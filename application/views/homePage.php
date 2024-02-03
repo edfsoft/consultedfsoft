@@ -281,8 +281,7 @@
                     <p><a href="https://www.google.com/maps/place/Maruthi+Medical+Center+Erode+-+Multispeciality+Hospitals%2FInfertility+Clinic%2FIVF+Treatment+Center%2FTest+Tube+Baby+Center%2FIUI+Center/@11.3383515,77.7104976,17z/data=!4m10!1m2!2m1!1s564,Perundurai+road,+Erode-11!3m6!1s0x3ba96f34f915e187:0xb1e50821faa81313!8m2!3d11.3381551!4d77.7130846!15sCh01NjQsUGVydW5kdXJhaSByb2FkLCBFcm9kZS0xMZIBEGZlcnRpbGl0eV9jbGluaWPgAQA!16s%2Fg%2F1ptvtx91z?entry=ttu"
                             style="font-size:18px;font-weight:400;" target="blank"
                             class="text-decoration-none text-light fs-6"><img
-                                src="<?php echo base_url(); ?>assets/location.svg" alt="1"> 564, Perundurai
-                            road, Erode-11</a></p>
+                                src="<?php echo base_url(); ?>assets/location.svg" alt="1"> 564, Perundurai road, Erode-11</a></p>
                 </div>
                 <p style="font-size:13px;font-weight:400;" class="text-light pt-2">Copyright © 2024 <a
                         href="https://www.erodediabetesfoundation.org/" target="blank"

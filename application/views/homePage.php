@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consult@EDF</title>
 
-    <link href="assets/edfTitleLogo.png" rel="icon">
+    <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -21,7 +21,7 @@
 
     <style>
         body {
-            font-family: 'Poppins', sans-serif; 
+            font-family: 'Poppins', sans-serif;
         }
     </style>
 </head>
@@ -31,7 +31,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light px-5">
         <div class="container-fluid">
             <a class="navbar-brand" href="https://www.erodediabetesfoundation.org/" target="blank"><img
-                    src="assets/edf_logo.png" alt="logo"></a>
+                    src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -39,7 +39,7 @@
             <div class="collapse navbar-collapse ps-5" id="navbarNavDropdown">
                 <ul class="navbar-nav ps-5">
                     <li class="nav-item">
-                        <a class="nav-link text-dark me-4" aria-current="page" href="#">About us</a>
+                        <a class="nav-link text-dark me-4" aria-current="page" href="#wyhchooseus">About us</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-dark me-4" href="#" id="navbarDropdownMenuLink"
@@ -47,68 +47,70 @@
                             Services
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Blogs</a></li>
-                            <li><a class="dropdown-item" href="#">Blogs</a></li>
-                            <li><a class="dropdown-item" href="#">Blogs</a></li>
+                            <li><a class="dropdown-item" href="#services">Services</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark me-4" href="#">Blogs</a>
+                        <a class="nav-link text-dark me-4" href="https://www.erodediabetesfoundation.org/blog/"
+                            target="blank">Blogs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark me-4" href="#">Testimonials</a>
+                        <a class="nav-link text-dark me-4" href="#testimonials">Testimonials</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#">Contact us</a>
+                        <a class="nav-link text-dark" href="#footer">Contact us</a>
                     </li>
                 </ul>
             </div>
-            <div class="dropdown">
-                <button class="btn rounded-pill text-light me-sm-3 px-4" style="background-color:#00AD8E;" type="button"
-                    id="dropDownLogin" data-bs-toggle="dropdown" aria-expanded="false">
-                    Login
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropDownLogin">
-                    <li><button class="dropdown-item" type="button">Health Care Provider</button></li>
-                    <li><button class="dropdown-item" type="button">Chief Consultant</button></li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-danger rounded-pill text-light px-4" type="button" id="dropDownSignup"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    Signup
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropDownSignup">
-                    <li><button class="dropdown-item" type="button">Health Care Provider</button></li>
-                    <li><button class="dropdown-item" type="button">Chief Consultant</button></li>
-                </ul>
+            <div class="d-flex text-center">
+                <div class="dropdown me-4 me-sm-0">
+                    <button class="btn rounded-pill text-light me-sm-3 px-4" style="background-color:#00AD8E;"
+                        type="button" id="dropDownLogin" data-bs-toggle="dropdown" aria-expanded="false">
+                        Login
+                    </button>
+                    <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-50px);"
+                        aria-labelledby="dropDownLogin">
+                        <li><button class="dropdown-item" type="button">Health Care Provider</button></li>
+                        <li><button class="dropdown-item" type="button">Chief Consultant</button></li>
+                    </ul>
+                </div>
+                <div class="dropdown ms-4 ms-sm-0">
+                    <button class="btn btn-danger rounded-pill text-light px-4" type="button" id="dropDownSignup"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Signup
+                    </button>
+                    <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-100px);"
+                        aria-labelledby="dropDownSignup">
+                        <li><button class="dropdown-item" type="button">Health Care Provider</button></li>
+                        <li><button class="dropdown-item" type="button">Chief Consultant</button></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Banner -->
-    <div class="d-flex justify-content-between pt-sm-5 ps-sm-5" style="background-color:#EEF6F5;">
+    <div class="d-lg-flex justify-content-between pt-sm-5 ps-sm-5" style="background-color:#EEF6F5;">
         <div class="ms-5 mt-5" style="font-size:36px;font-weight:500;">
             Specialized <br> <span class="text-danger">Diabetes Support</span> from <br> the convenience of <br> your
             own home
             <p class="pt-3" style="font-size:18px;font-weight:400;"> Online Video Consultations With <br> Expert
                 Diabetologists.</p>
-            <a href="#"><img src="assets/bookAppointBtn.png" alt="book"></a>
+            <a href="#"><img src="<?php echo base_url(); ?>assets/bookAppointBtn.png" alt="book"></a>
         </div>
-        <img class="d-none d-lg-flex img-responsive" src="assets/banner.png" alt="banner">
+        <img class="d-none d-lg-block img-fluid" src="<?php echo base_url(); ?>assets/banner.png" alt="banner">
     </div>
 
     <!-- Special -->
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="col col-lg-2">
-            </div>
-            <div class="col-md-auto">
-                <div class="d-flex align-items-center m-5">
-                    <img class="d-none d-lg-flex img-responsive" src="assets/special.svg" alt="special">
-                    <div class="ps-5" style="font-size:36px;font-weight:500;">
+    <div id="services" class="container">
+        <div class=" justify-content-md-center">
+            <div class="col-lg-auto">
+                <div class="d-lg-flex text-center align-items-center m-lg-5">
+                    <img class="text-center img-fluid" src="<?php echo base_url(); ?>assets/special.svg" alt="special">
+                    <div class="text-lg-start ps-md-5 p-2" style="font-size:36px;font-weight:500;">
                         We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you
-                        <p class="pt-3" style="font-size:18px;font-weight:400;"> Feel free to secure diabetes
+                        <p class="text-lg-start pt-3 p-2" style="font-size:18px;font-weight:400;"> Feel free to secure
+                            diabetes
                             consultations online
                             at your convenience, connecting with reliable and experienced medical professionals.
                             You can arrange your appointment by giving us a call and the rest is in our capable hands.
@@ -122,45 +124,47 @@
                     </div>
                 </div>
             </div>
-            <div class="col col-lg-2">
-            </div>
         </div>
     </div>
 
     <!-- Why choose -->
-    <div class="my-5 p-5" style="background-image:url('assets/chooseBanner.svg');">
-        <h3 class="pt-5 text-center" style="font-size:36px;font-weight:500;">
+    <div id="wyhchooseus" class="py-5 position-relative"
+        style="background-color:#FFF4F4;background-image: url('<?php echo base_url(); ?>assets/whysvg2.svg');background-repeat: no-repeat;background-position: right top;z-index:-2;">
+        <div class="position-relative">
+            <img class="position-absolute top-0 start-0" src="assets/whysvg1.svg" alt="1" style="z-index: -1;">
+        </div>
+
+        <h3 class="pt-lg-5 text-center" style="font-size:36px;font-weight:500;">
             Why choose us? </h3>
         <p class="pt-4 text-center" style="font-size:18px;font-weight:400;">Choose us for expert online diabetic
-            consultations,
-            providing <br> personalized care from certified professionals. </p>
-        <div class="d-sm-flex justify-content-evenly  pt-5">
+            consultations, providing <br> personalized care from certified professionals. </p>
 
-            <div class="col-2 text-center"> <img class=" mt-5" src="assets/choose1.png" alt="1">
-                <p class="text-danger pt-5" style="font-size:20px;font-weight:500;">Video Consultations</p>
-                <p class="" style="font-size:18px;font-weight:400;">Experience the convenience of video
-                    consultations
-                    for diabetic care from the comfort of your home.
+        <div class="d-lg-flex justify-content-evenly pt-lg-4">
+            <div class="col-lg-2 text-center"> <img class="mt-lg-5 pt-3"
+                    src="<?php echo base_url(); ?>assets/choose1.png" alt="1">
+                <p class="text-danger pt-2 pt-lg-5 " style="font-size:20px;font-weight:500;">Video Consultations</p>
+                <p class="px-2" style="font-size:18px;font-weight:400;">Experience the convenience of video
+                    consultations for diabetic care from the comfort of your home.
                 </p>
             </div>
-            <div class="col-2 text-center"> <img class="pb-2" src="assets/choose2.png" alt="2">
-                <p class="text-danger pt-5" style="font-size:20px;font-weight:500;"> Best Online Doctors</p>
-                <p class="" style="font-size:18px;font-weight:400;">Experience top-notch online diabetic care with
-                    our
-                    expert doctors, providing personalized consultations.
+            <div class="col-lg-2 text-center"> <img class="pt-3 pb-lg-2 "
+                    src="<?php echo base_url(); ?>assets/choose2.png" alt="2">
+                <p class="text-danger pt-2 pt-lg-5" style="font-size:20px;font-weight:500;"> Best Online Doctors</p>
+                <p class="px-2" style="font-size:18px;font-weight:400;">Experience top-notch online diabetic care with
+                    our expert doctors, providing personalized consultations.
                 </p>
             </div>
-            <div class="col-2 text-center"> <img class=" mt-5" src="assets/choose3.png" alt="3">
-                <p class="text-danger pt-4" style="font-size:20px;font-weight:500;">Digital Medical Records</p>
-                <p class="" style="font-size:18px;font-weight:400;">Effortlessly manage your diabetic health with
-                    our
-                    online consultation platform, featuring secure.
+            <div class="col-lg-2 text-center"> <img class="pt-3 mt-lg-5"
+                    src="<?php echo base_url(); ?>assets/choose3.png" alt="3">
+                <p class="text-danger pt-2 pt-lg-4" style="font-size:20px;font-weight:500;">Digital Medical Records</p>
+                <p class="px-2" style="font-size:18px;font-weight:400;">Effortlessly manage your diabetic health with
+                    our online consultation platform, featuring secure.
                 </p>
             </div>
-            <div class="col-2 text-center"> <img class="pt-4 pb-3" src="assets/choose4.png" alt="4">
-                <p class="text-danger pt-5" style="font-size:20px;font-weight:500;">Secure Patient Records</p>
-                <p class="" style="font-size:18px;font-weight:400;">Trust us for a confidential and secure
-                    platform
+            <div class="col-lg-2 text-center"> <img class="pt-3 pt-lg-4 pb-lg-3"
+                    src="<?php echo base_url(); ?>assets/choose4.png" alt="4">
+                <p class="text-danger pt-2 pt-lg-5" style="font-size:20px;font-weight:500;">Secure Patient Records</p>
+                <p class="px-2" style="font-size:18px;font-weight:400;">Trust us for a confidential and secure platform
                     dedicated to your well-being.
                 </p>
             </div>
@@ -168,34 +172,36 @@
     </div>
 
     <!-- Happy Patients -->
-    <div class="my-5">
+    <div id="testimonials" class="my-5">
         <div class="text-center">
-            <img src="assets/happysmile.svg" alt="happy">
+            <img src="<?php echo base_url(); ?>assets/happysmile.svg" alt="happy">
             <p style="font-size:36px;font-weight:500;">Happy Patients</p>
-            <p class="" style="font-size:18px;font-weight:400;">What Our Patients Say About Our Medical Treatments</p>
+            <p class="px-2" style="font-size:18px;font-weight:400;">What Our Patients Say About Our Medical Treatments
+            </p>
         </div>
 
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators" style="padding-top:100px;">
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1" style="text-indent:0;">a</button>
+                    aria-current="true" aria-label="Slide 1" style="text-indent:0;"><span class="badge bg-success">
+                    </span></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2" style="text-indent:0;">b</button>
+                    aria-label="Slide 2" style="text-indent:0;"><span class="badge bg-success"> </button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3" style="text-indent:0;">c</button>
+                    aria-label="Slide 3" style="text-indent:0;"><span class="badge bg-success"> </button>
             </div>
             <div class="carousel-inner">
                 <div class="carousel-item ">
-                    <div class="d-sm-flex justify-content-center p-5">
-                        <div class=" col-5 text-center border border-2 rounded-3 m-3 p-5">
-                            <img src="assets/happyPatients1.png" alt="1">
+                    <div class="d-md-flex justify-content-center p-3 pb-5">
+                        <div class=" col-md-5 text-center border border-2 rounded-3 m-3 p-5">
+                            <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="1">
                             <p class="text-secondary pt-2" style="font-size:18px;font-weight:400;"> “Lorem ipsum dolor
                                 sit amet, consectetur adipiscing elit, sed do
                                 eiusmod tempor incididunt ut labore et dolore magna aliqua.”</p>
                             <p style="font-size:18px;font-weight:400;">Suesh Krishanan</p>
                         </div>
-                        <div class=" col-5 text-center border border-2 rounded-3 m-3 p-5">
-                            <img src="assets/happyPatients2.png" alt="2">
+                        <div class=" col-md-5 text-center border border-2 rounded-3 m-3 p-5">
+                            <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="2">
                             <p class="text-secondary pt-2" style="font-size:18px;font-weight:400;"> “Lorem ipsum dolor
                                 sit amet, consectetur adipiscing elit, sed do
                                 eiusmod tempor incididunt ut labore et dolore magna aliqua.”</p>
@@ -204,16 +210,16 @@
                     </div>
                 </div>
                 <div class="carousel-item active">
-                    <div class="d-sm-flex justify-content-center p-5">
-                        <div class=" col-5 text-center border border-2 rounded-3 m-3 p-5">
-                            <img src="assets/happyPatients1.png" alt="1">
+                    <div class="d-md-flex justify-content-center  p-3 pb-5">
+                        <div class=" col-md-5 text-center border border-2 rounded-3 m-3 p-5">
+                            <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="1">
                             <p class="text-secondary pt-2" style="font-size:18px;font-weight:400;"> “Lorem ipsum dolor
                                 sit amet, consectetur adipiscing elit, sed do
                                 eiusmod tempor incididunt ut labore et dolore magna aliqua.”</p>
                             <p style="font-size:18px;font-weight:400;">Suesh Krishanan</p>
                         </div>
-                        <div class=" col-5 text-center border border-2 rounded-3 m-3 p-5">
-                            <img src="assets/happyPatients2.png" alt="2">
+                        <div class=" col-md-5 text-center border border-2 rounded-3 m-3 p-5">
+                            <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="2">
                             <p class="text-secondary pt-2" style="font-size:18px;font-weight:400;"> “Lorem ipsum dolor
                                 sit amet, consectetur adipiscing elit, sed do
                                 eiusmod tempor incididunt ut labore et dolore magna aliqua.”</p>
@@ -222,16 +228,16 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <div class="d-sm-flex justify-content-center p-5">
-                        <div class=" col-sm-5 text-center border border-2 rounded-3 m-3 p-5">
-                            <img src="assets/happyPatients1.png" alt="1">
+                    <div class="d-md-flex justify-content-center  p-3 pb-5">
+                        <div class=" col-md-5 text-center border border-2 rounded-3 m-3 p-5">
+                            <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="1">
                             <p class="text-secondary pt-2" style="font-size:18px;font-weight:400;"> “Lorem ipsum dolor
                                 sit amet, consectetur adipiscing elit, sed do
                                 eiusmod tempor incididunt ut labore et dolore magna aliqua.”</p>
                             <p style="font-size:18px;font-weight:400;">Suesh Krishanan</p>
                         </div>
-                        <div class=" col-5 text-center border border-2 rounded-3 m-3 p-5">
-                            <img src="assets/happyPatients2.png" alt="2">
+                        <div class=" col-md-5 text-center border border-2 rounded-3 m-3 p-5">
+                            <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="2">
                             <p class="text-secondary pt-2" style="font-size:18px;font-weight:400;"> “Lorem ipsum dolor
                                 sit amet, consectetur adipiscing elit, sed do
                                 eiusmod tempor incididunt ut labore et dolore magna aliqua.”</p>
@@ -254,25 +260,29 @@
     </div>
 
     <!-- Footer -->
-    <div class="container-fluid pt-5"
-        style="background-image: url('assets/footer.png'); background-size: cover; background-repeat: no-repeat;">
+    <div id="abc" class="container-fluid pt-5"
+        style="background-image: url('<?php echo base_url(); ?>assets/footer.png');background-size: cover;background-position: center center;background-repeat: no-repeat;">
         <div class="row">
             <div class="col-12 text-center ">
-                <img src="assets/footerEdfLogo.png" alt="logo">
+                <img src="<?php echo base_url(); ?>assets/footerEdfLogo.png" alt="logo">
                 <p class="text-light pt-2" style="font-size:18px;font-weight:400;"> “Empowering lives through expert
                     diabetes consultations online, <br> Your journey to a healthier, happier life starts here.”</p>
                 <hr class="my-4 text-light mx-auto" style="width:50%;height: 2px;">
-                <div class="d-sm-flex justify-content-evenly ">
-                    <p style="font-size:18px;font-weight:400;" class="text-light"><a href="tel:+9789494299"
-                            style="font-size:18px;font-weight:400;" class="text-decoration-none text-light">+91
+                <div class="d-lg-flex justify-content-evenly ">
+                    <p style="font-size:18px;font-weight:400;" class="text-light"><img
+                            src="<?php echo base_url(); ?>assets/phone-call.svg" alt="1"> <a href="tel:+9789494299"
+                            style="font-size:18px;font-weight:400;" class="text-decoration-none text-light fs-6">+91
                             9789494299</a> , <a href="tel:+04242264949" style="font-size:18px;font-weight:400;"
-                            class="text-decoration-none text-light">04242264949</a></p>
-                    <a href="mailto:contact@erodediabetesfoundation.org" style="font-size:18px;font-weight:400;"
-                        class="text-decoration-none text-light">contact@erodediabetesfoundation.org</a>
-                    <a href="https://www.google.com/maps/place/Maruthi+Medical+Center+Erode+-+Multispeciality+Hospitals%2FInfertility+Clinic%2FIVF+Treatment+Center%2FTest+Tube+Baby+Center%2FIUI+Center/@11.3383515,77.7104976,17z/data=!4m10!1m2!2m1!1s564,Perundurai+road,+Erode-11!3m6!1s0x3ba96f34f915e187:0xb1e50821faa81313!8m2!3d11.3381551!4d77.7130846!15sCh01NjQsUGVydW5kdXJhaSByb2FkLCBFcm9kZS0xMZIBEGZlcnRpbGl0eV9jbGluaWPgAQA!16s%2Fg%2F1ptvtx91z?entry=ttu"
-                        style="font-size:18px;font-weight:400;" target="blank"
-                        class="text-decoration-none text-light">564,Perundurai
-                        road, Erode-11</a>
+                            class="text-decoration-none text-light fs-6">04242264949</a></p>
+                    <p><a href="mailto:contact@erodediabetesfoundation.org" style="font-size:18px;font-weight:400;"
+                            class="text-decoration-none text-light fs-6"><img
+                                src="<?php echo base_url(); ?>assets/mail.svg" alt="1">
+                            contact@erodediabetesfoundation.org</a></p>
+                    <p><a href="https://www.google.com/maps/place/Maruthi+Medical+Center+Erode+-+Multispeciality+Hospitals%2FInfertility+Clinic%2FIVF+Treatment+Center%2FTest+Tube+Baby+Center%2FIUI+Center/@11.3383515,77.7104976,17z/data=!4m10!1m2!2m1!1s564,Perundurai+road,+Erode-11!3m6!1s0x3ba96f34f915e187:0xb1e50821faa81313!8m2!3d11.3381551!4d77.7130846!15sCh01NjQsUGVydW5kdXJhaSByb2FkLCBFcm9kZS0xMZIBEGZlcnRpbGl0eV9jbGluaWPgAQA!16s%2Fg%2F1ptvtx91z?entry=ttu"
+                            style="font-size:18px;font-weight:400;" target="blank"
+                            class="text-decoration-none text-light fs-6"><img
+                                src="<?php echo base_url(); ?>assets/location.svg" alt="1"> 564, Perundurai
+                            road, Erode-11</a></p>
                 </div>
                 <p style="font-size:13px;font-weight:400;" class="text-light pt-2">Copyright © 2024 <a
                         href="https://www.erodediabetesfoundation.org/" target="blank"

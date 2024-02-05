@@ -64,14 +64,16 @@
             </div>
             <div class="d-flex text-center">
                 <div class="dropdown me-4 me-sm-0">
-                    <button class="btn rounded-pill text-light me-sm-3 px-4" style="background-color:#00AD8E;"
+                    <button class="btn rounded-pill text-light me-sm-4 px-4" style="background-color:#00AD8E;"
                         type="button" id="dropDownLogin" data-bs-toggle="dropdown" aria-expanded="false">
                         Login
                     </button>
                     <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-50px);"
                         aria-labelledby="dropDownLogin">
-                        <li><button class="dropdown-item" type="button">Health Care Provider</button></li>
-                        <li><button class="dropdown-item" type="button">Chief Consultant</button></li>
+                        <li><a href="<?php echo base_url() . "Healthcareprovider/" ?>" class="dropdown-item py-2">Health
+                                Care Provider</a></li>
+                        <li><a href="<?php echo base_url() . "Chiefconsultant/" ?>" class="dropdown-item py-2">
+                                Chief Consultant</a></li>
                     </ul>
                 </div>
                 <div class="dropdown ms-4 ms-sm-0">
@@ -79,10 +81,10 @@
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Signup
                     </button>
-                    <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-100px);"
+                    <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-70px);"
                         aria-labelledby="dropDownSignup">
-                        <li><button class="dropdown-item" type="button">Health Care Provider</button></li>
-                        <li><button class="dropdown-item" type="button">Chief Consultant</button></li>
+                        <li><a href="" class="dropdown-item py-2">Health Care Provider</a></li>
+                        <li><a href="" class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
                 </div>
             </div>
@@ -108,18 +110,13 @@
                 <div class="d-lg-flex text-center align-items-center m-lg-5">
                     <img class="text-center img-fluid" src="<?php echo base_url(); ?>assets/special.svg" alt="special">
                     <div class="text-lg-start ps-md-5 p-2" style="font-size:36px;font-weight:500;">
-                        We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you
-                        <p class="text-lg-start pt-3 p-2" style="font-size:18px;font-weight:400;"> Feel free to secure
-                            diabetes
-                            consultations online
-                            at your convenience, connecting with reliable and experienced medical professionals.
-                            You can arrange your appointment by giving us a call and the rest is in our capable hands.
-                            <br><br>
-                            While video consultations offer the benefit of the comfort of your home, they do not
-                            compromise the
-                            treatment protocol. <br>
-                            <button class="btn text-light rounded-pill mt-3 px-3" style="background-color:#00AD8E;">Read
-                                More</button>
+                        We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you diabetes
+                        consultations online at your convenience, connecting with reliable and experienced medical
+                        professionals. You can arrange your appointment by giving us a call and the rest is in our
+                        capable hands. <br><br> While video consultations offer the benefit of the comfort of your home,
+                        they do not compromise the treatment protocol. <br>
+                        <button class="btn text-light rounded-pill mt-3 px-3" style="background-color:#00AD8E;">Read
+                            More</button>
                         </p>
                     </div>
                 </div>
@@ -281,7 +278,8 @@
                     <p><a href="https://www.google.com/maps/place/Maruthi+Medical+Center+Erode+-+Multispeciality+Hospitals%2FInfertility+Clinic%2FIVF+Treatment+Center%2FTest+Tube+Baby+Center%2FIUI+Center/@11.3383515,77.7104976,17z/data=!4m10!1m2!2m1!1s564,Perundurai+road,+Erode-11!3m6!1s0x3ba96f34f915e187:0xb1e50821faa81313!8m2!3d11.3381551!4d77.7130846!15sCh01NjQsUGVydW5kdXJhaSByb2FkLCBFcm9kZS0xMZIBEGZlcnRpbGl0eV9jbGluaWPgAQA!16s%2Fg%2F1ptvtx91z?entry=ttu"
                             style="font-size:18px;font-weight:400;" target="blank"
                             class="text-decoration-none text-light fs-6"><img
-                                src="<?php echo base_url(); ?>assets/location.svg" alt="1"> 564, Perundurai road, Erode-11</a></p>
+                                src="<?php echo base_url(); ?>assets/location.svg" alt="1"> 564, Perundurai road,
+                            Erode-11</a></p>
                 </div>
                 <p style="font-size:13px;font-weight:400;" class="text-light pt-2">Copyright © 2024 <a
                         href="https://www.erodediabetesfoundation.org/" target="blank"

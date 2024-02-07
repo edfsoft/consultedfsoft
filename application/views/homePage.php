@@ -110,8 +110,8 @@
                 <div class="d-lg-flex text-center align-items-center m-lg-5">
                     <img class="text-center img-fluid" src="<?php echo base_url(); ?>assets/special.svg" alt="special">
                     <div class="text-lg-start ps-md-5 p-2" style="font-size:36px;font-weight:500;">
-                        We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you diabetes
-                        consultations online at your convenience, connecting with reliable and experienced medical
+                        We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you 
+                        <p class="pt-4" style="font-size:18px;font-weight:400;">Feel free to secure diabetes consultations online at your convenience, connecting with reliable and experienced medical
                         professionals. You can arrange your appointment by giving us a call and the rest is in our
                         capable hands. <br><br> While video consultations offer the benefit of the comfort of your home,
                         they do not compromise the treatment protocol. <br>

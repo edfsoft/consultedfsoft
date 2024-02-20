@@ -16,4 +16,16 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpLogin.php');
     }
 
+public function dashboard()
+{
+    $this->data['method'] = "dashboard";
+    $this->load->view('hcpDashboard.php',  $this->data);
+}
+    
+public function patients()
+{
+    $this->data['method'] = "patients";
+    $this->load->view('hcpDashboard.php',  $this->data);
+}
+
 }

@@ -28,4 +28,10 @@ public function patients()
     $this->load->view('hcpDashboard.php',  $this->data);
 }
 
+public function patientform()
+{
+    $this->data['method'] = "patientDetailsform";
+    $this->load->view('hcpDashboard.php',  $this->data);
+}
+
 }

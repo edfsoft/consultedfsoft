@@ -378,12 +378,12 @@
                                 <p class="ps-2" style="font-size: 24px; font-weight: 500">
                                     Patients
                                 </p>
-                                <button style="background-color: #00ad8e; color: white; border: none" class="rounded">
-                                    <i class="bi bi-plus-square-fill"></i> Patient
-                                </button>
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientform" ?>"> <button
+                                        style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
+                                        <i class="bi bi-plus-square-fill"></i> Patient
+                                    </button></a>
                             </div>
 
-                            <!-- Section-1 -->
                             <table class="table text-center">
                                 <thead>
                                     <tr>
@@ -444,6 +444,106 @@
                         </div>
                     </div>
                 </section>
+            <?php
+        } else if ($method == "patientDetailsform") {
+            ?>
+
+                    <script>
+                        document.getElementById('patients').style.color = "#87F7E3";
+                    </script>
+
+                    <section>
+                        <div class="card shadow-none rounded">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between mt-2 mb-3">
+                                    <p class="ps-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
+                                        <button
+                                            style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
+                                            class="text-light rounded-circle border-0">1</button> Basic Details
+                                    </p>
+                                    <a href="#" class="text-dark"><i class="bi bi-arrow-left"></i> Back</a>
+                                </div>
+                                <!-- Form  -->
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <form id="multi-step-form">
+                                                <div id="step-1">
+                                                    <div class="form-group pb-2">
+                                                        <label for="name">Name</label>
+                                                        <input type="text" class="form-control" id="patientname" name="patientname"
+                                                            required>
+                                                    </div>
+                                                    <div class="form-group pb-2">
+                                                        <label for="name">Patient Id</label>
+                                                        <input type="text" class="form-control" id="patientId" name="patientId"
+                                                            required>
+                                                    </div>
+                                                    <div class="form-group pb-2">
+                                                        <label for="name">Gender</label>
+                                                        <input type="text" class="form-control" id="patientGender"
+                                                            name="patientGender" required>
+                                                    </div>
+                                                    <div class="form-group pb-2">
+                                                        <label for="name">DOB</label>
+                                                        <input type="text" class="form-control" id="patientDob" name="patientDob"
+                                                            required>
+                                                    </div>
+                                                    <div class="form-group pb-2">
+                                                        <label for="name">Moblie Number</label>
+                                                        <input type="text" class="form-control" id="patientmobile"
+                                                            name="patientmobile" required>
+                                                    </div>
+                                                    <div class="form-group pb-2">
+                                                        <label for="name">Email</label>
+                                                        <input type="text" class="form-control" id="patientemail"
+                                                            name="patientemail" required>
+                                                    </div>
+                                                    <div class="form-group pb-2">
+                                                        <label for="name">Address</label>
+                                                        <input type="text" class="form-control" id="patientaddress"
+                                                            name="patientaddress" required>
+                                                    </div>
+                                                    <button class="btn text-light next float-end mt-2"
+                                                        style="background-color: #00ad8e;" onclick="nextStep(1)">Next</button>
+                                                </div>
+
+                                                <div id="step-2" style="display:none;">
+                                                    <div class="form-group">
+                                                        <label for="email">Email:</label>
+                                                        <input type="email" class="form-control" id="email" name="email" required>
+                                                    </div>
+                                                    <button class="btn btn-secondary prev" onclick="prevStep(2)">Previous</button>
+                                                    <button class="btn btn-primary next" onclick="nextStep(2)">Next</button>
+                                                </div>
+
+                                                <div id="step-3" style="display:none;">
+                                                    <div class="form-group">
+                                                        <label for="message">Message:</label>
+                                                        <textarea class="form-control" id="message" name="message" rows="4"
+                                                            required></textarea>
+                                                    </div>
+                                                    <button class="btn btn-secondary prev" onclick="prevStep(3)">Previous</button>
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <script>
+                        function nextStep(step) {
+                            document.getElementById('step-' + step).style.display = 'none';
+                            document.getElementById('step-' + (step + 1)).style.display = 'block';
+                        }
+
+                        function prevStep(step) {
+                            document.getElementById('step-' + step).style.display = 'none';
+                            document.getElementById('step-' + (step - 1)).style.display = 'block';
+                        }
+                    </script>
         <?php } ?>
     </main>
 </body>
@@ -459,6 +559,6 @@
 <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
 
 <!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/main.js"></script>
 
 </html>

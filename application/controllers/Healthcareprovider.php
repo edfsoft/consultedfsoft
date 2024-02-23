@@ -33,5 +33,16 @@ public function patientform()
     $this->data['method'] = "patientDetailsform";
     $this->load->view('hcpDashboard.php',  $this->data);
 }
+public function appointments()
+{
+    $this->data['method'] = "appointments";
+    $this->load->view('hcpDashboard.php',  $this->data);
+}
+
+public function chiefDoctors()
+{
+    $this->data['method'] = "chiefDoctors";
+    $this->load->view('hcpDashboard.php',  $this->data);
+}
 
 }

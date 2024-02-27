@@ -16,33 +16,44 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpLogin.php');
     }
 
-public function dashboard()
-{
-    $this->data['method'] = "dashboard";
-    $this->load->view('hcpDashboard.php',  $this->data);
-}
-    
-public function patients()
-{
-    $this->data['method'] = "patients";
-    $this->load->view('hcpDashboard.php',  $this->data);
-}
+    public function register()
+    {
+        $this->load->view('hcpRegister.php');
+    }
 
-public function patientform()
-{
-    $this->data['method'] = "patientDetailsform";
-    $this->load->view('hcpDashboard.php',  $this->data);
-}
-public function appointments()
-{
-    $this->data['method'] = "appointments";
-    $this->load->view('hcpDashboard.php',  $this->data);
-}
+    public function dashboard()
+    {
+        $this->data['method'] = "dashboard";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
 
-public function chiefDoctors()
-{
-    $this->data['method'] = "chiefDoctors";
-    $this->load->view('hcpDashboard.php',  $this->data);
-}
+    public function patients()
+    {
+        $this->data['method'] = "patients";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
+
+    public function patientform()
+    {
+        $this->data['method'] = "patientDetailsForm";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
+    public function appointments()
+    {
+        $this->data['method'] = "appointments";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
+
+    public function appointmentsForm()
+    {
+        $this->data['method'] = "appointmentsForm";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
+
+    public function chiefDoctors()
+    {
+        $this->data['method'] = "chiefDoctors";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
 
 }

@@ -83,8 +83,8 @@
                     </button>
                     <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-70px);"
                         aria-labelledby="dropDownSignup">
-                        <li><a href="" class="dropdown-item py-2">Health Care Provider</a></li>
-                        <li><a href="" class="dropdown-item py-2">Chief Consultant</a></li>
+                        <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>" class="dropdown-item py-2">Health Care Provider</a></li>
+                        <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>" class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
                 </div>
             </div>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HCP Login Page</title>
+    <title>HCP Signup Page</title>
 
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
 
@@ -38,22 +38,28 @@
 
         <div class="mx-sm-5 p-5">
             <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo" class="img-fluid">
-            <p class="pt-2" style="font-size:40px;font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
-            <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
-            <p class="" style="font-size:18px;font-weight:400;">Empowering general practitioners to provide <br>
+            <p class="pt-2" style="font-size:40px;font-weight:500;color:#00AD8E;">Healthcare Provider Signup</p>
+            <p class="" style="font-size:24px;font-weight:600;">Create an account</p>
+            <!-- <p class="" style="font-size:18px;font-weight:400;">Empowering general practitioners to provide <br>
                 personalized online diabetes consultations <br> for comprehensive patient care.
-            </p>
+            </p> -->
             <form action="forms" method="post" name="hcploginform" onsubmit="return validateLogin()">
+                <div class="mb-3">
+                    <label for="hcpName" class="form-label">Name <span class="text-danger">*</span></label>
+                    <input type="text" name="hcpName" id="hcpName" placeholder="Suresh Kumar"
+                        class="form-control rounded-pill p-3">
+                    <div id="name_err" class="text-danger pt-1"></div>
+                </div>
                 <div class="mb-3">
                     <label for="hcpEmail" class="form-label">Email address <span class="text-danger">*</span></label>
                     <input type="text" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com"
-                        oninput="validEmail(this)" class="form-control rounded-pill p-3">
+                        class="form-control rounded-pill p-3">
                     <div id="mail_err" class="text-danger pt-1"></div>
                 </div>
                 <div class="mb-3">
                     <label for="hcpPassword" class="form-label">Password <span class="text-danger">*</span></label>
                     <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
-                        oninput="validePassword(this)" class="form-control rounded-pill p-3">
+                        class="form-control rounded-pill p-3">
                     <div id="password_err" class="text-danger pt-1"></div>
                 </div>
                 <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
@@ -66,47 +72,22 @@
                 </div>
 
                 <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
-                    style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
+                    style="background-color:#00AD8E;font-size:16px;font-weight:600;">Register</button>
             </form>
 
-            <p class="mt-3" style="font-size:18px;font-weight:400;">Don't have an account? <a
-                    href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                    class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
+            <p class="mt-3" style="font-size:18px;font-weight:400;">Already have an account ? <a
+                    href="<?php echo base_url() . "Healthcareprovider/" ?>" class="text-decoration-none text-dark"
+                    style="font-weight:600;"> Login</a></p>
         </div>
     </div>
 
     <script>
-        document.getElementById("hcpPassword").onfocus = function () {
-            document.getElementById("passwordmessage").style.display = "block";
-        }
-
-        document.getElementById("hcpPassword").onblur = function () {
-            document.getElementById("passwordmessage").style.display = "none";
-        }
-
-        function validEmail(input) {
-            const emailError = document.getElementById("mail_err");
-            if (input.value != "") {
-                 emailError.textContent = "";
-            }
-        }
-
-        function validePassword(input) {
-            const passwordError = document.getElementById("password_err");
-            if (input.value != "") {
-                passwordError.textContent = "";
-            }
-        }
-
         function validateLogin() {
             var email = document.getElementById("hcpEmail").value;
             var password = document.getElementById("hcpPassword").value;
 
             if (email == "") {
                 document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
-                return false;
-            }else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
-                document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
                 return false;
             } else {
                 document.getElementById("mail_err").innerHTML = "";
@@ -115,10 +96,7 @@
             if (password == "") {
                 document.getElementById("password_err").innerHTML = "Password must be filled out.";
                 return false;
-            }else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)){
-                document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password.";
-                return false;
-            }  {
+            } else {
                 document.getElementById("password_err").innerHTML = "";
             }
         }

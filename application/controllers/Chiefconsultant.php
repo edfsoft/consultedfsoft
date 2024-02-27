@@ -16,4 +16,10 @@ class chiefconsultant extends CI_Controller
         $this->load->view('ccLogin.php');
     }
 
+    public function register()
+    {
+        $this->load->view('ccRegister.php');
+    }
+
+
 }

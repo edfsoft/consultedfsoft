@@ -76,7 +76,12 @@
                                 Chief Consultant</a></li>
                     </ul>
                 </div>
+
                 <div class="dropdown ms-4 ms-sm-0">
+                    <a href="<?php echo base_url() . "Healthcareprovider/register" ?>">
+                        <button class="btn btn-danger rounded-pill text-light px-4" type="button">Signup</button></a>
+                </div>
+                <!-- <div class="dropdown ms-4 ms-sm-0">
                     <button class="btn btn-danger rounded-pill text-light px-4" type="button" id="dropDownSignup"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Signup
@@ -86,7 +91,7 @@
                         <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>" class="dropdown-item py-2">Health Care Provider</a></li>
                         <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>" class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
     </nav>
@@ -110,13 +115,15 @@
                 <div class="d-lg-flex text-center align-items-center m-lg-5">
                     <img class="text-center img-fluid" src="<?php echo base_url(); ?>assets/special.svg" alt="special">
                     <div class="text-lg-start ps-md-5 p-2" style="font-size:36px;font-weight:500;">
-                        We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you 
-                        <p class="pt-4" style="font-size:18px;font-weight:400;">Feel free to secure diabetes consultations online at your convenience, connecting with reliable and experienced medical
-                        professionals. You can arrange your appointment by giving us a call and the rest is in our
-                        capable hands. <br><br> While video consultations offer the benefit of the comfort of your home,
-                        they do not compromise the treatment protocol. <br>
-                        <button class="btn text-light rounded-pill mt-3 px-3" style="background-color:#00AD8E;">Read
-                            More</button>
+                        We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you
+                        <p class="pt-4" style="font-size:18px;font-weight:400;">Feel free to secure diabetes
+                            consultations online at your convenience, connecting with reliable and experienced medical
+                            professionals. You can arrange your appointment by giving us a call and the rest is in our
+                            capable hands. <br><br> While video consultations offer the benefit of the comfort of your
+                            home,
+                            they do not compromise the treatment protocol. <br>
+                            <button class="btn text-light rounded-pill mt-3 px-3" style="background-color:#00AD8E;">Read
+                                More</button>
                         </p>
                     </div>
                 </div>

@@ -23,69 +23,121 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+
+        .fixed-image {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            height: 100vh;
+            width: 50%;
+            z-index: -1;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-image {
+                width: 100%;
+                display: none;
+            }
+
+            #bgcolor {
+                background-color:rgba(0, 121, 173, 0.6) ;
+            }
+        }
+
+        #ccMobile::-webkit-outer-spin-button,
+        #ccMobile::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
 
 <body>
-    <div class="d-flex ">
-        <div class="card d-none d-md-block">
-            <img src="<?php echo base_url(); ?>assets/ccbglogin.png" alt="Background"
-                class="h-100 w-md-50 w-lg-75 w-100">
-            <div class="card-img-overlay d-flex align-items-center justify-content-center mt-0 pt-0">
-                <img src="<?php echo base_url(); ?>assets/cclogin.png" alt="Overlay" class="img-fluid">
+    <div class="container-fluid">
+        <div class="row" id="bgcolor">
+            <div class="col-md-6">
+                <img src="<?php echo base_url(); ?>assets/ccbglogin.png" alt="Fixed Image"
+                    class="fixed-image img-fluid">
+                <div class="fixed-image-container text-center d-none d-md-block"
+                    style="position: fixed; top: 50%; left: 25%; transform: translate(-50%, -50%);">
+                    <p style="font-size:40px;font-weight:500;">Welcome to</p>
+                    <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="Overlay" class="img-fluid" width="226"
+                        height="106">
+                    <p class="pt-3" style="font-size:18px;">Sign up to continue as <b>Chief Consultant</b>.</p>
+                </div>
             </div>
-        </div>
+            <div class="col-md-6">
+                <div class="login-form mx-lg-5 p-5">
+                    <p class="pt-2" style="font-size:40px;font-weight:500;color:#E01A2B;">Create an Account</p>
+                    <p class="" style="font-size:24px;font-weight:600;">CHIEF CONSULTANT</p>
+                    <p class="" style="font-size:18px;font-weight:400;">We're thrilled to have you join us on your
+                        journey
+                        towards better health.
+                    </p>
+                    <form action="forms" method="post" name="signupform" onsubmit="return validateSignup()"
+                        oninput="return removeError()">
+                        <div class="mb-3">
+                            <label for="ccName" class="form-label">Name <span class="text-danger">*</span></label>
+                            <input type="text" name="ccName" id="ccName" placeholder="Suresh Kumar"
+                                class="form-control rounded-pill p-3">
+                            <div id="name_err" class="text-danger pt-1"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ccMobile" class="form-label">Mobile <span class="text-danger">*</span></label>
+                            <input type="number" name="ccMobile" id="ccMobile" placeholder="9876543210"
+                                class="form-control rounded-pill p-3">
+                            <div id="mobile_err" class="text-danger pt-1"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ccEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="ccEmail" id="ccEmail" placeholder="example@gmail.com"
+                                class="form-control rounded-pill p-3">
+                            <div id="mail_err" class="text-danger pt-1"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ccPassword" class="form-label">Password <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
+                                class="form-control rounded-pill p-3">
+                            <div id="password_err" class="text-danger pt-1"></div>
+                        </div>
+                        <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
+                            Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
+                            and a minimum of 8 characters.</div>
+                        <div class="mb-3">
+                            <label for="ccCnfmPassword" class="form-label">Confirm Password <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" name="ccCnfmPassword" id="ccCnfmPassword"
+                                placeholder="confirm password" class="form-control rounded-pill p-3">
+                            <div id="cnfmpassword_err" class="text-danger pt-1"></div>
+                        </div>
 
-        <div class="mx-sm-5 p-5">
-            <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo" class="img-fluid">
-            <p class="pt-2" style="font-size:40px;font-weight:500;color:#0079AD;">Chief Consultant Signup</p>
-            <p class="" style="font-size:24px;font-weight:600;">Create an account</p>
-            <!-- <p class="" style="font-size:18px;font-weight:400;">Empowering chief practitioners to provide <br>
-                personalized online diabetes consultations <br> for comprehensive patient care.
-            </p> -->
-            <form action="#" method="post" name="ccloginform" onsubmit="return validateLogin()">
-                <div class="mb-3">
-                    <label for="ccName" class="form-label">Name <span class="text-danger">*</span></label>
-                    <input type="text" name="ccName" id="ccName" placeholder="John Doe"
-                        class="form-control rounded-pill p-3">
-                    <div id="name_err" class="text-danger pt-1"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="ccEmail" class="form-label">Email address <span class="text-danger">*</span></label>
-                    <input type="text" name="ccEmail" id="ccEmail" placeholder="example@gmail.com"
-                        class="form-control rounded-pill p-3">
-                    <div id="mail_err" class="text-danger pt-1"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="ccPassword" class="form-label">Password <span class="text-danger">*</span></label>
-                    <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
-                        class="form-control rounded-pill p-3">
-                    <div id="password_err" class="text-danger pt-1"></div>
-                </div>
-                <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
-                    Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number and a
-                    minimum
-                    of 8 characters.</div>
-                <div class="mb-3">
-                    <input type="checkbox" id="check" name="check" value="1">
-                    <label for="check"> Remember me</label>
-                </div>
+                        <div class="mb-3">
+                            <input type="checkbox" id="check" name="check" value="1">
+                            <label for="check">I agree the Terms of Use and Privacy Policy.</label>
+                        </div>
 
-                <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
-                    style="background-color:#00AD8E;font-size:16px;font-weight:600;">Register</button>
-            </form>
-
-            <p class="mt-3" style="font-size:18px;font-weight:400;">Already have an account ? <a
-                    href="<?php echo base_url() . "Chiefconsultant/" ?>"
-                    class="text-decoration-none text-dark" style="font-weight:600;">Login</a></p>
+                        <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
+                            style="background-color:#0079AD;font-size:16px;font-weight:600;">Sign Up</button>
+                    </form>
+                    <p class="mt-3" style="font-size:18px;font-weight:400;">Already have an account ? <a
+                            href="<?php echo base_url() . "Healthcareprovider/" ?>"
+                            class="text-decoration-none text-dark" style="font-weight:600;"> Login</a></p>
+                </div>
+            </div>
         </div>
     </div>
 
+
+
     <script>
-        function validateLogin() {
+        function validateSignup() {
             var name = document.getElementById("ccName").value;
+            var mobile = document.getElementById("ccMobile").value;
             var email = document.getElementById("ccEmail").value;
             var password = document.getElementById("ccPassword").value;
+            var confirmpassword = document.getElementById("ccCnfmPassword").value;
 
             if (name == "") {
                 document.getElementById("name_err").innerHTML = "Name must be filled out.";
@@ -94,8 +146,21 @@
                 document.getElementById("name_err").innerHTML = "";
             }
 
+            if (mobile == "") {
+                document.getElementById("mobile_err").innerHTML = "Mobile number must be filled out.";
+                return false;
+            } else if (!/^\d{10}$/.test(mobile)) {
+                document.getElementById("mobile_err").innerHTML = "Invalid mobile number. Please enter valid number.";
+                return false;
+            } else {
+                document.getElementById("mobile_err").innerHTML = "";
+            }
+
             if (email == "") {
                 document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
+                return false;
+            } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
                 return false;
             } else {
                 document.getElementById("mail_err").innerHTML = "";
@@ -104,10 +169,61 @@
             if (password == "") {
                 document.getElementById("password_err").innerHTML = "Password must be filled out.";
                 return false;
+            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+                document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password."
+                return false;
             } else {
                 document.getElementById("password_err").innerHTML = "";
             }
+
+            if (confirmpassword == "") {
+                document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
+                return false;
+            } else if (confirmpassword != password) {
+                document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
+                return false;
+            } else {
+                document.getElementById("cnfmpassword_err").innerHTML = "";
+            }
         }
+
+        document.getElementById("ccPassword").onfocus = function () {
+            document.getElementById("passwordmessage").style.display = "block";
+        }
+
+        document.getElementById("ccPassword").onblur = function () {
+            document.getElementById("passwordmessage").style.display = "none";
+        }
+
+
+        function removeError() {
+            var name = document.getElementById("ccName").value;
+            var mobile = document.getElementById("ccMobile").value;
+            var email = document.getElementById("ccEmail").value;
+            var password = document.getElementById("ccPassword").value;
+            var confirmpassword = document.getElementById("ccCnfmPassword").value;
+
+            if (name != "") {
+                document.getElementById("name_err").innerHTML = "";
+            }
+
+            if (mobile != "") {
+                document.getElementById("mobile_err").innerHTML = "";
+            }
+
+            if (email != "") {
+                document.getElementById("mail_err").innerHTML = "";
+            }
+
+            if (password != "") {
+                document.getElementById("password_err").innerHTML = "";
+            }
+
+            if (confirmpassword != "") {
+                document.getElementById("cnfmpassword_err").innerHTML = "";
+            }
+        }
+
     </script>
 </body>
 

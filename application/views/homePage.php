@@ -77,11 +77,11 @@
                     </ul>
                 </div>
 
-                <div class="dropdown ms-4 ms-sm-0">
+                <!-- <div class="dropdown ms-4 ms-sm-0">
                     <a href="<?php echo base_url() . "Healthcareprovider/register" ?>">
                         <button class="btn btn-danger rounded-pill text-light px-4" type="button">Signup</button></a>
-                </div>
-                <!-- <div class="dropdown ms-4 ms-sm-0">
+                </div> -->
+                <div class="dropdown ms-4 ms-sm-0">
                     <button class="btn btn-danger rounded-pill text-light px-4" type="button" id="dropDownSignup"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Signup
@@ -91,7 +91,7 @@
                         <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>" class="dropdown-item py-2">Health Care Provider</a></li>
                         <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>" class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
-                </div> -->
+                </div>
             </div>
         </div>
     </nav>

@@ -66,7 +66,7 @@
                 </div>
 
                 <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
-                    style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
+                    style="background-color:#0079AD;font-size:16px;font-weight:600;">Login</button>
             </form>
 
             <p class="mt-3" style="font-size:18px;font-weight:400;">Don't have an account? <a

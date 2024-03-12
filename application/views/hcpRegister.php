@@ -41,7 +41,7 @@
             }
 
             #bgcolor {
-                background-color:rgba(0,173,142, 0.6) ;
+                background-color: rgba(0, 173, 142, 0.6);
             }
         }
 

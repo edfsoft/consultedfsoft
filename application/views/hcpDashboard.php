@@ -26,6 +26,7 @@
     <style>
         body {
             font-family: "Poppins", sans-serif;
+            /* scroll-padding-top: 290px; */
         }
     </style>
 </head>
@@ -179,7 +180,7 @@
                             <img src="<?php echo base_url(); ?>assets/dash_icon2.svg" alt="icon2" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Total Patients
+                                    Today Patients
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     25
@@ -193,7 +194,7 @@
                             <img src="<?php echo base_url(); ?>assets/dash_icon3.svg" alt="icon3" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Total Patients
+                                    Total Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     19
@@ -680,61 +681,61 @@
                             var mobile = document.getElementById("patientMobile").value;
                             var address = document.getElementById("patientAddress").value;
 
-                            // if (name == "") {
-                            //     document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
-                            //     document.getElementById("patientName").focus();
-                            //     return false;
-                            // } else {
-                            //     document.getElementById("patientName_err").innerHTML = "";
-                            // }
+                            if (name == "") {
+                                document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
+                                document.getElementById("patientName").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientName_err").innerHTML = "";
+                            }
 
-                            // if (patientId == "") {
-                            //     document.getElementById("patientId_err").innerHTML = "Patient Id must be filled out.";
-                            //     return false;
-                            // } else {
-                            //     document.getElementById("patientId_err").innerHTML = "";
-                            // }
+                            if (patientId == "") {
+                                document.getElementById("patientId_err").innerHTML = "Patient Id must be filled out.";
+                                return false;
+                            } else {
+                                document.getElementById("patientId_err").innerHTML = "";
+                            }
 
-                            // if (gender == "") {
-                            //     document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
-                            //     return false;
-                            // } else {
-                            //     document.getElementById("patientGender_err").innerHTML = "";
-                            // }
+                            if (gender == "") {
+                                document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
+                                return false;
+                            } else {
+                                document.getElementById("patientGender_err").innerHTML = "";
+                            }
 
-                            // if (dob == "") {
-                            //     document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
-                            //     return false;
-                            // } else {
-                            //     document.getElementById("patientDob_err").innerHTML = "";
-                            // }
+                            if (dob == "") {
+                                document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
+                                return false;
+                            } else {
+                                document.getElementById("patientDob_err").innerHTML = "";
+                            }
 
-                            // if (mobile == "") {
-                            //     document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
-                            //     return false;
-                            // } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
-                            //     document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
-                            //     return false;
-                            // } else {
-                            //     document.getElementById("patientMobile_err").innerHTML = "";
-                            // }
+                            if (mobile == "") {
+                                document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
+                                return false;
+                            } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
+                                document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
+                                return false;
+                            } else {
+                                document.getElementById("patientMobile_err").innerHTML = "";
+                            }
 
-                            // if (email == "") {
-                            //     document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";
-                            //     return false;
-                            // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                            //     document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";
-                            //     return false;
-                            // } else {
-                            //     document.getElementById("patientEmail_err").innerHTML = "";
-                            // }
+                            if (email == "") {
+                                document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";
+                                return false;
+                            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";
+                                return false;
+                            } else {
+                                document.getElementById("patientEmail_err").innerHTML = "";
+                            }
 
-                            // if (address == "") {
-                            //     document.getElementById("patientAddress_err").innerHTML = "Address must be filled out.";
-                            //     return false;
-                            // } else {
-                            //     document.getElementById("patientAddress_err").innerHTML = "";
-                            // }
+                            if (address == "") {
+                                document.getElementById("patientAddress_err").innerHTML = "Address must be filled out.";
+                                return false;
+                            } else {
+                                document.getElementById("patientAddress_err").innerHTML = "";
+                            }
 
                             return true;
                         }

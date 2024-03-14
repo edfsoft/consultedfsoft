@@ -28,6 +28,19 @@
             font-family: "Poppins", sans-serif;
             /* scroll-padding-top: 290px; */
         }
+
+        #patientMobile::-webkit-outer-spin-button,
+        #patientMobile::-webkit-inner-spin-button,
+        #additionalContact::-webkit-outer-spin-button,
+        #additionalContact::-webkit-inner-spin-button,
+        #partnerMobile::-webkit-outer-spin-button,
+        #partnerMobile::-webkit-inner-spin-button,
+        #patientPincode::-webkit-outer-spin-button,
+        #patientPincode::-webkit-inner-spin-button
+         {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -479,17 +492,31 @@
                                                             class="text-light rounded-circle border-0">1</button> Basic Details
                                                     </p>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientName">Name <span
+                                                        <label class="form-label" for="patientName">First Name <span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="patientName" name="patientName">
+                                                        <input type="text" class="form-control" id="patientName" name="patientName"
+                                                            placeholder="Gopal">
                                                         <div id="patientName_err" class="text-danger pt-1"></div>
                                                     </div>
-                                                    <div class="form-group pb-2">
-                                                        <label class="form-label" for="patientId">Patient Id <span
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientLastName">Last Name</label>
+                                                        <input type="text" class="form-control" id="patientLastName"
+                                                            name="patientLastName" placeholder="Krishna">
+                                                        <div id="patientLastName_err" class="text-danger pt-1"></div>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientMobile">Moblie Number <span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="number" class="form-control" id="patientId" name="patientId"
-                                                            min="0">
-                                                        <div id="patientId_err" class="text-danger pt-1"></div>
+                                                        <input type="number" class="form-control" id="patientMobile"
+                                                            name="patientMobile" placeholder="9638527410">
+                                                        <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientEmail">Email <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="mail" class="form-control" id="patientEmail"
+                                                            name="patientEmail" placeholder="example@gmail.com">
+                                                        <div id="patientEmail_err" class="text-danger pt-1"></div>
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientGender">Gender <span
@@ -504,29 +531,45 @@
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientDob">DOB <span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="date" class="form-control" id="patientDob" name="patientDob">
+                                                        <input type="date" class="form-control" id="patientDob"
+                                                            onchange="calculateAge()" name="patientDob">
                                                         <div id="patientDob_err" class="text-danger pt-1"></div>
                                                     </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientMobile">Moblie Number <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="patientMobile"
-                                                            name="patientMobile">
-                                                        <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                                    <div class="form-group pb-2">
+                                                        <label class="form-label">Age</label>
+                                                        <div class="d-flex ">
+                                                            <p class="pt-1 pe-2">Years: </p>
+                                                            <p class="form-control" name="ageYearsOutput" id="ageYearsOutput"
+                                                                value="">0</p>
+                                                            <p class="pt-1 ps-2 ps-md-5 pe-2">Months: </p>
+                                                            <p class="form-control" name="ageMonthsOutput" id="ageMonthsOutput"
+                                                                value="">0</p>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientEmail">Email <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="mail" class="form-control" id="patientEmail"
-                                                            name="patientEmail">
-                                                        <div id="patientEmail_err" class="text-danger pt-1"></div>
+                                                        <label class="form-label" for="patientMatrital">Marital Status</label>
+                                                        <select class="form-control" id="patientMatrital" name="patientMatrital">
+                                                            <option value="">Select Marital Status</option>
+                                                            <option value="Single">Single</option>
+                                                            <option value="Married">Married</option>
+                                                        </select>
+                                                        <div id="patientMarital_err" class="text-danger pt-1"></div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientAddress">Address <span
+                                                        <label class="form-label" for="patientBlood">Blood Group <span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="patientAddress"
-                                                            name="patientAddress">
-                                                        <div id="patientAddress_err" class="text-danger pt-1"></div>
+                                                        <select class="form-control" id="patientBlood" name="patientBlood">
+                                                            <option value="">Select Blood Group</option>
+                                                            <option value="A +ve">A +ve</option>
+                                                            <option value="A -ve">A -ve</option>
+                                                            <option value="B +ve">B +ve</option>
+                                                            <option value="B -ve">B -ve</option>
+                                                            <option value="O +ve">O +ve</option>
+                                                            <option value="O -ve">O -ve</option>
+                                                            <option value="AB +ve">AB +ve</option>
+                                                            <option value="AB -ve">AB -ve</option>
+                                                        </select>
+                                                        <div id="patientBlood_err" class="text-danger pt-1"></div>
                                                     </div>
                                                     <button class="btn text-light next float-end mt-2"
                                                         style="background-color: #00ad8e;"
@@ -537,48 +580,67 @@
                                                     <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
                                                         <button
                                                             style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
-                                                            class="text-light rounded-circle border-0">2</button> Health Records
-                                                    </p>
+                                                            class="text-light rounded-circle border-0">2</button> Additional
+                                                        Information  </p>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientWeight">Weight</label>
-                                                        <div class="d-flex">
-                                                            <input type="number" class="form-control" id="patientWeight"
-                                                                name="patientWeight" min="0" required>
-                                                            <p class="mx-2 my-2">Kg</p>
-                                                        </div>
+                                                        <label class="form-label" for="additionalContact">Additional Contact
+                                                            Number</label>
+                                                        <input type="number" class="form-control" id="additionalContact"
+                                                            name="additionalContact" required>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientHeight">Height</label>
-                                                        <div class="d-flex">
-                                                        <input type="number" class="form-control" id="patientHeight"
-                                                            name="patientHeight" min="0" required>
-                                                            <p class="mx-2 my-2">Cm</p>
-                                                        </div>
+                                                        <label class="form-label" for="patientProfessions">Patient's
+                                                            Profession</label>
+                                                        <input type="text" class="form-control" id="patientProfessions"
+                                                            name="patientProfessions" required>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientBp">Blood Pressure</label>
-                                                        <div class="d-flex">
-                                                        <input type="number" class="form-control" id="patientBp" name="patientBp"
-                                                            required>
-                                                            <p class="mx-2 my-2">mmHg</p>
-                                                        </div>
+                                                        <label class="form-label" for="partnersName">Partner's Name</label>
+                                                        <input type="text" class="form-control" id="partnersName"
+                                                            name="partnersName" required>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientsCholestrol">Cholestrol</label>
-                                                        <div class="d-flex">
-                                                        <input type="number" class="form-control" id="patientsCholestrol"
-                                                            name="patientsCholestrol" min="0" required>
-                                                            <p class="mx-2 my-2">mg/dl</p>
-                                                        </div>
+                                                        <label class="form-label" for="partnerMobile">Partner's Mobile
+                                                            Number</label>
+                                                        <input type="number" class="form-control" id="partnerMobile"
+                                                            name="partnerMobile" required>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientBsugar">Blood Sugar</label>
-                                                        <div class="d-flex">
-                                                        <input type="number" class="form-control" id="patientBsugar"
-                                                            name="patientBsugar" min="0" required>
-                                                            <p class="mx-2 my-2">mmol/L</p>
-                                                        </div>
+                                                        <label class="form-label" for="partnerBlood">Partner's Blood Group</label>
+                                                        <select class="form-control" id="partnerBlood" name="partnerBlood">
+                                                            <option value="">Select Blood Group</option>
+                                                            <option value="A +ve">A +ve</option>
+                                                            <option value="A -ve">A -ve</option>
+                                                            <option value="B +ve">B +ve</option>
+                                                            <option value="B -ve">B -ve</option>
+                                                            <option value="O +ve">O +ve</option>
+                                                            <option value="O -ve">O -ve</option>
+                                                            <option value="AB +ve">AB +ve</option>
+                                                            <option value="AB -ve">AB -ve</option>
+                                                        </select>
                                                     </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientDoorNo">Door Number</label>
+                                                        <input type="text" class="form-control" id="patientDoorNo"
+                                                            name="patientDoorNo" required>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientStreet">Street Address</label>
+                                                        <input type="text" class="form-control" id="patientStreet"
+                                                            name="patientStreet" required>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientDistrict">District</label>
+                                                        <input type="text" class="form-control" id="patientDistrict"
+                                                            name="patientDistrict" required>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientPincode">Pincode</label>
+                                                        <input type="number" class="form-control" id="patientPincode"
+                                                            name="patientPincode" required>
+                                                    </div>
+
+
                                                     <div class="d-flex justify-content-between mt-3">
                                                         <button class="btn btn-secondary text-light prev"
                                                             onclick="prevStep(2)">Previous</button>
@@ -593,6 +655,47 @@
                                                             style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
                                                             class="text-light rounded-circle border-0">3</button> Medical Records
                                                     </p>
+
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientWeight">Weight</label>
+                                                        <div class="d-flex">
+                                                            <input type="number" class="form-control" id="patientWeight"
+                                                                name="patientWeight" min="0" required>
+                                                            <p class="mx-2 my-2">Kg</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientHeight">Height</label>
+                                                        <div class="d-flex">
+                                                            <input type="number" class="form-control" id="patientHeight"
+                                                                name="patientHeight" min="0" required>
+                                                            <p class="mx-2 my-2">Cm</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientBp">Blood Pressure</label>
+                                                        <div class="d-flex">
+                                                            <input type="number" class="form-control" id="patientBp"
+                                                                name="patientBp" required>
+                                                            <p class="mx-2 my-2">mmHg</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientsCholestrol">Cholestrol</label>
+                                                        <div class="d-flex">
+                                                            <input type="number" class="form-control" id="patientsCholestrol"
+                                                                name="patientsCholestrol" min="0" required>
+                                                            <p class="mx-2 my-2">mg/dl</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientBsugar">Blood Sugar</label>
+                                                        <div class="d-flex">
+                                                            <input type="number" class="form-control" id="patientBsugar"
+                                                                name="patientBsugar" min="0" required>
+                                                            <p class="mx-2 my-2">mmol/L</p>
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="medicalReceipts">Medical Receipts</label>
                                                         <input type="text" class="form-control" id="medicalReceipts"
@@ -604,10 +707,10 @@
                                                         <input type="text" class="form-control" id="medicalReports"
                                                             name="medicalReports">
                                                     </div>
-                                                    <div class="form-group pb-3">
+                                                    <!-- <div class="form-group pb-3">
                                                         <button class="btn text-light" style="background-color: #00ad8e;">
                                                             Add</button>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="d-flex justify-content-between mt-3">
                                                         <button class="btn btn-secondary text-light prev"
                                                             onclick="prevStep(3)">Previous</button>
@@ -622,6 +725,31 @@
                         </div>
                     </section>
                     <script>
+                        function calculateAge() {
+                            var dobInput = document.getElementById('patientDob').value;
+                            if (dobInput) {
+                                var dob = new Date(dobInput);
+                                var today = new Date();
+                                var ageYears = today.getFullYear() - dob.getFullYear();
+                                var ageMonths = today.getMonth() - dob.getMonth();
+
+                                if (ageMonths < 0 || (ageMonths === 0 && today.getDate() < dob.getDate())) {
+                                    ageYears--;
+                                    ageMonths = 12 - Math.abs(ageMonths);
+                                } else {
+                                    ageMonths++;
+                                }
+
+                                document.getElementById('ageYearsOutput').innerText = ageYears;
+                                document.getElementById('ageMonthsOutput').innerText = ageMonths;
+                            } else {
+                                document.getElementById('ageYearsOutput').innerText = "";
+                                document.getElementById('ageMonthsOutput').innerText = "";
+                            }
+                        }
+
+                    </script>
+                    <script>
                         function nextStep(step) {
                             document.getElementById('step-' + step).style.display = 'none';
                             document.getElementById('step-' + (step + 1)).style.display = 'block';
@@ -634,27 +762,14 @@
 
                         function clearErrorPatientDetails() {
                             var name = document.getElementById("patientName").value;
-                            var patientId = document.getElementById("patientId").value;
+                            var mobile = document.getElementById("patientMobile").value;
+                            var email = document.getElementById("patientEmail").value;
                             var gender = document.getElementById("patientGender").value;
                             var dob = document.getElementById("patientDob").value;
-                            var email = document.getElementById("patientEmail").value;
-                            var mobile = document.getElementById("patientMobile").value;
-                            var address = document.getElementById("patientAddress").value;
+                            var blood = document.getElementById("patientBlood").value;
 
                             if (name != "") {
                                 document.getElementById("patientName_err").innerHTML = "";
-                            }
-
-                            if (patientId != "") {
-                                document.getElementById("patientId_err").innerHTML = "";
-                            }
-
-                            if (gender != "") {
-                                document.getElementById("patientGender_err").innerHTML = "";
-                            }
-
-                            if (dob != "") {
-                                document.getElementById("patientDob_err").innerHTML = "";
                             }
 
                             if (mobile != "") {
@@ -665,21 +780,28 @@
                                 document.getElementById("patientEmail_err").innerHTML = "";
                             }
 
-                            if (address != "") {
-                                document.getElementById("patientAddress_err").innerHTML = "";
+                            if (gender != "") {
+                                document.getElementById("patientGender_err").innerHTML = "";
                             }
 
+                            if (dob != "") {
+                                document.getElementById("patientDob_err").innerHTML = "";
+                            }
+
+                            if (blood != "") {
+                                document.getElementById("patientBlood_err").innerHTML = "";
+                            }
                         }
 
 
                         function validatePatientDetails() {
                             var name = document.getElementById("patientName").value;
-                            var patientId = document.getElementById("patientId").value;
-                            var gender = document.getElementById("patientGender").value;
-                            var dob = document.getElementById("patientDob").value;
-                            var email = document.getElementById("patientEmail").value;
                             var mobile = document.getElementById("patientMobile").value;
-                            var address = document.getElementById("patientAddress").value;
+                            var email = document.getElementById("patientEmail").value;
+                            var dob = document.getElementById("patientDob").value;
+                            var gender = document.getElementById("patientGender").value;
+                            var blood = document.getElementById("patientBlood").value;
+
 
                             if (name == "") {
                                 document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
@@ -689,32 +811,13 @@
                                 document.getElementById("patientName_err").innerHTML = "";
                             }
 
-                            if (patientId == "") {
-                                document.getElementById("patientId_err").innerHTML = "Patient Id must be filled out.";
-                                return false;
-                            } else {
-                                document.getElementById("patientId_err").innerHTML = "";
-                            }
-
-                            if (gender == "") {
-                                document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
-                                return false;
-                            } else {
-                                document.getElementById("patientGender_err").innerHTML = "";
-                            }
-
-                            if (dob == "") {
-                                document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
-                                return false;
-                            } else {
-                                document.getElementById("patientDob_err").innerHTML = "";
-                            }
-
                             if (mobile == "") {
                                 document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
+                                document.getElementById("patientMobile").focus();
                                 return false;
                             } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
                                 document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
+                                document.getElementById("patientMobile").focus();
                                 return false;
                             } else {
                                 document.getElementById("patientMobile_err").innerHTML = "";
@@ -722,19 +825,38 @@
 
                             if (email == "") {
                                 document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";
+                                document.getElementById("patientEmail").focus();
                                 return false;
                             } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                                 document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";
+                                document.getElementById("patientEmail").focus();
                                 return false;
                             } else {
                                 document.getElementById("patientEmail_err").innerHTML = "";
                             }
 
-                            if (address == "") {
-                                document.getElementById("patientAddress_err").innerHTML = "Address must be filled out.";
+                            if (gender == "") {
+                                document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
+                                document.getElementById("patientDob").focus();
                                 return false;
                             } else {
-                                document.getElementById("patientAddress_err").innerHTML = "";
+                                document.getElementById("patientGender_err").innerHTML = "";
+                            }
+
+                            if (dob == "") {
+                                document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
+                                document.getElementById("patientGender").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientDob_err").innerHTML = "";
+                            }
+
+                            if (blood == "") {
+                                document.getElementById("patientBlood_err").innerHTML = "Blood group must be filled out.";
+                                document.getElementById("patientBlood").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientBlood_err").innerHTML = "";
                             }
 
                             return true;
@@ -967,6 +1089,15 @@
         <?php } ?>
     </main>
 </body>
+
+<!-- Event listener to block right-click -->
+<!-- <script>
+    function blockRightClick(event) {
+        event.preventDefault(); 
+    }
+
+    document.addEventListener('contextmenu', blockRightClick);
+</script> -->
 
 <!-- Vendor JS Files -->
 <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>

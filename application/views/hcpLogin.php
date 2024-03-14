@@ -34,6 +34,14 @@
             z-index: -1;
         }
 
+        #forgotPassword {
+            text-decoration: none;
+        }
+
+        #forgotPassword:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .fixed-image {
                 width: 100%;
@@ -65,8 +73,7 @@
                     <p class="pt-2" style="font-size:40px;font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
                     <p class="" style="font-size:18px;font-weight:400;">Empowering general practitioners to provide <br>
-                        personalized online diabetes consultations <br> for comprehensive patient care.
-                    </p>
+                        personalized online diabetes consultations <br> for comprehensive patient care. </p>
                     <form action="forms" method="post" name="hcploginform" onsubmit="return validateLogin()">
                         <div class="mb-3">
                             <label for="hcpEmail" class="form-label">Email address <span
@@ -84,9 +91,7 @@
                         </div>
                         <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
-                            and a
-                            minimum
-                            of 8 characters.</div>
+                            and a minimum of 8 characters.</div>
                         <div class="mb-3">
                             <input type="checkbox" id="check" name="check" value="1">
                             <label for="check"> Remember me</label>
@@ -94,7 +99,7 @@
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
                                 style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
-                            <a href="#" class="text-danger text-decoration-none mt-5">Forgot password?</a>
+                            <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
                     <p class="mt-3" style="font-size:18px;font-weight:400;">Don't have an account? <a

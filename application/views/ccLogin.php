@@ -34,6 +34,14 @@
             z-index: -1;
         }
 
+        #forgotPassword {
+            text-decoration: none;
+        }
+
+        #forgotPassword:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .fixed-image {
                 width: 100%;
@@ -84,9 +92,7 @@
                         </div>
                         <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
-                            and a
-                            minimum
-                            of 8 characters.</div>
+                            and a minimum of 8 characters.</div>
                         <div class="mb-3">
                             <input type="checkbox" id="check" name="check" value="1">
                             <label for="check"> Remember me</label>
@@ -95,7 +101,7 @@
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
                                 style="background-color:#0079AD;font-size:16px;font-weight:600;">Login</button>
-                            <a href="#" class="text-danger text-decoration-none mt-5">Forgot password?</a>
+                            <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
 

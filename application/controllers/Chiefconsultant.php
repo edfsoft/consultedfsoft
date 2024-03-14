@@ -21,5 +21,15 @@ class chiefconsultant extends CI_Controller
         $this->load->view('ccRegister.php');
     }
 
+    public function dashboard()
+    {
+        $this->data['method'] = "dashboard";
+        $this->load->view('ccDashboard.php', $this->data);
+    }
 
+    public function patients()
+    {
+        $this->data['method'] = "patients";
+        $this->load->view('ccDashboard.php', $this->data);
+    }
 }

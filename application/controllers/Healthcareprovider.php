@@ -56,4 +56,15 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpDashboard.php', $this->data);
     }
 
+    public function myProfile()
+    {
+        $this->data['method'] = "myProfile";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
+
+    public function logout()
+    {
+        $this->session->sess_destroy();
+        $this->index();
+    }
 }

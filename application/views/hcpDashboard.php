@@ -36,8 +36,7 @@
         #partnerMobile::-webkit-outer-spin-button,
         #partnerMobile::-webkit-inner-spin-button,
         #patientPincode::-webkit-outer-spin-button,
-        #patientPincode::-webkit-inner-spin-button
-         {
+        #patientPincode::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
@@ -47,7 +46,7 @@
 <body>
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="d-flex align-items-center justify-content-between">
-            <a href="" class="logo d-flex align-items-center">
+            <a href="https://erodediabetesfoundation.org/" target="blank" class="logo d-flex align-items-center">
                 <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="edf" />
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -85,9 +84,9 @@
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
-
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="">
+                            <a class="dropdown-item d-flex align-items-center"
+                                href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -97,8 +96,9 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center text-danger"
-                                onclick="return confirm('Are you sure to logout?')" href="">
+                            <a href="<?php echo base_url() . "Healthcareprovider/logout" ?>"
+                                class="dropdown-item d-flex align-items-center text-danger"
+                                onclick="return confirm('Are you sure to logout?')">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Log Out</span>
                             </a>
@@ -146,7 +146,8 @@
             </li>
 
             <li class="pt-4">
-                <a class="" href="#" style="font-size: 18px; font-weight: 400;color:white;" id="logout"
+                <a class="" href="<?php echo base_url() . "Healthcareprovider/logout" ?>"
+                    style="font-size: 18px; font-weight: 400;color:white;" id="logout"
                     onclick="return confirm('Are you sure to logout?')">
                     <div>
                         <i class="bi bi-box-arrow-in-right pe-3"></i>
@@ -581,7 +582,8 @@
                                                         <button
                                                             style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
                                                             class="text-light rounded-circle border-0">2</button> Additional
-                                                        Information  </p>
+                                                        Information
+                                                    </p>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="additionalContact">Additional Contact
                                                             Number</label>
@@ -1086,18 +1088,29 @@
                                         </div>
                                     </div>
                                 </section>
+            <?php
+        } else if ($method == "myProfile") {
+            ?>
+                                    <section>
+                                        <div class="card rounded">
+                                            <div class="card-body p-4">
+                                                This is my profile.
+                                            </div>
+                                        </div>
+                                    </section>
         <?php } ?>
     </main>
-</body>
 
-<!-- Event listener to block right-click -->
-<!-- <script>
+    <!-- Event listener to block right-click -->
+    <!-- <script>
     function blockRightClick(event) {
         event.preventDefault(); 
     }
 
     document.addEventListener('contextmenu', blockRightClick);
 </script> -->
+
+</body>
 
 <!-- Vendor JS Files -->
 <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>

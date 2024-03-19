@@ -32,4 +32,27 @@ class chiefconsultant extends CI_Controller
         $this->data['method'] = "patients";
         $this->load->view('ccDashboard.php', $this->data);
     }
+
+    public function appointments()
+    {
+        $this->data['method'] = "appointments";
+        $this->load->view('ccDashboard.php', $this->data);
+    }
+
+    public function healthcareproviders()
+    {
+        $this->data['method'] = "hcps";
+        $this->load->view('ccDashboard.php', $this->data);
+    }
+    public function myProfile()
+    {
+        $this->data['method'] = "myProfile";
+        $this->load->view('ccDashboard.php', $this->data);
+    }
+
+    public function logout()
+    {
+        $this->session->sess_destroy();
+        $this->index();
+    }
 }

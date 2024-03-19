@@ -36,8 +36,7 @@
         #partnerMobile::-webkit-outer-spin-button,
         #partnerMobile::-webkit-inner-spin-button,
         #patientPincode::-webkit-outer-spin-button,
-        #patientPincode::-webkit-inner-spin-button
-         {
+        #patientPincode::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
@@ -47,7 +46,7 @@
 <body>
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="d-flex align-items-center justify-content-between">
-            <a href="" class="logo d-flex align-items-center">
+            <a href="https://erodediabetesfoundation.org/" target="blank" class="logo d-flex align-items-center">
                 <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="edf" />
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -78,16 +77,17 @@
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6></h6>
-                            <p class="pt-1"></p>
-                            <span>Health Care Provider</span>
+                            <!-- <h6></h6> -->
+                            <p class="pt-"></p>
+                            <span>Chief Consultant</span>
                         </li>
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="">
+                            <a class="dropdown-item d-flex align-items-center"
+                                href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -97,8 +97,9 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center text-danger"
-                                onclick="return confirm('Are you sure to logout?')" href="">
+                            <a href="<?php echo base_url() . "Chiefconsultant/logout" ?>"
+                                class="dropdown-item d-flex align-items-center text-danger"
+                                onclick="return confirm('Are you sure to logout?')">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Log Out</span>
                             </a>
@@ -131,6 +132,10 @@
                     style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                     <div>
                         <i class="bi bi-calendar4 pe-3"></i><span>Appointments</span>
+                        <p class="text-dark float-end">
+                            <i class="fas fa-envelope fa-2x"></i>
+                            <span class="badge rounded-pill badge-notification bg-danger">15</span>
+                        </p>
                     </div>
                 </a>
             </li>
@@ -146,7 +151,8 @@
             </li>
 
             <li class="pt-4">
-                <a class="" href="#" style="font-size: 18px; font-weight: 400;color:white;" id="logout"
+                <a class="" href="<?php echo base_url() . "Chiefconsultant/logout" ?>"
+                    style="font-size: 18px; font-weight: 400;color:white;" id="logout"
                     onclick="return confirm('Are you sure to logout?')">
                     <div>
                         <i class="bi bi-box-arrow-in-right pe-3"></i>
@@ -164,7 +170,7 @@
             ?>
 
             <script>
-                document.getElementById('dashboard').style.color = "#87F7E3";
+                document.getElementById('dashboard').style.color = "#66D1FF";
             </script>
 
             <section>
@@ -176,35 +182,37 @@
                 <div class="d-md-flex justify-content-evenly">
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_icon1.svg" alt="icon1" />
+                            <img src="<?php echo base_url(); ?>assets/dash_iconcc1.svg" alt="icon1" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
                                     Total Doctors
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
-                                    2500
+                                    25
                                 </p>
                                 <p style="font-size: 16px">Till Today</p>
                             </div>
                         </div>
                     </div>
                     <div class="card rounded-5 mx-2">
-                        <div class="card-body text-center d-flex px-4 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_icon2.svg" alt="icon2" />
+                        <div class="card-body d-flex px-4 pt-3">
+                            <img src="<?php echo base_url(); ?>assets/dash_iconcc2.svg" alt="icon3" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                    Today Patients
+                                    Total Patients
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
-                                    25
+                                    500
                                 </p>
-                                <p style="font-size: 16px">29 December 2024</p>
+                                <p style="font-size: 16px">
+                                    <?php echo date("d - m - Y") ?>
+                                </p>
                             </div>
                         </div>
                     </div>
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_icon3.svg" alt="icon3" />
+                            <img src="<?php echo base_url(); ?>assets/dash_iconcc3.svg" alt="icon3" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
                                     Total Appointments
@@ -212,7 +220,9 @@
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
                                     19
                                 </p>
-                                <p style="font-size: 16px">29 December 2024</p>
+                                <p style="font-size: 16px">
+                                    <?php echo date("d - m - Y") ?>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -383,12 +393,13 @@
                     </div>
                 </div>
             </section>
+
             <?php
         } else if ($method == "patients") {
             ?>
 
                 <script>
-                    document.getElementById('patients').style.color = "#87F7E3";
+                    document.getElementById('patients').style.color = "#66D1FF";
                 </script>
 
                 <section>
@@ -398,10 +409,6 @@
                                 <p class="ps-2" style="font-size: 24px; font-weight: 500">
                                     Patients
                                 </p>
-                                <a href="<?php echo base_url() . "Healthcareprovider/patientform" ?>"> <button
-                                        style="background-color: #0079AD;" class="text-light border-0 rounded p-2">
-                                        <i class="bi bi-plus-square-fill"></i> Patient
-                                    </button></a>
                             </div>
                             <div class="table-responsive">
                                 <table class="table text-center">
@@ -468,155 +475,163 @@
             <?php
         } else if ($method == "appointments") {
             ?>
+                    <script>
+                        document.getElementById('appointments').style.color = "#66D1FF";
+                    </script>
+
+                    <section>
+                        <div class="card shadow-none rounded">
+                            <div class="card-body p-4">
+                                <div class="d-flex justify-content-between mt-2 mb-5">
+                                    <p class="ps-2" style="font-size: 24px; font-weight: 500">
+                                        Appointments
+                                    </p>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table text-center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                    PATIENT ID
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                    PATIENT
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD" class="">
+                                                    AGE
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                    GENDER
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                    DATE
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                    TIME
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                    DOCTOR
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="font-size: 16px">0220946660</td>
+                                                <td class="px-4">
+                                                    <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
+                                                        width="40" height="40" /> Lithorish
+                                                </td>
+                                                <td style="font-size: 16px">62</td>
+                                                <td style="font-size: 16px">Male</td>
+                                                <td style="font-size: 16px">29-01-2024</td>
+                                                <td class="" style="font-size: 16px">11.00 A.M</td>
+                                                <td style="font-size: 16px">Dr.A.S.Senthilvelu
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="font-size: 16px">0220946661</td>
+                                                <td class="px-4">
+                                                    <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
+                                                        width="40" height="40" /> Santhosh Kumar
+                                                </td>
+                                                <td style="font-size: 16px">65</td>
+                                                <td style="font-size: 16px">Male</td>
+                                                <td style="font-size: 16px">30-01-2024</td>
+                                                <td class="" style="font-size: 16px">11.30 A.M</td>
+                                                <td style="font-size: 16px" class="text-center">
+                                                    Dr.A.S.Senthilvelu
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+            <?php
+        } else if ($method == "hcps") {
+            ?>
                         <script>
-                            document.getElementById('appointments').style.color = "#87F7E3";
+                            document.getElementById('healthCareProviders').style.color = "#66D1FF";
                         </script>
 
                         <section>
-                            <div class="card shadow-none rounded">
+                            <div class="card rounded">
                                 <div class="card-body p-4">
-                                    <div class="d-flex justify-content-between mt-2 mb-5">
+                                    <div class="d-flex justify-content-between mt-3 mb-3">
                                         <p class="ps-2" style="font-size: 24px; font-weight: 500">
-                                            Appointments
+                                            Health Care Providers
                                         </p>
-                                        <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
-                                                style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
-                                                <i class="bi bi-plus-square-fill"></i> Appointment
-                                            </button></a>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table text-center">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                        PATIENT ID
-                                                    </th>
-                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                        PATIENT
-                                                    </th>
-                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
-                                                        AGE
-                                                    </th>
-                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                        GENDER
-                                                    </th>
-                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                        DATE
-                                                    </th>
-                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                        TIME
-                                                    </th>
-                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                        DOCTOR
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="font-size: 16px">0220946660</td>
-                                                    <td class="px-4">
-                                                        <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
-                                                            width="40" height="40" /> Lithorish
-                                                    </td>
-                                                    <td style="font-size: 16px">62</td>
-                                                    <td style="font-size: 16px">Male</td>
-                                                    <td style="font-size: 16px">29-01-2024</td>
-                                                    <td class="" style="font-size: 16px">11.00 A.M</td>
-                                                    <td style="font-size: 16px">Dr.A.S.Senthilvelu
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="font-size: 16px">0220946661</td>
-                                                    <td class="px-4">
-                                                        <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
-                                                            width="40" height="40" /> Santhosh Kumar
-                                                    </td>
-                                                    <td style="font-size: 16px">65</td>
-                                                    <td style="font-size: 16px">Male</td>
-                                                    <td style="font-size: 16px">30-01-2024</td>
-                                                    <td class="" style="font-size: 16px">11.30 A.M</td>
-                                                    <td style="font-size: 16px" class="text-center">
-                                                        Dr.A.S.Senthilvelu
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="d-md-flex">
+                                        <div class="card rounded-2 mx-3">
+                                            <div class="card-body text-center p-4">
+                                                <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="dr1" width="122"
+                                                    height="122" />
+                                                <p class="pt-4" style="font-size: 18px;">
+                                                    Dr.A.S.Senthilvelu <br>
+                                                    <span style="font-size:16px; color: #00ad8e;">
+                                                        Diabetes Consultant
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="card rounded-2 mx-3">
+                                            <div class="card-body text-center p-4">
+                                                <img src="<?php echo base_url(); ?>assets/Doctor2.png" alt="dr1" width="122"
+                                                    height="122" />
+                                                <p class="pt-4" style="font-size: 18px;">
+                                                    Dr.Kumaresan <br>
+                                                    <span style="font-size:16px; color: #00ad8e;">
+                                                        Diabetes Consultant
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="card rounded-2 mx-3">
+                                            <div class="card-body text-center p-4">
+                                                <img src="<?php echo base_url(); ?>assets/Doctor3.png" alt="dr1" width="122"
+                                                    height="122" />
+                                                <p class="pt-4" style="font-size: 18px;">
+                                                    Dr.Sweethasha <br>
+                                                    <span style="font-size:16px; color: #00ad8e;">
+                                                        Diabetes Consultant
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </section>
             <?php
-        } else if ($method == "healthCareProviders") {
+        } else if ($method == "myProfile") {
             ?>
-                                <script>
-                                    document.getElementById('chiefDoctor').style.color = "#87F7E3";
-                                </script>
+                            <section>
+                                <div class="card shadow-none rounded">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between mt-2 mb-5">
+                                            <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor">
 
-                                <section>
-                                    <div class="card rounded">
-                                        <div class="card-body p-4">
-                                            <div class="d-flex justify-content-between mt-3 mb-3">
-                                                <p class="ps-2" style="font-size: 24px; font-weight: 500">
-                                                    Chief Doctors
-                                                </p>
-                                                <a href="#"> <button style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
-                                                        <i class="bi bi-plus-square-fill"></i> Add
-                                                    </button></a>
-                                            </div>
-                                            <div class="d-md-flex">
-                                                <div class="card rounded-2 mx-3">
-                                                    <div class="card-body text-center p-4">
-                                                        <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="dr1" width="122"
-                                                            height="122" />
-                                                        <p class="pt-4" style="font-size: 18px;">
-                                                            Dr.A.S.Senthilvelu <br>
-                                                            <span style="font-size:16px; color: #00ad8e;">
-                                                                Diabetes Consultant
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="card rounded-2 mx-3">
-                                                    <div class="card-body text-center p-4">
-                                                        <img src="<?php echo base_url(); ?>assets/Doctor2.png" alt="dr1" width="122"
-                                                            height="122" />
-                                                        <p class="pt-4" style="font-size: 18px;">
-                                                            Dr.Kumaresan <br>
-                                                            <span style="font-size:16px; color: #00ad8e;">
-                                                                Diabetes Consultant
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="card rounded-2 mx-3">
-                                                    <div class="card-body text-center p-4">
-                                                        <img src="<?php echo base_url(); ?>assets/Doctor3.png" alt="dr1" width="122"
-                                                            height="122" />
-                                                        <p class="pt-4" style="font-size: 18px;">
-                                                            Dr.Sweethasha <br>
-                                                            <span style="font-size:16px; color: #00ad8e;">
-                                                                Diabetes Consultant
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                            </div>
                                         </div>
+
                                     </div>
-                                </section>
+                                </div>
+                            </section>
         <?php } ?>
     </main>
+
+    <!-- Event listener to block right-click -->
+    <script>
+        function blockRightClick(event) {
+            event.preventDefault();
+        }
+
+        document.addEventListener('contextmenu', blockRightClick);
+    </script>
+
 </body>
-
-<!-- Event listener to block right-click -->
-<!-- <script>
-    function blockRightClick(event) {
-        event.preventDefault(); 
-    }
-
-    document.addEventListener('contextmenu', blockRightClick);
-</script> -->
 
 <!-- Vendor JS Files -->
 <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>

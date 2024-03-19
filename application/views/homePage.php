@@ -39,7 +39,7 @@
             <div class="collapse navbar-collapse ps-5" id="navbarNavDropdown">
                 <ul class="navbar-nav ps-5">
                     <li class="nav-item">
-                        <a class="nav-link text-dark me-4" aria-current="page" href="#wyhchooseus">About us</a>
+                        <a class="nav-link text-dark me-4" aria-current="page" href="#whychooseus">About us</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-dark me-4" href="#" id="navbarDropdownMenuLink"
@@ -58,7 +58,7 @@
                         <a class="nav-link text-dark me-4" href="#testimonials">Testimonials</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#footer">Contact us</a>
+                        <a class="nav-link text-dark" href="#contactus">Contact us</a>
                     </li>
                 </ul>
             </div>
@@ -88,8 +88,10 @@
                     </button>
                     <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-70px);"
                         aria-labelledby="dropDownSignup">
-                        <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>" class="dropdown-item py-2">Health Care Provider</a></li>
-                        <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>" class="dropdown-item py-2">Chief Consultant</a></li>
+                        <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
+                                class="dropdown-item py-2">Health Care Provider</a></li>
+                        <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>"
+                                class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
                 </div>
             </div>
@@ -132,7 +134,7 @@
     </div>
 
     <!-- Why choose -->
-    <div id="wyhchooseus" class="py-5 position-relative"
+    <div id="whychooseus" class="py-5 position-relative"
         style="background-color:#FFF4F4;background-image: url('<?php echo base_url(); ?>assets/whysvg2.svg');background-repeat: no-repeat;background-position: right top;z-index:-2;">
         <div class="position-relative">
             <img class="position-absolute top-0 start-0" src="assets/whysvg1.svg" alt="1" style="z-index: -1;">
@@ -264,7 +266,7 @@
     </div>
 
     <!-- Footer -->
-    <div id="abc" class="container-fluid pt-5"
+    <div id="contactus" class="container-fluid pt-5"
         style="background-image: url('<?php echo base_url(); ?>assets/footer.png');background-size: cover;background-position: center center;background-repeat: no-repeat;">
         <div class="row">
             <div class="col-12 text-center ">
@@ -297,6 +299,15 @@
     </div>
 
     <!-- <p>Welcome to Online Consultation</p> -->
+
+    <!-- Event listener to block right-click -->
+    <script>
+        function blockRightClick(event) {
+            event.preventDefault();
+        }
+
+        document.addEventListener('contextmenu', blockRightClick);
+    </script>
 
 </body>
 

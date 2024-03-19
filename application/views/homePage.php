@@ -100,7 +100,7 @@
 
     <!-- Banner -->
     <div class="d-lg-flex justify-content-between pt-sm-5 ps-sm-5" style="background-color:#EEF6F5;">
-        <div class="ms-5 mt-5" style="font-size:36px;font-weight:500;">
+        <div class="ms-5 mt-3 mt-sm-5 pt-4 pt-sm-0 " style="font-size:36px;font-weight:500;">
             Specialized <br> <span class="text-danger">Diabetes Support</span> from <br> the convenience of <br> your
             own home
             <p class="pt-3" style="font-size:18px;font-weight:400;"> Online Video Consultations With <br> Expert

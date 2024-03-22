@@ -611,11 +611,53 @@
                             <section>
                                 <div class="card shadow-none rounded">
                                     <div class="card-body p-4">
-                                        <div class="d-flex justify-content-between mt-2 mb-5">
-                                            <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor">
-
+                                        <div class="d-flex justify-content-start mt-2 mb-5">
+                                            <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor" width="143"
+                                                height="143">
+                                            <div class="ps-5">
+                                                <p style="font-size:24px;font-weight:500;">Dr.A.S.Senthilvelu</p>
+                                                <p style="font-size:16px;font-weight:400;color:#0079AD;">Diabetologist</p>
+                                                <p><a href="tel:+9894604299" style="font-size:16px;font-weight:400;"
+                                                        class="text-decoration-none text-dark fs-6">+91
+                                                        9894604299</a> | <a href="mailto:contact@erodediabetesfoundation.org"
+                                                        style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                                        contact@erodediabetesfoundation.org</a></p>
+                                            </div>
                                         </div>
 
+                                        <div class="d-flex justify-content-between mt-2 ">
+                                            <p style="font-size:24px;font-weight:400;">Profile Details</p>
+                                            <a href="#"><i class="bi bi-pencil-square"></i> Edit</a>
+                                        </div>
+
+                                        <table>
+                                            <tr>
+                                                <td class="col-3 py-2" style="color:#999292">Years of Experience</td>
+                                                <td>30</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2" style="color:#999292">Registration detail</td>
+                                                <td>Tamil Nadu Medical Council</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2" style="color:#999292">Specialization</td>
+                                                <td>Diabetologist, Internal Medician Physician</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2" style="color:#999292">Membership</td>
+                                                <td>Life Member IMA</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2" style="color:#999292">Date of Birth</td>
+                                                <td>20/05/1967</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-2" style="color:#999292">Services</td>
+                                                <td>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantiu doloremque
+                                                    laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                                    architecto beatae vitae dicta sunt explicabo.</td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
                             </section>

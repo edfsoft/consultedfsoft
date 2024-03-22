@@ -36,9 +36,18 @@
         #partnerMobile::-webkit-outer-spin-button,
         #partnerMobile::-webkit-inner-spin-button,
         #patientPincode::-webkit-outer-spin-button,
-        #patientPincode::-webkit-inner-spin-button {
+        #patientPincode::-webkit-inner-spin-button,
+        #patientAltMobile::-webkit-outer-spin-button,
+        #patientAltMobile::-webkit-inner-spin-button,
+        #patientId::-webkit-outer-spin-button,
+        #patientId::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
+        }
+
+        .timeButton.highlighted {
+            background-color: blue;
+            color: white;
         }
     </style>
 </head>
@@ -401,7 +410,7 @@
                                 </p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientform" ?>"> <button
                                         style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
-                                        <i class="bi bi-plus-square-fill"></i> Patient
+                                        <i class="bi bi-plus-square-fill"></i> Add Patient
                                     </button></a>
                             </div>
                             <div class="table-responsive">
@@ -496,13 +505,13 @@
                                                         <label class="form-label" for="patientName">First Name <span
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" id="patientName" name="patientName"
-                                                            placeholder="Gopal">
+                                                            placeholder="Siva">
                                                         <div id="patientName_err" class="text-danger pt-1"></div>
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientLastName">Last Name</label>
                                                         <input type="text" class="form-control" id="patientLastName"
-                                                            name="patientLastName" placeholder="Krishna">
+                                                            name="patientLastName" placeholder="Kumar">
                                                         <div id="patientLastName_err" class="text-danger pt-1"></div>
                                                     </div>
                                                     <div class="form-group pb-3">
@@ -511,6 +520,13 @@
                                                         <input type="number" class="form-control" id="patientMobile"
                                                             name="patientMobile" placeholder="9638527410">
                                                         <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientAltMobile">Alternate Moblie
+                                                            Number</label>
+                                                        <input type="number" class="form-control" id="patientAltMobile"
+                                                            name="patientAltMobile" placeholder="9876543210">
+                                                        <!-- <div id="patientMobile_err" class="text-danger pt-1"></div> -->
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientEmail">Email <span
@@ -557,6 +573,11 @@
                                                         <div id="patientMarital_err" class="text-danger pt-1"></div>
                                                     </div>
                                                     <div class="form-group pb-3">
+                                                        <label class="form-label" for="marriedSince">Married Since</label>
+                                                        <input type="date" class="form-control" id="marriedSince"
+                                                            name="marriedSince">
+                                                    </div>
+                                                    <div class="form-group pb-3">
                                                         <label class="form-label" for="patientBlood">Blood Group <span
                                                                 class="text-danger">*</span></label>
                                                         <select class="form-control" id="patientBlood" name="patientBlood">
@@ -585,7 +606,7 @@
                                                         Information
                                                     </p>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="additionalContact">Additional Contact
+                                                        <label class="form-label" for="additionalContact">Emergency Contact
                                                             Number</label>
                                                         <input type="number" class="form-control" id="additionalContact"
                                                             name="additionalContact" required>
@@ -700,19 +721,23 @@
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="medicalReceipts">Medical Receipts</label>
-                                                        <input type="text" class="form-control" id="medicalReceipts"
+                                                        <input type="file" class="form-control" id="medicalReceipts"
                                                             name="medicalReceipts">
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="medicalReports">Attach Medical
                                                             Reports</label>
-                                                        <input type="text" class="form-control" id="medicalReports"
+                                                        <input type="file" class="form-control" id="medicalReports"
                                                             name="medicalReports">
                                                     </div>
                                                     <!-- <div class="form-group pb-3">
                                                         <button class="btn text-light" style="background-color: #00ad8e;">
                                                             Add</button>
                                                     </div> -->
+
+                                                    <input type="hidden" name="referedDoctor" id="referedDoctor"
+                                                        value="Seesion doctor name">
+
                                                     <div class="d-flex justify-content-between mt-3">
                                                         <button class="btn btn-secondary text-light prev"
                                                             onclick="prevStep(3)">Previous</button>
@@ -880,7 +905,7 @@
                                         </p>
                                         <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
                                                 style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
-                                                <i class="bi bi-plus-square-fill"></i> Appointment
+                                                <i class="bi bi-plus-square-fill"></i> Book Appointment
                                             </button></a>
                                     </div>
                                     <div class="table-responsive">
@@ -908,6 +933,9 @@
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                         DOCTOR
                                                     </th>
+                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                        ACTION
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -923,6 +951,9 @@
                                                     <td class="" style="font-size: 16px">11.00 A.M</td>
                                                     <td style="font-size: 16px">Dr.A.S.Senthilvelu
                                                     </td>
+                                                    <td style="font-size: 16px">
+                                                        <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="font-size: 16px">0220946661</td>
@@ -936,6 +967,9 @@
                                                     <td class="" style="font-size: 16px">11.30 A.M</td>
                                                     <td style="font-size: 16px" class="text-center">
                                                         Dr.A.S.Senthilvelu
+                                                    </td>
+                                                    <td style="font-size: 16px">
+                                                        <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -962,65 +996,236 @@
                                             <div class="row">
                                                 <div class="col-md-8">
 
-                                                    <form action="xd" name="patientDetails" id="multi-step-form">
-                                                        <div id="step-1">
+                                                    <form action="xd" name="patientDetails" oninput="clearErrorAppointment()"
+                                                        onsubmit="return validateAppointment()">
+                                                        <div>
                                                             <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;">
                                                                 Appointments</p>
-                                                            <div class="form-group pb-3">
-                                                                <label class="form-label" for="patientName">Name <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" id="patientName" name="patientName">
-                                                                <div id="patientName_err" class="text-danger pt-1"></div>
-                                                            </div>
                                                             <div class="form-group pb-2">
                                                                 <label class="form-label" for="patientId">Patient Id <span
                                                                         class="text-danger">*</span></label>
-                                                                <input type="number" class="form-control" id="patientId" name="patientId"
-                                                                    min="0">
+                                                                <input type="text" class="form-control" id="patientId" name="patientId"
+                                                                    placeholder="EDF000001">
                                                                 <div id="patientId_err" class="text-danger pt-1"></div>
                                                             </div>
                                                             <div class="form-group pb-3">
-                                                                <label class="form-label" for="patientGender">Gender <span
+                                                                <label class="form-label" for="patientName">Name <span
                                                                         class="text-danger">*</span></label>
-                                                                <select class="form-control" id="patientGender" name="patientGender">
-                                                                    <option value="">Select Gender</option>
-                                                                    <option value="Male">Male</option>
-                                                                    <option value="Female">Female</option>
+                                                                <input type="text" class="form-control" id="patientName" name="patientName"
+                                                                    placeholder="Gopal">
+                                                                <div id="patientName_err" class="text-danger pt-1"></div>
+                                                            </div>
+                                                            <div class="form-group pb-3">
+                                                                <label class="form-label" for="referalDoctor">Referal Doctor <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control" id="referalDoctor"
+                                                                    name="referalDoctor" placeholder="A S Senthilvelu">
+                                                                <div id="referalDoctor_err" class="text-danger pt-1"></div>
+                                                            </div>
+                                                            <div class="form-group pb-3">
+                                                                <label class="form-label pb-2" for="appConsult">Mode of consult <span
+                                                                        class="text-danger">*</span></label><br>
+                                                                <input type="radio" id="audio" name="appConsult" value="audio" checked>
+                                                                <label for="audio">Audio</label>
+                                                                <input type="radio" class="ms-5 ps-5" id="video" name="appConsult"
+                                                                    value="video">
+                                                                <label for="video">Video</label><br>
+                                                                <div id="appConsult_err" class="text-danger pt-1"></div>
+                                                            </div>
+                                                            <div class="form-group pb-3">
+                                                                <label class="form-label" for="appDate">Date <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input type="date" class="form-control" id="appDate" name="appDate">
+                                                                <div id="appDate_err" class="text-danger pt-1"></div>
+                                                            </div>
+                                                            <div class="form-group pb-3">
+                                                                <label class="form-label" for="dayTime">Part of a day <span
+                                                                        class="text-danger">*</span></label>
+                                                                <select class="form-control" id="dayTime" name="dayTime"
+                                                                    onchange="displayTime()">
+                                                                    <option value="">Select time</option>
+                                                                    <option value="Morning">Morning</option>
+                                                                    <option value="Afternoon">Afternoon</option>
+                                                                    <option value="Evening">Evening</option>
+                                                                    <option value="Night">Night</option>
                                                                 </select>
-                                                                <div id="patientGender_err" class="text-danger pt-1"></div>
+                                                                <div id="dayTime_err" class="text-danger pt-1"></div>
+                                                            </div>
+                                                            <div class="py-2" id="morningTime" style="display:none"><i
+                                                                    class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
+                                                                <button type="button"
+                                                                    class="timeButton btn btn-outline-primary my-1 btn btn-outline-primary py-1"
+                                                                    value="08:30 AM">08:30 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="08:40 AM">08:40 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="08:50 AM">08:50 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:00 AM">09:00 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:10 AM">09:10 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:20 AM">09:20 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:30 AM">09:30 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:40 AM">09:40 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:50 AM">09:50 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="10:00 AM">10:00 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="10:10 AM">10:10 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="10:20 AM">10:20 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="10:30 AM">10:30 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="10:40 AM">10:40 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="10:50 AM">10:50 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="11:00 AM">11:00 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="11:10 AM">11:10 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="11:20 AM">11:20 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="11:30 AM">11:30 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="11:40 AM">11:40 AM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="11:50 AM">11:50 AM</button>
+                                                            </div>
+                                                            <div class="py-2" id="afternoonTime" style="display:none"><i
+                                                                    class="bi bi-sun"></i>,
+                                                                Afternoon Consult time,<br>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="12:00 PM">12:00 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="12:10 PM">12:10 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="12:20 PM">12:20 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="12:30 PM">12:30 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="12:40 PM">12:40 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="12:50 PM">12:50 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="01:00 PM">01:00 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="01:10 PM">01:10 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="01:20 PM">01:20 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="01:30 PM">01:30 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="01:40 PM">01:40 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="01:50 PM">01:50 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="02:00 PM">02:00 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="02:10 PM">02:10 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="02:20 PM">02:20 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="02:30 PM">02:30 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="02:40 PM">02:40 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="02:50 PM">02:50 PM</button>
+                                                            </div>
+                                                            <div class="py-2" id="eveningTime" style="display:none"><i
+                                                                    class="bi bi-brightness-alt-high"></i>, Evening Consult time,<br>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="05:30 PM">05:30 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="05:40 PM">05:40 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="05:50 PM">05:50 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="06:00 PM">06:00 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="06:10 PM">06:10 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="06:20 PM">06:20 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="06:30 PM">06:30 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="06:40 PM">06:40 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="06:50 PM">06:50 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="07:00 PM">07:00 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="07:10 PM">07:10 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="07:20 PM">07:20 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="07:30 PM">07:30 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="07:40 PM">07:40 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="07:50 PM">07:50 PM</button>
+                                                            </div>
+                                                            <div class="py-2" id="nightTime" style="display:none"><i
+                                                                    class="bi bi-moon-stars"></i>, Night Consult time,<br>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="08:00 PM">08:00 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="08:10 PM">08:10 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="08:20 PM">08:20 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="08:30 PM">08:30 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="08:40 PM">08:40 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="08:50 PM">08:50 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:00 PM">09:00 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:10 PM">09:10 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:20 PM">09:20 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:30 PM">09:30 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:40 PM">09:40 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="09:50 PM">09:50 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="10:00 PM">10:00 PM</button>
+                                                                <button type="button" class="timeButton btn btn-outline-primary my-1"
+                                                                    value="10:10 PM">10:10 PM</button>
                                                             </div>
                                                             <div class="form-group pb-3">
-                                                                <label class="form-label" for="patientDob">DOB <span
+                                                                <label class="form-label" for="appTime">Time <span
                                                                         class="text-danger">*</span></label>
-                                                                <input type="date" class="form-control" id="patientDob" name="patientDob">
-                                                                <div id="patientDob_err" class="text-danger pt-1"></div>
+                                                                <input type="text" class="form-control" id="appTime" name="appTime"
+                                                                    placeholder="Select time" readonly>
+                                                                <div id="appTime_err" class="text-danger pt-1"></div>
                                                             </div>
                                                             <div class="form-group pb-3">
-                                                                <label class="form-label" for="patientMobile">Moblie Number <span
+                                                                <label class="form-label" for="appReason">Patient's Complaint <span
                                                                         class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" id="patientMobile"
-                                                                    name="patientMobile">
-                                                                <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                                                <input type="text" class="form-control" id="appReason" name="appReason"
+                                                                    placeholder="Regular followups">
+                                                                <div id="appReason_err" class="text-danger pt-1"></div>
                                                             </div>
+                                                            <!-- Payment -->
                                                             <div class="form-group pb-3">
-                                                                <label class="form-label" for="patientEmail">Email <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="mail" class="form-control" id="patientEmail"
-                                                                    name="patientEmail">
-                                                                <div id="patientEmail_err" class="text-danger pt-1"></div>
+                                                                <label class="form-label" for="pay">Payment <span
+                                                                        class="text-danger">******</span></label>
+                                                                <input type="text" class="form-control" id="pay" name="pay"
+                                                                    placeholder="Add payment details">
                                                             </div>
-                                                            <div class="form-group pb-3">
-                                                                <label class="form-label" for="patientAddress">Address <span
-                                                                        class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control" id="patientAddress"
-                                                                    name="patientAddress">
-                                                                <div id="patientAddress_err" class="text-danger pt-1"></div>
-                                                            </div>
-                                                            <button class="btn text-light next float-end mt-2"
-                                                                style="background-color: #00ad8e;">
-                                                                Submit </button>
-                                                        </div>
 
+                                                            <button type="submit" class="btn text-light next float-end mt-2"
+                                                                style="background-color: #00ad8e;">Confirm </button>
+                                                        </div>
                                                     </form>
                                                 </div>
                                             </div>
@@ -1028,6 +1233,178 @@
                                     </div>
                                 </div>
                             </section>
+                            <script>
+                                var dateInput = document.getElementById('appDate');
+                                var today = new Date();
+                                var dd = String(today.getDate()).padStart(2, '0');
+                                var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+                                var yyyy = today.getFullYear();
+                                var minDate = yyyy + '-' + mm + '-' + dd;
+                                dateInput.setAttribute('min', minDate);
+
+
+                                // var timeButton = document.querySelectorAll('.timeButton');
+                                // timeButton.forEach(function (button) {
+                                //     button.addEventListener('click', function () {
+                                //         document.getElementById('appTime').value = button.value;
+                                //     });
+                                // });
+                                var buttons = document.querySelectorAll('.timeButton');
+
+                                buttons.forEach(function (button) {
+                                    button.addEventListener('click', function () {
+                                        buttons.forEach(function (btn) {
+                                            btn.classList.remove('highlighted');
+                                        });
+                                        button.classList.add('highlighted');
+                                        document.getElementById('appTime').value = button.value;
+                                    });
+                                });
+
+
+                                function displayTime() {
+                                    dayTime = document.getElementById("dayTime").value;
+                                    if (dayTime == 'Morning') {
+                                        document.getElementById("morningTime").style.display = "block";
+                                    } else {
+                                        document.getElementById("morningTime").style.display = "none";
+                                    }
+                                    if (dayTime == 'Afternoon') {
+                                        document.getElementById("afternoonTime").style.display = "block";
+                                    } else {
+                                        document.getElementById("afternoonTime").style.display = "none";
+                                    }
+                                    if (dayTime == 'Evening') {
+                                        document.getElementById("eveningTime").style.display = "block";
+                                    } else {
+                                        document.getElementById("eveningTime").style.display = "none";
+                                    }
+                                    if (dayTime == 'Night') {
+                                        document.getElementById("nightTime").style.display = "block";
+                                    } else {
+                                        document.getElementById("nightTime").style.display = "none";
+                                    }
+                                }
+
+                                function clearErrorAppointment() {
+                                    var patientId = document.getElementById("patientId").value;
+                                    var name = document.getElementById("patientName").value;
+                                    var referalDr = document.getElementById("referalDoctor").value;
+                                    // var consultMode = document.getElementById("appConsult").value;
+                                    var date = document.getElementById("appDate").value;
+                                    var dayTime = document.getElementById("dayTime").value;
+                                    var time = document.getElementById("appTime").value;
+                                    var reason = document.getElementById("appReason").value;
+
+                                    if (patientId != "") {
+                                        document.getElementById("patientId_err").innerHTML = "";
+                                    }
+
+                                    if (name != "") {
+                                        document.getElementById("patientName_err").innerHTML = "";
+                                    }
+
+                                    if (referalDr != "") {
+                                        document.getElementById("referalDoctor_err").innerHTML = "";
+                                    }
+
+                                    // if (consultMode != "") {
+                                    //     document.getElementById("appConsult_err").innerHTML = "";
+                                    // }
+
+                                    if (date != "") {
+                                        document.getElementById("appDate_err").innerHTML = "";
+                                    }
+
+                                    if (dayTime != "") {
+                                        document.getElementById("dayTime_err").innerHTML = "";
+                                    }
+
+                                    if (time != "") {
+                                        document.getElementById("appTime_err").innerHTML = "";
+                                    }
+
+                                    if (appReason != "") {
+                                        document.getElementById("appReason_err").innerHTML = "";
+                                    }
+                                }
+
+                                function validateAppointment() {
+                                    var patientId = document.getElementById("patientId").value;
+                                    var name = document.getElementById("patientName").value;
+                                    var referalDr = document.getElementById("referalDoctor").value;
+                                    // var consultMode = document.getElementById("appConsult").value;
+                                    var date = document.getElementById("appDate").value;
+                                    var dayTime = document.getElementById("dayTime").value;
+                                    var time = document.getElementById("appTime").value;
+                                    var reason = document.getElementById("appReason").value;
+
+                                    if (patientId == "") {
+                                        document.getElementById("patientId_err").innerHTML = "Id must be filled out.";
+                                        document.getElementById("patientId").focus();
+                                        return false;
+                                    } else {
+                                        document.getElementById("patientId_err").innerHTML = "";
+                                    }
+
+                                    if (name == "") {
+                                        document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
+                                        document.getElementById("patientName").focus();
+                                        return false;
+                                    } else {
+                                        document.getElementById("patientName_err").innerHTML = "";
+                                    }
+
+                                    if (referalDr == "") {
+                                        document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out.";
+                                        document.getElementById("referalDoctor").focus();
+                                        return false;
+                                    } else {
+                                        document.getElementById("referalDoctor_err").innerHTML = "";
+                                    }
+
+                                    // if (consultMode == "") {
+                                    //     document.getElementById("appConsult_err").innerHTML = "Select the mode of consultation.";
+                                    //     document.getElementById("appConsult").focus();
+                                    //     return false;
+                                    // } else {
+                                    //     document.getElementById("appConsult_err").innerHTML = "";
+                                    // }
+
+                                    if (date == "") {
+                                        document.getElementById("appDate_err").innerHTML = "Date must be filled out.";
+                                        document.getElementById("appDate").focus();
+                                        return false;
+                                    } else {
+                                        document.getElementById("appDate_err").innerHTML = "";
+                                    }
+
+                                    if (dayTime == "") {
+                                        document.getElementById("dayTime_err").innerHTML = "Time must be filled out.";
+                                        document.getElementById("dayTime").focus();
+                                        return false;
+                                    } else {
+                                        document.getElementById("dayTime_err").innerHTML = "";
+                                    }
+
+                                    if (time == "") {
+                                        document.getElementById("appTime_err").innerHTML = "Time must be filled out.";
+                                        document.getElementById("appTime").focus();
+                                        return false;
+                                    } else {
+                                        document.getElementById("appTime_err").innerHTML = "";
+                                    }
+
+                                    if (reason == "") {
+                                        document.getElementById("appReason_err").innerHTML = "Complaints must be filled out.";
+                                        document.getElementById("appReason").focus();
+                                        return false;
+                                    } else {
+                                        document.getElementById("appReason_err").innerHTML = "";
+                                    }
+                                    return true;
+                                }
+                            </script>
             <?php
         } else if ($method == "chiefDoctors") {
             ?>

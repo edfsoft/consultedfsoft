@@ -44,9 +44,16 @@ class chiefconsultant extends CI_Controller
         $this->data['method'] = "hcps";
         $this->load->view('ccDashboard.php', $this->data);
     }
+    
     public function myProfile()
     {
         $this->data['method'] = "myProfile";
+        $this->load->view('ccDashboard.php', $this->data);
+    }
+
+    public function editMyProfile()
+    {
+        $this->data['method'] = "editMyProfile";
         $this->load->view('ccDashboard.php', $this->data);
     }
 

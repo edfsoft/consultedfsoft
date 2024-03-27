@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') or exit ('No direct script access allowed');
 
 class healthcareprovider extends CI_Controller
 {
@@ -38,6 +38,13 @@ class healthcareprovider extends CI_Controller
         $this->data['method'] = "patientDetailsForm";
         $this->load->view('hcpDashboard.php', $this->data);
     }
+    
+    public function patientdetails()
+    {
+        $this->data['method'] = "patientDetails";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
+
     public function appointments()
     {
         $this->data['method'] = "appointments";
@@ -56,9 +63,20 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpDashboard.php', $this->data);
     }
 
+    public function chiefDoctorsProfile()
+    {
+        $this->data['method'] = "chiefDoctorProfile";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
     public function myProfile()
     {
         $this->data['method'] = "myProfile";
+        $this->load->view('hcpDashboard.php', $this->data);
+    }
+
+    public function editMyProfile()
+    {
+        $this->data['method'] = "editMyProfile";
         $this->load->view('hcpDashboard.php', $this->data);
     }
 

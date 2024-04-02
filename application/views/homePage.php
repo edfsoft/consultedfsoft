@@ -39,7 +39,7 @@
             <div class="collapse navbar-collapse ps-5" id="navbarNavDropdown">
                 <ul class="navbar-nav ps-5">
                     <li class="nav-item">
-                        <a class="nav-link text-dark me-4" aria-current="page" href="#wyhchooseus">About us</a>
+                        <a class="nav-link text-dark me-4" aria-current="page" href="#whychooseus">About us</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-dark me-4" href="#" id="navbarDropdownMenuLink"
@@ -58,7 +58,7 @@
                         <a class="nav-link text-dark me-4" href="#testimonials">Testimonials</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="#footer">Contact us</a>
+                        <a class="nav-link text-dark" href="#contactus">Contact us</a>
                     </li>
                 </ul>
             </div>
@@ -76,6 +76,11 @@
                                 Chief Consultant</a></li>
                     </ul>
                 </div>
+
+                <!-- <div class="dropdown ms-4 ms-sm-0">
+                    <a href="<?php echo base_url() . "Healthcareprovider/register" ?>">
+                        <button class="btn btn-danger rounded-pill text-light px-4" type="button">Signup</button></a>
+                </div> -->
                 <div class="dropdown ms-4 ms-sm-0">
                     <button class="btn btn-danger rounded-pill text-light px-4" type="button" id="dropDownSignup"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -83,8 +88,10 @@
                     </button>
                     <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-70px);"
                         aria-labelledby="dropDownSignup">
-                        <li><a href="" class="dropdown-item py-2">Health Care Provider</a></li>
-                        <li><a href="" class="dropdown-item py-2">Chief Consultant</a></li>
+                        <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
+                                class="dropdown-item py-2">Health Care Provider</a></li>
+                        <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>"
+                                class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
                 </div>
             </div>
@@ -93,7 +100,7 @@
 
     <!-- Banner -->
     <div class="d-lg-flex justify-content-between pt-sm-5 ps-sm-5" style="background-color:#EEF6F5;">
-        <div class="ms-5 mt-5" style="font-size:36px;font-weight:500;">
+        <div class="ms-5 mt-3 mt-sm-5 pt-4 pt-sm-0 " style="font-size:36px;font-weight:500;">
             Specialized <br> <span class="text-danger">Diabetes Support</span> from <br> the convenience of <br> your
             own home
             <p class="pt-3" style="font-size:18px;font-weight:400;"> Online Video Consultations With <br> Expert
@@ -110,13 +117,15 @@
                 <div class="d-lg-flex text-center align-items-center m-lg-5">
                     <img class="text-center img-fluid" src="<?php echo base_url(); ?>assets/special.svg" alt="special">
                     <div class="text-lg-start ps-md-5 p-2" style="font-size:36px;font-weight:500;">
-                        We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you 
-                        <p class="pt-4" style="font-size:18px;font-weight:400;">Feel free to secure diabetes consultations online at your convenience, connecting with reliable and experienced medical
-                        professionals. You can arrange your appointment by giving us a call and the rest is in our
-                        capable hands. <br><br> While video consultations offer the benefit of the comfort of your home,
-                        they do not compromise the treatment protocol. <br>
-                        <button class="btn text-light rounded-pill mt-3 px-3" style="background-color:#00AD8E;">Read
-                            More</button>
+                        We Provide Best <span style="color:#00AD8E;">Online Doctor Consultation</span> for you
+                        <p class="pt-4" style="font-size:18px;font-weight:400;">Feel free to secure diabetes
+                            consultations online at your convenience, connecting with reliable and experienced medical
+                            professionals. You can arrange your appointment by giving us a call and the rest is in our
+                            capable hands. <br><br> While video consultations offer the benefit of the comfort of your
+                            home,
+                            they do not compromise the treatment protocol. <br>
+                            <button class="btn text-light rounded-pill mt-3 px-3" style="background-color:#00AD8E;">Read
+                                More</button>
                         </p>
                     </div>
                 </div>
@@ -125,7 +134,7 @@
     </div>
 
     <!-- Why choose -->
-    <div id="wyhchooseus" class="py-5 position-relative"
+    <div id="whychooseus" class="py-5 position-relative"
         style="background-color:#FFF4F4;background-image: url('<?php echo base_url(); ?>assets/whysvg2.svg');background-repeat: no-repeat;background-position: right top;z-index:-2;">
         <div class="position-relative">
             <img class="position-absolute top-0 start-0" src="assets/whysvg1.svg" alt="1" style="z-index: -1;">
@@ -257,7 +266,7 @@
     </div>
 
     <!-- Footer -->
-    <div id="abc" class="container-fluid pt-5"
+    <div id="contactus" class="container-fluid pt-5"
         style="background-image: url('<?php echo base_url(); ?>assets/footer.png');background-size: cover;background-position: center center;background-repeat: no-repeat;">
         <div class="row">
             <div class="col-12 text-center ">
@@ -290,6 +299,15 @@
     </div>
 
     <!-- <p>Welcome to Online Consultation</p> -->
+
+    <!-- Event listener to block right-click -->
+    <script>
+        function blockRightClick(event) {
+            event.preventDefault();
+        }
+
+        document.addEventListener('contextmenu', blockRightClick);
+    </script>
 
 </body>
 

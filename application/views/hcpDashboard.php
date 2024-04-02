@@ -49,6 +49,11 @@
             background-color: blue;
             color: white;
         }
+
+        .highlight {
+            background-color: black;
+            color: white;
+        }
     </style>
 </head>
 
@@ -76,8 +81,8 @@
                     <img src="<?php echo base_url(); ?>assets/happyPatients1.png" width="40" height="40" alt="Profile"
                         class="rounded-circle me-1" />
 
-                    <div class="text-dark w-25 d-none d-md-block me-2">
-                        Dr.Subash Karan
+                    <div class="text-dark w-25 d-none d-md-block me-2 my-auto">
+                    Dr.<?php echo $_SESSION['hcpsName']; ?>
                     </div>
 
                     <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
@@ -192,14 +197,14 @@
                                     Total Patients
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
-                                    2500
+                                    320
                                 </p>
                                 <p style="font-size: 16px">Till Today</p>
                             </div>
                         </div>
                     </div>
                     <div class="card rounded-5 mx-2">
-                        <div class="card-body text-center d-flex px-4 pt-3">
+                        <div class="card-body d-flex px-4 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_icon2.svg" alt="icon2" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
@@ -208,7 +213,7 @@
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     25
                                 </p>
-                                <p style="font-size: 16px">29 December 2024</p>
+                                <p style="font-size: 16px"><?php echo date("d - m - Y") ?></p>
                             </div>
                         </div>
                     </div>
@@ -217,12 +222,12 @@
                             <img src="<?php echo base_url(); ?>assets/dash_icon3.svg" alt="icon3" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Total Appointments
+                                    Today Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     19
                                 </p>
-                                <p style="font-size: 16px">29 December 2024</p>
+                                <p style="font-size: 16px"><?php echo date("d - m - Y") ?></p>
                             </div>
                         </div>
                     </div>
@@ -453,7 +458,8 @@
                                             <td style="font-size: 16px">Diabetes</td>
                                             <td style="font-size: 16px">
                                                 <a class="icon" href="#" data-bs-toggle="dropdown">
-                                                    <p class=""><i class="bi bi-three-dots-vertical"></i></p>
+                                                    <p class="" onclick="highlightRow(this)"><i
+                                                            class="bi bi-three-dots-vertical"></i></p>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                     <li><a class="px-1 "
@@ -490,6 +496,22 @@
                         </div>
                     </div>
                 </section>
+                <script>
+                    function highlightRow(element) {
+                        // Remove highlight class from all rows
+                        var rows = document.querySelectorAll('tr.highlight');
+                        rows.forEach(function (row) {
+                            row.classList.remove('highlight');
+                        });
+                        // Add highlight class to current row
+                        element.closest('tr').classList.add('highlight');
+                    }
+
+                    function removeHighlight(element) {
+                        // Remove highlight class when dropdown menu is clicked
+                        var row = element.closest('tr');
+                        row.classList.remove('highlight');
+                    }</script>
             <?php
         } else if ($method == "patientDetailsForm") {
             ?>
@@ -735,6 +757,11 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientDiagonsis">Diagonsis</label>
+                                                        <input type="text" class="form-control" id="patientDiagonsis"
+                                                            name="patientDiagonsis" required>
+                                                    </div>
+                                                    <div class="form-group pb-3">
                                                         <label class="form-label" for="medicalReceipts">Medical Receipts</label>
                                                         <input type="file" class="form-control" id="medicalReceipts"
                                                             name="medicalReceipts">
@@ -914,18 +941,27 @@
 
                         <section>
                             <div class="card shadow-none rounded">
-                                <div class="card-body p-4">
+                                <div class="card-body p-5">
                                     <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                             class="bi bi-arrow-left"></i> Back</a>
-                                    <!-- Form  -->
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                Patient Details : Name
-                                            </div>
+                                    <div class="d-sm-flex justify-content-evenly mt-2 mb-5">
+                                        <div class="ps-sm-5">
+                                            <p style="font-size:24px;font-weight:500;">Anand Kumar | EDF000001</p>
+
+                                            <p><a href="tel:+9894604299" class="text-decoration-none text-dark fs-6">+91
+                                                    9894604299</a> | <a href="mailto:example@gmail.com"
+                                                    class="text-decoration-none text-dark fs-6">
+                                                    example@gmail.com</a></p>
+                                            <p>Male | 67 years</p>
+                                            <p style="font-weight:500;"> Diabetes </p>
                                         </div>
+                                        <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor" width="143"
+                                            height="143">
                                     </div>
+
+
                                 </div>
+                            </div>
                             </div>
                         </section>
 
@@ -1469,7 +1505,9 @@
                                                             <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="dr1" width="122"
                                                                 height="122" class="mb-4" /> <br>
                                                             <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile" ?>"
-                                                                class="text-dark" style="font-size: 18px;">
+                                                                onMouseOver="this.style.textDecoration='underline'"
+                                                                onMouseOut="this.style.textDecoration='none'" class="text-dark"
+                                                                style="font-size: 18px;">
                                                                 Dr.A.S.Senthilvelu </a>
                                                             <p style="font-size:16px; color: #00ad8e;">
                                                                 Diabetes Consultant
@@ -1508,6 +1546,10 @@
             <?php
         } else if ($method == "chiefDoctorProfile") {
             ?>
+                                        <script>
+                                            document.getElementById('chiefDoctor').style.color = "#87F7E3";
+                                        </script>
+
                                         <section>
                                             <div class="card shadow-none rounded">
                                                 <div class="card-body p-4">
@@ -1565,13 +1607,6 @@
             <?php
         } else if ($method == "myProfile") {
             ?>
-                                            <!-- <section>
-                                                <div class="card rounded">
-                                                    <div class="card-body p-4">
-                                                        This is my profile.
-                                                    </div>
-                                                </div>
-                                            </section> -->
                                             <section>
                                                 <div class="card shadow-none rounded">
                                                     <div class="card-body p-4">
@@ -1591,7 +1626,8 @@
 
                                                         <div class="d-flex justify-content-between mt-2 ">
                                                             <p style="font-size:24px;font-weight:400;">Profile Details</p>
-                                                            <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i class="bi bi-pencil-square"></i> Edit</a>
+                                                            <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
+                                                                    class="bi bi-pencil-square"></i> Edit</a>
                                                         </div>
                                                         <table>
                                                             <tr>

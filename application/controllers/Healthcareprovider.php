@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') or exit ('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class healthcareprovider extends CI_Controller
 {
@@ -21,16 +21,59 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpRegister.php');
     }
 
+    public function hcpSignup()
+    {
+        $hcpMobileNum = $this->input->post('hcpMobile');
+
+        if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
+            echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
+            $this->register();
+        } else {
+            $postData = $this->input->post(null, true);
+            $register = $this->HcpModel->register();
+            // $generateid = $this->HcpModel->generatehcpid();
+            $this->index();
+        }
+    }
+
+    public function hcpLogin()
+    {
+        $postData = $this->input->post(null, true);
+        $login = $this->HcpModel->hcpLoginDetails();
+        if (isset($login[0]['id'])) {
+            $LoggedInDetails = array(
+                'hcpsName' => $login[0]['hcpName'],
+                'hcpsMailId' => $login[0]['hcpMail'],
+                'hcpsMobileNum' => $login[0]['hcpMobile'],
+            );
+            $this->session->set_userdata($LoggedInDetails);
+            $this->dashboard();
+        } else {
+            $this->index();
+            echo '<script>alert("Please enter registered details.");</script>';
+        }
+    }
+
     public function dashboard()
     {
-        $this->data['method'] = "dashboard";
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "dashboard";
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+            // echo '<script>alert("Please Login");</script>';
+        }
     }
 
     public function patients()
     {
-        $this->data['method'] = "patients";
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "patients";
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+            // echo '<script>alert("Please Login");</script>';
+        }
     }
 
     public function patientform()
@@ -38,7 +81,7 @@ class healthcareprovider extends CI_Controller
         $this->data['method'] = "patientDetailsForm";
         $this->load->view('hcpDashboard.php', $this->data);
     }
-    
+
     public function patientdetails()
     {
         $this->data['method'] = "patientDetails";
@@ -47,8 +90,14 @@ class healthcareprovider extends CI_Controller
 
     public function appointments()
     {
-        $this->data['method'] = "appointments";
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "appointments";
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+            // echo '<script>alert("Please Login");</script>';
+        }
+
     }
 
     public function appointmentsForm()
@@ -59,8 +108,14 @@ class healthcareprovider extends CI_Controller
 
     public function chiefDoctors()
     {
-        $this->data['method'] = "chiefDoctors";
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "chiefDoctors";
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+            // echo '<script>alert("Please Login");</script>';
+        }
+
     }
 
     public function chiefDoctorsProfile()
@@ -80,9 +135,15 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpDashboard.php', $this->data);
     }
 
+    // public function logout()
+    // {
+    //     $this->session->sess_destroy();
+    //     $this->index();
+    // }
+
     public function logout()
     {
-        $this->session->sess_destroy();
+        $this->session->unset_userdata('LoggedInDetails');
         $this->index();
     }
 }

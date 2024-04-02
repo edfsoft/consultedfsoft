@@ -74,7 +74,7 @@
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
                     <p class="" style="font-size:18px;font-weight:400;">Empowering general practitioners to provide <br>
                         personalized online diabetes consultations <br> for comprehensive patient care. </p>
-                    <form action="forms" method="post" name="hcploginform" onsubmit="return validateLogin()">
+                    <form action="<?php echo base_url() . "Healthcareprovider/hcpLogin" ?>" method="post" name="hcploginform" onsubmit="return validateLogin()">
                         <div class="mb-3">
                             <label for="hcpEmail" class="form-label">Email address <span
                                     class="text-danger">*</span></label>

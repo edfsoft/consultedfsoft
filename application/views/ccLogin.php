@@ -75,7 +75,7 @@
                     <p class="" style="font-size:18px;font-weight:400;">Empowering chief practitioners to provide <br>
                         personalized online diabetes consultations <br> for comprehensive patient care.
                     </p>
-                    <form action="#" method="post" name="ccloginform" onsubmit="return validateLogin()">
+                    <form action="<?php echo base_url() . "Chiefconsultant/ccLogin" ?>" method="post" name="ccloginform" onsubmit="return validateLogin()">
                         <div class="mb-3">
                             <label for="ccEmail" class="form-label">Email address <span
                                     class="text-danger">*</span></label>

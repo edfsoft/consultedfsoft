@@ -41,7 +41,7 @@
             }
 
             #bgcolor {
-                background-color:rgba(0, 121, 173, 0.6) ;
+                background-color: rgba(0, 121, 173, 0.6);
             }
         }
 
@@ -72,11 +72,9 @@
                     <p class="pt-2" style="font-size:40px;font-weight:500;color:#E01A2B;">Create an Account</p>
                     <p class="" style="font-size:24px;font-weight:600;">CHIEF CONSULTANT</p>
                     <p class="" style="font-size:18px;font-weight:400;">We're thrilled to have you join us on your
-                        journey
-                        towards better health.
-                    </p>
-                    <form action="forms" method="post" name="signupform" onsubmit="return validateSignup()"
-                        oninput="return removeError()">
+                        journey towards better health.</p>
+                    <form action="<?php echo base_url() . "Chiefconsultant/ccSignup" ?>" method="post" name="signupform"
+                        onsubmit="return validateSignup()" oninput="return removeError()">
                         <div class="mb-3">
                             <label for="ccName" class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" name="ccName" id="ccName" placeholder="Suresh Kumar"

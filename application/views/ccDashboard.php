@@ -70,7 +70,7 @@
                         class="rounded-circle me-1" />
 
                     <div class="text-dark w-25 d-none d-md-block me-2">
-                        Dr.Senthil Velu
+                    Dr.<?php echo $_SESSION['ccName']; ?>
                     </div>
 
                     <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
@@ -187,10 +187,10 @@
                             <img src="<?php echo base_url(); ?>assets/dash_iconcc1.svg" alt="icon1" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                    Total Doctors
+                                    Total Patients
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
-                                    25
+                                    2500
                                 </p>
                                 <p style="font-size: 16px">Till Today</p>
                             </div>
@@ -201,14 +201,12 @@
                             <img src="<?php echo base_url(); ?>assets/dash_iconcc2.svg" alt="icon3" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                    Total Patients
+                                    Total Doctors
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
-                                    500
+                                    24
                                 </p>
-                                <p style="font-size: 16px">
-                                    <?php echo date("d - m - Y") ?>
-                                </p>
+                                <p style="font-size: 16px">Till Today</p>
                             </div>
                         </div>
                     </div>
@@ -217,7 +215,7 @@
                             <img src="<?php echo base_url(); ?>assets/dash_iconcc3.svg" alt="icon3" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                    Total Appointments
+                                    Today Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
                                     19
@@ -524,6 +522,9 @@
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                     DOCTOR
                                                 </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                    ACTION
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -539,6 +540,18 @@
                                                 <td class="" style="font-size: 16px">11.00 A.M</td>
                                                 <td style="font-size: 16px">Dr.A.S.Senthilvelu
                                                 </td>
+                                                <td style="font-size: 16px">
+                                                    <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                        <p class=""><i class="bi bi-three-dots-vertical"></i></p>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center">
+                                                        <li><a class="text-center"
+                                                                href="<?php echo base_url() . "cc/patientdetails" ?>">
+                                                                <button type="button" class="btn btn-success">
+                                                                    <i class="bi bi-eye"></i>View</button></a>
+                                                        </li>
+                                                    </ul>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td style="font-size: 16px">0220946661</td>
@@ -552,6 +565,18 @@
                                                 <td class="" style="font-size: 16px">11.30 A.M</td>
                                                 <td style="font-size: 16px" class="text-center">
                                                     Dr.A.S.Senthilvelu
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                    <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                        <p class=""><i class="bi bi-three-dots-vertical"></i></p>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center">
+                                                        <li><a class="text-center"
+                                                                href="<?php echo base_url() . "cc/patientdetails" ?>">
+                                                                <button type="button" class="btn btn-success">
+                                                                    <i class="bi bi-eye"></i>View</button></a>
+                                                        </li>
+                                                    </ul>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -577,14 +602,15 @@
                                     </div>
                                     <div class="d-md-flex">
                                         <div class="card rounded-2 mx-3">
-                                            <div class="card-body text-center p-4">
+                                            <div class=" card-body text-center p-4">
                                                 <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="dr1" width="122"
-                                                    height="122" />
-                                                <p class="pt-4" style="font-size: 18px;">
-                                                 Dr.Subash Karan <br>
-                                                    <span style="font-size:16px; color: #0079AD;">
-                                                        Diabetes Consultant
-                                                    </span>
+                                                    height="122" class="mb-4" /> <br>
+                                                <a href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfile" ?>"
+                                                    onMouseOver="this.style.textDecoration='underline'" style="font-size: 18px;"
+                                                    onMouseOut="this.style.textDecoration='none'" class="text-dark">
+                                                    Dr.Subash Karan </a>
+                                                <p style="font-size:16px; color: #0079AD;">
+                                                    Diabetes Consultant
                                                 </p>
                                             </div>
                                         </div>
@@ -618,208 +644,257 @@
                             </div>
                         </section>
             <?php
-        } else if ($method == "myProfile") {
+        } else if ($method == "hcpsProfile") {
             ?>
+                            <script>
+                                document.getElementById('healthCareProviders').style.color = "#66D1FF";
+                            </script>
+
                             <section>
                                 <div class="card shadow-none rounded">
                                     <div class="card-body p-4">
+                                        <a href=""
+                                            class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
                                         <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                            <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor" width="143"
+                                            <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="Doctor" width="143"
                                                 height="143">
                                             <div class="ps-sm-5">
-                                                <p style="font-size:24px;font-weight:500;">Dr.A.S.Senthilvelu</p>
+                                                <p style="font-size:24px;font-weight:500;">Dr.Subash Karan</p>
                                                 <p style="font-size:16px;font-weight:400;color:#0079AD;">Diabetologist</p>
                                                 <p><a href="tel:+9894604299" style="font-size:16px;font-weight:400;"
                                                         class="text-decoration-none text-dark fs-6">+91
-                                                        9894604299</a> | <a href="mailto:contact@erodediabetesfoundation.org"
+                                                        9876543210</a> | <a href="mailto:contact@erodediabetesfoundation.org"
                                                         style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
-                                                        contact@erodediabetesfoundation.org</a></p>
+                                                        drsubashkaran@gmail.com</a></p>
                                             </div>
                                         </div>
-
                                         <div class="d-flex justify-content-between mt-2 ">
                                             <p style="font-size:24px;font-weight:400;">Profile Details</p>
-                                            <a href="<?php echo base_url() . "Chiefconsultant/editMyProfile" ?>"><i
-                                                    class="bi bi-pencil-square"></i> Edit</a>
                                         </div>
-
                                         <table>
                                             <tr>
-                                                <td class="col-3 py-2" style="color:#999292">Years of Experience</td>
-                                                <td>30</td>
+                                                <td class="col-5 py-2" style="color:#999292">Years of Experience</td>
+                                                <td>7</td>
                                             </tr>
                                             <tr>
                                                 <td class="py-2" style="color:#999292">Qualification</td>
                                                 <td>MBBS</td>
                                             </tr>
                                             <tr>
-                                                <td class="py-2" style="color:#999292">Registration detail</td>
-                                                <td>Tamil Nadu Medical Council</td>
-                                            </tr>
-                                            <tr>
                                                 <td class="py-2" style="color:#999292">Specialization</td>
                                                 <td>Diabetologist, Internal Medician Physician</td>
                                             </tr>
                                             <tr>
-                                                <td class="py-2" style="color:#999292">Membership</td>
-                                                <td>Life Member IMA</td>
-                                            </tr>
-                                            <tr>
                                                 <td class="py-2" style="color:#999292">Date of Birth</td>
                                                 <td>20/05/1967</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2" style="color:#999292">Services</td>
-                                                <td>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantiu doloremque
-                                                    laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-                                                    architecto beatae vitae dicta sunt explicabo.</td>
                                             </tr>
                                         </table>
                                     </div>
                                 </div>
                             </section>
             <?php
-        } else if ($method == "editMyProfile") {
+        } else if ($method == "myProfile") {
             ?>
                                 <section>
                                     <div class="card shadow-none rounded">
                                         <div class="card-body p-4">
-                                            <div class="">
-                                                <p style="font-size:24px;font-weight:400;">Edit Profile Details</p>
-                                                <form action="#" name="profileEditForm" name="profileEditForm" enctype="multipart/form-data"
-                                                    method="POST" onsubmit="return validateDetails()" oninput="clearErrorDetails()">
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="drName" name="drName"
-                                                            placeholder="Suresh Kumar">
-                                                        <div id="drName_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="drMobile">Mobile <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="number" class="form-control" id="drMobile" name="drMobile"
-                                                            placeholder="9632587410">
-                                                        <div id="drMobile_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
-                                                        <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                            placeholder="example@gmail.com">
-                                                        <div id="drEmail_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="profilePhoto">Profile Photo <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="file" class="form-control" id="profilePhoto" name="profilePhoto">
-                                                        <div id="profilePhoto_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="yearOfExp">Years of Experience</label>
-                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
-                                                            placeholder="25">
-                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="qualification">Qualification</label>
-                                                        <input type="text" class="form-control" id="qualification" name="qualification"
-                                                            placeholder="MBBS">
-                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="regDetails">Registration detail</label>
-                                                        <input type="text" class="form-control" id="regDetails" name="regDetails"
-                                                            placeholder="Tamil Nadu Medical Council">
-                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="membership">Membership</label>
-                                                        <input type="text" class="form-control" id="membership" name="membership"
-                                                            placeholder="Life member IMA">
-                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="dob">Date of Birth</label>
-                                                        <input type="date" class="form-control" id="dob" name="dob">
-                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="services">Services</label><br>
-                                                        <textarea class="form-control" id="services" name="services" rows="" cols=""
-                                                            placeholder="Completed diabetes care under one roof"></textarea>
-                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                    </div>
-                                                    <button type="submit" class="btn btn-success float-end mt-3 ">Save</button>
-                                                </form>
+                                            <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                                <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor" width="143"
+                                                    height="143">
+                                                <div class="ps-sm-5">
+                                                    <p style="font-size:24px;font-weight:500;">Dr.A.S.Senthilvelu</p>
+                                                    <p style="font-size:16px;font-weight:400;color:#0079AD;">Diabetologist</p>
+                                                    <p><a href="tel:+9894604299" style="font-size:16px;font-weight:400;"
+                                                            class="text-decoration-none text-dark fs-6">+91
+                                                            9894604299</a> | <a href="mailto:contact@erodediabetesfoundation.org"
+                                                            style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                                            contact@erodediabetesfoundation.org</a></p>
+                                                </div>
                                             </div>
+
+                                            <div class="d-flex justify-content-between mt-2 ">
+                                                <p style="font-size:24px;font-weight:400;">Profile Details</p>
+                                                <a href="<?php echo base_url() . "Chiefconsultant/editMyProfile" ?>"><i
+                                                        class="bi bi-pencil-square"></i> Edit</a>
+                                            </div>
+
+                                            <table>
+                                                <tr>
+                                                    <td class="col-3 py-2" style="color:#999292">Years of Experience</td>
+                                                    <td>30</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2" style="color:#999292">Qualification</td>
+                                                    <td>MBBS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2" style="color:#999292">Registration detail</td>
+                                                    <td>Tamil Nadu Medical Council</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2" style="color:#999292">Specialization</td>
+                                                    <td>Diabetologist, Internal Medician Physician</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2" style="color:#999292">Membership</td>
+                                                    <td>Life Member IMA</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2" style="color:#999292">Date of Birth</td>
+                                                    <td>20/05/1967</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="py-2" style="color:#999292">Services</td>
+                                                    <td>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantiu doloremque
+                                                        laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                                                        architecto beatae vitae dicta sunt explicabo.</td>
+                                                </tr>
+                                            </table>
                                         </div>
                                     </div>
                                 </section>
-                                <script>
-                                    function clearErrorDetails() {
-                                        var doctorName = document.getElementById("drName").value;
-                                        var doctorMobile = document.getElementById("drMobile").value;
-                                        var doctorEmail = document.getElementById("drEmail").value;
-                                        // var photo = document.getElementById("profilePhoto").value;
+            <?php
+        } else if ($method == "editMyProfile") {
+            ?>
+                                    <section>
+                                        <div class="card shadow-none rounded">
+                                            <div class="card-body p-4">
+                                                <div class="">
+                                                    <p style="font-size:24px;font-weight:400;">Edit Profile Details</p>
+                                                    <form action="#" name="profileEditForm" name="profileEditForm" enctype="multipart/form-data"
+                                                        method="POST" onsubmit="return validateDetails()" oninput="clearErrorDetails()">
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" id="drName" name="drName"
+                                                                placeholder="Suresh Kumar">
+                                                            <div id="drName_err" class="text-danger pt-1"></div>
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="drMobile">Mobile <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="number" class="form-control" id="drMobile" name="drMobile"
+                                                                placeholder="9632587410">
+                                                            <div id="drMobile_err" class="text-danger pt-1"></div>
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
+                                                            <input type="email" class="form-control" id="drEmail" name="drEmail"
+                                                                placeholder="example@gmail.com">
+                                                            <div id="drEmail_err" class="text-danger pt-1"></div>
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="profilePhoto">Profile Photo <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="file" class="form-control" id="profilePhoto" name="profilePhoto">
+                                                            <div id="profilePhoto_err" class="text-danger pt-1"></div>
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="yearOfExp">Years of Experience</label>
+                                                            <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
+                                                                placeholder="25">
+                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="qualification">Qualification</label>
+                                                            <input type="text" class="form-control" id="qualification" name="qualification"
+                                                                placeholder="MBBS">
+                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="regDetails">Registration detail</label>
+                                                            <input type="text" class="form-control" id="regDetails" name="regDetails"
+                                                                placeholder="Tamil Nadu Medical Council">
+                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="membership">Membership</label>
+                                                            <input type="text" class="form-control" id="membership" name="membership"
+                                                                placeholder="Life member IMA">
+                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="dob">Date of Birth</label>
+                                                            <input type="date" class="form-control" id="dob" name="dob">
+                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="services">Services</label><br>
+                                                            <textarea class="form-control" id="services" name="services" rows="" cols=""
+                                                                placeholder="Completed diabetes care under one roof"></textarea>
+                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                        </div>
+                                                        <button type="submit" class="btn btn-success float-end mt-3 ">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <script>
+                                        function clearErrorDetails() {
+                                            var doctorName = document.getElementById("drName").value;
+                                            var doctorMobile = document.getElementById("drMobile").value;
+                                            var doctorEmail = document.getElementById("drEmail").value;
+                                            // var photo = document.getElementById("profilePhoto").value;
 
-                                        if (doctorName != "") {
-                                            document.getElementById("drName_err").innerHTML = "";
+                                            if (doctorName != "") {
+                                                document.getElementById("drName_err").innerHTML = "";
+                                            }
+
+                                            if (doctorMobile != "") {
+                                                document.getElementById("drMobile_err").innerHTML = "";
+                                            }
+
+                                            if (doctorEmail != "") {
+                                                document.getElementById("drEmail_err").innerHTML = "";
+                                            }
+
+                                            // if (photo != "") {
+                                            //     document.getElementById("profilePhoto_err").innerHTML = "";
+                                            // }
                                         }
+                                    </script>
+                                    <script>
+                                        function validateDetails() {
+                                            var doctorNmae = document.getElementById("drName").value;
+                                            var doctorMobile = document.getElementById("drMobile").value;
+                                            var doctorEmail = document.getElementById("drEmail").value;
+                                            // var photo = document.getElementById("profilePhoto").value;
 
-                                        if (doctorMobile != "") {
-                                            document.getElementById("drMobile_err").innerHTML = "";
+                                            if (doctorNmae == "") {
+                                                document.getElementById("drName_err").innerHTML = "A name can't be blank.";
+                                                document.getElementById("drName").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("drName_err").innerHTML = "";
+                                            }
+
+                                            if (doctorMobile == "") {
+                                                document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
+                                                document.getElementById("drMobile").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("drMobile_err").innerHTML = "";
+                                            }
+
+                                            if (doctorEmail == "") {
+                                                document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
+                                                document.getElementById("drEmail").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("drEmail_err").innerHTML = "";
+                                            }
+
+                                            // if (photo == "") {
+                                            //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
+                                            //     document.getElementById("profilePhoto").focus();
+                                            //     return false;
+                                            // } else {
+                                            //     document.getElementById("profilePhoto_err").innerHTML = "";
+                                            // }
+
+                                            return true;
                                         }
-
-                                        if (doctorEmail != "") {
-                                            document.getElementById("drEmail_err").innerHTML = "";
-                                        }
-
-                                        // if (photo != "") {
-                                        //     document.getElementById("profilePhoto_err").innerHTML = "";
-                                        // }
-                                    }
-                                </script>
-                                <script>
-                                    function validateDetails() {
-                                        var doctorNmae = document.getElementById("drName").value;
-                                        var doctorMobile = document.getElementById("drMobile").value;
-                                        var doctorEmail = document.getElementById("drEmail").value;
-                                        // var photo = document.getElementById("profilePhoto").value;
-
-                                        if (doctorNmae == "") {
-                                            document.getElementById("drName_err").innerHTML = "A name can't be blank.";
-                                            document.getElementById("drName").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("drName_err").innerHTML = "";
-                                        }
-
-                                        if (doctorMobile == "") {
-                                            document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
-                                            document.getElementById("drMobile").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("drMobile_err").innerHTML = "";
-                                        }
-
-                                        if (doctorEmail == "") {
-                                            document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
-                                            document.getElementById("drEmail").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("drEmail_err").innerHTML = "";
-                                        }
-
-                                        // if (photo == "") {
-                                        //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
-                                        //     document.getElementById("profilePhoto").focus();
-                                        //     return false;
-                                        // } else {
-                                        //     document.getElementById("profilePhoto_err").innerHTML = "";
-                                        // }
-
-                                        return true;
-                                    }
-                                </script>
+                                    </script>
 
         <?php } ?>
     </main>

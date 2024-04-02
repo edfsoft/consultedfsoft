@@ -72,11 +72,9 @@
                     <p class="pt-2" style="font-size:40px;font-weight:500;color:#E01A2B;">Create an Account</p>
                     <p class="" style="font-size:24px;font-weight:600;">HEALTH CARE PROVIDER</p>
                     <p class="" style="font-size:18px;font-weight:400;">We're thrilled to have you join us on your
-                        journey
-                        towards better health.
-                    </p>
-                    <form action="forms" method="post" name="signupform" onsubmit="return validateSignup()"
-                        oninput="return removeError()">
+                        journey towards better health. </p>
+                    <form action="<?php echo base_url() . "Healthcareprovider/hcpSignup" ?>" method="post"
+                        name="hcpsignupform" onsubmit="return validateSignup()" oninput="return removeError()">
                         <div class="mb-3">
                             <label for="hcpName" class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" name="hcpName" id="hcpName" placeholder="Suresh Kumar"

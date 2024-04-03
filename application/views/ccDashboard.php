@@ -69,9 +69,10 @@
                     <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" width="40" height="40" alt="Profile"
                         class="rounded-circle me-1" />
 
-                    <div class="text-dark w-25 d-none d-md-block me-2">
-                    Dr.<?php echo $_SESSION['ccName']; ?>
-                    </div>
+                    <p class="text-dark w-50 d-none d-md-block me-2">
+                        Dr.
+                        <?php echo $_SESSION['ccName']; ?>
+                    </p>
 
                     <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
                         <span class="dropdown-toggle mx-4"></span>
@@ -79,7 +80,9 @@
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <!-- <h6></h6> -->
+                            <h6> Dr.
+                                <?php echo $_SESSION['ccName']; ?>
+                            </h6>
                             <p class="pt-"></p>
                             <span>Chief Consultant</span>
                         </li>
@@ -653,8 +656,7 @@
                             <section>
                                 <div class="card shadow-none rounded">
                                     <div class="card-body p-4">
-                                        <a href=""
-                                            class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
+                                        <a href="" class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
                                         <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                             <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="Doctor" width="143"
                                                 height="143">

@@ -81,9 +81,10 @@
                     <img src="<?php echo base_url(); ?>assets/happyPatients1.png" width="40" height="40" alt="Profile"
                         class="rounded-circle me-1" />
 
-                    <div class="text-dark w-25 d-none d-md-block me-2 my-auto">
-                    Dr.<?php echo $_SESSION['hcpsName']; ?>
-                    </div>
+                    <p class="text-dark w-50 d-none d-md-block me-2 my-auto" style="margin:20px;width:auto;">
+                        Dr.
+                        <?php echo $_SESSION['hcpsName']; ?>
+                    </p>
 
                     <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
                         <span class="dropdown-toggle mx-4"></span>
@@ -91,7 +92,7 @@
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            <h6></h6>
+                            <h6><?php echo $_SESSION['hcpsName']; ?></h6>
                             <p class="pt-1"></p>
                             <span>Health Care Provider</span>
                         </li>
@@ -213,7 +214,9 @@
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     25
                                 </p>
-                                <p style="font-size: 16px"><?php echo date("d - m - Y") ?></p>
+                                <p style="font-size: 16px">
+                                    <?php echo date("d - m - Y") ?>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -227,7 +230,9 @@
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     19
                                 </p>
-                                <p style="font-size: 16px"><?php echo date("d - m - Y") ?></p>
+                                <p style="font-size: 16px">
+                                    <?php echo date("d - m - Y") ?>
+                                </p>
                             </div>
                         </div>
                     </div>

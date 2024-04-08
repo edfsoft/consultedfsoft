@@ -29,6 +29,7 @@
             /* scroll-padding-top: 290px; */
         }
 
+        /* To remove the arrows in the  input type number*/
         #patientMobile::-webkit-outer-spin-button,
         #patientMobile::-webkit-inner-spin-button,
         #additionalContact::-webkit-outer-spin-button,
@@ -45,14 +46,15 @@
             margin: 0;
         }
 
+        /* Appointment time buttons */
         .timeButton.highlighted {
             background-color: blue;
             color: white;
         }
 
-        .highlight {
-            background-color: black;
-            color: white;
+        /* Form Labels */
+        .form-label {
+            font-weight: 500;
         }
     </style>
 </head>
@@ -81,7 +83,7 @@
                     <img src="<?php echo base_url(); ?>assets/happyPatients1.png" width="40" height="40" alt="Profile"
                         class="rounded-circle me-1" />
 
-                    <p class="text-dark w-50 d-none d-md-block me-2 my-auto" style="margin:20px;width:auto;">
+                    <p class="text-dark w-50 d-none d-md-block me-2 my-auto" style="margin:15px;width:auto;">
                         Dr.
                         <?php echo $_SESSION['hcpsName']; ?>
                     </p>
@@ -90,10 +92,15 @@
                         <span class="dropdown-toggle mx-4"></span>
                     </a>
 
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
+                        style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
                         <li class="dropdown-header">
-                            <h6><?php echo $_SESSION['hcpsName']; ?></h6>
-                            <p class="pt-1"></p>
+                            <h6>
+                                <?php echo $_SESSION['hcpsName']; ?> /
+                            </h6>
+                            <p>
+                                <?php echo $_SESSION['hcpId']; ?>
+                            </p>
                             <span>Health Care Provider</span>
                         </li>
                         <li>
@@ -381,7 +388,7 @@
                                 Diabetes - Health care
                             </p>
                             <div>
-                                <a href="tel:+9944556622"><button style="
+                                <a href="tel:9944556622"><button style="
                                 background-color: #00ad8e;
                                 color: white;
                                 font-size: 16px;
@@ -463,8 +470,7 @@
                                             <td style="font-size: 16px">Diabetes</td>
                                             <td style="font-size: 16px">
                                                 <a class="icon" href="#" data-bs-toggle="dropdown">
-                                                    <p class="" onclick="highlightRow(this)"><i
-                                                            class="bi bi-three-dots-vertical"></i></p>
+                                                    <p class=""><i class="bi bi-three-dots-vertical"></i></p>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                     <li><a class="px-1 "
@@ -501,22 +507,7 @@
                         </div>
                     </div>
                 </section>
-                <script>
-                    function highlightRow(element) {
-                        // Remove highlight class from all rows
-                        var rows = document.querySelectorAll('tr.highlight');
-                        rows.forEach(function (row) {
-                            row.classList.remove('highlight');
-                        });
-                        // Add highlight class to current row
-                        element.closest('tr').classList.add('highlight');
-                    }
 
-                    function removeHighlight(element) {
-                        // Remove highlight class when dropdown menu is clicked
-                        var row = element.closest('tr');
-                        row.classList.remove('highlight');
-                    }</script>
             <?php
         } else if ($method == "patientDetailsForm") {
             ?>
@@ -606,20 +597,6 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientMatrital">Marital Status</label>
-                                                        <select class="form-control" id="patientMatrital" name="patientMatrital">
-                                                            <option value="">Select Marital Status</option>
-                                                            <option value="Single">Single</option>
-                                                            <option value="Married">Married</option>
-                                                        </select>
-                                                        <div id="patientMarital_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="marriedSince">Married Since</label>
-                                                        <input type="date" class="form-control" id="marriedSince"
-                                                            name="marriedSince">
-                                                    </div>
-                                                    <div class="form-group pb-3">
                                                         <label class="form-label" for="patientBlood">Blood Group <span
                                                                 class="text-danger">*</span></label>
                                                         <select class="form-control" id="patientBlood" name="patientBlood">
@@ -635,6 +612,21 @@
                                                         </select>
                                                         <div id="patientBlood_err" class="text-danger pt-1"></div>
                                                     </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientMatrital">Marital Status</label>
+                                                        <select class="form-control" id="patientMatrital" name="patientMatrital">
+                                                            <option value="">Select Marital Status</option>
+                                                            <option value="Single">Single</option>
+                                                            <option value="Married">Married</option>
+                                                        </select>
+                                                        <div id="patientMarital_err" class="text-danger pt-1"></div>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="marriedSince">Married Since</label>
+                                                        <input type="date" class="form-control" id="marriedSince"
+                                                            name="marriedSince">
+                                                    </div>
+
                                                     <button class="btn text-light next float-end mt-2"
                                                         style="background-color: #00ad8e;"
                                                         onclick="if (validatePatientDetails()) { nextStep(1); }">Next</button>
@@ -647,12 +639,12 @@
                                                             class="text-light rounded-circle border-0">2</button> Additional
                                                         Information
                                                     </p>
-                                                    <div class="form-group pb-3">
+                                                    <!-- <div class="form-group pb-3">
                                                         <label class="form-label" for="additionalContact">Emergency Contact
                                                             Number</label>
                                                         <input type="number" class="form-control" id="additionalContact"
                                                             name="additionalContact" required>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientProfessions">Patient's
                                                             Profession</label>
@@ -762,9 +754,20 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientDiagonsis">Diagonsis</label>
+                                                        <label class="form-label" for="patientDiagonsis">Diagonsis /
+                                                            Complaints</label>
                                                         <input type="text" class="form-control" id="patientDiagonsis"
                                                             name="patientDiagonsis" required>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientSymptoms">Symptoms / Findings</label>
+                                                        <input type="text" class="form-control" id="patientSymptoms"
+                                                            name="patientSymptoms" required>
+                                                    </div>
+                                                    <div class="form-group pb-3">
+                                                        <label class="form-label" for="patientMedicines">Medicines</label>
+                                                        <input type="text" class="form-control" id="patientMedicines"
+                                                            name="patientMedicines" required>
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="medicalReceipts">Medical Receipts</label>
@@ -772,8 +775,7 @@
                                                             name="medicalReceipts">
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="medicalReports">Attach Medical
-                                                            Reports</label>
+                                                        <label class="form-label" for="medicalReports">Test Uploads</label>
                                                         <input type="file" class="form-control" id="medicalReports"
                                                             name="medicalReports">
                                                     </div>
@@ -798,141 +800,36 @@
                             </div>
                         </div>
                     </section>
-                    <script>
-                        function calculateAge() {
-                            var dobInput = document.getElementById('patientDob').value;
-                            if (dobInput) {
-                                var dob = new Date(dobInput);
-                                var today = new Date();
-                                var ageYears = today.getFullYear() - dob.getFullYear();
-                                var ageMonths = today.getMonth() - dob.getMonth();
-
-                                if (ageMonths < 0 || (ageMonths === 0 && today.getDate() < dob.getDate())) {
-                                    ageYears--;
-                                    ageMonths = 12 - Math.abs(ageMonths);
-                                } else {
-                                    ageMonths++;
-                                }
-
-                                document.getElementById('ageYearsOutput').innerText = ageYears;
-                                document.getElementById('ageMonthsOutput').innerText = ageMonths;
-                            } else {
-                                document.getElementById('ageYearsOutput').innerText = "";
-                                document.getElementById('ageMonthsOutput').innerText = "";
-                            }
+                    <script>             function calculateAge() {
+                            var dobInput = document.getElementById('patientDob').value; if (dobInput) {
+                                var dob = new Date(dobInput); var today = new Date(); var ageYears = today.getFullYear() - dob.getFullYear(); var ageMonths = today.getMonth() - dob.getMonth();
+                                if (ageMonths < 0 || (ageMonths === 0 && today.getDate() < dob.getDate())) { ageYears--; ageMonths = 12 - Math.abs(ageMonths); } else { ageMonths++; }
+                                document.getElementById('ageYearsOutput').innerText = ageYears; document.getElementById('ageMonthsOutput').innerText = ageMonths;
+                            } else { document.getElementById('ageYearsOutput').innerText = ""; document.getElementById('ageMonthsOutput').innerText = ""; }
                         }
 
                     </script>
-                    <script>
-                        function nextStep(step) {
-                            document.getElementById('step-' + step).style.display = 'none';
-                            document.getElementById('step-' + (step + 1)).style.display = 'block';
-                        }
-
-                        function prevStep(step) {
-                            document.getElementById('step-' + step).style.display = 'none';
-                            document.getElementById('step-' + (step - 1)).style.display = 'block';
-                        }
-
+                    <script>             function nextStep(step) { document.getElementById('step-' + step).style.display = 'none'; document.getElementById('step-' + (step + 1)).style.display = 'block'; }
+                        function prevStep(step) { document.getElementById('step-' + step).style.display = 'none'; document.getElementById('step-' + (step - 1)).style.display = 'block'; }
                         function clearErrorPatientDetails() {
-                            var name = document.getElementById("patientName").value;
-                            var mobile = document.getElementById("patientMobile").value;
-                            var email = document.getElementById("patientEmail").value;
-                            var gender = document.getElementById("patientGender").value;
-                            var dob = document.getElementById("patientDob").value;
-                            var blood = document.getElementById("patientBlood").value;
-
-                            if (name != "") {
-                                document.getElementById("patientName_err").innerHTML = "";
-                            }
-
-                            if (mobile != "") {
-                                document.getElementById("patientMobile_err").innerHTML = "";
-                            }
-
-                            if (email != "") {
-                                document.getElementById("patientEmail_err").innerHTML = "";
-                            }
-
-                            if (gender != "") {
-                                document.getElementById("patientGender_err").innerHTML = "";
-                            }
-
-                            if (dob != "") {
-                                document.getElementById("patientDob_err").innerHTML = "";
-                            }
-
-                            if (blood != "") {
-                                document.getElementById("patientBlood_err").innerHTML = "";
-                            }
+                            var name = document.getElementById("patientName").value; var mobile = document.getElementById("patientMobile").value; var email = document.getElementById("patientEmail").value; var gender = document.getElementById("patientGender").value; var dob = document.getElementById("patientDob").value; var blood = document.getElementById("patientBlood").value;
+                            if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
+                            if (mobile != "") { document.getElementById("patientMobile_err").innerHTML = ""; }
+                            if (email != "") { document.getElementById("patientEmail_err").innerHTML = ""; }
+                            if (gender != "") { document.getElementById("patientGender_err").innerHTML = ""; }
+                            if (dob != "") { document.getElementById("patientDob_err").innerHTML = ""; }
+                            if (blood != "") { document.getElementById("patientBlood_err").innerHTML = ""; }
                         }
-
 
                         function validatePatientDetails() {
-                            var name = document.getElementById("patientName").value;
-                            var mobile = document.getElementById("patientMobile").value;
-                            var email = document.getElementById("patientEmail").value;
-                            var dob = document.getElementById("patientDob").value;
-                            var gender = document.getElementById("patientGender").value;
-                            var blood = document.getElementById("patientBlood").value;
+                            var name = document.getElementById("patientName").value; var mobile = document.getElementById("patientMobile").value; var email = document.getElementById("patientEmail").value; var dob = document.getElementById("patientDob").value; var gender = document.getElementById("patientGender").value; var blood = document.getElementById("patientBlood").value;
 
-
-                            if (name == "") {
-                                document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
-                                document.getElementById("patientName").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientName_err").innerHTML = "";
-                            }
-
-                            if (mobile == "") {
-                                document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
-                                document.getElementById("patientMobile").focus();
-                                return false;
-                            } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
-                                document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
-                                document.getElementById("patientMobile").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientMobile_err").innerHTML = "";
-                            }
-
-                            if (email == "") {
-                                document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";
-                                document.getElementById("patientEmail").focus();
-                                return false;
-                            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                                document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";
-                                document.getElementById("patientEmail").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientEmail_err").innerHTML = "";
-                            }
-
-                            if (gender == "") {
-                                document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
-                                document.getElementById("patientDob").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientGender_err").innerHTML = "";
-                            }
-
-                            if (dob == "") {
-                                document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
-                                document.getElementById("patientGender").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientDob_err").innerHTML = "";
-                            }
-
-                            if (blood == "") {
-                                document.getElementById("patientBlood_err").innerHTML = "Blood group must be filled out.";
-                                document.getElementById("patientBlood").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientBlood_err").innerHTML = "";
-                            }
-
+                            // if (name == "") {                 //     document.getElementById("patientName_err").innerHTML = "Name must be filled out.";                 //     document.getElementById("patientName").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientName_err").innerHTML = "";                 // }
+                            // if (mobile == "") {                 //     document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";                 //     document.getElementById("patientMobile").focus();                 //     return false;                 // } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {                 //     document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";                 //     document.getElementById("patientMobile").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientMobile_err").innerHTML = "";                 // }
+                            // if (email == "") {                 //     document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";                 //     document.getElementById("patientEmail").focus();                 //     return false;                 // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {                 //     document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";                 //     document.getElementById("patientEmail").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientEmail_err").innerHTML = "";                 // }
+                            // if (gender == "") {                 //     document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";                 //     document.getElementById("patientDob").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientGender_err").innerHTML = "";                 // }
+                            // if (dob == "") {                 //     document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";                 //     document.getElementById("patientGender").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientDob_err").innerHTML = "";                 // }
+                            // if (blood == "") {                 //     document.getElementById("patientBlood_err").innerHTML = "Blood group must be filled out.";                 //     document.getElementById("patientBlood").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientBlood_err").innerHTML = "";                 // }
                             return true;
                         }
                     </script>
@@ -953,7 +850,7 @@
                                         <div class="ps-sm-5">
                                             <p style="font-size:24px;font-weight:500;">Anand Kumar | EDF000001</p>
 
-                                            <p><a href="tel:+9894604299" class="text-decoration-none text-dark fs-6">+91
+                                            <p><a href="tel:9894604299" class="text-decoration-none text-dark fs-6">+91
                                                     9894604299</a> | <a href="mailto:example@gmail.com"
                                                     class="text-decoration-none text-dark fs-6">
                                                     example@gmail.com</a></p>
@@ -973,6 +870,7 @@
             <?php
         } else if ($method == "appointments") {
             ?>
+
                             <script>
                                 document.getElementById('appointments').style.color = "#87F7E3";
                             </script>
@@ -1081,7 +979,7 @@
                                                             oninput="clearErrorAppointment()">
                                                             <div>
                                                                 <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;">
-                                                                    Appointments</p>
+                                                                    Appointments Details</p>
                                                                 <div class="form-group pb-2">
                                                                     <label class="form-label" for="patientId">Patient Id <span
                                                                             class="text-danger">*</span></label>
@@ -1315,175 +1213,39 @@
                                     </div>
                                 </section>
                                 <script>
-                                    var dateInput = document.getElementById('appDate');
-                                    var today = new Date();
-                                    var dd = String(today.getDate()).padStart(2, '0');
-                                    var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
-                                    var yyyy = today.getFullYear();
-                                    var minDate = yyyy + '-' + mm + '-' + dd;
-                                    dateInput.setAttribute('min', minDate);
+                                    var dateInput = document.getElementById('appDate'); var today = new Date(); var dd = String(today.getDate()).padStart(2, '0'); var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!             var yyyy = today.getFullYear();             var minDate = yyyy + '-' + mm + '-' + dd;             dateInput.setAttribute('min', minDate);
 
+                                    // var timeButton = document.querySelectorAll('.timeButton');             // timeButton.forEach(function (button) {             //     button.addEventListener('click', function () {             //         document.getElementById('appTime').value = button.value;             //     });             // });             var buttons = document.querySelectorAll('.timeButton');
+                                    buttons.forEach(function (button) { button.addEventListener('click', function () { buttons.forEach(function (btn) { btn.classList.remove('highlighted'); }); button.classList.add('highlighted'); document.getElementById('appTime').value = button.value; }); });
 
-                                    // var timeButton = document.querySelectorAll('.timeButton');
-                                    // timeButton.forEach(function (button) {
-                                    //     button.addEventListener('click', function () {
-                                    //         document.getElementById('appTime').value = button.value;
-                                    //     });
-                                    // });
-                                    var buttons = document.querySelectorAll('.timeButton');
-
-                                    buttons.forEach(function (button) {
-                                        button.addEventListener('click', function () {
-                                            buttons.forEach(function (btn) {
-                                                btn.classList.remove('highlighted');
-                                            });
-                                            button.classList.add('highlighted');
-                                            document.getElementById('appTime').value = button.value;
-                                        });
-                                    });
-
-
-                                    function displayTime() {
-                                        dayTime = document.getElementById("dayTime").value;
-                                        if (dayTime == 'Morning') {
-                                            document.getElementById("morningTime").style.display = "block";
-                                        } else {
-                                            document.getElementById("morningTime").style.display = "none";
-                                        }
-                                        if (dayTime == 'Afternoon') {
-                                            document.getElementById("afternoonTime").style.display = "block";
-                                        } else {
-                                            document.getElementById("afternoonTime").style.display = "none";
-                                        }
-                                        if (dayTime == 'Evening') {
-                                            document.getElementById("eveningTime").style.display = "block";
-                                        } else {
-                                            document.getElementById("eveningTime").style.display = "none";
-                                        }
-                                        if (dayTime == 'Night') {
-                                            document.getElementById("nightTime").style.display = "block";
-                                        } else {
-                                            document.getElementById("nightTime").style.display = "none";
-                                        }
-                                    }
-
+                                    function displayTime() { dayTime = document.getElementById("dayTime").value; if (dayTime == 'Morning') { document.getElementById("morningTime").style.display = "block"; } else { document.getElementById("morningTime").style.display = "none"; } if (dayTime == 'Afternoon') { document.getElementById("afternoonTime").style.display = "block"; } else { document.getElementById("afternoonTime").style.display = "none"; } if (dayTime == 'Evening') { document.getElementById("eveningTime").style.display = "block"; } else { document.getElementById("eveningTime").style.display = "none"; } if (dayTime == 'Night') { document.getElementById("nightTime").style.display = "block"; } else { document.getElementById("nightTime").style.display = "none"; } }
                                     function clearErrorAppointment() {
                                         var patientId = document.getElementById("patientId").value;
                                         var name = document.getElementById("patientName").value;
                                         var referalDr = document.getElementById("referalDoctor").value;
-                                        // var consultMode = document.getElementById("appConsult").value;
+                                        // var consultMode = document.getElementById("appConsult").value;      
                                         var date = document.getElementById("appDate").value;
-                                        var dayTime = document.getElementById("dayTime").value;
-                                        var time = document.getElementById("appTime").value;
-                                        var reason = document.getElementById("appReason").value;
-
-                                        if (patientId != "") {
-                                            document.getElementById("patientId_err").innerHTML = "";
+                                        var dayTime = document.getElementById("dayTime").value; var time = document.getElementById("appTime").value; var reason = document.getElementById("appReason").value;
+                                        if (patientId != "") { document.getElementById("patientId_err").innerHTML = ""; }
+                                        if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
+                                        if (referalDr != "") { document.getElementById("referalDoctor_err").innerHTML = ""; }
+                                        if (consultMode != "") {                 //     document.getElementById("appConsult_err").innerHTML = "";                 // }
+                                            if (date != "") { document.getElementById("appDate_err").innerHTML = ""; }
+                                            if (dayTime != "") { document.getElementById("dayTime_err").innerHTML = ""; }
+                                            if (time != "") { document.getElementById("appTime_err").innerHTML = ""; }
+                                            if (appReason != "") { document.getElementById("appReason_err").innerHTML = ""; }
                                         }
-
-                                        if (name != "") {
-                                            document.getElementById("patientName_err").innerHTML = "";
+                                        function validateAppointment() {
+                                            var patientId = document.getElementById("patientId").value; var name = document.getElementById("patientName").value; var referalDr = document.getElementById("referalDoctor").value;                 // var consultMode = document.getElementById("appConsult").value;                 var date = document.getElementById("appDate").value;                 var dayTime = document.getElementById("dayTime").value;                 var time = document.getElementById("appTime").value;                 var reason = document.getElementById("appReason").value;
+                                            if (patientId == "") { document.getElementById("patientId_err").innerHTML = "Id must be filled out."; document.getElementById("patientId").focus(); return false; } else { document.getElementById("patientId_err").innerHTML = ""; }
+                                            if (name == "") { document.getElementById("patientName_err").innerHTML = "Name must be filled out."; document.getElementById("patientName").focus(); return false; } else { document.getElementById("patientName_err").innerHTML = ""; }
+                                            if (referalDr == "") { document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out."; document.getElementById("referalDoctor").focus(); return false; } else { document.getElementById("referalDoctor_err").innerHTML = ""; }
+                                            // if (consultMode == "") {                 //     document.getElementById("appConsult_err").innerHTML = "Select the mode of consultation.";                 //     document.getElementById("appConsult").focus();                 //     return false;                 // } else {                 //     document.getElementById("appConsult_err").innerHTML = "";                 // }
+                                            if (date == "") { document.getElementById("appDate_err").innerHTML = "Date must be filled out."; document.getElementById("appDate").focus(); return false; } else { document.getElementById("appDate_err").innerHTML = ""; }
+                                            if (dayTime == "") { document.getElementById("dayTime_err").innerHTML = "Time must be filled out."; document.getElementById("dayTime").focus(); return false; } else { document.getElementById("dayTime_err").innerHTML = ""; }
+                                            if (time == "") { document.getElementById("appTime_err").innerHTML = "Time must be filled out."; document.getElementById("appTime").focus(); return false; } else { document.getElementById("appTime_err").innerHTML = ""; }
+                                            if (reason == "") { document.getElementById("appReason_err").innerHTML = "Complaints must be filled out."; document.getElementById("appReason").focus(); return false; } else { document.getElementById("appReason_err").innerHTML = ""; } return true;
                                         }
-
-                                        if (referalDr != "") {
-                                            document.getElementById("referalDoctor_err").innerHTML = "";
-                                        }
-
-                                        // if (consultMode != "") {
-                                        //     document.getElementById("appConsult_err").innerHTML = "";
-                                        // }
-
-                                        if (date != "") {
-                                            document.getElementById("appDate_err").innerHTML = "";
-                                        }
-
-                                        if (dayTime != "") {
-                                            document.getElementById("dayTime_err").innerHTML = "";
-                                        }
-
-                                        if (time != "") {
-                                            document.getElementById("appTime_err").innerHTML = "";
-                                        }
-
-                                        if (appReason != "") {
-                                            document.getElementById("appReason_err").innerHTML = "";
-                                        }
-                                    }
-
-                                    function validateAppointment() {
-                                        var patientId = document.getElementById("patientId").value;
-                                        var name = document.getElementById("patientName").value;
-                                        var referalDr = document.getElementById("referalDoctor").value;
-                                        // var consultMode = document.getElementById("appConsult").value;
-                                        var date = document.getElementById("appDate").value;
-                                        var dayTime = document.getElementById("dayTime").value;
-                                        var time = document.getElementById("appTime").value;
-                                        var reason = document.getElementById("appReason").value;
-
-                                        if (patientId == "") {
-                                            document.getElementById("patientId_err").innerHTML = "Id must be filled out.";
-                                            document.getElementById("patientId").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("patientId_err").innerHTML = "";
-                                        }
-
-                                        if (name == "") {
-                                            document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
-                                            document.getElementById("patientName").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("patientName_err").innerHTML = "";
-                                        }
-
-                                        if (referalDr == "") {
-                                            document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out.";
-                                            document.getElementById("referalDoctor").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("referalDoctor_err").innerHTML = "";
-                                        }
-
-                                        // if (consultMode == "") {
-                                        //     document.getElementById("appConsult_err").innerHTML = "Select the mode of consultation.";
-                                        //     document.getElementById("appConsult").focus();
-                                        //     return false;
-                                        // } else {
-                                        //     document.getElementById("appConsult_err").innerHTML = "";
-                                        // }
-
-                                        if (date == "") {
-                                            document.getElementById("appDate_err").innerHTML = "Date must be filled out.";
-                                            document.getElementById("appDate").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("appDate_err").innerHTML = "";
-                                        }
-
-                                        if (dayTime == "") {
-                                            document.getElementById("dayTime_err").innerHTML = "Time must be filled out.";
-                                            document.getElementById("dayTime").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("dayTime_err").innerHTML = "";
-                                        }
-
-                                        if (time == "") {
-                                            document.getElementById("appTime_err").innerHTML = "Time must be filled out.";
-                                            document.getElementById("appTime").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("appTime_err").innerHTML = "";
-                                        }
-
-                                        if (reason == "") {
-                                            document.getElementById("appReason_err").innerHTML = "Complaints must be filled out.";
-                                            document.getElementById("appReason").focus();
-                                            return false;
-                                        } else {
-                                            document.getElementById("appReason_err").innerHTML = "";
-                                        }
-                                        return true;
                                     }
                                 </script>
             <?php
@@ -1495,118 +1257,126 @@
 
                                     <section>
                                         <div class="card rounded">
-                                            <div class="card-body p-4">
-                                                <div class="d-flex justify-content-between mt-3 mb-3">
-                                                    <p class="ps-2" style="font-size: 24px; font-weight: 500">
-                                                        Chief Doctors
-                                                    </p>
-                                                    <!-- <a href="#"> <button style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
-                                                        <i class="bi bi-plus-square-fill"></i> Add
-                                                    </button></a> -->
-                                                </div>
-                                                <div class="d-md-flex">
-                                                    <div class="card rounded-2 mx-3">
-                                                        <div class=" card-body text-center p-4">
-                                                            <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="dr1" width="122"
-                                                                height="122" class="mb-4" /> <br>
-                                                            <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile" ?>"
-                                                                onMouseOver="this.style.textDecoration='underline'"
-                                                                onMouseOut="this.style.textDecoration='none'" class="text-dark"
-                                                                style="font-size: 18px;">
-                                                                Dr.A.S.Senthilvelu </a>
-                                                            <p style="font-size:16px; color: #00ad8e;">
-                                                                Diabetes Consultant
-                                                            </p>
+                                            <p class="ps-2 m-3" style="font-size: 24px; font-weight: 500">
+                                                Chief Doctors
+                                            </p>
+                                        </div>
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                        <?php foreach ($ccDetails as $key => $value) { ?>
+                                                    <div class="card col-lg-4 m-3">
+                                                        <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                            <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="CC profile photo"
+                                                                width="122" height="122" class="my-auto">
+                                                            <div>
+                                                                <p class="card-title"><b>
+                                                <?php echo $value['doctorName']; ?>
+                                                                    </b> / <br>
+                                            <?php echo $value['ccId']; ?>
+                                                                </p>
+                                                                <p style="color: #00ad8e;"><b>
+                                                <?php echo $value['specialization']; ?>
+                                                                    </b></p>
+                                                                <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['id'] ?>"
+                                                                    class="btn btn-secondary">Full Details</a>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card rounded-2 mx-3">
-                                                        <div class="card-body text-center p-4">
-                                                            <img src="<?php echo base_url(); ?>assets/Doctor2.png" alt="dr1" width="122"
-                                                                height="122" />
-                                                            <p class="pt-4" style="font-size: 18px;">
-                                                                Dr.Kumaresan <br>
-                                                                <span style="font-size:16px; color: #00ad8e;">
-                                                                    Diabetes Consultant
-                                                                </span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card rounded-2 mx-3">
-                                                        <div class="card-body text-center p-4">
-                                                            <img src="<?php echo base_url(); ?>assets/Doctor3.png" alt="dr1" width="122"
-                                                                height="122" />
-                                                            <p class="pt-4" style="font-size: 18px;">
-                                                                Dr.Sweethasha <br>
-                                                                <span style="font-size:16px; color: #00ad8e;">
-                                                                    Diabetes Consultant
-                                                                </span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
+                        <?php } ?>
                                             </div>
                                         </div>
+
                                     </section>
             <?php
         } else if ($method == "chiefDoctorProfile") {
             ?>
-                                        <script>
-                                            document.getElementById('chiefDoctor').style.color = "#87F7E3";
+                                        <script>             document.getElementById('chiefDoctor').style.color = "#87F7E3";
                                         </script>
 
                                         <section>
                                             <div class="card shadow-none rounded">
-                                                <div class="card-body p-4">
-                                                    <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>"
-                                                        class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
-                                                    <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                                        <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor" width="143"
-                                                            height="143">
-                                                        <div class="ps-sm-5">
-                                                            <p style="font-size:24px;font-weight:500;">Dr.A.S.Senthilvelu</p>
-                                                            <p style="font-size:16px;font-weight:400;color:#0079AD;">Diabetologist</p>
-                                                            <p><a href="tel:+9894604299" style="font-size:16px;font-weight:400;"
-                                                                    class="text-decoration-none text-dark fs-6">+91
-                                                                    9894604299</a> | <a href="mailto:contact@erodediabetesfoundation.org"
-                                                                    style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
-                                                                    contact@erodediabetesfoundation.org</a></p>
+                        <?php
+                        foreach ($ccDetails as $key => $value) {
+                            ?>
+                                                    <div class="card-body p-4">
+                                                        <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>"
+                                                            class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
+                                                        <div class="d-sm-flex justify-content-start mt-2 mb-5">
+
+                                                            <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor" width="143"
+                                                                height="143">
+                                                            <div class="ps-sm-5">
+                                                                <p style="font-size:20px;font-weight:500;">Dr.
+                                        <?php echo $value['doctorName']; ?>
+                                                                </p>
+                                                                <p style="font-size:16px;font-weight:400;color:#00ad8e;">Diabetologist</p>
+                                                                <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
+                                                                        style="font-size:16px;font-weight:400;"
+                                                                        class="text-decoration-none text-dark fs-6">+91
+                                            <?php echo $value['doctorMobile']; ?>
+                                                                    </a> | <a href="mailto:<?php echo $value['doctorMail']; ?>"
+                                                                        style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                            <?php echo $value['doctorMail']; ?>
+                                                                    </a></p>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="d-flex justify-content-between mt-2 ">
-                                                        <p style="font-size:24px;font-weight:400;">Profile Details</p>
-                                                    </div>
+                                                        <div class="d-flex justify-content-between mt-2 ">
+                                                            <p style="font-size:24px;font-weight:500;">Profile Details</p>
+                                                        </div>
 
-                                                    <table>
-                                                        <tr>
-                                                            <td class="col-3 py-2" style="color:#999292">Years of Experience</td>
-                                                            <td>30</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Registration detail</td>
-                                                            <td>Tamil Nadu Medical Council</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Specialization</td>
-                                                            <td>Diabetologist, Internal Medician Physician</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Membership</td>
-                                                            <td>Life Member IMA</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Date of Birth</td>
-                                                            <td>20/05/1967</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Services</td>
-                                                            <td>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantiu doloremque
-                                                                laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-                                                                architecto beatae vitae dicta sunt explicabo.</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
+                                                        <table>
+                                                            <tr>
+                                                                <td class="col-2 py-2" style="color:#999292">Years of Experience</td>
+                                                                <td class="col-5">
+                                        <?php echo $value['yearOfExperience']; ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="py-2" style="color:#999292">Qualification</td>
+                                                                <td>
+                                        <?php echo $value['qualification']; ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="py-2" style="color:#999292">Registration detail</td>
+                                                                <td>
+                                        <?php echo $value['regDetails']; ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="py-2" style="color:#999292">Membership</td>
+                                                                <td>
+                                        <?php echo $value['membership']; ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="py-2" style="color:#999292">Services</td>
+                                                                <td>
+                                        <?php echo $value['services']; ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="py-2" style="color:#999292">Date of Birth</td>
+                                                                <td>
+                                        <?php echo $value['dateOfBirth']; ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
+                                                                <td>
+                                        <?php echo $value['hospitalName']; ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="py-2" style="color:#999292">Location</td>
+                                                                <td>
+                                        <?php echo $value['location']; ?>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                    <?php } ?>
                                             </div>
                                         </section>
             <?php
@@ -1615,43 +1385,71 @@
                                             <section>
                                                 <div class="card shadow-none rounded">
                                                     <div class="card-body p-4">
-                                                        <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                                            <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="Doctor" width="143"
-                                                                height="143">
-                                                            <div class="ps-sm-5">
-                                                                <p style="font-size:24px;font-weight:500;">Dr.Subash Karan</p>
-                                                                <p style="font-size:16px;font-weight:400;color:#00ad8e;">Diabetologist</p>
-                                                                <p><a href="tel:+9894604299" style="font-size:16px;font-weight:400;"
-                                                                        class="text-decoration-none text-dark fs-6">+91
-                                                                        9876543210</a> | <a href="mailto:contact@erodediabetesfoundation.org"
-                                                                        style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
-                                                                        drsubashkaran@gmail.com</a></p>
+                            <?php
+                            foreach ($hcpDetails as $key => $value) {
+                                ?>
+                                                            <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="Doctor" width="143"
+                                                                    height="143">
+                                                                <div class="ps-sm-5">
+                                                                    <p style="font-size:20px;font-weight:500;">Dr.
+                                        <?php echo $value['hcpName']; ?>
+                                                                    </p>
+                                                                    <p style="font-size:16px;font-weight:400;color:#00ad8e;">
+                                        <?php echo $value['hcpSpecialization']; ?>
+                                                                    </p>
+                                                                    <p><a href="tel:<?php echo $value['hcpMobile']; ?>" style="font-size:16px;font-weight:400;"
+                                                                            class="text-decoration-none text-dark fs-6">+91
+                                            <?php echo $value['hcpMobile']; ?>
+                                                                        </a> | <a href="mailto:<?php echo $value['hcpMail']; ?>"
+                                                                            style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                            <?php echo $value['hcpMail']; ?>
+                                                                        </a></p>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div class="d-flex justify-content-between mt-2 ">
-                                                            <p style="font-size:24px;font-weight:400;">Profile Details</p>
-                                                            <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
-                                                                    class="bi bi-pencil-square"></i> Edit</a>
-                                                        </div>
-                                                        <table>
-                                                            <tr>
-                                                                <td class="col-5 py-2" style="color:#999292">Years of Experience</td>
-                                                                <td>7</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="py-2" style="color:#999292">Qualification</td>
-                                                                <td>MBBS</td>
-                                                            </tr>
-                                                            <tr>
+                                                            <div class="d-flex justify-content-between mt-2 ">
+                                                                <p style="font-size:24px;font-weight:500;">Profile Details</p>
+                                                                <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
+                                                                        class="bi bi-pencil-square"></i> Edit</a>
+                                                            </div>
+                                                            <table>
+                                                                <tr>
+                                                                    <td class="col-5 py-2" style="color:#999292">Years of Experience</td>
+                                                                    <td class="col-5">
+                                        <?php echo $value['hcpExperience']; ?>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="py-2" style="color:#999292">Qualification</td>
+                                                                    <td>
+                                        <?php echo $value['hcpQualification']; ?>
+                                                                    </td>
+                                                                </tr>
+                                                                <!-- <tr>
                                                                 <td class="py-2" style="color:#999292">Specialization</td>
                                                                 <td>Diabetologist, Internal Medician Physician</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="py-2" style="color:#999292">Date of Birth</td>
-                                                                <td>20/05/1967</td>
-                                                            </tr>
-                                                        </table>
+                                                            </tr> -->
+                                                                <tr>
+                                                                    <td class="py-2" style="color:#999292">Date of Birth</td>
+                                                                    <td>
+                                        <?php echo $value['hcpDob']; ?>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
+                                                                    <td>
+                                        <?php echo $value['hcpHospitalName']; ?>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="py-2" style="color:#999292">Location</td>
+                                                                    <td>
+                                        <?php echo $value['hcpLocation']; ?>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </section>
@@ -1662,121 +1460,172 @@
                                                     <div class="card shadow-none rounded">
                                                         <div class="card-body p-4">
                                                             <div class="">
-                                                                <p style="font-size:24px;font-weight:400;">Edit Profile Details</p>
-                                                                <form action="#" name="profileEditForm" name="profileEditForm" enctype="multipart/form-data"
-                                                                    method="POST" onsubmit="return validateDetails()" oninput="clearErrorDetails()">
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control" id="drName" name="drName"
-                                                                            placeholder="Suresh Kumar">
-                                                                        <div id="drName_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="drMobile">Mobile <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="number" class="form-control" id="drMobile" name="drMobile"
-                                                                            placeholder="9632587410">
-                                                                        <div id="drMobile_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
-                                                                        <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                                            placeholder="example@gmail.com">
-                                                                        <div id="drEmail_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
+                                                                <p style="font-size:24px;font-weight:500;">Edit Profile Details</p>
+                                                                <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
+                                                                    name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
+                                                                    onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="col-md-6">
+                                    <?php
+                                    foreach ($hcpDetails as $key => $value) {
+                                        ?>
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
+                                                                            <input type="text" class="form-control" id="drName" name="drName"
+                                                                                value="<?php echo $value['hcpName']; ?>" placeholder="Suresh Kumar">
+                                                                            <div id="drName_err" class="text-danger pt-1"></div>
+                                                                        </div>
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="drMobile">Mobile <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <input type="number" class="form-control" id="drMobile" name="drMobile"
+                                                                                value="<?php echo $value['hcpMobile']; ?>" placeholder="9632587410">
+                                                                            <div id="drMobile_err" class="text-danger pt-1"></div>
+                                                                        </div>
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
+                                                                            <input type="email" class="form-control" id="drEmail" name="drEmail"
+                                                                                value="<?php echo $value['hcpMail']; ?>" placeholder="example@gmail.com">
+                                                                            <div id="drEmail_err" class="text-danger pt-1"></div>
+                                                                        </div>
+                                                                        <div class="form-group pb-3 ">
+                                                                            <label class="form-label" for="drPassword">Password <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <div class="d-flex">
+                                                                                <input type="password" class="form-control" id="drPassword" name="drPassword"
+                                                                                    value='<?php echo $value['hcpPassword']; ?>'>
+                                                                                <button type="button" class="btn btn-outline-secondary"
+                                                                                    onclick="togglePasswordVisibility('drPassword', 'visibilityIcon')">
+                                                                                    <i id="visibilityIcon" class="bi bi-eye-slash"></i>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div id="drPassword_err" class="text-danger pt-1"></div>
+                                                                        </div>
+                                                                        <!-- <div class="form-group pb-3">
                                                                         <label class="form-label" for="profilePhoto">Profile Photo <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="file" class="form-control" id="profilePhoto" name="profilePhoto">
                                                                         <div id="profilePhoto_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="yearOfExp">Years of Experience</label>
-                                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
-                                                                            placeholder="25">
-                                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="qualification">Qualification</label>
-                                                                        <input type="text" class="form-control" id="qualification" name="qualification"
-                                                                            placeholder="MBBS">
-                                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="dob">Date of Birth</label>
-                                                                        <input type="date" class="form-control" id="dob" name="dob">
-                                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                    </div>
-                                                                    <button type="submit" class="btn btn-success float-end mt-3 ">Save</button>
+                                                                        </div> -->
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="yearOfExp">Years of Experience</label>
+                                                                            <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
+                                                                                value="<?php echo $value['hcpExperience']; ?>" placeholder="25">
+                                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                        </div>
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="qualification">Qualification</label>
+                                                                            <input type="text" class="form-control" id="qualification" name="qualification"
+                                                                                value="<?php echo $value['hcpQualification']; ?>" placeholder="MBBS">
+                                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                        </div>
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="specialization">Specialization</label>
+                                                                            <input type="text" class="form-control" id="specialization" name="specialization"
+                                                                                value="<?php echo $value['hcpSpecialization']; ?>" placeholder="Diabetologist">
+                                                                            <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
+                                                                        </div>
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="dob">Date of Birth</label>
+                                                                            <input type="date" class="form-control" id="dob" name="dob"
+                                                                                value="<?php echo $value['hcpDob']; ?>">
+                                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                        </div>
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="hospitalName">Hospital / Clinic Name</label>
+                                                                            <input type="text" class="form-control" id="hospitalName" name="hospitalName"
+                                                                                value="<?php echo $value['hcpHospitalName']; ?>" placeholder="MMCH">
+                                                                            <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
+                                                                        </div>
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="location">Location</label>
+                                                                            <input type="text" class="form-control" id="location" name="location"
+                                                                                value="<?php echo $value['hcpLocation']; ?>" placeholder="Erode">
+                                                                            <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
+                                                                        </div>
+                                <?php } ?>
+                                                                    <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
+                                                                    <button type="submit" class="btn float-end mt-3"
+                                                                        style="color: white;background-color: #00ad8e;">Save</button>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </section>
+
                                                 <script>
                                                     function clearErrorDetails() {
                                                         var doctorName = document.getElementById("drName").value;
                                                         var doctorMobile = document.getElementById("drMobile").value;
                                                         var doctorEmail = document.getElementById("drEmail").value;
+                                                        var doctorpassword = document.getElementById("password").value;
                                                         // var photo = document.getElementById("profilePhoto").value;
 
                                                         if (doctorName != "") {
                                                             document.getElementById("drName_err").innerHTML = "";
                                                         }
-
                                                         if (doctorMobile != "") {
                                                             document.getElementById("drMobile_err").innerHTML = "";
                                                         }
-
                                                         if (doctorEmail != "") {
                                                             document.getElementById("drEmail_err").innerHTML = "";
                                                         }
-
-                                                        // if (photo != "") {
-                                                        //     document.getElementById("profilePhoto_err").innerHTML = "";
-                                                        // }
+                                                        if (doctorpassword != "") {
+                                                            document.getElementById("drPassword_err").innerHTML = "";
+                                                        }
+                                                        // if (photo != "") {   
+                                                        //     document.getElementById("profilePhoto_err").innerHTML = "";   // }           
                                                     }
                                                 </script>
-                                                <script>
-                                                    function validateDetails() {
+                                                <script>             function validateDetails() {
                                                         var doctorNmae = document.getElementById("drName").value;
                                                         var doctorMobile = document.getElementById("drMobile").value;
                                                         var doctorEmail = document.getElementById("drEmail").value;
+                                                        var doctorPassword = document.getElementById("password").value;
                                                         // var photo = document.getElementById("profilePhoto").value;
 
                                                         if (doctorNmae == "") {
                                                             document.getElementById("drName_err").innerHTML = "A name can't be blank.";
-                                                            document.getElementById("drName").focus();
-                                                            return false;
-                                                        } else {
-                                                            document.getElementById("drName_err").innerHTML = "";
-                                                        }
-
+                                                            document.getElementById("drName").focus(); return false;
+                                                        } else { document.getElementById("drName_err").innerHTML = ""; }
                                                         if (doctorMobile == "") {
                                                             document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
-                                                            document.getElementById("drMobile").focus();
-                                                            return false;
-                                                        } else {
-                                                            document.getElementById("drMobile_err").innerHTML = "";
-                                                        }
-
+                                                            document.getElementById("drMobile").focus(); return false;
+                                                        } else { document.getElementById("drMobile_err").innerHTML = ""; }
                                                         if (doctorEmail == "") {
                                                             document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
-                                                            document.getElementById("drEmail").focus();
-                                                            return false;
+                                                            document.getElementById("drEmail").focus(); return false;
+                                                        } else { document.getElementById("drEmail_err").innerHTML = ""; }
+                                                        if (doctorPassword == "") {
+                                                            document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
+                                                            document.getElementById("password").focus(); return false;
+                                                        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
+                                                            document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number and a minimum of 8 characters.";
+                                                            document.getElementById("password").focus(); return false;
                                                         } else {
-                                                            document.getElementById("drEmail_err").innerHTML = "";
+                                                            document.getElementById("drPassword_err").innerHTML = "";
                                                         }
-
-                                                        // if (photo == "") {
-                                                        //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
-                                                        //     document.getElementById("profilePhoto").focus();
-                                                        //     return false;
-                                                        // } else {
-                                                        //     document.getElementById("profilePhoto_err").innerHTML = "";
+                                                        // if (photo == "") {                
+                                                        //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";   
+                                                        //     document.getElementById("profilePhoto").focus();                
+                                                        //     return false;                 // } else {              
+                                                        //     document.getElementById("profilePhoto_err").innerHTML = "";        
                                                         // }
-
                                                         return true;
+                                                    }
+                                                </script>
+                                                <script>
+                                                    function togglePasswordVisibility(inputId, iconId) {
+                                                        var passwordInput = document.getElementById(inputId);
+                                                        var visibilityIcon = document.getElementById(iconId);
+
+                                                        if (passwordInput.type === "password") {
+                                                            passwordInput.type = "text";
+                                                            visibilityIcon.classList.remove("bi-eye-slash");
+                                                            visibilityIcon.classList.add("bi-eye");
+                                                        } else {
+                                                            passwordInput.type = "password";
+                                                            visibilityIcon.classList.remove("bi-eye");
+                                                            visibilityIcon.classList.add("bi-eye-slash");
+                                                        }
                                                     }
                                                 </script>
 

@@ -276,9 +276,9 @@
                 <hr class="my-4 text-light mx-auto" style="width:50%;height: 2px;">
                 <div class="d-lg-flex justify-content-evenly ">
                     <p style="font-size:18px;font-weight:400;" class="text-light"><img
-                            src="<?php echo base_url(); ?>assets/phone-call.svg" alt="1"> <a href="tel:+9789494299"
+                            src="<?php echo base_url(); ?>assets/phone-call.svg" alt="1"> <a href="tel:9789494299"
                             style="font-size:18px;font-weight:400;" class="text-decoration-none text-light fs-6">+91
-                            9789494299</a> , <a href="tel:+04242264949" style="font-size:18px;font-weight:400;"
+                            9789494299</a> , <a href="tel:04242264949" style="font-size:18px;font-weight:400;"
                             class="text-decoration-none text-light fs-6">04242264949</a></p>
                     <p><a href="mailto:contact@erodediabetesfoundation.org" style="font-size:18px;font-weight:400;"
                             class="text-decoration-none text-light fs-6"><img

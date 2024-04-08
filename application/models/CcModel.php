@@ -18,6 +18,37 @@ class CcModel extends CI_Model
         $this->db->insert('cc_details', $insert);
     }
 
+    public function generateCcId()
+    {
+        $latest_customer_id = $this->getlastCcId();
+        $last_four_digits = substr($latest_customer_id, -3);
+        $incremented_id = str_pad((int) $last_four_digits + 1, 3, '0', STR_PAD_LEFT);
+        $generate_id = "EDFCC{$incremented_id}";
+        $insert = array(
+            'ccId' => $generate_id
+        );
+        $MobileNumber = $this->input->post('ccMobile');
+        $this->db->where('doctorMobile', $MobileNumber);
+        $this->db->update('cc_details', $insert);
+        return $generate_id;
+    }
+
+    public function getlastCcId()
+    {
+        $this->db->select('ccId');
+        $this->db->from('cc_details');
+        $this->db->order_by('ccId', 'DESC');
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            return $row->ccId;
+        } else {
+            return 'EDFCC000';
+        }
+    }
+
     public function checkUserExistence($ccMobileNum)
     {
         $this->db->where('doctorMobile', $ccMobileNum);
@@ -34,6 +65,51 @@ class CcModel extends CI_Model
         $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'";
         $count = $this->db->query($query);
         return $count->result_array();
+    }
+
+    public function getCcDetails()
+    {
+        $ccIdDb = $_SESSION['ccIdDb'];
+        $details = "SELECT * FROM `cc_details` WHERE `id` = $ccIdDb";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getHcpProfile()
+    {
+        $details = "SELECT * FROM `hcp_details`";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getHcpDetails($hcpIdDb)
+    {
+        $details = "SELECT * FROM `hcp_details` WHERE `id`=$hcpIdDb ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function updateProfileDetails()
+    {
+        $post = $this->input->post(null, true);
+        $ccIdDb = $_SESSION['ccIdDb'];
+        $updatedata = array(
+            'doctorName' => $post['drName'],
+            'doctorMobile' => $post['drMobile'],
+            'doctorMail' => $post['drEmail'],
+            'doctorPassword' => $post['drPassword'],
+            'yearOfExperience' => $post['yearOfExp'],
+            'qualification' => $post['qualification'],
+            'regDetails' => $post['regDetails'],
+            'membership' => $post['membership'],
+            'specialization' => $post['specialization'],
+            'dateOfBirth' => $post['dob'],
+            'services' => $post['services'],
+            'hospitalName' => $post['hospitalName'],
+            'location' => $post['location'],
+        );
+        $this->db->where('id', $ccIdDb);
+        $this->db->update('cc_details', $updatedata);
     }
 
 }

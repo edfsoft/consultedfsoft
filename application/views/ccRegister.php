@@ -120,7 +120,7 @@
                             style="background-color:#0079AD;font-size:16px;font-weight:600;">Sign Up</button>
                     </form>
                     <p class="mt-3" style="font-size:18px;font-weight:400;">Already have an account ? <a
-                            href="<?php echo base_url() . "Healthcareprovider/" ?>"
+                            href="<?php echo base_url() . "Chiefconsultant/" ?>"
                             class="text-decoration-none text-dark" style="font-weight:600;"> Login</a></p>
                 </div>
             </div>

@@ -88,8 +88,8 @@
                     </button>
                     <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-70px);"
                         aria-labelledby="dropDownSignup">
-                        <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                                class="dropdown-item py-2">Health Care Provider</a></li>
+                        <!-- <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
+                                class="dropdown-item py-2">Health Care Provider</a></li> -->
                         <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>"
                                 class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
@@ -270,7 +270,7 @@
         style="background-image: url('<?php echo base_url(); ?>assets/footer.png');background-size: cover;background-position: center center;background-repeat: no-repeat;">
         <div class="row">
             <div class="col-12 text-center ">
-                <img src="<?php echo base_url(); ?>assets/footerEdfLogo.png" alt="logo">
+                <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo">
                 <p class="text-light pt-2" style="font-size:18px;font-weight:400;"> “Empowering lives through expert
                     diabetes consultations online, <br> Your journey to a healthier, happier life starts here.”</p>
                 <hr class="my-4 text-light mx-auto" style="width:50%;height: 2px;">

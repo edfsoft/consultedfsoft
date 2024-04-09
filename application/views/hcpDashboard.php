@@ -432,16 +432,17 @@
                             </div>
                             <div class="table-responsive">
                                 <table class="table text-center">
+
                                     <thead>
                                         <tr>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                 PATIENT
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
-                                                NAME
+                                                PATIENT ID
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                PATIENT ID
+                                                NAME
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                 GENDER
@@ -458,49 +459,50 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="px-4">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
-                                                    width="40" height="40" />
-                                            </td>
-                                            <td class="" style="font-size: 16px">Lithorish</td>
-                                            <td style="font-size: 16px">0220946660</td>
-                                            <td style="font-size: 16px">Male</td>
-                                            <td style="font-size: 16px">62</td>
-                                            <td style="font-size: 16px">Diabetes</td>
-                                            <td style="font-size: 16px">
-                                                <a class="icon" href="#" data-bs-toggle="dropdown">
-                                                    <p class=""><i class="bi bi-three-dots-vertical"></i></p>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                                    <li><a class="px-1 "
-                                                            href="<?php echo base_url() . "Healthcareprovider/patientdetails" ?>"><button
-                                                                type="button" class="btn btn-success"><i class="bi bi-eye"></i>
-                                                                View</button></a>
-                                                        <a class="px-1 " href="#"><button type="button"
-                                                                class="btn btn-secondary"><i class="bi bi-pencil"></i>
-                                                                Edit</button></a>
-                                                        <a onclick="return confirm('Are you sure you want to delete?')"
-                                                            href="#"><button type="button" class="btn btn-danger"><i
-                                                                    class="bi bi-trash"></i> Delete</button></a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-4">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
-                                                    width="40" height="40" />
-                                            </td>
-                                            <td class="" style="font-size: 16px">Santhosh Kumar</td>
-                                            <td style="font-size: 16px">0220946661</td>
-                                            <td style="font-size: 16px">Male</td>
-                                            <td style="font-size: 16px">65</td>
-                                            <td style="font-size: 16px">Diabetes</td>
-                                            <td style="font-size: 16px" class="text-center">
-                                                <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
-                                            </td>
-                                        </tr>
+                                        <?php
+                                        foreach ($patientDetails as $key => $value) {
+                                            ?>
+                                            <tr>
+                                                <td class="px-4">
+                                                    <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
+                                                        width="40" height="40" />
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                <?php echo $value['patientId'] ?>
+                                                </td>
+                                                <td class="" style="font-size: 16px">
+                                                <?php echo $value['firstName'] ?>
+                                                <?php echo $value['lastName'] ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                <?php echo $value['gender'] ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                <?php echo $value['age'] ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                <?php echo $value['ageMonth'] ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                    <a class="icon" href="#" data-bs-toggle="dropdown">
+                                                        <p class=""><i class="bi bi-three-dots-vertical"></i></p>
+                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                        <li><a class="px-1 "
+                                                                href="<?php echo base_url() . "Healthcareprovider/patientdetails" ?>"><button
+                                                                    type="button" class="btn btn-success"><i class="bi bi-eye"></i>
+                                                                    View</button></a>
+                                                            <a class="px-1 " href="#"><button type="button"
+                                                                    class="btn btn-secondary"><i class="bi bi-pencil"></i>
+                                                                    Edit</button></a>
+                                                            <a onclick="return confirm('Are you sure you want to delete?')"
+                                                                href="#"><button type="button" class="btn btn-danger"><i
+                                                                        class="bi bi-trash"></i> Delete</button></a>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                    <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -526,8 +528,9 @@
                                     <div class="row">
                                         <div class="col-md-8">
 
-                                            <form action="xd" name="patientDetails" id="multi-step-form"
-                                                enctype="multipart/form-data" method="POST" oninput="clearErrorPatientDetails()">
+                                            <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
+                                                name="patientDetails" id="multi-step-form" enctype="multipart/form-data"
+                                                method="POST" oninput="clearErrorPatientDetails()">
                                                 <div id="step-1">
                                                     <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
                                                         <button
@@ -543,8 +546,8 @@
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientLastName">Last Name</label>
-                                                        <input type="text" class="form-control" id="patientLastName"
-                                                            name="patientLastName" placeholder="Kumar">
+                                                        <input type="text" class="form-control" id="" name="patientLastName"
+                                                            placeholder="Kumar">
                                                         <div id="patientLastName_err" class="text-danger pt-1"></div>
                                                     </div>
                                                     <div class="form-group pb-3">
@@ -589,11 +592,11 @@
                                                         <label class="form-label">Age</label>
                                                         <div class="d-flex ">
                                                             <p class="pt-1 pe-2">Years: </p>
-                                                            <p class="form-control" name="ageYearsOutput" id="ageYearsOutput"
-                                                                value="">0</p>
+                                                            <input class="form-control" name="ageYearsOutput" id="ageYearsOutput"
+                                                                value="" readonly>
                                                             <p class="pt-1 ps-2 ps-md-5 pe-2">Months: </p>
-                                                            <p class="form-control" name="ageMonthsOutput" id="ageMonthsOutput"
-                                                                value="">0</p>
+                                                            <input class="form-control" name="ageMonthsOutput" id="ageMonthsOutput"
+                                                                value="" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="form-group pb-3">
@@ -613,8 +616,8 @@
                                                         <div id="patientBlood_err" class="text-danger pt-1"></div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientMatrital">Marital Status</label>
-                                                        <select class="form-control" id="patientMatrital" name="patientMatrital">
+                                                        <label class="form-label" for="patientMarital">Marital Status</label>
+                                                        <select class="form-control" id="patientMarital" name="patientMarital">
                                                             <option value="">Select Marital Status</option>
                                                             <option value="Single">Single</option>
                                                             <option value="Married">Married</option>
@@ -649,16 +652,17 @@
                                                         <label class="form-label" for="patientProfessions">Patient's
                                                             Profession</label>
                                                         <input type="text" class="form-control" id="patientProfessions"
-                                                            name="patientProfessions" required>
+                                                            name="patientProfessions">
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="partnersName">Partner's Name</label>
+                                                        <label class="form-label" for="partnersName">Partner's Name <span
+                                                                class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" id="partnersName"
                                                             name="partnersName" required>
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="partnerMobile">Partner's Mobile
-                                                            Number</label>
+                                                            Number <span class="text-danger">*</span></label>
                                                         <input type="number" class="form-control" id="partnerMobile"
                                                             name="partnerMobile" required>
                                                     </div>
@@ -679,22 +683,22 @@
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientDoorNo">Door Number</label>
                                                         <input type="text" class="form-control" id="patientDoorNo"
-                                                            name="patientDoorNo" required>
+                                                            name="patientDoorNo">
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientStreet">Street Address</label>
                                                         <input type="text" class="form-control" id="patientStreet"
-                                                            name="patientStreet" required>
+                                                            name="patientStreet">
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientDistrict">District</label>
                                                         <input type="text" class="form-control" id="patientDistrict"
-                                                            name="patientDistrict" required>
+                                                            name="patientDistrict">
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientPincode">Pincode</label>
                                                         <input type="number" class="form-control" id="patientPincode"
-                                                            name="patientPincode" required>
+                                                            name="patientPincode">
                                                     </div>
 
 
@@ -714,7 +718,8 @@
                                                     </p>
 
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientWeight">Weight</label>
+                                                        <label class="form-label" for="patientWeight">Weight <span
+                                                                class="text-danger">*</span></label>
                                                         <div class="d-flex">
                                                             <input type="number" class="form-control" id="patientWeight"
                                                                 name="patientWeight" min="0" required>
@@ -722,7 +727,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientHeight">Height</label>
+                                                        <label class="form-label" for="patientHeight">Height <span
+                                                                class="text-danger">*</span></label>
                                                         <div class="d-flex">
                                                             <input type="number" class="form-control" id="patientHeight"
                                                                 name="patientHeight" min="0" required>
@@ -730,7 +736,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientBp">Blood Pressure</label>
+                                                        <label class="form-label" for="patientBp">Blood Pressure <span
+                                                                class="text-danger">*</span></label>
                                                         <div class="d-flex">
                                                             <input type="number" class="form-control" id="patientBp"
                                                                 name="patientBp" required>
@@ -738,7 +745,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientsCholestrol">Cholestrol</label>
+                                                        <label class="form-label" for="patientsCholestrol">Cholestrol <span
+                                                                class="text-danger">*</span></label>
                                                         <div class="d-flex">
                                                             <input type="number" class="form-control" id="patientsCholestrol"
                                                                 name="patientsCholestrol" min="0" required>
@@ -746,7 +754,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientBsugar">Blood Sugar</label>
+                                                        <label class="form-label" for="patientBsugar">Blood Sugar <span
+                                                                class="text-danger">*</span></label>
                                                         <div class="d-flex">
                                                             <input type="number" class="form-control" id="patientBsugar"
                                                                 name="patientBsugar" min="0" required>
@@ -755,19 +764,20 @@
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientDiagonsis">Diagonsis /
-                                                            Complaints</label>
+                                                            Complaints <span class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" id="patientDiagonsis"
                                                             name="patientDiagonsis" required>
                                                     </div>
                                                     <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientSymptoms">Symptoms / Findings</label>
+                                                        <label class="form-label" for="patientSymptoms">Symptoms / Findings <span
+                                                                class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" id="patientSymptoms"
                                                             name="patientSymptoms" required>
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="patientMedicines">Medicines</label>
                                                         <input type="text" class="form-control" id="patientMedicines"
-                                                            name="patientMedicines" required>
+                                                            name="patientMedicines">
                                                     </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="medicalReceipts">Medical Receipts</label>
@@ -800,17 +810,33 @@
                             </div>
                         </div>
                     </section>
-                    <script>             function calculateAge() {
-                            var dobInput = document.getElementById('patientDob').value; if (dobInput) {
-                                var dob = new Date(dobInput); var today = new Date(); var ageYears = today.getFullYear() - dob.getFullYear(); var ageMonths = today.getMonth() - dob.getMonth();
-                                if (ageMonths < 0 || (ageMonths === 0 && today.getDate() < dob.getDate())) { ageYears--; ageMonths = 12 - Math.abs(ageMonths); } else { ageMonths++; }
-                                document.getElementById('ageYearsOutput').innerText = ageYears; document.getElementById('ageMonthsOutput').innerText = ageMonths;
-                            } else { document.getElementById('ageYearsOutput').innerText = ""; document.getElementById('ageMonthsOutput').innerText = ""; }
+                    <script>
+                        function calculateAge() {
+                            var dobInput = document.getElementById('patientDob').value;
+                            if (dobInput) {
+                                var dob = new Date(dobInput);
+                                var today = new Date();
+                                var ageYears = today.getFullYear() - dob.getFullYear();
+                                var ageMonths = today.getMonth() - dob.getMonth();
+                                if (ageMonths < 0 || (ageMonths === 0 && today.getDate() < dob.getDate())) {
+                                    ageYears--; ageMonths = 12 - Math.abs(ageMonths);
+                                } else {
+                                    ageMonths++;
+                                }
+                                document.getElementById('ageYearsOutput').value = ageYears;
+                                document.getElementById('ageMonthsOutput').value = ageMonths;
+                            } else {
+                                document.getElementById('ageYearsOutput').innerText = "";
+                                document.getElementById('ageMonthsOutput').innerText = "";
+                            }
                         }
 
                     </script>
-                    <script>             function nextStep(step) { document.getElementById('step-' + step).style.display = 'none'; document.getElementById('step-' + (step + 1)).style.display = 'block'; }
+                    <script>
+
+                        function nextStep(step) { document.getElementById('step-' + step).style.display = 'none'; document.getElementById('step-' + (step + 1)).style.display = 'block'; }
                         function prevStep(step) { document.getElementById('step-' + step).style.display = 'none'; document.getElementById('step-' + (step - 1)).style.display = 'block'; }
+
                         function clearErrorPatientDetails() {
                             var name = document.getElementById("patientName").value; var mobile = document.getElementById("patientMobile").value; var email = document.getElementById("patientEmail").value; var gender = document.getElementById("patientGender").value; var dob = document.getElementById("patientDob").value; var blood = document.getElementById("patientBlood").value;
                             if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
@@ -824,13 +850,58 @@
                         function validatePatientDetails() {
                             var name = document.getElementById("patientName").value; var mobile = document.getElementById("patientMobile").value; var email = document.getElementById("patientEmail").value; var dob = document.getElementById("patientDob").value; var gender = document.getElementById("patientGender").value; var blood = document.getElementById("patientBlood").value;
 
-                            // if (name == "") {                 //     document.getElementById("patientName_err").innerHTML = "Name must be filled out.";                 //     document.getElementById("patientName").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientName_err").innerHTML = "";                 // }
-                            // if (mobile == "") {                 //     document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";                 //     document.getElementById("patientMobile").focus();                 //     return false;                 // } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {                 //     document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";                 //     document.getElementById("patientMobile").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientMobile_err").innerHTML = "";                 // }
-                            // if (email == "") {                 //     document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";                 //     document.getElementById("patientEmail").focus();                 //     return false;                 // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {                 //     document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";                 //     document.getElementById("patientEmail").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientEmail_err").innerHTML = "";                 // }
-                            // if (gender == "") {                 //     document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";                 //     document.getElementById("patientDob").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientGender_err").innerHTML = "";                 // }
-                            // if (dob == "") {                 //     document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";                 //     document.getElementById("patientGender").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientDob_err").innerHTML = "";                 // }
-                            // if (blood == "") {                 //     document.getElementById("patientBlood_err").innerHTML = "Blood group must be filled out.";                 //     document.getElementById("patientBlood").focus();                 //     return false;                 // } else {                 //     document.getElementById("patientBlood_err").innerHTML = "";                 // }
+                            if (name == "") {
+                                document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
+                                document.getElementById("patientName").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientName_err").innerHTML = "";
+                            }
+                            if (mobile == "") {
+                                document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
+                                document.getElementById("patientMobile").focus();
+                                return false;
+                            } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
+                                document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
+                                document.getElementById("patientMobile").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientMobile_err").innerHTML = "";
+                            }
+                            if (email == "") {
+                                document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";
+                                document.getElementById("patientEmail").focus();
+                                return false;
+                            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";
+                                document.getElementById("patientEmail").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientEmail_err").innerHTML = "";
+                            }
+                            if (gender == "") {
+                                document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
+                                document.getElementById("patientDob").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientGender_err").innerHTML = "";
+                            }
+                            if (dob == "") {
+                                document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
+                                document.getElementById("patientGender").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientDob_err").innerHTML = "";
+                            }
+                            if (blood == "") {
+                                document.getElementById("patientBlood_err").innerHTML = "Blood group must be filled out.";
+                                document.getElementById("patientBlood").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientBlood_err").innerHTML = "";
+                            }
                             return true;
+
                         }
                     </script>
             <?php

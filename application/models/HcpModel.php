@@ -67,6 +67,64 @@ class HcpModel extends CI_Model
         return $count->result_array();
     }
 
+    public function insertPatients()
+    {
+        $post = $this->input->post(null, true);
+        $insertdata = array(
+            'firstName' => $post['patientName'],
+            'lastName' => $post['patientLastName'],
+            'mobileNumber' => $post['patientMobile'],
+            'alternateMobile' => $post['patientAltMobile'],
+            'mailId' => $post['patientEmail'],
+            'gender' => $post['patientGender'],
+            'dob' => $post['patientDob'],
+            'age' => $post['ageYearsOutput'],
+            'ageMonth' => $post['ageMonthsOutput'],
+            'bloodGroup' => $post['patientBlood'],
+            'maritalStatus' => $post['patientMarital'],
+            'marriedSince' => $post['marriedSince'],
+        );
+        $this->db->insert('patient_details', $insertdata);
+    }
+
+    public function generatePatientId()
+    {
+        $latest_customer_id = $this->getlastPatientId();
+        $last_four_digits = substr($latest_customer_id, -6);
+        $incremented_id = str_pad((int) $last_four_digits + 1, 6, '0', STR_PAD_LEFT);
+        $generate_id = "EDF{$incremented_id}";
+        $insert = array(
+            'patientId' => $generate_id
+        );
+        $MobileNumber = $this->input->post('patientMobile');
+        $this->db->where('mobileNumber', $MobileNumber);
+        $this->db->update('patient_details', $insert);
+        return $generate_id;
+    }
+
+    public function getlastPatientId()
+    {
+        $this->db->select('patientId');
+        $this->db->from('patient_details');
+        $this->db->order_by('patientId', 'DESC');
+        $this->db->limit(1);
+
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            return $row->patientId;
+        } else {
+            return 'EDF000000';
+        }
+    }
+
+    public function getPatientDetails()
+    {
+        $details = "SELECT * FROM `patient_details`";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function getHcpDetails()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];

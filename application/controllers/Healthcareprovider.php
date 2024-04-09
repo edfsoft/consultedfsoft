@@ -71,6 +71,8 @@ class healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "patients";
+            $patientDetails = $this->HcpModel->getPatientDetails();
+        $this->data['patientDetails'] = $patientDetails['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();
@@ -87,6 +89,13 @@ class healthcareprovider extends CI_Controller
     {
         $this->data['method'] = "patientDetails";
         $this->load->view('hcpDashboard.php', $this->data);
+    }
+
+    public function addPatientsForm()
+    {
+        $profileDetails = $this->HcpModel->insertPatients();
+        $generateid = $this->HcpModel->generatePatientId();
+        $this->patients();
     }
 
     public function appointments()

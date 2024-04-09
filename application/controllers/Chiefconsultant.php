@@ -31,6 +31,7 @@ class chiefconsultant extends CI_Controller
         } else {
             $postData = $this->input->post(null, true);
             $register = $this->CcModel->register();
+            $generateid = $this->CcModel->generateCcId();
             $this->index();
         }
     }
@@ -41,6 +42,8 @@ class chiefconsultant extends CI_Controller
         $login = $this->CcModel->ccLoginDetails();
         if (isset($login[0]['id'])) {
             $LoggedInDetails = array(
+                'ccIdDb' => $login[0]['id'],
+                'ccId' => $login[0]['ccId'],
                 'ccName' => $login[0]['doctorName'],
                 'ccMailId' => $login[0]['doctorMail'],
                 'ccMobileNum' => $login[0]['doctorMobile'],
@@ -87,6 +90,8 @@ class chiefconsultant extends CI_Controller
     {
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "hcps";
+            $hcpDetails = $this->CcModel->getHcpProfile();
+            $this->data['hcpDetails'] = $hcpDetails;
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();
@@ -95,20 +100,33 @@ class chiefconsultant extends CI_Controller
 
     public function healthCareProvidersProfile()
     {
+        $hcpIdDb = $this->uri->segment(3);
         $this->data['method'] = "hcpsProfile";
+        $hcpDetails = $this->CcModel->getHcpDetails($hcpIdDb);
+        $this->data['hcpDetails'] = $hcpDetails;
         $this->load->view('ccDashboard.php', $this->data);
     }
 
     public function myProfile()
     {
         $this->data['method'] = "myProfile";
+        $ccDetails = $this->CcModel->getCcDetails();
+        $this->data['ccDetails'] = $ccDetails;
         $this->load->view('ccDashboard.php', $this->data);
     }
 
     public function editMyProfile()
     {
         $this->data['method'] = "editMyProfile";
+        $ccDetails = $this->CcModel->getCcDetails();
+        $this->data['ccDetails'] = $ccDetails;
         $this->load->view('ccDashboard.php', $this->data);
+    } 
+    
+    public function updateMyProfile()
+    {
+        $profileDetails = $this->CcModel->updateProfileDetails();
+        $this->myProfile();
     }
 
     // public function logout()
@@ -123,5 +141,5 @@ class chiefconsultant extends CI_Controller
         $this->index();
     }
 
-    
+
 }

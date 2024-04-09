@@ -161,6 +161,15 @@
             }
         }
     </script>
+
+   <!-- Event listener to block right-click -->
+    <script>
+    function blockRightClick(event) {
+        event.preventDefault(); 
+    }
+
+    document.addEventListener('contextmenu', blockRightClick);
+</script>
 </body>
 
 </html>

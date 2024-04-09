@@ -88,8 +88,8 @@
                     </button>
                     <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-70px);"
                         aria-labelledby="dropDownSignup">
-                        <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                                class="dropdown-item py-2">Health Care Provider</a></li>
+                        <!-- <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
+                                class="dropdown-item py-2">Health Care Provider</a></li> -->
                         <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>"
                                 class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
@@ -270,15 +270,15 @@
         style="background-image: url('<?php echo base_url(); ?>assets/footer.png');background-size: cover;background-position: center center;background-repeat: no-repeat;">
         <div class="row">
             <div class="col-12 text-center ">
-                <img src="<?php echo base_url(); ?>assets/footerEdfLogo.png" alt="logo">
+                <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo">
                 <p class="text-light pt-2" style="font-size:18px;font-weight:400;"> “Empowering lives through expert
                     diabetes consultations online, <br> Your journey to a healthier, happier life starts here.”</p>
                 <hr class="my-4 text-light mx-auto" style="width:50%;height: 2px;">
                 <div class="d-lg-flex justify-content-evenly ">
                     <p style="font-size:18px;font-weight:400;" class="text-light"><img
-                            src="<?php echo base_url(); ?>assets/phone-call.svg" alt="1"> <a href="tel:+9789494299"
+                            src="<?php echo base_url(); ?>assets/phone-call.svg" alt="1"> <a href="tel:9789494299"
                             style="font-size:18px;font-weight:400;" class="text-decoration-none text-light fs-6">+91
-                            9789494299</a> , <a href="tel:+04242264949" style="font-size:18px;font-weight:400;"
+                            9789494299</a> , <a href="tel:04242264949" style="font-size:18px;font-weight:400;"
                             class="text-decoration-none text-light fs-6">04242264949</a></p>
                     <p><a href="mailto:contact@erodediabetesfoundation.org" style="font-size:18px;font-weight:400;"
                             class="text-decoration-none text-light fs-6"><img

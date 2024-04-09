@@ -102,9 +102,9 @@
                             <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
-                    <p class="mt-3" style="font-size:18px;font-weight:400;">Don't have an account? <a
+                    <!-- <p class="mt-3" style="font-size:18px;font-weight:400;">Don't have an account? <a
                             href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                            class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
+                            class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p> -->
                 </div>
             </div>
         </div>
@@ -158,6 +158,15 @@
             }
         }
     </script>
+
+     <!-- Event listener to block right-click -->
+    <script>
+    function blockRightClick(event) {
+        event.preventDefault(); 
+    }
+
+    document.addEventListener('contextmenu', blockRightClick);
+</script>
 </body>
 
 </html>

@@ -67,9 +67,44 @@ class HcpModel extends CI_Model
         return $count->result_array();
     }
 
+    public function getPatientList()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $details = "SELECT * FROM `patient_details` WHERE `patientHcp`=  $hcpIdDb";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function insertPatients()
     {
         $post = $this->input->post(null, true);
+
+        $config['upload_path'] = "./uploads/";
+        // $basepath = base_url() . 'uploads/';
+        $config['allowed_types'] = "jpg|png|jpeg|pdf";
+        $config['max_size'] = 1024;
+
+        $this->load->library('upload', $config);
+
+        $firstDocument = "No data";
+        $secondDocument = "No data";
+        $photo = "No data";
+
+        if ($this->upload->do_upload('medicalReceipts')) {
+            $data = $this->upload->data();
+            $firstDocument = $data['file_name'];
+        } 
+        if ($this->upload->do_upload('medicalReports')) {
+            $data = $this->upload->data();
+            $secondDocument = $data['file_name'];
+        } 
+         if ($this->upload->do_upload('profilePhoto')) {
+            $data = $this->upload->data();
+            $photo = $data['file_name'];
+        } else {
+            $error = $this->upload->display_errors();
+        }
+
         $insertdata = array(
             'firstName' => $post['patientName'],
             'lastName' => $post['patientLastName'],
@@ -83,8 +118,121 @@ class HcpModel extends CI_Model
             'bloodGroup' => $post['patientBlood'],
             'maritalStatus' => $post['patientMarital'],
             'marriedSince' => $post['marriedSince'],
+            'profilePhoto' => $photo,
+            'profession' => $post['patientProfessions'],
+            'doorNumber' => $post['patientDoorNo'],
+            'address' => $post['patientStreet'],
+            'district' => $post['patientDistrict'],
+            'pincode' => $post['patientPincode'],
+            'partnerName' => $post['partnersName'],
+            'partnerMobile' => $post['partnerMobile'],
+            'partnerBlood' => $post['partnerBlood'],
+            'weight	' => $post['patientWeight'],
+            'height	' => $post['patientHeight'],
+            'bloodPressure' => $post['patientBp'],
+            'cholestrol' => $post['patientsCholestrol'],
+            'bloodSugar' => $post['patientBsugar'],
+            'diagonsis	' => $post['patientDiagonsis'],
+            'symptoms' => $post['patientSymptoms'],
+            'medicines	' => $post['patientMedicines'],
+            'documentOne' => $firstDocument,
+            'documentTwo' => $secondDocument,
+            'patientHcp	' => $_SESSION['hcpIdDb'],
         );
         $this->db->insert('patient_details', $insertdata);
+    }
+
+    public function updatePatients()
+    {
+        $post = $this->input->post(null, true);
+
+        // $config['upload_path'] = "./uploads/";
+        // // $basepath = base_url() . 'uploads/';
+        // $config['allowed_types'] = "jpg|png|jpeg|pdf";
+        // $config['max_size'] = 1024;
+
+        // $this->load->library('upload', $config);
+
+        // $firstDocument = "No data";
+        // $secondDocument = "No data";
+        // $photo = "No data";
+
+        // if ($this->upload->do_upload('medicalReceipts')) {
+        //     $data = $this->upload->data();
+        //     $firstDocument = $data['file_name'];
+        // } 
+        // if ($this->upload->do_upload('medicalReports')) {
+        //     $data = $this->upload->data();
+        //     $secondDocument = $data['file_name'];
+        // } 
+        //  if ($this->upload->do_upload('profilePhoto')) {
+        //     $data = $this->upload->data();
+        //     $photo = $data['file_name'];
+        // } else {
+        //     $error = $this->upload->display_errors();
+        // }
+
+        $insertdata = array(
+            'firstName' => $post['patientName'],
+            'lastName' => $post['patientLastName'],
+            'mobileNumber' => $post['patientMobile'],
+            'alternateMobile' => $post['patientAltMobile'],
+            'mailId' => $post['patientEmail'],
+            'gender' => $post['patientGender'],
+            'dob' => $post['patientDob'],
+            'age' => $post['ageYearsOutput'],
+            'ageMonth' => $post['ageMonthsOutput'],
+            'bloodGroup' => $post['patientBlood'],
+            'maritalStatus' => $post['patientMarital'],
+            'marriedSince' => $post['marriedSince'],
+            // 'profilePhoto' => $photo,
+            'profession' => $post['patientProfessions'],
+            'doorNumber' => $post['patientDoorNo'],
+            'address' => $post['patientStreet'],
+            'district' => $post['patientDistrict'],
+            'pincode' => $post['patientPincode'],
+            'partnerName' => $post['partnersName'],
+            'partnerMobile' => $post['partnerMobile'],
+            'partnerBlood' => $post['partnerBlood'],
+            'weight	' => $post['patientWeight'],
+            'height	' => $post['patientHeight'],
+            'bloodPressure' => $post['patientBp'],
+            'cholestrol' => $post['patientsCholestrol'],
+            'bloodSugar' => $post['patientBsugar'],
+            'diagonsis	' => $post['patientDiagonsis'],
+            'symptoms' => $post['patientSymptoms'],
+            'medicines	' => $post['patientMedicines'],
+            // 'documentOne' => $firstDocument,
+            // 'documentTwo' => $secondDocument,
+            // 'patientHcp	' => $_SESSION['hcpIdDb'],
+        );
+        $this->db->where('id',  $post['patientIdDb']);
+        $this->db->update('patient_details', $insertdata);
+    }
+
+    public function updatePatientProfile()
+    {
+        $post = $this->input->post(null, true);
+
+        $config['upload_path'] = "./uploads/";
+        // $basepath = base_url() . 'uploads/';
+        $config['allowed_types'] = "jpg|png|jpeg";
+        $config['max_size'] = 1024;
+
+        $this->load->library('upload', $config);
+
+        if ($this->upload->do_upload('patientProfile')) {
+            $data = $this->upload->data();
+            $photo = $data['file_name'];
+        } else {
+            $error = $this->upload->display_errors();
+        }
+
+        $updatedata = array(
+            'profilePhoto' => $photo
+        );
+        $this->db->where('id', $post['photoPatientIdDb']);
+        $this->db->update('patient_details', $updatedata);
     }
 
     public function generatePatientId()
@@ -118,11 +266,11 @@ class HcpModel extends CI_Model
         }
     }
 
-    public function getPatientDetails()
+    public function getPatientDetails($id)
     {
-        $details = "SELECT * FROM `patient_details`";
+        $details = "SELECT * FROM `patient_details` WHERE `id`= $id ";
         $select = $this->db->query($details);
-        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+        return $select->result_array();
     }
 
     public function getHcpDetails()
@@ -131,6 +279,35 @@ class HcpModel extends CI_Model
         $details = "SELECT * FROM `hcp_details` WHERE `id` = $hcpIdDb";
         $select = $this->db->query($details);
         return $select->result_array();
+    }
+
+    public function updateProfilePhoto()
+    {
+        $post = $this->input->post(null, true);
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+
+        $config['upload_path'] = "./uploads/";
+        $basepath = base_url() . 'uploads/';
+        $config['allowed_types'] = "jpg|png|jpeg";
+        $config['max_size'] = 1024;
+
+        $this->load->library('upload', $config);
+
+
+        if ($this->upload->do_upload('hcpProfile')) {
+            $data = $this->upload->data();
+            $photo = $data['file_name'];
+        } else {
+            $error = $this->upload->display_errors();
+        }
+
+        $photoFileName = $basepath . $photo;
+
+        $updatedata = array(
+            'hcpPhoto' => $photoFileName
+        );
+        $this->db->where('id', $hcpIdDb);
+        $this->db->update('hcp_details', $updatedata);
     }
 
     public function updateProfileDetails()
@@ -166,6 +343,22 @@ class HcpModel extends CI_Model
         $select = $this->db->query($details);
         return $select->result_array();
     }
+
+
+    // public function do_upload()
+    // {
+    //     $config['upload_path'] = "./uploads/";
+    //     $config['allowed_types'] = "jpg|png|pdf";
+    //     $config['max_size'] = 1024;
+
+    //     $this->load->library('upload', $config);
+
+    //     if ($this->upload->do_upload('file')) {
+    //         $data = $this->upload->data();
+    //     } else {
+    //         $error = $this->upload->display_errors();
+    //     }
+    // }
 
 }
 ?>

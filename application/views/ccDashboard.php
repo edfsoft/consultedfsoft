@@ -71,7 +71,7 @@
                     <a href="" class="m-2 me-4">
                         <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a>
 
-                    <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" width="40" height="40" alt="Profile"
+                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
                         class="rounded-circle me-1" />
 
                     <p class="text-dark w-50 d-none d-md-block me-2 my-auto" style="margin:15px;width:auto;">
@@ -201,7 +201,7 @@
                                     Total Patients
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
-                                    2500
+                                    <?php echo $patientTotal; ?>
                                 </p>
                                 <p style="font-size: 16px">Till Today</p>
                             </div>
@@ -373,20 +373,11 @@
                             <p style="font-size: 16px; font-weight: 500; color: #0079AD">
                                 Patient History
                             </p>
-                            <p style="
-                                font-size: 16px;
-                                font-weight: 400;
-                                background-color: #e9eeed;
-                                padding: 10px;
-                            ">
+                            <p style="font-size: 16px;font-weight: 400;background-color: #e9eeed;padding: 10px;">
                                 Diabetes - Health care
                             </p>
                             <div>
-                                <a href="tel:9944556622"><button style="
-                                background-color: #0079AD;
-                                color: white;
-                                font-size: 16px;
-                            " class="border border-1 rounded p-2 p-md-3">
+                                <a href="tel:9944556622"><button style="background-color: #0079AD;color: white;font-size: 16px;" class="border border-1 rounded p-2 p-md-3">
                                         <i class="bi bi-telephone"></i> +91 99445 56622
                                     </button></a>
                                 <a href="#"><button style="border: 2px solid #0079AD; background-color: white"
@@ -449,44 +440,42 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="px-4">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
-                                                    width="40" height="40" />
-                                            </td>
-                                            <td class="" style="font-size: 16px">Lithorish</td>
-                                            <td style="font-size: 16px">0220946660</td>
-                                            <td style="font-size: 16px">Male</td>
-                                            <td style="font-size: 16px">62</td>
-                                            <td style="font-size: 16px">Diabetes</td>
-                                            <td style="font-size: 16px">
-                                                <a class="icon" href="#" data-bs-toggle="dropdown">
-                                                    <p class=""><i class="bi bi-three-dots-vertical"></i></p>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center
-                                                 ">
-                                                    <li><a class="text-center"
-                                                            href="<?php echo base_url() . "cc/patientdetails" ?>"><button
-                                                                type="button" class="btn btn-success"><i class="bi bi-eye"></i>
-                                                                View</button></a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-4">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
-                                                    width="40" height="40" />
-                                            </td>
-                                            <td class="" style="font-size: 16px">Santhosh Kumar</td>
-                                            <td style="font-size: 16px">0220946661</td>
-                                            <td style="font-size: 16px">Male</td>
-                                            <td style="font-size: 16px">65</td>
-                                            <td style="font-size: 16px">Diabetes</td>
-                                            <td style="font-size: 16px" class="text-center">
-                                                <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
-                                            </td>
-                                        </tr>
+                                        <?php
+                                        foreach ($patientDetails as $key => $value) {
+                                            ?>
+                                            <tr>
+                                                <td class="px-4">
+                                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                                <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
+                                                    width="40" height="40" class="rounded-circle">
+                                <?php } else { ?>
+                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="40"
+                                                    height="40" class="rounded-circle">
+                                <?php } ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                <?php echo $value['patientId'] ?>
+                                                </td>
+                                                <td class="" style="font-size: 16px">
+                                                <?php echo $value['firstName'] ?>
+                                                <?php echo $value['lastName'] ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                <?php echo $value['gender'] ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                <?php echo $value['age'] ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                <?php echo $value['diagonsis'] ?>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                    <a href="<?php echo base_url() . "Chiefconsultant/patientdetails/" . $value['id'] ?>"
+                                                        class="px-1 "><button class="btn btn-success"><i
+                                                                class="bi bi-eye"></i></button></a>
+                                                </td>
+                                            </tr>
+                                    <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -494,6 +483,133 @@
                     </div>
                 </section>
             <?php
+             } else if ($method == "patientDetails") {
+                ?>
+    
+                            <script>
+                                document.getElementById('patients').style.color = "#66D1FF";
+                            </script>
+    
+                            <section>
+                                <div class="card shadow-none rounded">
+                                    <div class="card-body p-5">
+                                        <a href="<?php echo base_url() . "Chiefconsultant/patients" ?>" class="float-end text-dark"><i
+                                                class="bi bi-arrow-left"></i> Back</a>
+                                <?php
+                                foreach ($patientDetails as $key => $value) {
+                                    ?>
+                                            <div class="d-sm-flex justify-content-evenly mt-2 mb-5">
+                                                <div class="ps-sm-5">
+                                                    <p style="font-size:24px;font-weight:500;"> <?php echo $value['firstName'] ?>
+                                            <?php echo $value['lastName'] ?> | <?php echo $value['patientId'] ?>
+                                                    </p>
+                                                    <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> year(s)</p>
+                                                    <p class="text-dark" style="font-weight:500;font-size:20px;">
+                                            <?php echo $value['diagonsis'] ?>
+                                                    </p>
+                                                </div>
+                                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                                <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
+                                                    width="140" height="140" class="rounded-circle">
+                                <?php } else { ?>
+                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                    height="140" class="rounded-circle">
+                                <?php } ?>
+                                            </div>
+    
+                                            <h4 class="my-3">Personal Details:</h4>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> - <a
+                                                        href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                            <?php echo $value['mobileNumber'] ?></a></p>
+                                                <p><span class="text-secondary ">Mail</span> - <a href="mailto:<?php echo $value['mailId'] ?>"
+                                                        class="text-decoration-none text-dark">
+                                            <?php echo $value['mailId'] ?></a></p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Blood group</span> -
+                                        <?php echo $value['bloodGroup'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Alternate mobile</span> -
+                                        <?php echo $value['alternateMobile'] ?>
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Marital status</span> -
+                                        <?php echo $value['maritalStatus'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Married since</span> - <?php echo $value['marriedSince'] ?></p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Profession</span> -
+                                        <?php echo $value['profession'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Street address</span> - <?php echo $value['doorNumber'] ?>,
+                                        <?php echo $value['address'] ?>
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">District</span> -
+                                        <?php echo $value['district'] ?>         <?php echo $value['pincode'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Partner name</span> - <?php echo $value['partnerName'] ?></p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Partner mobile</span> -
+                                        <?php echo $value['partnerMobile'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Partner blood group</span> -
+                                        <?php echo $value['partnerBlood'] ?>
+                                                </p>
+                                            </div>
+                                            <h4 class="mt-5 mb-3">Medical Records:</h4>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Weight</span> - <?php echo $value['weight'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Height</span> - <?php echo $value['height'] ?></p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> -
+                                        <?php echo $value['bloodPressure'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Cholestrol </span> - <?php echo $value['cholestrol'] ?></p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> -
+                                        <?php echo $value['bloodSugar'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Diagonsis / Complaints</span> -
+                                        <?php echo $value['diagonsis'] ?>
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
+                                        <?php echo $value['symptoms'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
+                                            </div>
+                                <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
+                                                <h4 class="mt-5 mb-3">Documents / Reports:</h4>
+                                                <div class="d-md-flex">
+                                        <?php if ($value['documentOne'] != "No data") { ?>
+                                                        <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> - <a
+                                                                href="<?php echo base_url() . 'uploads/' . $value['documentOne'] ?>" target="blank"
+                                                                rel="Document 1"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
+                                        <?php } ?>
+                                        <?php if ($value['documentTwo'] != "No data") { ?>
+                                                        <p><span class="text-secondary ">Test uploads</span> - <a
+                                                                href="<?php echo base_url() . 'uploads/' . $value['documentTwo'] ?>" target="blank" rel="Document 2"> <i
+                                                                    class="bi bi-box-arrow-up-right"></i> Open</a> </p>
+                                        <?php } ?>
+                                                </div>
+                                <?php }
+                                } ?>
+                                    </div>
+                                </div>
+                                </div>
+                            </section>
+    
+                <?php
         } else if ($method == "appointments") {
             ?>
                     <script>
@@ -645,8 +761,13 @@
                         <?php foreach ($hcpDetails as $key => $value) { ?>
                                         <div class="card col-lg-4 m-3">
                                             <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="HCP profile Photo"
-                                                    width="122" height="122" class="my-auto">
+                                    <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
+                                                    <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="122" height="122"
+                                                        class="rounded-circle my-auto">
+                                    <?php } else { ?>
+                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="122"
+                                                        height="122" class="rounded-circle my-auto">
+                                    <?php } ?>
                                                 <div>
                                                     <p class="card-title"><b>
                                                 <?php echo $value['hcpName']; ?>
@@ -681,8 +802,13 @@
                                             <a href="<?php echo base_url() . "Chiefconsultant/healthCareProviders" ?>"
                                                 class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
                                             <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="Doctor" width="143"
-                                                    height="143">
+                                <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
+                                                    <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
+                                                        class="rounded-circle my-auto">
+                                <?php } else { ?>
+                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                        height="140" class="rounded-circle my-auto">
+                                <?php } ?>
                                                 <div class="ps-sm-5">
                                                     <p style="font-size:20px;font-weight:500;">Dr.
                                         <?php echo $value['hcpName']; ?>
@@ -706,31 +832,51 @@
                                                 <tr>
                                                     <td class="col-5 py-2 mx-4" style="color:#999292">Years of Experience</td>
                                                     <td class="col-5 ">
-                                        <?php echo $value['hcpExperience']; ?>
+                                        <?php if ($value['hcpExperience'] != "") {
+                                            echo $value['hcpExperience'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="py-2" style="color:#999292">Qualification</td>
                                                     <td>
-                                        <?php echo $value['hcpQualification']; ?>
+                                        <?php if ($value['hcpQualification'] != "") {
+                                            echo $value['hcpQualification'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="py-2" style="color:#999292">Date of Birth</td>
                                                     <td>
-                                        <?php echo $value['hcpDob']; ?>
+                                        <?php if ($value['hcpDob'] != "") {
+                                            echo $value['hcpDob'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
                                                     <td>
-                                        <?php echo $value['hcpHospitalName']; ?>
+                                        <?php if ($value['hcpHospitalName'] != "") {
+                                            echo $value['hcpHospitalName'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="py-2" style="color:#999292">Location</td>
                                                     <td>
-                                        <?php echo $value['hcpLocation']; ?>
+                                        <?php if ($value['hcpLocation'] != "") {
+                                            echo $value['hcpLocation'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -748,8 +894,13 @@
                             foreach ($ccDetails as $key => $value) {
                                 ?>
                                                 <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                                    <img src="<?php echo base_url(); ?>assets/Dr1Senthilvelu.png" alt="Doctor" width="143"
-                                                        height="143">
+                                <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
+                                                        <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
+                                                            class="rounded-circle">
+                                <?php } else { ?>
+                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                            height="140" class="rounded-circle">
+                                <?php } ?>
                                                     <div class="ps-sm-5">
                                                         <p style="font-size:20px;font-weight:500;">Dr.
                                         <?php echo $value['doctorName']; ?>
@@ -836,13 +987,28 @@
                                     <section>
                                         <div class="card shadow-none rounded">
                                             <div class="card-body p-4">
-                                                <div class="">
-                                                    <p style="font-size:24px;font-weight:500;">Edit Profile Details</p>
-                                <?php
-                                foreach ($ccDetails as $key => $value) {
-                                    ?>
-                                                        <form action="<?php echo base_url() . "Chiefconsultant/updateMyProfile" ?>"
-                                                            name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
+                                                <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark"><i
+                                                        class="bi bi-arrow-left"></i> Back</a>
+                            <?php
+                            foreach ($ccDetails as $key => $value) {
+                                ?>
+                                                    <div class="">
+                                                        <p style="font-size:24px;font-weight:500;">Edit Profile Details</p>
+                                                        <div class="position-relative mb-5">
+
+                                    <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
+                                                                <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="180" height="180"
+                                                                    class="rounded-circle">
+                                    <?php } else { ?>
+                                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180"
+                                                                    height="180" class="rounded-circle">
+                                    <?php } ?>
+                                                            <button class="position-absolute bottom-0 " type="button" data-toggle="modal"
+                                                                data-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
+                                                        </div>
+
+                                                        <form action="<?php echo base_url() . "/updateMyProfile" ?>" name="profileEditForm"
+                                                            name="profileEditForm" enctype="multipart/form-data" method="POST"
                                                             onsubmit="return validateDetails()" oninput="clearErrorDetails()">
                                                             <div class="form-group pb-3">
                                                                 <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
@@ -928,13 +1094,13 @@
                                                             <div class="form-group pb-3">
                                                                 <label class="form-label" for="hospitalName">Hospital / Clinic Name</label><br>
                                                                 <input type="text" class="form-control" id="hospitalName" name="hospitalName"
-                                                                    value="<?php echo $value['hospitalName']; ?>">
+                                                                    value="<?php echo $value['hospitalName']; ?>" placeholder="MMCH">
                                                                 <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                             </div>
                                                             <div class="form-group pb-3">
                                                                 <label class="form-label" for="location">Location</label><br>
                                                                 <input type="text" class="form-control" id="location" name="location"
-                                                                    value="<?php echo $value['location']; ?>">
+                                                                    value="<?php echo $value['location']; ?>" placeholder="Erode">
                                                                 <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                             </div>
                                                             <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
@@ -1028,6 +1194,30 @@
                                     </script>
 
         <?php } ?>
+
+        <!-- Popup Update Profile Photo -->
+        <div class="modal fade" id="updatePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="<?php echo base_url() . "Chiefconsultant/updatePhoto" ?>" name="profilePhotoForm"
+                            name="profilePhotoForm" enctype="multipart/form-data" method="POST">
+                            <label for="ccProfile" class="pb-2">Upload file: </label><br>
+                            <input type="file" name="ccProfile" id="ccProfile" accept="image/png ,image/jpg, image/jpeg"
+                                required><br><br>
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Event listener to block right-click -->
@@ -1053,5 +1243,10 @@
 
 <!-- Template Main JS File -->
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
+
+<!-- bootstrap popup link -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </html>

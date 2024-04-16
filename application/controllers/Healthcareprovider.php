@@ -38,7 +38,6 @@ class healthcareprovider extends CI_Controller
 
     public function hcpLogin()
     {
-        // $postData = $this->input->post(null, true);
         $login = $this->HcpModel->hcpLoginDetails();
         if (isset($login[0]['id'])) {
             $LoggedInDetails = array(
@@ -60,6 +59,8 @@ class healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "dashboard";
+            $patientTotal = $this->HcpModel->getPatientList();
+            $this->data['patientTotal'] = $patientTotal['totalRows'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();
@@ -71,8 +72,8 @@ class healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "patients";
-            $patientDetails = $this->HcpModel->getPatientDetails();
-        $this->data['patientDetails'] = $patientDetails['response'];
+            $patientList = $this->HcpModel->getPatientList();
+            $this->data['patientList'] = $patientList['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();
@@ -81,20 +82,56 @@ class healthcareprovider extends CI_Controller
 
     public function patientform()
     {
-        $this->data['method'] = "patientDetailsForm";
-        $this->load->view('hcpDashboard.php', $this->data);
-    }
-
-    public function patientdetails()
-    {
-        $this->data['method'] = "patientDetails";
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "patientDetailsForm";
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
     }
 
     public function addPatientsForm()
     {
         $profileDetails = $this->HcpModel->insertPatients();
         $generateid = $this->HcpModel->generatePatientId();
+        $this->patients();
+    }
+
+    public function patientdetails()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "patientDetails";
+            $patientIdDb = $this->uri->segment(3);
+            $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
+            $this->data['patientDetails'] = $patientDetails;
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
+    }
+
+    public function patientformUpdate()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "patientDetailsFormUpdate";
+            $patientIdDb = $this->uri->segment(3);
+            $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
+            $this->data['patientDetails'] = $patientDetails;
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
+    }
+
+    public function updatePatientsForm()
+    {
+        $profileDetails = $this->HcpModel->updatePatients();
+        $this->patients();
+    }
+
+    public function updatePatientPhoto()
+    {
+        $profilePhoto = $this->HcpModel->updatePatientProfile();
         $this->patients();
     }
 
@@ -110,8 +147,12 @@ class healthcareprovider extends CI_Controller
 
     public function appointmentsForm()
     {
-        $this->data['method'] = "appointmentsForm";
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "appointmentsForm";
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
     }
 
     public function chiefDoctors()
@@ -128,27 +169,45 @@ class healthcareprovider extends CI_Controller
 
     public function chiefDoctorsProfile()
     {
-        $ccIdDb = $this->uri->segment(3);
-        $this->data['method'] = "chiefDoctorProfile";
-        $ccDetails = $this->HcpModel->getCcDetails($ccIdDb);
-        $this->data['ccDetails'] = $ccDetails;
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $ccIdDb = $this->uri->segment(3);
+            $this->data['method'] = "chiefDoctorProfile";
+            $ccDetails = $this->HcpModel->getCcDetails($ccIdDb);
+            $this->data['ccDetails'] = $ccDetails;
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
     }
 
     public function myProfile()
     {
-        $this->data['method'] = "myProfile";
-        $hcpDetails = $this->HcpModel->getHcpDetails();
-        $this->data['hcpDetails'] = $hcpDetails;
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "myProfile";
+            $hcpDetails = $this->HcpModel->getHcpDetails();
+            $this->data['hcpDetails'] = $hcpDetails;
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
     }
 
     public function editMyProfile()
     {
-        $this->data['method'] = "editMyProfile";
-        $hcpDetails = $this->HcpModel->getHcpDetails();
-        $this->data['hcpDetails'] = $hcpDetails;
-        $this->load->view('hcpDashboard.php', $this->data);
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "editMyProfile";
+            $hcpDetails = $this->HcpModel->getHcpDetails();
+            $this->data['hcpDetails'] = $hcpDetails;
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
+    }
+
+    public function updatePhoto()
+    {
+        $profileDetails = $this->HcpModel->updateProfilePhoto();
+        $this->editMyProfile();
     }
 
     public function updateMyProfile()

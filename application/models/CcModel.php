@@ -67,6 +67,13 @@ class CcModel extends CI_Model
         return $count->result_array();
     }
 
+    public function allPatientList()
+    {
+        $details = "SELECT * FROM `patient_details`";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function getCcDetails()
     {
         $ccIdDb = $_SESSION['ccIdDb'];
@@ -87,6 +94,35 @@ class CcModel extends CI_Model
         $details = "SELECT * FROM `hcp_details` WHERE `id`=$hcpIdDb ";
         $select = $this->db->query($details);
         return $select->result_array();
+    }
+
+    public function updateProfilePhoto()
+    {
+        $post = $this->input->post(null, true);
+        $ccIdDb = $_SESSION['ccIdDb'];
+
+        $config['upload_path'] = "./uploads/";
+        $basepath = base_url() . 'uploads/';
+        $config['allowed_types'] = "jpg|png|jpeg";
+        $config['max_size'] = 1024;
+
+        $this->load->library('upload', $config);
+
+
+        if ($this->upload->do_upload('ccProfile')) {
+            $data = $this->upload->data();
+            $photo = $data['file_name'];
+        } else {
+            $error = $this->upload->display_errors();
+        }
+
+        $photoFileName = $basepath . $photo;
+
+        $updatedata = array(
+            'ccPhoto' => $photoFileName
+        );
+        $this->db->where('id', $ccIdDb);
+        $this->db->update('cc_details', $updatedata);
     }
 
     public function updateProfileDetails()

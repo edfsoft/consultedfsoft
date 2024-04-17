@@ -146,31 +146,26 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
 
-        // $config['upload_path'] = "./uploads/";
-        // // $basepath = base_url() . 'uploads/';
-        // $config['allowed_types'] = "jpg|png|jpeg|pdf";
-        // $config['max_size'] = 1024;
+        $config['upload_path'] = "./uploads/";
+        $config['allowed_types'] = "jpg|png|jpeg|pdf";
+        $config['max_size'] = 1024;
 
-        // $this->load->library('upload', $config);
+        $this->load->library('upload', $config);
 
-        // $firstDocument = "No data";
-        // $secondDocument = "No data";
-        // $photo = "No data";
+        $firstDocument = $post['oldmedicalReceipts'];
+        $secondDocument = $post['oldmedicalReports'];
 
-        // if ($this->upload->do_upload('medicalReceipts')) {
-        //     $data = $this->upload->data();
-        //     $firstDocument = $data['file_name'];
-        // } 
-        // if ($this->upload->do_upload('medicalReports')) {
-        //     $data = $this->upload->data();
-        //     $secondDocument = $data['file_name'];
-        // } 
-        //  if ($this->upload->do_upload('profilePhoto')) {
-        //     $data = $this->upload->data();
-        //     $photo = $data['file_name'];
-        // } else {
-        //     $error = $this->upload->display_errors();
-        // }
+        if ($this->upload->do_upload('medicalReceipts')) {
+            $data = $this->upload->data();
+            $firstDocument = $data['file_name'];
+        } 
+        if ($this->upload->do_upload('medicalReports')) {
+            $data = $this->upload->data();
+            $secondDocument = $data['file_name'];
+        } 
+         else {
+            $error = $this->upload->display_errors();
+        }
 
         $insertdata = array(
             'firstName' => $post['patientName'],
@@ -185,7 +180,6 @@ class HcpModel extends CI_Model
             'bloodGroup' => $post['patientBlood'],
             'maritalStatus' => $post['patientMarital'],
             'marriedSince' => $post['marriedSince'],
-            // 'profilePhoto' => $photo,
             'profession' => $post['patientProfessions'],
             'doorNumber' => $post['patientDoorNo'],
             'address' => $post['patientStreet'],
@@ -202,9 +196,8 @@ class HcpModel extends CI_Model
             'diagonsis	' => $post['patientDiagonsis'],
             'symptoms' => $post['patientSymptoms'],
             'medicines	' => $post['patientMedicines'],
-            // 'documentOne' => $firstDocument,
-            // 'documentTwo' => $secondDocument,
-            // 'patientHcp	' => $_SESSION['hcpIdDb'],
+            'documentOne' => $firstDocument,
+            'documentTwo' => $secondDocument,
         );
         $this->db->where('id',  $post['patientIdDb']);
         $this->db->update('patient_details', $insertdata);

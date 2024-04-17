@@ -426,10 +426,13 @@
                                     </button></a>
                             </div>
                             <div class="table-responsive">
-                                <table class="table text-center">
+                                <table class="table text-center" id="patientTable">
 
                                     <thead>
                                         <tr>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                S.NO
+                                            </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                 PATIENT
                                             </th>
@@ -455,9 +458,12 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        $count = 0;
                                         foreach ($patientList as $key => $value) {
+                                            $count++;
                                             ?>
                                             <tr>
+                                                <td><?php echo $count; ?>. </td>
                                                 <td class="px-4">
                                                 <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                                         <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
@@ -483,7 +489,7 @@
                                                 <td style="font-size: 16px">
                                                 <?php echo $value['diagonsis'] ?>
                                                 </td>
-                                                <td style="font-size: 16px">
+                                                <td class="d-flex" style="font-size: 16px">
                                                     <a
                                                         href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['id'] ?>"><button
                                                             class="btn btn-success" class="px-1 "><i
@@ -516,11 +522,84 @@
                                     <?php } ?>
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
+                    <div id="paginationButtons" class="text-center mt-4">
+                        <div id="paginationBtnsContainer"></div>
+                    </div>
                 </section>
 
+                <script>
+                    var table = document.getElementById('patientTable');
+                    var rowsPerPage = 7;
+                    var currentPage = 1;
+                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
+
+                    showPage(currentPage);
+
+                    function showPage(page) {
+                        var startIndex = (page - 1) * rowsPerPage;
+                        var endIndex = startIndex + rowsPerPage;
+                        for (var i = 0; i < table.rows.length; i++) {
+                            if (i >= startIndex && i < endIndex) {
+                                table.rows[i].style.display = 'table-row';
+                            } else {
+                                table.rows[i].style.display = 'none';
+                            }
+                        }
+                    }
+
+                    function goToPage(page) {
+                        if (page < 1) page = 1;
+                        if (page > totalPages) page = totalPages;
+                        currentPage = page;
+                        showPage(currentPage);
+                        updatePaginationButtons();
+                    }
+
+                    function previousPage() {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            showPage(currentPage);
+                            updatePaginationButtons();
+                        }
+                    }
+
+                    function nextPage() {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            showPage(currentPage);
+                            updatePaginationButtons();
+                        }
+                    }
+
+                    function updatePaginationButtons() {
+                        var buttonsHtml = '';
+
+                        var startPage = Math.max(1, currentPage - 1);
+                        var endPage = Math.min(totalPages, currentPage + 1);
+
+                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+
+                        for (var i = startPage; i <= endPage; i++) {
+                            var activeClass = (i === currentPage) ? 'active' : '';
+                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+                        }
+
+                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+
+                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
+
+                        var previousBtn = document.getElementById('previousBtn');
+                        var nextBtn = document.getElementById('nextBtn');
+                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
+                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
+                    }
+
+                    updatePaginationButtons();
+                </script>
             <?php
         } else if ($method == "patientDetailsForm") {
             ?>
@@ -1269,17 +1348,37 @@
                                                                 cols="" rows=""
                                                                 placeholder="E.g. Insulin"><?php echo $value['medicines']; ?></textarea>
                                                         </div>
-                                                        <!-- <div class="form-group pb-3">
-                                                            <label class="form-label" for="medicalReceipts">Medical Receipts</label>
+
+                                                        <div class="form-group pb-3">
+                                                            <label for="medicalReceipts" class="form-label">Medical Receipts</label>
+                                                            <input type="text" class="form-control" name="oldmedicalReceipts"
+                                                                value="<?php echo $value['documentOne']; ?>" hidden>
                                                             <input type="file" class="form-control" id="medicalReceipts"
                                                                 name="medicalReceipts"
-                                                                accept="image/png ,image/jpg, image/jpeg,application/pdf">
-                                                        </div> -->
-                                                        <!-- <div class="form-group pb-3">
-                                                            <label class="form-label" for="medicalReports">Test Uploads</label>
+                                                                accept="image/png ,image/jpg, image/jpeg, application/pdf" hidden>
+                                                            <div style="display:flex;">
+                                                                <label id="file_mr" for="medicalReceipts" class="form-control"
+                                                                    style="cursor:pointer">Choose File</label>
+                                                                <a href="<?php echo base_url() . 'uploads/' . $value['documentOne']; ?>" class="ps-2 pt-1"
+                                                                style="display:none" target="blank" id="existfileMR"> <i class="bi bi-box-arrow-up-right me-2"></i> Open </a>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group pb-3">
+                                                            <label for="medicalReports" class="form-label">Test Uploads</label>
+                                                            <input type="text" class="form-control" name="oldmedicalReports"
+                                                                value="<?php echo $value['documentTwo']; ?>" hidden>
                                                             <input type="file" class="form-control" id="medicalReports"
-                                                                name="medicalReports">
-                                                        </div> -->
+                                                                name="medicalReports"
+                                                                accept="image/png ,image/jpg, image/jpeg, application/pdf" hidden>
+                                                            <div style="display:flex;">
+                                                                <label id="file_tu" for="medicalReports" class="form-control"
+                                                                    style="cursor:pointer">Choose File</label>
+                                                                <a href="<?php echo base_url() . 'uploads/' . $value['documentTwo']; ?>" class="ps-2 pt-1"
+                                                                style="display:none" target="blank" id="existfileTU"> <i class="bi bi-box-arrow-up-right me-2"> </i>  Open </a>
+                                                            </div>
+                                                        </div>
+
                                                         <input type="hidden" id="patientIdDb" name="patientIdDb"
                                                             value="<?php echo $value['id']; ?>">
 
@@ -1289,13 +1388,57 @@
                                                                 onclick="return validatePatientDetails()">Submit</button>
                                                         </div>
                                                     </form>
-                                    <?php } ?>
+
+                                            <?php
+                                            if ($value['documentOne'] != 'No data') {
+                                                ?>
+                                                        <script>  document.getElementById("existfileMR").style.display = "flex"; </script>
+                                            <?php
+                                            }
+                                            if ($value['documentTwo'] != 'No data') {
+                                                ?>
+                                                        <script>  document.getElementById("existfileTU").style.display = "flex"; </script>
+                                            <?php
+                                            }
+                                } ?>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </section>
+                        <script>
+                            document.getElementById("file_mr").addEventListener("click", function () {
+                                document.getElementById("existfileMR").style.display = "none";
+                            });
+
+                            const fileInputab = document.getElementById("medicalReceipts");
+                            const fileInputLabelab = document.getElementById("file_mr");
+
+                            fileInputab.addEventListener("change", function () {
+                                if (fileInputab.files.length > 0) {
+                                    fileInputLabelab.textContent = fileInputab.files[0].name;
+                                } else {
+                                    fileInputLabelab.textContent = "Select a File";
+                                }
+                            });
+                            </script>
+                        <script>
+                            document.getElementById("file_tu").addEventListener("click", function () {
+                                document.getElementById("existfileTU").style.display = "none";
+                            });
+
+                            const fileInputtu = document.getElementById("medicalReports");
+                            const fileInputLabeltu = document.getElementById("file_tu");
+
+                            fileInputtu.addEventListener("change", function () {
+                                if (fileInputtu.files.length > 0) {
+                                    fileInputLabeltu.textContent = fileInputtufiles[0].name;
+                                } else {
+                                    fileInputLabeltu.textContent = "Select a File";
+                                }
+                            });
+                        </script>
                         <script>
                             function patientPhotoUpdate(dbId) {
                                 document.getElementById("photoPatientIdDb").value = dbId;
@@ -1616,6 +1759,9 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                                S.NO
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                                 PATIENT ID
                                                             </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
@@ -1643,6 +1789,7 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
+                                                            <td>1. </td>
                                                             <td style="font-size: 16px">EDF000004</td>
                                                             <td class="px-4">
                                                                 <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
@@ -1653,23 +1800,6 @@
                                                             <td style="font-size: 16px">29-01-2024</td>
                                                             <td class="" style="font-size: 16px">11.00 A.M</td>
                                                             <td style="font-size: 16px">Dr.A.S.Senthilvelu
-                                                            </td>
-                                                            <td style="font-size: 16px">
-                                                                <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="font-size: 16px">EDF000021</td>
-                                                            <td class="px-4">
-                                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
-                                                                    width="40" height="40" /> Santhosh Kumar
-                                                            </td>
-                                                            <td style="font-size: 16px">65</td>
-                                                            <td style="font-size: 16px">Male</td>
-                                                            <td style="font-size: 16px">30-01-2024</td>
-                                                            <td class="" style="font-size: 16px">11.30 A.M</td>
-                                                            <td style="font-size: 16px" class="text-center">
-                                                                Dr.A.S.Senthilvelu
                                                             </td>
                                                             <td style="font-size: 16px">
                                                                 <a href="#"><i class="bi bi-three-dots-vertical"></i></a>

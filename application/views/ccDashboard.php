@@ -418,7 +418,7 @@
                                 <table class="table text-center" id="PatientList">
                                     <thead>
                                         <tr>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                 S.NO
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
@@ -446,7 +446,7 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $count=0;
+                                        $count = 0;
                                         foreach ($patientDetails as $key => $value) {
                                             $count++;
                                             ?>
@@ -479,7 +479,8 @@
                                                 </td>
                                                 <td style="font-size: 16px">
                                                     <a href="<?php echo base_url() . "Chiefconsultant/patientdetails/" . $value['id'] ?>"
-                                                        class="px-1 "><button class="btn btn-success"><i class="bi bi-eye"></i></button></a>
+                                                        class="px-1 "><button class="btn btn-success"><i
+                                                                class="bi bi-eye"></i></button></a>
                                                 </td>
                                             </tr>
                                     <?php } ?>
@@ -560,6 +561,18 @@
                         nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
                     }
 
+                    function showPage(page) {
+                        var startIndex = (page - 1) * rowsPerPage;
+                        var endIndex = startIndex + rowsPerPage;
+                        for (var i = 0; i < table.rows.length; i++) {
+                            if (i === 0 || (i >= startIndex && i < endIndex)) {
+                                table.rows[i].style.display = 'table-row';
+                            } else {
+                                table.rows[i].style.display = 'none';
+                            }
+                        }
+                    }
+
                     updatePaginationButtons();
                 </script>
 
@@ -616,10 +629,11 @@
                                         </p>
                                     </div>
                                     <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Marital status</span> -
-                                    <?php echo $value['maritalStatus'] ?>
+                                        <p class="col-sm-6"><span class="text-secondary ">Date of Birth </span> -
+                                    <?php echo $value['dob'] ?>
                                         </p>
-                                        <p><span class="text-secondary ">Married since</span> - <?php echo $value['marriedSince'] ?></p>
+                                        <p><span class="text-secondary ">Married status</span> - <?php echo $value['marriedSince'] ?>
+                                    <?php echo $value['maritalStatus'] ?></p>
                                     </div>
                                     <div class="d-md-flex">
                                         <p class="col-sm-6"><span class="text-secondary ">Profession</span> -
@@ -801,6 +815,7 @@
                             </script>
 
                             <section>
+                                <!-- Old code as per in design -->
                                 <!-- <div class="card rounded">
                                 <div class="card-body p-4">
                                     <div class="d-flex justify-content-between mt-3 mb-3">
@@ -833,10 +848,16 @@
                                 </div>
                             </div> -->
                                 <div class="card rounded">
-                                    <p class="ps-2 m-3" style="font-size: 24px; font-weight: 500">
-                                        Health Care Providers
-                                    </p>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="ps-2 m-3" style="font-size: 24px; font-weight: 500">
+                                            Health Care Providers
+                                        </p>
+                                        <a href="<?php echo base_url() . "Healthcareprovider/register" ?>" class="my-auto me-3">
+                                            <button style="background-color: #0079AD;" class="text-light border-0 rounded p-2">
+                                                <i class="bi bi-plus-square-fill"></i> HCP</button></a>
+                                    </div>
                                 </div>
+
                                 <div class="container">
                                     <div class="row justify-content-center">
                         <?php foreach ($hcpDetails as $key => $value) { ?>

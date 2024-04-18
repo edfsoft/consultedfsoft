@@ -266,6 +266,31 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function insertappointment()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'patientId' => $post['patientId'],
+            'patientName' => $post['patientName'],
+            'referalDoctor' => $post['referalDoctor'],
+            'modeOfConsultant' => $post['appConsult'],
+            'dateOfAppoint' => $post['appDate'],
+            'partOfDay' => $post['dayTime'],
+            'timeOfAppoint' => $post['appTime'],
+            'patientComplaint' => $post['appReason'],
+            'hcpDbId' => $_SESSION['hcpIdDb']
+        );
+        $this->db->insert('appointment_details', $insert);
+    }
+
+    public function getAppointmentList()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId`=  $hcpIdDb";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function getHcpDetails()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];

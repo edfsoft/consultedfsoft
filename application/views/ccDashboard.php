@@ -147,7 +147,7 @@
                         <i class="bi bi-calendar4 pe-3"></i><span>Appointments</span>
                         <p class="text-dark float-end">
                             <i class="fas fa-envelope fa-2x"></i>
-                            <span class="badge rounded-pill badge-notification bg-danger">15</span>
+                            <span class="badge rounded-pill badge-notification bg-danger"><?php echo $appointmentListCount ?></span>
                         </p>
                     </div>
                 </a>
@@ -633,7 +633,8 @@
                                     <?php echo $value['dob'] ?>
                                         </p>
                                         <p><span class="text-secondary ">Married status</span> - <?php echo $value['marriedSince'] ?>
-                                    <?php echo $value['maritalStatus'] ?></p>
+                                    <?php echo $value['maritalStatus'] ?>
+                                        </p>
                                     </div>
                                     <div class="d-md-flex">
                                         <p class="col-sm-6"><span class="text-secondary ">Profession</span> -
@@ -720,21 +721,24 @@
                                         </p>
                                     </div>
                                     <div class="table-responsive">
-                                        <table class="table text-center">
+                                        <table class="table text-center" id="appointmentTable" >
                                             <thead>
                                                 <tr>
+                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                        S.NO
+                                                    </th>
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         PATIENT ID
                                                     </th>
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         PATIENT
                                                     </th>
-                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD" class="">
+                                                    <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD" class="">
                                                         AGE
                                                     </th>
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         GENDER
-                                                    </th>
+                                                    </th> -->
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         DATE
                                                     </th>
@@ -742,7 +746,10 @@
                                                         TIME
                                                     </th>
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                        DOCTOR
+                                                        HCP
+                                                    </th>
+                                                    <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                        PURPOSE
                                                     </th>
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         ACTION
@@ -750,63 +757,126 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td style="font-size: 16px">0220946660</td>
-                                                    <td class="px-4">
-                                                        <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
-                                                            width="40" height="40" /> Lithorish
-                                                    </td>
-                                                    <td style="font-size: 16px">62</td>
-                                                    <td style="font-size: 16px">Male</td>
-                                                    <td style="font-size: 16px">29-01-2024</td>
-                                                    <td class="" style="font-size: 16px">11.00 A.M</td>
-                                                    <td style="font-size: 16px">Dr.A.S.Senthilvelu
-                                                    </td>
-                                                    <td style="font-size: 16px">
-                                                        <a class="icon" href="#" data-bs-toggle="dropdown">
-                                                            <p class=""><i class="bi bi-three-dots-vertical"></i></p>
-                                                        </a>
-                                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center">
-                                                            <li><a class="text-center"
-                                                                    href="<?php echo base_url() . "cc/patientdetails" ?>">
-                                                                    <button type="button" class="btn btn-success">
-                                                                        <i class="bi bi-eye"></i>View</button></a>
-                                                            </li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="font-size: 16px">0220946661</td>
-                                                    <td class="px-4">
-                                                        <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
-                                                            width="40" height="40" /> Santhosh Kumar
-                                                    </td>
-                                                    <td style="font-size: 16px">65</td>
-                                                    <td style="font-size: 16px">Male</td>
-                                                    <td style="font-size: 16px">30-01-2024</td>
-                                                    <td class="" style="font-size: 16px">11.30 A.M</td>
-                                                    <td style="font-size: 16px" class="text-center">
-                                                        Dr.A.S.Senthilvelu
-                                                    </td>
-                                                    <td style="font-size: 16px">
-                                                        <a class="icon" href="#" data-bs-toggle="dropdown">
-                                                            <p class=""><i class="bi bi-three-dots-vertical"></i></p>
-                                                        </a>
-                                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow text-center">
-                                                            <li><a class="text-center"
-                                                                    href="<?php echo base_url() . "cc/patientdetails" ?>">
-                                                                    <button type="button" class="btn btn-success">
-                                                                        <i class="bi bi-eye"></i>View</button></a>
-                                                            </li>
-                                                        </ul>
-                                                    </td>
-                                                </tr>
+                                        <?php
+                                        $count = 0;
+                                        foreach ($appointmentList as $key => $value) {
+                                            $count++;
+                                            ?>
+                                                    <tr>
+                                                        <td><?php echo $count; ?>. </td>
+                                                        <td style="font-size: 16px"><?php echo $value['patientId'] ?></td>
+                                                        <td class="px-4"><?php echo $value['patientName'] ?></td>
+                                                        <td style="font-size: 16px"><?php echo $value['dateOfAppoint'] ?></td>
+                                                        <td class="" style="font-size: 16px"><?php echo $value['timeOfAppoint'] ?></td>
+                                                        <td style="font-size: 16px"><?php echo $value['patientHcp'] ?></td>
+                                                        <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
+                                                        <td style="font-size: 16px">
+                                                            <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
+                                                        </td>
+                                                    </tr>
+                                    <?php } ?>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                            <div id="paginationButtons" class="text-center mt-4">
+                                        <div id="paginationBtnsContainer"></div>
+                                    </div>
+                                </section>
+                                <script>
+                                    var table = document.getElementById('appointmentTable');
+                                    var rowsPerPage = 7;
+                                    var currentPage = 1;
+                                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
+
+                                    showPage(currentPage);
+
+                                    function showPage(page) {
+                                        var startIndex = (page - 1) * rowsPerPage;
+                                        var endIndex = startIndex + rowsPerPage;
+                                        for (var i = 0; i < table.rows.length; i++) {
+                                            if (i >= startIndex && i < endIndex) {
+                                                table.rows[i].style.display = 'table-row';
+                                            } else {
+                                                table.rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    }
+
+                                    function goToPage(page) {
+                                        if (page < 1) page = 1;
+                                        if (page > totalPages) page = totalPages;
+                                        currentPage = page;
+                                        showPage(currentPage);
+                                        updatePaginationButtons();
+                                    }
+
+                                    function previousPage() {
+                                        if (currentPage > 1) {
+                                            currentPage--;
+                                            showPage(currentPage);
+                                            updatePaginationButtons();
+                                        }
+                                    }
+
+                                    function nextPage() {
+                                        if (currentPage < totalPages) {
+                                            currentPage++;
+                                            showPage(currentPage);
+                                            updatePaginationButtons();
+                                        }
+                                    }
+
+                                    function updatePaginationButtons() {
+                                        var buttonsHtml = '';
+
+                                        var startPage = Math.max(1, currentPage - 1);
+                                        var endPage = Math.min(totalPages, currentPage + 1);
+
+                                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+
+                                        for (var i = startPage; i <= endPage; i++) {
+                                            var activeClass = (i === currentPage) ? 'active' : '';
+                                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+                                        }
+
+                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+
+                                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
+
+                                        var previousBtn = document.getElementById('previousBtn');
+                                        var nextBtn = document.getElementById('nextBtn');
+                                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
+                                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
+                                    }
+                                    function showPage(page) {
+                                        var startIndex = (page - 1) * rowsPerPage;
+                                        var endIndex = startIndex + rowsPerPage;
+                                        for (var i = 0; i < table.rows.length; i++) {
+                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
+                                                table.rows[i].style.display = 'table-row';
+                                            } else {
+                                                table.rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    }
+                                    function showPage(page) {
+                                        var startIndex = (page - 1) * rowsPerPage;
+                                        var endIndex = startIndex + rowsPerPage;
+                                        for (var i = 0; i < table.rows.length; i++) {
+                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
+                                                table.rows[i].style.display = 'table-row';
+                                            } else {
+                                                table.rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    }
+
+
+                                    updatePaginationButtons();
+                                </script>
+                            
             <?php
         } else if ($method == "hcps") {
             ?>

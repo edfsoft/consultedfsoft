@@ -57,12 +57,19 @@ class chiefconsultant extends CI_Controller
         }
     }
 
+    public function setVariable()
+    {
+        $appointmentList = $this->HcpModel->getAppointmentList();
+        $this->data['appointmentListCount'] = $appointmentList['totalRows'];
+    }
+
     public function dashboard()
     {
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "dashboard";
             $patientTotal = $this->CcModel->allPatientList();
             $this->data['patientTotal'] = $patientTotal['totalRows'];
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();
@@ -75,6 +82,7 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "patients";
             $patientDetails = $this->CcModel->allPatientList();
             $this->data['patientDetails'] = $patientDetails['response'];
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();
@@ -88,6 +96,7 @@ class chiefconsultant extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();
@@ -98,6 +107,9 @@ class chiefconsultant extends CI_Controller
     {
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "appointments";
+            $appointmentList = $this->HcpModel->getAppointmentList();
+            $this->data['appointmentList'] = $appointmentList['response'];
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();
@@ -110,6 +122,7 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "hcps";
             $hcpDetails = $this->CcModel->getHcpProfile();
             $this->data['hcpDetails'] = $hcpDetails;
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();
@@ -135,6 +148,7 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "myProfile";
             $ccDetails = $this->CcModel->getCcDetails();
             $this->data['ccDetails'] = $ccDetails;
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();
@@ -147,6 +161,7 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "editMyProfile";
             $ccDetails = $this->CcModel->getCcDetails();
             $this->data['ccDetails'] = $ccDetails;
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();

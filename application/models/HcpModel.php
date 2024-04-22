@@ -278,6 +278,7 @@ class HcpModel extends CI_Model
             'partOfDay' => $post['dayTime'],
             'timeOfAppoint' => $post['appTime'],
             'patientComplaint' => $post['appReason'],
+            'patientHcp' => $_SESSION['hcpId'],
             'hcpDbId' => $_SESSION['hcpIdDb']
         );
         $this->db->insert('appointment_details', $insert);

@@ -1680,7 +1680,8 @@
                                     <?php echo $value['dob'] ?>
                                                 </p>
                                                 <p><span class="text-secondary ">Married status</span> - <?php echo $value['marriedSince'] ?>
-                                    <?php echo $value['maritalStatus'] ?></p>
+                                    <?php echo $value['maritalStatus'] ?>
+                                                </p>
                                             </div>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Profession</span> -

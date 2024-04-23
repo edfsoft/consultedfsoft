@@ -1817,9 +1817,18 @@
                                                             <tr>
                                                                 <td><?php echo $count; ?>. </td>
                                                                 <td style="font-size: 16px"><?php echo $value['patientId'] ?></td>
+                                                                <!-- <td style="font-size: 16px">
+                                                                    <p data-toggle="modal" data-target="#viewPatientDetails">
+                                                                    <?php echo $value['patientId'] ?>
+                                                                    </p>
+                                                                </td> -->
                                                                 <td class="px-4"><?php echo $value['patientName'] ?></td>
-                                                                <td style="font-size: 16px"><?php echo $value['dateOfAppoint'] ?></td>
-                                                                <td class="" style="font-size: 16px"><?php echo $value['timeOfAppoint'] ?></td>
+                                                                <td style="font-size: 16px">
+                                                <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
+                                                                </td>
+                                                                <td class="" style="font-size: 16px">
+                                                <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
+                                                                </td>
                                                                 <td style="font-size: 16px"><?php echo $value['referalDoctor'] ?></td>
                                                                 <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
                                                                 <td style="font-size: 16px">
@@ -1836,6 +1845,7 @@
                                         <div id="paginationBtnsContainer"></div>
                                     </div>
                                 </section>
+
                                 <script>
                                     var table = document.getElementById('appointmentTable');
                                     var rowsPerPage = 7;
@@ -2006,151 +2016,155 @@
                                                                     <div class="py-2" id="morningTime" style="display:none"><i
                                                                             class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:30 AM">08:30 AM</button>
+                                                                            value="08:30">08:30 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:40 AM">08:40 AM</button>
+                                                                            value="08:40">08:40 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:50 AM">08:50 AM</button>
+                                                                            value="08:50">08:50 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:00 AM">09:00 AM</button>
+                                                                            value="09:00">09:00 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:10 AM">09:10 AM</button>
+                                                                            value="09:10">09:10 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:20 AM">09:20 AM</button>
+                                                                            value="09:20">09:20 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:30 AM">09:30 AM</button>
+                                                                            value="09:30">09:30 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:40 AM">09:40 AM</button>
+                                                                            value="09:40">09:40 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:50 AM">09:50 AM</button>
+                                                                            value="09:50">09:50 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:00 AM">10:00 AM</button>
+                                                                            value="10:00">10:00 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:10 AM">10:10 AM</button>
+                                                                            value="10:10">10:10 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:20 AM">10:20 AM</button>
+                                                                            value="10:20">10:20 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:30 AM">10:30 AM</button>
+                                                                            value="10:30">10:30 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:40 AM">10:40 AM</button>
+                                                                            value="10:40">10:40 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:50 AM">10:50 AM</button>
+                                                                            value="10:50">10:50 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:00 AM">11:00 AM</button>
+                                                                            value="11:00">11:00 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:10 AM">11:10 AM</button>
+                                                                            value="11:10">11:10 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:20 AM">11:20 AM</button>
+                                                                            value="11:20">11:20 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:30 AM">11:30 AM</button>
+                                                                            value="11:30">11:30 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:40 AM">11:40 AM</button>
+                                                                            value="11:40">11:40 AM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:50 AM">11:50 AM</button>
+                                                                            value="11:50">11:50 AM</button>
+
                                                                     </div>
                                                                     <div class="py-2" id="afternoonTime" style="display:none"><i
                                                                             class="bi bi-sun"></i>,
                                                                         Afternoon Consult time,<br>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:00 PM">12:00 PM</button>
+                                                                            value="12:00">12:00 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:10 PM">12:10 PM</button>
+                                                                            value="12:10">12:10 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:20 PM">12:20 PM</button>
+                                                                            value="12:20">12:20 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:30 PM">12:30 PM</button>
+                                                                            value="12:30">12:30 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:40 PM">12:40 PM</button>
+                                                                            value="12:40">12:40 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:50 PM">12:50 PM</button>
+                                                                            value="12:50">12:50 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="01:00 PM">01:00 PM</button>
+                                                                            value="13:00">01:00 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="01:10 PM">01:10 PM</button>
+                                                                            value="13:10">01:10 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="01:20 PM">01:20 PM</button>
+                                                                            value="13:20">01:20 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="01:30 PM">01:30 PM</button>
+                                                                            value="13:30">01:30 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="01:40 PM">01:40 PM</button>
+                                                                            value="13:40">01:40 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="01:50 PM">01:50 PM</button>
+                                                                            value="13:50">01:50 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="02:00 PM">02:00 PM</button>
+                                                                            value="14:00">02:00 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="02:10 PM">02:10 PM</button>
+                                                                            value="14:10">02:10 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="02:20 PM">02:20 PM</button>
+                                                                            value="14:20">02:20 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="02:30 PM">02:30 PM</button>
+                                                                            value="14:30">02:30 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="02:40 PM">02:40 PM</button>
+                                                                            value="14:40">02:40 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="02:50 PM">02:50 PM</button>
+                                                                            value="14:50">02:50 PM</button>
+
                                                                     </div>
                                                                     <div class="py-2" id="eveningTime" style="display:none"><i
                                                                             class="bi bi-brightness-alt-high"></i>, Evening Consult time,<br>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="05:30 PM">05:30 PM</button>
+                                                                            value="17:30">05:30 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="05:40 PM">05:40 PM</button>
+                                                                            value="17:40">05:40 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="05:50 PM">05:50 PM</button>
+                                                                            value="17:50">05:50 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="06:00 PM">06:00 PM</button>
+                                                                            value="18:00">06:00 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="06:10 PM">06:10 PM</button>
+                                                                            value="18:10">06:10 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="06:20 PM">06:20 PM</button>
+                                                                            value="18:20">06:20 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="06:30 PM">06:30 PM</button>
+                                                                            value="18:30">06:30 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="06:40 PM">06:40 PM</button>
+                                                                            value="18:40">06:40 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="06:50 PM">06:50 PM</button>
+                                                                            value="18:50">06:50 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="07:00 PM">07:00 PM</button>
+                                                                            value="19:00">07:00 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="07:10 PM">07:10 PM</button>
+                                                                            value="19:10">07:10 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="07:20 PM">07:20 PM</button>
+                                                                            value="19:20">07:20 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="07:30 PM">07:30 PM</button>
+                                                                            value="19:30">07:30 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="07:40 PM">07:40 PM</button>
+                                                                            value="19:40">07:40 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="07:50 PM">07:50 PM</button>
+                                                                            value="19:50">07:50 PM</button>
+
                                                                     </div>
                                                                     <div class="py-2" id="nightTime" style="display:none"><i
                                                                             class="bi bi-moon-stars"></i>, Night Consult time,<br>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:00 PM">08:00 PM</button>
+                                                                            value="20:00">08:00 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:10 PM">08:10 PM</button>
+                                                                            value="20:10">08:10 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:20 PM">08:20 PM</button>
+                                                                            value="20:20">08:20 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:30 PM">08:30 PM</button>
+                                                                            value="20:30">08:30 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:40 PM">08:40 PM</button>
+                                                                            value="20:40">08:40 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:50 PM">08:50 PM</button>
+                                                                            value="20:50">08:50 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:00 PM">09:00 PM</button>
+                                                                            value="21:00">09:00 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:10 PM">09:10 PM</button>
+                                                                            value="21:10">09:10 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:20 PM">09:20 PM</button>
+                                                                            value="21:20">09:20 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:30 PM">09:30 PM</button>
+                                                                            value="21:30">09:30 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:40 PM">09:40 PM</button>
+                                                                            value="21:40">09:40 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:50 PM">09:50 PM</button>
+                                                                            value="21:50">09:50 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:00 PM">10:00 PM</button>
+                                                                            value="22:00">10:00 PM</button>
                                                                         <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:10 PM">10:10 PM</button>
+                                                                            value="22:10">10:10 PM</button>
+
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="appTime">Time <span
@@ -2735,7 +2749,8 @@
                                                             //     document.getElementById("profilePhoto_err").innerHTML = "";   // }           
                                                         }
                                                     </script>
-                                                    <script>             function validateDetails() {
+                                                    <script>
+                                                        function validateDetails() {
                                                             var doctorNmae = document.getElementById("drName").value;
                                                             var doctorMobile = document.getElementById("drMobile").value;
                                                             var doctorEmail = document.getElementById("drEmail").value;
@@ -2840,16 +2855,37 @@
             </div>
         </div>
 
+        <!-- Popup for Patient details -->
+        <!-- <div class="modal fade" id="viewPatientDetails" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">All details</h5>
+                                    <?php
+                                    if(isset($patientList['id']))
+                                    foreach ($patientList as $key => $value) {
+                                            ?>
+                                            <p><?php echo $value['patientId'] ?> </p>
+                                    <?php }
+                                    ?>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+
     </main>
 
     <!-- Event listener to block right-click -->
-    <!-- <script>
+    <script>
     function blockRightClick(event) {
         event.preventDefault(); 
     }
 
     document.addEventListener('contextmenu', blockRightClick);
-</script> -->
+</script>
 
 </body>
 

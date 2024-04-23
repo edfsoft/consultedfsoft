@@ -224,6 +224,12 @@ class healthcareprovider extends CI_Controller
         $this->myProfile();
     }
 
+    // public function getDetails()
+    // {
+    //     $patientList = $this->HcpModel->getPatientList();
+    //     $this->data['patientList'] = $patientList['response'];
+    //     $this->load->view('hcpDashboard.php',  $this->data);
+    // }
 
     // public function logout()
     // {

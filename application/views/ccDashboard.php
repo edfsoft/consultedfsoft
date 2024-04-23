@@ -766,8 +766,8 @@
                                                         <td><?php echo $count; ?>. </td>
                                                         <td style="font-size: 16px"><?php echo $value['patientId'] ?></td>
                                                         <td class="px-4"><?php echo $value['patientName'] ?></td>
-                                                        <td style="font-size: 16px"><?php echo $value['dateOfAppoint'] ?></td>
-                                                        <td class="" style="font-size: 16px"><?php echo $value['timeOfAppoint'] ?></td>
+                                                        <td style="font-size: 16px"><?php echo date("d-m-Y", strtotime($value['dateOfAppoint']));?></td>
+                                                                <td class="" style="font-size: 16px"><?php echo date('h:i a', strtotime($value['timeOfAppoint']));?></td>
                                                         <td style="font-size: 16px"><?php echo $value['patientHcp'] ?></td>
                                                         <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
                                                         <td style="font-size: 16px">

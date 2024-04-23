@@ -50,7 +50,7 @@
 
         /* Appointment time buttons */
         .timeButton.highlighted {
-            background-color: blue;
+            background-color: #383d3d;
             color: white;
         }
 
@@ -426,10 +426,13 @@
                                     </button></a>
                             </div>
                             <div class="table-responsive">
-                                <table class="table text-center">
+                                <table class="table text-center" id="patientTable">
 
                                     <thead>
                                         <tr>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                S.NO
+                                            </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                 PATIENT
                                             </th>
@@ -455,9 +458,12 @@
                                     </thead>
                                     <tbody>
                                         <?php
+                                        $count = 0;
                                         foreach ($patientList as $key => $value) {
+                                            $count++;
                                             ?>
                                             <tr>
+                                                <td><?php echo $count; ?>. </td>
                                                 <td class="px-4">
                                                 <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                                         <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
@@ -483,7 +489,7 @@
                                                 <td style="font-size: 16px">
                                                 <?php echo $value['diagonsis'] ?>
                                                 </td>
-                                                <td style="font-size: 16px">
+                                                <td class="d-flex d-md-block" style="font-size: 16px">
                                                     <a
                                                         href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['id'] ?>"><button
                                                             class="btn btn-success" class="px-1 "><i
@@ -516,11 +522,96 @@
                                     <?php } ?>
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
+                    <div id="paginationButtons" class="text-center mt-4">
+                        <div id="paginationBtnsContainer"></div>
+                    </div>
                 </section>
 
+                <script>
+                    var table = document.getElementById('patientTable');
+                    var rowsPerPage = 8;
+                    var currentPage = 1;
+                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
+
+                    showPage(currentPage);
+
+                    function showPage(page) {
+                        var startIndex = (page - 1) * rowsPerPage;
+                        var endIndex = startIndex + rowsPerPage;
+                        for (var i = 0; i < table.rows.length; i++) {
+                            if (i >= startIndex && i < endIndex) {
+                                table.rows[i].style.display = 'table-row';
+                            } else {
+                                table.rows[i].style.display = 'none';
+                            }
+                        }
+                    }
+
+                    function goToPage(page) {
+                        if (page < 1) page = 1;
+                        if (page > totalPages) page = totalPages;
+                        currentPage = page;
+                        showPage(currentPage);
+                        updatePaginationButtons();
+                    }
+
+                    function previousPage() {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            showPage(currentPage);
+                            updatePaginationButtons();
+                        }
+                    }
+
+                    function nextPage() {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            showPage(currentPage);
+                            updatePaginationButtons();
+                        }
+                    }
+
+                    function updatePaginationButtons() {
+                        var buttonsHtml = '';
+
+                        var startPage = Math.max(1, currentPage - 1);
+                        var endPage = Math.min(totalPages, currentPage + 1);
+
+                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+
+                        for (var i = startPage; i <= endPage; i++) {
+                            var activeClass = (i === currentPage) ? 'active' : '';
+                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+                        }
+
+                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+
+                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
+
+                        var previousBtn = document.getElementById('previousBtn');
+                        var nextBtn = document.getElementById('nextBtn');
+                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
+                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
+                    }
+
+                    function showPage(page) {
+                        var startIndex = (page - 1) * rowsPerPage;
+                        var endIndex = startIndex + rowsPerPage;
+                        for (var i = 0; i < table.rows.length; i++) {
+                            if (i === 0 || (i >= startIndex && i < endIndex)) {
+                                table.rows[i].style.display = 'table-row';
+                            } else {
+                                table.rows[i].style.display = 'none';
+                            }
+                        }
+                    }
+
+                    updatePaginationButtons();
+                </script>
             <?php
         } else if ($method == "patientDetailsForm") {
             ?>
@@ -1066,8 +1157,10 @@
                                                             <label class="form-label" for="patientDob">DOB <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="date" class="form-control" id="patientDob"
-                                                                onchange="calculateAge()" value="<?php echo $value['dob']; ?> "
-                                                                name="patientDob">
+                                                                onchange="calculateAge()" value="<?php echo strftime(
+                                                                    '%Y-%m-%d',
+                                                                    strtotime($value['dob']),
+                                                                ); ?>" name="patientDob">
                                                             <div id="patientDob_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-2">
@@ -1269,17 +1362,39 @@
                                                                 cols="" rows=""
                                                                 placeholder="E.g. Insulin"><?php echo $value['medicines']; ?></textarea>
                                                         </div>
-                                                        <!-- <div class="form-group pb-3">
-                                                            <label class="form-label" for="medicalReceipts">Medical Receipts</label>
+
+                                                        <div class="form-group pb-3">
+                                                            <label for="medicalReceipts" class="form-label">Medical Receipts</label>
+                                                            <input type="text" class="form-control" name="oldmedicalReceipts"
+                                                                value="<?php echo $value['documentOne']; ?>" hidden>
                                                             <input type="file" class="form-control" id="medicalReceipts"
                                                                 name="medicalReceipts"
-                                                                accept="image/png ,image/jpg, image/jpeg,application/pdf">
-                                                        </div> -->
-                                                        <!-- <div class="form-group pb-3">
-                                                            <label class="form-label" for="medicalReports">Test Uploads</label>
+                                                                accept="image/png ,image/jpg, image/jpeg, application/pdf" hidden>
+                                                            <div style="display:flex;">
+                                                                <label id="file_mr" for="medicalReceipts" class="form-control"
+                                                                    style="cursor:pointer">Choose File</label>
+                                                                <a href="<?php echo base_url() . 'uploads/' . $value['documentOne']; ?>"
+                                                                    class="ps-2 pt-1" style="display:none" target="blank" id="existfileMR">
+                                                                    <i class="bi bi-box-arrow-up-right me-2"></i> Open </a>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group pb-3">
+                                                            <label for="medicalReports" class="form-label">Test Uploads</label>
+                                                            <input type="text" class="form-control" name="oldmedicalReports"
+                                                                value="<?php echo $value['documentTwo']; ?>" hidden>
                                                             <input type="file" class="form-control" id="medicalReports"
-                                                                name="medicalReports">
-                                                        </div> -->
+                                                                name="medicalReports"
+                                                                accept="image/png ,image/jpg, image/jpeg, application/pdf" hidden>
+                                                            <div style="display:flex;">
+                                                                <label id="file_tu" for="medicalReports" class="form-control"
+                                                                    style="cursor:pointer">Choose File</label>
+                                                                <a href="<?php echo base_url() . 'uploads/' . $value['documentTwo']; ?>"
+                                                                    class="ps-2 pt-1" style="display:none" target="blank" id="existfileTU">
+                                                                    <i class="bi bi-box-arrow-up-right me-2"> </i> Open </a>
+                                                            </div>
+                                                        </div>
+
                                                         <input type="hidden" id="patientIdDb" name="patientIdDb"
                                                             value="<?php echo $value['id']; ?>">
 
@@ -1289,13 +1404,57 @@
                                                                 onclick="return validatePatientDetails()">Submit</button>
                                                         </div>
                                                     </form>
-                                    <?php } ?>
+
+                                            <?php
+                                            if ($value['documentOne'] != 'No data') {
+                                                ?>
+                                                        <script>  document.getElementById("existfileMR").style.display = "flex"; </script>
+                                            <?php
+                                            }
+                                            if ($value['documentTwo'] != 'No data') {
+                                                ?>
+                                                        <script>  document.getElementById("existfileTU").style.display = "flex"; </script>
+                                            <?php
+                                            }
+                                } ?>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </section>
+                        <script>
+                            document.getElementById("file_mr").addEventListener("click", function () {
+                                document.getElementById("existfileMR").style.display = "none";
+                            });
+
+                            const fileInputab = document.getElementById("medicalReceipts");
+                            const fileInputLabelab = document.getElementById("file_mr");
+
+                            fileInputab.addEventListener("change", function () {
+                                if (fileInputab.files.length > 0) {
+                                    fileInputLabelab.textContent = fileInputab.files[0].name;
+                                } else {
+                                    fileInputLabelab.textContent = "Select a File";
+                                }
+                            });
+                        </script>
+                        <script>
+                            document.getElementById("file_tu").addEventListener("click", function () {
+                                document.getElementById("existfileTU").style.display = "none";
+                            });
+
+                            const fileInputtu = document.getElementById("medicalReports");
+                            const fileInputLabeltu = document.getElementById("file_tu");
+
+                            fileInputtu.addEventListener("change", function () {
+                                if (fileInputtu.files.length > 0) {
+                                    fileInputLabeltu.textContent = fileInputtufiles[0].name;
+                                } else {
+                                    fileInputLabeltu.textContent = "Select a File";
+                                }
+                            });
+                        </script>
                         <script>
                             function patientPhotoUpdate(dbId) {
                                 document.getElementById("photoPatientIdDb").value = dbId;
@@ -1517,10 +1676,12 @@
                                                 </p>
                                             </div>
                                             <div class="d-md-flex">
-                                                <p class="col-sm-6"><span class="text-secondary ">Marital status</span> -
+                                                <p class="col-sm-6"><span class="text-secondary ">Date of Birth </span> -
+                                    <?php echo $value['dob'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Married status</span> - <?php echo $value['marriedSince'] ?>
                                     <?php echo $value['maritalStatus'] ?>
                                                 </p>
-                                                <p><span class="text-secondary ">Married since</span> - <?php echo $value['marriedSince'] ?></p>
                                             </div>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Profession</span> -
@@ -1612,21 +1773,24 @@
                                                     </button></a>
                                             </div>
                                             <div class="table-responsive">
-                                                <table class="table text-center">
+                                                <table class="table text-center" id="appointmentTable">
                                                     <thead>
                                                         <tr>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                                S.NO
+                                                            </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                                 PATIENT ID
                                                             </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                PATIENT
+                                                                PATIENT NAME
                                                             </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
+                                                            <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
                                                                 AGE
                                                             </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                                 GENDER
-                                                            </th>
+                                                            </th> -->
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                                 DATE
                                                             </th>
@@ -1634,7 +1798,10 @@
                                                                 TIME
                                                             </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                DOCTOR
+                                                                DOCTOR ID
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                                PURPOSE
                                                             </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                                 ACTION
@@ -1642,45 +1809,136 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td style="font-size: 16px">EDF000004</td>
-                                                            <td class="px-4">
-                                                                <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
-                                                                    width="40" height="40" /> Lithorish
-                                                            </td>
-                                                            <td style="font-size: 16px">62</td>
-                                                            <td style="font-size: 16px">Male</td>
-                                                            <td style="font-size: 16px">29-01-2024</td>
-                                                            <td class="" style="font-size: 16px">11.00 A.M</td>
-                                                            <td style="font-size: 16px">Dr.A.S.Senthilvelu
-                                                            </td>
-                                                            <td style="font-size: 16px">
-                                                                <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="font-size: 16px">EDF000021</td>
-                                                            <td class="px-4">
-                                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
-                                                                    width="40" height="40" /> Santhosh Kumar
-                                                            </td>
-                                                            <td style="font-size: 16px">65</td>
-                                                            <td style="font-size: 16px">Male</td>
-                                                            <td style="font-size: 16px">30-01-2024</td>
-                                                            <td class="" style="font-size: 16px">11.30 A.M</td>
-                                                            <td style="font-size: 16px" class="text-center">
-                                                                Dr.A.S.Senthilvelu
-                                                            </td>
-                                                            <td style="font-size: 16px">
-                                                                <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
-                                                            </td>
-                                                        </tr>
+                                        <?php
+                                        $count = 0;
+                                        foreach ($appointmentList as $key => $value) {
+                                            $count++;
+                                            ?>
+                                                            <tr>
+                                                                <td><?php echo $count; ?>. </td>
+                                                                <td style="font-size: 16px"><?php echo $value['patientId'] ?></td>
+                                                                <!-- <td style="font-size: 16px">
+                                                                    <p data-toggle="modal" data-target="#viewPatientDetails">
+                                                                    <?php echo $value['patientId'] ?>
+                                                                    </p>
+                                                                </td> -->
+                                                                <td class="px-4"><?php echo $value['patientName'] ?></td>
+                                                                <td style="font-size: 16px">
+                                                <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
+                                                                </td>
+                                                                <td class="" style="font-size: 16px">
+                                                <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
+                                                                </td>
+                                                                <td style="font-size: 16px"><?php echo $value['referalDoctor'] ?></td>
+                                                                <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
+                                                                <td style="font-size: 16px">
+                                                                    <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
+                                                                </td>
+                                                            </tr>
+                                    <?php } ?>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="paginationButtons" class="text-center mt-4">
+                                        <div id="paginationBtnsContainer"></div>
+                                    </div>
                                 </section>
+
+                                <script>
+                                    var table = document.getElementById('appointmentTable');
+                                    var rowsPerPage = 7;
+                                    var currentPage = 1;
+                                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
+
+                                    showPage(currentPage);
+
+                                    function showPage(page) {
+                                        var startIndex = (page - 1) * rowsPerPage;
+                                        var endIndex = startIndex + rowsPerPage;
+                                        for (var i = 0; i < table.rows.length; i++) {
+                                            if (i >= startIndex && i < endIndex) {
+                                                table.rows[i].style.display = 'table-row';
+                                            } else {
+                                                table.rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    }
+
+                                    function goToPage(page) {
+                                        if (page < 1) page = 1;
+                                        if (page > totalPages) page = totalPages;
+                                        currentPage = page;
+                                        showPage(currentPage);
+                                        updatePaginationButtons();
+                                    }
+
+                                    function previousPage() {
+                                        if (currentPage > 1) {
+                                            currentPage--;
+                                            showPage(currentPage);
+                                            updatePaginationButtons();
+                                        }
+                                    }
+
+                                    function nextPage() {
+                                        if (currentPage < totalPages) {
+                                            currentPage++;
+                                            showPage(currentPage);
+                                            updatePaginationButtons();
+                                        }
+                                    }
+
+                                    function updatePaginationButtons() {
+                                        var buttonsHtml = '';
+
+                                        var startPage = Math.max(1, currentPage - 1);
+                                        var endPage = Math.min(totalPages, currentPage + 1);
+
+                                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+
+                                        for (var i = startPage; i <= endPage; i++) {
+                                            var activeClass = (i === currentPage) ? 'active' : '';
+                                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+                                        }
+
+                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+
+                                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
+
+                                        var previousBtn = document.getElementById('previousBtn');
+                                        var nextBtn = document.getElementById('nextBtn');
+                                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
+                                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
+                                    }
+                                    function showPage(page) {
+                                        var startIndex = (page - 1) * rowsPerPage;
+                                        var endIndex = startIndex + rowsPerPage;
+                                        for (var i = 0; i < table.rows.length; i++) {
+                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
+                                                table.rows[i].style.display = 'table-row';
+                                            } else {
+                                                table.rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    }
+                                    function showPage(page) {
+                                        var startIndex = (page - 1) * rowsPerPage;
+                                        var endIndex = startIndex + rowsPerPage;
+                                        for (var i = 0; i < table.rows.length; i++) {
+                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
+                                                table.rows[i].style.display = 'table-row';
+                                            } else {
+                                                table.rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    }
+
+
+                                    updatePaginationButtons();
+                                </script>
+
             <?php
         } else if ($method == "appointmentsForm") {
             ?>
@@ -1699,7 +1957,8 @@
                                                     <div class="row">
                                                         <div class="col-md-8">
 
-                                                            <form action="xd" name="patientDetails" onsubmit="return validateAppointment()"
+                                                            <form action="<?php echo base_url() . "Healthcareprovider/newAppointment" ?>"
+                                                                method="POST" name="patientDetails" onsubmit="return validateAppointment()"
                                                                 oninput="clearErrorAppointment()">
                                                                 <div>
                                                                     <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;">
@@ -1708,21 +1967,21 @@
                                                                         <label class="form-label" for="patientId">Patient Id <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="patientId" name="patientId"
-                                                                            placeholder="EDF000001">
+                                                                            placeholder="E.g. EDF000001">
                                                                         <div id="patientId_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="patientName">Name <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="patientName" name="patientName"
-                                                                            placeholder="Gopal">
+                                                                            placeholder="E.g. Gopal">
                                                                         <div id="patientName_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
-                                                                        <label class="form-label" for="referalDoctor">Referal Doctor <span
+                                                                        <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="referalDoctor"
-                                                                            name="referalDoctor" placeholder="A S Senthilvelu">
+                                                                            name="referalDoctor" placeholder="E.g. EDFCC001">
                                                                         <div id="referalDoctor_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
@@ -1756,166 +2015,169 @@
                                                                     </div>
                                                                     <div class="py-2" id="morningTime" style="display:none"><i
                                                                             class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
-                                                                        <button type="button"
-                                                                            class="timeButton btn btn-outline-primary my-1 btn btn-outline-primary py-1"
-                                                                            value="08:30 AM">08:30 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="08:40 AM">08:40 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="08:50 AM">08:50 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:00 AM">09:00 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:10 AM">09:10 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:20 AM">09:20 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:30 AM">09:30 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:40 AM">09:40 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:50 AM">09:50 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="10:00 AM">10:00 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="10:10 AM">10:10 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="10:20 AM">10:20 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="10:30 AM">10:30 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="10:40 AM">10:40 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="10:50 AM">10:50 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="11:00 AM">11:00 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="11:10 AM">11:10 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="11:20 AM">11:20 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="11:30 AM">11:30 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="11:40 AM">11:40 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="11:50 AM">11:50 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="08:30">08:30 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="08:40">08:40 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="08:50">08:50 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="09:00">09:00 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="09:10">09:10 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="09:20">09:20 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="09:30">09:30 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="09:40">09:40 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="09:50">09:50 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="10:00">10:00 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="10:10">10:10 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="10:20">10:20 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="10:30">10:30 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="10:40">10:40 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="10:50">10:50 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="11:00">11:00 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="11:10">11:10 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="11:20">11:20 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="11:30">11:30 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="11:40">11:40 AM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="11:50">11:50 AM</button>
+
                                                                     </div>
                                                                     <div class="py-2" id="afternoonTime" style="display:none"><i
                                                                             class="bi bi-sun"></i>,
                                                                         Afternoon Consult time,<br>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="12:00 PM">12:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="12:10 PM">12:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="12:20 PM">12:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="12:30 PM">12:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="12:40 PM">12:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="12:50 PM">12:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="01:00 PM">01:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="01:10 PM">01:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="01:20 PM">01:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="01:30 PM">01:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="01:40 PM">01:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="01:50 PM">01:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="02:00 PM">02:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="02:10 PM">02:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="02:20 PM">02:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="02:30 PM">02:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="02:40 PM">02:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="02:50 PM">02:50 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="12:00">12:00 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="12:10">12:10 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="12:20">12:20 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="12:30">12:30 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="12:40">12:40 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="12:50">12:50 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="13:00">01:00 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="13:10">01:10 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="13:20">01:20 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="13:30">01:30 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="13:40">01:40 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="13:50">01:50 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="14:00">02:00 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="14:10">02:10 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="14:20">02:20 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="14:30">02:30 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="14:40">02:40 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="14:50">02:50 PM</button>
+
                                                                     </div>
                                                                     <div class="py-2" id="eveningTime" style="display:none"><i
                                                                             class="bi bi-brightness-alt-high"></i>, Evening Consult time,<br>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="05:30 PM">05:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="05:40 PM">05:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="05:50 PM">05:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="06:00 PM">06:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="06:10 PM">06:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="06:20 PM">06:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="06:30 PM">06:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="06:40 PM">06:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="06:50 PM">06:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="07:00 PM">07:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="07:10 PM">07:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="07:20 PM">07:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="07:30 PM">07:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="07:40 PM">07:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="07:50 PM">07:50 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="17:30">05:30 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="17:40">05:40 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="17:50">05:50 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="18:00">06:00 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="18:10">06:10 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="18:20">06:20 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="18:30">06:30 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="18:40">06:40 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="18:50">06:50 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="19:00">07:00 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="19:10">07:10 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="19:20">07:20 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="19:30">07:30 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="19:40">07:40 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="19:50">07:50 PM</button>
+
                                                                     </div>
                                                                     <div class="py-2" id="nightTime" style="display:none"><i
                                                                             class="bi bi-moon-stars"></i>, Night Consult time,<br>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="08:00 PM">08:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="08:10 PM">08:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="08:20 PM">08:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="08:30 PM">08:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="08:40 PM">08:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="08:50 PM">08:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:00 PM">09:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:10 PM">09:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:20 PM">09:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:30 PM">09:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:40 PM">09:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="09:50 PM">09:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="10:00 PM">10:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-primary my-1"
-                                                                            value="10:10 PM">10:10 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="20:00">08:00 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="20:10">08:10 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="20:20">08:20 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="20:30">08:30 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="20:40">08:40 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="20:50">08:50 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="21:00">09:00 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="21:10">09:10 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="21:20">09:20 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="21:30">09:30 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="21:40">09:40 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="21:50">09:50 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="22:00">10:00 PM</button>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="22:10">10:10 PM</button>
+
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="appTime">Time <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="appTime" name="appTime"
-                                                                            placeholder="Select time" readonly>
+                                                                            placeholder="E.g. Select time" readonly>
                                                                         <div id="appTime_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="appReason">Patient's Complaint <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="appReason" name="appReason"
-                                                                            placeholder="Regular followups">
+                                                                            placeholder="E.g. Regular followups">
                                                                         <div id="appReason_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <!-- Payment -->
@@ -1923,7 +2185,7 @@
                                                                         <label class="form-label" for="pay">Payment <span
                                                                                 class="text-danger">******</span></label>
                                                                         <input type="text" class="form-control" id="pay" name="pay"
-                                                                            placeholder="Add payment details">
+                                                                            placeholder="E.g. Add payment details">
                                                                     </div>
 
                                                                     <button type="submit" class="btn text-light next float-end mt-2"
@@ -1937,40 +2199,162 @@
                                         </div>
                                     </section>
                                     <script>
-                                        var dateInput = document.getElementById('appDate'); var today = new Date(); var dd = String(today.getDate()).padStart(2, '0'); var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!             var yyyy = today.getFullYear();             var minDate = yyyy + '-' + mm + '-' + dd;             dateInput.setAttribute('min', minDate);
+                                        var dateInput = document.getElementById('appDate');
+                                        var today = new Date();
+                                        var dd = String(today.getDate()).padStart(2, '0');
+                                        var mm = String(today.getMonth() + 1).padStart(2, '0');
+                                        // January is 0!             
+                                        var yyyy = today.getFullYear();
+                                        var minDate = yyyy + '-' + mm + '-' + dd;
+                                        dateInput.setAttribute('min', minDate);
 
-                                        // var timeButton = document.querySelectorAll('.timeButton');             // timeButton.forEach(function (button) {             //     button.addEventListener('click', function () {             //         document.getElementById('appTime').value = button.value;             //     });             // });             var buttons = document.querySelectorAll('.timeButton');
-                                        buttons.forEach(function (button) { button.addEventListener('click', function () { buttons.forEach(function (btn) { btn.classList.remove('highlighted'); }); button.classList.add('highlighted'); document.getElementById('appTime').value = button.value; }); });
+                                        // var timeButton = document.querySelectorAll('.timeButton');
+                                        // timeButton.forEach(function (button) {         
+                                        //     button.addEventListener('click', function () { 
+                                        //         document.getElementById('appTime').value = button.value;     
+                                        //     });   
+                                        // }); 
 
-                                        function displayTime() { dayTime = document.getElementById("dayTime").value; if (dayTime == 'Morning') { document.getElementById("morningTime").style.display = "block"; } else { document.getElementById("morningTime").style.display = "none"; } if (dayTime == 'Afternoon') { document.getElementById("afternoonTime").style.display = "block"; } else { document.getElementById("afternoonTime").style.display = "none"; } if (dayTime == 'Evening') { document.getElementById("eveningTime").style.display = "block"; } else { document.getElementById("eveningTime").style.display = "none"; } if (dayTime == 'Night') { document.getElementById("nightTime").style.display = "block"; } else { document.getElementById("nightTime").style.display = "none"; } }
+                                        var buttons = document.querySelectorAll('.timeButton');
+                                        buttons.forEach(function (button) {
+                                            button.addEventListener('click',
+                                                function () {
+                                                    buttons.forEach(function (btn) {
+                                                        btn.classList.remove('highlighted');
+                                                    });
+                                                    button.classList.add('highlighted'); document.getElementById('appTime').value = button.value;
+                                                });
+                                        });
+
+                                        function displayTime() {
+                                            dayTime = document.getElementById("dayTime").value;
+                                            if (dayTime == 'Morning') {
+                                                document.getElementById("morningTime").style.display = "block";
+                                            } else {
+                                                document.getElementById("morningTime").style.display = "none";
+                                            }
+                                            if (dayTime == 'Afternoon') {
+                                                document.getElementById("afternoonTime").style.display = "block";
+                                            } else {
+                                                document.getElementById("afternoonTime").style.display = "none";
+                                            }
+                                            if (dayTime == 'Evening') {
+                                                document.getElementById("eveningTime").style.display = "block";
+                                            } else {
+                                                document.getElementById("eveningTime").style.display = "none";
+                                            }
+                                            if (dayTime == 'Night') {
+                                                document.getElementById("nightTime").style.display = "block";
+                                            } else {
+                                                document.getElementById("nightTime").style.display = "none";
+                                            }
+                                        }
+
                                         function clearErrorAppointment() {
                                             var patientId = document.getElementById("patientId").value;
                                             var name = document.getElementById("patientName").value;
                                             var referalDr = document.getElementById("referalDoctor").value;
                                             // var consultMode = document.getElementById("appConsult").value;      
                                             var date = document.getElementById("appDate").value;
-                                            var dayTime = document.getElementById("dayTime").value; var time = document.getElementById("appTime").value; var reason = document.getElementById("appReason").value;
-                                            if (patientId != "") { document.getElementById("patientId_err").innerHTML = ""; }
-                                            if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
-                                            if (referalDr != "") { document.getElementById("referalDoctor_err").innerHTML = ""; }
-                                            if (consultMode != "") {                 //     document.getElementById("appConsult_err").innerHTML = "";                 // }
-                                                if (date != "") { document.getElementById("appDate_err").innerHTML = ""; }
-                                                if (dayTime != "") { document.getElementById("dayTime_err").innerHTML = ""; }
-                                                if (time != "") { document.getElementById("appTime_err").innerHTML = ""; }
-                                                if (appReason != "") { document.getElementById("appReason_err").innerHTML = ""; }
+                                            var dayTime = document.getElementById("dayTime").value;
+                                            var time = document.getElementById("appTime").value;
+                                            var reason = document.getElementById("appReason").value;
+
+                                            if (patientId != "") {
+                                                document.getElementById("patientId_err").innerHTML = "";
                                             }
-                                            function validateAppointment() {
-                                                var patientId = document.getElementById("patientId").value; var name = document.getElementById("patientName").value; var referalDr = document.getElementById("referalDoctor").value;                 // var consultMode = document.getElementById("appConsult").value;                 var date = document.getElementById("appDate").value;                 var dayTime = document.getElementById("dayTime").value;                 var time = document.getElementById("appTime").value;                 var reason = document.getElementById("appReason").value;
-                                                if (patientId == "") { document.getElementById("patientId_err").innerHTML = "Id must be filled out."; document.getElementById("patientId").focus(); return false; } else { document.getElementById("patientId_err").innerHTML = ""; }
-                                                if (name == "") { document.getElementById("patientName_err").innerHTML = "Name must be filled out."; document.getElementById("patientName").focus(); return false; } else { document.getElementById("patientName_err").innerHTML = ""; }
-                                                if (referalDr == "") { document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out."; document.getElementById("referalDoctor").focus(); return false; } else { document.getElementById("referalDoctor_err").innerHTML = ""; }
-                                                // if (consultMode == "") {                 //     document.getElementById("appConsult_err").innerHTML = "Select the mode of consultation.";                 //     document.getElementById("appConsult").focus();                 //     return false;                 // } else {                 //     document.getElementById("appConsult_err").innerHTML = "";                 // }
-                                                if (date == "") { document.getElementById("appDate_err").innerHTML = "Date must be filled out."; document.getElementById("appDate").focus(); return false; } else { document.getElementById("appDate_err").innerHTML = ""; }
-                                                if (dayTime == "") { document.getElementById("dayTime_err").innerHTML = "Time must be filled out."; document.getElementById("dayTime").focus(); return false; } else { document.getElementById("dayTime_err").innerHTML = ""; }
-                                                if (time == "") { document.getElementById("appTime_err").innerHTML = "Time must be filled out."; document.getElementById("appTime").focus(); return false; } else { document.getElementById("appTime_err").innerHTML = ""; }
-                                                if (reason == "") { document.getElementById("appReason_err").innerHTML = "Complaints must be filled out."; document.getElementById("appReason").focus(); return false; } else { document.getElementById("appReason_err").innerHTML = ""; } return true;
+                                            if (name != "") {
+                                                document.getElementById("patientName_err").innerHTML = "";
+                                            }
+                                            if (referalDr != "") {
+                                                document.getElementById("referalDoctor_err").innerHTML = "";
+                                            }
+                                            // if (consultMode != "") {
+                                            //     document.getElementById("appConsult_err").innerHTML = "";
+                                            // }
+                                            if (date != "") {
+                                                document.getElementById("appDate_err").innerHTML = "";
+                                            }
+                                            if (dayTime != "") {
+                                                document.getElementById("dayTime_err").innerHTML = "";
+                                            }
+                                            if (time != "") {
+                                                document.getElementById("appTime_err").innerHTML = "";
+                                            }
+                                            if (appReason != "") {
+                                                document.getElementById("appReason_err").innerHTML = "";
                                             }
                                         }
+
+                                        function validateAppointment() {
+                                            var patientId = document.getElementById("patientId").value;
+                                            var name = document.getElementById("patientName").value;
+                                            var referalDr = document.getElementById("referalDoctor").value;
+                                            // var consultMode = document.getElementById("appConsult").value;
+                                            var date = document.getElementById("appDate").value;
+                                            var dayTime = document.getElementById("dayTime").value;
+                                            var time = document.getElementById("appTime").value;
+                                            var reason = document.getElementById("appReason").value;
+
+                                            if (patientId == "") {
+                                                document.getElementById("patientId_err").innerHTML = "Id must be filled out.";
+                                                document.getElementById("patientId").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("patientId_err").innerHTML = "";
+                                            }
+                                            if (name == "") {
+                                                document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
+                                                document.getElementById("patientName").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("patientName_err").innerHTML = "";
+                                            }
+                                            if (referalDr == "") {
+                                                document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out.";
+                                                document.getElementById("referalDoctor").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("referalDoctor_err").innerHTML = "";
+                                            }
+                                            // if (consultMode == "") {
+                                            //     document.getElementById("appConsult_err").innerHTML = "Select the mode of consultation.";
+                                            //     document.getElementById("appConsult").focus();
+                                            //     return false;
+                                            // } else {
+                                            //     document.getElementById("appConsult_err").innerHTML = "";
+                                            // }
+                                            if (date == "") {
+                                                document.getElementById("appDate_err").innerHTML = "Date must be filled out.";
+                                                document.getElementById("appDate").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("appDate_err").innerHTML = "";
+                                            }
+                                            if (dayTime == "") {
+                                                document.getElementById("dayTime_err").innerHTML = "Time must be filled out.";
+                                                document.getElementById("dayTime").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("dayTime_err").innerHTML = "";
+                                            }
+                                            if (time == "") {
+                                                document.getElementById("appTime_err").innerHTML = "Time must be filled out.";
+                                                document.getElementById("appTime").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("appTime_err").innerHTML = "";
+                                            }
+                                            if (reason == "") {
+                                                document.getElementById("appReason_err").innerHTML = "Complaints must be filled out.";
+                                                document.getElementById("appReason").focus();
+                                                return false;
+                                            } else {
+                                                document.getElementById("appReason_err").innerHTML = "";
+                                            }
+                                            return true;
+                                        }
+
                                     </script>
             <?php
         } else if ($method == "chiefDoctors") {
@@ -2365,7 +2749,8 @@
                                                             //     document.getElementById("profilePhoto_err").innerHTML = "";   // }           
                                                         }
                                                     </script>
-                                                    <script>             function validateDetails() {
+                                                    <script>
+                                                        function validateDetails() {
                                                             var doctorNmae = document.getElementById("drName").value;
                                                             var doctorMobile = document.getElementById("drMobile").value;
                                                             var doctorEmail = document.getElementById("drEmail").value;
@@ -2470,16 +2855,37 @@
             </div>
         </div>
 
+        <!-- Popup for Patient details -->
+        <!-- <div class="modal fade" id="viewPatientDetails" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">All details</h5>
+                                    <?php
+                                    if(isset($patientList['id']))
+                                    foreach ($patientList as $key => $value) {
+                                            ?>
+                                            <p><?php echo $value['patientId'] ?> </p>
+                                    <?php }
+                                    ?>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+
     </main>
 
     <!-- Event listener to block right-click -->
-    <!-- <script>
+    <script>
     function blockRightClick(event) {
         event.preventDefault(); 
     }
 
     document.addEventListener('contextmenu', blockRightClick);
-</script> -->
+</script>
 
 </body>
 

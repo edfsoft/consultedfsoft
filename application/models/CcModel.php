@@ -74,12 +74,12 @@ class CcModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    public function getCcDetails()
+    public function getAppointmentList()
     {
-        $ccIdDb = $_SESSION['ccIdDb'];
-        $details = "SELECT * FROM `cc_details` WHERE `id` = $ccIdDb";
+        $ccId = $_SESSION['ccId'];
+        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId`=  $ccId  ORDER BY `dateOfAppoint`, `timeOfAppoint`";
         $select = $this->db->query($details);
-        return $select->result_array();
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
     public function getHcpProfile()
@@ -92,6 +92,14 @@ class CcModel extends CI_Model
     public function getHcpDetails($hcpIdDb)
     {
         $details = "SELECT * FROM `hcp_details` WHERE `id`=$hcpIdDb ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getCcDetails()
+    {
+        $ccIdDb = $_SESSION['ccIdDb'];
+        $details = "SELECT * FROM `cc_details` WHERE `id` = $ccIdDb";
         $select = $this->db->query($details);
         return $select->result_array();
     }

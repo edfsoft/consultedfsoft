@@ -139,6 +139,8 @@ class healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "appointments";
+            $appointmentList = $this->HcpModel->getAppointmentList();
+            $this->data['appointmentList'] = $appointmentList['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();
@@ -153,6 +155,12 @@ class healthcareprovider extends CI_Controller
         } else {
             $this->index();
         }
+    }
+
+    public function newAppointment()
+    {
+        $appointmentDetails = $this->HcpModel->insertappointment();
+        $this->appointments();
     }
 
     public function chiefDoctors()
@@ -216,6 +224,12 @@ class healthcareprovider extends CI_Controller
         $this->myProfile();
     }
 
+    // public function getDetails()
+    // {
+    //     $patientList = $this->HcpModel->getPatientList();
+    //     $this->data['patientList'] = $patientList['response'];
+    //     $this->load->view('hcpDashboard.php',  $this->data);
+    // }
 
     // public function logout()
     // {

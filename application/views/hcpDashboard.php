@@ -2888,10 +2888,10 @@
     </script>
     <!-- Hide page source -->
     <script>
-         document.onkeydown = function (e) {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) {
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+                return false;
             }
-            return false;
         };
     </script>
 

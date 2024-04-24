@@ -224,14 +224,23 @@
 
     </script>
 
- <!-- Event listener to block right-click -->
+    <!-- Event listener to block right-click -->
     <script>
-    function blockRightClick(event) {
-        event.preventDefault(); 
-    }
+        function blockRightClick(event) {
+            event.preventDefault();
+        }
 
-    document.addEventListener('contextmenu', blockRightClick);
-</script>
+        document.addEventListener('contextmenu', blockRightClick);
+    </script>
+    <!-- To hide page source -->
+    <script>
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+                return false;
+            }
+        };
+    </script>
+
 </body>
 
 </html>

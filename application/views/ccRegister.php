@@ -120,8 +120,8 @@
                             style="background-color:#0079AD;font-size:16px;font-weight:600;">Sign Up</button>
                     </form>
                     <p class="mt-3" style="font-size:18px;font-weight:400;">Already have an account ? <a
-                            href="<?php echo base_url() . "Chiefconsultant/" ?>"
-                            class="text-decoration-none text-dark" style="font-weight:600;"> Login</a></p>
+                            href="<?php echo base_url() . "Chiefconsultant/" ?>" class="text-decoration-none text-dark"
+                            style="font-weight:600;"> Login</a></p>
                 </div>
             </div>
         </div>
@@ -224,23 +224,23 @@
 
     </script>
 
-     <!-- Event listener to block right-click -->
+    <!-- Event listener to block right-click -->
     <script>
-    function blockRightClick(event) {
-        event.preventDefault(); 
-    }
+        function blockRightClick(event) {
+            event.preventDefault();
+        }
 
-    document.addEventListener('contextmenu', blockRightClick);
-</script>
- <!-- Hide page source -->
- <script>
-         document.onkeydown = function (e) {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) {
+        document.addEventListener('contextmenu', blockRightClick);
+    </script>
+    <!-- Hide page source -->
+    <script>
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+                return false;
             }
-            return false;
         };
     </script>
-    
+
 </body>
 
 </html>

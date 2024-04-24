@@ -75,7 +75,8 @@
                     <p class="" style="font-size:18px;font-weight:400;">Empowering chief practitioners to provide <br>
                         personalized online diabetes consultations <br> for comprehensive patient care.
                     </p>
-                    <form action="<?php echo base_url() . "Chiefconsultant/ccLogin" ?>" method="post" name="ccloginform" onsubmit="return validateLogin()">
+                    <form action="<?php echo base_url() . "Chiefconsultant/ccLogin" ?>" method="post" name="ccloginform"
+                        onsubmit="return validateLogin()">
                         <div class="mb-3">
                             <label for="ccEmail" class="form-label">Email address <span
                                     class="text-danger">*</span></label>
@@ -162,23 +163,23 @@
         }
     </script>
 
-   <!-- Event listener to block right-click -->
+    <!-- Event listener to block right-click -->
     <script>
-    function blockRightClick(event) {
-        event.preventDefault(); 
-    }
+        function blockRightClick(event) {
+            event.preventDefault();
+        }
 
-    document.addEventListener('contextmenu', blockRightClick);
-</script>
- <!-- Hide page source -->
- <script>
-         document.onkeydown = function (e) {
-            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) {
+        document.addEventListener('contextmenu', blockRightClick);
+    </script>
+    <!-- Hide page source -->
+    <script>
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+                return false;
             }
-            return false;
         };
     </script>
-    
+
 </body>
 
 </html>

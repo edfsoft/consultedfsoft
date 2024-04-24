@@ -119,9 +119,9 @@
                         <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
                             style="background-color:#00AD8E;font-size:16px;font-weight:600;">Sign Up</button>
                     </form>
-                    <!-- <p class="mt-3" style="font-size:18px;font-weight:400;">Already have an account ? <a
+                    <p class="mt-3" style="font-size:18px;font-weight:400;">Already have an account ? <a
                             href="<?php echo base_url() . "Healthcareprovider/" ?>"
-                            class="text-decoration-none text-dark" style="font-weight:600;"> Login</a></p> -->
+                            class="text-decoration-none text-dark" style="font-weight:600;"> Login</a></p>
                 </div>
             </div>
         </div>

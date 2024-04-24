@@ -2863,8 +2863,8 @@
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="exampleModalLabel">All details</h5>
                                     <?php
-                                    if(isset($patientList['id']))
-                                    foreach ($patientList as $key => $value) {
+                                    if (isset($patientList['id']))
+                                        foreach ($patientList as $key => $value) {
                                             ?>
                                             <p><?php echo $value['patientId'] ?> </p>
                                     <?php }
@@ -2880,12 +2880,20 @@
 
     <!-- Event listener to block right-click -->
     <script>
-    function blockRightClick(event) {
-        event.preventDefault(); 
-    }
+        function blockRightClick(event) {
+            event.preventDefault();
+        }
 
-    document.addEventListener('contextmenu', blockRightClick);
-</script>
+        document.addEventListener('contextmenu', blockRightClick);
+    </script>
+    <!-- Hide page source -->
+    <script>
+         document.onkeydown = function (e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) {
+            }
+            return false;
+        };
+    </script>
 
 </body>
 

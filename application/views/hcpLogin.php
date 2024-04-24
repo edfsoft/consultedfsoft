@@ -102,9 +102,9 @@
                             <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
-                    <!-- <p class="mt-3" style="font-size:18px;font-weight:400;">Don't have an account? <a
+                    <p class="mt-3" style="font-size:18px;font-weight:400;">Don't have an account? <a
                             href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                            class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p> -->
+                            class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
                 </div>
             </div>
         </div>
@@ -167,6 +167,15 @@
 
     document.addEventListener('contextmenu', blockRightClick);
 </script>
+ <!-- Hide page source -->
+ <script>
+         document.onkeydown = function (e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) {
+            }
+            return false;
+        };
+    </script>
+    
 </body>
 
 </html>

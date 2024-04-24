@@ -88,8 +88,8 @@
                     </button>
                     <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-70px);"
                         aria-labelledby="dropDownSignup">
-                        <!-- <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                                class="dropdown-item py-2">Health Care Provider</a></li> -->
+                        <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
+                                class="dropdown-item py-2">Health Care Provider</a></li>
                         <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>"
                                 class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
@@ -307,6 +307,14 @@
         }
 
         document.addEventListener('contextmenu', blockRightClick);
+    </script>
+     <!-- Hide page source -->
+     <script>
+         document.onkeydown = function (e) {
+            if (e.ctrlKey && (e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 85 || e.keyCode === 117)) {
+            }
+            return false;
+        };
     </script>
 
 </body>

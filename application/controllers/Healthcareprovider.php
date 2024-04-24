@@ -239,7 +239,12 @@ class healthcareprovider extends CI_Controller
 
     public function logout()
     {
-        $this->session->unset_userdata('LoggedInDetails');
+        // $this->session->unset_userdata('LoggedInDetails');
+        $this->session->unset_userdata('hcpIdDb');
+        $this->session->unset_userdata('hcpId');
+        $this->session->unset_userdata('hcpsName');
+        $this->session->unset_userdata('hcpsMailId');
+        $this->session->unset_userdata('hcpsMobileNum');
         $this->index();
     }
 }

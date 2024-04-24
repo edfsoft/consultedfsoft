@@ -188,7 +188,15 @@ class chiefconsultant extends CI_Controller
 
     public function logout()
     {
-        $this->session->unset_userdata('LoggedInDetails');
+        // $this->session->unset_userdata('LoggedInDetails');
+        // unset($this->session->LoggedInDetails('ccId'));
+        // unset($this->session->userdata('ccId'));
+        // $this->session->mark_as_flash('LoggedInDetails');
+        $this->session->unset_userdata('ccIdDb');
+        $this->session->unset_userdata('ccId');
+        $this->session->unset_userdata('ccName');
+        $this->session->unset_userdata('ccMailId');
+        $this->session->unset_userdata('ccMobileNum');
         $this->index();
     }
 

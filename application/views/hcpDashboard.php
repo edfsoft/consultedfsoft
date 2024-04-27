@@ -79,7 +79,7 @@
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center ms-5">
                 <li class="nav-item dropdown d-flex justify-content-evenly">
-                    <a href="" class="m-2 me-4">
+                    <a href="#" class="m-2 me-4">
                         <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a>
 
                     <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
@@ -497,8 +497,6 @@
                                                     <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id'] ?>"
                                                         class="px-1 "><button class="btn btn-secondary"><i
                                                                 class="bi bi-pencil"></i></button></a>
-                                                    <a href="#" onclick="return confirm('Are you sure you want to delete?')"><button
-                                                            class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
 
                                                     <!-- Drop down 3 dots -->
                                                     <!-- <a class="icon" href="#" data-bs-toggle="dropdown">
@@ -621,11 +619,11 @@
 
                     <section>
                         <div class="card shadow-none rounded">
-                            <div class="card-body p-4">
+                            <div class="card-body px-md-4 py-4">
                                 <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                         class="bi bi-arrow-left"></i> Back</a>
                                 <!-- Form  -->
-                                <div class="container">
+                                <div class="">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
@@ -1949,14 +1947,13 @@
 
                                     <section>
                                         <div class="card shadow-none rounded">
-                                            <div class="card-body p-4">
+                                            <div class="card-body px-md-4 py-4">
                                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                                     class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
                                                 <!-- Form  -->
-                                                <div class="container">
+                                                <div class="">
                                                     <div class="row">
                                                         <div class="col-md-8">
-
                                                             <form action="<?php echo base_url() . "Healthcareprovider/newAppointment" ?>"
                                                                 method="POST" name="patientDetails" onsubmit="return validateAppointment()"
                                                                 oninput="clearErrorAppointment()">
@@ -1966,22 +1963,38 @@
                                                                     <div class="form-group pb-2">
                                                                         <label class="form-label" for="patientId">Patient Id <span
                                                                                 class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control" id="patientId" name="patientId"
-                                                                            placeholder="E.g. EDF000001">
+                                                                        <select class="form-control" name="patientId" id="patientId">
+                                                                            <option value="">Select Patient Id</option>
+                                                        <?php
+                                                        foreach ($patientsId as $key => $value) {
+                                                            ?>
+                                                                                <option value="<?php echo $value['patientId'] ?>">
+                                                            <?php echo $value['patientId'] ." / ". $value['firstName'] ." ". $value['lastName'] ?>
+                                                                                </option>
+                                                    <?php } ?>
+                                                                        </select>
                                                                         <div id="patientId_err" class="text-danger pt-1"></div>
                                                                     </div>
-                                                                    <div class="form-group pb-3">
+                                                                    <!-- <div class="form-group pb-3">
                                                                         <label class="form-label" for="patientName">Name <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="patientName" name="patientName"
                                                                             placeholder="E.g. Gopal">
                                                                         <div id="patientName_err" class="text-danger pt-1"></div>
-                                                                    </div>
+                                                                    </div> -->
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                                                 class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control" id="referalDoctor"
-                                                                            name="referalDoctor" placeholder="E.g. EDFCC001">
+                                                                        <select class="form-control" name="referalDoctor" id="referalDoctor">
+                                                                            <option value="">Select Chief Consultant Id</option>
+                                                        <?php
+                                                        foreach ($ccsId as $key => $value) {
+                                                            ?>
+                                                                                <option value="<?php echo $value['ccId'] ?>">
+                                                            <?php echo $value['ccId'] ?> / <?php echo $value['doctorName'] ?>
+                                                                                </option>
+                                                    <?php } ?>
+                                                                        </select>
                                                                         <div id="referalDoctor_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
@@ -2252,7 +2265,7 @@
 
                                         function clearErrorAppointment() {
                                             var patientId = document.getElementById("patientId").value;
-                                            var name = document.getElementById("patientName").value;
+                                            // var name = document.getElementById("patientName").value;
                                             var referalDr = document.getElementById("referalDoctor").value;
                                             // var consultMode = document.getElementById("appConsult").value;      
                                             var date = document.getElementById("appDate").value;
@@ -2263,9 +2276,9 @@
                                             if (patientId != "") {
                                                 document.getElementById("patientId_err").innerHTML = "";
                                             }
-                                            if (name != "") {
-                                                document.getElementById("patientName_err").innerHTML = "";
-                                            }
+                                            // if (name != "") {
+                                            //     document.getElementById("patientName_err").innerHTML = "";
+                                            // }
                                             if (referalDr != "") {
                                                 document.getElementById("referalDoctor_err").innerHTML = "";
                                             }
@@ -2288,7 +2301,7 @@
 
                                         function validateAppointment() {
                                             var patientId = document.getElementById("patientId").value;
-                                            var name = document.getElementById("patientName").value;
+                                            // var name = document.getElementById("patientName").value;
                                             var referalDr = document.getElementById("referalDoctor").value;
                                             // var consultMode = document.getElementById("appConsult").value;
                                             var date = document.getElementById("appDate").value;
@@ -2303,13 +2316,13 @@
                                             } else {
                                                 document.getElementById("patientId_err").innerHTML = "";
                                             }
-                                            if (name == "") {
-                                                document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
-                                                document.getElementById("patientName").focus();
-                                                return false;
-                                            } else {
-                                                document.getElementById("patientName_err").innerHTML = "";
-                                            }
+                                            // if (name == "") {
+                                            //     document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
+                                            //     document.getElementById("patientName").focus();
+                                            //     return false;
+                                            // } else {
+                                            //     document.getElementById("patientName_err").innerHTML = "";
+                                            // }
                                             if (referalDr == "") {
                                                 document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out.";
                                                 document.getElementById("referalDoctor").focus();
@@ -2887,13 +2900,13 @@
         document.addEventListener('contextmenu', blockRightClick);
     </script>
     <!-- Hide page source -->
-    <script>
+    <!-- <script>
         document.onkeydown = function (e) {
             if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
                 return false;
             }
         };
-    </script>
+    </script> -->
 
 </body>
 

@@ -24,6 +24,11 @@
             font-family: 'Poppins', sans-serif;
         }
 
+         /* Form Labels */
+         .form-label {
+            font-weight: 500;
+        }
+
         .fixed-image {
             position: fixed;
             top: 0;
@@ -58,7 +63,7 @@
 <body>
     <div class="container-fluid">
         <div class="row" id="bgcolor">
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
                 <img src="<?php echo base_url(); ?>assets/hcpbglogin.png" alt="Fixed Image"
                     class="fixed-image img-fluid">
                 <div class="fixed-image-container text-center d-none d-md-block"
@@ -68,12 +73,14 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="login-form mx-lg-5 p-5">
-                    <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo" class="img-fluid">
-                    <p class="pt-2" style="font-size:40px;font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
+                <div class="login-form mx-lg-5 p-3 p-sm-5">
+                    <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
+                            alt="logo" class="img-fluid"></a>
+                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
-                    <p class="" style="font-size:18px;font-weight:400;">Empowering general practitioners to provide <br>
-                        personalized online diabetes consultations <br> for comprehensive patient care. </p>
+                    <p class="text-justify" style="font-size:18px;font-weight:400;">Empowering general practitioners to
+                        provide
+                        personalized online diabetes consultations for comprehensive patient care. </p>
                     <form action="<?php echo base_url() . "Healthcareprovider/hcpLogin" ?>" method="post"
                         name="hcploginform" onsubmit="return validateLogin()">
                         <div class="mb-3">
@@ -93,17 +100,18 @@
                         <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                             and a minimum of 8 characters.</div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <input type="checkbox" id="check" name="check" value="1">
                             <label for="check"> Remember me</label>
-                        </div>
+                        </div> -->
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
+                            <button type="submit"
+                                class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
                                 style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
                             <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
-                    <p class="mt-3" style="font-size:18px;font-weight:400;">Don't have an account? <a
+                    <p class="mt-4" style="font-size:18px;font-weight:400;">Don't have an account? <a
                             href="<?php echo base_url() . "Healthcareprovider/register" ?>"
                             class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
                 </div>

@@ -24,6 +24,11 @@
             font-family: 'Poppins', sans-serif;
         }
 
+         /* Form Labels */
+         .form-label {
+            font-weight: 500;
+        }
+
         .fixed-image {
             position: fixed;
             top: 0;
@@ -68,8 +73,8 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="login-form mx-lg-5 p-5">
-                    <p class="pt-2" style="font-size:40px;font-weight:500;color:#E01A2B;">Create an Account</p>
+                <div class="login-form mx-lg-5 p-3 p-sm-5">
+                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#E01A2B;">Create an Account</p>
                     <p class="" style="font-size:24px;font-weight:600;">CHIEF CONSULTANT</p>
                     <p class="" style="font-size:18px;font-weight:400;">We're thrilled to have you join us on your
                         journey towards better health.</p>
@@ -111,15 +116,15 @@
                             <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                         </div>
 
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <input type="checkbox" id="check" name="check" value="1">
                             <label for="check">I agree the Terms of Use and Privacy Policy.</label>
-                        </div>
+                        </div> -->
 
-                        <button type="submit" class="border-0 rounded-pill text-light mt-4 px-5 py-3"
+                        <button type="submit" class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
                             style="background-color:#0079AD;font-size:16px;font-weight:600;">Sign Up</button>
                     </form>
-                    <p class="mt-3" style="font-size:18px;font-weight:400;">Already have an account ? <a
+                    <p class="mt-4" style="font-size:18px;font-weight:400;">Already have an account ? <a
                             href="<?php echo base_url() . "Chiefconsultant/" ?>" class="text-decoration-none text-dark"
                             style="font-weight:600;"> Login</a></p>
                 </div>

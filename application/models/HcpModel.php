@@ -271,7 +271,7 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
         $insert = array(
             'patientId' => $post['patientId'],
-            'patientName' => $post['patientName'],
+            // 'patientName' => $post['patientName'],
             'referalDoctor' => $post['referalDoctor'],
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],

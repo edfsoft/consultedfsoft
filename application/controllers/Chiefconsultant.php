@@ -59,7 +59,7 @@ class chiefconsultant extends CI_Controller
 
     public function setVariable()
     {
-        $appointmentList = $this->HcpModel->getAppointmentList();
+        $appointmentList = $this->CcModel->getAppointmentList();
         $this->data['appointmentListCount'] = $appointmentList['totalRows'];
     }
 
@@ -107,7 +107,7 @@ class chiefconsultant extends CI_Controller
     {
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "appointments";
-            $appointmentList = $this->HcpModel->getAppointmentList();
+            $appointmentList = $this->CcModel->getAppointmentList();
             $this->data['appointmentList'] = $appointmentList['response'];
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);

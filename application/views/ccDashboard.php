@@ -68,7 +68,7 @@
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center ms-5">
                 <li class="nav-item dropdown d-flex justify-content-evenly">
-                    <a href="" class="m-2 me-4">
+                    <a href="#" class="m-2 me-4">
                         <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a>
 
                     <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"

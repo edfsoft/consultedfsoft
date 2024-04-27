@@ -151,6 +151,10 @@ class healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "appointmentsForm";
+            $patientList = $this->HcpModel->getPatientList();
+            $this->data['patientsId'] = $patientList['response'];
+            $ccDetails = $this->HcpModel->getCcProfile();
+            $this->data['ccsId'] = $ccDetails;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();

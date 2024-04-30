@@ -136,6 +136,7 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "hcpsProfile";
             $hcpDetails = $this->CcModel->getHcpDetails($hcpIdDb);
             $this->data['hcpDetails'] = $hcpDetails;
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();

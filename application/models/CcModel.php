@@ -62,7 +62,7 @@ class CcModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['ccEmail'];
         $password = $postData['ccPassword'];
-        $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'";
+        $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'  AND deleteStatus = '0'";
         $count = $this->db->query($query);
         return $count->result_array();
     }
@@ -84,14 +84,14 @@ class CcModel extends CI_Model
 
     public function getHcpProfile()
     {
-        $details = "SELECT * FROM `hcp_details`";
+        $details = "SELECT * FROM `hcp_details` WHERE deleteStatus = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
     public function getHcpDetails($hcpIdDb)
     {
-        $details = "SELECT * FROM `hcp_details` WHERE `id`=$hcpIdDb ";
+        $details = "SELECT * FROM `hcp_details` WHERE `id`=$hcpIdDb  AND deleteStatus = '0' ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -99,7 +99,7 @@ class CcModel extends CI_Model
     public function getCcDetails()
     {
         $ccIdDb = $_SESSION['ccIdDb'];
-        $details = "SELECT * FROM `cc_details` WHERE `id` = $ccIdDb";
+        $details = "SELECT * FROM `cc_details` WHERE `id` = $ccIdDb  AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }

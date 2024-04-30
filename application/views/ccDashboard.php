@@ -147,7 +147,8 @@
                         <i class="bi bi-calendar4 pe-3"></i><span>Appointments</span>
                         <p class="text-dark float-end">
                             <i class="fas fa-envelope fa-2x"></i>
-                            <span class="badge rounded-pill badge-notification bg-danger"><?php echo $appointmentListCount ?></span>
+                            <span
+                                class="badge rounded-pill badge-notification bg-danger"><?php echo $appointmentListCount ?></span>
                         </p>
                     </div>
                 </a>
@@ -187,7 +188,7 @@
             </script>
 
             <section>
-                <p class="ps-2 py-3" style="font-size: 24px; font-weight: 500">
+                <p class="card ps-3 py-3" style="font-size: 24px; font-weight: 500">
                     Dashboard
                 </p>
 
@@ -408,8 +409,8 @@
 
                 <section>
                     <div class="card shadow-none rounded">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between mt-2 mb-5">
+                        <div class="card-body p-2 p-sm-4">
+                            <div class="d-flex justify-content-between mt-2 mb-3">
                                 <p class="ps-2" style="font-size: 24px; font-weight: 500">
                                     Patients
                                 </p>
@@ -586,15 +587,19 @@
 
                     <section>
                         <div class="card shadow-none rounded">
-                            <div class="card-body p-5">
+                            <div class="d-flex justify-content-between mt-2 p-3">
+                                <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                 <a href="<?php echo base_url() . "Chiefconsultant/patients" ?>" class="float-end text-dark"><i
                                         class="bi bi-arrow-left"></i> Back</a>
+                            </div>
+                            <div class="card-body p-2 p-sm-5">
+
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
                                     <div class="d-sm-flex justify-content-evenly mt-2 mb-5">
                                         <div class="ps-sm-5">
-                                            <p style="font-size:24px;font-weight:500;"> <?php echo $value['firstName'] ?>
+                                            <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
                                         <?php echo $value['lastName'] ?> | <?php echo $value['patientId'] ?>
                                             </p>
                                             <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> year(s)</p>
@@ -611,7 +616,7 @@
                                 <?php } ?>
                                     </div>
 
-                                    <h4 class="my-3">Personal Details:</h4>
+                                    <h5 class="my-3 fw-bolder">Personal Details:</h5>
                                     <div class="d-md-flex">
                                         <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> - <a
                                                 href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
@@ -658,7 +663,7 @@
                                     <?php echo $value['partnerBlood'] ?>
                                         </p>
                                     </div>
-                                    <h4 class="mt-5 mb-3">Medical Records:</h4>
+                                    <h5 class="my-3 fw-bolder">Medical Records:</h5>
                                     <div class="d-md-flex">
                                         <p class="col-sm-6"><span class="text-secondary ">Weight</span> - <?php echo $value['weight'] ?>
                                         </p>
@@ -685,7 +690,9 @@
                                         <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
                                     </div>
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
-                                        <h4 class="mt-5 mb-3">Documents / Reports:</h4>
+
+                                        <h5 class="my-3 mt-5 fw-bolder">Documents / Reports:</h5>
+
                                         <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
                                                 <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> - <a
@@ -702,8 +709,9 @@
                             } ?>
                             </div>
                         </div>
-                        </div>
+
                     </section>
+
 
             <?php
         } else if ($method == "appointments") {
@@ -714,14 +722,14 @@
 
                         <section>
                             <div class="card shadow-none rounded">
-                                <div class="card-body p-4">
+                                <div class="card-body p-2 p-sm-4">
                                     <div class="d-flex justify-content-between mt-2 mb-5">
                                         <p class="ps-2" style="font-size: 24px; font-weight: 500">
                                             Appointments
                                         </p>
                                     </div>
                                     <div class="table-responsive">
-                                        <table class="table text-center" id="appointmentTable" >
+                                        <table class="table text-center" id="appointmentTable">
                                             <thead>
                                                 <tr>
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
@@ -766,8 +774,12 @@
                                                         <td><?php echo $count; ?>. </td>
                                                         <td style="font-size: 16px"><?php echo $value['patientId'] ?></td>
                                                         <td class="px-4"><?php echo $value['patientName'] ?></td>
-                                                        <td style="font-size: 16px"><?php echo date("d-m-Y", strtotime($value['dateOfAppoint']));?></td>
-                                                                <td class="" style="font-size: 16px"><?php echo date('h:i a', strtotime($value['timeOfAppoint']));?></td>
+                                                        <td style="font-size: 16px">
+                                                <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
+                                                        </td>
+                                                        <td class="" style="font-size: 16px">
+                                                <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
+                                                        </td>
                                                         <td style="font-size: 16px"><?php echo $value['patientHcp'] ?></td>
                                                         <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
                                                         <td style="font-size: 16px">
@@ -781,102 +793,103 @@
                                 </div>
                             </div>
                             <div id="paginationButtons" class="text-center mt-4">
-                                        <div id="paginationBtnsContainer"></div>
-                                    </div>
-                                </section>
-                                <script>
-                                    var table = document.getElementById('appointmentTable');
-                                    var rowsPerPage = 7;
-                                    var currentPage = 1;
-                                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
+                                <div id="paginationBtnsContainer"></div>
+                            </div>
+                        </section>
 
+                        <script>
+                            var table = document.getElementById('appointmentTable');
+                            var rowsPerPage = 7;
+                            var currentPage = 1;
+                            var totalPages = Math.ceil(table.rows.length / rowsPerPage);
+
+                            showPage(currentPage);
+
+                            function showPage(page) {
+                                var startIndex = (page - 1) * rowsPerPage;
+                                var endIndex = startIndex + rowsPerPage;
+                                for (var i = 0; i < table.rows.length; i++) {
+                                    if (i >= startIndex && i < endIndex) {
+                                        table.rows[i].style.display = 'table-row';
+                                    } else {
+                                        table.rows[i].style.display = 'none';
+                                    }
+                                }
+                            }
+
+                            function goToPage(page) {
+                                if (page < 1) page = 1;
+                                if (page > totalPages) page = totalPages;
+                                currentPage = page;
+                                showPage(currentPage);
+                                updatePaginationButtons();
+                            }
+
+                            function previousPage() {
+                                if (currentPage > 1) {
+                                    currentPage--;
                                     showPage(currentPage);
-
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i >= startIndex && i < endIndex) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-
-                                    function goToPage(page) {
-                                        if (page < 1) page = 1;
-                                        if (page > totalPages) page = totalPages;
-                                        currentPage = page;
-                                        showPage(currentPage);
-                                        updatePaginationButtons();
-                                    }
-
-                                    function previousPage() {
-                                        if (currentPage > 1) {
-                                            currentPage--;
-                                            showPage(currentPage);
-                                            updatePaginationButtons();
-                                        }
-                                    }
-
-                                    function nextPage() {
-                                        if (currentPage < totalPages) {
-                                            currentPage++;
-                                            showPage(currentPage);
-                                            updatePaginationButtons();
-                                        }
-                                    }
-
-                                    function updatePaginationButtons() {
-                                        var buttonsHtml = '';
-
-                                        var startPage = Math.max(1, currentPage - 1);
-                                        var endPage = Math.min(totalPages, currentPage + 1);
-
-                                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
-
-                                        for (var i = startPage; i <= endPage; i++) {
-                                            var activeClass = (i === currentPage) ? 'active' : '';
-                                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-                                        }
-
-                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
-
-                                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
-
-                                        var previousBtn = document.getElementById('previousBtn');
-                                        var nextBtn = document.getElementById('nextBtn');
-                                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
-                                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
-                                    }
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-
-
                                     updatePaginationButtons();
-                                </script>
-                            
+                                }
+                            }
+
+                            function nextPage() {
+                                if (currentPage < totalPages) {
+                                    currentPage++;
+                                    showPage(currentPage);
+                                    updatePaginationButtons();
+                                }
+                            }
+
+                            function updatePaginationButtons() {
+                                var buttonsHtml = '';
+
+                                var startPage = Math.max(1, currentPage - 1);
+                                var endPage = Math.min(totalPages, currentPage + 1);
+
+                                buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+
+                                for (var i = startPage; i <= endPage; i++) {
+                                    var activeClass = (i === currentPage) ? 'active' : '';
+                                    buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+                                }
+
+                                buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+
+                                document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
+
+                                var previousBtn = document.getElementById('previousBtn');
+                                var nextBtn = document.getElementById('nextBtn');
+                                previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
+                                nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
+                            }
+                            function showPage(page) {
+                                var startIndex = (page - 1) * rowsPerPage;
+                                var endIndex = startIndex + rowsPerPage;
+                                for (var i = 0; i < table.rows.length; i++) {
+                                    if (i === 0 || (i >= startIndex && i < endIndex)) {
+                                        table.rows[i].style.display = 'table-row';
+                                    } else {
+                                        table.rows[i].style.display = 'none';
+                                    }
+                                }
+                            }
+                            function showPage(page) {
+                                var startIndex = (page - 1) * rowsPerPage;
+                                var endIndex = startIndex + rowsPerPage;
+                                for (var i = 0; i < table.rows.length; i++) {
+                                    if (i === 0 || (i >= startIndex && i < endIndex)) {
+                                        table.rows[i].style.display = 'table-row';
+                                    } else {
+                                        table.rows[i].style.display = 'none';
+                                    }
+                                }
+                            }
+
+
+                            updatePaginationButtons();
+                        </script>
+
             <?php
         } else if ($method == "hcps") {
             ?>
@@ -918,16 +931,10 @@
                                 </div>
                             </div> -->
                                 <div class="card rounded">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="ps-2 m-3" style="font-size: 24px; font-weight: 500">
-                                            Health Care Providers
-                                        </p>
-                                        <a href="<?php echo base_url() . "Healthcareprovider/register" ?>" class="my-auto me-3">
-                                            <button style="background-color: #0079AD;" class="text-light border-0 rounded p-2">
-                                                <i class="bi bi-plus-square-fill"></i> HCP</button></a>
-                                    </div>
+                                    <p class="ps-2 m-3" style="font-size: 24px; font-weight: 500">
+                                        Health Care Providers
+                                    </p>
                                 </div>
-
                                 <div class="container">
                                     <div class="row justify-content-center">
                         <?php foreach ($hcpDetails as $key => $value) { ?>
@@ -958,6 +965,7 @@
                                     </div>
                                 </div>
                             </section>
+
             <?php
         } else if ($method == "hcpsProfile") {
             ?>
@@ -967,19 +975,22 @@
 
                                 <section>
                                     <div class="card shadow-none rounded">
-                        <?php
-                        foreach ($hcpDetails as $key => $value) {
-                            ?>
-                                            <div class="card-body p-4">
-                                                <a href="<?php echo base_url() . "Chiefconsultant/healthCareProviders" ?>"
-                                                    class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
+                                        <div class="d-flex justify-content-between mt-2 p-2">
+                                            <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
+                                            <a href="<?php echo base_url() . "Chiefconsultant/healthCareProviders" ?>"
+                                                class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
+                                        </div>
+                                        <div class="card-body p-2 p-sm-4">
+                            <?php
+                            foreach ($hcpDetails as $key => $value) {
+                                ?>
                                                 <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
                                                         <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                            class="rounded-circle my-auto">
+                                                            class="rounded-circle">
                                 <?php } else { ?>
                                                         <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                            height="140" class="rounded-circle my-auto">
+                                                            height="140" class="rounded-circle">
                                 <?php } ?>
                                                     <div class="ps-sm-5">
                                                         <p style="font-size:20px;font-weight:500;">Dr.
@@ -997,71 +1008,61 @@
                                                             </a></p>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex justify-content-between mt-2 ">
-                                                    <p style="font-size:24px;font-weight:500;">Profile Details</p>
-                                                </div>
+
                                                 <table>
                                                     <tr>
-                                                        <td class="col-5 py-2 mx-4" style="color:#999292">Years of Experience</td>
-                                                        <td class="col-5 ">
-                                        <?php if ($value['hcpExperience'] != "") {
-                                            echo $value['hcpExperience'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
+                                                        <td class="col-5 py-2" style="color:#999292">Years of Experience</td>
+                                                        <td class="col-5">
+                                        <?php echo $value['hcpExperience']; ?>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="py-2" style="color:#999292">Qualification</td>
                                                         <td>
-                                        <?php if ($value['hcpQualification'] != "") {
-                                            echo $value['hcpQualification'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
+                                        <?php echo $value['hcpQualification']; ?>
                                                         </td>
                                                     </tr>
+                                                    <!-- <tr>
+                                                                <td class="py-2" style="color:#999292">Specialization</td>
+                                                                <td>Diabetologist, Internal Medician Physician</td>
+                                                            </tr> -->
                                                     <tr>
                                                         <td class="py-2" style="color:#999292">Date of Birth</td>
                                                         <td>
-                                        <?php if ($value['hcpDob'] != "") {
-                                            echo $value['hcpDob'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
+                                        <?php echo $value['hcpDob']; ?>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
                                                         <td>
-                                        <?php if ($value['hcpHospitalName'] != "") {
-                                            echo $value['hcpHospitalName'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
+                                        <?php echo $value['hcpHospitalName']; ?>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="py-2" style="color:#999292">Location</td>
                                                         <td>
-                                        <?php if ($value['hcpLocation'] != "") {
-                                            echo $value['hcpLocation'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
+                                        <?php echo $value['hcpLocation']; ?>
                                                         </td>
                                                     </tr>
                                                 </table>
-                                            </div>
-                    <?php } ?>
+                        <?php } ?>
+                                        </div>
                                     </div>
                                 </section>
+
             <?php
         } else if ($method == "myProfile") {
             ?>
+
                                     <section>
                                         <div class="card shadow-none rounded">
-                                            <div class="card-body p-4">
+                                            <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                                <p style="font-size: 24px; font-weight: 500">
+                                                    My Profile </p>
+                                                <a href="<?php echo base_url() . "Chiefconsultant/dashboard" ?>" class="text-dark"><i
+                                                        class="bi bi-arrow-left"></i> Back</a>
+                                            </div>
+                                            <div class="card-body ps-2 p-sm-4">
                             <?php
                             foreach ($ccDetails as $key => $value) {
                                 ?>
@@ -1092,7 +1093,7 @@
                                                     </div>
 
                                                     <div class="d-flex justify-content-between mt-2 ">
-                                                        <p style="font-size:24px;font-weight:500;">Profile Details</p>
+                                                    <h5 class="fw-bolder">Profile Details:</h5>
                                                         <a href="<?php echo base_url() . "Chiefconsultant/editMyProfile" ?>"><i
                                                                 class="bi bi-pencil-square"></i> Edit</a>
                                                     </div>
@@ -1153,19 +1154,25 @@
                                             </div>
                                         </div>
                                     </section>
+
             <?php
         } else if ($method == "editMyProfile") {
             ?>
+
                                         <section>
                                             <div class="card shadow-none rounded">
-                                                <div class="card-body p-4">
-                                                    <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark"><i
+                                            <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                <p style="font-size: 24px; font-weight: 500">
+                               Profile Details</p>
+                                <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark"><i
                                                             class="bi bi-arrow-left"></i> Back</a>
+                            </div>
+                                                <div class="card-body ps-2 p-sm-4">
+                                                  
                             <?php
                             foreach ($ccDetails as $key => $value) {
                                 ?>
                                                         <div class="">
-                                                            <p style="font-size:24px;font-weight:500;">Edit Profile Details</p>
                                                             <div class="position-relative mb-5">
 
                                     <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
@@ -1390,6 +1397,7 @@
                 </div>
             </div>
         </div>
+
     </main>
 
     <!-- Event listener to block right-click -->
@@ -1400,14 +1408,14 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
-     <!-- Hide page source -->
-     <script>
-    document.onkeydown = function (e) {
-        if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
-            return false; 
-        }
-    };
-</script>
+    <!-- Hide page source -->
+    <script>
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+                return false;
+            }
+        };
+    </script>
 
 </body>
 

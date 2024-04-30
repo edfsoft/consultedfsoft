@@ -62,7 +62,7 @@ class HcpModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['hcpEmail'];
         $password = $postData['hcpPassword'];
-        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password'";
+        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0'";
         $count = $this->db->query($query);
         return $count->result_array();
     }
@@ -70,7 +70,7 @@ class HcpModel extends CI_Model
     public function getPatientList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `patient_details` WHERE `patientHcp`=  $hcpIdDb";
+        $details = "SELECT * FROM `patient_details` WHERE `patientHcp`=  $hcpIdDb AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -261,7 +261,7 @@ class HcpModel extends CI_Model
 
     public function getPatientDetails($id)
     {
-        $details = "SELECT * FROM `patient_details` WHERE `id`= $id ";
+        $details = "SELECT * FROM `patient_details` WHERE `id`= $id  AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -271,7 +271,7 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
         $insert = array(
             'patientId' => $post['patientId'],
-            'patientName' => $post['patientName'],
+            // 'patientName' => $post['patientName'],
             'referalDoctor' => $post['referalDoctor'],
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
@@ -295,7 +295,7 @@ class HcpModel extends CI_Model
     public function getHcpDetails()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `hcp_details` WHERE `id` = $hcpIdDb";
+        $details = "SELECT * FROM `hcp_details` WHERE `id` = $hcpIdDb AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -351,14 +351,14 @@ class HcpModel extends CI_Model
 
     public function getCcProfile()
     {
-        $details = "SELECT * FROM `cc_details`";
+        $details = "SELECT * FROM `cc_details` WHERE deleteStatus = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
     public function getCcDetails($ccIdDb)
     {
-        $details = "SELECT * FROM `cc_details` WHERE `id`=$ccIdDb ";
+        $details = "SELECT * FROM `cc_details` WHERE `id`=$ccIdDb AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }

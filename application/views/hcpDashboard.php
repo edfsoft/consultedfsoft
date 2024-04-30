@@ -79,7 +79,7 @@
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center ms-5">
                 <li class="nav-item dropdown d-flex justify-content-evenly">
-                    <a href="" class="m-2 me-4">
+                    <a href="#" class="m-2 me-4">
                         <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a>
 
                     <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
@@ -193,7 +193,7 @@
             </script>
 
             <section>
-                <p class="ps-2 py-3" style="font-size: 24px; font-weight: 500">
+                <p class=" card ps-3 py-3" style="font-size: 24px; font-weight: 500">
                     Dashboard
                 </p>
 
@@ -405,6 +405,7 @@
                     </div>
                 </div>
             </section>
+
             <?php
         } else if ($method == "patients") {
             ?>
@@ -415,16 +416,17 @@
 
                 <section>
                     <div class="card shadow-none rounded">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between mt-2 mb-5">
-                                <p class="ps-2" style="font-size: 24px; font-weight: 500">
-                                    Patients
-                                </p>
-                                <a href="<?php echo base_url() . "Healthcareprovider/patientform" ?>"> <button
-                                        style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
-                                        <i class="bi bi-plus-square-fill"></i> Add Patient
-                                    </button></a>
-                            </div>
+                        <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                            <p style="font-size: 24px; font-weight: 500">
+                                Patients
+                            </p>
+                            <a href="<?php echo base_url() . "Healthcareprovider/patientform" ?>"> <button
+                                    style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
+                                    <i class="bi bi-plus-square-fill"></i> Add Patient
+                                </button></a>
+                        </div>
+                        <div class="card-body ps-2 p-sm-4">
+
                             <div class="table-responsive">
                                 <table class="table text-center" id="patientTable">
 
@@ -497,8 +499,6 @@
                                                     <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id'] ?>"
                                                         class="px-1 "><button class="btn btn-secondary"><i
                                                                 class="bi bi-pencil"></i></button></a>
-                                                    <a href="#" onclick="return confirm('Are you sure you want to delete?')"><button
-                                                            class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
 
                                                     <!-- Drop down 3 dots -->
                                                     <!-- <a class="icon" href="#" data-bs-toggle="dropdown">
@@ -612,6 +612,7 @@
 
                     updatePaginationButtons();
                 </script>
+
             <?php
         } else if ($method == "patientDetailsForm") {
             ?>
@@ -621,11 +622,15 @@
 
                     <section>
                         <div class="card shadow-none rounded">
-                            <div class="card-body p-4">
+                            <div class="d-flex justify-content-between mt-2 p-2">
+                                <p style="font-size: 24px; font-weight: 500"> New Patient </p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                         class="bi bi-arrow-left"></i> Back</a>
+                            </div>
+                            <div class="card-body px-md-4 pb-4">
+
                                 <!-- Form  -->
-                                <div class="container">
+                                <div class="">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
@@ -915,6 +920,7 @@
                             </div>
                         </div>
                     </section>
+
                     <script>
                         var today = new Date();
 
@@ -1062,6 +1068,7 @@
 
                         }
                     </script>
+
             <?php
         } else if ($method == "patientDetailsFormUpdate") {
             ?>
@@ -1071,16 +1078,19 @@
 
                         <section>
                             <div class="card shadow-none rounded">
-                                <div class="card-body p-4">
+                                <div class="d-flex justify-content-between mt-2 p-3">
+                                    <p style="font-size: 24px; font-weight: 500">Edit Patient Details</p>
                                     <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                             class="bi bi-arrow-left"></i> Back</a>
+                                </div>
+                                <div class="card-body p-2 p-sm-4">
+
                                     <!-- Form  -->
                                     <div class="container">
                                 <?php
                                 foreach ($patientDetails as $key => $value) {
                                     ?>
                                             <div class="row">
-                                                <p style="font-size:24px;font-weight:500;">Edit Profile Details</p>
                                                 <div class="position-relative mb-5">
 
                                         <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
@@ -1423,6 +1433,7 @@
                                 </div>
                             </div>
                         </section>
+
                         <script>
                             document.getElementById("file_mr").addEventListener("click", function () {
                                 document.getElementById("existfileMR").style.display = "none";
@@ -1633,15 +1644,19 @@
 
                             <section>
                                 <div class="card shadow-none rounded">
-                                    <div class="card-body p-5">
+                                    <div class="d-flex justify-content-between mt-2 p-3">
+                                        <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                         <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                                 class="bi bi-arrow-left"></i> Back</a>
+                                    </div>
+                                    <div class="card-body p-2 p-sm-5">
+
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
                                             <div class="d-sm-flex justify-content-evenly mt-2 mb-5">
                                                 <div class="ps-sm-5">
-                                                    <p style="font-size:24px;font-weight:500;"> <?php echo $value['firstName'] ?>
+                                                    <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
                                         <?php echo $value['lastName'] ?> | <?php echo $value['patientId'] ?>
                                                     </p>
                                                     <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> year(s)</p>
@@ -1658,7 +1673,7 @@
                                 <?php } ?>
                                             </div>
 
-                                            <h4 class="my-3">Personal Details:</h4>
+                                            <h5 class="my-3 fw-bolder">Personal Details:</h5>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> - <a
                                                         href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
@@ -1705,7 +1720,7 @@
                                     <?php echo $value['partnerBlood'] ?>
                                                 </p>
                                             </div>
-                                            <h4 class="mt-5 mb-3">Medical Records:</h4>
+                                            <h5 class="my-3 fw-bolder">Medical Records:</h5>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Weight</span> - <?php echo $value['weight'] ?>
                                                 </p>
@@ -1732,7 +1747,9 @@
                                                 <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
                                             </div>
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
-                                                <h4 class="mt-5 mb-3">Documents / Reports:</h4>
+
+                                                <h5 class="my-3 mt-5 fw-bolder">Documents / Reports:</h5>
+
                                                 <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
                                                         <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> - <a
@@ -1762,16 +1779,18 @@
 
                                 <section>
                                     <div class="card shadow-none rounded">
-                                        <div class="card-body p-4">
-                                            <div class="d-flex justify-content-between mt-2 mb-5">
-                                                <p class="ps-2" style="font-size: 24px; font-weight: 500">
-                                                    Appointments
-                                                </p>
-                                                <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
-                                                        style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
-                                                        <i class="bi bi-plus-square-fill"></i> Book Appointment
-                                                    </button></a>
-                                            </div>
+                                        <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2">
+                                            <p style="font-size: 24px; font-weight: 500">
+                                                Appointments
+                                            </p>
+                                            <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
+                                                    style="background-color: #00ad8e;" class="float-end text-light border-0 rounded p-2">
+                                                    <i class="bi bi-plus-square-fill"></i> Book Appointment
+                                                </button></a>
+                                        </div>
+                                        <div class="card-body p-2 p-sm-4">
+
+
                                             <div class="table-responsive">
                                                 <table class="table text-center" id="appointmentTable">
                                                     <thead>
@@ -1949,255 +1968,272 @@
 
                                     <section>
                                         <div class="card shadow-none rounded">
-                                            <div class="card-body p-4">
+                                            <div class="d-flex justify-content-between mt-2 p-2">
+                                                <p style="font-size: 24px; font-weight: 500"> New Appoitment</p>
                                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                                     class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
-                                                <!-- Form  -->
-                                                <div class="container">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
+                                            </div>
+                                            <div class="card-body px-md-4 pb-4">
 
-                                                            <form action="<?php echo base_url() . "Healthcareprovider/newAppointment" ?>"
-                                                                method="POST" name="patientDetails" onsubmit="return validateAppointment()"
-                                                                oninput="clearErrorAppointment()">
-                                                                <div>
-                                                                    <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;">
-                                                                        Appointments Details</p>
-                                                                    <div class="form-group pb-2">
-                                                                        <label class="form-label" for="patientId">Patient Id <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control" id="patientId" name="patientId"
-                                                                            placeholder="E.g. EDF000001">
-                                                                        <div id="patientId_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
+                                                <!-- Form  -->
+                                                <div>
+                                                    <div class="col-md-8">
+                                                        <form action="<?php echo base_url() . "Healthcareprovider/newAppointment" ?>" method="POST"
+                                                            name="patientDetails" onsubmit="return validateAppointment()"
+                                                            oninput="clearErrorAppointment()">
+                                                            <div>
+                                                                <!-- <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;">
+                                                                        Appointments Details</p> -->
+                                                                <div class="form-group pb-2">
+                                                                    <label class="form-label" for="patientId">Patient Id <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <select class="form-control" name="patientId" id="patientId">
+                                                                        <option value="">Select Patient Id</option>
+                                                    <?php
+                                                    foreach ($patientsId as $key => $value) {
+                                                        ?>
+                                                                            <option value="<?php echo $value['patientId'] ?>">
+                                                        <?php echo $value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName'] ?>
+                                                                            </option>
+                                                <?php } ?>
+                                                                    </select>
+                                                                    <div id="patientId_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <!-- <div class="form-group pb-3">
                                                                         <label class="form-label" for="patientName">Name <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="patientName" name="patientName"
                                                                             placeholder="E.g. Gopal">
                                                                         <div id="patientName_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="referalDoctor">Referal Doctor ID <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control" id="referalDoctor"
-                                                                            name="referalDoctor" placeholder="E.g. EDFCC001">
-                                                                        <div id="referalDoctor_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label pb-2" for="appConsult">Mode of consult <span
-                                                                                class="text-danger">*</span></label><br>
-                                                                        <input type="radio" id="audio" name="appConsult" value="audio" checked>
-                                                                        <label for="audio">Audio</label>
-                                                                        <input type="radio" class="ms-5 ps-5" id="video" name="appConsult"
-                                                                            value="video">
-                                                                        <label for="video">Video</label><br>
-                                                                        <div id="appConsult_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="appDate">Date <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="date" class="form-control" id="appDate" name="appDate">
-                                                                        <div id="appDate_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="dayTime">Part of a day <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <select class="form-control" id="dayTime" name="dayTime"
-                                                                            onchange="displayTime()">
-                                                                            <option value="">Select time</option>
-                                                                            <option value="Morning">Morning</option>
-                                                                            <option value="Afternoon">Afternoon</option>
-                                                                            <option value="Evening">Evening</option>
-                                                                            <option value="Night">Night</option>
-                                                                        </select>
-                                                                        <div id="dayTime_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="py-2" id="morningTime" style="display:none"><i
-                                                                            class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:30">08:30 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:40">08:40 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="08:50">08:50 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:00">09:00 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:10">09:10 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:20">09:20 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:30">09:30 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:40">09:40 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="09:50">09:50 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:00">10:00 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:10">10:10 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:20">10:20 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:30">10:30 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:40">10:40 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="10:50">10:50 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:00">11:00 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:10">11:10 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:20">11:20 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:30">11:30 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:40">11:40 AM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="11:50">11:50 AM</button>
-
-                                                                    </div>
-                                                                    <div class="py-2" id="afternoonTime" style="display:none"><i
-                                                                            class="bi bi-sun"></i>,
-                                                                        Afternoon Consult time,<br>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:00">12:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:10">12:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:20">12:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:30">12:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:40">12:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="12:50">12:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="13:00">01:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="13:10">01:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="13:20">01:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="13:30">01:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="13:40">01:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="13:50">01:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="14:00">02:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="14:10">02:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="14:20">02:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="14:30">02:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="14:40">02:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="14:50">02:50 PM</button>
-
-                                                                    </div>
-                                                                    <div class="py-2" id="eveningTime" style="display:none"><i
-                                                                            class="bi bi-brightness-alt-high"></i>, Evening Consult time,<br>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="17:30">05:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="17:40">05:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="17:50">05:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="18:00">06:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="18:10">06:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="18:20">06:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="18:30">06:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="18:40">06:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="18:50">06:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="19:00">07:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="19:10">07:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="19:20">07:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="19:30">07:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="19:40">07:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="19:50">07:50 PM</button>
-
-                                                                    </div>
-                                                                    <div class="py-2" id="nightTime" style="display:none"><i
-                                                                            class="bi bi-moon-stars"></i>, Night Consult time,<br>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="20:00">08:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="20:10">08:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="20:20">08:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="20:30">08:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="20:40">08:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="20:50">08:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="21:00">09:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="21:10">09:10 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="21:20">09:20 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="21:30">09:30 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="21:40">09:40 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="21:50">09:50 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="22:00">10:00 PM</button>
-                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                            value="22:10">10:10 PM</button>
-
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="appTime">Time <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control" id="appTime" name="appTime"
-                                                                            placeholder="E.g. Select time" readonly>
-                                                                        <div id="appTime_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="appReason">Patient's Complaint <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control" id="appReason" name="appReason"
-                                                                            placeholder="E.g. Regular followups">
-                                                                        <div id="appReason_err" class="text-danger pt-1"></div>
-                                                                    </div>
-                                                                    <!-- Payment -->
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="pay">Payment <span
-                                                                                class="text-danger">******</span></label>
-                                                                        <input type="text" class="form-control" id="pay" name="pay"
-                                                                            placeholder="E.g. Add payment details">
-                                                                    </div>
-
-                                                                    <button type="submit" class="btn text-light next float-end mt-2"
-                                                                        style="background-color: #00ad8e;">Confirm </button>
+                                                                    </div> -->
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="referalDoctor">Referal Doctor ID <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <select class="form-control" name="referalDoctor" id="referalDoctor">
+                                                                        <option value="">Select Chief Consultant Id</option>
+                                                    <?php
+                                                    foreach ($ccsId as $key => $value) {
+                                                        ?>
+                                                                            <option value="<?php echo $value['ccId'] ?>">
+                                                        <?php echo $value['ccId'] ?> / <?php echo $value['doctorName'] ?>
+                                                                            </option>
+                                                <?php } ?>
+                                                                    </select>
+                                                                    <div id="referalDoctor_err" class="text-danger pt-1"></div>
                                                                 </div>
-                                                            </form>
-                                                        </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label pb-2" for="appConsult">Mode of consult <span
+                                                                            class="text-danger">*</span></label><br>
+                                                                    <input type="radio" id="audio" name="appConsult" value="audio" checked>
+                                                                    <label for="audio">Audio</label>
+                                                                    <input type="radio" class="ms-5 ps-5" id="video" name="appConsult"
+                                                                        value="video">
+                                                                    <label for="video">Video</label><br>
+                                                                    <div id="appConsult_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="appDate">Date <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="date" class="form-control" id="appDate" name="appDate">
+                                                                    <div id="appDate_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="dayTime">Part of a day <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <select class="form-control" id="dayTime" name="dayTime"
+                                                                        onchange="displayTime()">
+                                                                        <option value="">Select time</option>
+                                                                        <option value="Morning">Morning</option>
+                                                                        <option value="Afternoon">Afternoon</option>
+                                                                        <option value="Evening">Evening</option>
+                                                                        <option value="Night">Night</option>
+                                                                    </select>
+                                                                    <div id="dayTime_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="py-2" id="morningTime" style="display:none"><i
+                                                                        class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="08:30">08:30 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="08:40">08:40 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="08:50">08:50 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="09:00">09:00 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="09:10">09:10 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="09:20">09:20 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="09:30">09:30 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="09:40">09:40 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="09:50">09:50 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="10:00">10:00 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="10:10">10:10 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="10:20">10:20 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="10:30">10:30 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="10:40">10:40 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="10:50">10:50 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="11:00">11:00 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="11:10">11:10 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="11:20">11:20 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="11:30">11:30 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="11:40">11:40 AM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="11:50">11:50 AM</button>
+
+                                                                </div>
+                                                                <div class="py-2" id="afternoonTime" style="display:none"><i class="bi bi-sun"></i>,
+                                                                    Afternoon Consult time,<br>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="12:00">12:00 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="12:10">12:10 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="12:20">12:20 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="12:30">12:30 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="12:40">12:40 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="12:50">12:50 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="13:00">01:00 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="13:10">01:10 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="13:20">01:20 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="13:30">01:30 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="13:40">01:40 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="13:50">01:50 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="14:00">02:00 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="14:10">02:10 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="14:20">02:20 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="14:30">02:30 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="14:40">02:40 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="14:50">02:50 PM</button>
+
+                                                                </div>
+                                                                <div class="py-2" id="eveningTime" style="display:none"><i
+                                                                        class="bi bi-brightness-alt-high"></i>, Evening Consult time,<br>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="17:30">05:30 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="17:40">05:40 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="17:50">05:50 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="18:00">06:00 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="18:10">06:10 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="18:20">06:20 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="18:30">06:30 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="18:40">06:40 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="18:50">06:50 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="19:00">07:00 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="19:10">07:10 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="19:20">07:20 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="19:30">07:30 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="19:40">07:40 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="19:50">07:50 PM</button>
+
+                                                                </div>
+                                                                <div class="py-2" id="nightTime" style="display:none"><i
+                                                                        class="bi bi-moon-stars"></i>, Night Consult time,<br>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="20:00">08:00 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="20:10">08:10 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="20:20">08:20 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="20:30">08:30 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="20:40">08:40 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="20:50">08:50 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="21:00">09:00 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="21:10">09:10 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="21:20">09:20 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="21:30">09:30 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="21:40">09:40 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="21:50">09:50 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="22:00">10:00 PM</button>
+                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                        value="22:10">10:10 PM</button>
+
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="appTime">Time <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" id="appTime" name="appTime"
+                                                                        placeholder="E.g. Select time" readonly>
+                                                                    <div id="appTime_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="appReason">Patient's Complaint <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" id="appReason" name="appReason"
+                                                                        placeholder="E.g. Regular followups">
+                                                                    <div id="appReason_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <!-- Payment -->
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="pay">Payment <span
+                                                                            class="text-danger">******</span></label>
+                                                                    <input type="text" class="form-control" id="pay" name="pay"
+                                                                        placeholder="E.g. Add payment details">
+                                                                </div>
+
+                                                                <button type="submit" class="btn text-light next float-end mt-2"
+                                                                    style="background-color: #00ad8e;">Confirm </button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </section>
+
                                     <script>
                                         var dateInput = document.getElementById('appDate');
                                         var today = new Date();
@@ -2252,7 +2288,7 @@
 
                                         function clearErrorAppointment() {
                                             var patientId = document.getElementById("patientId").value;
-                                            var name = document.getElementById("patientName").value;
+                                            // var name = document.getElementById("patientName").value;
                                             var referalDr = document.getElementById("referalDoctor").value;
                                             // var consultMode = document.getElementById("appConsult").value;      
                                             var date = document.getElementById("appDate").value;
@@ -2263,9 +2299,9 @@
                                             if (patientId != "") {
                                                 document.getElementById("patientId_err").innerHTML = "";
                                             }
-                                            if (name != "") {
-                                                document.getElementById("patientName_err").innerHTML = "";
-                                            }
+                                            // if (name != "") {
+                                            //     document.getElementById("patientName_err").innerHTML = "";
+                                            // }
                                             if (referalDr != "") {
                                                 document.getElementById("referalDoctor_err").innerHTML = "";
                                             }
@@ -2288,7 +2324,7 @@
 
                                         function validateAppointment() {
                                             var patientId = document.getElementById("patientId").value;
-                                            var name = document.getElementById("patientName").value;
+                                            // var name = document.getElementById("patientName").value;
                                             var referalDr = document.getElementById("referalDoctor").value;
                                             // var consultMode = document.getElementById("appConsult").value;
                                             var date = document.getElementById("appDate").value;
@@ -2303,13 +2339,13 @@
                                             } else {
                                                 document.getElementById("patientId_err").innerHTML = "";
                                             }
-                                            if (name == "") {
-                                                document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
-                                                document.getElementById("patientName").focus();
-                                                return false;
-                                            } else {
-                                                document.getElementById("patientName_err").innerHTML = "";
-                                            }
+                                            // if (name == "") {
+                                            //     document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
+                                            //     document.getElementById("patientName").focus();
+                                            //     return false;
+                                            // } else {
+                                            //     document.getElementById("patientName_err").innerHTML = "";
+                                            // }
                                             if (referalDr == "") {
                                                 document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out.";
                                                 document.getElementById("referalDoctor").focus();
@@ -2356,6 +2392,7 @@
                                         }
 
                                     </script>
+
             <?php
         } else if ($method == "chiefDoctors") {
             ?>
@@ -2399,8 +2436,8 @@
                         <?php } ?>
                                                 </div>
                                             </div>
-
                                         </section>
+
             <?php
         } else if ($method == "chiefDoctorProfile") {
             ?>
@@ -2410,14 +2447,19 @@
 
                                             <section>
                                                 <div class="card shadow-none rounded">
-                        <?php
-                        foreach ($ccDetails as $key => $value) {
-                            ?>
-                                                        <div class="card-body p-4">
-                                                            <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>"
-                                                                class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
-                                                            <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                                    <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                                        <p style="font-size: 24px; font-weight: 500">
+                                                            Chief Doctor Profile </p>
+                                                        <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>" class="text-dark"><i
+                                                                class="bi bi-arrow-left"></i> Back</a>
+                                                    </div>
 
+                                                    <div class="card-body p-2 p-sm-4">
+
+                                                        <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                <?php
+                                foreach ($ccDetails as $key => $value) {
+                                    ?>
                                 <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
                                                                     <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
                                                                         class="rounded-circle">
@@ -2441,9 +2483,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="d-flex justify-content-between mt-2 ">
-                                                                <p style="font-size:24px;font-weight:500;">Profile Details</p>
-                                                            </div>
+                                                            <h5 class="my-3 fw-bolder">Profile Details:</h5>
 
                                                             <table>
                                                                 <tr>
@@ -2531,12 +2571,19 @@
                     <?php } ?>
                                                 </div>
                                             </section>
+
             <?php
         } else if ($method == "myProfile") {
             ?>
+
                                                 <section>
                                                     <div class="card shadow-none rounded">
-                                                        <div class="card-body p-4">
+                                                        <div class="d-flex justify-content-between mt-2 p-2">
+                                                            <p style="font-size: 24px; font-weight: 500"> My Profile</p>
+                                                            <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>" class="float-end text-dark"><i
+                                                                    class="bi bi-arrow-left"></i> Back</a>
+                                                        </div>
+                                                        <div class="card-body p-2 p-sm-4">
                             <?php
                             foreach ($hcpDetails as $key => $value) {
                                 ?>
@@ -2566,7 +2613,7 @@
                                                                 </div>
 
                                                                 <div class="d-flex justify-content-between mt-2 ">
-                                                                    <p style="font-size:24px;font-weight:500;">Profile Details</p>
+                                                                    <p style="font-size:22px;font-weight:500;">Profile Details:</p>
                                                                     <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
                                                                             class="bi bi-pencil-square"></i> Edit</a>
                                                                 </div>
@@ -2610,21 +2657,24 @@
                                                         </div>
                                                     </div>
                                                 </section>
+
             <?php
         } else if ($method == "editMyProfile") {
             ?>
+
                                                     <section>
                                                         <div class="card shadow-none rounded">
-                                                            <div class="card-body p-4">
+                                                            <div class="d-flex justify-content-between mt-2 p-2">
+                                                                <p style="font-size: 24px; font-weight: 500"> Edit Profile Details</p>
                                                                 <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>" class="float-end text-dark"><i
                                                                         class="bi bi-arrow-left"></i> Back</a>
-                            <?php
-                            foreach ($hcpDetails as $key => $value) {
-                                ?>
-                                                                    <div class="">
-                                                                        <p style="font-size:24px;font-weight:500;">Edit Profile Details</p>
-                                                                        <div class="position-relative mb-5">
-
+                                                            </div>
+                                                            <div class="card-body ps-2 p-sm-4">
+                                                                <div class="">
+                                                                    <div class="position-relative mb-5">
+                                    <?php
+                                    foreach ($hcpDetails as $key => $value) {
+                                        ?>
                                     <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
                                                                                 <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="180" height="180"
                                                                                     class="rounded-circle">
@@ -2855,37 +2905,24 @@
             </div>
         </div>
 
-        <!-- Popup for Patient details -->
-        <!-- <div class="modal fade" id="viewPatientDetails" tabindex="-1" role="dialog"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">All details</h5>
-                                    <?php
-                                    if(isset($patientList['id']))
-                                    foreach ($patientList as $key => $value) {
-                                            ?>
-                                            <p><?php echo $value['patientId'] ?> </p>
-                                    <?php }
-                                    ?>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-
-
     </main>
 
     <!-- Event listener to block right-click -->
     <script>
-    function blockRightClick(event) {
-        event.preventDefault(); 
-    }
+        function blockRightClick(event) {
+            event.preventDefault();
+        }
 
-    document.addEventListener('contextmenu', blockRightClick);
-</script>
+        document.addEventListener('contextmenu', blockRightClick);
+    </script>
+    <!-- Hide page source -->
+    <!-- <script>
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+                return false;
+            }
+        };
+    </script> -->
 
 </body>
 

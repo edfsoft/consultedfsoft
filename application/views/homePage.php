@@ -20,6 +20,11 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 
     <style>
+        html {
+            scroll-behavior: auto !important;
+        }
+
+
         body {
             font-family: 'Poppins', sans-serif;
         }
@@ -88,8 +93,8 @@
                     </button>
                     <ul class="dropdown-menu border-0 rounded-3 shadow mt-3 p-2" style="transform: translateX(-70px);"
                         aria-labelledby="dropDownSignup">
-                        <!-- <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                                class="dropdown-item py-2">Health Care Provider</a></li> -->
+                        <li><a href="<?php echo base_url() . "Healthcareprovider/register" ?>"
+                                class="dropdown-item py-2">Health Care Provider</a></li>
                         <li><a href="<?php echo base_url() . "Chiefconsultant/register" ?>"
                                 class="dropdown-item py-2">Chief Consultant</a></li>
                     </ul>
@@ -105,7 +110,8 @@
             own home
             <p class="pt-3" style="font-size:18px;font-weight:400;"> Online Video Consultations With <br> Expert
                 Diabetologists.</p>
-            <a href="#"><img src="<?php echo base_url(); ?>assets/bookAppointBtn.png" alt="book"></a>
+            <a href="<?php echo base_url() . "Healthcareprovider/" ?>"><img
+                    src="<?php echo base_url(); ?>assets/bookAppointBtn.png" alt="book"></a>
         </div>
         <img class="d-none d-lg-block img-fluid" src="<?php echo base_url(); ?>assets/banner.png" alt="banner">
     </div>
@@ -122,8 +128,7 @@
                             consultations online at your convenience, connecting with reliable and experienced medical
                             professionals. You can arrange your appointment by giving us a call and the rest is in our
                             capable hands. <br><br> While video consultations offer the benefit of the comfort of your
-                            home,
-                            they do not compromise the treatment protocol. <br>
+                            home, they do not compromise the treatment protocol. <br>
                             <button class="btn text-light rounded-pill mt-3 px-3" style="background-color:#00AD8E;">Read
                                 More</button>
                         </p>
@@ -307,6 +312,14 @@
         }
 
         document.addEventListener('contextmenu', blockRightClick);
+    </script>
+    <!-- Hide page source -->
+    <script>
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+                return false;
+            }
+        };
     </script>
 
 </body>

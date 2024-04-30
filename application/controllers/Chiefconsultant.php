@@ -59,7 +59,7 @@ class chiefconsultant extends CI_Controller
 
     public function setVariable()
     {
-        $appointmentList = $this->HcpModel->getAppointmentList();
+        $appointmentList = $this->CcModel->getAppointmentList();
         $this->data['appointmentListCount'] = $appointmentList['totalRows'];
     }
 
@@ -107,7 +107,7 @@ class chiefconsultant extends CI_Controller
     {
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "appointments";
-            $appointmentList = $this->HcpModel->getAppointmentList();
+            $appointmentList = $this->CcModel->getAppointmentList();
             $this->data['appointmentList'] = $appointmentList['response'];
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
@@ -136,6 +136,7 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "hcpsProfile";
             $hcpDetails = $this->CcModel->getHcpDetails($hcpIdDb);
             $this->data['hcpDetails'] = $hcpDetails;
+            $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
             $this->index();
@@ -188,7 +189,15 @@ class chiefconsultant extends CI_Controller
 
     public function logout()
     {
-        $this->session->unset_userdata('LoggedInDetails');
+        // $this->session->unset_userdata('LoggedInDetails');
+        // unset($this->session->LoggedInDetails('ccId'));
+        // unset($this->session->userdata('ccId'));
+        // $this->session->mark_as_flash('LoggedInDetails');
+        $this->session->unset_userdata('ccIdDb');
+        $this->session->unset_userdata('ccId');
+        $this->session->unset_userdata('ccName');
+        $this->session->unset_userdata('ccMailId');
+        $this->session->unset_userdata('ccMobileNum');
         $this->index();
     }
 

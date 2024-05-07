@@ -62,7 +62,7 @@ class HcpModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['hcpEmail'];
         $password = $postData['hcpPassword'];
-        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0'";
+        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0' AND approvalStatus = '1'";
         $count = $this->db->query($query);
         return $count->result_array();
     }
@@ -269,10 +269,13 @@ class HcpModel extends CI_Model
     public function insertappointment()
     {
         $post = $this->input->post(null, true);
+        list($patientId, $dbId) = explode('|', $post['patientId']);
+        list($ccId, $ccDbId) = explode('|', $post['referalDoctor']);
         $insert = array(
-            'patientId' => $post['patientId'],
-            // 'patientName' => $post['patientName'],
-            'referalDoctor' => $post['referalDoctor'],
+            'patientId' => $patientId,
+            'patientDbId' => $dbId,
+            'referalDoctor' => $ccId,
+            'referalDoctorDbId' => $ccDbId,
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
             'partOfDay' => $post['dayTime'],
@@ -295,7 +298,7 @@ class HcpModel extends CI_Model
     public function getHcpDetails()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `hcp_details` WHERE `id` = $hcpIdDb AND deleteStatus = '0'";
+        $details = "SELECT * FROM `hcp_details`";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -351,14 +354,14 @@ class HcpModel extends CI_Model
 
     public function getCcProfile()
     {
-        $details = "SELECT * FROM `cc_details` WHERE deleteStatus = '0'";
+        $details = "SELECT * FROM `cc_details` WHERE deleteStatus = '0' AND approvalStatus = '1'";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
     public function getCcDetails($ccIdDb)
     {
-        $details = "SELECT * FROM `cc_details` WHERE `id`=$ccIdDb AND deleteStatus = '0'";
+        $details = "SELECT * FROM `cc_details` WHERE `id`=$ccIdDb AND deleteStatus = '0' AND approvalStatus = '1'";
         $select = $this->db->query($details);
         return $select->result_array();
     }

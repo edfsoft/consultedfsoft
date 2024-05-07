@@ -91,7 +91,7 @@ class chiefconsultant extends CI_Controller
 
     public function patientdetails()
     {
-        if (isset($_SESSION['hcpsName'])) {
+        if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "patientDetails";
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
@@ -109,6 +109,34 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "appointments";
             $appointmentList = $this->CcModel->getAppointmentList();
             $this->data['appointmentList'] = $appointmentList['response'];
+            $this->setVariable();
+            $this->load->view('ccDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
+    }
+
+    public function patientProfileApp()
+    {
+        if (isset($_SESSION['ccName'])) {
+            $patientIdDb = $this->uri->segment(3);
+            $this->data['method'] = "patientDetailsApp";
+            $details = $this->HcpModel->getPatientDetails($patientIdDb);
+            $this->data['patientDetails'] = $details;
+            $this->setVariable();
+            $this->load->view('ccDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
+    }
+
+    public function healthCareProvidersProfileApp()
+    {
+        if (isset($_SESSION['ccName'])) {
+            $hcpIdDb = $this->uri->segment(3);
+            $this->data['method'] = "hcpsProfileApp";
+            $hcpDetails = $this->CcModel->getHcpDetails($hcpIdDb);
+            $this->data['hcpDetails'] = $hcpDetails;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {

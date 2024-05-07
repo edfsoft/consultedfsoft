@@ -51,8 +51,12 @@
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Services
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#services">Services</a></li>
+                        <ul class="dropdown-menu border-0 rounded-3 shadow mt-2 p-2"
+                            aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="#services">Online Consultation</a></li>
+                            <li><a class="dropdown-item"
+                                    href="https://erodediabetesfoundation.org/service/diabetes-consult/"
+                                    target="blank">Diabetes Consult</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -105,15 +109,15 @@
 
     <!-- Banner -->
     <div class="d-lg-flex justify-content-between pt-sm-5 ps-sm-5" style="background-color:#EEF6F5;">
-        <div class="ms-5 mt-3 mt-sm-5 pt-4 pt-sm-0 " style="font-size:36px;font-weight:500;">
-            Specialized <br> <span class="text-danger">Diabetes Support</span> from <br> the convenience of <br> your
+        <div class="m-4 ms-sm-5 mt-3 mt-sm-5 pt-4 pt-sm-0 fs-1" style="font-weight:500;">
+            Specialized <span class="text-danger">Diabetes Support</span> from the convenience of your
             own home
             <p class="pt-3" style="font-size:18px;font-weight:400;"> Online Video Consultations With <br> Expert
                 Diabetologists.</p>
-            <a href="<?php echo base_url() . "Healthcareprovider/" ?>"><img
+            <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"><img
                     src="<?php echo base_url(); ?>assets/bookAppointBtn.png" alt="book"></a>
         </div>
-        <img class="d-none d-lg-block img-fluid" src="<?php echo base_url(); ?>assets/banner.png" alt="banner">
+        <img class="d-none d-lg-block img-fluid ms-2" src="<?php echo base_url(); ?>assets/banner.png" alt="banner">
     </div>
 
     <!-- Special -->

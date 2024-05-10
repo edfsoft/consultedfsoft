@@ -39,7 +39,7 @@ class healthcareprovider extends CI_Controller
     public function hcpLogin()
     {
         $login = $this->HcpModel->hcpLoginDetails();
-        if (isset($login[0]['id'])) {
+        if (isset($login[0]['id']) && ($login[0]['approvalStatus']== "1")) {
             $LoggedInDetails = array(
                 'hcpIdDb' => $login[0]['id'],
                 'hcpId' => $login[0]['hcpId'],
@@ -49,6 +49,9 @@ class healthcareprovider extends CI_Controller
             );
             $this->session->set_userdata($LoggedInDetails);
             $this->dashboard();
+        } else if ($login[0]['approvalStatus']== 0) {
+            $this->index();
+            echo '<script>alert("You can log in once the verification process is done.");</script>';
         } else {
             $this->index();
             echo '<script>alert("Please enter registered details.");</script>';

@@ -411,7 +411,7 @@
                     <div class="card shadow-none rounded">
                         <div class="card-body p-2 p-sm-4">
                             <div class="d-flex justify-content-between mt-2 mb-3">
-                                <p class="ps-2" style="font-size: 24px; font-weight: 500">
+                                <p style="font-size: 24px; font-weight: 500">
                                     Patients
                                 </p>
                             </div>
@@ -423,10 +423,10 @@
                                                 S.NO
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                              PHOTO
+                                                PHOTO
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD" class="">
-                                              ID
+                                                ID
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                 NAME
@@ -587,7 +587,7 @@
 
                     <section>
                         <div class="card shadow-none rounded">
-                            <div class="d-flex justify-content-between mt-2 p-3">
+                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                 <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                 <a href="<?php echo base_url() . "Chiefconsultant/patients" ?>" class="float-end text-dark"><i
                                         class="bi bi-arrow-left"></i> Back</a>
@@ -723,8 +723,8 @@
                         <section>
                             <div class="card shadow-none rounded">
                                 <div class="card-body p-2 p-sm-4">
-                                    <div class="d-flex justify-content-between mt-2 mb-5">
-                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">
+                                    <div class="d-flex justify-content-between mt-2 mb-3">
+                                        <p style="font-size: 24px; font-weight: 500">
                                             Appointments
                                         </p>
                                     </div>
@@ -773,7 +773,9 @@
                                                     <tr>
                                                         <td><?php echo $count; ?>. </td>
                                                         <td style="font-size: 16px"><a
-                                                                href="<?php echo base_url() . "Chiefconsultant/patientProfileApp/" . $value['patientDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"><?php echo $value['patientId'] ?></a>
+                                                                href="<?php echo base_url() . "Chiefconsultant/patientProfileApp/" . $value['patientDbId']; ?>"
+                                                                class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                onmouseout="style='text-decoration:none'"><?php echo $value['patientId'] ?></a>
                                                         </td>
                                                         <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                         <td style="font-size: 16px">
@@ -783,7 +785,9 @@
                                                 <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                         </td>
                                                         <td style="font-size: 16px"><a
-                                                                href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfileApp/" . $value['hcpDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
+                                                                href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfileApp/" . $value['hcpDbId']; ?>"
+                                                                class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
                                                         </td>
                                                         <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
                                                         <td style="font-size: 16px">
@@ -904,7 +908,7 @@
 
                             <section>
                                 <div class="card shadow-none rounded">
-                                    <div class="d-flex justify-content-between mt-2 p-3">
+                                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                         <a href="<?php echo base_url() . "Chiefconsultant/appointments" ?>" class="float-end text-dark"><i
                                                 class="bi bi-arrow-left"></i> Back</a>
@@ -1038,7 +1042,7 @@
 
                                 <section>
                                     <div class="card shadow-none rounded">
-                                        <div class="d-flex justify-content-between mt-2 p-2">
+                                        <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                             <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
                                             <a href="<?php echo base_url() . "Chiefconsultant/appointments" ?>" class="float-end text-dark"><i
                                                     class="bi bi-arrow-left"></i> Back</a>
@@ -1213,18 +1217,18 @@
                                                     for (var i = startIndex; i < Math.min(endIndex, hcpDetails.length); i++) {
                                                         var value = hcpDetails[i];
                                                         html += `
-                                            <div class="card col-lg-4 m-3">
-                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                    <img src="${value.hcpPhoto || '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile Photo" width="122" height="122"
-                                                         class="rounded-circle my-auto">
-                                                    <div>
-                                                        <p class="card-title"><b>${value.hcpName}</b> / <br>${value.hcpId}</p>
-                                                        <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
-                                                        <a href="<?php echo base_url() . 'Chiefconsultant/healthCareProvidersProfile/'; ?>${value.id}" class="btn btn-secondary">Full Details</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        `;
+                                                                        <div class="card col-lg-4 m-3">
+                                                                            <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                                                <img src="${value.hcpPhoto || '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile Photo" width="122" height="122"
+                                                                                     class="rounded-circle my-auto">
+                                                                                <div>
+                                                                                    <p class="card-title"><b>${value.hcpName}</b> / <br>${value.hcpId}</p>
+                                                                                    <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
+                                                                                    <a href="<?php echo base_url() . 'Chiefconsultant/healthCareProvidersProfile/'; ?>${value.id}" class="btn btn-secondary">Full Details</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    `;
                                                     }
                                                     contentContainer.innerHTML = html;
                                                 }
@@ -1237,8 +1241,8 @@
 
                                                     for (var i = 1; i <= totalPages; i++) {
                                                         buttonsHtml += `
-                                            <button class="btn btn-outline-secondary mx-1 pagination-btn" onclick="goToPage(${i})">${i}</button>
-                                        `;
+                                                                        <button class="btn btn-outline-secondary mx-1 pagination-btn" onclick="goToPage(${i})">${i}</button>
+                                                                    `;
                                                     }
 
                                                     buttonsHtml += `<button class="btn btn-outline-secondary ms-3" onclick="nextPage()">&gt;</button>`;
@@ -1292,7 +1296,7 @@
 
                                         <section>
                                             <div class="card shadow-none rounded">
-                                                <div class="d-flex justify-content-between mt-2 p-2">
+                                                <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                     <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
                                                     <a href="<?php echo base_url() . "Chiefconsultant/healthCareProviders" ?>"
                                                         class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
@@ -1373,7 +1377,7 @@
 
                                             <section>
                                                 <div class="card shadow-none rounded">
-                                                    <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                         <p style="font-size: 24px; font-weight: 500">
                                                             My Profile </p>
                                                         <a href="<?php echo base_url() . "Chiefconsultant/dashboard" ?>" class="text-dark"><i
@@ -1478,7 +1482,7 @@
 
                                                 <section>
                                                     <div class="card shadow-none rounded">
-                                                        <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                                        <div class="d-flex justify-content-between mx-2 p-2 pt-sm-4 px-sm-4">
                                                             <p style="font-size: 24px; font-weight: 500">
                                                                 Profile Details</p>
                                                             <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark"><i

@@ -10,11 +10,13 @@ class HcpModel extends CI_Model
     public function register()
     {
         $post = $this->input->post(null, true);
+        $approval = isset($post['approvalApproved'])?$post['approvalApproved']:'0';
         $insert = array(
             'hcpName' => $post['hcpName'],
             'hcpMobile' => $post['hcpMobile'],
             'hcpMail' => $post['hcpEmail'],
-            'hcpPassword' => $post['hcpCnfmPassword']
+            'hcpPassword' => $post['hcpCnfmPassword'],
+            'approvalStatus' => $approval
         );
         $this->db->insert('hcp_details', $insert);
     }
@@ -62,7 +64,7 @@ class HcpModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['hcpEmail'];
         $password = $postData['hcpPassword'];
-        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0' AND approvalStatus = '1'";
+        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0'";
         $count = $this->db->query($query);
         return $count->result_array();
     }
@@ -298,7 +300,7 @@ class HcpModel extends CI_Model
     public function getHcpDetails()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `hcp_details`";
+        $details = "SELECT * FROM `hcp_details` WHERE `id` = $hcpIdDb";
         $select = $this->db->query($details);
         return $select->result_array();
     }

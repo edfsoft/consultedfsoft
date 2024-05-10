@@ -416,7 +416,7 @@
 
                 <section>
                     <div class="card shadow-none rounded">
-                        <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                        <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                             <p style="font-size: 24px; font-weight: 500">
                                 Patients
                             </p>
@@ -442,7 +442,7 @@
                                                 ID
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                            NAME
+                                                NAME
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                 GENDER
@@ -622,7 +622,7 @@
 
                     <section>
                         <div class="card shadow-none rounded">
-                            <div class="d-flex justify-content-between mt-2 p-2">
+                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                 <p style="font-size: 24px; font-weight: 500"> New Patient </p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                         class="bi bi-arrow-left"></i> Back</a>
@@ -1078,7 +1078,7 @@
 
                         <section>
                             <div class="card shadow-none rounded">
-                                <div class="d-flex justify-content-between mt-2 p-3">
+                                <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                     <p style="font-size: 24px; font-weight: 500">Edit Patient Details</p>
                                     <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                             class="bi bi-arrow-left"></i> Back</a>
@@ -1644,7 +1644,7 @@
 
                             <section>
                                 <div class="card shadow-none rounded">
-                                    <div class="d-flex justify-content-between mt-2 p-3">
+                                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                         <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                                 class="bi bi-arrow-left"></i> Back</a>
@@ -1779,7 +1779,7 @@
 
                                 <section>
                                     <div class="card shadow-none rounded">
-                                        <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2">
+                                        <div class="d-sm-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                             <p style="font-size: 24px; font-weight: 500">
                                                 Appointments
                                             </p>
@@ -1789,8 +1789,6 @@
                                                 </button></a>
                                         </div>
                                         <div class="card-body p-2 p-sm-4">
-
-
                                             <div class="table-responsive">
                                                 <table class="table text-center" id="appointmentTable">
                                                     <thead>
@@ -1836,7 +1834,11 @@
                                                             <tr>
                                                                 <td><?php echo $count; ?>. </td>
                                                                 <td style="font-size: 16px">
-                                                                <a href="<?php echo base_url() . "Healthcareprovider/patientdetailsApp/" . $value['patientDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"> <?php echo $value['patientId'] ?></a></td>
+                                                                    <a href="<?php echo base_url() . "Healthcareprovider/patientdetailsApp/" . $value['patientDbId']; ?>"
+                                                                        class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                        onmouseout="style='text-decoration:none'">
+                                                    <?php echo $value['patientId'] ?></a>
+                                                                </td>
                                                                 <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                                 <td style="font-size: 16px">
                                                 <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
@@ -1845,7 +1847,11 @@
                                                 <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                                 </td>
                                                                 <td style="font-size: 16px">
-                                                                <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfileApp/" . $value['referalDoctorDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"> <?php echo $value['referalDoctor'] ?></a></td>
+                                                                    <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfileApp/" . $value['referalDoctorDbId']; ?>"
+                                                                        class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                        onmouseout="style='text-decoration:none'">
+                                                    <?php echo $value['referalDoctor'] ?></a>
+                                                                </td>
                                                                 <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
                                                                 <td style="font-size: 16px">
                                                                     <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
@@ -1965,7 +1971,7 @@
 
                                     <section>
                                         <div class="card shadow-none rounded">
-                                            <div class="d-flex justify-content-between mt-2 p-2">
+                                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                 <p style="font-size: 24px; font-weight: 500"> New Appoitment</p>
                                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                                     class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
@@ -2221,7 +2227,7 @@
                                                                         placeholder="E.g. Add payment details">
                                                                 </div>
 
-                                                                <button type="submit" class="btn text-light next float-end mt-2"
+                                                                <button type="submit" class="btn text-light float-end mt-2"
                                                                     style="background-color: #00ad8e;">Confirm </button>
                                                             </div>
                                                         </form>
@@ -2399,7 +2405,7 @@
 
                                         <section>
                                             <div class="card shadow-none rounded">
-                                                <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                                <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                     <p style="font-size: 24px; font-weight: 500">
                                                         Chief Doctor Profile </p>
                                                     <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" class="text-dark"><i
@@ -2534,16 +2540,16 @@
 
                                             <section>
                                                 <div class="card shadow-none rounded">
-                                                    <div class="d-flex justify-content-between mt-2 p-3">
+                                                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                                         <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                                             class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
                                                     </div>
                                                     <div class="card-body p-2 p-sm-5">
 
-                                    <?php
-                                    foreach ($patientDetails as $key => $value) {
-                                        ?>
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
                                                             <div class="d-sm-flex justify-content-evenly mt-2 mb-5">
                                                                 <div class="ps-sm-5">
                                                                     <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
@@ -2553,14 +2559,14 @@
                                                                     <p class="text-dark" style="font-weight:500;font-size:20px;">
                                         <?php echo $value['diagonsis'] ?>
                                                                     </p>
-                                                                    </div>
-                                    <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
-                                                                        <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
-                                                                            width="140" height="140" class="rounded-circle">
-                                    <?php } else { ?>
-                                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                                            height="140" class="rounded-circle">
-                                    <?php } ?>
+                                                                </div>
+                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                                                    <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
+                                                                        width="140" height="140" class="rounded-circle">
+                                <?php } else { ?>
+                                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                                        height="140" class="rounded-circle">
+                                <?php } ?>
                                                             </div>
 
                                                             <h5 class="my-3 fw-bolder">Personal Details:</h5>
@@ -2636,7 +2642,7 @@
                                                                 </p>
                                                                 <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
                                                             </div>
-                                    <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
+                            <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
 
                                                                 <h5 class="my-3 mt-5 fw-bolder">Documents / Reports:</h5>
 
@@ -2675,7 +2681,7 @@
                                                     </div>
                                                     <div class="container">
                                                         <div class="row justify-content-center">
-                            <?php foreach ($ccDetails as $key => $value) { ?>
+                        <?php foreach ($ccDetails as $key => $value) { ?>
                                                                 <div class="card col-lg-4 m-3">
                                                                     <div class="d-sm-flex justify-content-evenly text-center p-4">
                                     <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
@@ -2713,7 +2719,7 @@
 
                                                     <section>
                                                         <div class="card shadow-none rounded">
-                                                            <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                 <p style="font-size: 24px; font-weight: 500">
                                                                     Chief Doctor Profile </p>
                                                                 <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>" class="text-dark"><i
@@ -2844,7 +2850,7 @@
 
                                                         <section>
                                                             <div class="card shadow-none rounded">
-                                                                <div class="d-flex justify-content-between mt-2 p-2">
+                                                                <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                     <p style="font-size: 24px; font-weight: 500"> My Profile</p>
                                                                     <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>" class="float-end text-dark"><i
                                                                             class="bi bi-arrow-left"></i> Back</a>
@@ -2930,7 +2936,7 @@
 
                                                             <section>
                                                                 <div class="card shadow-none rounded">
-                                                                    <div class="d-flex justify-content-between mt-2 p-2">
+                                                                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                         <p style="font-size: 24px; font-weight: 500"> Edit Profile Details</p>
                                                                         <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>" class="float-end text-dark"><i
                                                                                 class="bi bi-arrow-left"></i> Back</a>

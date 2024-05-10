@@ -41,7 +41,7 @@ class chiefconsultant extends CI_Controller
     {
         $postData = $this->input->post(null, true);
         $login = $this->CcModel->ccLoginDetails();
-        if (isset($login[0]['id'])) {
+        if (isset($login[0]['id']) && ($login[0]['approvalStatus']== "1")) {
             $LoggedInDetails = array(
                 'ccIdDb' => $login[0]['id'],
                 'ccId' => $login[0]['ccId'],
@@ -51,6 +51,9 @@ class chiefconsultant extends CI_Controller
             );
             $this->session->set_userdata($LoggedInDetails);
             $this->dashboard();
+        } else if ($login[0]['approvalStatus']== 0) {
+            $this->index();
+            echo '<script>alert("You can log in once the verification process is done.");</script>';
         } else {
             $this->index();
             echo '<script>alert("Please enter registered details.");</script>';

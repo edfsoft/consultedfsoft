@@ -9,13 +9,15 @@ class CcModel extends CI_Model
     public function register()
     {
         $post = $this->input->post(null, true);
+        $approval = isset($post['approvalApproved'])?$post['approvalApproved']:'0';
         $insert = array(
             'doctorName' => $post['ccName'],
             'doctorMobile' => $post['ccMobile'],
             'doctorMail' => $post['ccEmail'],
-            'doctorPassword' => $post['ccCnfmPassword']
+            'doctorPassword' => $post['ccCnfmPassword'],
+            'approvalStatus' => $approval
         );
-        $this->db->insert('cc_details', $insert);
+         $this->db->insert('cc_details', $insert);
     }
 
     public function generateCcId()
@@ -62,7 +64,7 @@ class CcModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['ccEmail'];
         $password = $postData['ccPassword'];
-        $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'  AND deleteStatus = '0' AND approvalStatus = '1'";
+        $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'  AND deleteStatus = '0'";
         $count = $this->db->query($query);
         return $count->result_array();
     }
@@ -99,7 +101,7 @@ class CcModel extends CI_Model
     public function getCcDetails()
     {
         $ccIdDb = $_SESSION['ccIdDb'];
-        $details = "SELECT * FROM `cc_details`";
+        $details = "SELECT * FROM `cc_details` WHERE `id`=$ccIdDb";
         $select = $this->db->query($details);
         return $select->result_array();
     }

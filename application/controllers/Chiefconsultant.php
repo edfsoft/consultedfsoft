@@ -51,7 +51,7 @@ class chiefconsultant extends CI_Controller
             );
             $this->session->set_userdata($LoggedInDetails);
             $this->dashboard();
-        } else if ($login[0]['approvalStatus']== 0) {
+        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus']== 0) {
             $this->index();
             echo '<script>alert("You can log in once the verification process is done.");</script>';
         } else {

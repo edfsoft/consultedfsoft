@@ -2679,35 +2679,72 @@
                                                             Chief Doctors
                                                         </p>
                                                     </div>
+                                                   
                                                     <div class="container">
-                                                        <div class="row justify-content-center">
-                        <?php foreach ($ccDetails as $key => $value) { ?>
-                                                                <div class="card col-lg-4 m-3">
-                                                                    <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                            <div class="row justify-content-center">
+                            <?php
+                            $itemsPerPage = 2;
+                            $totalItems = count($ccDetails);
+                            $totalPages = ceil($totalItems / $itemsPerPage);
+                            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $page = max(1, min($totalPages, intval($page)));
+
+                            $offset = ($page - 1) * $itemsPerPage;
+
+                            for ($i = $offset; $i < min($totalItems, $offset + $itemsPerPage); $i++) {
+                                $value = $ccDetails[$i];
+                                ?>
+                                                    <div class="card col-lg-4 m-3">
+                                                        <div class="d-sm-flex justify-content-evenly text-center p-4">
                                     <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                                                            <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                                class="rounded-circle my-auto">
+                                                                <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="122" height="122"
+                                                                    class="rounded-circle my-auto">
                                     <?php } else { ?>
-                                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                                                height="140" class="rounded-circle my-auto">
+                                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="122"
+                                                                    height="122" class="rounded-circle my-auto">
                                     <?php } ?>
-                                                                        <div>
-                                                                            <p class="card-title"><b>
-                                                <?php echo $value['doctorName']; ?>
-                                                                                </b> / <br>
-                                            <?php echo $value['ccId']; ?>
-                                                                            </p>
-                                                                            <p style="color: #00ad8e;"><b>
-                                                <?php echo $value['specialization']; ?>
-                                                                                </b></p>
-                                                                            <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['id'] ?>"
-                                                                                class="btn btn-secondary">Full Details</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                        <?php } ?>
+                                                            <div>
+                                                                <p class="card-title"><b><?php echo $value['doctorName']; ?></b> /
+                                                                    <br><?php echo $value['ccId']; ?>
+                                                                </p>
+                                                                <p style="color: #00ad8e;"><b><?php echo $value['specialization']; ?></b></p>
+                                                                <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['id']; ?>"
+                                                                    class="btn btn-secondary">Full Details</a>
+                                                            </div>
                                                         </div>
                                                     </div>
+                        <?php } ?>
+                                            </div>
+
+                                            <div class="pagination justify-content-center mt-3">
+                                                <ul class="pagination">
+                                                    <li>
+                                                        <a href="?page=<?php echo ($page - 1); ?>">
+                                                            <button type="button" class="bg-light border px-3 py-2" <?php if ($page == 1)
+                                                                echo 'disabled'; ?>>
+                                                                < </button>
+                                                        </a>
+                                                    </li>
+                                            <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
+                                                        <li class="">
+                                                            <a class="text-secondary " href="?page=<?php echo $i; ?>">
+                                                                <button type="button"
+                                                                    class="btn border px-3 py-2 <?php if ($i == $page)
+                                                                        echo 'btn-secondary text-light'; ?>">
+                                            <?php echo $i; ?></button>
+                                                            </a>
+                                                        </li>
+                                            <?php } ?>
+
+                                                    <li>
+                                                        <a href="?page=<?php echo ($page + 1); ?>">
+                                                        <button type="button" class="bg-light border px-3 py-2" <?php if ($page == $totalPages)
+                                                                echo 'disabled'; ?>> > </button>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                                 </section>
 
             <?php
@@ -2722,8 +2759,8 @@
                                                             <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                 <p style="font-size: 24px; font-weight: 500">
                                                                     Chief Doctor Profile </p>
-                                                                <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>" class="text-dark"><i
-                                                                        class="bi bi-arrow-left"></i> Back</a>
+                                                                    <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                                            class="bi bi-arrow-left"></i> Back</b>
                                                             </div>
 
                                                             <div class="card-body p-2 p-sm-4">
@@ -2843,6 +2880,12 @@
                     <?php } ?>
                                                         </div>
                                                     </section>
+                                                    <script>
+                                            function goBack() {
+                                                window.history.back();
+                                            }
+                                        </script>
+
 
             <?php
         } else if ($method == "myProfile") {

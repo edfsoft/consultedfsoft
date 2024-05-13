@@ -1157,11 +1157,8 @@
 
                                 </div>
                             </div> -->
-                                        <div class="card rounded">
-                                            <p class="ps-2 m-3" style="font-size: 24px; font-weight: 500">
-                                                Health Care Providers
-                                            </p>
-                                        </div>
+
+                                        <!-- Code to display all cards in single page -->
                                         <!-- <div class="container">
                                     <div class="row justify-content-center">
                         <?php foreach ($hcpDetails as $key => $value) { ?>
@@ -1192,99 +1189,78 @@
                                     </div>
                                 </div> -->
 
-                                        <div class="container" id="contentContainer">
-                                            <div class="row justify-content-center" id="content">
-                                            </div>
+
+                                        <div class="card rounded">
+                                            <p class="ps-2 m-3" style="font-size: 24px; font-weight: 500">
+                                                Health Care Providers
+                                            </p>
                                         </div>
 
-                                        <div class="container text-center mt-4">
+                                        <div class="container">
                                             <div class="row justify-content-center">
-                                                <div id="paginationContainer">
-                                                </div>
+                            <?php
+                            $itemsPerPage = 6;
+                            $totalItems = count($hcpDetails);
+                            $totalPages = ceil($totalItems / $itemsPerPage);
+                            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $page = max(1, min($totalPages, intval($page)));
+
+                            $offset = ($page - 1) * $itemsPerPage;
+
+                            for ($i = $offset; $i < min($totalItems, $offset + $itemsPerPage); $i++) {
+                                $value = $hcpDetails[$i];
+                                ?>
+                                                    <div class="card col-lg-4 m-3">
+                                                        <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                    <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
+                                                                <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="122" height="122"
+                                                                    class="rounded-circle my-auto">
+                                    <?php } else { ?>
+                                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="122"
+                                                                    height="122" class="rounded-circle my-auto">
+                                    <?php } ?>
+                                                            <div>
+                                                                <p class="card-title"><b><?php echo $value['hcpName']; ?></b> /
+                                                                    <br><?php echo $value['hcpId']; ?>
+                                                                </p>
+                                                                <p style="color: #0079AD;"><b><?php echo $value['hcpSpecialization']; ?></b></p>
+                                                                <a href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfile/" . $value['id']; ?>"
+                                                                    class="btn btn-secondary">Full Details</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                        <?php } ?>
                                             </div>
-                                            <script>
-                                                var hcpDetails = <?php echo json_encode($hcpDetails); ?>;
-                                                var itemsPerPage = 6;
-                                                var currentPage = 1;
-                                                var totalPages = Math.ceil(hcpDetails.length / itemsPerPage);
 
-                                                function displayData(page) {
-                                                    var startIndex = (page - 1) * itemsPerPage;
-                                                    var endIndex = startIndex + itemsPerPage;
-                                                    var contentContainer = document.getElementById('content');
-                                                    var html = '';
+                                            <div class="pagination justify-content-center mt-3">
+                                                <ul class="pagination">
+                                                    <li>
+                                                        <a href="?page=<?php echo ($page - 1); ?>">
+                                                            <button type="button" class="bg-light border px-3 py-2" <?php if ($page == 1)
+                                                                echo 'disabled'; ?>>
+                                                                < </button>
+                                                        </a>
+                                                    </li>
+                            <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
+                                                        <li class="">
+                                                            <a class="text-secondary " href="?page=<?php echo $i; ?>">
+                                                                <button type="button"
+                                                                    class="btn border px-3 py-2 <?php if ($i == $page)
+                                                                        echo 'btn-secondary text-light'; ?>">
+                                            <?php echo $i; ?></button>
+                                                            </a>
+                                                        </li>
+                            <?php } ?>
 
-                                                    for (var i = startIndex; i < Math.min(endIndex, hcpDetails.length); i++) {
-                                                        var value = hcpDetails[i];
-                                                        html += `
-                                                                        <div class="card col-lg-4 m-3">
-                                                                            <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                                                <img src="${value.hcpPhoto || '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile Photo" width="122" height="122"
-                                                                                     class="rounded-circle my-auto">
-                                                                                <div>
-                                                                                    <p class="card-title"><b>${value.hcpName}</b> / <br>${value.hcpId}</p>
-                                                                                    <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
-                                                                                    <a href="<?php echo base_url() . 'Chiefconsultant/healthCareProvidersProfile/'; ?>${value.id}" class="btn btn-secondary">Full Details</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    `;
-                                                    }
-                                                    contentContainer.innerHTML = html;
-                                                }
-
-                                                function generatePagination() {
-                                                    var paginationContainer = document.getElementById('paginationContainer');
-                                                    var buttonsHtml = '';
-
-                                                    buttonsHtml += `<button class="btn btn-outline-secondary me-3" onclick="previousPage()">&lt;</button>`;
-
-                                                    for (var i = 1; i <= totalPages; i++) {
-                                                        buttonsHtml += `
-                                                                        <button class="btn btn-outline-secondary mx-1 pagination-btn" onclick="goToPage(${i})">${i}</button>
-                                                                    `;
-                                                    }
-
-                                                    buttonsHtml += `<button class="btn btn-outline-secondary ms-3" onclick="nextPage()">&gt;</button>`;
-
-                                                    paginationContainer.innerHTML = buttonsHtml;
-                                                }
-
-                                                function goToPage(page) {
-                                                    currentPage = page;
-                                                    displayData(currentPage);
-                                                    updatePaginationUI();
-                                                }
-
-                                                function updatePaginationUI() {
-                                                    var paginationButtons = document.querySelectorAll('.pagination-btn');
-                                                    paginationButtons.forEach(function (button, index) {
-                                                        if (index + 1 === currentPage) {
-                                                            button.classList.add('active');
-                                                        } else {
-                                                            button.classList.remove('active');
-                                                        }
-                                                    });
-                                                }
-
-                                                function previousPage() {
-                                                    if (currentPage > 1) {
-                                                        goToPage(currentPage - 1);
-                                                    }
-                                                }
-
-                                                function nextPage() {
-                                                    if (currentPage < totalPages) {
-                                                        goToPage(currentPage + 1);
-                                                    }
-                                                }
-
-                                                // Initial display and pagination generation
-                                                displayData(currentPage);
-                                                generatePagination();
-                                            </script>
-
-
+                                                    <li>
+                                                        <a href="?page=<?php echo ($page + 1); ?>">
+                                                        <button type="button" class="bg-light border px-3 py-2" <?php if ($page == $totalPages)
+                                                                echo 'disabled'; ?>> > </button>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </section>
 
             <?php
@@ -1298,8 +1274,8 @@
                                             <div class="card shadow-none rounded">
                                                 <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                     <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
-                                                    <a href="<?php echo base_url() . "Chiefconsultant/healthCareProviders" ?>"
-                                                        class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
+                                                    <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                                            class="bi bi-arrow-left"></i> Back</b>
                                                 </div>
                                                 <div class="card-body p-2 p-sm-4">
                             <?php
@@ -1370,6 +1346,11 @@
                                                 </div>
                                             </div>
                                         </section>
+                                        <script>
+                                            function goBack() {
+                                                window.history.back();
+                                            }
+                                        </script>
 
             <?php
         } else if ($method == "myProfile") {

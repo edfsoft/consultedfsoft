@@ -438,6 +438,16 @@
                                         <div id="mail_err" class="text-danger pt-1"></div>
                                     </div>
                                     <div class="mb-3">
+                                        <label for="ccSpec" class="form-label">Specialization <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-control rounded-pill p-3" id="ccSpec" name="ccSpec">
+                                            <option value="">Select Specialization</option>
+                                            <option value="Diabetologist">Diabetologist</option>
+                                            <option value="General Practitioners">General Practitioners</option>
+                                        </select>
+                                        <div id="spec_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="ccPassword" class="form-label">Password <span
                                                 class="text-danger">*</span></label>
                                         <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
@@ -467,6 +477,7 @@
                             var name = document.getElementById("ccName").value;
                             var mobile = document.getElementById("ccMobile").value;
                             var email = document.getElementById("ccEmail").value;
+                            var spec = document.getElementById("ccSpec").value;
                             var password = document.getElementById("ccPassword").value;
                             var confirmpassword = document.getElementById("ccCnfmPassword").value;
 
@@ -495,6 +506,13 @@
                                 return false;
                             } else {
                                 document.getElementById("mail_err").innerHTML = "";
+                            }
+
+                            if (spec == "") {
+                                document.getElementById("spec_err").innerHTML = "Specialization must be filled out.";
+                                return false;
+                            } else {
+                                document.getElementById("spec_err").innerHTML = "";
                             }
 
                             if (password == "") {
@@ -531,6 +549,7 @@
                             var name = document.getElementById("ccName").value;
                             var mobile = document.getElementById("ccMobile").value;
                             var email = document.getElementById("ccEmail").value;
+                            var spec = document.getElementById("ccSpec").value;
                             var password = document.getElementById("ccPassword").value;
                             var confirmpassword = document.getElementById("ccCnfmPassword").value;
 
@@ -544,6 +563,10 @@
 
                             if (email != "") {
                                 document.getElementById("mail_err").innerHTML = "";
+                            }
+
+                            if (spec != "") {
+                                document.getElementById("spec_err").innerHTML = "";
                             }
 
                             if (password != "") {
@@ -942,6 +965,16 @@
                                                     <div id="mail_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <div class="mb-3">
+                                                    <label for="hcpSpec" class="form-label">Specialization <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-control" id="hcpSpec" name="hcpSpec">
+                                                        <option value="">Select Specialization</option>
+                                                        <option value="Diabetologist">Diabetologist</option>
+                                                        <option value="General Practitioners">General Practitioners</option>
+                                                    </select>
+                                                    <div id="spec_err" class="text-danger pt-1"></div>
+                                                </div>
+                                                <div class="mb-3">
                                                     <label for="hcpPassword" class="form-label">Password <span
                                                             class="text-danger">*</span></label>
                                                     <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
@@ -965,6 +998,114 @@
                                         </div>
                                     </div>
                                 </section>
+
+                                <script>
+                                    function validateSignup() {
+                                        var name = document.getElementById("hcpName").value;
+                                        var mobile = document.getElementById("hcpMobile").value;
+                                        var email = document.getElementById("hcpEmail").value;
+                                        var spec = document.getElementById("hcpSpec").value;
+                                        var password = document.getElementById("hcpPassword").value;
+                                        var confirmpassword = document.getElementById("hcpCnfmPassword").value;
+
+                                        if (name == "") {
+                                            document.getElementById("name_err").innerHTML = "Name must be filled out.";
+                                            return false;
+                                        } else {
+                                            document.getElementById("name_err").innerHTML = "";
+                                        }
+
+                                        if (mobile == "") {
+                                            document.getElementById("mobile_err").innerHTML = "Mobile number must be filled out.";
+                                            return false;
+                                        } else if (!/^\d{10}$/.test(mobile)) {
+                                            document.getElementById("mobile_err").innerHTML = "Invalid mobile number. Please enter valid number.";
+                                            return false;
+                                        } else {
+                                            document.getElementById("mobile_err").innerHTML = "";
+                                        }
+
+                                        if (email == "") {
+                                            document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
+                                            return false;
+                                        } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                                            document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
+                                            return false;
+                                        } else {
+                                            document.getElementById("mail_err").innerHTML = "";
+                                        }
+
+                                        if (spec == "") {
+                                            document.getElementById("spec_err").innerHTML = "Specialization must be filled out.";
+                                            return false;
+                                        } else {
+                                            document.getElementById("spec_err").innerHTML = "";
+                                        }
+
+                                        if (password == "") {
+                                            document.getElementById("password_err").innerHTML = "Password must be filled out.";
+                                            return false;
+                                        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+                                            document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password."
+                                            return false;
+                                        } else {
+                                            document.getElementById("password_err").innerHTML = "";
+                                        }
+
+                                        if (confirmpassword == "") {
+                                            document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
+                                            return false;
+                                        } else if (confirmpassword != password) {
+                                            document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
+                                            return false;
+                                        } else {
+                                            document.getElementById("cnfmpassword_err").innerHTML = "";
+                                        }
+                                    }
+
+                                    document.getElementById("hcpPassword").onfocus = function () {
+                                        document.getElementById("passwordmessage").style.display = "block";
+                                    }
+
+                                    document.getElementById("hcpPassword").onblur = function () {
+                                        document.getElementById("passwordmessage").style.display = "none";
+                                    }
+
+
+                                    function removeError() {
+                                        var name = document.getElementById("hcpName").value;
+                                        var mobile = document.getElementById("hcpMobile").value;
+                                        var email = document.getElementById("hcpEmail").value;
+                                        var spec = document.getElementById("hcpSpec").value;
+                                        var password = document.getElementById("hcpPassword").value;
+                                        var confirmpassword = document.getElementById("hcpCnfmPassword").value;
+
+                                        if (name != "") {
+                                            document.getElementById("name_err").innerHTML = "";
+                                        }
+
+                                        if (mobile != "") {
+                                            document.getElementById("mobile_err").innerHTML = "";
+                                        }
+
+                                        if (email != "") {
+                                            document.getElementById("mail_err").innerHTML = "";
+                                        }
+
+                                        if (spec != "") {
+                                            document.getElementById("spec_err").innerHTML = "";
+                                        }
+
+                                        if (password != "") {
+                                            document.getElementById("password_err").innerHTML = "";
+                                        }
+
+                                        if (confirmpassword != "") {
+                                            document.getElementById("cnfmpassword_err").innerHTML = "";
+                                        }
+                                    }
+
+                                </script>
 
             <?php
         } else if ($method == "hcpDetails") {

@@ -99,6 +99,16 @@
                             <div id="mail_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="mb-3">
+                            <label for="ccSpec" class="form-label">Specialization <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control rounded-pill p-3" id="ccSpec" name="ccSpec">
+                                <option value="">Select Specialization</option>
+                                <option value="Diabetologist">Diabetologist</option>
+                                <option value="General Practitioners">General Practitioners</option>
+                            </select>
+                            <div id="spec_err" class="text-danger pt-1"></div>
+                        </div>
+                        <div class="mb-3">
                             <label for="ccPassword" class="form-label">Password <span
                                     class="text-danger">*</span></label>
                             <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
@@ -139,6 +149,7 @@
             var name = document.getElementById("ccName").value;
             var mobile = document.getElementById("ccMobile").value;
             var email = document.getElementById("ccEmail").value;
+            var spec = document.getElementById("ccSpec").value;
             var password = document.getElementById("ccPassword").value;
             var confirmpassword = document.getElementById("ccCnfmPassword").value;
 
@@ -167,6 +178,13 @@
                 return false;
             } else {
                 document.getElementById("mail_err").innerHTML = "";
+            }
+
+            if (spec == "") {
+                document.getElementById("spec_err").innerHTML = "Specialization must be filled out.";
+                return false;
+            } else {
+                document.getElementById("spec_err").innerHTML = "";
             }
 
             if (password == "") {
@@ -203,6 +221,7 @@
             var name = document.getElementById("ccName").value;
             var mobile = document.getElementById("ccMobile").value;
             var email = document.getElementById("ccEmail").value;
+            var spec = document.getElementById("ccSpec").value;
             var password = document.getElementById("ccPassword").value;
             var confirmpassword = document.getElementById("ccCnfmPassword").value;
 
@@ -216,6 +235,10 @@
 
             if (email != "") {
                 document.getElementById("mail_err").innerHTML = "";
+            }
+
+            if (spec != "") {
+                document.getElementById("spec_err").innerHTML = "";
             }
 
             if (password != "") {

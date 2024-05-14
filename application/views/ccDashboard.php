@@ -1244,9 +1244,8 @@
                             <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
                                                         <li class="">
                                                             <a class="text-secondary " href="?page=<?php echo $i; ?>">
-                                                                <button type="button"
-                                                                    class="btn border px-3 py-2 <?php if ($i == $page)
-                                                                        echo 'btn-secondary text-light'; ?>">
+                                                                <button type="button" class="btn border px-3 py-2 <?php if ($i == $page)
+                                                                    echo 'btn-secondary text-light'; ?>">
                                             <?php echo $i; ?></button>
                                                             </a>
                                                         </li>
@@ -1254,7 +1253,7 @@
 
                                                     <li>
                                                         <a href="?page=<?php echo ($page + 1); ?>">
-                                                        <button type="button" class="bg-light border px-3 py-2" <?php if ($page == $totalPages)
+                                                            <button type="button" class="bg-light border px-3 py-2" <?php if ($page == $totalPages)
                                                                 echo 'disabled'; ?>> > </button>
                                                         </a>
                                                     </li>
@@ -1404,51 +1403,82 @@
                                                                 <tr>
                                                                     <td class="col-2 py-2" style="color:#999292">Years of Experience</td>
                                                                     <td class="col-5">
-                                        <?php echo $value['yearOfExperience']; ?>
+                                        <?php if ($value['yearOfExperience'] != "") {
+                                            echo $value['yearOfExperience'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td class="py-2" style="color:#999292">
-                                                                        Qualification
-                                                                    </td>
+                                                                    <td class="py-2" style="color:#999292">Qualification</td>
                                                                     <td>
-                                        <?php echo $value['qualification']; ?>
+                                        <?php if ($value['qualification'] != "") {
+                                            echo $value['qualification'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="py-2" style="color:#999292">Registration detail</td>
                                                                     <td>
-                                        <?php echo $value['regDetails']; ?>
+                                        <?php if ($value['regDetails'] != "") {
+                                            echo $value['regDetails'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="py-2" style="color:#999292">Membership</td>
                                                                     <td>
-                                        <?php echo $value['membership']; ?>
+                                        <?php if ($value['membership'] != "") {
+                                            echo $value['membership'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="py-2" style="color:#999292">Services</td>
                                                                     <td>
-                                        <?php echo $value['services']; ?>
+                                        <?php if ($value['services'] != "") {
+                                            echo $value['services'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="py-2" style="color:#999292">Date of Birth</td>
                                                                     <td>
-                                        <?php echo $value['dateOfBirth']; ?>
+                                        <?php if ($value['dateOfBirth'] != "") {
+                                            echo $value['dateOfBirth'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
                                                                     <td>
-                                        <?php echo $value['hospitalName']; ?>
+                                        <?php if ($value['hospitalName'] != "") {
+                                            echo $value['hospitalName'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td class="py-2" style="color:#999292">Location</td>
                                                                     <td>
-                                        <?php echo $value['location']; ?>
+                                        <?php if ($value['location'] != "") {
+                                            echo $value['location'];
+                                        } else {
+                                            echo "-";
+                                        }
+                                        ?>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -1465,7 +1495,7 @@
                                                     <div class="card shadow-none rounded">
                                                         <div class="d-flex justify-content-between mx-2 p-2 pt-sm-4 px-sm-4">
                                                             <p style="font-size: 24px; font-weight: 500">
-                                                                Profile Details</p>
+                                                                Edit Profile Details</p>
                                                             <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark"><i
                                                                     class="bi bi-arrow-left"></i> Back</a>
                                                         </div>
@@ -1488,9 +1518,9 @@
                                                                             data-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
                                                                     </div>
 
-                                                                    <form action="<?php echo base_url() . "/updateMyProfile" ?>" name="profileEditForm"
+                                                                    <form action="<?php echo base_url() . "Chiefconsultant/updateMyProfile" ?>"
                                                                         name="profileEditForm" enctype="multipart/form-data" method="POST"
-                                                                        onsubmit="return validateDetails()" oninput="clearErrorDetails()">
+                                                                        onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="col-md-6">
                                                                         <div class="form-group pb-3">
                                                                             <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
                                                                             <input type="text" class="form-control" id="drName" name="drName"
@@ -1523,12 +1553,19 @@
                                                                             </div>
                                                                             <div id="drPassword_err" class="text-danger pt-1"></div>
                                                                         </div>
-                                                                        <!-- <div class="form-group pb-3">
-                                                            <label class="form-label" for="profilePhoto">Profile Photo <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="file" class="form-control" id="profilePhoto" name="profilePhoto">
-                                                            <div id="profilePhoto_err" class="text-danger pt-1"></div>
-                                                        </div> -->
+
+                                                                        <div class="form-group pb-3">
+                                                                            <label class="form-label" for="specialization">Specialization</label>
+                                                                            <select class="form-control" id="specialization" name="specialization">
+                                                                                <option value="Diabetologist" <?php if ($value['specialization'] === "Diabetologist")
+                                                                                    echo "Selected"; ?>>Diabetologist
+                                                                                </option>
+                                                                                <option value="General Practitioners" <?php if ($value['specialization'] === "General Practitioners")
+                                                                                    echo "Selected"; ?>>
+                                                                                    General Practitioners</option>
+                                                                            </select>
+                                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                        </div>
                                                                         <div class="form-group pb-3">
                                                                             <label class="form-label" for="yearOfExp">Years of Experience</label>
                                                                             <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
@@ -1539,12 +1576,6 @@
                                                                             <label class="form-label" for="qualification">Qualification</label>
                                                                             <input type="text" class="form-control" id="qualification" name="qualification"
                                                                                 value="<?php echo $value['qualification']; ?>" placeholder="MBBS">
-                                                                            <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                        </div>
-                                                                        <div class="form-group pb-3">
-                                                                            <label class="form-label" for="specialization">Specialization</label>
-                                                                            <input type="text" class="form-control" id="specialization" name="specialization"
-                                                                                value="<?php echo $value['specialization']; ?>" placeholder="Diabetologist">
                                                                             <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                         </div>
                                                                         <div class="form-group pb-3">
@@ -1599,6 +1630,7 @@
                                                         var doctorName = document.getElementById("drName").value;
                                                         var doctorMobile = document.getElementById("drMobile").value;
                                                         var doctorEmail = document.getElementById("drEmail").value;
+                                                        var doctorpassword = document.getElementById("drPassword").value;
                                                         // var photo = document.getElementById("profilePhoto").value;
 
                                                         if (doctorName != "") {
@@ -1610,6 +1642,9 @@
                                                         if (doctorEmail != "") {
                                                             document.getElementById("drEmail_err").innerHTML = "";
                                                         }
+                                                        if (doctorpassword != "") {
+                                                            document.getElementById("drPassword_err").innerHTML = "";
+                                                        }
                                                         // if (photo != "") {
                                                         //     document.getElementById("profilePhoto_err").innerHTML = "";
                                                         // }
@@ -1620,6 +1655,7 @@
                                                         var doctorNmae = document.getElementById("drName").value;
                                                         var doctorMobile = document.getElementById("drMobile").value;
                                                         var doctorEmail = document.getElementById("drEmail").value;
+                                                        var doctorPassword = document.getElementById("drPassword").value;
                                                         // var photo = document.getElementById("profilePhoto").value;
 
                                                         if (doctorNmae == "") {
@@ -1646,6 +1682,18 @@
                                                             document.getElementById("drEmail_err").innerHTML = "";
                                                         }
 
+                                                        if (doctorPassword == "") {
+                                                            document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
+                                                            document.getElementById("drPassword").focus();
+                                                            return false;
+                                                        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
+                                                            document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
+                                                            document.getElementById("drPassword").focus();
+                                                            return false;
+                                                        } else {
+                                                            document.getElementById("drPassword_err").innerHTML = "";
+                                                        }
+
                                                         // if (photo == "") {
                                                         //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
                                                         //     document.getElementById("profilePhoto").focus();
@@ -1654,7 +1702,7 @@
                                                         //     document.getElementById("profilePhoto_err").innerHTML = "";
                                                         // }
 
-                                                        return true;
+
                                                     }
                                                 </script>
                                                 <script>

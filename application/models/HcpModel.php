@@ -15,6 +15,7 @@ class HcpModel extends CI_Model
             'hcpName' => $post['hcpName'],
             'hcpMobile' => $post['hcpMobile'],
             'hcpMail' => $post['hcpEmail'],
+            'hcpSpecialization' => $post['hcpSpec'],
             'hcpPassword' => $post['hcpCnfmPassword'],
             'approvalStatus' => $approval
         );

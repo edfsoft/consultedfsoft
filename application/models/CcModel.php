@@ -14,6 +14,7 @@ class CcModel extends CI_Model
             'doctorName' => $post['ccName'],
             'doctorMobile' => $post['ccMobile'],
             'doctorMail' => $post['ccEmail'],
+            'specialization' => $post['ccSpec'],
             'doctorPassword' => $post['ccCnfmPassword'],
             'approvalStatus' => $approval
         );

@@ -59,6 +59,31 @@ class edfadmin extends CI_Controller
         }
     }
 
+    public function ccSignupForm()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "ccRegisterForm";
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
+    }
+
+    public function ccSignup()
+    {
+        $ccMobileNum = $this->input->post('ccMobile');
+
+        if ($this->CcModel->checkUserExistence($ccMobileNum)) {
+            echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
+            $this->ccList();
+        } else {
+            $postData = $this->input->post(null, true);
+            $register = $this->CcModel->register();
+            $generateid = $this->CcModel->generateCcId();
+            $this->ccList();
+        }
+    }
+
     public function ccDetails()
     {
         if (isset($_SESSION['adminIdDb'])) {
@@ -103,6 +128,31 @@ class edfadmin extends CI_Controller
             $this->load->view('adminDashboard.php', $this->data);
         } else {
             $this->index();
+        }
+    }
+
+    public function hcpSignupForm()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "hcpRegisterForm";
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
+    }
+    
+    public function hcpSignup()
+    {
+        $hcpMobileNum = $this->input->post('hcpMobile');
+
+        if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
+            echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
+            $this->hcpList();
+        } else {
+            $postData = $this->input->post(null, true);
+            $register = $this->HcpModel->register();
+            $generateid = $this->HcpModel->generatehcpid();
+            $this->hcpList();
         }
     }
 

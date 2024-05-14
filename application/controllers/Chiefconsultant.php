@@ -41,7 +41,7 @@ class chiefconsultant extends CI_Controller
     {
         $postData = $this->input->post(null, true);
         $login = $this->CcModel->ccLoginDetails();
-        if (isset($login[0]['id'])) {
+        if (isset($login[0]['id']) && ($login[0]['approvalStatus']== "1")) {
             $LoggedInDetails = array(
                 'ccIdDb' => $login[0]['id'],
                 'ccId' => $login[0]['ccId'],
@@ -51,6 +51,9 @@ class chiefconsultant extends CI_Controller
             );
             $this->session->set_userdata($LoggedInDetails);
             $this->dashboard();
+        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus']== 0) {
+            $this->index();
+            echo '<script>alert("You can log in once the verification process is done.");</script>';
         } else {
             $this->index();
             echo '<script>alert("Please enter registered details.");</script>';
@@ -109,34 +112,6 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "appointments";
             $appointmentList = $this->CcModel->getAppointmentList();
             $this->data['appointmentList'] = $appointmentList['response'];
-            $this->setVariable();
-            $this->load->view('ccDashboard.php', $this->data);
-        } else {
-            $this->index();
-        }
-    }
-
-    public function patientProfileApp()
-    {
-        if (isset($_SESSION['ccName'])) {
-            $patientIdDb = $this->uri->segment(3);
-            $this->data['method'] = "patientDetailsApp";
-            $details = $this->HcpModel->getPatientDetails($patientIdDb);
-            $this->data['patientDetails'] = $details;
-            $this->setVariable();
-            $this->load->view('ccDashboard.php', $this->data);
-        } else {
-            $this->index();
-        }
-    }
-
-    public function healthCareProvidersProfileApp()
-    {
-        if (isset($_SESSION['ccName'])) {
-            $hcpIdDb = $this->uri->segment(3);
-            $this->data['method'] = "hcpsProfileApp";
-            $hcpDetails = $this->CcModel->getHcpDetails($hcpIdDb);
-            $this->data['hcpDetails'] = $hcpDetails;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {

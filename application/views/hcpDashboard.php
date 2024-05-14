@@ -218,14 +218,12 @@
                             <img src="<?php echo base_url(); ?>assets/dash_icon2.svg" alt="icon2" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Today Patients
+                                    Total CCs
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     25
                                 </p>
-                                <p style="font-size: 16px">
-                                    <?php echo date("d - m - Y") ?>
-                                </p>
+                                <p style="font-size: 16px">Till Today</p>
                             </div>
                         </div>
                     </div>
@@ -297,7 +295,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="#" class="text-decoration-underline">see all</a>
+                            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" class="text-decoration-underline">see all</a>
                         </div>
                     </div>
 
@@ -416,7 +414,7 @@
 
                 <section>
                     <div class="card shadow-none rounded">
-                        <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                        <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                             <p style="font-size: 24px; font-weight: 500">
                                 Patients
                             </p>
@@ -442,7 +440,7 @@
                                                 ID
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                            NAME
+                                                NAME
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                 GENDER
@@ -581,14 +579,14 @@
                         var startPage = Math.max(1, currentPage - 1);
                         var endPage = Math.min(totalPages, currentPage + 1);
 
-                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
 
                         for (var i = startPage; i <= endPage; i++) {
                             var activeClass = (i === currentPage) ? 'active' : '';
                             buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
                         }
 
-                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
 
                         document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
 
@@ -622,7 +620,7 @@
 
                     <section>
                         <div class="card shadow-none rounded">
-                            <div class="d-flex justify-content-between mt-2 p-2">
+                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                 <p style="font-size: 24px; font-weight: 500"> New Patient </p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                         class="bi bi-arrow-left"></i> Back</a>
@@ -1078,7 +1076,7 @@
 
                         <section>
                             <div class="card shadow-none rounded">
-                                <div class="d-flex justify-content-between mt-2 p-3">
+                                <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                     <p style="font-size: 24px; font-weight: 500">Edit Patient Details</p>
                                     <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                             class="bi bi-arrow-left"></i> Back</a>
@@ -1644,10 +1642,10 @@
 
                             <section>
                                 <div class="card shadow-none rounded">
-                                    <div class="d-flex justify-content-between mt-2 p-3">
+                                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
-                                        <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
-                                                class="bi bi-arrow-left"></i> Back</a>
+                                        <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                                class="bi bi-arrow-left"></i> Back</button>
                                     </div>
                                     <div class="card-body p-2 p-sm-5">
 
@@ -1768,6 +1766,11 @@
                                 </div>
                                 </div>
                             </section>
+                            <script>
+                                function goBack() {
+                                    window.history.back();
+                                }
+                            </script>
 
             <?php
         } else if ($method == "appointments") {
@@ -1779,7 +1782,7 @@
 
                                 <section>
                                     <div class="card shadow-none rounded">
-                                        <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2">
+                                        <div class="d-sm-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                             <p style="font-size: 24px; font-weight: 500">
                                                 Appointments
                                             </p>
@@ -1789,8 +1792,6 @@
                                                 </button></a>
                                         </div>
                                         <div class="card-body p-2 p-sm-4">
-
-
                                             <div class="table-responsive">
                                                 <table class="table text-center" id="appointmentTable">
                                                     <thead>
@@ -1836,7 +1837,11 @@
                                                             <tr>
                                                                 <td><?php echo $count; ?>. </td>
                                                                 <td style="font-size: 16px">
-                                                                <a href="<?php echo base_url() . "Healthcareprovider/patientdetailsApp/" . $value['patientDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"> <?php echo $value['patientId'] ?></a></td>
+                                                                    <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
+                                                                        class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                        onmouseout="style='text-decoration:none'">
+                                                    <?php echo $value['patientId'] ?></a>
+                                                                </td>
                                                                 <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                                 <td style="font-size: 16px">
                                                 <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
@@ -1845,7 +1850,11 @@
                                                 <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                                 </td>
                                                                 <td style="font-size: 16px">
-                                                                <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfileApp/" . $value['referalDoctorDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"> <?php echo $value['referalDoctor'] ?></a></td>
+                                                                    <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
+                                                                        class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                        onmouseout="style='text-decoration:none'">
+                                                    <?php echo $value['referalDoctor'] ?></a>
+                                                                </td>
                                                                 <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
                                                                 <td style="font-size: 16px">
                                                                     <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
@@ -1864,7 +1873,7 @@
 
                                 <script>
                                     var table = document.getElementById('appointmentTable');
-                                    var rowsPerPage = 7;
+                                    var rowsPerPage = 8;
                                     var currentPage = 1;
                                     var totalPages = Math.ceil(table.rows.length / rowsPerPage);
 
@@ -1912,14 +1921,14 @@
                                         var startPage = Math.max(1, currentPage - 1);
                                         var endPage = Math.min(totalPages, currentPage + 1);
 
-                                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+                                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
 
                                         for (var i = startPage; i <= endPage; i++) {
                                             var activeClass = (i === currentPage) ? 'active' : '';
                                             buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
                                         }
 
-                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
 
                                         document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
 
@@ -1965,7 +1974,7 @@
 
                                     <section>
                                         <div class="card shadow-none rounded">
-                                            <div class="d-flex justify-content-between mt-2 p-2">
+                                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                 <p style="font-size: 24px; font-weight: 500"> New Appoitment</p>
                                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                                     class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
@@ -2221,7 +2230,7 @@
                                                                         placeholder="E.g. Add payment details">
                                                                 </div>
 
-                                                                <button type="submit" class="btn text-light next float-end mt-2"
+                                                                <button type="submit" class="btn text-light float-end mt-2"
                                                                     style="background-color: #00ad8e;">Confirm </button>
                                                             </div>
                                                         </form>
@@ -2399,7 +2408,7 @@
 
                                         <section>
                                             <div class="card shadow-none rounded">
-                                                <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                                <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                     <p style="font-size: 24px; font-weight: 500">
                                                         Chief Doctor Profile </p>
                                                     <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" class="text-dark"><i
@@ -2534,16 +2543,16 @@
 
                                             <section>
                                                 <div class="card shadow-none rounded">
-                                                    <div class="d-flex justify-content-between mt-2 p-3">
+                                                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                                         <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                                             class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
                                                     </div>
                                                     <div class="card-body p-2 p-sm-5">
 
-                                    <?php
-                                    foreach ($patientDetails as $key => $value) {
-                                        ?>
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
                                                             <div class="d-sm-flex justify-content-evenly mt-2 mb-5">
                                                                 <div class="ps-sm-5">
                                                                     <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
@@ -2553,14 +2562,14 @@
                                                                     <p class="text-dark" style="font-weight:500;font-size:20px;">
                                         <?php echo $value['diagonsis'] ?>
                                                                     </p>
-                                                                    </div>
-                                    <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
-                                                                        <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
-                                                                            width="140" height="140" class="rounded-circle">
-                                    <?php } else { ?>
-                                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                                            height="140" class="rounded-circle">
-                                    <?php } ?>
+                                                                </div>
+                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                                                    <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
+                                                                        width="140" height="140" class="rounded-circle">
+                                <?php } else { ?>
+                                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                                        height="140" class="rounded-circle">
+                                <?php } ?>
                                                             </div>
 
                                                             <h5 class="my-3 fw-bolder">Personal Details:</h5>
@@ -2636,7 +2645,7 @@
                                                                 </p>
                                                                 <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
                                                             </div>
-                                    <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
+                            <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
 
                                                                 <h5 class="my-3 mt-5 fw-bolder">Documents / Reports:</h5>
 
@@ -2673,33 +2682,69 @@
                                                             Chief Doctors
                                                         </p>
                                                     </div>
+
                                                     <div class="container">
                                                         <div class="row justify-content-center">
-                            <?php foreach ($ccDetails as $key => $value) { ?>
+                            <?php
+                            $itemsPerPage = 6;
+                            $totalItems = count($ccDetails);
+                            $totalPages = ceil($totalItems / $itemsPerPage);
+                            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                            $page = max(1, min($totalPages, intval($page)));
+
+                            $offset = ($page - 1) * $itemsPerPage;
+
+                            for ($i = $offset; $i < min($totalItems, $offset + $itemsPerPage); $i++) {
+                                $value = $ccDetails[$i];
+                                ?>
                                                                 <div class="card col-lg-4 m-3">
                                                                     <div class="d-sm-flex justify-content-evenly text-center p-4">
                                     <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                                                            <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
+                                                                            <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="122" height="122"
                                                                                 class="rounded-circle my-auto">
                                     <?php } else { ?>
-                                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                                                height="140" class="rounded-circle my-auto">
+                                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="122"
+                                                                                height="122" class="rounded-circle my-auto">
                                     <?php } ?>
                                                                         <div>
-                                                                            <p class="card-title"><b>
-                                                <?php echo $value['doctorName']; ?>
-                                                                                </b> / <br>
-                                            <?php echo $value['ccId']; ?>
+                                                                            <p class="card-title"><b><?php echo $value['doctorName']; ?></b> /
+                                                                                <br><?php echo $value['ccId']; ?>
                                                                             </p>
-                                                                            <p style="color: #00ad8e;"><b>
-                                                <?php echo $value['specialization']; ?>
-                                                                                </b></p>
-                                                                            <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['id'] ?>"
+                                                                            <p style="color: #00ad8e;"><b><?php echo $value['specialization']; ?></b></p>
+                                                                            <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['id']; ?>"
                                                                                 class="btn btn-secondary">Full Details</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                         <?php } ?>
+                                                        </div>
+
+                                                        <div class="pagination justify-content-center mt-3">
+                                                            <ul class="pagination">
+                                                                <li>
+                                                                    <a href="?page=<?php echo ($page - 1); ?>">
+                                                                        <button type="button" class="bg-light border px-3 py-2" <?php if ($page == 1)
+                                                                            echo 'disabled'; ?>>
+                                                                            < </button>
+                                                                    </a>
+                                                                </li>
+                            <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
+                                                                    <li class="">
+                                                                        <a class="text-secondary " href="?page=<?php echo $i; ?>">
+                                                                            <button type="button" class="btn border px-3 py-2 <?php if ($i == $page)
+                                                                                echo 'btn-secondary text-light'; ?>">
+                                            <?php echo $i; ?></button>
+                                                                        </a>
+                                                                    </li>
+                            <?php } ?>
+
+                                                                <li>
+                                                                    <a href="?page=<?php echo ($page + 1); ?>">
+                                                                        <button type="button" class="bg-light border px-3 py-2" <?php if ($page == $totalPages)
+                                                                            echo 'disabled'; ?>> > </button>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </section>
@@ -2713,11 +2758,11 @@
 
                                                     <section>
                                                         <div class="card shadow-none rounded">
-                                                            <div class="d-flex justify-content-between mt-2 mb-3 p-2">
+                                                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                 <p style="font-size: 24px; font-weight: 500">
                                                                     Chief Doctor Profile </p>
-                                                                <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>" class="text-dark"><i
-                                                                        class="bi bi-arrow-left"></i> Back</a>
+                                                                <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                                                        class="bi bi-arrow-left"></i> Back</button>
                                                             </div>
 
                                                             <div class="card-body p-2 p-sm-4">
@@ -2837,6 +2882,12 @@
                     <?php } ?>
                                                         </div>
                                                     </section>
+                                                    <script>
+                                                        function goBack() {
+                                                            window.history.back();
+                                                        }
+                                                    </script>
+
 
             <?php
         } else if ($method == "myProfile") {
@@ -2844,7 +2895,7 @@
 
                                                         <section>
                                                             <div class="card shadow-none rounded">
-                                                                <div class="d-flex justify-content-between mt-2 p-2">
+                                                                <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                     <p style="font-size: 24px; font-weight: 500"> My Profile</p>
                                                                     <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>" class="float-end text-dark"><i
                                                                             class="bi bi-arrow-left"></i> Back</a>
@@ -2858,7 +2909,7 @@
                                                                                 <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
                                                                                     class="rounded-circle">
                                 <?php } else { ?>
-                                                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt=" Profile Photo" width="140"
                                                                                     height="140" class="rounded-circle">
                                 <?php } ?>
                                                                             <div class="ps-sm-5">
@@ -2887,13 +2938,21 @@
                                                                             <tr>
                                                                                 <td class="col-5 py-2" style="color:#999292">Years of Experience</td>
                                                                                 <td class="col-5">
-                                        <?php echo $value['hcpExperience']; ?>
+                                        <?php if ($value['hcpExperience'] != "") {
+                                            echo $value['hcpExperience'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td class="py-2" style="color:#999292">Qualification</td>
                                                                                 <td>
-                                        <?php echo $value['hcpQualification']; ?>
+                                        <?php if ($value['hcpQualification'] != "") {
+                                            echo $value['hcpQualification'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                                 </td>
                                                                             </tr>
                                                                             <!-- <tr>
@@ -2903,19 +2962,31 @@
                                                                             <tr>
                                                                                 <td class="py-2" style="color:#999292">Date of Birth</td>
                                                                                 <td>
-                                        <?php echo $value['hcpDob']; ?>
+                                        <?php if ($value['hcpDob'] != "") {
+                                            echo $value['hcpDob'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
                                                                                 <td>
-                                        <?php echo $value['hcpHospitalName']; ?>
+                                        <?php if ($value['hcpHospitalName'] != "") {
+                                            echo $value['hcpHospitalName'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td class="py-2" style="color:#999292">Location</td>
                                                                                 <td>
-                                        <?php echo $value['hcpLocation']; ?>
+                                        <?php if ($value['hcpLocation'] != "") {
+                                            echo $value['hcpLocation'];
+                                        } else {
+                                            echo "-";
+                                        } ?>
                                                                                 </td>
                                                                             </tr>
                                                                         </table>
@@ -2930,7 +3001,7 @@
 
                                                             <section>
                                                                 <div class="card shadow-none rounded">
-                                                                    <div class="d-flex justify-content-between mt-2 p-2">
+                                                                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                         <p style="font-size: 24px; font-weight: 500"> Edit Profile Details</p>
                                                                         <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>" class="float-end text-dark"><i
                                                                                 class="bi bi-arrow-left"></i> Back</a>
@@ -2989,12 +3060,21 @@
                                                                                         </div>
                                                                                         <div id="drPassword_err" class="text-danger pt-1"></div>
                                                                                     </div>
-                                                                                    <!-- <div class="form-group pb-3">
-                                                                        <label class="form-label" for="profilePhoto">Profile Photo <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="file" class="form-control" id="profilePhoto" name="profilePhoto">
-                                                                        <div id="profilePhoto_err" class="text-danger pt-1"></div>
-                                                                        </div> -->
+                                                                                    <div class="form-group pb-3">
+                                                                                        <label class="form-label" for="specialization">Specialization <span
+                                                                                                class="text-danger">*</span></label>
+                                                                                        <select class="form-control" id="specialization" name="specialization">
+                                                                                            <option value="Diabetologist" <?php if ($value['hcpSpecialization'] === "Diabetologist")
+                                                                                                echo "Selected"; ?>>
+                                                                                                Diabetologist
+                                                                                            </option>
+                                                                                            <option value="General Practitioners" <?php if ($value['hcpSpecialization'] === "General Practitioners")
+                                                                                                echo "Selected"; ?>>
+                                                                                                General Practitioners</option>
+                                                                                        </select>
+                                                                                        <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
+                                                                                    </div>
+
                                                                                     <div class="form-group pb-3">
                                                                                         <label class="form-label" for="yearOfExp">Years of Experience</label>
                                                                                         <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
@@ -3006,12 +3086,6 @@
                                                                                         <input type="text" class="form-control" id="qualification" name="qualification"
                                                                                             value="<?php echo $value['hcpQualification']; ?>" placeholder="E.g. MBBS">
                                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                                    </div>
-                                                                                    <div class="form-group pb-3">
-                                                                                        <label class="form-label" for="specialization">Specialization</label>
-                                                                                        <input type="text" class="form-control" id="specialization" name="specialization"
-                                                                                            value="<?php echo $value['hcpSpecialization']; ?>" placeholder="E.g. Diabetologist">
-                                                                                        <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
                                                                                     </div>
                                                                                     <div class="form-group pb-3">
                                                                                         <label class="form-label" for="dob">Date of Birth</label>
@@ -3046,7 +3120,7 @@
                                                                     var doctorName = document.getElementById("drName").value;
                                                                     var doctorMobile = document.getElementById("drMobile").value;
                                                                     var doctorEmail = document.getElementById("drEmail").value;
-                                                                    var doctorpassword = document.getElementById("password").value;
+                                                                    var doctorpassword = document.getElementById("drPassword").value;
                                                                     // var photo = document.getElementById("profilePhoto").value;
 
                                                                     if (doctorName != "") {
@@ -3070,37 +3144,44 @@
                                                                     var doctorNmae = document.getElementById("drName").value;
                                                                     var doctorMobile = document.getElementById("drMobile").value;
                                                                     var doctorEmail = document.getElementById("drEmail").value;
-                                                                    var doctorPassword = document.getElementById("password").value;
+                                                                    var doctorPassword = document.getElementById("drPassword").value;
                                                                     // var photo = document.getElementById("profilePhoto").value;
 
                                                                     if (doctorNmae == "") {
                                                                         document.getElementById("drName_err").innerHTML = "A name can't be blank.";
                                                                         document.getElementById("drName").focus(); return false;
-                                                                    } else { document.getElementById("drName_err").innerHTML = ""; }
+                                                                    } else {
+                                                                        document.getElementById("drName_err").innerHTML = "";
+                                                                    }
                                                                     if (doctorMobile == "") {
                                                                         document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
                                                                         document.getElementById("drMobile").focus(); return false;
-                                                                    } else { document.getElementById("drMobile_err").innerHTML = ""; }
+                                                                    } else {
+                                                                        document.getElementById("drMobile_err").innerHTML = "";
+                                                                    }
                                                                     if (doctorEmail == "") {
                                                                         document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
                                                                         document.getElementById("drEmail").focus(); return false;
-                                                                    } else { document.getElementById("drEmail_err").innerHTML = ""; }
+                                                                    } else {
+                                                                        document.getElementById("drEmail_err").innerHTML = "";
+                                                                    }
                                                                     if (doctorPassword == "") {
                                                                         document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
-                                                                        document.getElementById("password").focus(); return false;
+                                                                        document.getElementById("drPassword").focus();
+                                                                        return false;
                                                                     } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
-                                                                        document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number and a minimum of 8 characters.";
-                                                                        document.getElementById("password").focus(); return false;
+                                                                        document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
+                                                                        document.getElementById("drPassword").focus();
+                                                                        return false;
                                                                     } else {
                                                                         document.getElementById("drPassword_err").innerHTML = "";
                                                                     }
-                                                                    // if (photo == "") {                
+                                                                    // // if (photo == "") {                
                                                                     //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";   
                                                                     //     document.getElementById("profilePhoto").focus();                
                                                                     //     return false;                 // } else {              
                                                                     //     document.getElementById("profilePhoto_err").innerHTML = "";        
                                                                     // }
-                                                                    return true;
                                                                 }
                                                             </script>
                                                             <script>

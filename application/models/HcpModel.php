@@ -10,11 +10,14 @@ class HcpModel extends CI_Model
     public function register()
     {
         $post = $this->input->post(null, true);
+        $approval = isset($post['approvalApproved'])?$post['approvalApproved']:'0';
         $insert = array(
             'hcpName' => $post['hcpName'],
             'hcpMobile' => $post['hcpMobile'],
             'hcpMail' => $post['hcpEmail'],
-            'hcpPassword' => $post['hcpCnfmPassword']
+            'hcpSpecialization' => $post['hcpSpec'],
+            'hcpPassword' => $post['hcpCnfmPassword'],
+            'approvalStatus' => $approval
         );
         $this->db->insert('hcp_details', $insert);
     }
@@ -62,7 +65,7 @@ class HcpModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['hcpEmail'];
         $password = $postData['hcpPassword'];
-        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0' AND approvalStatus = '1'";
+        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0'";
         $count = $this->db->query($query);
         return $count->result_array();
     }
@@ -70,7 +73,7 @@ class HcpModel extends CI_Model
     public function getPatientList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `patient_details` WHERE `patientHcp`=  $hcpIdDb AND deleteStatus = '0'";
+        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -137,7 +140,8 @@ class HcpModel extends CI_Model
             'medicines	' => $post['patientMedicines'],
             'documentOne' => $firstDocument,
             'documentTwo' => $secondDocument,
-            'patientHcp	' => $_SESSION['hcpIdDb'],
+            'patientHcp	' => $_SESSION['hcpId'],
+            'patientHcpDbId	' => $_SESSION['hcpIdDb'],
         );
         $this->db->insert('patient_details', $insertdata);
     }
@@ -298,7 +302,7 @@ class HcpModel extends CI_Model
     public function getHcpDetails()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `hcp_details`";
+        $details = "SELECT * FROM `hcp_details` WHERE `id` = $hcpIdDb";
         $select = $this->db->query($details);
         return $select->result_array();
     }

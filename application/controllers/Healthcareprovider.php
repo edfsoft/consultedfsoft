@@ -39,7 +39,7 @@ class healthcareprovider extends CI_Controller
     public function hcpLogin()
     {
         $login = $this->HcpModel->hcpLoginDetails();
-        if (isset($login[0]['id'])) {
+        if (isset($login[0]['id']) && ($login[0]['approvalStatus']== "1")) {
             $LoggedInDetails = array(
                 'hcpIdDb' => $login[0]['id'],
                 'hcpId' => $login[0]['hcpId'],
@@ -49,6 +49,9 @@ class healthcareprovider extends CI_Controller
             );
             $this->session->set_userdata($LoggedInDetails);
             $this->dashboard();
+        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus']== 0) {
+            $this->index();
+            echo '<script>alert("You can log in once the verification process is done.");</script>';
         } else {
             $this->index();
             echo '<script>alert("Please enter registered details.");</script>';
@@ -155,32 +158,6 @@ class healthcareprovider extends CI_Controller
             $this->data['patientsId'] = $patientList['response'];
             $ccDetails = $this->HcpModel->getCcProfile();
             $this->data['ccsId'] = $ccDetails;
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            $this->index();
-        }
-    }
-
-    public function patientdetailsApp()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "patientDetailsApp";
-            $patientIdDb = $this->uri->segment(3);
-            $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
-            $this->data['patientDetails'] = $patientDetails;
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            $this->index();
-        }
-    }
-
-    public function chiefDoctorsProfileApp()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $ccIdDb = $this->uri->segment(3);
-            $this->data['method'] = "chiefDoctorProfileApp";
-            $ccDetails = $this->HcpModel->getCcDetails($ccIdDb);
-            $this->data['ccDetails'] = $ccDetails;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();

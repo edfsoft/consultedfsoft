@@ -79,8 +79,7 @@
                     <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
                     <p class="text-justify" style="font-size:18px;font-weight:400;">Empowering general practitioners to
-                        provide
-                        personalized online diabetes consultations for comprehensive patient care. </p>
+                        provide personalized online diabetes consultations for comprehensive patient care. </p>
                     <form action="<?php echo base_url() . "Healthcareprovider/hcpLogin" ?>" method="post"
                         name="hcploginform" onsubmit="return validateLogin()">
                         <div class="mb-3">

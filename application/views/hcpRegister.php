@@ -24,8 +24,8 @@
             font-family: 'Poppins', sans-serif;
         }
 
-         /* Form Labels */
-         .form-label {
+        /* Form Labels */
+        .form-label {
             font-weight: 500;
         }
 
@@ -99,6 +99,16 @@
                             <div id="mail_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="mb-3">
+                            <label for="hcpSpec" class="form-label">Specialization <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control rounded-pill p-3" id="hcpSpec" name="hcpSpec">
+                                <option value="">Select Specialization</option>
+                                <option value="Diabetologist">Diabetologist</option>
+                                <option value="General Practitioners">General Practitioners</option>
+                            </select>
+                            <div id="spec_err" class="text-danger pt-1"></div>
+                        </div>
+                        <div class="mb-3">
                             <label for="hcpPassword" class="form-label">Password <span
                                     class="text-danger">*</span></label>
                             <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
@@ -139,6 +149,7 @@
             var name = document.getElementById("hcpName").value;
             var mobile = document.getElementById("hcpMobile").value;
             var email = document.getElementById("hcpEmail").value;
+            var spec = document.getElementById("hcpSpec").value;
             var password = document.getElementById("hcpPassword").value;
             var confirmpassword = document.getElementById("hcpCnfmPassword").value;
 
@@ -167,6 +178,13 @@
                 return false;
             } else {
                 document.getElementById("mail_err").innerHTML = "";
+            }
+
+            if (spec == "") {
+                document.getElementById("spec_err").innerHTML = "Specialization must be filled out.";
+                return false;
+            } else {
+                document.getElementById("spec_err").innerHTML = "";
             }
 
             if (password == "") {
@@ -203,6 +221,7 @@
             var name = document.getElementById("hcpName").value;
             var mobile = document.getElementById("hcpMobile").value;
             var email = document.getElementById("hcpEmail").value;
+            var spec = document.getElementById("hcpSpec").value;
             var password = document.getElementById("hcpPassword").value;
             var confirmpassword = document.getElementById("hcpCnfmPassword").value;
 
@@ -216,6 +235,10 @@
 
             if (email != "") {
                 document.getElementById("mail_err").innerHTML = "";
+            }
+
+            if (spec != "") {
+                document.getElementById("spec_err").innerHTML = "";
             }
 
             if (password != "") {

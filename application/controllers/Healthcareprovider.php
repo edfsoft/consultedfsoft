@@ -164,32 +164,6 @@ class healthcareprovider extends CI_Controller
         }
     }
 
-    public function patientdetailsApp()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "patientDetailsApp";
-            $patientIdDb = $this->uri->segment(3);
-            $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
-            $this->data['patientDetails'] = $patientDetails;
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            $this->index();
-        }
-    }
-
-    public function chiefDoctorsProfileApp()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $ccIdDb = $this->uri->segment(3);
-            $this->data['method'] = "chiefDoctorProfileApp";
-            $ccDetails = $this->HcpModel->getCcDetails($ccIdDb);
-            $this->data['ccDetails'] = $ccDetails;
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            $this->index();
-        }
-    }
-
     public function newAppointment()
     {
         $appointmentDetails = $this->HcpModel->insertappointment();

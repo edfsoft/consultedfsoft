@@ -73,7 +73,7 @@ class HcpModel extends CI_Model
     public function getPatientList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `patient_details` WHERE `patientHcp`=  $hcpIdDb AND deleteStatus = '0'";
+        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -140,7 +140,8 @@ class HcpModel extends CI_Model
             'medicines	' => $post['patientMedicines'],
             'documentOne' => $firstDocument,
             'documentTwo' => $secondDocument,
-            'patientHcp	' => $_SESSION['hcpIdDb'],
+            'patientHcp	' => $_SESSION['hcpId'],
+            'patientHcpDbId	' => $_SESSION['hcpIdDb'],
         );
         $this->db->insert('patient_details', $insertdata);
     }

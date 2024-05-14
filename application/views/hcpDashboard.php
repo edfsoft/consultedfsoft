@@ -218,14 +218,12 @@
                             <img src="<?php echo base_url(); ?>assets/dash_icon2.svg" alt="icon2" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Today Patients
+                                    Total CCs
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     25
                                 </p>
-                                <p style="font-size: 16px">
-                                    <?php echo date("d - m - Y") ?>
-                                </p>
+                                <p style="font-size: 16px">Till Today</p>
                             </div>
                         </div>
                     </div>
@@ -297,7 +295,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="#" class="text-decoration-underline">see all</a>
+                            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" class="text-decoration-underline">see all</a>
                         </div>
                     </div>
 
@@ -581,14 +579,14 @@
                         var startPage = Math.max(1, currentPage - 1);
                         var endPage = Math.min(totalPages, currentPage + 1);
 
-                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
 
                         for (var i = startPage; i <= endPage; i++) {
                             var activeClass = (i === currentPage) ? 'active' : '';
                             buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
                         }
 
-                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
 
                         document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
 
@@ -1646,8 +1644,8 @@
                                 <div class="card shadow-none rounded">
                                     <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
-                                        <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
-                                                class="bi bi-arrow-left"></i> Back</a>
+                                        <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                                class="bi bi-arrow-left"></i> Back</button>
                                     </div>
                                     <div class="card-body p-2 p-sm-5">
 
@@ -1768,6 +1766,11 @@
                                 </div>
                                 </div>
                             </section>
+                            <script>
+                                function goBack() {
+                                    window.history.back();
+                                }
+                            </script>
 
             <?php
         } else if ($method == "appointments") {
@@ -1834,7 +1837,7 @@
                                                             <tr>
                                                                 <td><?php echo $count; ?>. </td>
                                                                 <td style="font-size: 16px">
-                                                                    <a href="<?php echo base_url() . "Healthcareprovider/patientdetailsApp/" . $value['patientDbId']; ?>"
+                                                                    <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
                                                                         class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                         onmouseout="style='text-decoration:none'">
                                                     <?php echo $value['patientId'] ?></a>
@@ -1847,7 +1850,7 @@
                                                 <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                                 </td>
                                                                 <td style="font-size: 16px">
-                                                                    <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfileApp/" . $value['referalDoctorDbId']; ?>"
+                                                                    <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
                                                                         class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                         onmouseout="style='text-decoration:none'">
                                                     <?php echo $value['referalDoctor'] ?></a>
@@ -1870,7 +1873,7 @@
 
                                 <script>
                                     var table = document.getElementById('appointmentTable');
-                                    var rowsPerPage = 7;
+                                    var rowsPerPage = 8;
                                     var currentPage = 1;
                                     var totalPages = Math.ceil(table.rows.length / rowsPerPage);
 
@@ -1918,14 +1921,14 @@
                                         var startPage = Math.max(1, currentPage - 1);
                                         var endPage = Math.min(totalPages, currentPage + 1);
 
-                                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+                                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
 
                                         for (var i = startPage; i <= endPage; i++) {
                                             var activeClass = (i === currentPage) ? 'active' : '';
                                             buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
                                         }
 
-                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
 
                                         document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
 
@@ -2683,7 +2686,7 @@
                                                     <div class="container">
                                                         <div class="row justify-content-center">
                             <?php
-                            $itemsPerPage = 2;
+                            $itemsPerPage = 6;
                             $totalItems = count($ccDetails);
                             $totalPages = ceil($totalItems / $itemsPerPage);
                             $page = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -2759,7 +2762,7 @@
                                                                 <p style="font-size: 24px; font-weight: 500">
                                                                     Chief Doctor Profile </p>
                                                                 <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
-                                                                        class="bi bi-arrow-left"></i> Back</b>
+                                                                        class="bi bi-arrow-left"></i> Back</button>
                                                             </div>
 
                                                             <div class="card-body p-2 p-sm-4">

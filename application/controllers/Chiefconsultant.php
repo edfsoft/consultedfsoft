@@ -119,34 +119,6 @@ class chiefconsultant extends CI_Controller
         }
     }
 
-    public function patientProfileApp()
-    {
-        if (isset($_SESSION['ccName'])) {
-            $patientIdDb = $this->uri->segment(3);
-            $this->data['method'] = "patientDetailsApp";
-            $details = $this->HcpModel->getPatientDetails($patientIdDb);
-            $this->data['patientDetails'] = $details;
-            $this->setVariable();
-            $this->load->view('ccDashboard.php', $this->data);
-        } else {
-            $this->index();
-        }
-    }
-
-    public function healthCareProvidersProfileApp()
-    {
-        if (isset($_SESSION['ccName'])) {
-            $hcpIdDb = $this->uri->segment(3);
-            $this->data['method'] = "hcpsProfileApp";
-            $hcpDetails = $this->CcModel->getHcpDetails($hcpIdDb);
-            $this->data['hcpDetails'] = $hcpDetails;
-            $this->setVariable();
-            $this->load->view('ccDashboard.php', $this->data);
-        } else {
-            $this->index();
-        }
-    }
-
     public function healthCareProviders()
     {
         if (isset($_SESSION['ccName'])) {

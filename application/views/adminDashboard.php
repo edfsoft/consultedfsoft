@@ -367,14 +367,14 @@
                         var startPage = Math.max(1, currentPage - 1);
                         var endPage = Math.min(totalPages, currentPage + 1);
 
-                        buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
 
                         for (var i = startPage; i <= endPage; i++) {
                             var activeClass = (i === currentPage) ? 'active' : '';
                             buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
                         }
 
-                        buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
 
                         document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
 
@@ -894,14 +894,14 @@
                                     var startPage = Math.max(1, currentPage - 1);
                                     var endPage = Math.min(totalPages, currentPage + 1);
 
-                                    buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+                                    buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
 
                                     for (var i = startPage; i <= endPage; i++) {
                                         var activeClass = (i === currentPage) ? 'active' : '';
                                         buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
                                     }
 
-                                    buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+                                    buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
 
                                     document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
 
@@ -1395,14 +1395,14 @@
                                                 var startPage = Math.max(1, currentPage - 1);
                                                 var endPage = Math.min(totalPages, currentPage + 1);
 
-                                                buttonsHtml += '<button class="btn btn-outline-secondary me-3" id="previousBtn" onclick="previousPage()">&lt;</button>';
+                                                buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
 
                                                 for (var i = startPage; i <= endPage; i++) {
                                                     var activeClass = (i === currentPage) ? 'active' : '';
                                                     buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
                                                 }
 
-                                                buttonsHtml += '<button class="btn btn-outline-secondary ms-3" id="nextBtn" onclick="nextPage()">&gt;</button>';
+                                                buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
 
                                                 document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
 

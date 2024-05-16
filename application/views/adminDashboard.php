@@ -239,9 +239,19 @@
                                 </button></a>
                         </div>
                         <div class="card-body p-2 p-sm-4">
+                            <?php
+                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                            $items_per_page = 10;
+
+                            $total_items = count($ccList);
+                            $total_pages = ceil($total_items / $items_per_page);
+
+                            $offset = ($current_page - 1) * $items_per_page;
+
+                            $current_page_items = array_slice($ccList, $offset, $items_per_page);
+                            ?>
                             <div class="table-responsive">
                                 <table class="table text-center" id="ccTable">
-
                                     <thead>
                                         <tr>
                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
@@ -269,8 +279,8 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $count = 0;
-                                        foreach ($ccList as $key => $value) {
+                                        $count = $offset;
+                                        foreach ($current_page_items as $key => $value) {
                                             $count++;
                                             ?>
                                             <tr>
@@ -308,96 +318,52 @@
                                     <?php } ?>
                                     </tbody>
                                 </table>
-
                             </div>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                <?php if ($current_page > 1): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                <button type="button" class="bg-light border px-3 py-2">
+                                                    < </button>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+
+                                    <?php
+                                    $start_page = max(1, $current_page - 2);
+                                    $end_page = min($total_pages, $current_page + 2);
+
+                                    if ($start_page == 1) {
+                                        $end_page = min($total_pages, 5);
+                                    }
+                                    if ($end_page == $total_pages) {
+                                        $start_page = max(1, $total_pages - 4);
+                                    }
+
+                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $i; ?>">
+                                                <button type="button"
+                                                    class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                                <?php echo $i; ?></button>
+                                            </a>
+                                        </li>
+                                <?php endfor; ?>
+
+                                <?php if ($current_page < $total_pages): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                <button type="button" class="bg-light border px-3 py-2">
+                                                    ></button>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
-                    <div id="paginationButtons" class="text-center mt-4">
-                        <div id="paginationBtnsContainer"></div>
-                    </div>
                 </section>
-
-                <script>
-                    var table = document.getElementById('ccTable');
-                    var rowsPerPage = 8;
-                    var currentPage = 1;
-                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
-
-                    showPage(currentPage);
-
-                    function showPage(page) {
-                        var startIndex = (page - 1) * rowsPerPage;
-                        var endIndex = startIndex + rowsPerPage;
-                        for (var i = 0; i < table.rows.length; i++) {
-                            if (i >= startIndex && i < endIndex) {
-                                table.rows[i].style.display = 'table-row';
-                            } else {
-                                table.rows[i].style.display = 'none';
-                            }
-                        }
-                    }
-
-                    function goToPage(page) {
-                        if (page < 1) page = 1;
-                        if (page > totalPages) page = totalPages;
-                        currentPage = page;
-                        showPage(currentPage);
-                        updatePaginationButtons();
-                    }
-
-                    function previousPage() {
-                        if (currentPage > 1) {
-                            currentPage--;
-                            showPage(currentPage);
-                            updatePaginationButtons();
-                        }
-                    }
-
-                    function nextPage() {
-                        if (currentPage < totalPages) {
-                            currentPage++;
-                            showPage(currentPage);
-                            updatePaginationButtons();
-                        }
-                    }
-
-                    function updatePaginationButtons() {
-                        var buttonsHtml = '';
-
-                        var startPage = Math.max(1, currentPage - 1);
-                        var endPage = Math.min(totalPages, currentPage + 1);
-
-                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
-
-                        for (var i = startPage; i <= endPage; i++) {
-                            var activeClass = (i === currentPage) ? 'active' : '';
-                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-                        }
-
-                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
-
-                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
-
-                        var previousBtn = document.getElementById('previousBtn');
-                        var nextBtn = document.getElementById('nextBtn');
-                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
-                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
-                    }
-
-                    function showPage(page) {
-                        var startIndex = (page - 1) * rowsPerPage;
-                        var endIndex = startIndex + rowsPerPage;
-                        for (var i = 0; i < table.rows.length; i++) {
-                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                table.rows[i].style.display = 'table-row';
-                            } else {
-                                table.rows[i].style.display = 'none';
-                            }
-                        }
-                    }
-
-                    updatePaginationButtons();
-                </script>
 
             <?php
         } else if ($method == "ccRegisterForm") {
@@ -592,8 +558,8 @@
                                 <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                     <p style="font-size: 24px; font-weight: 500">
                                         Chief Doctor Profile </p>
-                                    <a href="<?php echo base_url() . "Edfadmin/ccList" ?>" class="text-dark"><i
-                                            class="bi bi-arrow-left"></i> Back</a>
+                                    <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                            class="bi bi-arrow-left"></i> Back</button>
                                 </div>
 
                                 <div class="card-body p-2 p-sm-4">
@@ -746,6 +712,11 @@
                                 }
                             }
                         </script>
+                        <script>
+                            function goBack() {
+                                window.history.back();
+                            }
+                        </script>
 
             <?php
         } else if ($method == "healthCareProvider") {
@@ -765,6 +736,17 @@
                                                 <i class="bi bi-plus-square-fill"></i> Add HCP
                                             </button></a>
                                     </div>
+                        <?php
+                        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                        $items_per_page = 10;
+
+                        $total_items = count($hcpList);
+                        $total_pages = ceil($total_items / $items_per_page);
+
+                        $offset = ($current_page - 1) * $items_per_page;
+
+                        $current_page_items = array_slice($hcpList, $offset, $items_per_page);
+                        ?>
                                     <div class="card-body p-2 p-sm-4">
                                         <div class="table-responsive">
                                             <table class="table text-center" id="hcpTable">
@@ -796,8 +778,8 @@
                                                 </thead>
                                                 <tbody>
                                         <?php
-                                        $count = 0;
-                                        foreach ($hcpList as $key => $value) {
+                                        $count = $offset;
+                                        foreach ($current_page_items as $key => $value) {
                                             $count++;
                                             ?>
                                                         <tr>
@@ -835,96 +817,52 @@
                                     <?php } ?>
                                                 </tbody>
                                             </table>
-
                                         </div>
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center">
+                                <?php if ($current_page > 1): ?>
+                                                    <li>
+                                                        <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                            <button type="button" class="bg-light border px-3 py-2">
+                                                                < </button>
+                                                        </a>
+                                                    </li>
+                                <?php endif; ?>
+
+                                    <?php
+                                    $start_page = max(1, $current_page - 2);
+                                    $end_page = min($total_pages, $current_page + 2);
+
+                                    if ($start_page == 1) {
+                                        $end_page = min($total_pages, 5);
+                                    }
+                                    if ($end_page == $total_pages) {
+                                        $start_page = max(1, $total_pages - 4);
+                                    }
+
+                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                                    <li>
+                                                        <a href="?page=<?php echo $i; ?>">
+                                                            <button type="button"
+                                                                class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                                <?php echo $i; ?></button>
+                                                        </a>
+                                                    </li>
+                                <?php endfor; ?>
+
+                                <?php if ($current_page < $total_pages): ?>
+                                                    <li>
+                                                        <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                            <button type="button" class="bg-light border px-3 py-2">
+                                                                ></button>
+                                                        </a>
+                                                    </li>
+                                <?php endif; ?>
+                                            </ul>
+                                        </nav>
                                     </div>
                                 </div>
-                                <div id="paginationButtons" class="text-center mt-4">
-                                    <div id="paginationBtnsContainer"></div>
-                                </div>
                             </section>
-
-                            <script>
-                                var table = document.getElementById('hcpTable');
-                                var rowsPerPage = 8;
-                                var currentPage = 1;
-                                var totalPages = Math.ceil(table.rows.length / rowsPerPage);
-
-                                showPage(currentPage);
-
-                                function showPage(page) {
-                                    var startIndex = (page - 1) * rowsPerPage;
-                                    var endIndex = startIndex + rowsPerPage;
-                                    for (var i = 0; i < table.rows.length; i++) {
-                                        if (i >= startIndex && i < endIndex) {
-                                            table.rows[i].style.display = 'table-row';
-                                        } else {
-                                            table.rows[i].style.display = 'none';
-                                        }
-                                    }
-                                }
-
-                                function goToPage(page) {
-                                    if (page < 1) page = 1;
-                                    if (page > totalPages) page = totalPages;
-                                    currentPage = page;
-                                    showPage(currentPage);
-                                    updatePaginationButtons();
-                                }
-
-                                function previousPage() {
-                                    if (currentPage > 1) {
-                                        currentPage--;
-                                        showPage(currentPage);
-                                        updatePaginationButtons();
-                                    }
-                                }
-
-                                function nextPage() {
-                                    if (currentPage < totalPages) {
-                                        currentPage++;
-                                        showPage(currentPage);
-                                        updatePaginationButtons();
-                                    }
-                                }
-
-                                function updatePaginationButtons() {
-                                    var buttonsHtml = '';
-
-                                    var startPage = Math.max(1, currentPage - 1);
-                                    var endPage = Math.min(totalPages, currentPage + 1);
-
-                                    buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
-
-                                    for (var i = startPage; i <= endPage; i++) {
-                                        var activeClass = (i === currentPage) ? 'active' : '';
-                                        buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-                                    }
-
-                                    buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
-
-                                    document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
-
-                                    var previousBtn = document.getElementById('previousBtn');
-                                    var nextBtn = document.getElementById('nextBtn');
-                                    previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
-                                    nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
-                                }
-
-                                function showPage(page) {
-                                    var startIndex = (page - 1) * rowsPerPage;
-                                    var endIndex = startIndex + rowsPerPage;
-                                    for (var i = 0; i < table.rows.length; i++) {
-                                        if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                            table.rows[i].style.display = 'table-row';
-                                        } else {
-                                            table.rows[i].style.display = 'none';
-                                        }
-                                    }
-                                }
-
-                                updatePaginationButtons();
-                            </script>
 
             <?php
         } else if ($method == "hcpRegisterForm") {
@@ -1119,8 +1057,8 @@
                                         <div class="card shadow-none rounded">
                                             <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                 <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
-                                                <a href="<?php echo base_url() . "Edfadmin/hcpList" ?>" class="float-end text-dark"><i
-                                                        class="bi bi-arrow-left"></i> Back</a>
+                                                <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                                        class="bi bi-arrow-left"></i> Back</button>
                                             </div>
 
                                             <div class="card-body p-2 p-sm-4">
@@ -1245,6 +1183,11 @@
                                             }
                                         }
                                     </script>
+                                    <script>
+                                        function goBack() {
+                                            window.history.back();
+                                        }
+                                    </script>
 
             <?php
         } else if ($method == "patient") {
@@ -1266,6 +1209,18 @@
                                         <i class="bi bi-plus-square-fill"></i> Add Patient
                                     </button></a> -->
                                                     </div>
+                            <?php
+                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                            $items_per_page = 10;
+
+                            $total_items = count($patientList);
+                            $total_pages = ceil($total_items / $items_per_page);
+
+                            $offset = ($current_page - 1) * $items_per_page;
+
+                            $current_page_items = array_slice($patientList, $offset, $items_per_page);
+                            ?>
+
                                                     <div class="table-responsive">
                                                         <table class="table text-center" id="patientTable">
 
@@ -1300,8 +1255,8 @@
                                                             </thead>
                                                             <tbody>
                                         <?php
-                                        $count = 0;
-                                        foreach ($patientList as $key => $value) {
+                                        $count = $offset;
+                                        foreach ($current_page_items as $key => $value) {
                                             $count++;
                                             ?>
                                                                     <tr>
@@ -1336,96 +1291,52 @@
                                     <?php } ?>
                                                             </tbody>
                                                         </table>
-
                                                     </div>
+                                                    <nav aria-label="Page navigation">
+                                                        <ul class="pagination justify-content-center">
+                                <?php if ($current_page > 1): ?>
+                                                                <li>
+                                                                    <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                                        <button type="button" class="bg-light border px-3 py-2">
+                                                                            < </button>
+                                                                    </a>
+                                                                </li>
+                                <?php endif; ?>
+
+                                    <?php
+                                    $start_page = max(1, $current_page - 2);
+                                    $end_page = min($total_pages, $current_page + 2);
+
+                                    if ($start_page == 1) {
+                                        $end_page = min($total_pages, 5);
+                                    }
+                                    if ($end_page == $total_pages) {
+                                        $start_page = max(1, $total_pages - 4);
+                                    }
+
+                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                                                <li>
+                                                                    <a href="?page=<?php echo $i; ?>">
+                                                                        <button type="button"
+                                                                            class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                                <?php echo $i; ?></button>
+                                                                    </a>
+                                                                </li>
+                                <?php endfor; ?>
+
+                                <?php if ($current_page < $total_pages): ?>
+                                                                <li>
+                                                                    <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                                        <button type="button" class="bg-light border px-3 py-2">
+                                                                            ></button>
+                                                                    </a>
+                                                                </li>
+                                <?php endif; ?>
+                                                        </ul>
+                                                    </nav>
                                                 </div>
                                             </div>
-                                            <div id="paginationButtons" class="text-center mt-4">
-                                                <div id="paginationBtnsContainer"></div>
-                                            </div>
                                         </section>
-
-                                        <script>
-                                            var table = document.getElementById('patientTable');
-                                            var rowsPerPage = 8;
-                                            var currentPage = 1;
-                                            var totalPages = Math.ceil(table.rows.length / rowsPerPage);
-
-                                            showPage(currentPage);
-
-                                            function showPage(page) {
-                                                var startIndex = (page - 1) * rowsPerPage;
-                                                var endIndex = startIndex + rowsPerPage;
-                                                for (var i = 0; i < table.rows.length; i++) {
-                                                    if (i >= startIndex && i < endIndex) {
-                                                        table.rows[i].style.display = 'table-row';
-                                                    } else {
-                                                        table.rows[i].style.display = 'none';
-                                                    }
-                                                }
-                                            }
-
-                                            function goToPage(page) {
-                                                if (page < 1) page = 1;
-                                                if (page > totalPages) page = totalPages;
-                                                currentPage = page;
-                                                showPage(currentPage);
-                                                updatePaginationButtons();
-                                            }
-
-                                            function previousPage() {
-                                                if (currentPage > 1) {
-                                                    currentPage--;
-                                                    showPage(currentPage);
-                                                    updatePaginationButtons();
-                                                }
-                                            }
-
-                                            function nextPage() {
-                                                if (currentPage < totalPages) {
-                                                    currentPage++;
-                                                    showPage(currentPage);
-                                                    updatePaginationButtons();
-                                                }
-                                            }
-
-                                            function updatePaginationButtons() {
-                                                var buttonsHtml = '';
-
-                                                var startPage = Math.max(1, currentPage - 1);
-                                                var endPage = Math.min(totalPages, currentPage + 1);
-
-                                                buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
-
-                                                for (var i = startPage; i <= endPage; i++) {
-                                                    var activeClass = (i === currentPage) ? 'active' : '';
-                                                    buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-                                                }
-
-                                                buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
-
-                                                document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
-
-                                                var previousBtn = document.getElementById('previousBtn');
-                                                var nextBtn = document.getElementById('nextBtn');
-                                                previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
-                                                nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
-                                            }
-
-                                            function showPage(page) {
-                                                var startIndex = (page - 1) * rowsPerPage;
-                                                var endIndex = startIndex + rowsPerPage;
-                                                for (var i = 0; i < table.rows.length; i++) {
-                                                    if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                                        table.rows[i].style.display = 'table-row';
-                                                    } else {
-                                                        table.rows[i].style.display = 'none';
-                                                    }
-                                                }
-                                            }
-
-                                            updatePaginationButtons();
-                                        </script>
 
             <?php
         } else if ($method == "patientDetails") {
@@ -1439,8 +1350,8 @@
                                                 <div class="card shadow-none rounded">
                                                     <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
-                                                        <a href="<?php echo base_url() . "Edfadmin/patientList" ?>" class="float-end text-dark"><i
-                                                                class="bi bi-arrow-left"></i> Back</a>
+                                                        <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                                                class="bi bi-arrow-left"></i> Back</button>
                                                     </div>
                                                     <div class="card-body p-2 p-sm-4">
 
@@ -1561,6 +1472,11 @@
                                                 </div>
                                                 </div>
                                             </section>
+                                            <script>
+                                                function goBack() {
+                                                    window.history.back();
+                                                }
+                                            </script>
 
             <?php
         }

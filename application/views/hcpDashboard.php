@@ -295,7 +295,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" class="text-decoration-underline">see all</a>
+                            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
+                                class="text-decoration-underline">see all</a>
                         </div>
                     </div>
 
@@ -425,7 +426,7 @@
                         </div>
                         <div class="card-body ps-2 p-sm-4">
 
-                            <div class="table-responsive">
+                            <!-- <div class="table-responsive">
                                 <table class="table text-center" id="patientTable">
 
                                     <thead>
@@ -496,10 +497,10 @@
                                                                 class="bi bi-eye"></i></button></a>
                                                     <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id'] ?>"
                                                         class="px-1 "><button class="btn btn-secondary"><i
-                                                                class="bi bi-pencil"></i></button></a>
+                                                                class="bi bi-pencil"></i></button></a> -->
 
-                                                    <!-- Drop down 3 dots -->
-                                                    <!-- <a class="icon" href="#" data-bs-toggle="dropdown">
+                                <!-- Drop down 3 dots -->
+                                <!-- <a class="icon" href="#" data-bs-toggle="dropdown">
                                                         <p class=""><i class="bi bi-three-dots-vertical"></i></p>
                                                     </a>
                                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -515,101 +516,130 @@
                                                                         class="bi bi-trash"></i> Delete</button></a>
                                                         </li>
                                                     </ul> -->
+
+                                <!-- </td>
+                                            </tr>
+                                    <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div> -->
+
+                            <?php
+                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                            $items_per_page = 10;
+
+                            $total_items = count($patientList);
+                            $total_pages = ceil($total_items / $items_per_page);
+
+                            $offset = ($current_page - 1) * $items_per_page;
+
+                            $current_page_items = array_slice($patientList, $offset, $items_per_page);
+                            ?>
+
+                            <div class="table-responsive">
+                                <table class="table text-center" id="patientTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PHOTO</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
+                                                ID</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">NAME</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">GENDER
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
+                                                AGE</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DIAGNOSIS
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $count = $offset;
+                                        foreach ($current_page_items as $key => $value) {
+                                            $count++;
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $count; ?>.</td>
+                                                <td class="px-2">
+                                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                                        <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
+                                                            alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                <?php } else { ?>
+                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo"
+                                                            width="40" height="40" class="rounded-circle">
+                                                <?php } ?>
+                                                </td>
+                                                <td style="font-size: 16px"><?php echo $value['patientId'] ?></td>
+                                                <td class="" style="font-size: 16px">
+                                                <?php echo $value['firstName'] . ' ' . $value['lastName'] ?>
+                                                </td>
+                                                <td style="font-size: 16px"><?php echo $value['gender'] ?></td>
+                                                <td style="font-size: 16px"><?php echo $value['age'] ?></td>
+                                                <td style="font-size: 16px"><?php echo $value['diagonsis'] ?></td>
+                                                <td class="d-flex d-md-block" style="font-size: 16px">
+                                                    <a
+                                                        href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['id'] ?>"><button
+                                                            class="btn btn-success" class="px-1 "><i
+                                                                class="bi bi-eye"></i></button></a>
+                                                    <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id'] ?>"
+                                                        class="px-1 "><button class="btn btn-secondary"><i
+                                                                class="bi bi-pencil"></i></button></a>
                                                 </td>
                                             </tr>
                                     <?php } ?>
                                     </tbody>
                                 </table>
-
                             </div>
+
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                <?php if ($current_page > 1): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                <button type="button" class="bg-light border px-3 py-2">
+                                                    < </button>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+
+                                    <?php
+                                    $start_page = max(1, $current_page - 2);
+                                    $end_page = min($total_pages, $current_page + 2);
+
+                                    if ($start_page == 1) {
+                                        $end_page = min($total_pages, 5);
+                                    }
+                                    if ($end_page == $total_pages) {
+                                        $start_page = max(1, $total_pages - 4);
+                                    }
+
+                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $i; ?>">
+                                            <button type="button" class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                            <?php echo $i; ?></button>
+                                        </a>
+                                        </li>
+                                <?php endfor; ?>
+
+                                <?php if ($current_page < $total_pages): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                            <button type="button" class="bg-light border px-3 py-2">
+                                                    ></button>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+                                </ul>
+                            </nav>
                         </div>
-                    </div>
-                    <div id="paginationButtons" class="text-center mt-4">
-                        <div id="paginationBtnsContainer"></div>
                     </div>
                 </section>
 
-                <script>
-                    var table = document.getElementById('patientTable');
-                    var rowsPerPage = 8;
-                    var currentPage = 1;
-                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
 
-                    showPage(currentPage);
-
-                    function showPage(page) {
-                        var startIndex = (page - 1) * rowsPerPage;
-                        var endIndex = startIndex + rowsPerPage;
-                        for (var i = 0; i < table.rows.length; i++) {
-                            if (i >= startIndex && i < endIndex) {
-                                table.rows[i].style.display = 'table-row';
-                            } else {
-                                table.rows[i].style.display = 'none';
-                            }
-                        }
-                    }
-
-                    function goToPage(page) {
-                        if (page < 1) page = 1;
-                        if (page > totalPages) page = totalPages;
-                        currentPage = page;
-                        showPage(currentPage);
-                        updatePaginationButtons();
-                    }
-
-                    function previousPage() {
-                        if (currentPage > 1) {
-                            currentPage--;
-                            showPage(currentPage);
-                            updatePaginationButtons();
-                        }
-                    }
-
-                    function nextPage() {
-                        if (currentPage < totalPages) {
-                            currentPage++;
-                            showPage(currentPage);
-                            updatePaginationButtons();
-                        }
-                    }
-
-                    function updatePaginationButtons() {
-                        var buttonsHtml = '';
-
-                        var startPage = Math.max(1, currentPage - 1);
-                        var endPage = Math.min(totalPages, currentPage + 1);
-
-                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
-
-                        for (var i = startPage; i <= endPage; i++) {
-                            var activeClass = (i === currentPage) ? 'active' : '';
-                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-                        }
-
-                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
-
-                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
-
-                        var previousBtn = document.getElementById('previousBtn');
-                        var nextBtn = document.getElementById('nextBtn');
-                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
-                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
-                    }
-
-                    function showPage(page) {
-                        var startIndex = (page - 1) * rowsPerPage;
-                        var endIndex = startIndex + rowsPerPage;
-                        for (var i = 0; i < table.rows.length; i++) {
-                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                table.rows[i].style.display = 'table-row';
-                            } else {
-                                table.rows[i].style.display = 'none';
-                            }
-                        }
-                    }
-
-                    updatePaginationButtons();
-                </script>
 
             <?php
         } else if ($method == "patientDetailsForm") {
@@ -1791,47 +1821,40 @@
                                                     <i class="bi bi-plus-square-fill"></i> Book Appointment
                                                 </button></a>
                                         </div>
+
+                                        <?php
+                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                            $items_per_page = 10;
+
+                            $total_items = count($appointmentList);
+                            $total_pages = ceil($total_items / $items_per_page);
+
+                            $offset = ($current_page - 1) * $items_per_page;
+
+                            $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
+                            ?>
+
                                         <div class="card-body p-2 p-sm-4">
                                             <div class="table-responsive">
                                                 <table class="table text-center" id="appointmentTable">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                S.NO
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
                                                             </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                PATIENT ID
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
                                                             </th>
-                                                            <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                PATIENT NAME
-                                                            </th> -->
-                                                            <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
-                                                                AGE
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                GENDER
-                                                            </th> -->
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                DATE
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                TIME
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                CC ID
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                PURPOSE
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                ACTION
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                             </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                         <?php
-                                        $count = 0;
-                                        foreach ($appointmentList as $key => $value) {
+                                        $count = $offset;
+                                        foreach ($current_page_items as $key => $value) {
                                             $count++;
                                             ?>
                                                             <tr>
@@ -1840,9 +1863,9 @@
                                                                     <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
                                                                         class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                         onmouseout="style='text-decoration:none'">
-                                                    <?php echo $value['patientId'] ?></a>
+                                                    <?php echo $value['patientId'] ?>
+                                                                    </a>
                                                                 </td>
-                                                                <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                                 <td style="font-size: 16px">
                                                 <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
                                                                 </td>
@@ -1853,7 +1876,8 @@
                                                                     <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
                                                                         class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                         onmouseout="style='text-decoration:none'">
-                                                    <?php echo $value['referalDoctor'] ?></a>
+                                                    <?php echo $value['referalDoctor'] ?>
+                                                                    </a>
                                                                 </td>
                                                                 <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
                                                                 <td style="font-size: 16px">
@@ -1863,106 +1887,52 @@
                                     <?php } ?>
                                                     </tbody>
                                                 </table>
+
+                                                <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                <?php if ($current_page > 1): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                <button type="button" class="bg-light border px-3 py-2">
+                                                    < </button>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+
+                                    <?php
+                                    $start_page = max(1, $current_page - 2);
+                                    $end_page = min($total_pages, $current_page + 2);
+
+                                    if ($start_page == 1) {
+                                        $end_page = min($total_pages, 5);
+                                    }
+                                    if ($end_page == $total_pages) {
+                                        $start_page = max(1, $total_pages - 4);
+                                    }
+
+                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                        <li class=" ">
+                                            <a href="?page=<?php echo $i; ?>">
+                                            <button type="button" class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                            <?php echo $i; ?></button>
+                                        </a>
+                                        </li>
+                                <?php endfor; ?>
+
+                                <?php if ($current_page < $total_pages): ?>
+                                        <li class="page-item">
+                                            <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                            <button type="button" class="bg-light border px-3 py-2">
+                                                    ></button>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+                                </ul>
+                            </nav>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="paginationButtons" class="text-center mt-4">
-                                        <div id="paginationBtnsContainer"></div>
-                                    </div>
                                 </section>
-
-                                <script>
-                                    var table = document.getElementById('appointmentTable');
-                                    var rowsPerPage = 8;
-                                    var currentPage = 1;
-                                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
-
-                                    showPage(currentPage);
-
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i >= startIndex && i < endIndex) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-
-                                    function goToPage(page) {
-                                        if (page < 1) page = 1;
-                                        if (page > totalPages) page = totalPages;
-                                        currentPage = page;
-                                        showPage(currentPage);
-                                        updatePaginationButtons();
-                                    }
-
-                                    function previousPage() {
-                                        if (currentPage > 1) {
-                                            currentPage--;
-                                            showPage(currentPage);
-                                            updatePaginationButtons();
-                                        }
-                                    }
-
-                                    function nextPage() {
-                                        if (currentPage < totalPages) {
-                                            currentPage++;
-                                            showPage(currentPage);
-                                            updatePaginationButtons();
-                                        }
-                                    }
-
-                                    function updatePaginationButtons() {
-                                        var buttonsHtml = '';
-
-                                        var startPage = Math.max(1, currentPage - 1);
-                                        var endPage = Math.min(totalPages, currentPage + 1);
-
-                                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
-
-                                        for (var i = startPage; i <= endPage; i++) {
-                                            var activeClass = (i === currentPage) ? 'active' : '';
-                                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-                                        }
-
-                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
-
-                                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
-
-                                        var previousBtn = document.getElementById('previousBtn');
-                                        var nextBtn = document.getElementById('nextBtn');
-                                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
-                                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
-                                    }
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-
-
-                                    updatePaginationButtons();
-                                </script>
 
             <?php
         } else if ($method == "appointmentsForm") {

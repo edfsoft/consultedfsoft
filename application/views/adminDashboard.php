@@ -179,7 +179,7 @@
                                     Total Chief Consultants
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400;">
-                                    12
+                                   <?php echo $totalCcList; ?>
                                 </p>
                                 <p style="font-size: 16px"> <?php echo date("d - m - Y") ?></p>
                             </div>
@@ -193,7 +193,7 @@
                                     Total Health Care Providers
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400;">
-                                    25
+                                <?php echo $totalHcpList; ?>
                                 </p>
                                 <p style="font-size: 16px">
                                     <?php echo date("d - m - Y") ?>
@@ -209,7 +209,7 @@
                                     Total Patients
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400;">
-                                    725
+                                <?php echo $totalPatientList; ?>
                                 </p>
                                 <p style="font-size: 16px">
                                     Till Today
@@ -229,7 +229,7 @@
                 </script>
 
                 <section>
-                    <div class="card shadow-none rounded">
+                    <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                             <p class="ps-2" style="font-size: 24px; font-weight: 500">
                                 Chief Consultant List </p>
@@ -373,7 +373,7 @@
                     </script>
 
                     <section>
-                        <div class="card shadow-none rounded">
+                        <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                 <p style="font-size: 24px; font-weight: 500">
                                     New Chief Consultant</p>
@@ -554,7 +554,7 @@
                         </script>
 
                         <section>
-                            <div class="card shadow-none rounded">
+                            <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                     <p style="font-size: 24px; font-weight: 500">
                                         Chief Doctor Profile </p>
@@ -727,7 +727,8 @@
                             </script>
 
                             <section>
-                                <div class="card shadow-none rounded">
+                                <div class="card rounded">
+
                                     <div class="d-sm-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                         <p class="ps-2" style="font-size: 24px; font-weight: 500">
                                             Health Care Provider List </p>
@@ -872,7 +873,7 @@
                                 </script>
 
                                 <section>
-                                    <div class="card shadow-none rounded">
+                                    <div class="card rounded">
                                         <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                             <p style="font-size: 24px; font-weight: 500">
                                                 New Health Care Provider</p>
@@ -1054,7 +1055,7 @@
                                     </script>
 
                                     <section>
-                                        <div class="card shadow-none rounded">
+                                        <div class="card rounded">
                                             <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                 <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
                                                 <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
@@ -1198,9 +1199,9 @@
                                         </script>
 
                                         <section>
-                                            <div class="card shadow-none rounded">
+                                            <div class="card rounded">
                                                 <div class="card-body p-2 p-sm-4">
-                                                    <div class="d-flex justify-content-between mt-2 mb-5">
+                                                    <div class="d-flex justify-content-between mt-2 mb-3">
                                                         <p class="ps-2" style="font-size: 24px; font-weight: 500">
                                                             Patients List
                                                         </p>
@@ -1347,7 +1348,7 @@
                                             </script>
 
                                             <section>
-                                                <div class="card shadow-none rounded">
+                                                <div class="card rounded">
                                                     <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                                         <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
@@ -1414,13 +1415,13 @@
                                                                 <p class="col-sm-6"><span class="text-secondary ">District</span> -
                                     <?php echo $value['district'] ?>         <?php echo $value['pincode'] ?>
                                                                 </p>
-                                                                <p><span class="text-secondary ">Partner name</span> - <?php echo $value['partnerName'] ?></p>
+                                                                <p><span class="text-secondary ">Guardian name</span> - <?php echo $value['partnerName'] ?></p>
                                                             </div>
                                                             <div class="d-md-flex">
-                                                                <p class="col-sm-6"><span class="text-secondary ">Partner mobile</span> -
+                                                                <p class="col-sm-6"><span class="text-secondary ">Guardian mobile</span> -
                                     <?php echo $value['partnerMobile'] ?>
                                                                 </p>
-                                                                <p><span class="text-secondary ">Partner blood group</span> -
+                                                                <p><span class="text-secondary ">Guardian blood group</span> -
                                     <?php echo $value['partnerBlood'] ?>
                                                                 </p>
                                                             </div>

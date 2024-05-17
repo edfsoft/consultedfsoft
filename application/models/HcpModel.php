@@ -360,7 +360,7 @@ class HcpModel extends CI_Model
     {
         $details = "SELECT * FROM `cc_details` WHERE deleteStatus = '0' AND approvalStatus = '1'";
         $select = $this->db->query($details);
-        return $select->result_array();
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
     public function getCcDetails($ccIdDb)

@@ -213,10 +213,10 @@
                             <img src="<?php echo base_url(); ?>assets/dash_iconcc2.svg" alt="icon3" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                    Total HCPs
+                                    Total Verified HCPs
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
-                                    24
+                                <?php echo $totalHcps; ?>
                                 </p>
                                 <p style="font-size: 16px">Till Today</p>
                             </div>
@@ -241,7 +241,7 @@
                 </div>
 
                 <div class="d-lg-flex justify-content-evenly">
-                    <div class="card shadow-none rounded-5 mx-1">
+                    <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #0079AD">
                                 <i class="bi bi-calendar4 pe-3"></i> Today Appointments
@@ -294,7 +294,7 @@
                         </div>
                     </div>
 
-                    <div class="card shadow-none rounded-5 mx-1">
+                    <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #0079AD">
                                 <i class="bi bi-person pe-3"></i> Next Patient Details
@@ -408,7 +408,7 @@
                 </script>
 
                 <section>
-                    <div class="card shadow-none rounded">
+                    <div class="card rounded">
                         <div class="card-body p-2 p-sm-4">
                             <div class="d-flex justify-content-between mt-2 mb-3">
                                 <p style="font-size: 24px; font-weight: 500">
@@ -564,7 +564,7 @@
                     </script>
 
                     <section>
-                        <div class="card shadow-none rounded">
+                        <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                 <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                 <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
@@ -631,13 +631,13 @@
                                         <p class="col-sm-6"><span class="text-secondary ">District</span> -
                                     <?php echo $value['district'] ?>         <?php echo $value['pincode'] ?>
                                         </p>
-                                        <p><span class="text-secondary ">Partner name</span> - <?php echo $value['partnerName'] ?></p>
+                                        <p><span class="text-secondary ">Guardian name</span> - <?php echo $value['partnerName'] ?></p>
                                     </div>
                                     <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Partner mobile</span> -
+                                        <p class="col-sm-6"><span class="text-secondary ">Guardian mobile</span> -
                                     <?php echo $value['partnerMobile'] ?>
                                         </p>
-                                        <p><span class="text-secondary ">Partner blood group</span> -
+                                        <p><span class="text-secondary ">Guardian blood group</span> -
                                     <?php echo $value['partnerBlood'] ?>
                                         </p>
                                     </div>
@@ -704,7 +704,7 @@
                         </script>
 
                         <section>
-                            <div class="card shadow-none rounded">
+                            <div class="card rounded">
                                 <div class="card-body p-2 p-sm-4">
                                     <div class="d-flex justify-content-between mt-2 mb-3">
                                         <p style="font-size: 24px; font-weight: 500">
@@ -990,7 +990,7 @@
                                         </script>
 
                                         <section>
-                                            <div class="card shadow-none rounded">
+                                            <div class="card rounded">
                                                 <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                     <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
                                                     <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
@@ -1096,7 +1096,7 @@
             ?>
 
                                             <section>
-                                                <div class="card shadow-none rounded">
+                                                <div class="card rounded">
                                                     <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                         <p style="font-size: 24px; font-weight: 500">
                                                             My Profile </p>
@@ -1232,7 +1232,7 @@
             ?>
 
                                                 <section>
-                                                    <div class="card shadow-none rounded">
+                                                    <div class="card rounded">
                                                         <div class="d-flex justify-content-between mx-2 p-2 pt-sm-4 px-sm-4">
                                                             <p style="font-size: 24px; font-weight: 500">
                                                                 Edit Profile Details</p>

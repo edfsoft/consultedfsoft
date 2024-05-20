@@ -72,6 +72,8 @@ class chiefconsultant extends CI_Controller
             $this->data['method'] = "dashboard";
             $patientTotal = $this->CcModel->allPatientList();
             $this->data['patientTotal'] = $patientTotal['totalRows'];
+            $hcpDetails = $this->CcModel->getHcpProfile();
+            $this->data['totalHcps'] = $hcpDetails['totalRows'];
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
@@ -124,7 +126,7 @@ class chiefconsultant extends CI_Controller
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "hcps";
             $hcpDetails = $this->CcModel->getHcpProfile();
-            $this->data['hcpDetails'] = $hcpDetails;
+            $this->data['hcpDetails'] = $hcpDetails['response'];
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {

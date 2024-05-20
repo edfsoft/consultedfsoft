@@ -64,6 +64,8 @@ class healthcareprovider extends CI_Controller
             $this->data['method'] = "dashboard";
             $patientTotal = $this->HcpModel->getPatientList();
             $this->data['patientTotal'] = $patientTotal['totalRows'];
+            $ccDetails = $this->HcpModel->getCcProfile();
+            $this->data['totalCcs'] = $ccDetails['totalRows'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();
@@ -157,7 +159,7 @@ class healthcareprovider extends CI_Controller
             $patientList = $this->HcpModel->getPatientList();
             $this->data['patientsId'] = $patientList['response'];
             $ccDetails = $this->HcpModel->getCcProfile();
-            $this->data['ccsId'] = $ccDetails;
+            $this->data['ccsId'] = $ccDetails['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();
@@ -175,7 +177,7 @@ class healthcareprovider extends CI_Controller
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "chiefDoctors";
             $ccDetails = $this->HcpModel->getCcProfile();
-            $this->data['ccDetails'] = $ccDetails;
+            $this->data['ccDetails'] = $ccDetails['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();

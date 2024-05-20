@@ -218,10 +218,10 @@
                             <img src="<?php echo base_url(); ?>assets/dash_icon2.svg" alt="icon2" />
                             <div class="ps-3 pe-5">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Total CCs
+                                    Total Verified CCs
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
-                                    25
+                                    <?php echo $totalCcs; ?>
                                 </p>
                                 <p style="font-size: 16px">Till Today</p>
                             </div>
@@ -246,7 +246,7 @@
                 </div>
 
                 <div class="d-lg-flex justify-content-evenly">
-                    <div class="card shadow-none rounded-5 mx-1">
+                    <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
                                 <i class="bi bi-calendar4 pe-3"></i> Today Appointments
@@ -295,11 +295,12 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" class="text-decoration-underline">see all</a>
+                            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
+                                class="text-decoration-underline">see all</a>
                         </div>
                     </div>
 
-                    <div class="card shadow-none rounded-5 mx-1">
+                    <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
                                 <i class="bi bi-person pe-3"></i> Next Patient Details
@@ -413,7 +414,7 @@
                 </script>
 
                 <section>
-                    <div class="card shadow-none rounded">
+                    <div class="card rounded">
                         <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                             <p style="font-size: 24px; font-weight: 500">
                                 Patients
@@ -425,7 +426,7 @@
                         </div>
                         <div class="card-body ps-2 p-sm-4">
 
-                            <div class="table-responsive">
+                            <!-- <div class="table-responsive">
                                 <table class="table text-center" id="patientTable">
 
                                     <thead>
@@ -496,10 +497,10 @@
                                                                 class="bi bi-eye"></i></button></a>
                                                     <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id'] ?>"
                                                         class="px-1 "><button class="btn btn-secondary"><i
-                                                                class="bi bi-pencil"></i></button></a>
+                                                                class="bi bi-pencil"></i></button></a> -->
 
-                                                    <!-- Drop down 3 dots -->
-                                                    <!-- <a class="icon" href="#" data-bs-toggle="dropdown">
+                                <!-- Drop down 3 dots -->
+                                <!-- <a class="icon" href="#" data-bs-toggle="dropdown">
                                                         <p class=""><i class="bi bi-three-dots-vertical"></i></p>
                                                     </a>
                                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -515,101 +516,131 @@
                                                                         class="bi bi-trash"></i> Delete</button></a>
                                                         </li>
                                                     </ul> -->
+
+                                <!-- </td>
+                                            </tr>
+                                    <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div> -->
+
+                            <?php
+                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                            $items_per_page = 10;
+
+                            $total_items = count($patientList);
+                            $total_pages = ceil($total_items / $items_per_page);
+
+                            $offset = ($current_page - 1) * $items_per_page;
+
+                            $current_page_items = array_slice($patientList, $offset, $items_per_page);
+                            ?>
+
+                            <div class="table-responsive">
+                                <table class="table text-center" id="patientTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PHOTO</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
+                                                ID</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">NAME</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">GENDER
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
+                                                AGE</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DIAGNOSIS
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $count = $offset;
+                                        foreach ($current_page_items as $key => $value) {
+                                            $count++;
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $count; ?>.</td>
+                                                <td class="px-2">
+                                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                                        <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
+                                                            alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                <?php } else { ?>
+                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo"
+                                                            width="40" height="40" class="rounded-circle">
+                                                <?php } ?>
+                                                </td>
+                                                <td style="font-size: 16px"><?php echo $value['patientId'] ?></td>
+                                                <td class="" style="font-size: 16px">
+                                                <?php echo $value['firstName'] . ' ' . $value['lastName'] ?>
+                                                </td>
+                                                <td style="font-size: 16px"><?php echo $value['gender'] ?></td>
+                                                <td style="font-size: 16px"><?php echo $value['age'] ?></td>
+                                                <td style="font-size: 16px"><?php echo $value['diagonsis'] ?></td>
+                                                <td class="d-flex d-md-block" style="font-size: 16px">
+                                                    <a
+                                                        href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['id'] ?>"><button
+                                                            class="btn btn-success" class="px-1 "><i
+                                                                class="bi bi-eye"></i></button></a>
+                                                    <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id'] ?>"
+                                                        class="px-1 "><button class="btn btn-secondary"><i
+                                                                class="bi bi-pencil"></i></button></a>
                                                 </td>
                                             </tr>
                                     <?php } ?>
                                     </tbody>
                                 </table>
-
                             </div>
+
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                <?php if ($current_page > 1): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                <button type="button" class="bg-light border px-3 py-2">
+                                                    < </button>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+
+                                    <?php
+                                    $start_page = max(1, $current_page - 2);
+                                    $end_page = min($total_pages, $current_page + 2);
+
+                                    if ($start_page == 1) {
+                                        $end_page = min($total_pages, 5);
+                                    }
+                                    if ($end_page == $total_pages) {
+                                        $start_page = max(1, $total_pages - 4);
+                                    }
+
+                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $i; ?>">
+                                                <button type="button"
+                                                    class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                                <?php echo $i; ?></button>
+                                            </a>
+                                        </li>
+                                <?php endfor; ?>
+
+                                <?php if ($current_page < $total_pages): ?>
+                                        <li>
+                                            <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                <button type="button" class="bg-light border px-3 py-2">
+                                                    ></button>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+                                </ul>
+                            </nav>
                         </div>
-                    </div>
-                    <div id="paginationButtons" class="text-center mt-4">
-                        <div id="paginationBtnsContainer"></div>
                     </div>
                 </section>
 
-                <script>
-                    var table = document.getElementById('patientTable');
-                    var rowsPerPage = 8;
-                    var currentPage = 1;
-                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
 
-                    showPage(currentPage);
-
-                    function showPage(page) {
-                        var startIndex = (page - 1) * rowsPerPage;
-                        var endIndex = startIndex + rowsPerPage;
-                        for (var i = 0; i < table.rows.length; i++) {
-                            if (i >= startIndex && i < endIndex) {
-                                table.rows[i].style.display = 'table-row';
-                            } else {
-                                table.rows[i].style.display = 'none';
-                            }
-                        }
-                    }
-
-                    function goToPage(page) {
-                        if (page < 1) page = 1;
-                        if (page > totalPages) page = totalPages;
-                        currentPage = page;
-                        showPage(currentPage);
-                        updatePaginationButtons();
-                    }
-
-                    function previousPage() {
-                        if (currentPage > 1) {
-                            currentPage--;
-                            showPage(currentPage);
-                            updatePaginationButtons();
-                        }
-                    }
-
-                    function nextPage() {
-                        if (currentPage < totalPages) {
-                            currentPage++;
-                            showPage(currentPage);
-                            updatePaginationButtons();
-                        }
-                    }
-
-                    function updatePaginationButtons() {
-                        var buttonsHtml = '';
-
-                        var startPage = Math.max(1, currentPage - 1);
-                        var endPage = Math.min(totalPages, currentPage + 1);
-
-                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
-
-                        for (var i = startPage; i <= endPage; i++) {
-                            var activeClass = (i === currentPage) ? 'active' : '';
-                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-                        }
-
-                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
-
-                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
-
-                        var previousBtn = document.getElementById('previousBtn');
-                        var nextBtn = document.getElementById('nextBtn');
-                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
-                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
-                    }
-
-                    function showPage(page) {
-                        var startIndex = (page - 1) * rowsPerPage;
-                        var endIndex = startIndex + rowsPerPage;
-                        for (var i = 0; i < table.rows.length; i++) {
-                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                table.rows[i].style.display = 'table-row';
-                            } else {
-                                table.rows[i].style.display = 'none';
-                            }
-                        }
-                    }
-
-                    updatePaginationButtons();
-                </script>
 
             <?php
         } else if ($method == "patientDetailsForm") {
@@ -619,300 +650,256 @@
                     </script>
 
                     <section>
-                        <div class="card shadow-none rounded">
+                        <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                 <p style="font-size: 24px; font-weight: 500"> New Patient </p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
                                         class="bi bi-arrow-left"></i> Back</a>
                             </div>
+
                             <div class="card-body px-md-4 pb-4">
-
-                                <!-- Form  -->
-                                <div class="">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
-                                                name="patientDetails" id="multi-step-form" enctype="multipart/form-data"
-                                                method="POST" oninput="clearErrorPatientDetails()">
-                                                <div id="step-1">
-                                                    <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
-                                                        <button
-                                                            style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
-                                                            class="text-light rounded-circle border-0">1</button> Basic Details
-                                                    </p>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientName">First Name <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="patientName" name="patientName"
-                                                            placeholder="E.g. Siva">
-                                                        <div id="patientName_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientLastName">Last Name</label>
-                                                        <input type="text" class="form-control" id="" name="patientLastName"
-                                                            placeholder="E.g. Kumar">
-                                                        <div id="patientLastName_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientMobile">Moblie Number <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="number" class="form-control" id="patientMobile"
-                                                            name="patientMobile" placeholder="E.g. 9638527410">
-                                                        <div id="patientMobile_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientAltMobile">Alternate Moblie
-                                                            Number</label>
-                                                        <input type="number" class="form-control" id="patientAltMobile"
-                                                            name="patientAltMobile" placeholder="E.g. 9876543210">
-                                                        <!-- <div id="patientMobile_err" class="text-danger pt-1"></div> -->
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientEmail">Email <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="mail" class="form-control" id="patientEmail"
-                                                            name="patientEmail" placeholder="E.g. example@gmail.com">
-                                                        <div id="patientEmail_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientGender">Gender <span
-                                                                class="text-danger">*</span></label>
-                                                        <select class="form-control" id="patientGender" name="patientGender">
-                                                            <option value="">Select Gender</option>
-                                                            <option value="Male">Male</option>
-                                                            <option value="Female">Female</option>
-                                                        </select>
-                                                        <div id="patientGender_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientDob">DOB <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="date" class="form-control" id="patientDob"
-                                                            onchange="calculateAge()" name="patientDob">
-                                                        <div id="patientDob_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-2">
-                                                        <label class="form-label">Age</label>
-                                                        <div class="d-flex ">
-                                                            <p class="pt-1 pe-2">Years: </p>
-                                                            <input class="form-control" name="ageYearsOutput" id="ageYearsOutput"
-                                                                value="" readonly>
-                                                            <p class="pt-1 ps-2 ps-md-5 pe-2">Months: </p>
-                                                            <input class="form-control" name="ageMonthsOutput" id="ageMonthsOutput"
-                                                                value="" readonly>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientBlood">Blood Group <span
-                                                                class="text-danger">*</span></label>
-                                                        <select class="form-control" id="patientBlood" name="patientBlood">
-                                                            <option value="">Select Blood Group</option>
-                                                            <option value="A +ve">A +ve</option>
-                                                            <option value="A -ve">A -ve</option>
-                                                            <option value="B +ve">B +ve</option>
-                                                            <option value="B -ve">B -ve</option>
-                                                            <option value="O +ve">O +ve</option>
-                                                            <option value="O -ve">O -ve</option>
-                                                            <option value="AB +ve">AB +ve</option>
-                                                            <option value="AB -ve">AB -ve</option>
-                                                        </select>
-                                                        <div id="patientBlood_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientMarital">Marital Status</label>
-                                                        <select class="form-control" id="patientMarital" name="patientMarital">
-                                                            <option value="">Select Marital Status</option>
-                                                            <option value="Single">Single</option>
-                                                            <option value="Married">Married</option>
-                                                        </select>
-                                                        <div id="patientMarital_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="marriedSince">Married Since</label>
-                                                        <input type="text" class="form-control" id="marriedSince"
-                                                            name="marriedSince">
-                                                    </div>
-
-                                                    <button class="btn text-light next float-end mt-2"
-                                                        style="background-color: #00ad8e;"
-                                                        onclick="if (validatePatientDetails()) { nextStep(1); }">Next</button>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
+                                            name="patientDetails" id="patientDetails" enctype="multipart/form-data" method="POST"
+                                            oninput="clearErrorPatientDetails()" onsubmit="return validatePatientDetails()">
+                                            <p class="pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
+                                                <button
+                                                    style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
+                                                    class="text-light rounded-circle border-0">1</button> Basic Details
+                                            </p>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientName">First Name <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="patientName" name="patientName"
+                                                    placeholder="E.g. Siva">
+                                                <div id="patientName_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientLastName">Last Name</label>
+                                                <input type="text" class="form-control" id="" name="patientLastName"
+                                                    placeholder="E.g. Kumar">
+                                                <div id="patientLastName_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientMobile">Moblie Number <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" id="patientMobile" name="patientMobile"
+                                                    placeholder="E.g. 9638527410">
+                                                <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientAltMobile">Alternate Moblie
+                                                    Number</label>
+                                                <input type="number" class="form-control" id="patientAltMobile"
+                                                    name="patientAltMobile" placeholder="E.g. 9876543210">
+                                                <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientEmail">Email</label>
+                                                <input type="mail" class="form-control" id="patientEmail" name="patientEmail"
+                                                    placeholder="E.g. example@gmail.com">
+                                                <div id="patientEmail_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientGender">Gender <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-control" id="patientGender" name="patientGender">
+                                                    <option value="">Select Gender</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                                <div id="patientGender_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientDob">DOB <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="date" class="form-control" id="patientDob" onchange="calculateAge()"
+                                                    name="patientDob">
+                                                <div id="patientDob_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-2">
+                                                <label class="form-label">Age</label>
+                                                <div class="d-flex ">
+                                                    <p class="pt-1 pe-2">Years: </p>
+                                                    <input class="form-control" name="ageYearsOutput" id="ageYearsOutput" value=""
+                                                        readonly>
+                                                    <p class="pt-1 ps-2 ps-md-5 pe-2">Months: </p>
+                                                    <input class="form-control" name="ageMonthsOutput" id="ageMonthsOutput" value=""
+                                                        readonly>
                                                 </div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientBlood">Blood Group</label>
+                                                <select class="form-control" id="patientBlood" name="patientBlood">
+                                                    <option value="">Select Blood Group</option>
+                                                    <option value="A +ve">A +ve</option>
+                                                    <option value="A -ve">A -ve</option>
+                                                    <option value="B +ve">B +ve</option>
+                                                    <option value="B -ve">B -ve</option>
+                                                    <option value="O +ve">O +ve</option>
+                                                    <option value="O -ve">O -ve</option>
+                                                    <option value="AB +ve">AB +ve</option>
+                                                    <option value="AB -ve">AB -ve</option>
+                                                </select>
+                                                <div id="patientBlood_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientMarital">Marital Status</label>
+                                                <select class="form-control" id="patientMarital" name="patientMarital">
+                                                    <option value="">Select Marital Status</option>
+                                                    <option value="Single">Single</option>
+                                                    <option value="Married">Married</option>
+                                                </select>
+                                                <div id="patientMarital_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="marriedSince">Married Since</label>
+                                                <input type="text" class="form-control" id="marriedSince" name="marriedSince"
+                                                    placeholder="E.g. 2012">
+                                            </div>
 
-                                                <div id="step-2" style="display:none;">
-                                                    <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
-                                                        <button
-                                                            style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
-                                                            class="text-light rounded-circle border-0">2</button> Additional
-                                                        Information
-                                                    </p>
-                                                    <!-- <div class="form-group pb-3">
-                                                        <label class="form-label" for="additionalContact">Emergency Contact
-                                                            Number</label>
-                                                        <input type="number" class="form-control" id="additionalContact"
-                                                            name="additionalContact" required>
-                                                    </div> -->
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="profilePhoto">Profile Photo</label>
-                                                        <input type="file" class="form-control" id="profilePhoto"
-                                                            name="profilePhoto" accept="image/png ,image/jpg, image/jpeg">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientProfessions">Patient's
-                                                            Profession</label>
-                                                        <input type="text" class="form-control" id="patientProfessions"
-                                                            name="patientProfessions" placeholder="E.g. IT employee">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientDoorNo">Door Number</label>
-                                                        <input type="text" class="form-control" id="patientDoorNo"
-                                                            name="patientDoorNo" placeholder="E.g. 96">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientStreet">Street Address</label>
-                                                        <input type="text" class="form-control" id="patientStreet"
-                                                            name="patientStreet" placeholder="E.g. Abc street">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientDistrict">District</label>
-                                                        <input type="text" class="form-control" id="patientDistrict"
-                                                            name="patientDistrict" placeholder="E.g. Erode">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientPincode">Pincode</label>
-                                                        <input type="number" class="form-control" id="patientPincode"
-                                                            name="patientPincode">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="partnersName">Partner's Name <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="partnersName"
-                                                            name="partnersName" placeholder="E.g. Rohith">
-                                                        <div id="partnersName_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="partnerMobile">Partner's Mobile
-                                                            Number <span class="text-danger">*</span></label>
-                                                        <input type="number" class="form-control" id="partnerMobile"
-                                                            name="partnerMobile" placeholder="E.g. 9874563210">
-                                                        <div id="partnerMobile_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="partnerBlood">Partner's Blood Group</label>
-                                                        <select class="form-control" id="partnerBlood" name="partnerBlood">
-                                                            <option value="">Select Blood Group</option>
-                                                            <option value="A +ve">A +ve</option>
-                                                            <option value="A -ve">A -ve</option>
-                                                            <option value="B +ve">B +ve</option>
-                                                            <option value="B -ve">B -ve</option>
-                                                            <option value="O +ve">O +ve</option>
-                                                            <option value="O -ve">O -ve</option>
-                                                            <option value="AB +ve">AB +ve</option>
-                                                            <option value="AB -ve">AB -ve</option>
-                                                        </select>
-                                                    </div>
+                                            <p class="pt-4 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
+                                                <button
+                                                    style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
+                                                    class="text-light rounded-circle border-0">2</button> Additional
+                                                Information
+                                            </p>
 
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="profilePhoto">Profile Photo</label>
+                                                <input type="file" class="form-control" id="profilePhoto" name="profilePhoto"
+                                                    accept="image/png ,image/jpg, image/jpeg">
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientProfessions">Patient's
+                                                    Profession</label>
+                                                <input type="text" class="form-control" id="patientProfessions"
+                                                    name="patientProfessions" placeholder="E.g. IT employee">
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientDoorNo">Door Number</label>
+                                                <input type="text" class="form-control" id="patientDoorNo" name="patientDoorNo"
+                                                    placeholder="E.g. 96">
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientStreet">Street Address</label>
+                                                <input type="text" class="form-control" id="patientStreet" name="patientStreet"
+                                                    placeholder="E.g. Abc street">
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientDistrict">District</label>
+                                                <input type="text" class="form-control" id="patientDistrict" name="patientDistrict"
+                                                    placeholder="E.g. Erode">
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientPincode">Pincode</label>
+                                                <input type="number" class="form-control" id="patientPincode" name="patientPincode"
+                                                    placeholder="E.g. 638001">
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="partnersName">Guardian's Name </label>
+                                                <input type="text" class="form-control" id="partnersName" name="partnersName"
+                                                    placeholder="E.g. Rohith">
+                                                <div id="partnersName_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
+                                                <input type="number" class="form-control" id="partnerMobile" name="partnerMobile"
+                                                    placeholder="E.g. 9874563210">
+                                                <div id="partnerMobile_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
+                                                <select class="form-control" id="partnerBlood" name="partnerBlood">
+                                                    <option value="">Select Blood Group</option>
+                                                    <option value="A +ve">A +ve</option>
+                                                    <option value="A -ve">A -ve</option>
+                                                    <option value="B +ve">B +ve</option>
+                                                    <option value="B -ve">B -ve</option>
+                                                    <option value="O +ve">O +ve</option>
+                                                    <option value="O -ve">O -ve</option>
+                                                    <option value="AB +ve">AB +ve</option>
+                                                    <option value="AB -ve">AB -ve</option>
+                                                </select>
+                                            </div>
+                                            <p class="pt-4 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
+                                                <button
+                                                    style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
+                                                    class="text-light rounded-circle border-0">3</button> Medical Records
+                                            </p>
 
-                                                    <div class="d-flex justify-content-between mt-3">
-                                                        <button class="btn btn-secondary text-light prev"
-                                                            onclick="prevStep(2)">Previous</button>
-                                                        <button class="btn text-light next" style="background-color: #00ad8e;"
-                                                            onclick="if (validatePatientInfo()) { nextStep(2); }">Next</button>
-                                                    </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientWeight">Weight </label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control" id="patientWeight"
+                                                        name="patientWeight" min="0" placeholder="E.g. 50">
+                                                    <p class="mx-2 my-2">Kg</p>
                                                 </div>
-
-                                                <div id="step-3" style="display:none;">
-                                                    <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
-                                                        <button
-                                                            style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
-                                                            class="text-light rounded-circle border-0">3</button> Medical Records
-                                                    </p>
-
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientWeight">Weight <span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="d-flex">
-                                                            <input type="number" class="form-control" id="patientWeight"
-                                                                name="patientWeight" min="0" placeholder="E.g. 50" required>
-                                                            <p class="mx-2 my-2">Kg</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientHeight">Height <span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="d-flex">
-                                                            <input type="number" class="form-control" id="patientHeight"
-                                                                name="patientHeight" min="0" placeholder="E.g. 135" required>
-                                                            <p class="mx-2 my-2">Cm</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientBp">Blood Pressure <span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="d-flex">
-                                                            <input type="number" class="form-control" id="patientBp"
-                                                                name="patientBp" placeholder="E.g. 100" required>
-                                                            <p class="mx-2 my-2">mmHg</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientsCholestrol">Cholestrol <span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="d-flex">
-                                                            <input type="number" class="form-control" id="patientsCholestrol"
-                                                                name="patientsCholestrol" min="0" placeholder="E.g. 50" required>
-                                                            <p class="mx-2 my-2">mg/dl</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientBsugar">Blood Sugar <span
-                                                                class="text-danger">*</span></label>
-                                                        <div class="d-flex">
-                                                            <input type="number" class="form-control" id="patientBsugar"
-                                                                name="patientBsugar" min="0" placeholder="E.g. 200" required>
-                                                            <p class="mx-2 my-2">mmol/L</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientDiagonsis">Diagonsis /
-                                                            Complaints <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="patientDiagonsis"
-                                                            name="patientDiagonsis" placeholder="E.g. Diabetes checkup" required>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientSymptoms">Symptoms / Findings <span
-                                                                class="text-danger">*</span></label>
-                                                        <textarea class="form-control" name="patientSymptoms" id="patientSymptoms"
-                                                            cols="" rows="" value="" placeholder="E.g. Weight loss"></textarea>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientMedicines">Medicines</label>
-                                                        <textarea class="form-control" name="patientMedicines" id="patientMedicines"
-                                                            cols="" rows="" placeholder="E.g. Insulin"></textarea>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="medicalReceipts">Medical Receipts</label>
-                                                        <input type="file" class="form-control" id="medicalReceipts"
-                                                            name="medicalReceipts"
-                                                            accept="image/png ,image/jpg, image/jpeg,application/pdf">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="medicalReports">Test Uploads</label>
-                                                        <input type="file" class="form-control" id="medicalReports"
-                                                            name="medicalReports">
-                                                    </div>
-                                                    <!-- <div class="form-group pb-3">
-                                                        <button class="btn text-light" style="background-color: #00ad8e;">
-                                                            Add</button>
-                                                    </div> -->
-
-                                                    <div class="d-flex justify-content-between mt-3">
-                                                        <button class="btn btn-secondary text-light prev"
-                                                            onclick="prevStep(3)">Previous</button>
-                                                        <button type="submit" class="btn btn-success">Submit</button>
-                                                    </div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientHeight">Height</label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control" id="patientHeight"
+                                                        name="patientHeight" min="0" placeholder="E.g. 135">
+                                                    <p class="mx-2 my-2">Cm</p>
                                                 </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientBp">Blood Pressure</label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control" id="patientBp" name="patientBp"
+                                                        placeholder="E.g. 100">
+                                                    <p class="mx-2 my-2">mmHg</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientsCholestrol">Cholestrol</label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control" id="patientsCholestrol"
+                                                        name="patientsCholestrol" min="0" placeholder="E.g. 50">
+                                                    <p class="mx-2 my-2">mg/dl</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientBsugar">Blood Sugar </label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control" id="patientBsugar"
+                                                        name="patientBsugar" min="0" placeholder="E.g. 200">
+                                                    <p class="mx-2 my-2">mmol/L</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientDiagonsis">Diagonsis /
+                                                    Complaints <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="patientDiagonsis"
+                                                    name="patientDiagonsis" placeholder="E.g. Diabetes checkup">
+                                                    <div id="diagonsis_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientSymptoms">Symptoms / Findings <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea class="form-control" name="patientSymptoms" id="patientSymptoms" cols=""
+                                                    rows="" value="" placeholder="E.g. Weight loss"></textarea>
+                                                    <div id="symptoms_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="patientMedicines">Medicines</label>
+                                                <textarea class="form-control" name="patientMedicines" id="patientMedicines" cols=""
+                                                    rows="" placeholder="E.g. Insulin"></textarea>
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="medicalReceipts">Medical Receipts</label>
+                                                <input type="file" class="form-control" id="medicalReceipts" name="medicalReceipts"
+                                                    accept="image/png ,image/jpg, image/jpeg,application/pdf">
+                                            </div>
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="medicalReports">Test Uploads</label>
+                                                <input type="file" class="form-control" id="medicalReports" name="medicalReports">
+                                            </div>
+                                            <button type="submit" class="btn float-end text-light mt-2"
+                                                style="background-color: #00ad8e;">Submit</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -953,32 +940,29 @@
 
                     </script>
                     <script>
-
-                        function nextStep(step) { document.getElementById('step-' + step).style.display = 'none'; document.getElementById('step-' + (step + 1)).style.display = 'block'; }
-                        function prevStep(step) { document.getElementById('step-' + step).style.display = 'none'; document.getElementById('step-' + (step - 1)).style.display = 'block'; }
-
                         function clearErrorPatientDetails() {
                             var name = document.getElementById("patientName").value;
                             var mobile = document.getElementById("patientMobile").value;
-                            var email = document.getElementById("patientEmail").value;
                             var gender = document.getElementById("patientGender").value;
                             var dob = document.getElementById("patientDob").value;
-                            var blood = document.getElementById("patientBlood").value;
-                            var partnerName = document.getElementById("partnersName").value;
-                            var partnerMobile = document.getElementById("partnerMobile").value;
+                            var diagonsis = document.getElementById("patientDiagonsis").value;
+                            var symptoms = document.getElementById("patientSymptoms").value;
 
                             if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
                             if (mobile != "") { document.getElementById("patientMobile_err").innerHTML = ""; }
-                            if (email != "") { document.getElementById("patientEmail_err").innerHTML = ""; }
                             if (gender != "") { document.getElementById("patientGender_err").innerHTML = ""; }
                             if (dob != "") { document.getElementById("patientDob_err").innerHTML = ""; }
-                            if (blood != "") { document.getElementById("patientBlood_err").innerHTML = ""; }
-                            if (partnerName != "") { document.getElementById("partnersName_err").innerHTML = ""; }
-                            if (partnerMobile != "") { document.getElementById("partnerMobile_err").innerHTML = ""; }
+                            if (diagonsis != "") { document.getElementById("diagonsis_err").innerHTML = ""; }
+                            if (symptoms != "") { document.getElementById("symptoms_err").innerHTML = ""; }
                         }
 
                         function validatePatientDetails() {
-                            var name = document.getElementById("patientName").value; var mobile = document.getElementById("patientMobile").value; var email = document.getElementById("patientEmail").value; var dob = document.getElementById("patientDob").value; var gender = document.getElementById("patientGender").value; var blood = document.getElementById("patientBlood").value;
+                            var name = document.getElementById("patientName").value;
+                            var mobile = document.getElementById("patientMobile").value;
+                            var dob = document.getElementById("patientDob").value;
+                            var gender = document.getElementById("patientGender").value;
+                            var diagonsis = document.getElementById("patientDiagonsis").value;
+                            var symptoms = document.getElementById("patientSymptoms").value;
 
                             if (name == "") {
                                 document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
@@ -1000,18 +984,6 @@
                                 document.getElementById("patientMobile_err").innerHTML = "";
                             }
 
-                            if (email == "") {
-                                document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";
-                                document.getElementById("patientEmail").focus();
-                                return false;
-                            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                                document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";
-                                document.getElementById("patientEmail").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientEmail_err").innerHTML = "";
-                            }
-
                             if (gender == "") {
                                 document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
                                 document.getElementById("patientDob").focus();
@@ -1028,42 +1000,22 @@
                                 document.getElementById("patientDob_err").innerHTML = "";
                             }
 
-                            if (blood == "") {
-                                document.getElementById("patientBlood_err").innerHTML = "Blood group must be filled out.";
-                                document.getElementById("patientBlood").focus();
+                            if (diagonsis == "") {
+                                document.getElementById("diagonsis_err").innerHTML = "Diagonsis / Complaints must be filled out.";
+                                document.getElementById("patientDiagonsis").focus();
                                 return false;
                             } else {
-                                document.getElementById("patientBlood_err").innerHTML = "";
+                                document.getElementById("diagonsis_err").innerHTML = "";
+                            }
+
+                            if (symptoms == "") {
+                                document.getElementById("symptoms_err").innerHTML = "Symptoms / Findings must be filled out.";
+                                document.getElementById("patientSymptoms").focus();
+                                return false;
+                            } else {
+                                document.getElementById("symptoms_err").innerHTML = "";
                             }
                             return true;
-
-                        }
-
-                        function validatePatientInfo() {
-                            var partnerName = document.getElementById("partnersName").value;
-                            var partnerMobile = document.getElementById("partnerMobile").value;
-
-                            if (partnerName == "") {
-                                document.getElementById("partnersName_err").innerHTML = "Partner name must be filled out.";
-                                document.getElementById("partnersName").focus();
-                                return false;
-                            } else {
-                                document.getElementById("partnersName_err").innerHTML = "";
-                            }
-
-                            if (partnerMobile == "") {
-                                document.getElementById("partnerMobile_err").innerHTML = "Partner mobile number must be filled out.";
-                                document.getElementById("partnerMobile").focus();
-                                return false;
-                            } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(partnerMobile)) {
-                                document.getElementById("partnerMobile_err").innerHTML = "Enter valid mobile number.";
-                                document.getElementById("partnerMobile").focus();
-                                return false;
-                            } else {
-                                document.getElementById("partnerMobile_err").innerHTML = "";
-                            }
-                            return true;
-
                         }
                     </script>
 
@@ -1075,7 +1027,7 @@
                         </script>
 
                         <section>
-                            <div class="card shadow-none rounded">
+                            <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                     <p style="font-size: 24px; font-weight: 500">Edit Patient Details</p>
                                     <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>" class="float-end text-dark"><i
@@ -1083,7 +1035,6 @@
                                 </div>
                                 <div class="card-body p-2 p-sm-4">
 
-                                    <!-- Form  -->
                                     <div class="container">
                                 <?php
                                 foreach ($patientDetails as $key => $value) {
@@ -1143,8 +1094,7 @@
                                                             <div id="patientMobile_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="patientEmail">Email <span
-                                                                    class="text-danger">*</span></label>
+                                                            <label class="form-label" for="patientEmail">Email</label>
                                                             <input type="mail" class="form-control" id="patientEmail" name="patientEmail"
                                                                 value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com">
                                                             <div id="patientEmail_err" class="text-danger pt-1"></div>
@@ -1183,8 +1133,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="patientBlood">Blood Group <span
-                                                                    class="text-danger">*</span></label>
+                                                            <label class="form-label" for="patientBlood">Blood Group</label>
                                                             <select class="form-control" id="patientBlood" name="patientBlood">
                                                                 <option value="">Select Blood Group</option>
                                                                 <option value="A +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'A +ve')
@@ -1221,7 +1170,7 @@
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="marriedSince">Married Since</label>
                                                             <input type="text" class="form-control" id="marriedSince"
-                                                                value="<?php echo $value['marriedSince'] ?>" name="marriedSince">
+                                                                value="<?php echo $value['marriedSince'] ?>" name="marriedSince" placeholder="E.g. 2012" >
                                                         </div>
 
                                                         <p class="py-3" style="font-size: 20px; font-weight: 500;color:#00ad8e"> <button
@@ -1258,22 +1207,20 @@
                                                                 placeholder="E.g. 638001">
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="partnersName">Partner's Name <span
-                                                                    class="text-danger">*</span></label>
+                                                            <label class="form-label" for="partnersName">Guardian's Name </label>
                                                             <input type="text" class="form-control" id="partnersName" name="partnersName"
                                                                 value="<?php echo $value['partnerName'] ?>" placeholder="E.g. Rohith">
                                                             <div id="partnersName_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="partnerMobile">Partner's Mobile
-                                                                Number <span class="text-danger">*</span></label>
+                                                            <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
                                                             <input type="number" class="form-control" id="partnerMobile"
                                                                 name="partnerMobile" value="<?php echo $value['partnerMobile'] ?>"
                                                                 placeholder="E.g. 9874563210">
                                                             <div id="partnerMobile_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="partnerBlood">Partner's Blood Group</label>
+                                                            <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
                                                             <select class="form-control" id="partnerBlood" name="partnerBlood">
                                                                 <option value="">Select Blood Group</option>
                                                                 <option value="A +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'A +ve')
@@ -1301,8 +1248,7 @@
                                                         </p>
 
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="patientWeight">Weight <span
-                                                                    class="text-danger">*</span></label>
+                                                            <label class="form-label" for="patientWeight">Weight </label>
                                                             <div class="d-flex">
                                                                 <input type="number" class="form-control" id="patientWeight"
                                                                     name="patientWeight" min="0" value="<?php echo $value['weight'] ?>"
@@ -1311,8 +1257,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="patientHeight">Height <span
-                                                                    class="text-danger">*</span></label>
+                                                            <label class="form-label" for="patientHeight">Height </label>
                                                             <div class="d-flex">
                                                                 <input type="number" class="form-control" id="patientHeight"
                                                                     name="patientHeight" min="0" value="<?php echo $value['height'] ?>"
@@ -1321,8 +1266,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="patientBp">Blood Pressure <span
-                                                                    class="text-danger">*</span></label>
+                                                            <label class="form-label" for="patientBp">Blood Pressure </label>
                                                             <div class="d-flex">
                                                                 <input type="number" class="form-control" id="patientBp" name="patientBp"
                                                                     value="<?php echo $value['bloodPressure'] ?>" min="0"
@@ -1331,8 +1275,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="patientsCholestrol">Cholestrol <span
-                                                                    class="text-danger">*</span></label>
+                                                            <label class="form-label" for="patientsCholestrol">Cholestrol </label>
                                                             <div class="d-flex">
                                                                 <input type="number" class="form-control" id="patientsCholestrol"
                                                                     name="patientsCholestrol" min="0"
@@ -1341,8 +1284,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
-                                                            <label class="form-label" for="patientBsugar">Blood Sugar <span
-                                                                    class="text-danger">*</span></label>
+                                                            <label class="form-label" for="patientBsugar">Blood Sugar </label>
                                                             <div class="d-flex">
                                                                 <input type="number" class="form-control" id="patientBsugar"
                                                                     name="patientBsugar" min="0" value="<?php echo $value['bloodSugar'] ?>"
@@ -1356,6 +1298,7 @@
                                                             <input type="text" class="form-control" id="patientDiagonsis"
                                                                 name="patientDiagonsis" value="<?php echo $value['diagonsis'] ?>"
                                                                 placeholder="E.g. Diabetes checkup">
+                                                                <div id="diagonsis_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientSymptoms">Symptoms / Findings <span
@@ -1363,6 +1306,7 @@
                                                             <textarea class="form-control" name="patientSymptoms" id="patientSymptoms"
                                                                 cols="" rows=""
                                                                 placeholder="E.g. Weight loss"><?php echo $value['symptoms']; ?></textarea>
+                                                                <div id="symptoms_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientMedicines">Medicines</label>
@@ -1408,7 +1352,7 @@
 
                                                         <div class="d-flex justify-content-between mt-3">
                                                             <button type="reset" class="btn btn-secondary">Reset</button>
-                                                            <button type="submit" class="btn btn-success"
+                                                            <button type="submit" class="btn text-light" style="background-color: #00ad8e;"
                                                                 onclick="return validatePatientDetails()">Submit</button>
                                                         </div>
                                                     </form>
@@ -1502,135 +1446,85 @@
                             }
 
                         </script>
-                        <script>
-                            function clearErrorPatientDetails() {
-                                var name = document.getElementById("patientName").value;
-                                var mobile = document.getElementById("patientMobile").value;
-                                var email = document.getElementById("patientEmail").value;
-                                var gender = document.getElementById("patientGender").value;
-                                var dob = document.getElementById("patientDob").value;
-                                var blood = document.getElementById("patientBlood").value;
-                                var partnerName = document.getElementById("partnersName").value;
-                                var partnerMobile = document.getElementById("partnerMobile").value;
+                         <script>
+                        function clearErrorPatientDetails() {
+                            var name = document.getElementById("patientName").value;
+                            var mobile = document.getElementById("patientMobile").value;
+                            var gender = document.getElementById("patientGender").value;
+                            var dob = document.getElementById("patientDob").value;
+                            var diagonsis = document.getElementById("patientDiagonsis").value;
+                            var symptoms = document.getElementById("patientSymptoms").value;
 
-                                if (name != "") {
-                                    document.getElementById("patientName_err").innerHTML = "";
-                                }
-                                if (mobile != "") {
-                                    document.getElementById("patientMobile_err").innerHTML = "";
-                                }
-                                if (email != "") {
-                                    document.getElementById("patientEmail_err").innerHTML = "";
-                                }
-                                if (gender != "") {
-                                    document.getElementById("patientGender_err").innerHTML = "";
-                                }
-                                if (dob != "") {
-                                    document.getElementById("patientDob_err").innerHTML = "";
-                                }
-                                if (blood != "") {
-                                    document.getElementById("patientBlood_err").innerHTML = "";
-                                }
-                                if (partnerName != "") {
-                                    document.getElementById("partnersName_err").innerHTML = "";
-                                }
-                                if (partnerMobile != "") {
-                                    document.getElementById("partnerMobile_err").innerHTML = "";
-                                }
-                            }
-                        </script>
-                        <script>
+                            if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
+                            if (mobile != "") { document.getElementById("patientMobile_err").innerHTML = ""; }
+                            if (gender != "") { document.getElementById("patientGender_err").innerHTML = ""; }
+                            if (dob != "") { document.getElementById("patientDob_err").innerHTML = ""; }
+                            if (diagonsis != "") { document.getElementById("diagonsis_err").innerHTML = ""; }
+                            if (symptoms != "") { document.getElementById("symptoms_err").innerHTML = ""; }
+                        }
 
-                            function validatePatientDetails() {
-                                var name = document.getElementById("patientName").value;
-                                var mobile = document.getElementById("patientMobile").value;
-                                var email = document.getElementById("patientEmail").value;
-                                var dob = document.getElementById("patientDob").value;
-                                var gender = document.getElementById("patientGender").value;
-                                var blood = document.getElementById("patientBlood").value;
-                                var partnerName = document.getElementById("partnersName").value;
-                                var partnerMobile = document.getElementById("partnerMobile").value;
+                        function validatePatientDetails() {
+                            var name = document.getElementById("patientName").value;
+                            var mobile = document.getElementById("patientMobile").value;
+                            var dob = document.getElementById("patientDob").value;
+                            var gender = document.getElementById("patientGender").value;
+                            var diagonsis = document.getElementById("patientDiagonsis").value;
+                            var symptoms = document.getElementById("patientSymptoms").value;
 
-                                if (name == "") {
-                                    document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
-                                    document.getElementById("patientName").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("patientName_err").innerHTML = "";
-                                }
-
-                                if (mobile == "") {
-                                    document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
-                                    document.getElementById("patientMobile").focus();
-                                    return false;
-                                } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
-                                    document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
-                                    document.getElementById("patientMobile").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("patientMobile_err").innerHTML = "";
-                                }
-
-                                if (email == "") {
-                                    document.getElementById("patientEmail_err").innerHTML = "Mail address must be filled out.";
-                                    document.getElementById("patientEmail").focus();
-                                    return false;
-                                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                                    document.getElementById("patientEmail_err").innerHTML = "Enter valid mail address.";
-                                    document.getElementById("patientEmail").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("patientEmail_err").innerHTML = "";
-                                }
-
-                                if (gender == "") {
-                                    document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
-                                    document.getElementById("patientDob").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("patientGender_err").innerHTML = "";
-                                }
-
-                                if (dob == "") {
-                                    document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
-                                    document.getElementById("patientGender").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("patientDob_err").innerHTML = "";
-                                }
-
-                                if (blood == "") {
-                                    document.getElementById("patientBlood_err").innerHTML = "Blood group must be filled out.";
-                                    document.getElementById("patientBlood").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("patientBlood_err").innerHTML = "";
-                                }
-
-                                if (partnerName == "") {
-                                    document.getElementById("partnersName_err").innerHTML = "Partner name must be filled out.";
-                                    document.getElementById("partnersName").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("partnersName_err").innerHTML = "";
-                                }
-
-                                if (partnerMobile == "") {
-                                    document.getElementById("partnerMobile_err").innerHTML = "Partner mobile number must be filled out.";
-                                    document.getElementById("partnerMobile").focus();
-                                    return false;
-                                } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(partnerMobile)) {
-                                    document.getElementById("partnerMobile_err").innerHTML = "Enter valid mobile number.";
-                                    document.getElementById("partnerMobile").focus();
-                                    return false;
-                                } else {
-                                    document.getElementById("partnerMobile_err").innerHTML = "";
-                                }
-
-                                return true;
+                            if (name == "") {
+                                document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
+                                document.getElementById("patientName").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientName_err").innerHTML = "";
                             }
 
-                        </script>
+                            if (mobile == "") {
+                                document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
+                                document.getElementById("patientMobile").focus();
+                                return false;
+                            } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
+                                document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
+                                document.getElementById("patientMobile").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientMobile_err").innerHTML = "";
+                            }
+
+                            if (gender == "") {
+                                document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
+                                document.getElementById("patientDob").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientGender_err").innerHTML = "";
+                            }
+
+                            if (dob == "") {
+                                document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
+                                document.getElementById("patientGender").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientDob_err").innerHTML = "";
+                            }
+
+                            if (diagonsis == "") {
+                                document.getElementById("diagonsis_err").innerHTML = "Diagonsis / Complaints must be filled out.";
+                                document.getElementById("patientDiagonsis").focus();
+                                return false;
+                            } else {
+                                document.getElementById("diagonsis_err").innerHTML = "";
+                            }
+
+                            if (symptoms == "") {
+                                document.getElementById("symptoms_err").innerHTML = "Symptoms / Findings must be filled out.";
+                                document.getElementById("patientSymptoms").focus();
+                                return false;
+                            } else {
+                                document.getElementById("symptoms_err").innerHTML = "";
+                            }
+                            return true;
+                        }
+                    </script>
 
             <?php
         } else if ($method == "patientDetails") {
@@ -1641,14 +1535,13 @@
                             </script>
 
                             <section>
-                                <div class="card shadow-none rounded">
+                                <div class="card rounded">
                                     <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                         <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
                                                 class="bi bi-arrow-left"></i> Back</button>
                                     </div>
                                     <div class="card-body p-2 p-sm-5">
-
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
@@ -1708,13 +1601,13 @@
                                                 <p class="col-sm-6"><span class="text-secondary ">District</span> -
                                     <?php echo $value['district'] ?>         <?php echo $value['pincode'] ?>
                                                 </p>
-                                                <p><span class="text-secondary ">Partner name</span> - <?php echo $value['partnerName'] ?></p>
+                                                <p><span class="text-secondary ">Guardian name</span> - <?php echo $value['partnerName'] ?></p>
                                             </div>
                                             <div class="d-md-flex">
-                                                <p class="col-sm-6"><span class="text-secondary ">Partner mobile</span> -
+                                                <p class="col-sm-6"><span class="text-secondary ">Guardian mobile</span> -
                                     <?php echo $value['partnerMobile'] ?>
                                                 </p>
-                                                <p><span class="text-secondary ">Partner blood group</span> -
+                                                <p><span class="text-secondary ">Guardian blood group</span> -
                                     <?php echo $value['partnerBlood'] ?>
                                                 </p>
                                             </div>
@@ -1781,7 +1674,7 @@
                                 </script>
 
                                 <section>
-                                    <div class="card shadow-none rounded">
+                                    <div class="card rounded">
                                         <div class="d-sm-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                             <p style="font-size: 24px; font-weight: 500">
                                                 Appointments
@@ -1791,47 +1684,40 @@
                                                     <i class="bi bi-plus-square-fill"></i> Book Appointment
                                                 </button></a>
                                         </div>
+
+                        <?php
+                        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                        $items_per_page = 10;
+
+                        $total_items = count($appointmentList);
+                        $total_pages = ceil($total_items / $items_per_page);
+
+                        $offset = ($current_page - 1) * $items_per_page;
+
+                        $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
+                        ?>
+
                                         <div class="card-body p-2 p-sm-4">
                                             <div class="table-responsive">
                                                 <table class="table text-center" id="appointmentTable">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                S.NO
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
                                                             </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                PATIENT ID
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
                                                             </th>
-                                                            <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                PATIENT NAME
-                                                            </th> -->
-                                                            <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e" class="">
-                                                                AGE
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                GENDER
-                                                            </th> -->
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                DATE
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                TIME
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                CC ID
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                PURPOSE
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
-                                                                ACTION
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                             </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                         <?php
-                                        $count = 0;
-                                        foreach ($appointmentList as $key => $value) {
+                                        $count = $offset;
+                                        foreach ($current_page_items as $key => $value) {
                                             $count++;
                                             ?>
                                                             <tr>
@@ -1840,9 +1726,9 @@
                                                                     <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
                                                                         class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                         onmouseout="style='text-decoration:none'">
-                                                    <?php echo $value['patientId'] ?></a>
+                                                    <?php echo $value['patientId'] ?>
+                                                                    </a>
                                                                 </td>
-                                                                <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                                 <td style="font-size: 16px">
                                                 <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
                                                                 </td>
@@ -1853,7 +1739,8 @@
                                                                     <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
                                                                         class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                         onmouseout="style='text-decoration:none'">
-                                                    <?php echo $value['referalDoctor'] ?></a>
+                                                    <?php echo $value['referalDoctor'] ?>
+                                                                    </a>
                                                                 </td>
                                                                 <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
                                                                 <td style="font-size: 16px">
@@ -1863,106 +1750,53 @@
                                     <?php } ?>
                                                     </tbody>
                                                 </table>
+
+                                                <nav aria-label="Page navigation">
+                                                    <ul class="pagination justify-content-center">
+                                    <?php if ($current_page > 1): ?>
+                                                            <li>
+                                                                <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                                    <button type="button" class="bg-light border px-3 py-2">
+                                                                        < </button>
+                                                                </a>
+                                                            </li>
+                                    <?php endif; ?>
+
+                                        <?php
+                                        $start_page = max(1, $current_page - 2);
+                                        $end_page = min($total_pages, $current_page + 2);
+
+                                        if ($start_page == 1) {
+                                            $end_page = min($total_pages, 5);
+                                        }
+                                        if ($end_page == $total_pages) {
+                                            $start_page = max(1, $total_pages - 4);
+                                        }
+
+                                        for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                                            <li class=" ">
+                                                                <a href="?page=<?php echo $i; ?>">
+                                                                    <button type="button"
+                                                                        class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                                    <?php echo $i; ?></button>
+                                                                </a>
+                                                            </li>
+                                    <?php endfor; ?>
+
+                                    <?php if ($current_page < $total_pages): ?>
+                                                            <li class="page-item">
+                                                                <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                                    <button type="button" class="bg-light border px-3 py-2">
+                                                                        ></button>
+                                                                </a>
+                                                            </li>
+                                    <?php endif; ?>
+                                                    </ul>
+                                                </nav>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="paginationButtons" class="text-center mt-4">
-                                        <div id="paginationBtnsContainer"></div>
-                                    </div>
                                 </section>
-
-                                <script>
-                                    var table = document.getElementById('appointmentTable');
-                                    var rowsPerPage = 8;
-                                    var currentPage = 1;
-                                    var totalPages = Math.ceil(table.rows.length / rowsPerPage);
-
-                                    showPage(currentPage);
-
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i >= startIndex && i < endIndex) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-
-                                    function goToPage(page) {
-                                        if (page < 1) page = 1;
-                                        if (page > totalPages) page = totalPages;
-                                        currentPage = page;
-                                        showPage(currentPage);
-                                        updatePaginationButtons();
-                                    }
-
-                                    function previousPage() {
-                                        if (currentPage > 1) {
-                                            currentPage--;
-                                            showPage(currentPage);
-                                            updatePaginationButtons();
-                                        }
-                                    }
-
-                                    function nextPage() {
-                                        if (currentPage < totalPages) {
-                                            currentPage++;
-                                            showPage(currentPage);
-                                            updatePaginationButtons();
-                                        }
-                                    }
-
-                                    function updatePaginationButtons() {
-                                        var buttonsHtml = '';
-
-                                        var startPage = Math.max(1, currentPage - 1);
-                                        var endPage = Math.min(totalPages, currentPage + 1);
-
-                                        buttonsHtml += '<button class="btn btn-outline-secondary me-1" id="previousBtn" onclick="previousPage()">&lt;</button>';
-
-                                        for (var i = startPage; i <= endPage; i++) {
-                                            var activeClass = (i === currentPage) ? 'active' : '';
-                                            buttonsHtml += '<button class="btn btn-outline-secondary mx-1 pagination-btn ' + activeClass + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-                                        }
-
-                                        buttonsHtml += '<button class="btn btn-outline-secondary ms-1" id="nextBtn" onclick="nextPage()">&gt;</button>';
-
-                                        document.getElementById('paginationBtnsContainer').innerHTML = buttonsHtml;
-
-                                        var previousBtn = document.getElementById('previousBtn');
-                                        var nextBtn = document.getElementById('nextBtn');
-                                        previousBtn.style.display = (currentPage === 1) ? 'none' : 'inline-block';
-                                        nextBtn.style.display = (currentPage === totalPages) ? 'none' : 'inline-block';
-                                    }
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-                                    function showPage(page) {
-                                        var startIndex = (page - 1) * rowsPerPage;
-                                        var endIndex = startIndex + rowsPerPage;
-                                        for (var i = 0; i < table.rows.length; i++) {
-                                            if (i === 0 || (i >= startIndex && i < endIndex)) {
-                                                table.rows[i].style.display = 'table-row';
-                                            } else {
-                                                table.rows[i].style.display = 'none';
-                                            }
-                                        }
-                                    }
-
-
-                                    updatePaginationButtons();
-                                </script>
 
             <?php
         } else if ($method == "appointmentsForm") {
@@ -1973,7 +1807,7 @@
                                     </script>
 
                                     <section>
-                                        <div class="card shadow-none rounded">
+                                        <div class="card rounded">
                                             <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                 <p style="font-size: 24px; font-weight: 500"> New Appoitment</p>
                                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
@@ -2407,7 +2241,7 @@
                                         </script>
 
                                         <section>
-                                            <div class="card shadow-none rounded">
+                                            <div class="card rounded">
                                                 <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                     <p style="font-size: 24px; font-weight: 500">
                                                         Chief Doctor Profile </p>
@@ -2542,7 +2376,7 @@
                                             </script>
 
                                             <section>
-                                                <div class="card shadow-none rounded">
+                                                <div class="card rounded">
                                                     <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                         <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
                                                         <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
@@ -2757,7 +2591,7 @@
                                                     </script>
 
                                                     <section>
-                                                        <div class="card shadow-none rounded">
+                                                        <div class="card rounded">
                                                             <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                 <p style="font-size: 24px; font-weight: 500">
                                                                     Chief Doctor Profile </p>
@@ -2894,7 +2728,7 @@
             ?>
 
                                                         <section>
-                                                            <div class="card shadow-none rounded">
+                                                            <div class="card rounded">
                                                                 <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                     <p style="font-size: 24px; font-weight: 500"> My Profile</p>
                                                                     <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>" class="float-end text-dark"><i
@@ -3000,7 +2834,7 @@
             ?>
 
                                                             <section>
-                                                                <div class="card shadow-none rounded">
+                                                                <div class="card rounded">
                                                                     <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
                                                                         <p style="font-size: 24px; font-weight: 500"> Edit Profile Details</p>
                                                                         <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>" class="float-end text-dark"><i

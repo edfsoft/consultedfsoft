@@ -24,16 +24,21 @@
             font-family: 'Poppins', sans-serif;
             background-color: #ebebeb;
         }
+        
+         /* Form Labels */
+         .form-label {
+            font-weight: 500;
+        }
     </style>
 </head>
 
 <body>
     <div class="text-center mt-5">
         <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo" width="200" height="90"></a>
-        <p class="fs-2 pt-2" style="font-weight:500;">Administrator Login</p>
     </div>
     <div class="d-flex align-middle justify-content-center">
-        <div class="card mt-2 p-5">
+        <div class="card mt-3 p-4 p-sm-5">
+            <p class="fs-2 pb-3" style="font-weight:500;">Administrator Login</p>
             <form action="<?php echo base_url() . "Edfadmin/adminLogin" ?>" method="post" name="hcploginform"
                 onsubmit="return validateLogin()">
                 <div class="mb-3">

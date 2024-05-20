@@ -89,7 +89,7 @@ class CcModel extends CI_Model
     {
         $details = "SELECT * FROM `hcp_details` WHERE deleteStatus = '0' AND approvalStatus = '1'";
         $select = $this->db->query($details);
-        return $select->result_array();
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
     public function getHcpDetails($hcpIdDb)

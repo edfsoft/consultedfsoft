@@ -66,6 +66,9 @@ class healthcareprovider extends CI_Controller
             $this->data['patientTotal'] = $patientTotal['totalRows'];
             $ccDetails = $this->HcpModel->getCcProfile();
             $this->data['totalCcs'] = $ccDetails['totalRows'];
+            $appointmentList = $this->HcpModel->getAppointmentListDash();
+            $this->data['appointmentList'] = $appointmentList['response'];
+            $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             $this->index();

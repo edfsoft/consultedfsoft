@@ -299,6 +299,15 @@ class HcpModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
+    public function getAppointmentListDash()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $todayDate = date('Y-m-d');
+        $details = "SELECT * FROM `appointment_details` WHERE`hcpDbId`=  $hcpIdDb AND `dateOfAppoint`= '$todayDate' ";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function getHcpDetails()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];

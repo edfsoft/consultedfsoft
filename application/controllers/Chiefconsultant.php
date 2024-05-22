@@ -74,6 +74,9 @@ class chiefconsultant extends CI_Controller
             $this->data['patientTotal'] = $patientTotal['totalRows'];
             $hcpDetails = $this->CcModel->getHcpProfile();
             $this->data['totalHcps'] = $hcpDetails['totalRows'];
+            $appointmentList = $this->CcModel->getAppointmentListDash();
+            $this->data['appointmentList'] = $appointmentList['response'];
+            $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {

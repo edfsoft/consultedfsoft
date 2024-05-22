@@ -235,10 +235,10 @@
                                     Today Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
-                                    19
+                                    <?php echo $appointmentsTotal; ?>
                                 </p>
                                 <p style="font-size: 16px">
-                                    <?php echo date("d - m - Y") ?>
+                                    <?php echo date("d-m-Y") ?>
                                 </p>
                             </div>
                         </div>
@@ -248,7 +248,7 @@
                 <div class="d-lg-flex justify-content-evenly">
                     <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
-                            <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
+                            <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-2" >
                                 <i class="bi bi-calendar4 pe-3"></i> Today Appointments
                             </p>
                             <div class="table-responsive">
@@ -260,7 +260,7 @@
                                             </th>
                                             <th scope="col" style="font-size: 18px; font-weight: 500; color: #00ad8e"
                                                 class="px-5">
-                                                Name / Diagonsis
+                                                Patient Id / Diagonsis
                                             </th>
                                             <th scope="col" style="font-size: 18px; font-weight: 500; color: #00ad8e">
                                                 Time
@@ -268,35 +268,67 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="px-4">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
-                                                    width="40" height="40" />
-                                            </td>
-                                            <td class="px-5">
-                                                <span style="font-size: 16px; font-weight: 500; color: #00ad8e">Michael
-                                                    George</span><br /><span style="font-size: 16px">
-                                                    Diabetes Consultation</span>
-                                            </td>
-                                            <td style="font-size: 16px">Ongoing</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="px-3">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
-                                                    width="40" height="40" />
-                                            </td>
-                                            <td class="px-5">
-                                                <span style="font-size: 16px; font-weight: 500; color: #00ad8e">Michael
-                                                    George</span><br /><span style="font-size: 16px">
-                                                    Diabetes Consultation</span>
-                                            </td>
-                                            <td style="font-size: 16px">7.15 p.m</td>
-                                        </tr>
+                                        <?php if (isset($appointmentList[0]['id'])) { ?>
+                                            <tr>
+                                                <td class="px-4">
+                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="img"
+                                                        width="40" height="40" />
+                                                </td>
+                                                <td class="px-5">
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 500; color: #00ad8e"><?php echo $appointmentList[0]['patientId']; ?></span><br /><span
+                                                        style="font-size: 16px">
+                                                        <?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                </td>
+                                                <td style="font-size: 16px"><?php echo $appointmentList[0]['timeOfAppoint']; ?>
+                                                </td>
+                                            </tr>
+                                        <?php }
+                                        if (isset($appointmentList[1]['id'])) { ?>
+                                            <tr>
+                                                <td class="px-3">
+                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="img"
+                                                        width="40" height="40" />
+                                                </td>
+                                                <td class="px-5">
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 500; color: #00ad8e"><?php echo $appointmentList[1]['patientId']; ?></span><br /><span
+                                                        style="font-size: 16px">
+                                                        <?php echo $appointmentList[1]['patientComplaint']; ?></span>
+                                                </td>
+                                                <td style="font-size: 16px"><?php echo $appointmentList[1]['timeOfAppoint']; ?>
+                                                </td>
+                                            </tr>
+                                        <?php }
+                                        if (isset($appointmentList[2]['id'])) { ?>
+                                            <tr>
+                                                <td class="px-3">
+                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="img"
+                                                        width="40" height="40" />
+                                                </td>
+                                                <td class="px-5">
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 500; color: #00ad8e"><?php echo $appointmentList[2]['patientId']; ?></span><br /><span
+                                                        style="font-size: 16px">
+                                                        <?php echo $appointmentList[2]['patientComplaint']; ?></span>
+                                                </td>
+                                                <td style="font-size: 16px"><?php echo $appointmentList[2]['timeOfAppoint']; ?>
+                                                </td>
+                                            </tr>
+                                        <?php }
+                                        if (!isset($appointmentList[0]['id'])) { ?>
+                                            <tr>
+                                                <td><b>No appointments today.</b> </td>
+                                            </tr>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
-                                class="text-decoration-underline">see all</a>
+                            <?php if (isset($appointmentList[3]['id'])) { ?>
+                                <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
+                                    class="text-decoration-underline">see all</a>
+                            <?php } ?>
+
                         </div>
                     </div>
 
@@ -874,14 +906,14 @@
                                                     Complaints <span class="text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="patientDiagonsis"
                                                     name="patientDiagonsis" placeholder="E.g. Diabetes checkup">
-                                                    <div id="diagonsis_err" class="text-danger pt-1"></div>
+                                                <div id="diagonsis_err" class="text-danger pt-1"></div>
                                             </div>
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="patientSymptoms">Symptoms / Findings <span
                                                         class="text-danger">*</span></label>
                                                 <textarea class="form-control" name="patientSymptoms" id="patientSymptoms" cols=""
                                                     rows="" value="" placeholder="E.g. Weight loss"></textarea>
-                                                    <div id="symptoms_err" class="text-danger pt-1"></div>
+                                                <div id="symptoms_err" class="text-danger pt-1"></div>
                                             </div>
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="patientMedicines">Medicines</label>
@@ -1170,7 +1202,8 @@
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="marriedSince">Married Since</label>
                                                             <input type="text" class="form-control" id="marriedSince"
-                                                                value="<?php echo $value['marriedSince'] ?>" name="marriedSince" placeholder="E.g. 2012" >
+                                                                value="<?php echo $value['marriedSince'] ?>" name="marriedSince"
+                                                                placeholder="E.g. 2012">
                                                         </div>
 
                                                         <p class="py-3" style="font-size: 20px; font-weight: 500;color:#00ad8e"> <button
@@ -1298,7 +1331,7 @@
                                                             <input type="text" class="form-control" id="patientDiagonsis"
                                                                 name="patientDiagonsis" value="<?php echo $value['diagonsis'] ?>"
                                                                 placeholder="E.g. Diabetes checkup">
-                                                                <div id="diagonsis_err" class="text-danger pt-1"></div>
+                                                            <div id="diagonsis_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientSymptoms">Symptoms / Findings <span
@@ -1306,7 +1339,7 @@
                                                             <textarea class="form-control" name="patientSymptoms" id="patientSymptoms"
                                                                 cols="" rows=""
                                                                 placeholder="E.g. Weight loss"><?php echo $value['symptoms']; ?></textarea>
-                                                                <div id="symptoms_err" class="text-danger pt-1"></div>
+                                                            <div id="symptoms_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientMedicines">Medicines</label>
@@ -1446,85 +1479,85 @@
                             }
 
                         </script>
-                         <script>
-                        function clearErrorPatientDetails() {
-                            var name = document.getElementById("patientName").value;
-                            var mobile = document.getElementById("patientMobile").value;
-                            var gender = document.getElementById("patientGender").value;
-                            var dob = document.getElementById("patientDob").value;
-                            var diagonsis = document.getElementById("patientDiagonsis").value;
-                            var symptoms = document.getElementById("patientSymptoms").value;
+                        <script>
+                            function clearErrorPatientDetails() {
+                                var name = document.getElementById("patientName").value;
+                                var mobile = document.getElementById("patientMobile").value;
+                                var gender = document.getElementById("patientGender").value;
+                                var dob = document.getElementById("patientDob").value;
+                                var diagonsis = document.getElementById("patientDiagonsis").value;
+                                var symptoms = document.getElementById("patientSymptoms").value;
 
-                            if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
-                            if (mobile != "") { document.getElementById("patientMobile_err").innerHTML = ""; }
-                            if (gender != "") { document.getElementById("patientGender_err").innerHTML = ""; }
-                            if (dob != "") { document.getElementById("patientDob_err").innerHTML = ""; }
-                            if (diagonsis != "") { document.getElementById("diagonsis_err").innerHTML = ""; }
-                            if (symptoms != "") { document.getElementById("symptoms_err").innerHTML = ""; }
-                        }
-
-                        function validatePatientDetails() {
-                            var name = document.getElementById("patientName").value;
-                            var mobile = document.getElementById("patientMobile").value;
-                            var dob = document.getElementById("patientDob").value;
-                            var gender = document.getElementById("patientGender").value;
-                            var diagonsis = document.getElementById("patientDiagonsis").value;
-                            var symptoms = document.getElementById("patientSymptoms").value;
-
-                            if (name == "") {
-                                document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
-                                document.getElementById("patientName").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientName_err").innerHTML = "";
+                                if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
+                                if (mobile != "") { document.getElementById("patientMobile_err").innerHTML = ""; }
+                                if (gender != "") { document.getElementById("patientGender_err").innerHTML = ""; }
+                                if (dob != "") { document.getElementById("patientDob_err").innerHTML = ""; }
+                                if (diagonsis != "") { document.getElementById("diagonsis_err").innerHTML = ""; }
+                                if (symptoms != "") { document.getElementById("symptoms_err").innerHTML = ""; }
                             }
 
-                            if (mobile == "") {
-                                document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
-                                document.getElementById("patientMobile").focus();
-                                return false;
-                            } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
-                                document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
-                                document.getElementById("patientMobile").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientMobile_err").innerHTML = "";
-                            }
+                            function validatePatientDetails() {
+                                var name = document.getElementById("patientName").value;
+                                var mobile = document.getElementById("patientMobile").value;
+                                var dob = document.getElementById("patientDob").value;
+                                var gender = document.getElementById("patientGender").value;
+                                var diagonsis = document.getElementById("patientDiagonsis").value;
+                                var symptoms = document.getElementById("patientSymptoms").value;
 
-                            if (gender == "") {
-                                document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
-                                document.getElementById("patientDob").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientGender_err").innerHTML = "";
-                            }
+                                if (name == "") {
+                                    document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
+                                    document.getElementById("patientName").focus();
+                                    return false;
+                                } else {
+                                    document.getElementById("patientName_err").innerHTML = "";
+                                }
 
-                            if (dob == "") {
-                                document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
-                                document.getElementById("patientGender").focus();
-                                return false;
-                            } else {
-                                document.getElementById("patientDob_err").innerHTML = "";
-                            }
+                                if (mobile == "") {
+                                    document.getElementById("patientMobile_err").innerHTML = "Mobile must be filled out.";
+                                    document.getElementById("patientMobile").focus();
+                                    return false;
+                                } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
+                                    document.getElementById("patientMobile_err").innerHTML = "Enter valid mobile number.";
+                                    document.getElementById("patientMobile").focus();
+                                    return false;
+                                } else {
+                                    document.getElementById("patientMobile_err").innerHTML = "";
+                                }
 
-                            if (diagonsis == "") {
-                                document.getElementById("diagonsis_err").innerHTML = "Diagonsis / Complaints must be filled out.";
-                                document.getElementById("patientDiagonsis").focus();
-                                return false;
-                            } else {
-                                document.getElementById("diagonsis_err").innerHTML = "";
-                            }
+                                if (gender == "") {
+                                    document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
+                                    document.getElementById("patientDob").focus();
+                                    return false;
+                                } else {
+                                    document.getElementById("patientGender_err").innerHTML = "";
+                                }
 
-                            if (symptoms == "") {
-                                document.getElementById("symptoms_err").innerHTML = "Symptoms / Findings must be filled out.";
-                                document.getElementById("patientSymptoms").focus();
-                                return false;
-                            } else {
-                                document.getElementById("symptoms_err").innerHTML = "";
+                                if (dob == "") {
+                                    document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
+                                    document.getElementById("patientGender").focus();
+                                    return false;
+                                } else {
+                                    document.getElementById("patientDob_err").innerHTML = "";
+                                }
+
+                                if (diagonsis == "") {
+                                    document.getElementById("diagonsis_err").innerHTML = "Diagonsis / Complaints must be filled out.";
+                                    document.getElementById("patientDiagonsis").focus();
+                                    return false;
+                                } else {
+                                    document.getElementById("diagonsis_err").innerHTML = "";
+                                }
+
+                                if (symptoms == "") {
+                                    document.getElementById("symptoms_err").innerHTML = "Symptoms / Findings must be filled out.";
+                                    document.getElementById("patientSymptoms").focus();
+                                    return false;
+                                } else {
+                                    document.getElementById("symptoms_err").innerHTML = "";
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-                    </script>
+                        </script>
 
             <?php
         } else if ($method == "patientDetails") {
@@ -1730,7 +1763,12 @@
                                                                     </a>
                                                                 </td>
                                                                 <td style="font-size: 16px">
-                                                <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
+                                                    <?php
+                                                    if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
+                                                        echo "Today";
+                                                    } else {
+                                                        echo date("d-m-Y", strtotime($value['dateOfAppoint']));
+                                                    } ?>
                                                                 </td>
                                                                 <td class="" style="font-size: 16px">
                                                 <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>

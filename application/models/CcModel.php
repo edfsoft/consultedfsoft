@@ -85,6 +85,15 @@ class CcModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
+    public function getAppointmentListDash()
+    {
+        $ccId = $_SESSION['ccId'];
+        $todayDate = date('Y-m-d'); 
+        $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor`=  '$ccId' AND `dateOfAppoint`= '$todayDate'";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function getHcpProfile()
     {
         $details = "SELECT * FROM `hcp_details` WHERE deleteStatus = '0' AND approvalStatus = '1'";

@@ -230,7 +230,7 @@
                                     Today Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
-                                    19
+                                <?php echo $appointmentsTotal; ?>
                                 </p>
                                 <p style="font-size: 16px">
                                     <?php echo date("d - m - Y") ?>
@@ -263,34 +263,55 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <?php if (isset($appointmentList[0]['id'])) { ?>
                                         <tr>
                                             <td class="px-4">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients2.png" alt="img"
+                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="img"
                                                     width="40" height="40" />
                                             </td>
                                             <td class="px-5">
-                                                <span style="font-size: 16px; font-weight: 500; color: #0079AD">Michael
-                                                    George</span><br /><span style="font-size: 16px">
-                                                    Diabetes Consultation</span>
+                                                <span style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[0]['patientId']; ?></span><br /><span style="font-size: 16px">
+                                                <?php echo $appointmentList[0]['patientComplaint']; ?></span>
                                             </td>
-                                            <td style="font-size: 16px">Ongoing</td>
+                                            <td style="font-size: 16px"><?php echo $appointmentList[0]['timeOfAppoint']; ?></td>
                                         </tr>
+                                        <?php }  if (isset($appointmentList[1]['id'])) { ?>
                                         <tr>
-                                            <td class="px-3">
-                                                <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="img"
+                                            <td class="px-4">
+                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="img"
                                                     width="40" height="40" />
                                             </td>
                                             <td class="px-5">
-                                                <span style="font-size: 16px; font-weight: 500; color: #0079AD">Michael
-                                                    George</span><br /><span style="font-size: 16px">
-                                                    Diabetes Consultation</span>
+                                                <span style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[1]['patientId']; ?></span><br /><span style="font-size: 16px">
+                                                <?php echo $appointmentList[1]['patientComplaint']; ?></span>
                                             </td>
-                                            <td style="font-size: 16px">7.15 p.m</td>
+                                            <td style="font-size: 16px"><?php echo $appointmentList[1]['timeOfAppoint']; ?></td>
                                         </tr>
+                                        <?php }  if (isset($appointmentList[2]['id'])) { ?>
+                                        <tr>
+                                            <td class="px-4">
+                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="img"
+                                                    width="40" height="40" />
+                                            </td>
+                                            <td class="px-5">
+                                                <span style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[2]['patientId']; ?></span><br /><span style="font-size: 16px">
+                                                <?php echo $appointmentList[2]['patientComplaint']; ?></span>
+                                            </td>
+                                            <td style="font-size: 16px"><?php echo $appointmentList[2]['timeOfAppoint']; ?></td>
+                                        </tr>
+                                        <?php }
+                                        if (!isset($appointmentList[0]['id'])) { ?>
+                                            <tr>
+                                                <td><b>No appointments today.</b> </td>
+                                            </tr>
+                                        <?php } ?>
+                                        <?php if (isset($appointmentList[3]['id'])) { ?>
+                                <a href="<?php echo base_url() . "Chiefconsultant/appointments" ?>"
+                                    class="text-decoration-underline">see all</a>
+                            <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="<?php echo base_url() . "Chiefconsultant/appointments" ?>" class="text-decoration-underline">see all</a>
                         </div>
                     </div>
 
@@ -773,7 +794,11 @@
                                                         </td>
                                                         <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                         <td style="font-size: 16px">
-                                                <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])); ?>
+                                                       <?php if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
+                                                        echo "Today";
+                                                    } else {
+                                                        echo date("d-m-Y", strtotime($value['dateOfAppoint']));
+                                                    } ?>
                                                         </td>
                                                         <td class="" style="font-size: 16px">
                                                 <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>

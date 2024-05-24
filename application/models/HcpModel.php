@@ -10,7 +10,7 @@ class HcpModel extends CI_Model
     public function register()
     {
         $post = $this->input->post(null, true);
-        $approval = isset($post['approvalApproved'])?$post['approvalApproved']:'0';
+        $approval = isset($post['approvalApproved']) ? $post['approvalApproved'] : '0';
         $insert = array(
             'hcpName' => $post['hcpName'],
             'hcpMobile' => $post['hcpMobile'],
@@ -73,7 +73,7 @@ class HcpModel extends CI_Model
     public function getPatientList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0'";
+        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0' ORDER BY `id` DESC";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -96,12 +96,12 @@ class HcpModel extends CI_Model
         if ($this->upload->do_upload('medicalReceipts')) {
             $data = $this->upload->data();
             $firstDocument = $data['file_name'];
-        } 
+        }
         if ($this->upload->do_upload('medicalReports')) {
             $data = $this->upload->data();
             $secondDocument = $data['file_name'];
-        } 
-         if ($this->upload->do_upload('profilePhoto')) {
+        }
+        if ($this->upload->do_upload('profilePhoto')) {
             $data = $this->upload->data();
             $photo = $data['file_name'];
         } else {
@@ -162,12 +162,11 @@ class HcpModel extends CI_Model
         if ($this->upload->do_upload('medicalReceipts')) {
             $data = $this->upload->data();
             $firstDocument = $data['file_name'];
-        } 
+        }
         if ($this->upload->do_upload('medicalReports')) {
             $data = $this->upload->data();
             $secondDocument = $data['file_name'];
-        } 
-         else {
+        } else {
             $error = $this->upload->display_errors();
         }
 
@@ -203,7 +202,7 @@ class HcpModel extends CI_Model
             'documentOne' => $firstDocument,
             'documentTwo' => $secondDocument,
         );
-        $this->db->where('id',  $post['patientIdDb']);
+        $this->db->where('id', $post['patientIdDb']);
         $this->db->update('patient_details', $insertdata);
     }
 
@@ -299,11 +298,24 @@ class HcpModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
+    // public function getAppointmentListDash()
+    // {
+    //     $hcpIdDb = $_SESSION['hcpIdDb'];
+    //     $todayDate = date('Y-m-d');
+    //     $details = "SELECT * FROM `appointment_details` WHERE`hcpDbId`=  $hcpIdDb AND `dateOfAppoint`= '$todayDate' ";
+    //     $select = $this->db->query($details);
+    //     return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    // }
+
     public function getAppointmentListDash()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $todayDate = date('Y-m-d');
-        $details = "SELECT * FROM `appointment_details` WHERE`hcpDbId`=  $hcpIdDb AND `dateOfAppoint`= '$todayDate' ";
+        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.dob , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo,
+        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
+        FROM patient_details AS pd
+        LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
+        WHERE hcpDbId = $hcpIdDb  AND dateOfAppoint = '$todayDate';";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

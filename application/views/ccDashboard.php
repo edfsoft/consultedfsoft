@@ -144,7 +144,7 @@
                 <a class="" href="<?php echo base_url() . "Chiefconsultant/appointments" ?>"
                     style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                     <div>
-                        <i class="bi bi-calendar4 pe-3"></i><span>Appointments</span>
+                        <i class="bi bi-calendar4 pe-3"></i> <span>Appointments</span>
                         <p class="text-dark float-end">
                             <i class="fas fa-envelope fa-2x"></i>
                             <span
@@ -339,132 +339,132 @@
                             <?php } ?>
                         </div>
                     </div>
-                
 
-                <div class="card rounded-5 mx-1">
-                    <div class="card-body p-4">
-                        <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                            <i class="bi bi-person pe-3"></i> Patient Appointment Details
-                        </p>
-                        <?php if (isset($appointmentList[0]['id'])) { ?>
-                            <div class="d-flex justify-content-evenly">
-                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
-                                    <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
-                                        width="50" height="50" class="rounded-circle">
-                                <?php } else { ?>
-                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="50"
-                                        height="50" class="rounded-circle">
-                                <?php } ?>
-                                <p class="px-5">
-                                    <span style="font-size: 16px; font-weight: 500; color: #0079AD">Name</span><br /><span
-                                        style="font-size: 16px">
-                                        <?php echo $appointmentList[0]['firstName'], $appointmentList[0]['lastName']; ?></span>
-                                </p>
-                                <p>
-                                    <span style="font-size: 16px; font-weight: 500; color: #0079AD">Patient
-                                        ID</span><br /><span
-                                        style="font-size: 16px"><?php echo $appointmentList[0]['patientId']; ?></span>
-                                </p>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col-4" style="font-size: 16px; font-weight: 600">
-                                                D.O.B
-                                            </th>
-                                            <th scope="col-4" style="font-size: 16px; font-weight: 600">
-                                                Gender
-                                            </th>
-                                            <th scope="col-4" style="font-size: 16px; font-weight: 600">
-                                                Blood Group
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <span
-                                                    style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['dob']; ?></span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['gender']; ?></span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    style="font-size: 16px; font-weight: 400"><?php echo isset($appointmentList[0]['bloodGroup']) ? $appointmentList[0]['bloodGroup'] : '-' ?></span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col-6" style="font-size: 16px; font-weight: 600">
-                                                Diagonsis
-                                            </th>
-                                            <!-- <th scope="col-4" style="font-size: 16px; font-weight: 600" class="px-5">
+
+                    <div class="card rounded-5 mx-1">
+                        <div class="card-body p-4">
+                            <p style="font-size: 20px; font-weight: 500; color: #0079AD">
+                                <i class="bi bi-person pe-3"></i> Patient Appointment Details
+                            </p>
+                            <?php if (isset($appointmentList[0]['id'])) { ?>
+                                <div class="d-flex justify-content-evenly">
+                                    <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                        <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
+                                            alt="Profile Photo" width="50" height="50" class="rounded-circle">
+                                    <?php } else { ?>
+                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="50"
+                                            height="50" class="rounded-circle">
+                                    <?php } ?>
+                                    <p class="px-5">
+                                        <span style="font-size: 16px; font-weight: 500; color: #0079AD">Name</span><br /><span
+                                            style="font-size: 16px">
+                                            <?php echo $appointmentList[0]['firstName'], $appointmentList[0]['lastName']; ?></span>
+                                    </p>
+                                    <p>
+                                        <span style="font-size: 16px; font-weight: 500; color: #0079AD">Patient
+                                            ID</span><br /><span
+                                            style="font-size: 16px"><?php echo $appointmentList[0]['patientId']; ?></span>
+                                    </p>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col-4" style="font-size: 16px; font-weight: 600">
+                                                    D.O.B
+                                                </th>
+                                                <th scope="col-4" style="font-size: 16px; font-weight: 600">
+                                                    Gender
+                                                </th>
+                                                <th scope="col-4" style="font-size: 16px; font-weight: 600">
+                                                    Blood Group
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['dob']; ?></span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['gender']; ?></span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo isset($appointmentList[0]['bloodGroup']) ? $appointmentList[0]['bloodGroup'] : '-' ?></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col-6" style="font-size: 16px; font-weight: 600">
+                                                    Diagonsis
+                                                </th>
+                                                <!-- <th scope="col-4" style="font-size: 16px; font-weight: 600" class="px-5">
                                                     Height
                                                 </th> -->
-                                            <th scope="col-6" style="font-size: 16px; font-weight: 600">
-                                                Patient HCP ID
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <span
-                                                    style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint']; ?></span>
-                                            </td>
-                                            <!-- <td class="px-5">
+                                                <th scope="col-6" style="font-size: 16px; font-weight: 600">
+                                                    Patient HCP ID
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                </td>
+                                                <!-- <td class="px-5">
                                                     <span style="font-size: 16px; font-weight: 400">172cm</span>
                                                 </td> -->
-                                            <td>
-                                                <span
-                                                    style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientHcp']; ?></span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <p style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                Patient History
-                            </p>
-                            <p style="font-size: 16px;font-weight: 400;background-color: #e9eeed;padding: 10px;">
-                                Diabetes - Health care
-                            </p>
-                            <div>
-                                <a href="tel:<?php echo $appointmentList[0]['mobileNumber']; ?>"><button
-                                        style=" background-color: #0079AD; color: white; font-size: 16px;"
-                                        class="border border-1 rounded p-2 p-md-3">
-                                        <i class="bi bi-telephone"></i> +91
-                                        <?php echo $appointmentList[0]['mobileNumber']; ?>
-                                    </button></a>
-                                <?php if ($appointmentList[0]['documentOne'] != "No data") { ?>
-                                    <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentOne'] ?>"
-                                        target="blank"><button style="border: 2px solid #0079AD; background-color: white"
-                                            class="rounded p-2 p-md-3 mt-2 mt-sm-0 mx-sm-2">
-                                            <i class="bi bi-folder2"></i> Reports
+                                                <td>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientHcp']; ?></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <p style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                    Patient History
+                                </p>
+                                <p style="font-size: 16px;font-weight: 400;background-color: #e9eeed;padding: 10px;">
+                                    Diabetes - Health care
+                                </p>
+                                <div>
+                                    <a href="tel:<?php echo $appointmentList[0]['mobileNumber']; ?>"><button
+                                            style=" background-color: #0079AD; color: white; font-size: 16px;"
+                                            class="border border-1 rounded p-2 p-md-3">
+                                            <i class="bi bi-telephone"></i> +91
+                                            <?php echo $appointmentList[0]['mobileNumber']; ?>
                                         </button></a>
-                                <?php }
-                                if ($appointmentList[0]['documentTwo'] != "No data") { ?>
-                                    <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentTwo'] ?>"
-                                        target="blank"><button style="border: 2px solid #0079AD; background-color: white"
-                                            class="rounded p-2 p-md-3 mt-2 mt-sm-0">
-                                            <i class="bi bi-folder2"></i> Medicines
-                                        </button></a>
-                                <?php } ?>
-                            </div>
-                            <br>
-                            <a href="#" class="text-decoration-underline">Last Appointment</a>
-                        <?php } else { ?>
-                            <p class="m-md-5 px-md-5"><b> No appointments today.</b></p>
-                        <?php } ?>
+                                    <?php if ($appointmentList[0]['documentOne'] != "No data") { ?>
+                                        <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentOne'] ?>"
+                                            target="blank"><button style="border: 2px solid #0079AD; background-color: white"
+                                                class="rounded p-2 p-md-3 mt-2 mt-sm-0 mx-sm-2">
+                                                <i class="bi bi-folder2"></i> Reports
+                                            </button></a>
+                                    <?php }
+                                    if ($appointmentList[0]['documentTwo'] != "No data") { ?>
+                                        <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentTwo'] ?>"
+                                            target="blank"><button style="border: 2px solid #0079AD; background-color: white"
+                                                class="rounded p-2 p-md-3 mt-2 mt-sm-0">
+                                                <i class="bi bi-folder2"></i> Medicines
+                                            </button></a>
+                                    <?php } ?>
+                                </div>
+                                <br>
+                                <a href="#" class="text-decoration-underline">Last Appointment</a>
+                            <?php } else { ?>
+                                <p class="m-md-5 px-md-5"><b> No appointments today.</b></p>
+                            <?php } ?>
+                        </div>
                     </div>
                 </div>
-            </div>
             </section>
 
             <?php
@@ -539,28 +539,28 @@
                         itemsToShow.forEach((value, index) => {
                             const patientRow = document.createElement('tr');
                             patientRow.innerHTML = `
-                                                <td>${start + index + 1}.</td>
-                                                <td class="px-2">
-                                                    <img src="${value.profilePhoto && value.profilePhoto !== "No data" ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
-                                                        alt="Profile Photo" width="40" height="40" class="rounded-circle">
-                                                </td>
-                                                <td style="font-size: 16px">${value.patientId}</td>
-                                                <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                                                <td style="font-size: 16px">${value.gender}</td>
-                                                <td style="font-size: 16px">${value.age}</td>
-                                                <td style="font-size: 16px">${value.diagonsis}</td>
-                                                <td style="font-size: 16px">
-                                                    <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" 
-                                                        class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
-                                                        ${value.patientHcp}
-                                                    </a>
-                                                </td>
-                                                <td style="font-size: 16px">
-                                                    <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
-                                                        <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                                                    </a>
-                                                </td>
-                                            `;
+                                                        <td>${start + index + 1}.</td>
+                                                        <td class="px-2">
+                                                            <img src="${value.profilePhoto && value.profilePhoto !== "No data" ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                        </td>
+                                                        <td style="font-size: 16px">${value.patientId}</td>
+                                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                                                        <td style="font-size: 16px">${value.gender}</td>
+                                                        <td style="font-size: 16px">${value.age}</td>
+                                                        <td style="font-size: 16px">${value.diagonsis}</td>
+                                                        <td style="font-size: 16px">
+                                                            <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" 
+                                                                class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
+                                                                ${value.patientHcp}
+                                                            </a>
+                                                        </td>
+                                                        <td style="font-size: 16px">
+                                                            <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
+                                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
+                                                            </a>
+                                                        </td>
+                                                    `;
                             patientContainer.appendChild(patientRow);
                         });
 
@@ -577,10 +577,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                                            <a href="#">
-                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                            </a>
-                                        `;
+                                                    <a href="#">
+                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                    </a>
+                                                `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayPatientPage(currentPage - 1);
                         };
@@ -592,20 +592,20 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                                                <a href="#">
-                                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                </a>
-                                            `;
+                                                        <a href="#">
+                                                            <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                        </a>
+                                                    `;
                             li.onclick = () => displayPatientPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                                            <a href="#">
-                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                            </a>
-                                        `;
+                                                    <a href="#">
+                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                    </a>
+                                                `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                         };
@@ -786,6 +786,7 @@
                                             Appointments
                                         </p>
                                     </div>
+                                    
                             <?php
                             $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
                             $items_per_page = 10;
@@ -796,6 +797,8 @@
                             $offset = ($current_page - 1) * $items_per_page;
 
                             $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
+
+                            if(isset($appointmentList[0]['id'])){
                             ?>
                                     <div class="table-responsive">
                                         <table class="table text-center" id="appointmentTable">
@@ -913,6 +916,10 @@
                                 <?php endif; ?>
                                         </ul>
                                     </nav>
+
+                                    <?php } else { ?>
+                                        <h5 class="text-center my-5" ><b>No Records Found.</b> </h5>
+                                        <?php } ?>
                                 </div>
                             </div>
                         </section>
@@ -1032,17 +1039,17 @@
                                         const hcpItem = document.createElement('div');
                                         hcpItem.className = 'card col-lg-4 m-3 hcp-item';
                                         hcpItem.innerHTML = `
-                                                                                                                    <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                                                                                        <img src="${value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
-                                                                                                                             alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
-                                                                                                                        <div>
-                                                                                                                            <p class="card-title"><b>${value.hcpName}</b> /<br>${value.hcpId}</p>
-                                                                                                                            <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
-                                                                                                                            <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.id}" 
-                                                                                                                               class="btn btn-secondary">Full Details</a>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                `;
+                                                                                                                                        <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                                                                                                            <img src="${value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
+                                                                                                                                                 alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
+                                                                                                                                            <div>
+                                                                                                                                                <p class="card-title"><b>${value.hcpName}</b> /<br>${value.hcpId}</p>
+                                                                                                                                                <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
+                                                                                                                                                <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.id}" 
+                                                                                                                                                   class="btn btn-secondary">Full Details</a>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    `;
                                         hcpContainer.appendChild(hcpItem);
                                     });
 
@@ -1059,10 +1066,10 @@
 
                                     const prevLi = document.createElement('li');
                                     prevLi.innerHTML = `
-                                                                                                                <a href="#">
-                                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                                </a>
-                                                                                                            `;
+                                                                                                                                    <a href="#">
+                                                                                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                                                    </a>
+                                                                                                                                `;
                                     prevLi.onclick = () => {
                                         if (currentPage > 1) displayHcpPage(currentPage - 1);
                                     };
@@ -1071,20 +1078,20 @@
                                     for (let i = 1; i <= totalPages; i++) {
                                         const li = document.createElement('li');
                                         li.innerHTML = `
-                                                                                                                    <a href="#">
-                                                                                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                    </a>
-                                                                                                                `;
+                                                                                                                                        <a href="#">
+                                                                                                                                            <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                        </a>
+                                                                                                                                    `;
                                         li.onclick = () => displayHcpPage(i);
                                         ul.appendChild(li);
                                     }
 
                                     const nextLi = document.createElement('li');
                                     nextLi.innerHTML = `
-                                                                                                                <a href="#">
-                                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                </a>
-                                                                                                            `;
+                                                                                                                                    <a href="#">
+                                                                                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                    </a>
+                                                                                                                                `;
                                     nextLi.onclick = () => {
                                         if (currentPage < totalPages) displayHcpPage(currentPage + 1);
                                     };
@@ -1123,9 +1130,9 @@
                                                     class="bi bi-arrow-left"></i> Back</button>
                                         </div>
                                         <div class="card-body p-2 p-sm-4">
-                            <?php
-                            foreach ($hcpDetails as $key => $value) {
-                                ?>
+                                <?php
+                                foreach ($hcpDetails as $key => $value) {
+                                    ?>
                                                 <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
                                                         <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"

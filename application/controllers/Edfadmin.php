@@ -233,6 +233,16 @@ class edfadmin extends CI_Controller
         }
     }
 
+    public function specializationList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "specialization";
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            $this->index();
+        }
+    }
+
    public function logout()
     {
         $this->session->unset_userdata('adminIdDb');

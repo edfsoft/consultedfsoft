@@ -115,9 +115,7 @@ class HcpModel extends CI_Model
             'alternateMobile' => $post['patientAltMobile'],
             'mailId' => $post['patientEmail'],
             'gender' => $post['patientGender'],
-            'dob' => $post['patientDob'],
-            'age' => $post['ageYearsOutput'],
-            'ageMonth' => $post['ageMonthsOutput'],
+            'age' => $post['patientAge'],
             'bloodGroup' => $post['patientBlood'],
             'maritalStatus' => $post['patientMarital'],
             'marriedSince' => $post['marriedSince'],
@@ -177,9 +175,7 @@ class HcpModel extends CI_Model
             'alternateMobile' => $post['patientAltMobile'],
             'mailId' => $post['patientEmail'],
             'gender' => $post['patientGender'],
-            'dob' => $post['patientDob'],
-            'age' => $post['ageYearsOutput'],
-            'ageMonth' => $post['ageMonthsOutput'],
+            'age' => $post['patientAge'],
             'bloodGroup' => $post['patientBlood'],
             'maritalStatus' => $post['patientMarital'],
             'marriedSince' => $post['marriedSince'],
@@ -297,15 +293,6 @@ class HcpModel extends CI_Model
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
-
-    // public function getAppointmentListDash()
-    // {
-    //     $hcpIdDb = $_SESSION['hcpIdDb'];
-    //     $todayDate = date('Y-m-d');
-    //     $details = "SELECT * FROM `appointment_details` WHERE`hcpDbId`=  $hcpIdDb AND `dateOfAppoint`= '$todayDate' ";
-    //     $select = $this->db->query($details);
-    //     return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
-    // }
 
     public function getAppointmentListDash()
     {

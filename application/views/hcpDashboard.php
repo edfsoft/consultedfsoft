@@ -375,7 +375,7 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col-4" style="font-size: 16px; font-weight: 600">
-                                                    D.O.B
+                                                   Age
                                                 </th>
                                                 <th scope="col-4" style="font-size: 16px; font-weight: 600">
                                                     Gender
@@ -389,7 +389,7 @@
                                             <tr>
                                                 <td>
                                                     <span
-                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['dob']; ?></span>
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['age']; ?></span>
                                                 </td>
                                                 <td>
                                                     <span
@@ -552,25 +552,25 @@
                         itemsToShow.forEach((value, index) => {
                             const patientRow = document.createElement('tr');
                             patientRow.innerHTML = `
-                                                                <td>${start + index + 1}.</td>
-                                                                <td class="px-2">
-                                                                    <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
-                                                                        alt="Profile Photo" width="40" height="40" class="rounded-circle">
-                                                                </td>
-                                                                <td style="font-size: 16px">${value.patientId}</td>
-                                                                <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                                                                <td style="font-size: 16px">${value.gender}</td>
-                                                                <td style="font-size: 16px">${value.age}</td>
-                                                                <td style="font-size: 16px">${value.diagonsis}</td>
-                                                                <td class="d-flex d-lg-block" style="font-size: 16px">
-                                                                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
-                                                                        <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                                                                    </a>
-                                                                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}" class="px-1">
-                                                                        <button class="btn btn-secondary"><i class="bi bi-pencil"></i></button>
-                                                                    </a>
-                                                                </td>
-                                                            `;
+                                                                                        <td>${start + index + 1}.</td>
+                                                                                        <td class="px-2">
+                                                                                            <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
+                                                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                                        </td>
+                                                                                        <td style="font-size: 16px">${value.patientId}</td>
+                                                                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                                                                                        <td style="font-size: 16px">${value.gender}</td>
+                                                                                        <td style="font-size: 16px">${value.age}</td>
+                                                                                        <td style="font-size: 16px">${value.diagonsis}</td>
+                                                                                        <td class="d-flex d-lg-block" style="font-size: 16px">
+                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
+                                                                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
+                                                                                            </a>
+                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}" class="px-1">
+                                                                                                <button class="btn btn-secondary"><i class="bi bi-pencil"></i></button>
+                                                                                            </a>
+                                                                                        </td>
+                                                                                    `;
                             patientContainer.appendChild(patientRow);
                         });
 
@@ -587,10 +587,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                                                            <a href="#">
-                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                            </a>
-                                                        `;
+                                                                                    <a href="#">
+                                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                    </a>
+                                                                                `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayPatientPage(currentPage - 1);
                         };
@@ -602,20 +602,20 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                                                                <a href="#">
-                                                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                </a>
-                                                            `;
+                                                                                        <a href="#">
+                                                                                            <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                        </a>
+                                                                                    `;
                             li.onclick = () => displayPatientPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                                                            <a href="#">
-                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                            </a>
-                                                        `;
+                                                                                    <a href="#">
+                                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                    </a>
+                                                                                `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                         };
@@ -708,23 +708,12 @@
                                                 </select>
                                                 <div id="patientGender_err" class="text-danger pt-1"></div>
                                             </div>
-                                            <div class="form-group pb-3">
-                                                <label class="form-label" for="patientDob">DOB <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="date" class="form-control" id="patientDob" onchange="calculateAge()"
-                                                    name="patientDob">
-                                                <div id="patientDob_err" class="text-danger pt-1"></div>
-                                            </div>
                                             <div class="form-group pb-2">
-                                                <label class="form-label">Age</label>
-                                                <div class="d-flex ">
-                                                    <p class="pt-1 pe-2">Years: </p>
-                                                    <input class="form-control" name="ageYearsOutput" id="ageYearsOutput" value=""
-                                                        readonly>
-                                                    <p class="pt-1 ps-2 ps-md-5 pe-2">Months: </p>
-                                                    <input class="form-control" name="ageMonthsOutput" id="ageMonthsOutput" value=""
-                                                        readonly>
-                                                </div>
+                                                <label class="form-label" for="patientAge">Age <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" id="patientAge" name="patientAge"
+                                                    min="0" placeholder="E.g. 41">
+                                                <div id="patientAge_err" class="text-danger pt-1"></div>
                                             </div>
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="patientBlood">Blood Group</label>
@@ -904,51 +893,18 @@
                     </section>
 
                     <script>
-                        var today = new Date();
-
-                        var yyyy = today.getFullYear();
-                        var mm = String(today.getMonth() + 1).padStart(2, '0');
-                        var dd = String(today.getDate()).padStart(2, '0');
-                        var formattedToday = yyyy + '-' + mm + '-' + dd;
-
-                        document.getElementById("patientDob").setAttribute("max", formattedToday);
-                        document.getElementById("marriedSince").setAttribute("max", formattedToday);
-
-
-                        function calculateAge() {
-                            var dobInput = document.getElementById('patientDob').value;
-                            if (dobInput) {
-                                var dob = new Date(dobInput);
-                                var today = new Date();
-                                var ageYears = today.getFullYear() - dob.getFullYear();
-                                var ageMonths = today.getMonth() - dob.getMonth();
-                                if (ageMonths < 0 || (ageMonths === 0 && today.getDate() < dob.getDate())) {
-                                    ageYears--; ageMonths = 12 - Math.abs(ageMonths);
-                                } else {
-                                    ageMonths++;
-                                }
-                                document.getElementById('ageYearsOutput').value = ageYears;
-                                document.getElementById('ageMonthsOutput').value = ageMonths;
-                            } else {
-                                document.getElementById('ageYearsOutput').innerText = "";
-                                document.getElementById('ageMonthsOutput').innerText = "";
-                            }
-                        }
-
-                    </script>
-                    <script>
                         function clearErrorPatientDetails() {
                             var name = document.getElementById("patientName").value;
                             var mobile = document.getElementById("patientMobile").value;
                             var gender = document.getElementById("patientGender").value;
-                            var dob = document.getElementById("patientDob").value;
+                            var age = document.getElementById("patientAge").value;
                             var diagonsis = document.getElementById("patientDiagonsis").value;
                             var symptoms = document.getElementById("patientSymptoms").value;
 
                             if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
                             if (mobile != "") { document.getElementById("patientMobile_err").innerHTML = ""; }
                             if (gender != "") { document.getElementById("patientGender_err").innerHTML = ""; }
-                            if (dob != "") { document.getElementById("patientDob_err").innerHTML = ""; }
+                            if (age != "") { document.getElementById("patientAge_err").innerHTML = ""; }
                             if (diagonsis != "") { document.getElementById("diagonsis_err").innerHTML = ""; }
                             if (symptoms != "") { document.getElementById("symptoms_err").innerHTML = ""; }
                         }
@@ -956,7 +912,7 @@
                         function validatePatientDetails() {
                             var name = document.getElementById("patientName").value;
                             var mobile = document.getElementById("patientMobile").value;
-                            var dob = document.getElementById("patientDob").value;
+                            var age = document.getElementById("patientAge").value;
                             var gender = document.getElementById("patientGender").value;
                             var diagonsis = document.getElementById("patientDiagonsis").value;
                             var symptoms = document.getElementById("patientSymptoms").value;
@@ -983,15 +939,19 @@
 
                             if (gender == "") {
                                 document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
-                                document.getElementById("patientDob").focus();
+                                document.getElementById("patientGender").focus();
                                 return false;
                             } else {
                                 document.getElementById("patientGender_err").innerHTML = "";
                             }
 
-                            if (dob == "") {
-                                document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
-                                document.getElementById("patientGender").focus();
+                            if (age == "") {
+                                document.getElementById("patientAge_err").innerHTML = "Age must be filled out.";
+                                document.getElementById("patientAge").focus();
+                                return false;
+                            } else if (age >= 120) {
+                                document.getElementById("patientAge_err").innerHTML = "Enter valid age.";
+                                document.getElementById("patientAge").focus();
                                 return false;
                             } else {
                                 document.getElementById("patientDob_err").innerHTML = "";
@@ -1108,26 +1068,12 @@
                                                             </select>
                                                             <div id="patientGender_err" class="text-danger pt-1"></div>
                                                         </div>
-                                                        <div class="form-group pb-3">
-                                                            <label class="form-label" for="patientDob">DOB <span
-                                                                    class="text-danger">*</span></label>
-                                                            <input type="date" class="form-control" id="patientDob"
-                                                                onchange="calculateAge()" value="<?php echo strftime(
-                                                                    '%Y-%m-%d',
-                                                                    strtotime($value['dob']),
-                                                                ); ?>" name="patientDob">
-                                                            <div id="patientDob_err" class="text-danger pt-1"></div>
-                                                        </div>
                                                         <div class="form-group pb-2">
-                                                            <label class="form-label">Age</label>
-                                                            <div class="d-flex ">
-                                                                <p class="pt-1 pe-2">Years: </p>
-                                                                <input class="form-control" name="ageYearsOutput" id="ageYearsOutput"
-                                                                    value=" <?php echo $value['age'] ?>" placeholder="0" readonly>
-                                                                <p class="pt-1 ps-2 ps-md-5 pe-2">Months: </p>
-                                                                <input class="form-control" name="ageMonthsOutput" id="ageMonthsOutput"
-                                                                    value=" <?php echo $value['ageMonth'] ?>" placeholder="0" readonly>
-                                                            </div>
+                                                            <label class="form-label" for="patientAge">Age <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="number" class="form-control" id="patientAge" name="patientAge"
+                                                                min="0" value="<?php echo $value['age'] ?>" placeholder="E.g. 41">
+                                                            <div id="patientAge_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientBlood">Blood Group</label>
@@ -1412,51 +1358,18 @@
                             }
                         </script>
                         <script>
-                            var today = new Date();
-
-                            var yyyy = today.getFullYear();
-                            var mm = String(today.getMonth() + 1).padStart(2, '0');
-                            var dd = String(today.getDate()).padStart(2, '0');
-                            var formattedToday = yyyy + '-' + mm + '-' + dd;
-
-                            document.getElementById("patientDob").setAttribute("max", formattedToday);
-                            document.getElementById("marriedSince").setAttribute("max", formattedToday);
-
-
-                            function calculateAge() {
-                                var dobInput = document.getElementById('patientDob').value;
-                                if (dobInput) {
-                                    var dob = new Date(dobInput);
-                                    var today = new Date();
-                                    var ageYears = today.getFullYear() - dob.getFullYear();
-                                    var ageMonths = today.getMonth() - dob.getMonth();
-                                    if (ageMonths < 0 || (ageMonths === 0 && today.getDate() < dob.getDate())) {
-                                        ageYears--; ageMonths = 12 - Math.abs(ageMonths);
-                                    } else {
-                                        ageMonths++;
-                                    }
-                                    document.getElementById('ageYearsOutput').value = ageYears;
-                                    document.getElementById('ageMonthsOutput').value = ageMonths;
-                                } else {
-                                    document.getElementById('ageYearsOutput').innerText = "";
-                                    document.getElementById('ageMonthsOutput').innerText = "";
-                                }
-                            }
-
-                        </script>
-                        <script>
                             function clearErrorPatientDetails() {
                                 var name = document.getElementById("patientName").value;
                                 var mobile = document.getElementById("patientMobile").value;
                                 var gender = document.getElementById("patientGender").value;
-                                var dob = document.getElementById("patientDob").value;
+                                var age = document.getElementById("patientAge").value;
                                 var diagonsis = document.getElementById("patientDiagonsis").value;
                                 var symptoms = document.getElementById("patientSymptoms").value;
 
                                 if (name != "") { document.getElementById("patientName_err").innerHTML = ""; }
                                 if (mobile != "") { document.getElementById("patientMobile_err").innerHTML = ""; }
                                 if (gender != "") { document.getElementById("patientGender_err").innerHTML = ""; }
-                                if (dob != "") { document.getElementById("patientDob_err").innerHTML = ""; }
+                                if (age != "") { document.getElementById("patientAge_err").innerHTML = ""; }
                                 if (diagonsis != "") { document.getElementById("diagonsis_err").innerHTML = ""; }
                                 if (symptoms != "") { document.getElementById("symptoms_err").innerHTML = ""; }
                             }
@@ -1464,7 +1377,7 @@
                             function validatePatientDetails() {
                                 var name = document.getElementById("patientName").value;
                                 var mobile = document.getElementById("patientMobile").value;
-                                var dob = document.getElementById("patientDob").value;
+                                var age = document.getElementById("patientAge").value;
                                 var gender = document.getElementById("patientGender").value;
                                 var diagonsis = document.getElementById("patientDiagonsis").value;
                                 var symptoms = document.getElementById("patientSymptoms").value;
@@ -1491,18 +1404,22 @@
 
                                 if (gender == "") {
                                     document.getElementById("patientGender_err").innerHTML = "Gender must be filled out.";
-                                    document.getElementById("patientDob").focus();
+                                    document.getElementById("patientGender").focus();
                                     return false;
                                 } else {
                                     document.getElementById("patientGender_err").innerHTML = "";
                                 }
 
-                                if (dob == "") {
-                                    document.getElementById("patientDob_err").innerHTML = "Dob must be filled out.";
-                                    document.getElementById("patientGender").focus();
+                                if (age == "") {
+                                    document.getElementById("patientAge_err").innerHTML = "Age must be filled out.";
+                                    document.getElementById("patientAge").focus();
+                                    return false;
+                                } else if (age >= 120) {
+                                    document.getElementById("patientAge_err").innerHTML = "Enter valid age.";
+                                    document.getElementById("patientAge").focus();
                                     return false;
                                 } else {
-                                    document.getElementById("patientDob_err").innerHTML = "";
+                                    document.getElementById("patientAge_err").innerHTML = "";
                                 }
 
                                 if (diagonsis == "") {
@@ -1694,113 +1611,113 @@
 
                         $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
 
-                        if(isset($appointmentList[0]['id'])){
-                        ?>
+                        if (isset($appointmentList[0]['id'])) {
+                            ?>
 
-                                        <div class="card-body p-2 p-sm-4">
-                                            <div class="table-responsive">
-                                                <table class="table text-center" id="appointmentTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
-                                                            </th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                        <?php
-                                        $count = $offset;
-                                        foreach ($current_page_items as $key => $value) {
-                                            $count++;
-                                            ?>
+                                            <div class="card-body p-2 p-sm-4">
+                                                <div class="table-responsive">
+                                                    <table class="table text-center" id="appointmentTable">
+                                                        <thead>
                                                             <tr>
-                                                                <td><?php echo $count; ?>. </td>
-                                                                <td style="font-size: 16px">
-                                                                    <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
-                                                                        class="text-dark" onmouseover="style='text-decoration:underline'"
-                                                                        onmouseout="style='text-decoration:none'">
-                                                    <?php echo $value['patientId'] ?>
-                                                                    </a>
-                                                                </td>
-                                                                <td style="font-size: 16px">
-                                                    <?php
-                                                    if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
-                                                        echo "Today";
-                                                    } else {
-                                                        echo date("d-m-Y", strtotime($value['dateOfAppoint']));
-                                                    } ?>
-                                                                </td>
-                                                                <td class="" style="font-size: 16px">
-                                                <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
-                                                                </td>
-                                                                <td style="font-size: 16px">
-                                                                    <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
-                                                                        class="text-dark" onmouseover="style='text-decoration:underline'"
-                                                                        onmouseout="style='text-decoration:none'">
-                                                    <?php echo $value['referalDoctor'] ?>
-                                                                    </a>
-                                                                </td>
-                                                                <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
-                                                                <td style="font-size: 16px">
-                                                                    <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
-                                                                </td>
+                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
+                                                                </th>
+                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
+                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
+                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
+                                                                </th>
+                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
+                                                                </th>
                                                             </tr>
-                                    <?php } ?>
-                                                    </tbody>
-                                                </table>
-
-                                                <nav aria-label="Page navigation">
-                                                    <ul class="pagination justify-content-center">
-                                    <?php if ($current_page > 1): ?>
-                                                            <li>
-                                                                <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
-                                                                    <button type="button" class="bg-light border px-3 py-2">
-                                                                        < </button>
-                                                                </a>
-                                                            </li>
-                                    <?php endif; ?>
-
-                                        <?php
-                                        $start_page = max(1, $current_page - 2);
-                                        $end_page = min($total_pages, $current_page + 2);
-
-                                        if ($start_page == 1) {
-                                            $end_page = min($total_pages, 5);
-                                        }
-                                        if ($end_page == $total_pages) {
-                                            $start_page = max(1, $total_pages - 4);
-                                        }
-
-                                        for ($i = $start_page; $i <= $end_page; $i++): ?>
-                                                            <li class=" ">
-                                                                <a href="?page=<?php echo $i; ?>">
-                                                                    <button type="button"
-                                                                        class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
-                                                    <?php echo $i; ?></button>
-                                                                </a>
-                                                            </li>
-                                    <?php endfor; ?>
-
-                                    <?php if ($current_page < $total_pages): ?>
-                                                            <li class="page-item">
-                                                                <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
-                                                                    <button type="button" class="bg-light border px-3 py-2">
-                                                                        ></button>
-                                                                </a>
-                                                            </li>
-                                    <?php endif; ?>
-                                                    </ul>
-                                                </nav>
-                                                <?php } else { ?>
-                                        <h5 class="text-center my-5" ><b>No Records Found.</b> </h5>
+                                                        </thead>
+                                                        <tbody>
+                                            <?php
+                                            $count = $offset;
+                                            foreach ($current_page_items as $key => $value) {
+                                                $count++;
+                                                ?>
+                                                                <tr>
+                                                                    <td><?php echo $count; ?>. </td>
+                                                                    <td style="font-size: 16px">
+                                                                        <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
+                                                                            class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                            onmouseout="style='text-decoration:none'">
+                                                        <?php echo $value['patientId'] ?>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td style="font-size: 16px">
+                                                        <?php
+                                                        if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
+                                                            echo "Today";
+                                                        } else {
+                                                            echo date("d-m-Y", strtotime($value['dateOfAppoint']));
+                                                        } ?>
+                                                                    </td>
+                                                                    <td class="" style="font-size: 16px">
+                                                    <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
+                                                                    </td>
+                                                                    <td style="font-size: 16px">
+                                                                        <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
+                                                                            class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                            onmouseout="style='text-decoration:none'">
+                                                        <?php echo $value['referalDoctor'] ?>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
+                                                                    <td style="font-size: 16px">
+                                                                        <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
+                                                                    </td>
+                                                                </tr>
                                         <?php } ?>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <nav aria-label="Page navigation">
+                                                        <ul class="pagination justify-content-center">
+                                        <?php if ($current_page > 1): ?>
+                                                                <li>
+                                                                    <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                                        <button type="button" class="bg-light border px-3 py-2">
+                                                                            < </button>
+                                                                    </a>
+                                                                </li>
+                                        <?php endif; ?>
+
+                                            <?php
+                                            $start_page = max(1, $current_page - 2);
+                                            $end_page = min($total_pages, $current_page + 2);
+
+                                            if ($start_page == 1) {
+                                                $end_page = min($total_pages, 5);
+                                            }
+                                            if ($end_page == $total_pages) {
+                                                $start_page = max(1, $total_pages - 4);
+                                            }
+
+                                            for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                                                <li class=" ">
+                                                                    <a href="?page=<?php echo $i; ?>">
+                                                                        <button type="button"
+                                                                            class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                                        <?php echo $i; ?></button>
+                                                                    </a>
+                                                                </li>
+                                        <?php endfor; ?>
+
+                                        <?php if ($current_page < $total_pages): ?>
+                                                                <li class="page-item">
+                                                                    <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                                        <button type="button" class="bg-light border px-3 py-2">
+                                                                            ></button>
+                                                                    </a>
+                                                                </li>
+                                        <?php endif; ?>
+                                                        </ul>
+                                                    </nav>
+                            <?php } else { ?>
+                                                    <h5 class="text-center my-5"><b>No Records Found.</b> </h5>
+                            <?php } ?>
                                             </div>
                                         </div>
                                     </div>
@@ -2296,17 +2213,17 @@
                                                     const doctorItem = document.createElement('div');
                                                     doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
                                                     doctorItem.innerHTML = `
-                                                                                                                                                                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                                                                                                                                                                                                                    <img src="${value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
-                                                                                                                                                                                                                                                         alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
-                                                                                                                                                                                                                                                    <div>
-                                                                                                                                                                                                                                                        <p class="card-title"><b>${value.doctorName}</b>/<br>${value.ccId}</p>
-                                                                                                                                                                                                                                                        <p style="color: #00ad8e;"><b>${value.specialization}</b></p>
-                                                                                                                                                                                                                                                        <a href="<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/${value.id}" 
-                                                                                                                                                                                                                                                           class="btn btn-secondary">Full Details</a>
-                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                                                                                                                                                                                                                                                                                                                    <img src="${value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
+                                                                                                                                                                                                                                                                                                                                                         alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
+                                                                                                                                                                                                                                                                                                                                                    <div>
+                                                                                                                                                                                                                                                                                                                                                        <p class="card-title"><b>${value.doctorName}</b>/<br>${value.ccId}</p>
+                                                                                                                                                                                                                                                                                                                                                        <p style="color: #00ad8e;"><b>${value.specialization}</b></p>
+                                                                                                                                                                                                                                                                                                                                                        <a href="<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/${value.id}" 
+                                                                                                                                                                                                                                                                                                                                                           class="btn btn-secondary">Full Details</a>
+                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                            `;
                                                     doctorContainer.appendChild(doctorItem);
                                                 });
 
@@ -2323,8 +2240,8 @@
 
                                                 const prevLi = document.createElement('li');
                                                 prevLi.innerHTML = `
-                                                                                                                                                                                                                                            <a href="#">
-                                                                                                                                                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>`;
+                                                                                                                                                                                                                                                                                                                                            <a href="#">
+                                                                                                                                                                                                                                                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>`;
                                                 prevLi.onclick = () => {
                                                     if (currentPage > 1) displayPage(currentPage - 1);
                                                 };
@@ -2333,20 +2250,20 @@
                                                 for (let i = 1; i <= totalPages; i++) {
                                                     const li = document.createElement('li');
                                                     li.innerHTML = `
-                                                                                                                                                                                                                                                <a href="#">
-                                                                                                                                                                                                                                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                                                                                                                                                </a>
-                                                                                                                                                                                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                <a href="#">
+                                                                                                                                                                                                                                                                                                                                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                                                                                                                                                                                                                                </a>
+                                                                                                                                                                                                                                                                                                                                            `;
                                                     li.onclick = () => displayPage(i);
                                                     ul.appendChild(li);
                                                 }
 
                                                 const nextLi = document.createElement('li');
                                                 nextLi.innerHTML = `
-                                                                                                                                                                                                                                            <a href="#">
-                                                                                                                                                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                        `;
+                                                                                                                                                                                                                                                                                                                                            <a href="#">
+                                                                                                                                                                                                                                                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                                                                                        `;
                                                 nextLi.onclick = () => {
                                                     if (currentPage < totalPages) displayPage(currentPage + 1);
                                                 };

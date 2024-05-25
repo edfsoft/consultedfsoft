@@ -371,7 +371,7 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col-4" style="font-size: 16px; font-weight: 600">
-                                                    D.O.B
+                                                    Age
                                                 </th>
                                                 <th scope="col-4" style="font-size: 16px; font-weight: 600">
                                                     Gender
@@ -385,7 +385,7 @@
                                             <tr>
                                                 <td>
                                                     <span
-                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['dob']; ?></span>
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['age']; ?></span>
                                                 </td>
                                                 <td>
                                                     <span

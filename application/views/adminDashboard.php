@@ -126,7 +126,7 @@
                 <a class="" href="<?php echo base_url() . "Edfadmin/hcpList" ?>"
                     style="font-size: 18px; font-weight: 400;color:#8cafba;" id="hcps">
                     <div>
-                        <i class="bi bi-person-hearts pe-3"></i><span>HCP</span>
+                        <i class="bi bi-person-hearts pe-3"></i> <span>HCP</span>
                     </div>
                 </a>
             </li>
@@ -137,6 +137,16 @@
                     <div>
                         <i class="bi bi-people pe-3"></i>
                         <span>Patients</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="pt-4">
+                <a class="" href="<?php echo base_url() . "Edfadmin/specializationList" ?>"
+                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="specialization">
+                    <div>
+                    <i class="bi bi-card-checklist pe-3"></i>
+                        <span>Specialization</span>
                     </div>
                 </a>
             </li>
@@ -179,7 +189,7 @@
                                     Total Chief Consultants
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400;">
-                                   <?php echo $totalCcList; ?>
+                                    <?php echo $totalCcList; ?>
                                 </p>
                                 <p style="font-size: 16px"> <?php echo date("d - m - Y") ?></p>
                             </div>
@@ -193,7 +203,7 @@
                                     Total Health Care Providers
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400;">
-                                <?php echo $totalHcpList; ?>
+                                    <?php echo $totalHcpList; ?>
                                 </p>
                                 <p style="font-size: 16px">
                                     <?php echo date("d - m - Y") ?>
@@ -209,7 +219,7 @@
                                     Total Patients
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400;">
-                                <?php echo $totalPatientList; ?>
+                                    <?php echo $totalPatientList; ?>
                                 </p>
                                 <p style="font-size: 16px">
                                     Till Today
@@ -231,139 +241,144 @@
                 <section>
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
-                            <p class="ps-2" style="font-size: 24px; font-weight: 500">
-                                Chief Consultant List </p>
-                            <a href="<?php echo base_url() . "Edfadmin/ccSignupForm" ?>"> <button
-                                    style="background-color: #0081ff;" class="text-light border-0 rounded float-end p-2">
+                            <p class="ps-2" style="font-size: 24px; font-weight: 500">Chief Consultant List</p>
+                            <a href="<?php echo base_url() . "Edfadmin/ccSignupForm" ?>">
+                                <button style="background-color: #0081ff;" class="text-light border-0 rounded float-end p-2">
                                     <i class="bi bi-plus-square-fill"></i> Add CC
-                                </button></a>
+                                </button>
+                            </a>
+                        </div>
+                        <div class="input-group mx-auto" style="width:250px;">
+                            <span class="input-group-text" id="searchIconCc">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" id="searchInputCc" class="form-control" placeholder="Search by name"
+                                aria-describedby="searchIconCc">
+                            <button class="btn btn-outline-secondary" type="button" id="clearSearchCc">
+                                <i class="bi bi-x"></i>
+                            </button>
                         </div>
                         <div class="card-body p-2 p-sm-4">
-                            <?php
-                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-                            $items_per_page = 10;
 
-                            $total_items = count($ccList);
-                            $total_pages = ceil($total_items / $items_per_page);
-
-                            $offset = ($current_page - 1) * $items_per_page;
-
-                            $current_page_items = array_slice($ccList, $offset, $items_per_page);
-                            ?>
                             <div class="table-responsive">
                                 <table class="table text-center" id="ccTable">
                                     <thead>
                                         <tr>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                S.NO
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                ID
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                NAME
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                MOBILE NUMBER
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;" class="">
-                                                SPECIALIST
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;" class="">
-                                                STATUS
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                ACTION
-                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php
-                                        $count = $offset;
-                                        foreach ($current_page_items as $key => $value) {
-                                            $count++;
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $count; ?>. </td>
-                                                <td style="font-size: 16px">
-                                                <?php echo $value['ccId'] ?>
-                                                </td>
-                                                <td class="" style="font-size: 16px">
-                                                <?php echo $value['doctorName'] ?>
-                                                </td>
-                                                <td style="font-size: 16px">
-                                                <?php echo $value['doctorMobile'] ?>
-                                                </td>
-                                                <td style="font-size: 16px">
-                                                <?php echo $value['specialization'] ?>
-                                                </td>
-                                                <td style="font-size: 16px" class="">
-                                                <?php if ($value['approvalStatus'] == 1) { ?>
-                                                        <i class="bi bi-patch-check-fill text-success"></i>
-                                                <?php } else { ?>
-                                                        <i class="bi bi-patch-check-fill text-danger"></i>
-                                                <?php }
-                                                ?>
-                                                </td>
-                                                <td class="d-flex d-md-block" style="font-size: 16px">
-                                                    <a class=""
-                                                        href="<?php echo base_url() . "Edfadmin/ccDetails/" . $value['id'] ?>">
-                                                        <button class="btn btn-secondary me-1"><i
-                                                                class="bi bi-eye"></i></button></a>
-                                                    <a href="<?php echo base_url() . "Edfadmin/deleteCc/" . $value['id'] ?>"
-                                                        onclick="return confirm('Are you sure you want to delete?')"><button
-                                                            class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                                                </td>
-                                            </tr>
-                                    <?php } ?>
-                                    </tbody>
+                                    <tbody id="ccTableBody"></tbody>
                                 </table>
                             </div>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center">
-                                <?php if ($current_page > 1): ?>
-                                        <li>
-                                            <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
-                                                <button type="button" class="bg-light border px-3 py-2">
-                                                    < </button>
-                                            </a>
-                                        </li>
-                                <?php endif; ?>
-
-                                    <?php
-                                    $start_page = max(1, $current_page - 2);
-                                    $end_page = min($total_pages, $current_page + 2);
-
-                                    if ($start_page == 1) {
-                                        $end_page = min($total_pages, 5);
-                                    }
-                                    if ($end_page == $total_pages) {
-                                        $start_page = max(1, $total_pages - 4);
-                                    }
-
-                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
-                                        <li>
-                                            <a href="?page=<?php echo $i; ?>">
-                                                <button type="button"
-                                                    class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
-                                                <?php echo $i; ?></button>
-                                            </a>
-                                        </li>
-                                <?php endfor; ?>
-
-                                <?php if ($current_page < $total_pages): ?>
-                                        <li>
-                                            <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
-                                                <button type="button" class="bg-light border px-3 py-2">
-                                                    ></button>
-                                            </a>
-                                        </li>
-                                <?php endif; ?>
-                                </ul>
-                            </nav>
+                            <div class="pagination justify-content-center mt-3" id="paginationContainerCc"></div>
                         </div>
                     </div>
                 </section>
+
+                <script>
+                    const baseUrl = '<?php echo base_url(); ?>';
+                    const itemsPerPageCc = 10;
+                    const ccDetails = <?php echo json_encode($ccList); ?>;
+                    let filteredCcDetails = ccDetails;
+                    const initialPageCc = parseInt(localStorage.getItem('currentPageCc')) || 1;
+
+                    function displayCcPage(page) {
+                        localStorage.setItem('currentPageCc', page);
+                        const start = (page - 1) * itemsPerPageCc;
+                        const end = start + itemsPerPageCc;
+                        const itemsToShow = filteredCcDetails.slice(start, end);
+
+                        const ccTableBody = document.getElementById('ccTableBody');
+                        ccTableBody.innerHTML = '';
+
+                        itemsToShow.forEach((value, index) => {
+                            const ccRow = document.createElement('tr');
+                            ccRow.innerHTML = `
+                                                                                <td>${start + index + 1}.</td>
+                                                                                <td style="font-size: 16px">${value.ccId}</td>
+                                                                                <td style="font-size: 16px">${value.doctorName}</td>
+                                                                                <td style="font-size: 16px">${value.doctorMobile}</td>
+                                                                                <td style="font-size: 16px">${value.specialization}</td>
+                                                                                <td style="font-size: 16px">${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
+                                                                                <td class="d-flex d-md-block" style="font-size: 16px">
+                                                                                    <a href="${baseUrl}Edfadmin/ccDetails/${value.id}">
+                                                                                        <button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button>
+                                                                                    </a>
+                                                                                    <a href="${baseUrl}Edfadmin/deleteCc/${value.id}" onclick="return confirm('Are you sure you want to delete?')">
+                                                                                        <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                                                                    </a>
+                                                                                </td>
+                                                                            `;
+                            ccTableBody.appendChild(ccRow);
+                        });
+
+                        generateCcPagination(filteredCcDetails.length, page);
+                    }
+
+                    function generateCcPagination(totalItems, currentPage) {
+                        const totalPages = Math.ceil(totalItems / itemsPerPageCc);
+                        const paginationContainer = document.getElementById('paginationContainerCc');
+                        paginationContainer.innerHTML = '';
+
+                        const ul = document.createElement('ul');
+                        ul.className = 'pagination';
+
+                        const prevLi = document.createElement('li');
+                        prevLi.innerHTML = `
+                                                                            <a href="#">
+                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                            </a>
+                                                                        `;
+                        prevLi.onclick = () => {
+                            if (currentPage > 1) displayCcPage(currentPage - 1);
+                        };
+                        ul.appendChild(prevLi);
+
+                        for (let i = 1; i <= totalPages; i++) {
+                            const li = document.createElement('li');
+                            li.innerHTML = `
+                                                                                <a href="#">
+                                                                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                </a>
+                                                                            `;
+                            li.onclick = () => displayCcPage(i);
+                            ul.appendChild(li);
+                        }
+
+                        const nextLi = document.createElement('li');
+                        nextLi.innerHTML = `
+                                                                            <a href="#">
+                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                            </a>
+                                                                        `;
+                        nextLi.onclick = () => {
+                            if (currentPage < totalPages) displayCcPage(currentPage + 1);
+                        };
+                        ul.appendChild(nextLi);
+
+                        paginationContainer.appendChild(ul);
+                    }
+
+                    document.getElementById('searchInputCc').addEventListener('keyup', function () {
+                        const searchQuery = this.value.toLowerCase();
+                        filteredCcDetails = ccDetails.filter(item => item.doctorName.toLowerCase().includes(searchQuery) || item.ccId.toLowerCase().includes(searchQuery));
+                        displayCcPage(1);
+                    });
+
+                    document.getElementById('clearSearchCc').addEventListener('click', function () {
+                        document.getElementById('searchInputCc').value = '';
+                        filteredCcDetails = ccDetails;
+                        displayCcPage(1);
+                    });
+
+                    displayCcPage(initialPageCc);
+                </script>
 
             <?php
         } else if ($method == "ccRegisterForm") {
@@ -728,142 +743,143 @@
 
                             <section>
                                 <div class="card rounded">
-
                                     <div class="d-sm-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
-                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">
-                                            Health Care Provider List </p>
-                                        <a href="<?php echo base_url() . "Edfadmin/hcpSignupForm" ?>"> <button
-                                                style="background-color: #0081ff;" class="text-light border-0 rounded float-end p-2">
+                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Health Care Provider List</p>
+                                        <a href="<?php echo base_url() . 'Edfadmin/hcpSignupForm'; ?>">
+                                            <button style="background-color: #0081ff;" class="text-light border-0 rounded float-end p-2">
                                                 <i class="bi bi-plus-square-fill"></i> Add HCP
-                                            </button></a>
+                                            </button>
+                                        </a>
                                     </div>
-                        <?php
-                        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-                        $items_per_page = 10;
-
-                        $total_items = count($hcpList);
-                        $total_pages = ceil($total_items / $items_per_page);
-
-                        $offset = ($current_page - 1) * $items_per_page;
-
-                        $current_page_items = array_slice($hcpList, $offset, $items_per_page);
-                        ?>
+                                    <div class="input-group mx-auto" style="width:250px;">
+                                        <span class="input-group-text" id="searchIconHcp">
+                                            <i class="bi bi-search"></i>
+                                        </span>
+                                        <input type="text" id="searchInputHcp" class="form-control" placeholder="Search by name"
+                                            aria-describedby="searchIconHcp">
+                                        <button class="btn btn-outline-secondary" type="button" id="clearSearchHcp">
+                                            <i class="bi bi-x"></i>
+                                        </button>
+                                    </div>
                                     <div class="card-body p-2 p-sm-4">
                                         <div class="table-responsive">
                                             <table class="table text-center" id="hcpTable">
-
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                            S.NO
-                                                        </th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                            ID
-                                                        </th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                            NAME
-                                                        </th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                            MOBILE NUMBER
-                                                        </th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;" class="">
-                                                            SPECIALIST
-                                                        </th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                            STATUS
-                                                        </th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                            ACTION
-                                                        </th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                        <?php
-                                        $count = $offset;
-                                        foreach ($current_page_items as $key => $value) {
-                                            $count++;
-                                            ?>
-                                                        <tr>
-                                                            <td><?php echo $count; ?>. </td>
-                                                            <td style="font-size: 16px">
-                                                <?php echo $value['hcpId'] ?>
-                                                            </td>
-                                                            <td class="" style="font-size: 16px">
-                                                <?php echo $value['hcpName'] ?>
-                                                            </td>
-                                                            <td style="font-size: 16px">
-                                                <?php echo $value['hcpMobile'] ?>
-                                                            </td>
-                                                            <td style="font-size: 16px">
-                                                <?php echo $value['hcpSpecialization'] ?>
-                                                            </td>
-                                                            <td style="font-size: 16px" class="">
-                                                <?php if ($value['approvalStatus'] == 1) { ?>
-                                                                    <i class="bi bi-patch-check-fill text-success"></i>
-                                                <?php } else { ?>
-                                                                    <i class="bi bi-patch-check-fill text-danger"></i>
-                                                <?php }
-                                                ?>
-                                                            </td>
-                                                            <td class="d-flex d-md-block" style="font-size: 16px">
-                                                                <a class=""
-                                                                    href="<?php echo base_url() . "Edfadmin/hcpDetails/" . $value['id'] ?>">
-                                                                    <button class="btn btn-secondary me-1"><i
-                                                                            class="bi bi-eye"></i></button></a>
-                                                                <a href="<?php echo base_url() . "Edfadmin/deleteHcp/" . $value['id'] ?>"
-                                                                    onclick="return confirm('Are you sure you want to delete?')"><button
-                                                                        class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                                                            </td>
-                                                        </tr>
-                                    <?php } ?>
-                                                </tbody>
+                                                <tbody id="hcpTableBody"></tbody>
                                             </table>
                                         </div>
-                                        <nav aria-label="Page navigation">
-                                            <ul class="pagination justify-content-center">
-                                <?php if ($current_page > 1): ?>
-                                                    <li>
-                                                        <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
-                                                            <button type="button" class="bg-light border px-3 py-2">
-                                                                < </button>
-                                                        </a>
-                                                    </li>
-                                <?php endif; ?>
-
-                                    <?php
-                                    $start_page = max(1, $current_page - 2);
-                                    $end_page = min($total_pages, $current_page + 2);
-
-                                    if ($start_page == 1) {
-                                        $end_page = min($total_pages, 5);
-                                    }
-                                    if ($end_page == $total_pages) {
-                                        $start_page = max(1, $total_pages - 4);
-                                    }
-
-                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
-                                                    <li>
-                                                        <a href="?page=<?php echo $i; ?>">
-                                                            <button type="button"
-                                                                class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
-                                                <?php echo $i; ?></button>
-                                                        </a>
-                                                    </li>
-                                <?php endfor; ?>
-
-                                <?php if ($current_page < $total_pages): ?>
-                                                    <li>
-                                                        <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
-                                                            <button type="button" class="bg-light border px-3 py-2">
-                                                                ></button>
-                                                        </a>
-                                                    </li>
-                                <?php endif; ?>
-                                            </ul>
-                                        </nav>
+                                        <div class="pagination justify-content-center mt-3" id="paginationContainerHcp"></div>
                                     </div>
                                 </div>
                             </section>
+
+                            <script>
+                                const baseUrl = '<?php echo base_url(); ?>';
+                                const itemsPerPageHcp = 10;
+                                const hcpList = <?php echo json_encode($hcpList); ?>;
+                                let filteredHcpList = hcpList;
+                                let currentPageHcp = 1;
+
+                                function displayHcpPage(page) {
+                                    currentPageHcp = page;
+                                    const start = (page - 1) * itemsPerPageHcp;
+                                    const end = start + itemsPerPageHcp;
+                                    const paginatedData = filteredHcpList.slice(start, end);
+                                    const hcpTableBody = document.getElementById('hcpTableBody');
+                                    hcpTableBody.innerHTML = '';
+                                    paginatedData.forEach((hcp, index) => {
+                                        const row = `
+                                                                                                <tr>
+                                                                                                    <td>${start + index + 1}.</td>
+                                                                                                    <td>${hcp.hcpId}</td>
+                                                                                                    <td>${hcp.hcpName}</td>
+                                                                                                    <td>${hcp.hcpMobile}</td>
+                                                                                                    <td>${hcp.hcpSpecialization}</td>
+                                                                                                    <td>${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
+                                                                                                    <td class="d-flex d-md-block">
+                                                                                                        <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
+                                                                                                        <a href="${baseUrl}Edfadmin/deleteHcp/${hcp.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            `;
+                                        hcpTableBody.innerHTML += row;
+                                    });
+                                    generatePagination(filteredHcpList.length, page);
+                                }
+
+                                function generatePagination(totalItems, currentPage) {
+                                    const totalPages = Math.ceil(totalItems / itemsPerPageHcp);
+                                    const paginationContainer = document.getElementById('paginationContainerHcp');
+                                    paginationContainer.innerHTML = '';
+                                    const prevButton = document.createElement('button');
+                                    prevButton.innerHTML = '&lt;';
+                                    prevButton.type = 'button';
+                                    prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
+                                    prevButton.disabled = currentPage === 1;
+                                    prevButton.addEventListener('click', () => {
+                                        if (currentPage > 1) {
+                                            displayHcpPage(currentPage - 1);
+                                        }
+                                    });
+                                    paginationContainer.appendChild(prevButton);
+
+                                    for (let i = 1; i <= totalPages; i++) {
+                                        const li = document.createElement('li');
+                                        li.innerHTML = `
+                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayHcpPage(${i})">${i}</button>
+                                                                                            `;
+                                        paginationContainer.appendChild(li);
+                                    }
+
+                                    const nextButton = document.createElement('button');
+                                    nextButton.innerHTML = '&gt;';
+                                    nextButton.type = 'button';
+                                    nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
+                                    nextButton.disabled = currentPage === totalPages;
+                                    nextButton.addEventListener('click', () => {
+                                        if (currentPage < totalPages) {
+                                            displayHcpPage(currentPage + 1);
+                                        }
+                                    });
+                                    paginationContainer.appendChild(nextButton);
+                                }
+
+                                function filterHcpList(searchQuery) {
+                                    const lowerCaseQuery = searchQuery.toLowerCase();
+                                    filteredHcpList = hcpList.filter(hcp => {
+                                        return hcp.hcpName.toLowerCase().includes(lowerCaseQuery) || hcp.hcpId.toLowerCase().includes(lowerCaseQuery);
+                                    });
+                                    displayHcpPage(1);
+                                }
+
+                                document.getElementById('searchInputHcp').addEventListener('input', function () {
+                                    const searchQuery = this.value.trim();
+                                    if (searchQuery === '') {
+                                        filteredHcpList = hcpList;
+                                        displayHcpPage(currentPageHcp);
+                                    } else {
+                                        filterHcpList(searchQuery);
+                                    }
+                                });
+
+                                document.getElementById('clearSearchHcp').addEventListener('click', function () {
+                                    document.getElementById('searchInputHcp').value = '';
+                                    filteredHcpList = hcpList;
+                                    displayHcpPage(currentPageHcp);
+                                });
+
+                                displayHcpPage(1);
+                            </script>
 
             <?php
         } else if ($method == "hcpRegisterForm") {
@@ -1201,143 +1217,146 @@
                                         <section>
                                             <div class="card rounded">
                                                 <div class="card-body p-2 p-sm-4">
-                                                    <div class="d-flex justify-content-between mt-2 mb-3">
-                                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">
-                                                            Patients List
-                                                        </p>
-                                                        <!-- <a href="<?php echo base_url() . "Healthcareprovider/patientform" ?>"> <button
-                                        style="background-color: #00ad8e;" class="text-light border-0 rounded p-2">
-                                        <i class="bi bi-plus-square-fill"></i> Add Patient
-                                    </button></a> -->
+                                                    <div class="d-sm-flex justify-content-between mt-2 mb-3">
+                                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Patients List</p>
+                                                        <div class="input-group" style="width:250px;">
+                                                            <span class="input-group-text" id="searchIconPatient">
+                                                                <i class="bi bi-search"></i>
+                                                            </span>
+                                                            <input type="text" id="searchInputPatient" class="form-control" placeholder="Search by name"
+                                                                aria-describedby="searchIconPatient">
+                                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchPatient">
+                                                                <i class="bi bi-x"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
-                            <?php
-                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-                            $items_per_page = 10;
-
-                            $total_items = count($patientList);
-                            $total_pages = ceil($total_items / $items_per_page);
-
-                            $offset = ($current_page - 1) * $items_per_page;
-
-                            $current_page_items = array_slice($patientList, $offset, $items_per_page);
-                            ?>
 
                                                     <div class="table-responsive">
                                                         <table class="table text-center" id="patientTable">
-
                                                             <thead>
                                                                 <tr>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                        S.NO
-                                                                    </th>
-
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;" class="">
-                                                                        PATIENT ID
-                                                                    </th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                        PATIENT NAME
-                                                                    </th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                        MOBILE NUMBER
-                                                                    </th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                        GENDER
-                                                                    </th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;" class="">
-                                                                        AGE
-                                                                    </th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                        DIAGNOSIS
-                                                                    </th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                        ACTION
-                                                                    </th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT ID</th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT NAME</th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">GENDER</th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">AGE</th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">DIAGNOSIS</th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
-                                        <?php
-                                        $count = $offset;
-                                        foreach ($current_page_items as $key => $value) {
-                                            $count++;
-                                            ?>
-                                                                    <tr>
-                                                                        <td><?php echo $count; ?>. </td>
-                                                                        <td style="font-size: 16px">
-                                                <?php echo $value['patientId'] ?>
-                                                                        </td>
-                                                                        <td class="" style="font-size: 16px">
-                                                <?php echo $value['firstName'] ?>
-                                                <?php echo $value['lastName'] ?>
-                                                                        </td>
-                                                                        <td style="font-size: 16px">
-                                                <?php echo $value['mobileNumber'] ?>
-                                                                        </td>
-                                                                        <td style="font-size: 16px">
-                                                <?php echo $value['gender'] ?>
-                                                                        </td>
-                                                                        <td style="font-size: 16px">
-                                                <?php echo $value['age'] ?>
-                                                                        </td>
-                                                                        <td style="font-size: 16px">
-                                                <?php echo $value['diagonsis'] ?>
-                                                                        </td>
-                                                                        <td class="d-flex d-md-block" style="font-size: 16px">
-                                                                            <a href="<?php echo base_url() . "Edfadmin/patientdetails/" . $value['id'] ?>"><button
-                                                                                    class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
-                                                                            <a href="<?php echo base_url() . "Edfadmin/deletePatient/" . $value['id'] ?>"
-                                                                                onclick="return confirm('Are you sure you want to delete?')"><button
-                                                                                    class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                                                                        </td>
-                                                                    </tr>
-                                    <?php } ?>
-                                                            </tbody>
+                                                            <tbody id="patientTableBody"></tbody>
                                                         </table>
                                                     </div>
-                                                    <nav aria-label="Page navigation">
-                                                        <ul class="pagination justify-content-center">
-                                <?php if ($current_page > 1): ?>
-                                                                <li>
-                                                                    <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
-                                                                        <button type="button" class="bg-light border px-3 py-2">
-                                                                            < </button>
-                                                                    </a>
-                                                                </li>
-                                <?php endif; ?>
 
-                                    <?php
-                                    $start_page = max(1, $current_page - 2);
-                                    $end_page = min($total_pages, $current_page + 2);
-
-                                    if ($start_page == 1) {
-                                        $end_page = min($total_pages, 5);
-                                    }
-                                    if ($end_page == $total_pages) {
-                                        $start_page = max(1, $total_pages - 4);
-                                    }
-
-                                    for ($i = $start_page; $i <= $end_page; $i++): ?>
-                                                                <li>
-                                                                    <a href="?page=<?php echo $i; ?>">
-                                                                        <button type="button"
-                                                                            class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
-                                                <?php echo $i; ?></button>
-                                                                    </a>
-                                                                </li>
-                                <?php endfor; ?>
-
-                                <?php if ($current_page < $total_pages): ?>
-                                                                <li>
-                                                                    <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
-                                                                        <button type="button" class="bg-light border px-3 py-2">
-                                                                            ></button>
-                                                                    </a>
-                                                                </li>
-                                <?php endif; ?>
-                                                        </ul>
-                                                    </nav>
+                                                    <div class="pagination justify-content-center mt-3" id="paginationContainerPatient"></div>
                                                 </div>
                                             </div>
                                         </section>
+
+                                        <script>
+                                            const baseUrl = '<?php echo base_url(); ?>';
+                                            const patientList = <?php echo json_encode($patientList); ?>;
+                                            const itemsPerPagePatient = 10;
+                                            let filteredPatientList = patientList;
+                                            let currentPagePatient = 1;
+
+                                            function displayPatientPage(page) {
+                                                currentPagePatient = page;
+                                                const start = (page - 1) * itemsPerPagePatient;
+                                                const end = start + itemsPerPagePatient;
+                                                const paginatedData = filteredPatientList.slice(start, end);
+                                                const patientTableBody = document.getElementById('patientTableBody');
+                                                patientTableBody.innerHTML = '';
+                                                paginatedData.forEach((patient, index) => {
+                                                    const row = `
+                                                                                                                <tr>
+                                                                                                                    <td>${start + index + 1}.</td>
+                                                                                                                    <td>${patient.patientId}</td>
+                                                                                                                    <td>${patient.firstName} ${patient.lastName}</td>
+                                                                                                                    <td>${patient.mobileNumber}</td>
+                                                                                                                    <td>${patient.gender}</td>
+                                                                                                                    <td>${patient.age}</td>
+                                                                                                                    <td>${patient.diagonsis}</td>
+                                                                                                                    <td class="d-flex d-md-block">
+                                                                                                                        <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
+                                                                                                                        <a href="${baseUrl}Edfadmin/deletePatient/${patient.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                            `;
+                                                    patientTableBody.innerHTML += row;
+                                                });
+                                                generatePagination(filteredPatientList.length, page);
+                                            }
+
+                                            function generatePagination(totalItems, currentPage) {
+                                                const totalPages = Math.ceil(totalItems / itemsPerPagePatient);
+                                                const paginationContainer = document.getElementById('paginationContainerPatient');
+                                                paginationContainer.innerHTML = '';
+
+                                                const prevButton = document.createElement('button');
+                                                prevButton.innerHTML = '&lt;';
+                                                prevButton.type = 'button';
+                                                prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
+                                                prevButton.disabled = currentPage === 1;
+                                                prevButton.addEventListener('click', () => {
+                                                    if (currentPage > 1) {
+                                                        displayPatientPage(currentPage - 1);
+                                                    }
+                                                });
+                                                paginationContainer.appendChild(prevButton);
+
+                                                for (let i = 1; i <= totalPages; i++) {
+                                                    const li = document.createElement('li');
+                                                    li.innerHTML = `
+                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayPatientPage(${i})">${i}</button>
+                                                                                                            `;
+                                                    paginationContainer.appendChild(li);
+                                                }
+
+                                                const nextButton = document.createElement('button');
+                                                nextButton.innerHTML = '&gt;';
+                                                nextButton.type = 'button';
+                                                nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
+                                                nextButton.disabled = currentPage === totalPages;
+                                                nextButton.addEventListener('click', () => {
+                                                    if (currentPage < totalPages) {
+                                                        displayPatientPage(currentPage + 1);
+                                                    }
+                                                });
+                                                paginationContainer.appendChild(nextButton);
+                                            }
+
+                                            function filterPatientList(searchQuery) {
+                                                const lowerCaseQuery = searchQuery.toLowerCase();
+                                                filteredPatientList = patientList.filter(patient => {
+                                                    return (
+                                                        patient.firstName.toLowerCase().includes(lowerCaseQuery) ||
+                                                        patient.lastName.toLowerCase().includes(lowerCaseQuery) ||
+                                                        patient.patientId.toLowerCase().includes(lowerCaseQuery)
+                                                    );
+                                                });
+                                                displayPatientPage(1);
+                                            }
+
+                                            document.getElementById('searchInputPatient').addEventListener('input', function () {
+                                                const searchQuery = this.value.trim();
+                                                if (searchQuery === '') {
+                                                    filteredPatientList = patientList;
+                                                    displayPatientPage(currentPagePatient);
+                                                } else {
+                                                    filterPatientList(searchQuery);
+                                                }
+                                            });
+
+                                            document.getElementById('clearSearchPatient').addEventListener('click', function () {
+                                                document.getElementById('searchInputPatient').value = '';
+                                                filteredPatientList = patientList;
+                                                displayPatientPage(currentPagePatient);
+                                            });
+
+                                            displayPatientPage(1);
+                                        </script>
 
             <?php
         } else if ($method == "patientDetails") {
@@ -1478,6 +1497,48 @@
                                                     window.history.back();
                                                 }
                                             </script>
+
+<?php
+        } else if ($method == "specialization") {
+            ?>
+
+                                        <script>
+                                            document.getElementById('specialization').style.color = "white";
+                                        </script>
+
+                                        <section>
+                                            <div class="card rounded">
+                                                <div class="card-body p-2 p-sm-4">
+                                                    <div class="d-sm-flex justify-content-between mt-2 mb-3">
+                                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Specialization List</p>
+                                                        <!-- <div class="input-group" style="width:250px;">
+                                                            <span class="input-group-text" id="searchIconPatient">
+                                                                <i class="bi bi-search"></i>
+                                                            </span>
+                                                            <input type="text" id="searchInputPatient" class="form-control" placeholder="Search by name"
+                                                                aria-describedby="searchIconPatient">
+                                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchPatient">
+                                                                <i class="bi bi-x"></i>
+                                                            </button>
+                                                        </div> -->
+                                                    </div>
+
+                                                    <div class="table-responsive">
+                                                        <table class="table text-center" id="specializationTable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIZATION</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
 
             <?php
         }

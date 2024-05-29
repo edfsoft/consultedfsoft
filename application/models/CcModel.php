@@ -72,7 +72,7 @@ class CcModel extends CI_Model
 
     public function allPatientList()
     {
-        $details = "SELECT * FROM `patient_details`";
+        $details = "SELECT * FROM `patient_details` ORDER BY `id` DESC";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -81,6 +81,28 @@ class CcModel extends CI_Model
     {
         $ccId = $_SESSION['ccId'];
         $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor`=  '$ccId'  ORDER BY `dateOfAppoint`, `timeOfAppoint`";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
+    // public function getAppointmentListDash()
+    // {
+    //     $ccId = $_SESSION['ccId'];
+    //     $todayDate = date('Y-m-d'); 
+    //     $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor`=  '$ccId' AND `dateOfAppoint`= '$todayDate'";
+    //     $select = $this->db->query($details);
+    //     return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    // }
+
+    public function getAppointmentListDash()
+    {
+        $ccId = $_SESSION['ccIdDb'];
+        $todayDate = date('Y-m-d');
+        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.dob , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo,
+        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
+        FROM patient_details AS pd
+        LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
+        WHERE referalDoctorDbId = $ccId AND dateOfAppoint = '$todayDate';";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

@@ -298,7 +298,7 @@ class HcpModel extends CI_Model
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $todayDate = date('Y-m-d');
-        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.dob , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo,
+        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo,
         ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
         FROM patient_details AS pd
         LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
@@ -395,4 +395,3 @@ class HcpModel extends CI_Model
     // }
 
 }
-?>

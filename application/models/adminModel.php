@@ -23,7 +23,7 @@ class AdminModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    public function  ccAllDetails($ccId)
+    public function ccAllDetails($ccId)
     {
         $details = "SELECT * FROM `cc_details` WHERE `id`= '$ccId' AND deleteStatus = '0'";
         $select = $this->db->query($details);
@@ -87,13 +87,13 @@ class AdminModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    public function  patientAllDetails($patientId)
+    public function patientAllDetails($patientId)
     {
         $details = "SELECT * FROM `patient_details` WHERE `id`= '$patientId' AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }
-   
+
     public function deletePatientDb($patientIdDb)
     {
         $updateStatus = array(
@@ -102,6 +102,35 @@ class AdminModel extends CI_Model
         $this->db->where('id', $patientIdDb);
         $this->db->update('patient_details', $updateStatus);
     }
+
+    public function getSpecializationList()
+    {
+        $list = "SELECT * FROM `specialization_list` WHERE activeStatus = '0'";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function newSpecilization()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'specializationName' => $post['specializationName'],
+        );
+        $this->db->insert('specialization_list', $insert);
+    }
+
+    public function specilizationDelete($id)
+    {
+        $specilizationId = $id;
+        // $update = array(
+        //     'activeStatus' => '1',
+        // );
+        // $this->db->where('id', $specilizationId);
+        // $this->db->update('specialization_list', $update);
+        $this->db->where('id', $specilizationId);
+        $this->db->delete('specialization_list');
+    }
+
 
 }
 ?>

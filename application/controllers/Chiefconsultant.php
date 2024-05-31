@@ -28,12 +28,12 @@ class chiefconsultant extends CI_Controller
 
         if ($this->CcModel->checkUserExistence($ccMobileNum)) {
             echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
-            $this->register();
+            redirect('Chiefconsultant/register');
         } else {
             $postData = $this->input->post(null, true);
             $register = $this->CcModel->register();
             $generateid = $this->CcModel->generateCcId();
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
@@ -41,7 +41,7 @@ class chiefconsultant extends CI_Controller
     {
         $postData = $this->input->post(null, true);
         $login = $this->CcModel->ccLoginDetails();
-        if (isset($login[0]['id']) && ($login[0]['approvalStatus']== "1")) {
+        if (isset($login[0]['id']) && ($login[0]['approvalStatus'] == "1")) {
             $LoggedInDetails = array(
                 'ccIdDb' => $login[0]['id'],
                 'ccId' => $login[0]['ccId'],
@@ -50,12 +50,12 @@ class chiefconsultant extends CI_Controller
                 'ccMobileNum' => $login[0]['doctorMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
-            $this->dashboard();
-        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus']== 0) {
-            $this->index();
+             redirect('Chiefconsultant/dashboard');
+        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus'] == 0) {
+            redirect('Chiefconsultant/');
             echo '<script>alert("You can log in once the verification process is done.");</script>';
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
             echo '<script>alert("Please enter registered details.");</script>';
         }
     }
@@ -80,7 +80,7 @@ class chiefconsultant extends CI_Controller
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
@@ -93,7 +93,7 @@ class chiefconsultant extends CI_Controller
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
@@ -107,7 +107,7 @@ class chiefconsultant extends CI_Controller
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
@@ -120,7 +120,7 @@ class chiefconsultant extends CI_Controller
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
@@ -133,7 +133,7 @@ class chiefconsultant extends CI_Controller
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
@@ -147,7 +147,7 @@ class chiefconsultant extends CI_Controller
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
@@ -160,7 +160,7 @@ class chiefconsultant extends CI_Controller
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
@@ -173,28 +173,22 @@ class chiefconsultant extends CI_Controller
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Chiefconsultant/');
         }
     }
 
     public function updatePhoto()
     {
         $profileDetails = $this->CcModel->updateProfilePhoto();
-        $this->editMyProfile();
+         redirect('Chiefconsultant/editMyProfile');
     }
 
     public function updateMyProfile()
     {
         $profileDetails = $this->CcModel->updateProfileDetails();
-        $this->myProfile();
+         redirect('Chiefconsultant/myProfile');
     }
-
-    // public function logout()
-    // {
-    //     $this->session->sess_destroy();
-    //     $this->index();
-    // }
-
+ 
     public function logout()
     {
         // $this->session->unset_userdata('LoggedInDetails');
@@ -206,7 +200,7 @@ class chiefconsultant extends CI_Controller
         $this->session->unset_userdata('ccName');
         $this->session->unset_userdata('ccMailId');
         $this->session->unset_userdata('ccMobileNum');
-        $this->index();
+        redirect('Chiefconsultant/');
     }
 
 

@@ -300,28 +300,28 @@
                         if (itemsToShow.length === 0) {
                             const noMatchesRow = document.createElement('tr');
                             noMatchesRow.innerHTML = `
-                            <td colspan="7" class="text-center">No matches found.</td>
-                        `;
+                                                                                                    <td colspan="7" class="text-center">No matches found.</td>
+                                                                                                `;
                             ccTableBody.appendChild(noMatchesRow);
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const ccRow = document.createElement('tr');
                                 ccRow.innerHTML = `
-                                <td>${start + index + 1}.</td>
-                                <td style="font-size: 16px">${value.ccId}</td>
-                                <td style="font-size: 16px">${value.doctorName}</td>
-                                <td style="font-size: 16px">${value.doctorMobile}</td>
-                                <td style="font-size: 16px">${value.specialization}</td>
-                                <td style="font-size: 16px">${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
-                                <td class="d-flex d-md-block" style="font-size: 16px">
-                                    <a href="${baseUrl}Edfadmin/ccDetails/${value.id}">
-                                        <button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button>
-                                    </a>
-                                    <a href="${baseUrl}Edfadmin/deleteCc/${value.id}" onclick="return confirm('Are you sure you want to delete?')">
-                                        <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                                    </a>
-                                </td>
-                            `;
+                                                                                                        <td>${start + index + 1}.</td>
+                                                                                                        <td style="font-size: 16px">${value.ccId}</td>
+                                                                                                        <td style="font-size: 16px">${value.doctorName}</td>
+                                                                                                        <td style="font-size: 16px">${value.doctorMobile}</td>
+                                                                                                        <td style="font-size: 16px">${value.specialization}</td>
+                                                                                                        <td style="font-size: 16px">${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
+                                                                                                        <td class="d-flex d-md-block" style="font-size: 16px">
+                                                                                                            <a href="${baseUrl}Edfadmin/ccDetails/${value.id}">
+                                                                                                                <button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button>
+                                                                                                            </a>
+                                                                                                            <a href="${baseUrl}Edfadmin/deleteCc/${value.id}" onclick="return confirm('Are you sure you want to delete?')">
+                                                                                                                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                                                                                            </a>
+                                                                                                        </td>
+                                                                                                    `;
                                 ccTableBody.appendChild(ccRow);
                             });
                         }
@@ -339,10 +339,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                        <a href="#">
-                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                        </a>
-                    `;
+                                                                                                <a href="#">
+                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                </a>
+                                                                                            `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayCcPage(currentPage - 1);
                         };
@@ -351,20 +351,20 @@
                         for (let i = 1; i <= totalPages; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                            <a href="#">
-                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                            </a>
-                        `;
+                                                                                                    <a href="#">
+                                                                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                    </a>
+                                                                                                `;
                             li.onclick = () => displayCcPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                        <a href="#">
-                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                        </a>
-                    `;
+                                                                                                <a href="#">
+                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                </a>
+                                                                                            `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayCcPage(currentPage + 1);
                         };
@@ -429,7 +429,7 @@
                                     <div class="mb-3">
                                         <label for="ccSpec" class="form-label">Specialization <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control rounded-pill p-3" id="ccSpec" name="ccSpec">
+                                        <select class="form-control " id="ccSpec" name="ccSpec">
                                             <option value="">Select Specialization</option>
                                             <option value="Diabetologist">Diabetologist</option>
                                             <option value="General Practitioners">General Practitioners</option>
@@ -809,25 +809,25 @@
                                     if (paginatedData.length === 0) {
                                         const noMatchesRow = document.createElement('tr');
                                         noMatchesRow.innerHTML = `
-                                                    <td colspan="7" class="text-center">No matches found.</td>
-                                                `;
+                                                                                                                                                                                                                                        <td colspan="7" class="text-center">No matches found.</td>
+                                                                                                                                                                                                                                    `;
                                         hcpTableBody.appendChild(noMatchesRow);
                                     } else {
                                         paginatedData.forEach((hcp, index) => {
                                             const row = `
-                                                        <tr>
-                                                            <td>${start + index + 1}.</td>
-                                                            <td>${hcp.hcpId}</td>
-                                                            <td>${hcp.hcpName}</td>
-                                                            <td>${hcp.hcpMobile}</td>
-                                                            <td>${hcp.hcpSpecialization}</td>
-                                                            <td>${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
-                                                            <td class="d-flex d-md-block">
-                                                                <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
-                                                                <a href="${baseUrl}Edfadmin/deleteHcp/${hcp.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                                                            </td>
-                                                        </tr>
-                                                    `;
+                                                                                                                                                                                                                                            <tr>
+                                                                                                                                                                                                                                                <td>${start + index + 1}.</td>
+                                                                                                                                                                                                                                                <td>${hcp.hcpId}</td>
+                                                                                                                                                                                                                                                <td>${hcp.hcpName}</td>
+                                                                                                                                                                                                                                                <td>${hcp.hcpMobile}</td>
+                                                                                                                                                                                                                                                <td>${hcp.hcpSpecialization}</td>
+                                                                                                                                                                                                                                                <td>${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
+                                                                                                                                                                                                                                                <td class="d-flex d-md-block">
+                                                                                                                                                                                                                                                    <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
+                                                                                                                                                                                                                                                    <a href="${baseUrl}Edfadmin/deleteHcp/${hcp.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                                                                                                                                                                                                                                                </td>
+                                                                                                                                                                                                                                            </tr>
+                                                                                                                                                                                                                                        `;
                                             hcpTableBody.innerHTML += row;
                                         });
                                     }
@@ -855,8 +855,8 @@
                                     for (let i = 1; i <= totalPages; i++) {
                                         const li = document.createElement('li');
                                         li.innerHTML = `
-                                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayHcpPage(${i})">${i}</button>
-                                                `;
+                                                                                                                                                                                                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayHcpPage(${i})">${i}</button>
+                                                                                                                                                                                                                                    `;
                                         paginationContainer.appendChild(li);
                                     }
 
@@ -898,7 +898,7 @@
                                 });
 
                                 displayHcpPage(1);
-                            </script> 
+                            </script>
 
             <?php
         } else if ($method == "hcpRegisterForm") {
@@ -1273,7 +1273,6 @@
                                             </div>
                                         </section>
 
-
                                         <script>
                                             const baseUrl = '<?php echo base_url(); ?>';
                                             const patientList = <?php echo json_encode($patientList); ?>;
@@ -1292,26 +1291,26 @@
                                                 if (paginatedData.length === 0) {
                                                     const noMatchesRow = document.createElement('tr');
                                                     noMatchesRow.innerHTML = `
-                                                                                <td colspan="8" class="text-center">No matches found.</td>
-                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                                                <td colspan="8" class="text-center">No matches found.</td>
+                                                                                                                                                                                                                                                                                                                                                                            `;
                                                     patientTableBody.appendChild(noMatchesRow);
                                                 } else {
                                                     paginatedData.forEach((patient, index) => {
                                                         const row = `
-                                                                                    <tr>
-                                                                                        <td>${start + index + 1}.</td>
-                                                                                        <td>${patient.patientId}</td>
-                                                                                        <td>${patient.firstName} ${patient.lastName}</td>
-                                                                                        <td>${patient.mobileNumber}</td>
-                                                                                        <td>${patient.gender}</td>
-                                                                                        <td>${patient.age}</td>
-                                                                                        <td>${patient.diagonsis}</td>
-                                                                                        <td class="d-flex d-md-block">
-                                                                                            <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
-                                                                                            <a href="${baseUrl}Edfadmin/deletePatient/${patient.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                `;
+                                                                                                                                                                                                                                                                                                                                                                                    <tr>
+                                                                                                                                                                                                                                                                                                                                                                                        <td>${start + index + 1}.</td>
+                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.patientId}</td>
+                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.firstName} ${patient.lastName}</td>
+                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.mobileNumber}</td>
+                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.gender}</td>
+                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.age}</td>
+                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.diagonsis}</td>
+                                                                                                                                                                                                                                                                                                                                                                                        <td class="d-flex d-md-block">
+                                                                                                                                                                                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
+                                                                                                                                                                                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/deletePatient/${patient.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                                                                                                                                                                                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                                                                                                                                                                                    </tr>
+                                                                                                                                                                                                                                                                                                                                                                                `;
                                                         patientTableBody.innerHTML += row;
                                                     });
                                                 }
@@ -1339,8 +1338,8 @@
                                                 for (let i = 1; i <= totalPages; i++) {
                                                     const li = document.createElement('li');
                                                     li.innerHTML = `
-                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayPatientPage(${i})">${i}</button>
-                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayPatientPage(${i})">${i}</button>
+                                                                                                                                                                                                                                                                                                                                                                            `;
                                                     paginationContainer.appendChild(li);
                                                 }
 
@@ -1539,40 +1538,76 @@
                                                 <section>
                                                     <div class="card rounded">
                                                         <div class="card-body p-2 p-sm-4">
-                                                            <div class="d-sm-flex justify-content-between mt-2 mb-3">
+                                                            <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                 <p class="ps-2" style="font-size: 24px; font-weight: 500">Specialization List</p>
-                                                                <!-- <div class="input-group" style="width:250px;">
-                                                            <span class="input-group-text" id="searchIconPatient">
-                                                                <i class="bi bi-search"></i>
-                                                            </span>
-                                                            <input type="text" id="searchInputPatient" class="form-control" placeholder="Search by name"
-                                                                aria-describedby="searchIconPatient">
-                                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchPatient">
-                                                                <i class="bi bi-x"></i>
-                                                            </button>
-                                                        </div> -->
+                                                                <button style="background-color: #0081ff;" type="button" data-toggle="modal"
+                                                                    data-target="#newSpecilization" class="text-light border-0 rounded p-2">
+                                                                    <i class="bi bi-plus-square-fill"></i> New
+                                                                </button>
                                                             </div>
 
                                                             <div class="table-responsive">
                                                                 <table class="table text-center" id="specializationTable">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIZATION</th>
+                                                                            <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                                            <th scope="col-6" style="font-size: 16px; font-weight: 500;">SPECIALIZATION NAME
+                                                                            </th>
+                                                                            <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-
+                                        <?php
+                                        $count = 0;
+                                        foreach ($specilalizationList as $key => $value) {
+                                            $count++;
+                                            ?>
+                                                                            <tr>
+                                                                                <td><?php echo $count; ?>. </td>
+                                                                                <td style="font-size: 16px"><?php echo $value['specializationName'] ?></td>
+                                                                                <td><a href="<?php echo base_url() . 'Edfadmin/deleteSpecilization/' .$value['id'] ?>"  onclick="return confirm('Are you sure to delete ?')" class="px-1"> <button class="btn btn-danger"><i
+                                                                                                class="bi bi-trash"></i></button>
+                                                                                    </a></td>
+                                                                            </tr>
+                                    <?php } ?>
                                                                     </tbody>
                                                                 </table>
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </section>
 
+
             <?php
         }
         ?>
+
+        <!-- Popup Add new specilization -->
+        <div class="modal fade" id="newSpecilization" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Specilization</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="<?php echo base_url() . "Edfadmin/addNewSpecilization" ?>" name="addSpecilization"
+                            name="addSpecilization" enctype="multipart/form-data" method="POST">
+                            <label for="specializationName" class="form-label pb-2">Specilization Name </label><br>
+                            <input type="text" name="specializationName" id="specializationName" class="form-control"
+                                placeholder="E.g. Diabetologist" required><br><br>
+                            <button type="submit" class="btn btn-secondary float-end"> Add </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </main>
 
     <!-- Event listener to block right-click -->
@@ -1608,9 +1643,9 @@
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
 
 <!-- bootstrap popup link -->
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 
 </html>

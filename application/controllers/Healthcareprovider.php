@@ -27,19 +27,19 @@ class healthcareprovider extends CI_Controller
 
         if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
             echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
-            $this->register();
+            redirect('Healthcareprovider/register');
         } else {
             $postData = $this->input->post(null, true);
             $register = $this->HcpModel->register();
             $generateid = $this->HcpModel->generatehcpid();
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
     public function hcpLogin()
     {
         $login = $this->HcpModel->hcpLoginDetails();
-        if (isset($login[0]['id']) && ($login[0]['approvalStatus']== "1")) {
+        if (isset($login[0]['id']) && ($login[0]['approvalStatus'] == "1")) {
             $LoggedInDetails = array(
                 'hcpIdDb' => $login[0]['id'],
                 'hcpId' => $login[0]['hcpId'],
@@ -48,12 +48,12 @@ class healthcareprovider extends CI_Controller
                 'hcpsMobileNum' => $login[0]['hcpMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
-            $this->dashboard();
-        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus']== 0) {
-            $this->index();
+            redirect('Healthcareprovider/dashboard');
+        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus'] == 0) {
+            redirect('Healthcareprovider/');
             echo '<script>alert("You can log in once the verification process is done.");</script>';
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
             echo '<script>alert("Please enter registered details.");</script>';
         }
     }
@@ -71,7 +71,7 @@ class healthcareprovider extends CI_Controller
             $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
             // echo '<script>alert("Please Login");</script>';
         }
     }
@@ -84,7 +84,7 @@ class healthcareprovider extends CI_Controller
             $this->data['patientList'] = $patientList['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
@@ -94,7 +94,7 @@ class healthcareprovider extends CI_Controller
             $this->data['method'] = "patientDetailsForm";
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
@@ -102,7 +102,7 @@ class healthcareprovider extends CI_Controller
     {
         $profileDetails = $this->HcpModel->insertPatients();
         $generateid = $this->HcpModel->generatePatientId();
-        $this->patients();
+        redirect('Healthcareprovider/patients');
     }
 
     public function patientdetails()
@@ -114,7 +114,7 @@ class healthcareprovider extends CI_Controller
             $this->data['patientDetails'] = $patientDetails;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
@@ -127,20 +127,20 @@ class healthcareprovider extends CI_Controller
             $this->data['patientDetails'] = $patientDetails;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
     public function updatePatientsForm()
     {
         $profileDetails = $this->HcpModel->updatePatients();
-        $this->patients();
+        redirect('Healthcareprovider/patients');
     }
 
     public function updatePatientPhoto()
     {
         $profilePhoto = $this->HcpModel->updatePatientProfile();
-        $this->patients();
+        redirect('Healthcareprovider/patients');
     }
 
     public function appointments()
@@ -151,7 +151,7 @@ class healthcareprovider extends CI_Controller
             $this->data['appointmentList'] = $appointmentList['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
@@ -165,14 +165,14 @@ class healthcareprovider extends CI_Controller
             $this->data['ccsId'] = $ccDetails['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
     public function newAppointment()
     {
         $appointmentDetails = $this->HcpModel->insertappointment();
-        $this->appointments();
+        redirect('Healthcareprovider/appointments');
     }
 
     public function chiefDoctors()
@@ -183,7 +183,7 @@ class healthcareprovider extends CI_Controller
             $this->data['ccDetails'] = $ccDetails['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
@@ -196,7 +196,7 @@ class healthcareprovider extends CI_Controller
             $this->data['ccDetails'] = $ccDetails;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
@@ -208,7 +208,7 @@ class healthcareprovider extends CI_Controller
             $this->data['hcpDetails'] = $hcpDetails;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
@@ -220,20 +220,20 @@ class healthcareprovider extends CI_Controller
             $this->data['hcpDetails'] = $hcpDetails;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
-            $this->index();
+            redirect('Healthcareprovider/');
         }
     }
 
     public function updatePhoto()
     {
         $profileDetails = $this->HcpModel->updateProfilePhoto();
-        $this->editMyProfile();
+        redirect('Healthcareprovider/editMyProfile');
     }
 
     public function updateMyProfile()
     {
         $profileDetails = $this->HcpModel->updateProfileDetails();
-        $this->myProfile();
+        redirect('Healthcareprovider/myProfile');
     }
 
     // public function getDetails()
@@ -246,7 +246,7 @@ class healthcareprovider extends CI_Controller
     // public function logout()
     // {
     //     $this->session->sess_destroy();
-    //     $this->index();
+    //      redirect('Healthcareprovider/');
     // }
 
     public function logout()
@@ -257,6 +257,6 @@ class healthcareprovider extends CI_Controller
         $this->session->unset_userdata('hcpsName');
         $this->session->unset_userdata('hcpsMailId');
         $this->session->unset_userdata('hcpsMobileNum');
-        $this->index();
+        redirect('Healthcareprovider/');
     }
 }

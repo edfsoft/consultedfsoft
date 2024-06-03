@@ -749,7 +749,7 @@
                                                 <div id="patientMarital_err" class="text-danger pt-1"></div>
                                             </div>
                                             <div class="form-group pb-3">
-                                                c <label class="form-label" for="marriedSince">Married Since</label>
+                                                <label class="form-label" for="marriedSince">Married Since</label>
                                                 <input type="text" class="form-control" id="marriedSince" name="marriedSince"
                                                     placeholder="E.g. 2012">
                                             </div>

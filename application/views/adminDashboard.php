@@ -152,11 +152,11 @@
             </li>
 
             <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Edfadmin/dignosisList" ?>"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="diagnosis">
+                <a class="" href="<?php echo base_url() . "Edfadmin/symptomsList" ?>"
+                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="symptoms">
                     <div>
                         <i class="bi bi-list-task pe-3"></i>
-                        <span>Diagnosis</span>
+                        <span>Symptoms</span>
                     </div>
                 </a>
             </li>
@@ -1590,20 +1590,20 @@
                                                 </section>
 
             <?php
-        } else if ($method == "diagnosis") {
+        } else if ($method == "symptoms") {
             ?>
 
                                                     <script>
-                                                        document.getElementById('diagnosis').style.color = "white";
+                                                        document.getElementById('symptoms').style.color = "white";
                                                     </script>
 
                                                     <section>
                                                         <div class="card rounded">
                                                             <div class="card-body p-2 p-sm-4">
                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                    <p class="ps-2" style="font-size: 24px; font-weight: 500">Diagnosis List</p>
+                                                                    <p class="ps-2" style="font-size: 24px; font-weight: 500">Symptoms List</p>
                                                                     <button style="background-color: #0081ff;" type="button" data-toggle="modal"
-                                                                        data-target="#newDiagnosis" class="text-light border-0 rounded p-2">
+                                                                        data-target="#newSymptoms" class="text-light border-0 rounded p-2">
                                                                         <i class="bi bi-plus-square-fill"></i> New
                                                                     </button>
                                                                 </div>
@@ -1613,7 +1613,7 @@
                                                                         <thead>
                                                                             <tr>
                                                                                 <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                                                <th scope="col-6" style="font-size: 16px; font-weight: 500;">DIAGNOSIS NAME
+                                                                                <th scope="col-6" style="font-size: 16px; font-weight: 500;">SYMPTOMS NAME
                                                                                 </th>
                                                                                 <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                                             </tr>
@@ -1621,13 +1621,13 @@
                                                                         <tbody>
                                         <?php
                                         $count = 0;
-                                        foreach ($diagnosisList as $key => $value) {
+                                        foreach ($symptomsList as $key => $value) {
                                             $count++;
                                             ?>
                                                                                 <tr>
                                                                                     <td><?php echo $count; ?>. </td>
-                                                                                    <td style="font-size: 16px"><?php echo $value['diagnosisName'] ?></td>
-                                                                                    <td><a href="<?php echo base_url() . 'Edfadmin/deleteDiagnosis/' . $value['id'] ?>"
+                                                                                    <td style="font-size: 16px"><?php echo $value['symptomsName'] ?></td>
+                                                                                    <td><a href="<?php echo base_url() . 'Edfadmin/deleteSymptoms/' . $value['id'] ?>"
                                                                                             onclick="return confirm('Are you sure to delete ?')" class="px-1">
                                                                                             <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
                                                                                         </a></td>
@@ -1671,23 +1671,23 @@
         </div>
 
         <!-- Popup Add new diagnosis -->
-        <div class="modal fade" id="newDiagnosis" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="newSymptoms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add New Diagnosis</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Symptoms</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="<?php echo base_url() . "Edfadmin/addNewDiagnosis" ?>" name="addSpecilization"
+                        <form action="<?php echo base_url() . "Edfadmin/addNewSymptoms" ?>" name="addSymptoms"
                             enctype="multipart/form-data" method="POST">
 
-                            <label for="diagnosisName" class="form-label pb-2">Diagnosis Name </label><br>
-                            <input type="text" name="diagnosisName" id="diagnosisName" class="form-control"
-                                placeholder="E.g. Diabetes" required><br><br>
+                            <label for="symptomsName" class="form-label pb-2">Symptoms Name </label><br>
+                            <input type="text" name="symptomsName" id="symptomsName" class="form-control"
+                                placeholder="E.g. Head ache" required><br><br>
                             <button type="submit" class="btn btn-secondary float-end"> Add </button>
                         </form>
                     </div>

@@ -259,6 +259,32 @@ class edfadmin extends CI_Controller
         redirect('Edfadmin/specializationList');
     }
 
+    public function dignosisList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "diagnosis";
+            $list = $this->AdminModel->getDiagnosisList();
+            $this->data['diagnosisList'] = $list;
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+           redirect('Edfadmin/');
+        }
+    }
+
+    public function addNewDiagnosis()
+    {
+        $postData = $this->input->post(null, true);
+        $register = $this->AdminModel->newDiagnosis();
+        redirect('Edfadmin/dignosisList');
+    }
+
+    public function deleteDiagnosis()
+    {
+        $diagnosisId = $this->uri->segment(3);
+        $register = $this->AdminModel->diagnosisDelete($diagnosisId);
+        redirect('Edfadmin/dignosisList');
+    }
+
     public function logout()
     {
         $this->session->unset_userdata('adminIdDb');

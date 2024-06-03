@@ -131,6 +131,28 @@ class AdminModel extends CI_Model
         $this->db->delete('specialization_list');
     }
 
+    public function newDiagnosis()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'diagnosisName' => $post['diagnosisName'],
+        );
+        $this->db->insert('diagnosis_list', $insert);
+    }
+
+    public function getDiagnosisList()
+    {
+        $list = "SELECT * FROM `diagnosis_list` WHERE activeStatus = '0'";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function diagnosisDelete($id)
+    {
+        $diagnosisId = $id;
+        $this->db->where('id', $diagnosisId);
+        $this->db->delete('diagnosis_list');
+    }
 
 }
 ?>

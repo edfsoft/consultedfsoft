@@ -285,6 +285,32 @@ class edfadmin extends CI_Controller
         redirect('Edfadmin/symptomsList');
     }
 
+    public function medicinesList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "medicines";
+            $list = $this->AdminModel->getMedicinesList();
+            $this->data['medicinesList'] = $list;
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+           redirect('Edfadmin/');
+        }
+    }
+
+    public function addNewMedicine()
+    {
+        $postData = $this->input->post(null, true);
+        $register = $this->AdminModel->newMedicine();
+        redirect('Edfadmin/medicinesList');
+    }
+
+    public function deleteMedicine()
+    {
+        $medicineId = $this->uri->segment(3);
+        $register = $this->AdminModel->medicineDelete($medicineId);
+        redirect('Edfadmin/medicinesList');
+    }
+
     public function logout()
     {
         $this->session->unset_userdata('adminIdDb');

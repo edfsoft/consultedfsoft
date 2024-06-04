@@ -154,5 +154,27 @@ class AdminModel extends CI_Model
         $this->db->delete('symptoms_list');
     }
 
+    public function newMedicine()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'medicineName' => $post['medicineName'],
+        );
+        $this->db->insert('medicines_list', $insert);
+    }
+
+    public function getMedicinesList()
+    {
+        $list = "SELECT * FROM `medicines_list` WHERE activeStatus = '0'";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function medicineDelete($id)
+    {
+        $medicineId = $id;
+        $this->db->where('id', $medicineId);
+        $this->db->delete('medicines_list');
+    }
 }
 ?>

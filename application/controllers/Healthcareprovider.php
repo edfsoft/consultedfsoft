@@ -163,6 +163,8 @@ class healthcareprovider extends CI_Controller
             $this->data['patientsId'] = $patientList['response'];
             $ccDetails = $this->HcpModel->getCcProfile();
             $this->data['ccsId'] = $ccDetails['response'];
+            $symptoms = $this->HcpModel->getSymptoms();
+            $this->data['symptomsList'] = $symptoms;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');

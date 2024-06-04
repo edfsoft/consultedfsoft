@@ -378,6 +378,12 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getSymptoms()
+    {
+        $details = "SELECT * FROM `symptoms_list` ORDER BY `id` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
 
     // public function do_upload()
     // {

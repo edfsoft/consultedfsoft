@@ -19,7 +19,9 @@ class chiefconsultant extends CI_Controller
 
     public function register()
     {
-        $this->load->view('ccRegister.php');
+        $specList = $this->HcpModel->getSpecialization();
+        $this->data['specializationList'] = $specList;
+        $this->load->view('ccRegister.php', $this->data);
     }
 
     public function ccSignup()

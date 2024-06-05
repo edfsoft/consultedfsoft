@@ -23,7 +23,7 @@ class AdminModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    public function  ccAllDetails($ccId)
+    public function ccAllDetails($ccId)
     {
         $details = "SELECT * FROM `cc_details` WHERE `id`= '$ccId' AND deleteStatus = '0'";
         $select = $this->db->query($details);
@@ -87,13 +87,13 @@ class AdminModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    public function  patientAllDetails($patientId)
+    public function patientAllDetails($patientId)
     {
         $details = "SELECT * FROM `patient_details` WHERE `id`= '$patientId' AND deleteStatus = '0'";
         $select = $this->db->query($details);
         return $select->result_array();
     }
-   
+
     public function deletePatientDb($patientIdDb)
     {
         $updateStatus = array(
@@ -103,5 +103,78 @@ class AdminModel extends CI_Model
         $this->db->update('patient_details', $updateStatus);
     }
 
+    public function getSpecializationList()
+    {
+        $list = "SELECT * FROM `specialization_list` WHERE activeStatus = '0'";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function newSpecilization()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'specializationName' => $post['specializationName'],
+        );
+        $this->db->insert('specialization_list', $insert);
+    }
+
+    public function specilizationDelete($id)
+    {
+        $specilizationId = $id;
+        // $update = array(
+        //     'activeStatus' => '1',
+        // );
+        // $this->db->where('id', $specilizationId);
+        // $this->db->update('specialization_list', $update);
+        $this->db->where('id', $specilizationId);
+        $this->db->delete('specialization_list');
+    }
+
+    public function newSymptoms()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'symptomsName' => $post['symptomsName'],
+        );
+        $this->db->insert('symptoms_list', $insert);
+    }
+
+    public function getsymptomsList()
+    {
+        $list = "SELECT * FROM `symptoms_list` WHERE activeStatus = '0'";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function symptomsDelete($id)
+    {
+        $symptomsId = $id;
+        $this->db->where('id', $symptomsId);
+        $this->db->delete('symptoms_list');
+    }
+
+    public function newMedicine()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'medicineName' => $post['medicineName'],
+        );
+        $this->db->insert('medicines_list', $insert);
+    }
+
+    public function getMedicinesList()
+    {
+        $list = "SELECT * FROM `medicines_list` WHERE activeStatus = '0'";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function medicineDelete($id)
+    {
+        $medicineId = $id;
+        $this->db->where('id', $medicineId);
+        $this->db->delete('medicines_list');
+    }
 }
 ?>

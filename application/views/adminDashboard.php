@@ -23,6 +23,10 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
 
+    <!-- Google fonts link -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -145,8 +149,28 @@
                 <a class="" href="<?php echo base_url() . "Edfadmin/specializationList" ?>"
                     style="font-size: 18px; font-weight: 400;color:#8cafba;" id="specialization">
                     <div>
-                    <i class="bi bi-card-checklist pe-3"></i>
+                        <span class="material-symbols-outlined pe-2">data_check</span>
                         <span>Specialization</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="pt-4">
+                <a class="" href="<?php echo base_url() . "Edfadmin/symptomsList" ?>"
+                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="symptoms">
+                    <div>
+                        <span class="material-symbols-outlined pe-2"> conditions </span>
+                        <span>Symptoms</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="pt-4">
+                <a class="" href="<?php echo base_url() . "Edfadmin/medicinesList" ?>"
+                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="medicines">
+                    <div>
+                        <span class="material-symbols-outlined pe-2">vaccines</span>
+                        <span>Medicines</span>
                     </div>
                 </a>
             </li>
@@ -297,26 +321,34 @@
                         const ccTableBody = document.getElementById('ccTableBody');
                         ccTableBody.innerHTML = '';
 
-                        itemsToShow.forEach((value, index) => {
-                            const ccRow = document.createElement('tr');
-                            ccRow.innerHTML = `
-                                                                                <td>${start + index + 1}.</td>
-                                                                                <td style="font-size: 16px">${value.ccId}</td>
-                                                                                <td style="font-size: 16px">${value.doctorName}</td>
-                                                                                <td style="font-size: 16px">${value.doctorMobile}</td>
-                                                                                <td style="font-size: 16px">${value.specialization}</td>
-                                                                                <td style="font-size: 16px">${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
-                                                                                <td class="d-flex d-md-block" style="font-size: 16px">
-                                                                                    <a href="${baseUrl}Edfadmin/ccDetails/${value.id}">
-                                                                                        <button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button>
-                                                                                    </a>
-                                                                                    <a href="${baseUrl}Edfadmin/deleteCc/${value.id}" onclick="return confirm('Are you sure you want to delete?')">
-                                                                                        <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                                                                                    </a>
-                                                                                </td>
-                                                                            `;
-                            ccTableBody.appendChild(ccRow);
-                        });
+                        if (itemsToShow.length === 0) {
+                            const noMatchesRow = document.createElement('tr');
+                            noMatchesRow.innerHTML = `
+                                                                                                                                                                                                                    <td colspan="7" class="text-center">No matches found.</td>
+                                                                                                                                                                                                                `;
+                            ccTableBody.appendChild(noMatchesRow);
+                        } else {
+                            itemsToShow.forEach((value, index) => {
+                                const ccRow = document.createElement('tr');
+                                ccRow.innerHTML = `
+                                                                                                                                                                                                                        <td>${start + index + 1}.</td>
+                                                                                                                                                                                                                        <td style="font-size: 16px">${value.ccId}</td>
+                                                                                                                                                                                                                        <td style="font-size: 16px">${value.doctorName}</td>
+                                                                                                                                                                                                                        <td style="font-size: 16px">${value.doctorMobile}</td>
+                                                                                                                                                                                                                        <td style="font-size: 16px">${value.specialization}</td>
+                                                                                                                                                                                                                        <td style="font-size: 16px">${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
+                                                                                                                                                                                                                        <td class="d-flex d-md-block" style="font-size: 16px">
+                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/ccDetails/${value.id}">
+                                                                                                                                                                                                                                <button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button>
+                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/deleteCc/${value.id}" onclick="return confirm('Are you sure you want to delete?')">
+                                                                                                                                                                                                                                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                    `;
+                                ccTableBody.appendChild(ccRow);
+                            });
+                        }
 
                         generateCcPagination(filteredCcDetails.length, page);
                     }
@@ -331,10 +363,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                                                                            <a href="#">
-                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                            </a>
-                                                                        `;
+                                                                                                                                                                                                                <a href="#">
+                                                                                                                                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                                                                                                                                </a>
+                                                                                                                                                                                                            `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayCcPage(currentPage - 1);
                         };
@@ -343,20 +375,20 @@
                         for (let i = 1; i <= totalPages; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                                                                                <a href="#">
-                                                                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                </a>
-                                                                            `;
+                                                                                                                                                                                                                    <a href="#">
+                                                                                                                                                                                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                                `;
                             li.onclick = () => displayCcPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                                                                            <a href="#">
-                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                            </a>
-                                                                        `;
+                                                                                                                                                                                                                <a href="#">
+                                                                                                                                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                                                                                                </a>
+                                                                                                                                                                                                            `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayCcPage(currentPage + 1);
                         };
@@ -421,7 +453,7 @@
                                     <div class="mb-3">
                                         <label for="ccSpec" class="form-label">Specialization <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control rounded-pill p-3" id="ccSpec" name="ccSpec">
+                                        <select class="form-control " id="ccSpec" name="ccSpec">
                                             <option value="">Select Specialization</option>
                                             <option value="Diabetologist">Diabetologist</option>
                                             <option value="General Practitioners">General Practitioners</option>
@@ -446,7 +478,7 @@
                                         <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                     </div>
                                     <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
-                                    <button type="submit" class="btn btn-secondary text-light float-end">Sign
+                                    <button type="submit" class="btn btn-secondary text-light float-end mt-2">Sign
                                         Up</button>
                                 </form>
                             </div>
@@ -797,23 +829,33 @@
                                     const paginatedData = filteredHcpList.slice(start, end);
                                     const hcpTableBody = document.getElementById('hcpTableBody');
                                     hcpTableBody.innerHTML = '';
-                                    paginatedData.forEach((hcp, index) => {
-                                        const row = `
-                                                                                                <tr>
-                                                                                                    <td>${start + index + 1}.</td>
-                                                                                                    <td>${hcp.hcpId}</td>
-                                                                                                    <td>${hcp.hcpName}</td>
-                                                                                                    <td>${hcp.hcpMobile}</td>
-                                                                                                    <td>${hcp.hcpSpecialization}</td>
-                                                                                                    <td>${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
-                                                                                                    <td class="d-flex d-md-block">
-                                                                                                        <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
-                                                                                                        <a href="${baseUrl}Edfadmin/deleteHcp/${hcp.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            `;
-                                        hcpTableBody.innerHTML += row;
-                                    });
+
+                                    if (paginatedData.length === 0) {
+                                        const noMatchesRow = document.createElement('tr');
+                                        noMatchesRow.innerHTML = `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td colspan="7" class="text-center">No matches found.</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
+                                        hcpTableBody.appendChild(noMatchesRow);
+                                    } else {
+                                        paginatedData.forEach((hcp, index) => {
+                                            const row = `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${start + index + 1}.</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${hcp.hcpId}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${hcp.hcpName}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${hcp.hcpMobile}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${hcp.hcpSpecialization}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td class="d-flex d-md-block">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/deleteHcp/${hcp.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `;
+                                            hcpTableBody.innerHTML += row;
+                                        });
+                                    }
+
                                     generatePagination(filteredHcpList.length, page);
                                 }
 
@@ -821,6 +863,7 @@
                                     const totalPages = Math.ceil(totalItems / itemsPerPageHcp);
                                     const paginationContainer = document.getElementById('paginationContainerHcp');
                                     paginationContainer.innerHTML = '';
+
                                     const prevButton = document.createElement('button');
                                     prevButton.innerHTML = '&lt;';
                                     prevButton.type = 'button';
@@ -836,8 +879,8 @@
                                     for (let i = 1; i <= totalPages; i++) {
                                         const li = document.createElement('li');
                                         li.innerHTML = `
-                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayHcpPage(${i})">${i}</button>
-                                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayHcpPage(${i})">${i}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
                                         paginationContainer.appendChild(li);
                                     }
 
@@ -947,7 +990,7 @@
                                                     <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
-                                                <button type="submit" class="btn btn-secondary text-light float-end">Sign
+                                                <button type="submit" class="btn btn-secondary text-light float-end mt-2">Sign
                                                     Up</button>
                                             </form>
                                         </div>
@@ -1268,24 +1311,34 @@
                                                 const paginatedData = filteredPatientList.slice(start, end);
                                                 const patientTableBody = document.getElementById('patientTableBody');
                                                 patientTableBody.innerHTML = '';
-                                                paginatedData.forEach((patient, index) => {
-                                                    const row = `
-                                                                                                                <tr>
-                                                                                                                    <td>${start + index + 1}.</td>
-                                                                                                                    <td>${patient.patientId}</td>
-                                                                                                                    <td>${patient.firstName} ${patient.lastName}</td>
-                                                                                                                    <td>${patient.mobileNumber}</td>
-                                                                                                                    <td>${patient.gender}</td>
-                                                                                                                    <td>${patient.age}</td>
-                                                                                                                    <td>${patient.diagonsis}</td>
-                                                                                                                    <td class="d-flex d-md-block">
-                                                                                                                        <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
-                                                                                                                        <a href="${baseUrl}Edfadmin/deletePatient/${patient.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                                                                                                                    </td>
-                                                                                                                </tr>
-                                                                                                            `;
-                                                    patientTableBody.innerHTML += row;
-                                                });
+
+                                                if (paginatedData.length === 0) {
+                                                    const noMatchesRow = document.createElement('tr');
+                                                    noMatchesRow.innerHTML = `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td colspan="8" class="text-center">No matches found.</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
+                                                    patientTableBody.appendChild(noMatchesRow);
+                                                } else {
+                                                    paginatedData.forEach((patient, index) => {
+                                                        const row = `
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${start + index + 1}.</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.patientId}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.firstName} ${patient.lastName}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.mobileNumber}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.gender}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.age}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${patient.diagonsis}</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td class="d-flex d-md-block">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-secondary me-1"><i class="bi bi-eye"></i></button></a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/deletePatient/${patient.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `;
+                                                        patientTableBody.innerHTML += row;
+                                                    });
+                                                }
+
                                                 generatePagination(filteredPatientList.length, page);
                                             }
 
@@ -1309,8 +1362,8 @@
                                                 for (let i = 1; i <= totalPages; i++) {
                                                     const li = document.createElement('li');
                                                     li.innerHTML = `
-                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayPatientPage(${i})">${i}</button>
-                                                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayPatientPage(${i})">${i}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
                                                     paginationContainer.appendChild(li);
                                                 }
 
@@ -1498,51 +1551,342 @@
                                                 }
                                             </script>
 
-<?php
+            <?php
         } else if ($method == "specialization") {
             ?>
 
-                                        <script>
-                                            document.getElementById('specialization').style.color = "white";
-                                        </script>
+                                                <script>
+                                                    document.getElementById('specialization').style.color = "white";
+                                                </script>
 
-                                        <section>
-                                            <div class="card rounded">
-                                                <div class="card-body p-2 p-sm-4">
-                                                    <div class="d-sm-flex justify-content-between mt-2 mb-3">
-                                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Specialization List</p>
-                                                        <!-- <div class="input-group" style="width:250px;">
-                                                            <span class="input-group-text" id="searchIconPatient">
-                                                                <i class="bi bi-search"></i>
-                                                            </span>
-                                                            <input type="text" id="searchInputPatient" class="form-control" placeholder="Search by name"
-                                                                aria-describedby="searchIconPatient">
-                                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchPatient">
-                                                                <i class="bi bi-x"></i>
-                                                            </button>
-                                                        </div> -->
+                                                <section>
+                                                    <div class="card rounded">
+                                                        <div class="card-body p-2 p-sm-4">
+                                                            <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
+                                                                <p class="ps-2" style="font-size: 24px; font-weight: 500">Specialization List</p>
+                                                                <button style="background-color: #0081ff;" type="button" data-toggle="modal"
+                                                                    data-target="#newSpecilization" class="text-light border-0 rounded p-2">
+                                                                    <i class="bi bi-plus-square-fill"></i> New
+                                                                </button>
+                                                            </div>
+
+                                                            <div class="table-responsive">
+                                                                <table class="table text-center" id="specializationTable">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                                            <th scope="col-6" style="font-size: 16px; font-weight: 500;">SPECIALIZATION NAME
+                                                                            </th>
+                                                                            <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                        <?php
+                                        $count = 0;
+                                        foreach ($specilalizationList as $key => $value) {
+                                            $count++;
+                                            ?>
+                                                                            <tr>
+                                                                                <td><?php echo $count; ?>. </td>
+                                                                                <td style="font-size: 16px"><?php echo $value['specializationName'] ?></td>
+                                                                                <td><a href="<?php echo base_url() . 'Edfadmin/deleteSpecilization/' . $value['id'] ?>"
+                                                                                        onclick="return confirm('Are you sure to delete ?')" class="px-1"> <button
+                                                                                            class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                                                                    </a></td>
+                                                                            </tr>
+                                    <?php } ?>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                </section>
 
-                                                    <div class="table-responsive">
-                                                        <table class="table text-center" id="specializationTable">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIZATION</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
+            <?php
+        } else if ($method == "symptoms") {
+            ?>
 
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </section>
+                                                    <script>
+                                                        document.getElementById('symptoms').style.color = "white";
+                                                    </script>
+
+                                                    <section>
+                                                        <div class="card rounded">
+                                                            <div class="card-body p-2 p-sm-4">
+                                                                <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
+                                                                    <p class="ps-2" style="font-size: 24px; font-weight: 500">Symptoms List</p>
+                                                                    <button style="background-color: #0081ff;" type="button" data-toggle="modal"
+                                                                        data-target="#newSymptoms" class="text-light border-0 rounded p-2">
+                                                                        <i class="bi bi-plus-square-fill"></i> New
+                                                                    </button>
+                                                                </div>
+
+                                                                <div class="table-responsive">
+                                                                    <table class="table text-center" id="diagnosisTable">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                                                <th scope="col-6" style="font-size: 16px; font-weight: 500;">SYMPTOMS NAME
+                                                                                </th>
+                                                                                <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                        <?php
+                                        $count = 0;
+                                        foreach ($symptomsList as $key => $value) {
+                                            $count++;
+                                            ?>
+                                                                                <tr>
+                                                                                    <td><?php echo $count; ?>. </td>
+                                                                                    <td style="font-size: 16px"><?php echo $value['symptomsName'] ?></td>
+                                                                                    <td><a href="<?php echo base_url() . 'Edfadmin/deleteSymptoms/' . $value['id'] ?>"
+                                                                                            onclick="return confirm('Are you sure to delete ?')" class="px-1">
+                                                                                            <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                                                                        </a></td>
+                                                                                </tr>
+                                    <?php } ?>
+                                                                        </tbody>
+                                                                    </table>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </section>
+
+            <?php
+        } else if ($method == "medicines") {
+            ?>
+
+                                                        <script>
+                                                            document.getElementById('medicines').style.color = "white";
+                                                        </script>
+
+                                                        <section>
+                                                            <div class="card rounded">
+                                                                <div class="card-body">
+
+                                                                    <div class="d-flex justify-content-between mt-2 mb p-2 pt-sm-4 px-sm-4">
+                                                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Medicines List</p>
+                                                                        <button style="background-color: #0081ff;" type="button" data-toggle="modal"
+                                                                            data-target="#newMedicine" class="text-light border-0 rounded float-end p-2 mb-2">
+                                                                            <i class="bi bi-plus-square-fill"></i> New
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <div class="input-group mx-auto pb-3 pb-sm-5" style="width:250px;">
+                                                                        <span class="input-group-text" id="searchIcon">
+                                                                            <i class="bi bi-search"></i>
+                                                                        </span>
+                                                                        <input type="text" id="searchInput" placeholder="Search by name" class="form-control">
+                                                                        <button class="btn btn-outline-secondary" id="cancelSearchBtn"> <i class="bi bi-x"></i></button>
+                                                                    </div>
+
+                                                                    <div class="table-responsive">
+                                                                        <table class="table text-center" id="diagnosisTable">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                                                    <th scope="col-6" style="font-size: 16px; font-weight: 500;">MEDICINE NAME</th>
+                                                                                    <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody id="tableBody">
+                                        <?php
+                                        $count = 0;
+                                        foreach ($medicinesList as $key => $value) {
+                                            $count++;
+                                            ?>
+                                                                                    <tr>
+                                                                                        <td><?php echo $count; ?>.</td>
+                                                                                        <td style="font-size: 16px"><?php echo $value['medicineName'] ?></td>
+                                                                                        <td>
+                                                                                            <a href="<?php echo base_url() . 'Edfadmin/deleteMedicine/' . $value['id'] ?>"
+                                                                                                onclick="return confirm('Are you sure to delete ?')" class="px-1">
+                                                                                                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                                                                            </a>
+                                                                                        </td>
+                                                                                    </tr>
+                                    <?php } ?>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <nav>
+                                                                            <ul class="pagination justify-content-center" id="paginationControls">
+                                                                            </ul>
+                                                                        </nav>
+
+                                                                        <!-- </div> -->
+                                                                    </div>
+                                                                </div>
+                                                        </section>
+
+                                                        <script>
+                                                            document.addEventListener("DOMContentLoaded", function () {
+                                                                const rowsPerPage = 15;
+                                                                const table = document.getElementById("diagnosisTable");
+                                                                const tbody = table.querySelector("tbody");
+                                                                let rows = Array.from(tbody.getElementsByTagName("tr"));
+                                                                const paginationControls = document.getElementById("paginationControls");
+
+                                                                let currentPage = 1;
+                                                                const originalRows = [...rows];
+
+                                                                function displayTablePage(page) {
+                                                                    tbody.innerHTML = "";
+                                                                    let start = (page - 1) * rowsPerPage;
+                                                                    let end = start + rowsPerPage;
+                                                                    for (let i = start; i < end && i < rows.length; i++) {
+                                                                        tbody.appendChild(rows[i]);
+                                                                    }
+                                                                }
+
+                                                                function setupPagination() {
+                                                                    paginationControls.innerHTML = "";
+                                                                    let pageCount = Math.ceil(rows.length / rowsPerPage);
+                                                                    for (let i = 1; i <= pageCount; i++) {
+                                                                        let li = document.createElement("li");
+                                                                        li.className = "page-item";
+                                                                        let a = document.createElement("a");
+                                                                        a.className = "page-link";
+                                                                        a.textContent = i;
+                                                                        a.href = "#";
+                                                                        a.setAttribute("data-page", i);
+                                                                        li.appendChild(a);
+                                                                        paginationControls.appendChild(li);
+
+                                                                        a.addEventListener("click", function (e) {
+                                                                            e.preventDefault();
+                                                                            currentPage = parseInt(this.getAttribute("data-page"));
+                                                                            displayTablePage(currentPage);
+                                                                            updatePagination();
+                                                                        });
+                                                                    }
+                                                                }
+
+                                                                function updatePagination() {
+                                                                    let pageLinks = paginationControls.querySelectorAll(".page-link");
+                                                                    pageLinks.forEach(link => {
+                                                                        let page = parseInt(link.getAttribute("data-page"));
+                                                                        if (page === currentPage) {
+                                                                            link.parentElement.classList.add("active");
+                                                                        } else {
+                                                                            link.parentElement.classList.remove("active");
+                                                                        }
+                                                                    });
+                                                                }
+
+                                                                function searchTable() {
+                                                                    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+                                                                    rows = originalRows.filter(row => {
+                                                                        const cells = row.getElementsByTagName("td");
+                                                                        return cells[1].textContent.toLowerCase().includes(searchInput);
+                                                                    });
+
+                                                                    currentPage = 1;
+                                                                    displayTablePage(currentPage);
+                                                                    setupPagination();
+                                                                    updatePagination();
+                                                                }
+
+                                                                function cancelSearch() {
+                                                                    document.getElementById("searchInput").value = "";
+                                                                    rows = [...originalRows];
+                                                                    currentPage = 1;
+                                                                    displayTablePage(currentPage);
+                                                                    setupPagination();
+                                                                    updatePagination();
+                                                                }
+
+                                                                document.getElementById("searchInput").addEventListener("input", searchTable);
+                                                                document.getElementById("cancelSearchBtn").addEventListener("click", cancelSearch);
+
+                                                                displayTablePage(currentPage);
+                                                                setupPagination();
+                                                                updatePagination();
+                                                            });
+                                                        </script>
+
 
             <?php
         }
         ?>
+
+        <!-- Popup Add new specilization -->
+        <div class="modal fade" id="newSpecilization" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Specilization</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="<?php echo base_url() . "Edfadmin/addNewSpecilization" ?>" name="addSpecilization"
+                            name="addSpecilization" enctype="multipart/form-data" method="POST">
+                            <label for="specializationName" class="form-label pb-2">Specilization Name </label><br>
+                            <input type="text" name="specializationName" id="specializationName" class="form-control"
+                                placeholder="E.g. Diabetologist" required><br><br>
+                            <button type="submit" class="btn btn-secondary float-end"> Add </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup Add new symptom -->
+        <div class="modal fade" id="newSymptoms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Symptom</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="<?php echo base_url() . "Edfadmin/addNewSymptoms" ?>" name="addSymptoms"
+                            enctype="multipart/form-data" method="POST">
+
+                            <label for="symptomsName" class="form-label pb-2">Symptom / Complaint Name </label><br>
+                            <input type="text" name="symptomsName" id="symptomsName" class="form-control"
+                                placeholder="E.g. Head ache" required><br><br>
+                            <button type="submit" class="btn btn-secondary float-end"> Add </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup Add new medicine -->
+        <div class="modal fade" id="newMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Medicine</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="<?php echo base_url() . "Edfadmin/addNewMedicine" ?>" name="addMedicine"
+                            enctype="multipart/form-data" method="POST">
+
+                            <label for="medicineName" class="form-label pb-2">Medicine Name </label><br>
+                            <input type="text" name="medicineName" id="medicineName" class="form-control"
+                                placeholder="E.g. Insulin" required><br><br>
+                            <button type="submit" class="btn btn-secondary float-end"> Add </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </main>
 
     <!-- Event listener to block right-click -->
@@ -1578,9 +1922,9 @@
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
 
 <!-- bootstrap popup link -->
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 
 </html>

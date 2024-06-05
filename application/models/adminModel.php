@@ -176,5 +176,8 @@ class AdminModel extends CI_Model
         $this->db->where('id', $medicineId);
         $this->db->delete('medicines_list');
     }
+
+
+    
 }
 ?>

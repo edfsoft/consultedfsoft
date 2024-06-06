@@ -19,7 +19,7 @@ class healthcareprovider extends CI_Controller
     public function register()
     {
         $specList = $this->HcpModel->getSpecialization();
-            $this->data['specializationList'] = $specList;
+        $this->data['specializationList'] = $specList;
         $this->load->view('hcpRegister.php', $this->data);
     }
 
@@ -131,6 +131,10 @@ class healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $symptoms = $this->HcpModel->getSymptoms();
+            $this->data['symptomsList'] = $symptoms;
+            $medicines = $this->HcpModel->getMedicines();
+            $this->data['medicinesList'] = $medicines;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -227,7 +231,7 @@ class healthcareprovider extends CI_Controller
             $hcpDetails = $this->HcpModel->getHcpDetails();
             $this->data['hcpDetails'] = $hcpDetails;
             $specList = $this->HcpModel->getSpecialization();
-            $this->data['specilizationList'] = $specList;
+            $this->data['specializationList'] = $specList;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');

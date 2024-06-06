@@ -171,6 +171,8 @@ class chiefconsultant extends CI_Controller
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "editMyProfile";
             $ccDetails = $this->CcModel->getCcDetails();
+            $specList = $this->HcpModel->getSpecialization();
+            $this->data['specializationList'] = $specList;
             $this->data['ccDetails'] = $ccDetails;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);

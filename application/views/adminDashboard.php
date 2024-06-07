@@ -1918,6 +1918,7 @@
                                                                                     <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
                                                                                     <th scope="col-6" style="font-size: 16px; font-weight: 500;">BRAND NAME</th>
                                                                                     <th scope="col-6" style="font-size: 16px; font-weight: 500;">MEDICINE NAME</th>
+                                                                                    <th scope="col-6" style="font-size: 16px; font-weight: 500;">STRENGTH</th>
                                                                                     <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                                                 </tr>
                                                                             </thead>
@@ -1959,6 +1960,7 @@
                                                                                                                                                                                                                                                                                                                                                                             <td>${start + index + 1}.</td>
                                                                                                                                                                                                                                                                                                                                                                             <td style="font-size: 16px">${medicine.medicineBrand}</td>
                                                                                                                                                                                                                                                                                                                                                                             <td style="font-size: 16px">${medicine.medicineName}</td>
+                                                                                                                                                                                                                                                                                                                                                                            <td style="font-size: 16px">${medicine.strength}</td>
                                                                                                                                                                                                                                                                                                                                                                             <td>
                                                                                                                                                                                                                                                                                                                                                                                 <a href="${baseUrl}Edfadmin/deleteMedicine/${medicine.id}" onclick="return confirm('Are you sure to delete ?')" class="px-1">
                                                                                                                                                                                                                                                                                                                                                                                     <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
@@ -2119,7 +2121,10 @@
                                 placeholder="E.g. Dolo 650" required><br>
                                 <label for="medicineName" class="form-label pb-2">Medicine Name <span class="text-danger">*</span></label><br>
                             <input type="text" name="medicineName" id="medicineName" class="form-control"
-                                placeholder="E.g.  Paracetamol" required><br><br>
+                                placeholder="E.g.  Paracetamol" required><br>
+                                <label for="maedicineStrength" class="form-label pb-2">Medicine Strength <span class="text-danger">*</span></label><br>
+                                <input type="text" name="maedicineStrength" id="maedicineStrength" class="form-control"
+                                placeholder="E.g.  100 mg" required><br><br>
                             <button type="submit" class="btn btn-secondary float-end"> Add </button>
                         </form>
                     </div>

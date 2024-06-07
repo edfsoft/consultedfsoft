@@ -892,8 +892,8 @@
                                                 <?php
                                                 foreach ($medicinesList as $key => $value) {
                                                     ?>
-                                                        <option value="<?php echo $value['medicineName'] ?>">
-                                                    <?php echo $value['medicineName'] ?>
+                                                        <option value="<?php echo $value['medicineBrand'] . $value['medicineName'] ?>">
+                                                    <?php echo $value['medicineBrand'] ."/". $value['medicineName'] ?>
                                                         </option>
                                             <?php } ?>
                                                 </select>

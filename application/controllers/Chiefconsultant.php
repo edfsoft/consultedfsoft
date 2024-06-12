@@ -19,7 +19,9 @@ class chiefconsultant extends CI_Controller
 
     public function register()
     {
-        $this->load->view('ccRegister.php');
+        $specList = $this->HcpModel->getSpecialization();
+        $this->data['specializationList'] = $specList;
+        $this->load->view('ccRegister.php', $this->data);
     }
 
     public function ccSignup()
@@ -169,6 +171,8 @@ class chiefconsultant extends CI_Controller
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "editMyProfile";
             $ccDetails = $this->CcModel->getCcDetails();
+            $specList = $this->HcpModel->getSpecialization();
+            $this->data['specializationList'] = $specList;
             $this->data['ccDetails'] = $ccDetails;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);

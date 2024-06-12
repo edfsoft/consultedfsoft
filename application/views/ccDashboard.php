@@ -193,7 +193,7 @@
                 </p>
 
                 <!-- Section-1 -->
-                <div class="d-md-flex justify-content-evenly">
+                <div class="d-lg-flex justify-content-evenly">
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconcc1.svg" alt="icon1" />
@@ -498,14 +498,13 @@
                                     <thead>
                                         <tr>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">S.NO</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">PHOTO</th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">ID</th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">NAME</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">MOBILE
+                                            </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">GENDER
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">AGE</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">DIAGNOSIS
-                                            </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">HCP ID
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">ACTION
@@ -539,35 +538,31 @@
                         if (itemsToShow.length === 0) {
                             const noMatchesRow = document.createElement('tr');
                             noMatchesRow.innerHTML = `
-                    <td colspan="9" class="text-center">No matches found.</td>
-                `;
+                                    <td colspan="9" class="text-center">No matches found.</td>
+                                `;
                             patientContainer.appendChild(noMatchesRow);
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const patientRow = document.createElement('tr');
                                 patientRow.innerHTML = `
-                        <td>${start + index + 1}.</td>
-                        <td class="px-2">
-                            <img src="${value.profilePhoto && value.profilePhoto !== "No data" ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
-                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
-                        </td>
-                        <td style="font-size: 16px">${value.patientId}</td>
-                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                        <td style="font-size: 16px">${value.gender}</td>
-                        <td style="font-size: 16px">${value.age}</td>
-                        <td style="font-size: 16px">${value.diagonsis}</td>
-                        <td style="font-size: 16px">
-                            <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" 
-                                class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
-                                ${value.patientHcp}
-                            </a>
-                        </td>
-                        <td style="font-size: 16px">
-                            <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
-                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                            </a>
-                        </td>
-                    `;
+                                        <td>${start + index + 1}.</td>
+                                        <td style="font-size: 16px">${value.patientId}</td>
+                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                                        <td style="font-size: 16px">${value.mobileNumber}</td>
+                                        <td style="font-size: 16px">${value.gender}</td>
+                                        <td style="font-size: 16px">${value.age}</td>
+                                        <td style="font-size: 16px">
+                                            <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" 
+                                                class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
+                                                ${value.patientHcp}
+                                            </a>
+                                        </td>
+                                        <td style="font-size: 16px">
+                                            <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
+                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
+                                            </a>
+                                        </td>
+                                    `;
                                 patientContainer.appendChild(patientRow);
                             });
                         }
@@ -585,10 +580,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                <a href="#">
-                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                </a>
-            `;
+                                <a href="#">
+                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                </a>
+                            `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayPatientPage(currentPage - 1);
                         };
@@ -600,20 +595,20 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                    <a href="#">
-                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                    </a>
-                `;
+                                    <a href="#">
+                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                    </a>
+                                `;
                             li.onclick = () => displayPatientPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                <a href="#">
-                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                </a>
-            `;
+                                <a href="#">
+                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                </a>
+                            `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                         };
@@ -696,8 +691,8 @@
                                         </p>
                                     </div>
                                     <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Date of Birth </span> -
-                                    <?php echo $value['dob'] ?>
+                                        <p class="col-sm-6"><span class="text-secondary ">Age </span> -
+                                    <?php echo $value['age'] ?>
                                         </p>
                                         <p><span class="text-secondary ">Married status</span> - <?php echo $value['marriedSince'] ?>
                                     <?php echo $value['maritalStatus'] ?>
@@ -1048,25 +1043,25 @@
                                         const noMatchesDiv = document.createElement('div');
                                         noMatchesDiv.className = 'col-12 text-center';
                                         noMatchesDiv.innerHTML = `
-                                <p>No matches found.</p>
-                            `;
+                                                                        <p>No matches found.</p>
+                                                                    `;
                                         hcpContainer.appendChild(noMatchesDiv);
                                     } else {
                                         itemsToShow.forEach(value => {
                                             const hcpItem = document.createElement('div');
                                             hcpItem.className = 'card col-lg-4 m-3 hcp-item';
                                             hcpItem.innerHTML = `
-                                    <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                        <img src="${value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
-                                             alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
-                                        <div>
-                                            <p class="card-title"><b>${value.hcpName}</b> /<br>${value.hcpId}</p>
-                                            <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
-                                            <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.id}" 
-                                               class="btn btn-secondary">Full Details</a>
-                                        </div>
-                                    </div>
-                                `;
+                                                                            <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                                                <img src="${value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
+                                                                                     alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
+                                                                                <div>
+                                                                                    <p class="card-title"><b>${value.hcpName}</b> /<br>${value.hcpId}</p>
+                                                                                    <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
+                                                                                    <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.id}" 
+                                                                                       class="btn btn-secondary">Full Details</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        `;
                                             hcpContainer.appendChild(hcpItem);
                                         });
                                     }
@@ -1084,10 +1079,10 @@
 
                                     const prevLi = document.createElement('li');
                                     prevLi.innerHTML = `
-                            <a href="#">
-                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                            </a>
-                        `;
+                                                                    <a href="#">
+                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                    </a>
+                                                                `;
                                     prevLi.onclick = () => {
                                         if (currentPage > 1) displayHcpPage(currentPage - 1);
                                     };
@@ -1096,20 +1091,20 @@
                                     for (let i = 1; i <= totalPages; i++) {
                                         const li = document.createElement('li');
                                         li.innerHTML = `
-                                <a href="#">
-                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                </a>
-                            `;
+                                                                        <a href="#">
+                                                                            <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                        </a>
+                                                                    `;
                                         li.onclick = () => displayHcpPage(i);
                                         ul.appendChild(li);
                                     }
 
                                     const nextLi = document.createElement('li');
                                     nextLi.innerHTML = `
-                            <a href="#">
-                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                            </a>
-                        `;
+                                                                    <a href="#">
+                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                    </a>
+                                                                `;
                                     nextLi.onclick = () => {
                                         if (currentPage < totalPages) displayHcpPage(currentPage + 1);
                                     };
@@ -1449,12 +1444,14 @@
                                                                 <div class="form-group pb-3">
                                                                     <label class="form-label" for="specialization">Specialization</label>
                                                                     <select class="form-control" id="specialization" name="specialization">
-                                                                        <option value="Diabetologist" <?php if ($value['specialization'] === "Diabetologist")
-                                                                            echo "Selected"; ?>>Diabetologist
-                                                                        </option>
-                                                                        <option value="General Practitioners" <?php if ($value['specialization'] === "General Practitioners")
-                                                                            echo "Selected"; ?>>
-                                                                            General Practitioners</option>
+                                                <?php
+                                                $defaultSelectedValue = $value['specialization'];
+                                                foreach ($specializationList as $key => $cvalue) {
+                                                    $selected = ($cvalue['specializationName'] == $defaultSelectedValue) ? 'selected' : ''; ?>
+                                                                            <option value="<?php echo $cvalue['specializationName'] ?>" <?php echo $selected ?>>
+                                                    <?php echo $cvalue['specializationName'] ?>
+                                                                            </option>
+                                            <?php } ?>
                                                                     </select>
                                                                     <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                 </div>

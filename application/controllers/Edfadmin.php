@@ -69,6 +69,8 @@ class edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $this->data['method'] = "ccRegisterForm";
+            $specList = $this->HcpModel->getSpecialization();
+            $this->data['specializationList'] = $specList;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
            redirect('Edfadmin/');
@@ -141,6 +143,8 @@ class edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $this->data['method'] = "hcpRegisterForm";
+            $specList = $this->HcpModel->getSpecialization();
+            $this->data['specializationList'] = $specList;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
            redirect('Edfadmin/');

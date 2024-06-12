@@ -9,15 +9,11 @@
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     <!-- Font -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 
     <style>
         body {
@@ -62,13 +58,10 @@
     <div class="container-fluid">
         <div class="row" id="bgcolor">
             <div class="col-md-6">
-                <img src="<?php echo base_url(); ?>assets/hcpbglogin.png" alt="Fixed Image"
-                    class="fixed-image img-fluid">
-                <div class="fixed-image-container text-center d-none d-md-block"
-                    style="position: fixed; top: 50%; left: 25%; transform: translate(-50%, -50%);">
+                <img src="<?php echo base_url(); ?>assets/hcpbglogin.png" alt="Fixed Image" class="fixed-image img-fluid">
+                <div class="fixed-image-container text-center d-none d-md-block" style="position: fixed; top: 50%; left: 25%; transform: translate(-50%, -50%);">
                     <p style="font-size:40px;font-weight:500;">Welcome to</p>
-                    <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="Overlay" class="img-fluid" width="226"
-                        height="106">
+                    <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="Overlay" class="img-fluid" width="226" height="106">
                     <p class="pt-3" style="font-size:18px;">Sign up to continue as <b>Health Care Provider</b>.</p>
                 </div>
             </div>
@@ -78,55 +71,46 @@
                     <p class="" style="font-size:24px;font-weight:600;">HEALTH CARE PROVIDER</p>
                     <p class="" style="font-size:18px;font-weight:400;">We're thrilled to have you join us on your
                         journey towards better health. </p>
-                    <form action="<?php echo base_url() . "Healthcareprovider/hcpSignup" ?>" method="post"
-                        name="hcpsignupform" onsubmit="return validateSignup()" oninput="return removeError()">
+                    <form action="<?php echo base_url() . "Healthcareprovider/hcpSignup" ?>" method="post" name="hcpsignupform" onsubmit="return validateSignup()" oninput="return removeError()">
                         <div class="mb-3">
                             <label for="hcpName" class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" name="hcpName" id="hcpName" placeholder="Suresh Kumar"
-                                class="form-control rounded-pill p-3">
+                            <input type="text" name="hcpName" id="hcpName" placeholder="Suresh Kumar" class="form-control rounded-pill p-3">
                             <div id="name_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="mb-3">
                             <label for="hcpMobile" class="form-label">Mobile <span class="text-danger">*</span></label>
-                            <input type="number" name="hcpMobile" id="hcpMobile" placeholder="9876543210"
-                                class="form-control rounded-pill p-3">
+                            <input type="number" name="hcpMobile" id="hcpMobile" placeholder="9876543210" class="form-control rounded-pill p-3">
                             <div id="mobile_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="mb-3">
                             <label for="hcpEmail" class="form-label">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com"
-                                class="form-control rounded-pill p-3">
+                            <input type="email" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com" class="form-control rounded-pill p-3">
                             <div id="mail_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="mb-3">
-                            <label for="hcpSpec" class="form-label">Specialization <span
-                                    class="text-danger">*</span></label>
+                            <label for="hcpSpec" class="form-label">Specialization <span class="text-danger">*</span></label>
                             <select class="form-control rounded-pill p-3" id="hcpSpec" name="hcpSpec">
                                 <option value="">Select Specialization</option>
                                 <?php
-                                    foreach ($specializationList as $key => $value) {
-                                        ?>
-                                       <option value="<?php echo $value['specializationName'] ?>">
+                                foreach ($specializationList as $key => $value) {
+                                ?>
+                                    <option value="<?php echo $value['specializationName'] ?>">
                                         <?php echo $value['specializationName'] ?> </option>
                                 <?php } ?>
                             </select>
                             <div id="spec_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="mb-3">
-                            <label for="hcpPassword" class="form-label">Password <span
-                                    class="text-danger">*</span></label>
-                            <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
-                                class="form-control rounded-pill p-3">
+                            <label for="hcpPassword" class="form-label">Password <span class="text-danger">*</span></label>
+                            <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password" class="form-control rounded-pill p-3">
                             <div id="password_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                             and a minimum of 8 characters.</div>
                         <div class="mb-3">
-                            <label for="hcpCnfmPassword" class="form-label">Confirm Password <span
-                                    class="text-danger">*</span></label>
-                            <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
-                                placeholder="confirm password" class="form-control rounded-pill p-3">
+                            <label for="hcpCnfmPassword" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                            <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword" placeholder="confirm password" class="form-control rounded-pill p-3">
                             <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                         </div>
 
@@ -135,12 +119,9 @@
                             <label for="check">I agree the Terms of Use and Privacy Policy.</label>
                         </div> -->
 
-                        <button type="submit" class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
-                            style="background-color:#00AD8E;font-size:16px;font-weight:600;">Sign Up</button>
+                        <button type="submit" class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3" style="background-color:#00AD8E;font-size:16px;font-weight:600;">Sign Up</button>
                     </form>
-                    <p class="mt-4" style="font-size:18px;font-weight:400;">Already have an account ? <a
-                            href="<?php echo base_url() . "Healthcareprovider/" ?>"
-                            class="text-decoration-none text-dark" style="font-weight:600;"> Login</a></p>
+                    <p class="mt-4" style="font-size:18px;font-weight:400;">Already have an account ? <a href="<?php echo base_url() . "Healthcareprovider/" ?>" class="text-decoration-none text-dark" style="font-weight:600;"> Login</a></p>
                 </div>
             </div>
         </div>
@@ -212,11 +193,11 @@
             }
         }
 
-        document.getElementById("hcpPassword").onfocus = function () {
+        document.getElementById("hcpPassword").onfocus = function() {
             document.getElementById("passwordmessage").style.display = "block";
         }
 
-        document.getElementById("hcpPassword").onblur = function () {
+        document.getElementById("hcpPassword").onblur = function() {
             document.getElementById("passwordmessage").style.display = "none";
         }
 
@@ -253,7 +234,6 @@
                 document.getElementById("cnfmpassword_err").innerHTML = "";
             }
         }
-
     </script>
 
     <!-- Event listener to block right-click -->
@@ -266,7 +246,7 @@
     </script>
     <!-- To hide page source -->
     <script>
-        document.onkeydown = function (e) {
+        document.onkeydown = function(e) {
             if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
                 return false;
             }

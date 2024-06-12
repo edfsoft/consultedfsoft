@@ -9,24 +9,20 @@
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     <!-- Font -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
 
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #ebebeb;
         }
-        
-         /* Form Labels */
-         .form-label {
+
+        /* Form Labels */
+        .form-label {
             font-weight: 500;
         }
     </style>
@@ -39,12 +35,10 @@
     <div class="d-flex align-middle justify-content-center">
         <div class="card mt-3 p-4 p-sm-5">
             <p class="fs-2 pb-3" style="font-weight:500;">Administrator Login</p>
-            <form action="<?php echo base_url() . "Edfadmin/adminLogin" ?>" method="post" name="hcploginform"
-                onsubmit="return validateLogin()">
+            <form action="<?php echo base_url() . "Edfadmin/adminLogin" ?>" method="post" name="hcploginform" onsubmit="return validateLogin()">
                 <div class="mb-3">
                     <label for="adminEmail" class="form-label">Email address <span class="text-danger">*</span></label>
-                    <input type="text" name="adminEmail" id="adminEmail" placeholder="example@gmail.com"
-                        oninput="validEmail(this)" class="form-control p-2">
+                    <input type="text" name="adminEmail" id="adminEmail" placeholder="example@gmail.com" oninput="validEmail(this)" class="form-control p-2">
                     <div id="mail_err" class="text-danger pt-1"></div>
                 </div>
                 <div class="mb-3">
@@ -57,16 +51,15 @@
                     and a minimum of 8 characters.</div> -->
 
                 <!-- <div class="d-flex justify-content-between"> -->
-                    <!-- <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a> -->
-                    <button type="submit"
-                        class="bg-primary border-0 rounded-1 text-light float-end mt-2 px-4 py-2">Login</button>
+                <!-- <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a> -->
+                <button type="submit" class="bg-primary border-0 rounded-1 text-light float-end mt-2 px-4 py-2">Login</button>
                 <!-- </div> -->
             </form>
         </div>
     </div>
 
     <script>
-      function validEmail(input) {
+        function validEmail(input) {
             const emailError = document.getElementById("mail_err");
             if (input.value != "") {
                 emailError.textContent = "";
@@ -113,7 +106,7 @@
     </script>
     <!-- Hide page source -->
     <script>
-        document.onkeydown = function (e) {
+        document.onkeydown = function(e) {
             if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
                 return false;
             }

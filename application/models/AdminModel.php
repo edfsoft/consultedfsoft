@@ -105,7 +105,7 @@ class AdminModel extends CI_Model
 
     public function getSpecializationList()
     {
-        $list = "SELECT * FROM `specialization_list` WHERE activeStatus = '0'";
+        $list = "SELECT * FROM `specialization_list` WHERE activeStatus = '0' ORDER BY `specializationName`";
         $select = $this->db->query($list);
         return $select->result_array();
     }
@@ -142,7 +142,7 @@ class AdminModel extends CI_Model
 
     public function getsymptomsList()
     {
-        $list = "SELECT * FROM `symptoms_list` WHERE activeStatus = '0'";
+        $list = "SELECT * FROM `symptoms_list` WHERE activeStatus = '0' ORDER BY `symptomsName`";
         $select = $this->db->query($list);
         return $select->result_array();
     }
@@ -167,7 +167,7 @@ class AdminModel extends CI_Model
 
     public function getMedicinesList()
     {
-        $list = "SELECT * FROM `medicines_list` WHERE activeStatus = '0'";
+        $list = "SELECT * FROM `medicines_list` WHERE activeStatus = '0' ORDER BY `medicineName`";
         $select = $this->db->query($list);
         return $select->result_array();
     }
@@ -180,6 +180,6 @@ class AdminModel extends CI_Model
     }
 
 
-    
+
 }
 ?>

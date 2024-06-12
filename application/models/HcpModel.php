@@ -108,6 +108,8 @@ class HcpModel extends CI_Model
             $error = $this->upload->display_errors();
         }
 
+        $medicine = $post['patientMedicines'] != "addNew" ? $post['patientMedicines'] : $post['newMedicineBrand'] . " / " . $post['newMedicineName'] . " / " . $post['newMedicineSrength'];
+
         $insertdata = array(
             'firstName' => $post['patientName'],
             'lastName' => $post['patientLastName'],
@@ -135,13 +137,23 @@ class HcpModel extends CI_Model
             'bloodSugar' => $post['patientBsugar'],
             'diagonsis	' => $post['patientDiagonsis'],
             'symptoms' => $post['patientSymptoms'],
-            'medicines	' => $post['patientMedicines'],
+            'medicines' => $medicine,
             'documentOne' => $firstDocument,
             'documentTwo' => $secondDocument,
             'patientHcp	' => $_SESSION['hcpId'],
             'patientHcpDbId	' => $_SESSION['hcpIdDb'],
         );
         $this->db->insert('patient_details', $insertdata);
+
+        if ($post['patientMedicines'] == "addNew") {
+            $post = $this->input->post(null, true);
+            $insert = array(
+                'medicineBrand' => $post['newMedicineBrand'],
+                'medicineName' => $post['newMedicineName'],
+                'strength' => $post['newMedicineSrength']
+            );
+            $this->db->insert('medicines_list', $insert);
+        }
     }
 
     public function updatePatients()
@@ -380,21 +392,21 @@ class HcpModel extends CI_Model
 
     public function getSpecialization()
     {
-        $details = "SELECT * FROM `specialization_list` ORDER BY `id` ";
+        $details = "SELECT * FROM `specialization_list` ORDER BY `specializationName` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
     public function getSymptoms()
     {
-        $details = "SELECT * FROM `symptoms_list` ORDER BY `id` ";
+        $details = "SELECT * FROM `symptoms_list` ORDER BY `symptomsName` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
     public function getMedicines()
     {
-        $details = "SELECT * FROM `medicines_list` ORDER BY `id` ";
+        $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }

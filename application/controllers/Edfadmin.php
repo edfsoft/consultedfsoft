@@ -82,9 +82,12 @@ class edfadmin extends CI_Controller
         $ccMobileNum = $this->input->post('ccMobile');
 
         if ($this->CcModel->checkUserExistence($ccMobileNum)) {
-            echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
-            $this->ccList();
-        } else {
+            echo '<script type="text/javascript">
+                    alert("Mobile number already exists. Please use a new number.");
+                    window.location.href = "' . site_url('Edfadmin/ccList') . '";
+                  </script>';
+            exit();
+             } else {
             $postData = $this->input->post(null, true);
             $register = $this->CcModel->register();
             $generateid = $this->CcModel->generateCcId();
@@ -156,8 +159,11 @@ class edfadmin extends CI_Controller
         $hcpMobileNum = $this->input->post('hcpMobile');
 
         if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
-            echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
-            redirect('Edfadmin/hcpList');
+             echo '<script type="text/javascript">
+            alert("Mobile number already exists. Please use a new number.");
+            window.location.href = "' . site_url('Edfadmin/hcpList') . '";
+          </script>';
+    exit();
         } else {
             $postData = $this->input->post(null, true);
             $register = $this->HcpModel->register();

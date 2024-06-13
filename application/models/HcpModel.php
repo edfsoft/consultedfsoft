@@ -78,6 +78,13 @@ class HcpModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
+    public function checkPatientExistence($patientMobileNum)
+    {
+        $this->db->where('mobileNumber', $patientMobileNum);
+        $query = $this->db->get('patient_details');
+        return $query->num_rows() > 0;
+    }
+
     public function insertPatients()
     {
         $post = $this->input->post(null, true);

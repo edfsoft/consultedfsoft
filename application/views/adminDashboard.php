@@ -458,9 +458,13 @@
                                         <label for="ccSpec" class="form-label">Specialization <span
                                                 class="text-danger">*</span></label>
                                         <select class="form-control " id="ccSpec" name="ccSpec">
-                                            <option value="">Select Specialization</option>
-                                            <option value="Diabetologist">Diabetologist</option>
-                                            <option value="General Practitioners">General Practitioners</option>
+                                        <option value="">Select Specialization</option>
+                                <?php
+                                foreach ($specializationList as $key => $value) {
+                                ?>
+                                    <option value="<?php echo $value['specializationName'] ?>">
+                                        <?php echo $value['specializationName'] ?> </option>
+                                <?php } ?>
                                         </select>
                                         <div id="spec_err" class="text-danger pt-1"></div>
                                     </div>
@@ -986,9 +990,13 @@
                                                     <label for="hcpSpec" class="form-label">Specialization <span
                                                             class="text-danger">*</span></label>
                                                     <select class="form-control" id="hcpSpec" name="hcpSpec">
-                                                        <option value="">Select Specialization</option>
-                                                        <option value="Diabetologist">Diabetologist</option>
-                                                        <option value="General Practitioners">General Practitioners</option>
+                                                    <option value="">Select Specialization</option>
+                                <?php
+                                foreach ($specializationList as $key => $value) {
+                                ?>
+                                    <option value="<?php echo $value['specializationName'] ?>">
+                                        <?php echo $value['specializationName'] ?> </option>
+                                <?php } ?>
                                                     </select>
                                                     <div id="spec_err" class="text-danger pt-1"></div>
                                                 </div>

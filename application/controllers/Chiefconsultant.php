@@ -29,8 +29,11 @@ class chiefconsultant extends CI_Controller
         $ccMobileNum = $this->input->post('ccMobile');
 
         if ($this->CcModel->checkUserExistence($ccMobileNum)) {
-            echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
-            redirect('Chiefconsultant/register');
+            echo '<script type="text/javascript">
+            alert("Mobile number already exists. Please use a new number.");
+            window.location.href = "' . site_url('Chiefconsultant/register') . '";
+          </script>';
+            exit();
         } else {
             $postData = $this->input->post(null, true);
             $register = $this->CcModel->register();
@@ -52,13 +55,19 @@ class chiefconsultant extends CI_Controller
                 'ccMobileNum' => $login[0]['doctorMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
-             redirect('Chiefconsultant/dashboard');
+            redirect('Chiefconsultant/dashboard');
         } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus'] == 0) {
-            redirect('Chiefconsultant/');
-            echo '<script>alert("You can log in once the verification process is done.");</script>';
+             echo '<script type="text/javascript">
+            alert("You can log in once the verification process is done.");
+            window.location.href = "' . site_url('Chiefconsultant/') . '";
+          </script>';
+            exit();
         } else {
-            redirect('Chiefconsultant/');
-            echo '<script>alert("Please enter registered details.");</script>';
+            echo '<script type="text/javascript">
+            alert("Please enter registered details.");
+            window.location.href = "' . site_url('Chiefconsultant/') . '";
+          </script>';
+            exit();
         }
     }
 
@@ -184,15 +193,15 @@ class chiefconsultant extends CI_Controller
     public function updatePhoto()
     {
         $profileDetails = $this->CcModel->updateProfilePhoto();
-         redirect('Chiefconsultant/editMyProfile');
+        redirect('Chiefconsultant/editMyProfile');
     }
 
     public function updateMyProfile()
     {
         $profileDetails = $this->CcModel->updateProfileDetails();
-         redirect('Chiefconsultant/myProfile');
+        redirect('Chiefconsultant/myProfile');
     }
- 
+
     public function logout()
     {
         // $this->session->unset_userdata('LoggedInDetails');

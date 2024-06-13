@@ -28,8 +28,11 @@ class healthcareprovider extends CI_Controller
         $hcpMobileNum = $this->input->post('hcpMobile');
 
         if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
-            echo '<script>alert("Mobile number already exists. Please use a new number.");</script>';
-            redirect('Healthcareprovider/register');
+            echo '<script type="text/javascript">
+                    alert("Mobile number already exists. Please use a new number.");
+                    window.location.href = "' . site_url('Healthcareprovider/register') . '";
+                  </script>';
+            exit();
         } else {
             $postData = $this->input->post(null, true);
             $register = $this->HcpModel->register();
@@ -52,11 +55,17 @@ class healthcareprovider extends CI_Controller
             $this->session->set_userdata($LoggedInDetails);
             redirect('Healthcareprovider/dashboard');
         } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus'] == 0) {
-            redirect('Healthcareprovider/');
-            echo '<script>alert("You can log in once the verification process is done.");</script>';
+            echo '<script type="text/javascript">
+            alert("You can log in once the verification process is done.");
+            window.location.href = "' . site_url('Healthcareprovider/') . '";
+          </script>';
+            exit();
         } else {
-            redirect('Healthcareprovider/');
-            echo '<script>alert("Please enter registered details.");</script>';
+            echo '<script type="text/javascript">
+            alert("Please enter registered details.");
+            window.location.href = "' . site_url('Healthcareprovider/') . '";
+          </script>';
+            exit();
         }
     }
 
@@ -106,10 +115,28 @@ class healthcareprovider extends CI_Controller
 
     public function addPatientsForm()
     {
-        $profileDetails = $this->HcpModel->insertPatients();
-        $generateid = $this->HcpModel->generatePatientId();
-        redirect('Healthcareprovider/patients');
+        $post = $this->input->post(null, true);
+        $patientMobileNum = $post['patientMobile'];
+
+        if ($this->HcpModel->checkPatientExistence($patientMobileNum)) {
+            echo '<script type="text/javascript">
+                    alert("Mobile number already exists. Please use a new number.");
+                    window.location.href = "' . site_url('Healthcareprovider/patientform') . '";
+                  </script>';
+            exit();
+        } else {
+            $profileDetails = $this->HcpModel->insertPatients();
+            $generateid = $this->HcpModel->generatePatientId();
+            redirect('Healthcareprovider/patients');
+        }
     }
+
+    // public function addPatientsForm()
+    // {
+    //     $profileDetails = $this->HcpModel->insertPatients();
+    //     $generateid = $this->HcpModel->generatePatientId();
+    //     redirect('Healthcareprovider/patients');
+    // }
 
     public function patientdetails()
     {

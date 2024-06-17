@@ -244,10 +244,11 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
-    <!-- To hide page source -->
+
+    <!-- To hide page source Ctrl + U -->
     <script>
         document.onkeydown = function(e) {
-            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+            if (e.ctrlKey && e.keyCode === 85) {
                 return false;
             }
         };

@@ -457,7 +457,7 @@
                                     <div class="mb-3">
                                         <label for="ccSpec" class="form-label">Specialization <span
                                                 class="text-danger">*</span></label>
-                                        <select class="form-control " id="ccSpec" name="ccSpec">
+                                        <select class="form-select " id="ccSpec" name="ccSpec">
                                         <option value="">Select Specialization</option>
                                 <?php
                                 foreach ($specializationList as $key => $value) {
@@ -989,7 +989,7 @@
                                                 <div class="mb-3">
                                                     <label for="hcpSpec" class="form-label">Specialization <span
                                                             class="text-danger">*</span></label>
-                                                    <select class="form-control" id="hcpSpec" name="hcpSpec">
+                                                    <select class="form-select" id="hcpSpec" name="hcpSpec">
                                                     <option value="">Select Specialization</option>
                                 <?php
                                 foreach ($specializationList as $key => $value) {

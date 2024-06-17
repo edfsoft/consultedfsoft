@@ -89,7 +89,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="ccSpec" class="form-label">Specialization <span class="text-danger">*</span></label>
-                            <select class="form-control rounded-pill p-3" id="ccSpec" name="ccSpec">
+                            <select class="form-select rounded-pill p-3" id="ccSpec" name="ccSpec">
                                 <option value="">Select Specialization</option>
                                 <?php
                                 foreach ($specializationList as $key => $value) {

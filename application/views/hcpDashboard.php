@@ -553,32 +553,32 @@
                         if (itemsToShow.length === 0) {
                             const noMatchesRow = document.createElement('tr');
                             noMatchesRow.innerHTML = `
-                                                                                                                    <td colspan="8" class="text-center">No matches found.</td>
-                                                                                                                    `;
+                                                                                                                                                    <td colspan="8" class="text-center">No matches found.</td>
+                                                                                                                                                    `;
                             patientContainer.appendChild(noMatchesRow);
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const patientRow = document.createElement('tr');
                                 patientRow.innerHTML = `
-                                                                                                                        <td>${start + index + 1}.</td>
-                                                                                                                        <td class="px-2">
-                                                                                                                            <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
-                                                                                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
-                                                                                                                        </td>
-                                                                                                                        <td style="font-size: 16px">${value.patientId}</td>
-                                                                                                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                                                                                                                        <td style="font-size: 16px">${value.mobileNumber}</td>
-                                                                                                                        <td style="font-size: 16px">${value.gender}</td>
-                                                                                                                        <td style="font-size: 16px">${value.age}</td>
-                                                                                                                        <td class="d-flex d-lg-block" style="font-size: 16px">
-                                                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
-                                                                                                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                                                                                                                            </a>
-                                                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}" class="px-1">
-                                                                                                                                <button class="btn btn-secondary"><i class="bi bi-pencil"></i></button>
-                                                                                                                            </a>
-                                                                                                                        </td>
-                                                                                                                    `;
+                                                                                                                                                        <td>${start + index + 1}.</td>
+                                                                                                                                                        <td class="px-2">
+                                                                                                                                                            <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
+                                                                                                                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                                                                                                        </td>
+                                                                                                                                                        <td style="font-size: 16px">${value.patientId}</td>
+                                                                                                                                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                                                                                                                                                        <td style="font-size: 16px">${value.mobileNumber}</td>
+                                                                                                                                                        <td style="font-size: 16px">${value.gender}</td>
+                                                                                                                                                        <td style="font-size: 16px">${value.age}</td>
+                                                                                                                                                        <td class="d-flex d-lg-block" style="font-size: 16px">
+                                                                                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
+                                                                                                                                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
+                                                                                                                                                            </a>
+                                                                                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}" class="px-1">
+                                                                                                                                                                <button class="btn btn-secondary"><i class="bi bi-pencil"></i></button>
+                                                                                                                                                            </a>
+                                                                                                                                                        </td>
+                                                                                                                                                    `;
                                 patientContainer.appendChild(patientRow);
                             });
                         }
@@ -596,10 +596,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                                                                                                                <a href="#">
-                                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                                </a>
-                                                                                                            `;
+                                                                                                                                                <a href="#">
+                                                                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                                                                </a>
+                                                                                                                                            `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayPatientPage(currentPage - 1);
                         };
@@ -611,20 +611,20 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                                                                                                                    <a href="#">
-                                                                                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                    </a>
-                                                                                                                `;
+                                                                                                                                                    <a href="#">
+                                                                                                                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                                    </a>
+                                                                                                                                                `;
                             li.onclick = () => displayPatientPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                                                                                                                <a href="#">
-                                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                </a>
-                                                                                                            `;
+                                                                                                                                                <a href="#">
+                                                                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                                </a>
+                                                                                                                                            `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                         };
@@ -726,7 +726,7 @@
                                             </div>
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="patientBlood">Blood Group</label>
-                                                <select class="form-control" id="patientBlood" name="patientBlood">
+                                                <select class="form-select" id="patientBlood" name="patientBlood">
                                                     <option value="">Select Blood Group</option>
                                                     <option value="A +ve">A +ve</option>
                                                     <option value="A -ve">A -ve</option>
@@ -741,7 +741,7 @@
                                             </div>
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="patientMarital">Marital Status</label>
-                                                <select class="form-control" id="patientMarital" name="patientMarital">
+                                                <select class="form-select" id="patientMarital" name="patientMarital">
                                                     <option value="">Select Marital Status</option>
                                                     <option value="Single">Single</option>
                                                     <option value="Married">Married</option>
@@ -806,7 +806,7 @@
                                             </div>
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
-                                                <select class="form-control" id="partnerBlood" name="partnerBlood">
+                                                <select class="form-select" id="partnerBlood" name="partnerBlood">
                                                     <option value="">Select Blood Group</option>
                                                     <option value="A +ve">A +ve</option>
                                                     <option value="A -ve">A -ve</option>
@@ -878,8 +878,8 @@
                                                 <input type="text" id="patientSymptoms" name="patientSymptoms" readonly
                                                     class="form-control" hidden>
                                                 <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer"> </div>
-                                                <select class="form-control" id="multiSelectSymptoms" style="height:100px; "
-                                                    multiple>
+                                                <select class="form-select" id="multiSelectSymptoms">
+                                                    <option value="" selected disabled>Select Symptoms</option>
                                                 <?php
                                                 $count = 0;
                                                 foreach ($symptomsList as $key => $value) {
@@ -896,7 +896,7 @@
 
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="patientMedicines">Medicines</label>
-                                                <select class="form-control" id="patientMedicines" name="patientMedicines"
+                                                <select class="form-select" id="patientMedicines" name="patientMedicines"
                                                     oninput="addNewMedicines()">
                                                     <option value="">Select Medicines</option>
                                                 <?php
@@ -958,20 +958,19 @@
                                 selectedValuesContainer.innerHTML = '';
                                 selectedValues.forEach(value => {
                                     const span = document.createElement('span');
-                                    span.classList.add('selected-value');
-                                    span.classList.add('mx-2', 'p-2', 'rounded-2', 'text-dark', 'border', 'me-2');
-                                    span.style.backgroundColor = '#e0e0e0';
+                                    span.classList.add('badge', 'bg-secondary', 'me-2', 'd-inline-flex', 'align-items-center');
                                     span.textContent = value;
                                     const button = document.createElement('button');
-                                    button.textContent = 'x';
-                                    button.classList.add('rounded-circle', 'border-0', 'ms-2', 'px-2');
+                                    button.innerHTML = '&times;';
+                                    button.classList.add('btn-close', 'btn-close-white', 'ms-2');
                                     button.addEventListener('click', () => {
                                         selectedValues.delete(value);
                                         updateSelectedValues();
                                         Array.from(multiSelect.options).forEach(option => {
                                             if (option.value === value) {
+                                                option.classList.remove('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                                 option.selected = false;
-                                                option.disabled = false;
+                                                option.textContent = option.textContent.replace(' ✓', '').trim();
                                             }
                                         });
                                     });
@@ -986,7 +985,11 @@
                                 const selectedOptions = Array.from(multiSelect.selectedOptions);
                                 selectedOptions.forEach(option => {
                                     selectedValues.add(option.value);
-                                    option.disabled = true;
+                                    option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
+                                    if (!option.innerHTML.includes('✓')) {
+                                        option.innerHTML = `<span>${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
+
+                                    }
                                 });
                                 updateSelectedValues();
                             });
@@ -1184,7 +1187,7 @@
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientGender">Gender <span
                                                                     class="text-danger">*</span></label>
-                                                            <select class="form-control" id="patientGender" name="patientGender">
+                                                            <select class="form-select" id="patientGender" name="patientGender">
                                                                 <option value="">Select Gender</option>
                                                                 <option value="Male" <?php if (isset($value['gender']) && $value['gender'] === 'Male')
                                                                     echo 'selected'; ?>>Male</option>
@@ -1202,7 +1205,7 @@
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientBlood">Blood Group</label>
-                                                            <select class="form-control" id="patientBlood" name="patientBlood">
+                                                            <select class="form-select" id="patientBlood" name="patientBlood">
                                                                 <option value="">Select Blood Group</option>
                                                                 <option value="A +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'A +ve')
                                                                     echo 'selected'; ?>>A +ve</option>
@@ -1225,7 +1228,7 @@
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientMarital">Marital Status</label>
-                                                            <select class="form-control" id="patientMarital" name="patientMarital">
+                                                            <select class="form-select" id="patientMarital" name="patientMarital">
                                                                 <option value="">Select Marital Status</option>
                                                                 <option value="Single" <?php if (isset($value['maritalStatus']) && $value['maritalStatus'] === 'Single')
                                                                     echo 'selected'; ?>>Single</option>
@@ -1290,7 +1293,7 @@
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
-                                                            <select class="form-control" id="partnerBlood" name="partnerBlood">
+                                                            <select class="form-select" id="partnerBlood" name="partnerBlood">
                                                                 <option value="">Select Blood Group</option>
                                                                 <option value="A +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'A +ve')
                                                                     echo 'selected'; ?>>A +ve</option>
@@ -1377,8 +1380,8 @@
                                                                 placeholder="Select symptoms">
                                                             <div class="selected-values-container my-2 p-2" id="selectedValuesContainer">
                                                             </div>
-                                                            <select class="form-control" id="multiSelectSymptoms" style="height:100px; "
-                                                                multiple>
+                                                            <select class="form-select" id="multiSelectSymptoms" >
+                                                            <option value="" selected disabled >Select Symptoms</option>
                                                         <?php
                                                         $count = 0;
                                                         foreach ($symptomsList as $key => $svalue) {
@@ -1387,17 +1390,17 @@
                                                                     <option value="<?php echo $svalue['symptomsName'] ?>">
                                                             <?php echo $count . '. ' . $svalue['symptomsName'] ?>
                                                                     </option>
-
                                                     <?php } ?>
                                                             </select>
                                                             <div id="symptoms_err" class="text-danger pt-1"></div>
                                                         </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientMedicines">Medicines</label>
-                                                            <select class="form-control" id="patientMedicines" name="patientMedicines">
-                                                                <option value="<?php echo $value['medicines']; ?>">
+                                                            <select class="form-select" id="patientMedicines" name="patientMedicines">
+                                                            <option value="">Select Medicine</option>
+                                                                <!-- <option value="<?php echo $value['medicines']; ?>">
                                                         <?php echo $value['medicines']; ?>
-                                                                </option>
+                                                                </option> -->
                                                         <?php
                                                         foreach ($medicinesList as $key => $mvalue) {
                                                             ?>
@@ -1969,7 +1972,7 @@
                                                                 <div class="form-group pb-2">
                                                                     <label class="form-label" for="patientId">Patient Id <span
                                                                             class="text-danger">*</span></label>
-                                                                    <select class="form-control" name="patientId" id="patientId">
+                                                                    <select class="form-select" name="patientId" id="patientId">
                                                                         <option value="">Select Patient Id</option>
                                                     <?php
                                                     foreach ($patientsId as $key => $value) {
@@ -1991,7 +1994,7 @@
                                                                 <div class="form-group pb-3">
                                                                     <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                                             class="text-danger">*</span></label>
-                                                                    <select class="form-control" name="referalDoctor" id="referalDoctor">
+                                                                    <select class="form-select" name="referalDoctor" id="referalDoctor">
                                                                         <option value="">Select Chief Consultant Id</option>
                                                     <?php
                                                     foreach ($ccsId as $key => $value) {
@@ -2022,7 +2025,7 @@
                                                                 <div class="form-group pb-3">
                                                                     <label class="form-label" for="dayTime">Part of a day <span
                                                                             class="text-danger">*</span></label>
-                                                                    <select class="form-control" id="dayTime" name="dayTime"
+                                                                    <select class="form-select" id="dayTime" name="dayTime"
                                                                         onchange="displayTime()">
                                                                         <option value="">Select time</option>
                                                                         <option value="Morning">Morning</option>
@@ -2182,7 +2185,6 @@
                                                                         value="22:00">10:00 PM</button>
                                                                     <button type="button" class="timeButton btn btn-outline-secondary my-1"
                                                                         value="22:10">10:10 PM</button>
-
                                                                 </div>
                                                                 <div class="form-group pb-3">
                                                                     <label class="form-label" for="appTime">Time <span
@@ -2198,8 +2200,8 @@
                                                                         hidden>
                                                                     <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer">
                                                                     </div>
-                                                                    <select class="form-control" id="multiSelectSymptoms" style="height:100px; "
-                                                                        multiple>
+                                                                    <select class="form-select" id="multiSelectSymptoms">
+                                                                        <option value="" selected disabled >Select Symptoms</option>
                                                     <?php
                                                     $count = 0;
                                                     foreach ($symptomsList as $key => $value) {
@@ -2243,20 +2245,19 @@
                                                 selectedValuesContainer.innerHTML = '';
                                                 selectedValues.forEach(value => {
                                                     const span = document.createElement('span');
-                                                    span.classList.add('selected-value');
-                                                    span.classList.add('mx-2', 'p-2', 'rounded-2', 'text-dark', 'border', 'me-2');
-                                                    span.style.backgroundColor = '#e0e0e0';
+                                                    span.classList.add('badge', 'bg-secondary', 'me-2', 'd-inline-flex', 'align-items-center');
                                                     span.textContent = value;
                                                     const button = document.createElement('button');
-                                                    button.textContent = 'x';
-                                                    button.classList.add('rounded-circle', 'border-0', 'ms-2', 'px-2');
+                                                    button.innerHTML = '&times;';
+                                                    button.classList.add('btn-close', 'btn-close-white', 'ms-2');
                                                     button.addEventListener('click', () => {
                                                         selectedValues.delete(value);
                                                         updateSelectedValues();
                                                         Array.from(multiSelect.options).forEach(option => {
                                                             if (option.value === value) {
+                                                                option.classList.remove('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                                                 option.selected = false;
-                                                                option.disabled = false;
+                                                                option.textContent = option.textContent.replace(' ✓', '').trim();
                                                             }
                                                         });
                                                     });
@@ -2271,7 +2272,11 @@
                                                 const selectedOptions = Array.from(multiSelect.selectedOptions);
                                                 selectedOptions.forEach(option => {
                                                     selectedValues.add(option.value);
-                                                    option.disabled = true;
+                                                    option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
+                                                    if (!option.innerHTML.includes('✓')) {
+                                                        option.innerHTML = `<span>${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
+
+                                                    }
                                                 });
                                                 updateSelectedValues();
                                             });
@@ -2498,17 +2503,17 @@
                                                         const doctorItem = document.createElement('div');
                                                         doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
                                                         doctorItem.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                                                                                                                                                                                                                                                                                                                                                                                    <img src="${value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
-                                                                                                                                                                                                                                                                                                                                                                                                                        alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
-                                                                                                                                                                                                                                                                                                                                                                                                                    <div>
-                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="card-title"><b>${value.doctorName}</b>/<br>${value.ccId}</p>
-                                                                                                                                                                                                                                                                                                                                                                                                                        <p style="color: #00ad8e;"><b>${value.specialization}</b></p>
-                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/${value.id}" 
-                                                                                                                                                                                                                                                                                                                                                                                                                           class="btn btn-secondary">Full Details</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                                                                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <img src="${value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="card-title"><b>${value.doctorName}</b>/<br>${value.ccId}</p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p style="color: #00ad8e;"><b>${value.specialization}</b></p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/${value.id}" 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           class="btn btn-secondary">Full Details</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
                                                         doctorContainer.appendChild(doctorItem);
                                                     });
                                                 }
@@ -2526,10 +2531,10 @@
 
                                                 const prevLi = document.createElement('li');
                                                 prevLi.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                        <a href="#">
-                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                                                                                                                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                                                                                                                                                                                                        `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="#">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `;
                                                 prevLi.onclick = () => {
                                                     if (currentPage > 1) displayPage(currentPage - 1);
                                                 };
@@ -2538,20 +2543,20 @@
                                                 for (let i = 1; i <= totalPages; i++) {
                                                     const li = document.createElement('li');
                                                     li.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                            <a href="#">
-                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                                                                                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                                                                                                                                                                                        `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="#">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `;
                                                     li.onclick = () => displayPage(i);
                                                     ul.appendChild(li);
                                                 }
 
                                                 const nextLi = document.createElement('li');
                                                 nextLi.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                        <a href="#">
-                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                                                                                                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                                                                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="#">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `;
                                                 nextLi.onclick = () => {
                                                     if (currentPage < totalPages) displayPage(currentPage + 1);
                                                 };

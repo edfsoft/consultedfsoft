@@ -89,7 +89,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="hcpSpec" class="form-label">Specialization <span class="text-danger">*</span></label>
-                            <select class="form-control rounded-pill p-3" id="hcpSpec" name="hcpSpec">
+                            <select class="form-select rounded-pill p-3" id="hcpSpec" name="hcpSpec">
                                 <option value="">Select Specialization</option>
                                 <?php
                                 foreach ($specializationList as $key => $value) {
@@ -244,10 +244,11 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
-    <!-- To hide page source -->
+
+    <!-- To hide page source Ctrl + U -->
     <script>
         document.onkeydown = function(e) {
-            if (e.ctrlKey && e.keyCode === 85) { // Check if Ctrl + U is pressed
+            if (e.ctrlKey && e.keyCode === 85) {
                 return false;
             }
         };

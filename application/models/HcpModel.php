@@ -308,7 +308,7 @@ class HcpModel extends CI_Model
     public function getAppointmentList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId`=  $hcpIdDb ORDER BY `dateOfAppoint`, `timeOfAppoint`";
+        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND `dateOfAppoint` >= CURDATE() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

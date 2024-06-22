@@ -136,10 +136,12 @@
                 <a class="" href="<?php echo base_url() . "Chiefconsultant/appointments" ?>" style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                     <div>
                         <i class="bi bi-calendar4 pe-3"></i> <span>Appointments</span>
+                        <?php if($appointmentListCount > 0) { ?>
                         <p class="text-dark float-end">
                             <i class="fas fa-envelope fa-2x"></i>
                             <span class="badge rounded-pill badge-notification bg-danger"><?php echo $appointmentListCount ?></span>
                         </p>
+                        <?php } ?>
                     </div>
                 </a>
             </li>
@@ -432,6 +434,7 @@
             <script>
                 document.getElementById('patients').style.color = "#66D1FF";
             </script>
+  
             <section>
                 <div class="card rounded">
                     <div class="card-body p-2 p-sm-4">

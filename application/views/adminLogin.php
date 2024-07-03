@@ -9,11 +9,18 @@
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 
     <!-- Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+
+    <!-- Vendor CSS Files -->
+    <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
 
     <style>
         body {
@@ -30,29 +37,37 @@
 
 <body>
     <div class="text-center mt-5">
-        <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo" width="200" height="90"></a>
+        <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo"
+                width="200" height="90"></a>
     </div>
     <div class="d-flex align-middle justify-content-center">
         <div class="card mt-3 p-4 p-sm-5">
             <p class="fs-2 pb-3" style="font-weight:500;">Administrator Login</p>
-            <form action="<?php echo base_url() . "Edfadmin/adminLogin" ?>" method="post" name="hcploginform" onsubmit="return validateLogin()">
+            <form action="<?php echo base_url() . "Edfadmin/adminLogin" ?>" method="post" name="hcploginform"
+                onsubmit="return validateLogin()">
                 <div class="mb-3">
                     <label for="adminEmail" class="form-label">Email address <span class="text-danger">*</span></label>
-                    <input type="text" name="adminEmail" id="adminEmail" placeholder="example@gmail.com" oninput="validEmail(this)" class="form-control p-2">
+                    <input type="text" name="adminEmail" id="adminEmail" placeholder="example@gmail.com"
+                        oninput="validEmail(this)" class="form-control p-2">
                     <div id="mail_err" class="text-danger pt-1"></div>
                 </div>
-                <div class="mb-3">
+                <div class="position-relative">
                     <label for="adminPassword" class="form-label">Password <span class="text-danger">*</span></label>
-                    <input type="password" name="adminPassword" id="adminPassword" placeholder="password" class="form-control p-2">
-                    <div id="password_err" class="text-danger pt-1"></div>
+                    <input type="password" name="adminPassword" id="adminPassword" placeholder="password" oninput="validePassword(this)"
+                        class="form-control p-2">
+                    <i id="togglePassword" class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
+                        style="cursor: pointer;"></i>
                 </div>
+                <div id="password_err" class="text-danger pt-1"></div>
+
                 <!-- <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
                     Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                     and a minimum of 8 characters.</div> -->
 
                 <!-- <div class="d-flex justify-content-between"> -->
                 <!-- <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a> -->
-                <button type="submit" class="bg-primary border-0 rounded-1 text-light float-end mt-2 px-4 py-2">Login</button>
+                <button type="submit"
+                    class="bg-primary border-0 rounded-1 text-light float-end mt-2 px-4 py-2">Login</button>
                 <!-- </div> -->
             </form>
         </div>
@@ -96,6 +111,22 @@
         }
     </script>
 
+<script>
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('adminPassword');
+            const icon = document.getElementById('togglePassword');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    </script>
+
     <!-- Event listener to block right-click -->
     <script>
         function blockRightClick(event) {
@@ -107,7 +138,7 @@
 
     <!-- Hide page source Ctrl + U -->
     <script>
-        document.onkeydown = function(e) {
+        document.onkeydown = function (e) {
             if (e.ctrlKey && e.keyCode === 85) {
                 return false;
             }

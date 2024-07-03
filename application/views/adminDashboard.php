@@ -150,7 +150,7 @@
                     style="font-size: 18px; font-weight: 400;color:#8cafba;" id="specialization">
                     <div>
                         <span class="material-symbols-outlined pe-2">data_check</span>
-                        <span>Specialization</span>
+                        <span>Specializations</span>
                     </div>
                 </a>
             </li>
@@ -1621,11 +1621,11 @@
                                                                     <i class="bi bi-plus-square-fill"></i> New
                                                                 </button>
                                                             </div>
-                                                            <div class="input-group mx-auto pb-4" style="width:260px;">
+                                                            <div class="input-group mx-auto pb-4" style="width:280px;">
                                                                 <span class="input-group-text" id="searchIcon">
                                                                     <i class="bi bi-search"></i>
                                                                 </span>
-                                                                <input type="text" id="searchInputSpecialization" placeholder="Search Specializations"
+                                                                <input type="text" id="searchInputSpecialization" placeholder="Search Specialization"
                                                                     class="form-control">
                                                                 <button class="btn btn-outline-secondary" id="clearSearchSpecialization"> <i
                                                                         class="bi bi-x"></i></button>
@@ -1785,7 +1785,7 @@
                                                                     <span class="input-group-text" id="searchIcon">
                                                                         <i class="bi bi-search"></i>
                                                                     </span>
-                                                                    <input type="text" id="searchInputSymptoms" placeholder="Search Symptoms" class="form-control">
+                                                                    <input type="text" id="searchInputSymptoms" placeholder="Search Symptom" class="form-control">
                                                                     <button class="btn btn-outline-secondary" id="clearSearchSymptoms"> <i
                                                                             class="bi bi-x"></i></button>
                                                                 </div>
@@ -1948,7 +1948,7 @@
                                                                         <span class="input-group-text" id="searchIcon">
                                                                             <i class="bi bi-search"></i>
                                                                         </span>
-                                                                        <input type="text" id="searchInputMedicines" placeholder="Search Medicines"
+                                                                        <input type="text" id="searchInputMedicines" placeholder="Search Medicine"
                                                                             class="form-control">
                                                                         <button class="btn btn-outline-secondary" id="clearSearchMedicines"> <i
                                                                                 class="bi bi-x"></i></button>
@@ -2102,7 +2102,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add New Specilization</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -2127,7 +2127,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add New Symptom</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -2153,7 +2153,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add New Medicine</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

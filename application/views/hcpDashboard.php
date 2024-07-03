@@ -1925,8 +1925,11 @@
                                                                         </a>
                                                                     </td>
                                                                     <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
-                                                                    <td style="font-size: 16px">
-                                                                        <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
+                                                                    <td style="font-size: 16px" class="d-flex d-lg-block">
+                                                                        <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
+                                                                        <button class="me-1 btn btn-secondary" type="button" data-toggle="modal"
+                                                                        data-target="#appointmentTime"><i class="bi bi-pencil"></i></button>
+                                                                         <button class="btn btn-success" >Join</button>
                                                                     </td>
                                                                 </tr>
                                         <?php } ?>
@@ -2832,12 +2835,12 @@
                     <?php } ?>
                                                 </div>
                                             </section>
+
                                             <script>
                                                 function goBack() {
                                                     window.history.back(); yy
                                                 }
                                             </script>
-
 
             <?php
         } else if ($method == "myProfile") {
@@ -3159,6 +3162,25 @@
 
         <?php } ?>
 
+         <!-- Popup Appointment time edit -->
+         <div class="modal fade" id="appointmentTime" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Change Appointment Time</h5>
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                       <button class="btn btn-secondary" >Prepone 1 Slot</button>
+                       <button class="btn btn-secondary">Postpone 1 slot</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Popup Update Profile Photo -->
         <div class="modal fade" id="updatePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -3166,7 +3188,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -3190,7 +3212,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

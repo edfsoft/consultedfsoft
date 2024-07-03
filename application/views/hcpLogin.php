@@ -9,11 +9,19 @@
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 
     <!-- Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+
+    <!-- Vendor CSS Files -->
+    <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+
 
     <style>
         body {
@@ -60,30 +68,43 @@
     <div class="container-fluid">
         <div class="row" id="bgcolor">
             <div class="col-md-6 text-center">
-                <img src="<?php echo base_url(); ?>assets/hcpbglogin.png" alt="Fixed Image" class="fixed-image img-fluid">
-                <div class="fixed-image-container text-center d-none d-md-block" style="position: fixed; top: 50%; left: 25%; transform: translate(-50%, -50%);">
-                    <img src="<?php echo base_url(); ?>assets/hcplogin.png" alt="image" class="img-fluid" width="" height="">
+                <img src="<?php echo base_url(); ?>assets/hcpbglogin.png" alt="Fixed Image"
+                    class="fixed-image img-fluid">
+                <div class="fixed-image-container text-center d-none d-md-block"
+                    style="position: fixed; top: 50%; left: 25%; transform: translate(-50%, -50%);">
+                    <img src="<?php echo base_url(); ?>assets/hcplogin.png" alt="image" class="img-fluid" width=""
+                        height="">
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="login-form mx-lg-5 p-3 p-sm-5">
-                    <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo" class="img-fluid"></a>
+                    <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
+                            alt="logo" class="img-fluid"></a>
                     <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
                     <p class="text-justify" style="font-size:18px;font-weight:400;">Empowering general practitioners to
                         provide personalized online diabetes consultations for comprehensive patient care. </p>
-                    <form action="<?php echo base_url() . "Healthcareprovider/hcpLogin" ?>" method="post" name="hcploginform" onsubmit="return validateLogin()">
+                    <form action="<?php echo base_url() . "Healthcareprovider/hcpLogin" ?>" method="post"
+                        name="hcploginform" onsubmit="return validateLogin()">
                         <div class="mb-3">
-                            <label for="hcpEmail" class="form-label">Email address <span class="text-danger">*</span></label>
-                            <input type="text" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com" oninput="validEmail(this)" class="form-control rounded-pill p-3">
+                            <label for="hcpEmail" class="form-label">Email address <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com"
+                                oninput="validEmail(this)" class="form-control rounded-pill p-3">
                             <div id="mail_err" class="text-danger pt-1"></div>
                         </div>
-                        <div class="mb-3">
-                            <label for="hcpPassword" class="form-label">Password <span class="text-danger">*</span></label>
-                            <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password" oninput="validePassword(this)" class="form-control rounded-pill p-3">
-                            <div id="password_err" class="text-danger pt-1"></div>
+                        <div class="position-relative">
+                            <label for="hcpPassword" class="form-label">Password <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
+                                oninput="validePassword(this)" class="form-control rounded-pill p-3">
+                            <i id="togglePassword"
+                                class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
+                                style="cursor: pointer;"></i>
                         </div>
-                        <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
+                        <div id="password_err" class="text-danger pt-1"></div>
+
+                        <div class="text-secondary my-3" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                             and a minimum of 8 characters.</div>
                         <!-- <div class="mb-3">
@@ -91,22 +112,26 @@
                             <label for="check"> Remember me</label>
                         </div> -->
                         <div class="d-flex justify-content-between">
-                            <button type="submit" class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3" style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
+                            <button type="submit"
+                                class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
+                                style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
                             <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
-                    <p class="mt-4" style="font-size:18px;font-weight:400;">Don't have an account? <a href="<?php echo base_url() . "Healthcareprovider/register" ?>" class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
+                    <p class="mt-4" style="font-size:18px;font-weight:400;">Don't have an account? <a
+                            href="<?php echo base_url() . "Healthcareprovider/register" ?>"
+                            class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById("hcpPassword").onfocus = function() {
+        document.getElementById("hcpPassword").onfocus = function () {
             document.getElementById("passwordmessage").style.display = "block";
         }
 
-        document.getElementById("hcpPassword").onblur = function() {
+        document.getElementById("hcpPassword").onblur = function () {
             document.getElementById("passwordmessage").style.display = "none";
         }
 
@@ -150,6 +175,22 @@
         }
     </script>
 
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const passwordField = document.getElementById('hcpPassword');
+            const icon = document.getElementById('togglePassword');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        });
+    </script>
+
     <!-- Event listener to block right-click -->
     <script>
         function blockRightClick(event) {
@@ -160,7 +201,7 @@
     </script>
     <!-- Hide page source Ctrl + U -->
     <script>
-        document.onkeydown = function(e) {
+        document.onkeydown = function (e) {
             if (e.ctrlKey && e.keyCode === 85) {
                 return false;
             }

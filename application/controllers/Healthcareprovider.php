@@ -23,6 +23,11 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpRegister.php', $this->data);
     }
 
+    public function resetPassword()
+    {
+        $this->load->view('hcpForgetPassword.php');
+    }
+
     public function hcpSignup()
     {
         $hcpMobileNum = $this->input->post('hcpMobile');

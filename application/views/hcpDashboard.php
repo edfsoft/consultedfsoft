@@ -2087,51 +2087,14 @@
                                                                         placeholder="E.g. Select time" readonly>
                                                                     <div id="appTime_err" class="text-danger pt-1"></div>
                                                                 </div>
-                                                                <div class="py-2" id="morningTime" style="display:none"><i
-                                                                        class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="08:30">08:30 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="08:40">08:40 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="08:50">08:50 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="09:00">09:00 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="09:10">09:10 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="09:20">09:20 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="09:30">09:30 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="09:40">09:40 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="09:50">09:50 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="10:00">10:00 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="10:10">10:10 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="10:20">10:20 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="10:30">10:30 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="10:40">10:40 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="10:50">10:50 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="11:00">11:00 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="11:10">11:10 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="11:20">11:20 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="11:30">11:30 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="11:40">11:40 AM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="11:50">11:50 AM</button>
-                                                                </div>
+                                                                <div class="py-2" id="morningTime" style="display:none">
+                                                                        <i class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
+                                                                        <?php foreach ($morning as $time): ?>
+                                                                            <button type="button" class="timeButton btn btn-outline-secondary my-1" value="<?php echo $time['time']; ?>">
+                                                                                <?php echo date('h:i A', strtotime($time['time'])); ?>
+                                                                            </button>
+                                                                        <?php endforeach; ?>
+                                                                    </div>
                                                                 <div class="py-2" id="afternoonTime" style="display:none"><i class="bi bi-sun"></i>,
                                                                     Afternoon Consult time,<br>
                                                                     <button type="button" class="timeButton btn btn-outline-secondary my-1"
@@ -2455,7 +2418,9 @@
                                                 document.getElementById("nightTime").style.display = "none";
                                             }
                                         }
+                                    </script>
 
+                                    <script>
                                         function clearErrorAppointment() {
                                             var patientId = document.getElementById("patientId").value;
                                             // var name = document.getElementById("patientName").value;

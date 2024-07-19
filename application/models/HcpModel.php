@@ -411,12 +411,49 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getAppointmentTime()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
     public function getMedicines()
     {
         $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
+
+    public function getAppMorTime()
+    {
+        $details = "SELECT * FROM `morning_time` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getAppAfterTime()
+    {
+        $details = "SELECT * FROM `afternoon_time` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getAppEveTime()
+    {
+        $details = "SELECT * FROM `evening_time` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getAppNightTime()
+    {
+        $details = "SELECT * FROM `night_time` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
 
     // public function do_upload()
     // {

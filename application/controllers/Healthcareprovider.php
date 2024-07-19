@@ -207,6 +207,18 @@ class healthcareprovider extends CI_Controller
             $this->data['ccsId'] = $ccDetails['response'];
             $symptoms = $this->HcpModel->getSymptoms();
             $this->data['symptomsList'] = $symptoms;
+            $appTime = $this->HcpModel->getAppointmentTime();
+            $this->data['appBookedDetails'] = $appTime;
+
+            $mtime = $this->HcpModel->getAppMorTime();
+            $this->data['morning'] = $mtime;
+            $atime = $this->HcpModel->getAppAfterTime();
+            $this->data['afternoon'] = $atime;
+            $etime = $this->HcpModel->getAppEveTime();
+            $this->data['evening'] = $etime;
+            $ntime = $this->HcpModel->getAppNightTime();
+            $this->data['night'] = $ntime;
+
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');

@@ -553,32 +553,32 @@
                         if (itemsToShow.length === 0) {
                             const noMatchesRow = document.createElement('tr');
                             noMatchesRow.innerHTML = `
-                                                                                                                                                                                                                                                            <td colspan="8" class="text-center">No matches found.</td>
-                                                                                                                                                                                                                                                            `;
+                                                                                                                                                                                                                                                                            <td colspan="8" class="text-center">No matches found.</td>
+                                                                                                                                                                                                                                                                            `;
                             patientContainer.appendChild(noMatchesRow);
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const patientRow = document.createElement('tr');
                                 patientRow.innerHTML = `
-                                                                                                                                                                                                                                                                <td>${start + index + 1}.</td>
-                                                                                                                                                                                                                                                                <td class="px-2">
-                                                                                                                                                                                                                                                                    <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
-                                                                                                                                                                                                                                                                        alt="Profile Photo" width="40" height="40" class="rounded-circle">
-                                                                                                                                                                                                                                                                </td>
-                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.patientId}</td>
-                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.mobileNumber}</td>
-                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.gender}</td>
-                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.age}</td>
-                                                                                                                                                                                                                                                                <td class="d-flex d-lg-block" style="font-size: 16px">
-                                                                                                                                                                                                                                                                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
-                                                                                                                                                                                                                                                                        <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                                                                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                                                                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}" class="px-1">
-                                                                                                                                                                                                                                                                        <button class="btn btn-secondary"><i class="bi bi-pencil"></i></button>
-                                                                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                                                                </td>
-                                                                                                                                                                                                                                                            `;
+                                                                                                                                                                                                                                                                                <td>${start + index + 1}.</td>
+                                                                                                                                                                                                                                                                                <td class="px-2">
+                                                                                                                                                                                                                                                                                    <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}"
+                                                                                                                                                                                                                                                                                        alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                                                                                                                                                                                                                                </td>
+                                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.patientId}</td>
+                                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.mobileNumber}</td>
+                                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.gender}</td>
+                                                                                                                                                                                                                                                                                <td style="font-size: 16px">${value.age}</td>
+                                                                                                                                                                                                                                                                                <td class="d-flex d-lg-block" style="font-size: 16px">
+                                                                                                                                                                                                                                                                                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
+                                                                                                                                                                                                                                                                                        <button class="btn btn-success"><i class="bi bi-eye"></i></button>
+                                                                                                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                                                                                                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}" class="px-1">
+                                                                                                                                                                                                                                                                                        <button class="btn btn-secondary"><i class="bi bi-pencil"></i></button>
+                                                                                                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                                                                                                </td>
+                                                                                                                                                                                                                                                                            `;
                                 patientContainer.appendChild(patientRow);
                             });
                         }
@@ -596,10 +596,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                                                                                                                                                                                                                                                        <a href="#">
-                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                        <a href="#">
+                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                                                                    `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayPatientPage(currentPage - 1);
                         };
@@ -611,20 +611,20 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                                                                                                                                                                                                                                                            <a href="#">
-                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                                        `;
+                                                                                                                                                                                                                                                                            <a href="#">
+                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                        `;
                             li.onclick = () => displayPatientPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                                                                                                                                                                                                                                                        <a href="#">
-                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                        <a href="#">
+                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                                                                    `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                         };
@@ -1928,8 +1928,8 @@
                                                                     <td style="font-size: 16px" class="d-flex d-lg-block">
                                                                         <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
                                                                         <button class="me-1 btn btn-secondary" type="button" data-toggle="modal"
-                                                                        data-target="#appointmentTime"><i class="bi bi-pencil"></i></button>
-                                                                         <button class="btn btn-success" >Join</button>
+                                                                            data-target="#appointmentTime"><i class="bi bi-pencil"></i></button>
+                                                                        <button class="btn btn-success">Join</button>
                                                                     </td>
                                                                 </tr>
                                         <?php } ?>
@@ -2059,6 +2059,7 @@
                                                                     <label for="video">Video</label><br>
                                                                     <div id="appConsult_err" class="text-danger pt-1"></div>
                                                                 </div>
+
                                                                 <div class="form-group pb-3">
                                                                     <label class="form-label" for="appDate">Date <span
                                                                             class="text-danger">*</span></label>
@@ -2066,13 +2067,14 @@
                                                                         oninput="adjustTimeOptions()">
                                                                     <div id="appDate_err" class="text-danger pt-1"></div>
                                                                 </div>
+
                                                                 <div class="form-group pb-3">
                                                                     <label class="form-label" for="dayTime">Part of a day <span
                                                                             class="text-danger">*</span></label>
                                                                     <select class="form-select" id="dayTime" name="dayTime"
-                                                                        onchange="displayTime()">
-                                                                        <option id="placeholderOption" value="" style="display: none;">Select date
-                                                                        </option>
+                                                                        onchange="adjustTimeOptions()">
+                                                                        <option id="placeholderOption" value="" style="display: none;">Select part
+                                                                            of the day</option>
                                                                         <option value="Morning">Morning</option>
                                                                         <option value="Afternoon">Afternoon</option>
                                                                         <option value="Evening">Evening</option>
@@ -2080,6 +2082,7 @@
                                                                     </select>
                                                                     <div id="dayTime_err" class="text-danger pt-1"></div>
                                                                 </div>
+
                                                                 <div class="form-group pb-1">
                                                                     <label class="form-label" for="appTime">Time <span
                                                                             class="text-danger">*</span></label>
@@ -2087,117 +2090,47 @@
                                                                         placeholder="E.g. Select time" readonly>
                                                                     <div id="appTime_err" class="text-danger pt-1"></div>
                                                                 </div>
+
                                                                 <div class="py-2" id="morningTime" style="display:none">
-                                                                        <i class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
-                                                                        <?php foreach ($morning as $time): ?>
-                                                                            <button type="button" class="timeButton btn btn-outline-secondary my-1" value="<?php echo $time['time']; ?>">
-                                                                                <?php echo date('h:i A', strtotime($time['time'])); ?>
-                                                                            </button>
-                                                                        <?php endforeach; ?>
-                                                                    </div>
-                                                                <div class="py-2" id="afternoonTime" style="display:none"><i class="bi bi-sun"></i>,
-                                                                    Afternoon Consult time,<br>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="12:00">12:00 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="12:10">12:10 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="12:20">12:20 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="12:30">12:30 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="12:40">12:40 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="12:50">12:50 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="13:00">01:00 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="13:10">01:10 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="13:20">01:20 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="13:30">01:30 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="13:40">01:40 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="13:50">01:50 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="14:00">02:00 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="14:10">02:10 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="14:20">02:20 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="14:30">02:30 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="14:40">02:40 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="14:50">02:50 PM</button>
+                                                                    <i class="bi bi-brightness-alt-high"></i>, Morning Consult time,<br>
+                                            <?php foreach ($morning as $time): ?>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="<?php echo $time['time']; ?>">
+                                                    <?php echo date('h:i A', strtotime($time['time'])); ?>
+                                                                        </button>
+                                            <?php endforeach; ?>
                                                                 </div>
-                                                                <div class="py-2" id="eveningTime" style="display:none"><i
-                                                                        class="bi bi-brightness-alt-high"></i>, Evening Consult time,<br>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="17:30">05:30 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="17:40">05:40 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="17:50">05:50 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="18:00">06:00 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="18:10">06:10 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="18:20">06:20 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="18:30">06:30 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="18:40">06:40 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="18:50">06:50 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="19:00">07:00 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="19:10">07:10 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="19:20">07:20 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="19:30">07:30 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="19:40">07:40 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="19:50">07:50 PM</button>
+
+                                                                <div class="py-2" id="afternoonTime" style="display:none">
+                                                                    <i class="bi bi-sun"></i>, Afternoon Consult time,<br>
+                                            <?php foreach ($afternoon as $time): ?>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="<?php echo $time['time']; ?>">
+                                                    <?php echo date('h:i A', strtotime($time['time'])); ?>
+                                                                        </button>
+                                            <?php endforeach; ?>
                                                                 </div>
-                                                                <div class="py-2" id="nightTime" style="display:none"><i
-                                                                        class="bi bi-moon-stars"></i>, Night Consult time,<br>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="20:00">08:00 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="20:10">08:10 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="20:20">08:20 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="20:30">08:30 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="20:40">08:40 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="20:50">08:50 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="21:00">09:00 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="21:10">09:10 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="21:20">09:20 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="21:30">09:30 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="21:40">09:40 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="21:50">09:50 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="22:00">10:00 PM</button>
-                                                                    <button type="button" class="timeButton btn btn-outline-secondary my-1"
-                                                                        value="22:10">10:10 PM</button>
+
+                                                                <div class="py-2" id="eveningTime" style="display:none">
+                                                                    <i class="bi bi-brightness-alt-high"></i>, Evening Consult time,<br>
+                                            <?php foreach ($evening as $time): ?>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="<?php echo $time['time']; ?>">
+                                                    <?php echo date('h:i A', strtotime($time['time'])); ?>
+                                                                        </button>
+                                            <?php endforeach; ?>
                                                                 </div>
+
+                                                                <div class="py-2" id="nightTime" style="display:none">
+                                                                    <i class="bi bi-moon-stars"></i>, Night Consult time,<br>
+                                            <?php foreach ($night as $time): ?>
+                                                                        <button type="button" class="timeButton btn btn-outline-secondary my-1"
+                                                                            value="<?php echo $time['time']; ?>">
+                                                    <?php echo date('h:i A', strtotime($time['time'])); ?>
+                                                                        </button>
+                                            <?php endforeach; ?>
+                                                                </div>
+
                                                                 <div class="form-group py-3">
                                                                     <label class="form-label" for="appReason">Patient's Complaint / Symptoms<span
                                                                             class="text-danger">*</span></label>
@@ -2237,83 +2170,110 @@
                                             </div>
                                         </div>
                                     </section>
-                                    
+
+                                    <!-- Proper Working code  -->
                                     <script>
+                                        var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
+
+                                        // console.log("Booked Appointments:");
+                                        // appBookedDetails.forEach(appointment => {
+                                        //     console.log(`Date: ${appointment.dateOfAppoint}, Time: ${appointment.timeOfAppoint}`);
+                                        // });
+
                                         function adjustTimeOptions() {
-                                            const currentDate = new Date();
-                                            const selectedDate = new Date(document.getElementById('appDate').value);
-                                            const selectElement = document.getElementById('dayTime');
+                                            const selectedDate = document.getElementById('appDate').value;
+                                            const selectedTimeOfDay = document.getElementById('dayTime').value;
 
-                                            hideAllOptions();
+                                            const timeButtons = document.querySelectorAll('.timeButton');
 
-                                            let anyOptionVisible = false;
+                                            appBookedDetails.forEach(appointment => {
+                                                const bookedDate = formatDate(appointment.dateOfAppoint); // Format booked date
+                                                const bookedTime = appointment.timeOfAppoint;
+                                                const bookedTimeOfDay = appointment.dayTime;
 
-                                            if (currentDate.toDateString() === selectedDate.toDateString()) {
-                                                const currentHour = currentDate.getHours();
-
-                                                if (currentHour < 4) {
-                                                    showOption('Morning');
-                                                    anyOptionVisible = true;
+                                                if (bookedDate === selectedDate) {
+                                                    timeButtons.forEach(button => {
+                                                        if (button.value === bookedTime) {
+                                                            button.style.display = 'none';
+                                                        }
+                                                    });
                                                 }
-                                                if (currentHour < 9) {
-                                                    showOption('Afternoon');
-                                                    anyOptionVisible = true;
-                                                }
-                                                if (currentHour < 15) {
-                                                    showOption('Evening');
-                                                    anyOptionVisible = true;
-                                                }
-                                                if (currentHour < 18) {
-                                                    showOption('Night');
-                                                    anyOptionVisible = true;
-                                                }
-                                            } else {
-                                                showAllOptions();
-                                                anyOptionVisible = true;
-                                            }
-
-                                            if (!anyOptionVisible) {
-                                                document.getElementById('placeholderOption').style.display = 'block';
-                                            } else {
-                                                document.getElementById('placeholderOption').style.display = 'none';
-                                            }
+                                            });
                                         }
 
-                                        function hideAllOptions() {
-                                            const selectElement = document.getElementById('dayTime');
-                                            for (let i = 0; i < selectElement.options.length; i++) {
-                                                selectElement.options[i].style.display = 'none';
-                                            }
+                                        function formatDate(dateString) {
+                                            const date = new Date(dateString);
+                                            const yyyy = date.getFullYear();
+                                            const mm = String(date.getMonth() + 1).padStart(2, '0');
+                                            const dd = String(date.getDate()).padStart(2, '0');
+                                            return `${yyyy}-${mm}-${dd}`;
                                         }
 
-                                        function hideOption(timeOfDay) {
-                                            const selectElement = document.getElementById('dayTime');
-                                            for (let i = 0; i < selectElement.options.length; i++) {
-                                                if (selectElement.options[i].value === timeOfDay) {
-                                                    selectElement.options[i].style.display = 'none';
-                                                }
-                                            }
-                                        }
+                                        var dateInput = document.getElementById('appDate');
+                                        var today = new Date();
+                                        var dd = String(today.getDate()).padStart(2, '0');
+                                        var mm = String(today.getMonth() + 1).padStart(2, '0');
+                                        var yyyy = today.getFullYear();
+                                        var minDate = yyyy + '-' + mm + '-' + dd;
+                                        dateInput.setAttribute('min', minDate);
 
-                                        function showOption(timeOfDay) {
-                                            const selectElement = document.getElementById('dayTime');
-                                            for (let i = 0; i < selectElement.options.length; i++) {
-                                                if (selectElement.options[i].value === timeOfDay) {
-                                                    selectElement.options[i].style.display = 'block';
-                                                }
-                                            }
-                                        }
+                                        var buttons = document.querySelectorAll('.timeButton');
+                                        buttons.forEach(function (button) {
+                                            button.addEventListener('click', function () {
+                                                buttons.forEach(function (btn) {
+                                                    btn.classList.remove('highlighted');
+                                                });
+                                                button.classList.add('highlighted');
+                                                document.getElementById('appTime').value = button.value;
+                                            });
+                                        });
 
-                                        function showAllOptions() {
-                                            const selectElement = document.getElementById('dayTime');
-                                            for (let i = 0; i < selectElement.options.length; i++) {
-                                                selectElement.options[i].style.display = 'block';
+                                        function displayTime() {
+                                            var dayTime = document.getElementById("dayTime").value;
+                                            var morningTime = document.getElementById("morningTime");
+                                            var afternoonTime = document.getElementById("afternoonTime");
+                                            var eveningTime = document.getElementById("eveningTime");
+                                            var nightTime = document.getElementById("nightTime");
+
+                                            morningTime.style.display = "none";
+                                            afternoonTime.style.display = "none";
+                                            eveningTime.style.display = "none";
+                                            nightTime.style.display = "none";
+
+                                            if (dayTime === 'Morning') {
+                                                morningTime.style.display = "block";
+                                            } else if (dayTime === 'Afternoon') {
+                                                afternoonTime.style.display = "block";
+                                            } else if (dayTime === 'Evening') {
+                                                eveningTime.style.display = "block";
+                                            } else if (dayTime === 'Night') {
+                                                nightTime.style.display = "block";
                                             }
+
+                                            adjustTimeOptions();
                                         }
 
                                         window.onload = function () {
-                                            hideAllOptions();
-                                            document.getElementById('placeholderOption').style.display = 'block';
+                                            var selectElement = document.getElementById('dayTime');
+                                            selectElement.addEventListener('change', function () {
+                                                displayTime();
+                                            });
+
+                                            var placeholderOption = document.getElementById('placeholderOption');
+                                            placeholderOption.style.display = 'block';
+
+                                            var timeButtons = document.querySelectorAll('.timeButton');
+                                            timeButtons.forEach(function (button) {
+                                                button.addEventListener('click', function () {
+                                                    timeButtons.forEach(function (btn) {
+                                                        btn.classList.remove('highlighted');
+                                                    });
+                                                    button.classList.add('highlighted');
+                                                    document.getElementById('appTime').value = button.value;
+                                                });
+                                            });
+
+                                            adjustTimeOptions();
                                         };
                                     </script>
 
@@ -2368,65 +2328,12 @@
                                     </script>
 
                                     <script>
-                                        var dateInput = document.getElementById('appDate');
-                                        var today = new Date();
-                                        var dd = String(today.getDate()).padStart(2, '0');
-                                        var mm = String(today.getMonth() + 1).padStart(2, '0');
-                                        var yyyy = today.getFullYear();
-                                        var minDate = yyyy + '-' + mm + '-' + dd;
-                                        dateInput.setAttribute('min', minDate);
-
-                                        // var timeButton = document.querySelectorAll('.timeButton');
-                                        // timeButton.forEach(function (button) {         
-                                        //     button.addEventListener('click', function () { 
-                                        //         document.getElementById('appTime').value = button.value;     
-                                        //     });   
-                                        // }); 
-
-                                        var buttons = document.querySelectorAll('.timeButton');
-                                        buttons.forEach(function (button) {
-                                            button.addEventListener('click',
-                                                function () {
-                                                    buttons.forEach(function (btn) {
-                                                        btn.classList.remove('highlighted');
-                                                    });
-                                                    button.classList.add('highlighted');
-                                                    document.getElementById('appTime').value = button.value;
-                                                });
-                                        });
-
-                                        function displayTime() {
-                                            dayTime = document.getElementById("dayTime").value;
-                                            if (dayTime == 'Morning') {
-                                                document.getElementById("morningTime").style.display = "block";
-                                            } else {
-                                                document.getElementById("morningTime").style.display = "none";
-                                            }
-                                            if (dayTime == 'Afternoon') {
-                                                document.getElementById("afternoonTime").style.display = "block";
-                                            } else {
-                                                document.getElementById("afternoonTime").style.display = "none";
-                                            }
-                                            if (dayTime == 'Evening') {
-                                                document.getElementById("eveningTime").style.display = "block";
-                                            } else {
-                                                document.getElementById("eveningTime").style.display = "none";
-                                            }
-                                            if (dayTime == 'Night') {
-                                                document.getElementById("nightTime").style.display = "block";
-                                            } else {
-                                                document.getElementById("nightTime").style.display = "none";
-                                            }
-                                        }
-                                    </script>
-
-                                    <script>
                                         function clearErrorAppointment() {
                                             var patientId = document.getElementById("patientId").value;
                                             // var name = document.getElementById("patientName").value;
                                             var referalDr = document.getElementById("referalDoctor").value;
-                                            // var consultMode = document.getElementById("appConsult").value;      
-                                            var date = document.getElementById("appDate").value;
+                                                                                                    // var consultMode = document.getElementById("appConsult").value;      
+                                                                                              cvar date = document.getElementById("appDate").value;
                                             var dayTime = document.getElementById("dayTime").value;
                                             var time = document.getElementById("appTime").value;
                                             var reason = document.getElementById("appReason").value;
@@ -2590,17 +2497,17 @@
                                                         const doctorItem = document.createElement('div');
                                                         doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
                                                         doctorItem.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <img src="${value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="card-title"><b>${value.doctorName}</b>/<br>${value.ccId}</p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p style="color: #00ad8e;"><b>${value.specialization}</b></p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/${value.id}" 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           class="btn btn-secondary">Full Details</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <img src="${value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p class="card-title"><b>${value.doctorName}</b>/<br>${value.ccId}</p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <p style="color: #00ad8e;"><b>${value.specialization}</b></p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/${value.id}" 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           class="btn btn-secondary">Full Details</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
                                                         doctorContainer.appendChild(doctorItem);
                                                     });
                                                 }
@@ -2618,10 +2525,10 @@
 
                                                 const prevLi = document.createElement('li');
                                                 prevLi.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="#">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="#">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `;
                                                 prevLi.onclick = () => {
                                                     if (currentPage > 1) displayPage(currentPage - 1);
                                                 };
@@ -2630,20 +2537,20 @@
                                                 for (let i = 1; i <= totalPages; i++) {
                                                     const li = document.createElement('li');
                                                     li.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="#">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="#">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `;
                                                     li.onclick = () => displayPage(i);
                                                     ul.appendChild(li);
                                                 }
 
                                                 const nextLi = document.createElement('li');
                                                 nextLi.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="#">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="#">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `;
                                                 nextLi.onclick = () => {
                                                     if (currentPage < totalPages) displayPage(currentPage + 1);
                                                 };
@@ -3127,20 +3034,21 @@
 
         <?php } ?>
 
-         <!-- Popup Appointment time edit -->
-         <div class="modal fade" id="appointmentTime" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <!-- Popup Appointment time edit -->
+        <div class="modal fade" id="appointmentTime" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Change Appointment Time</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
+                            aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                       <button class="btn btn-secondary" >Prepone 1 Slot</button>
-                       <button class="btn btn-secondary">Postpone 1 slot</button>
+                        <button class="btn btn-secondary">Prepone 1 Slot</button>
+                        <button class="btn btn-secondary">Postpone 1 slot</button>
                     </div>
                 </div>
             </div>
@@ -3153,7 +3061,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
+                            aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -3177,7 +3086,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
+                            aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

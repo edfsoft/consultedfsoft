@@ -718,12 +718,12 @@
                 </div>
 
             </section>
+
             <script>
                 function goBack() {
                     window.history.back();
                 }
             </script>
-
 
         <?php
         } else if ($method == "appointments") {
@@ -803,7 +803,7 @@
                                                 <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                 <td style="font-size: 16px">
                                                     <?php if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
-                                                        echo "Today";
+                                                        echo "<b>Today</b>";
                                                     } else {
                                                         echo date("d-m-Y", strtotime($value['dateOfAppoint']));
                                                     } ?>

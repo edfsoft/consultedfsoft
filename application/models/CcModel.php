@@ -70,6 +70,16 @@ class CcModel extends CI_Model
         return $count->result_array();
     }
 
+    public function addAppLinkCc()
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            'gMeetLink' => $post['appLink']
+        );
+        $this->db->where('id', $post['ccIdDb']);
+        $this->db->update('cc_details', $updatedata);
+    }
+
     public function allPatientList()
     {
         $details = "SELECT * FROM `patient_details` ORDER BY `id` DESC";

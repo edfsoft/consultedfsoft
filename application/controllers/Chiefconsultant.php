@@ -24,6 +24,11 @@ class chiefconsultant extends CI_Controller
         $this->load->view('ccRegister.php', $this->data);
     }
 
+    public function resetPassword()
+    {
+        $this->load->view('ccForgetPassword.php');
+    }
+
     public function ccSignup()
     {
         $ccMobileNum = $this->input->post('ccMobile');

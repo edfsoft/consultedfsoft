@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HCP Login Page</title>
+    <title>CC Reset Password</title>
 
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
 
@@ -26,6 +26,12 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+        }
+
+        #ccPwdOtp::-webkit-outer-spin-button,
+        #ccPwdOtp::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         /* Form Labels */
@@ -58,7 +64,7 @@
             }
 
             #bgcolor {
-                background-color: rgba(0, 173, 142, 0.4);
+                background-color: rgba(0, 121, 173, 0.4);
             }
         }
     </style>
@@ -67,12 +73,12 @@
 <body>
     <div class="container-fluid">
         <div class="row" id="bgcolor">
-            <div class="col-md-6 text-center">
-                <img src="<?php echo base_url(); ?>assets/hcpbglogin.png" alt="Fixed Image"
+            <div class="col-md-6">
+                <img src="<?php echo base_url(); ?>assets/ccbglogin.png" alt="Fixed Image"
                     class="fixed-image img-fluid">
                 <div class="fixed-image-container text-center d-none d-md-block"
                     style="position: fixed; top: 50%; left: 25%; transform: translate(-50%, -50%);">
-                    <img src="<?php echo base_url(); ?>assets/hcplogin.png" alt="image" class="img-fluid" width=""
+                    <img src="<?php echo base_url(); ?>assets/ccloginimg.png" alt="image" class="img-fluid" width=""
                         height="">
                 </div>
             </div>
@@ -80,23 +86,21 @@
                 <div class="login-form mx-lg-5 p-3 p-sm-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
                             alt="logo" class="img-fluid"></a>
-                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
-                    <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
-                    <p class="text-justify" style="font-size:18px;font-weight:400;">Empowering general practitioners to
-                        provide personalized online diabetes consultations for comprehensive patient care. </p>
-                    <form action="<?php echo base_url() . "Healthcareprovider/hcpLogin" ?>" method="post"
-                        name="hcploginform" onsubmit="return validateLogin()">
+                            <p class="py-2" style="font-size:24px;font-weight:600;">CC Password Reset</p>
+                    <p class="text-justify" style="font-size:18px;font-weight:400;">Enter the OTP that has been sent to
+                        this mobile number : <b>9876543210</b>.</p>
+                    <form action="#" method="post" name="ccPasswordResetForm" onsubmit="return validateFields()">
                         <div class="mb-3">
-                            <label for="hcpEmail" class="form-label">Email address <span
+                            <label for="ccPwdOtp" class="form-label">OTP <span
                                     class="text-danger">*</span></label>
-                            <input type="text" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com"
-                                oninput="validEmail(this)" class="form-control rounded-pill p-3">
-                            <div id="mail_err" class="text-danger pt-1"></div>
+                            <input type="number" name="ccPwdOtp" id="ccPwdOtp" placeholder="1234"
+                                oninput="validOtp(this)" class="form-control rounded-pill p-3" min="0">
+                            <div id="otp_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="position-relative">
-                            <label for="hcpPassword" class="form-label">Password <span
+                            <label for="ccPassword" class="form-label">Password <span
                                     class="text-danger">*</span></label>
-                            <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
+                            <input type="password" name="ccPassword" id="ccPassword" placeholder="New password"
                                 oninput="validePassword(this)" class="form-control rounded-pill p-3">
                             <i id="togglePassword"
                                 class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
@@ -107,36 +111,39 @@
                         <div class="text-secondary my-3" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                             and a minimum of 8 characters.</div>
-                        <!-- <div class="mb-3">
-                            <input type="checkbox" id="check" name="check" value="1">
-                            <label for="check"> Remember me</label>
-                        </div> -->
-                        <div class="d-flex justify-content-between">
+                        <div class="my-3">
+                            <label for="ccCnfmPassword" class="form-label">Confirm Password <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" name="ccCnfmPassword" id="ccCnfmPassword"
+                                placeholder="Re-type password" class="form-control rounded-pill p-3">
+                            <div id="cnfmpassword_err" class="text-danger pt-1"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-5">
                             <button type="submit"
-                                class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
-                                style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
-                            <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a>
+                                class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
+                                style="background-color:#0079AD;font-size:16px;font-weight:600;">Submit</button>
+                                <p class="mt-3" style="font-size:18px;font-weight:400;">Back to <a
+                            href="<?php echo base_url() . "ChiefConsultant/" ?>"
+                            class="text-decoration-none text-dark" style="font-weight:600;">Login</a>.</p>
                         </div>
                     </form>
-                    <p class="mt-4" style="font-size:18px;font-weight:400;">Don't have an account? <a
-                            href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                            class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
+                    
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        document.getElementById("hcpPassword").onfocus = function () {
+        document.getElementById("ccPassword").onfocus = function () {
             document.getElementById("passwordmessage").style.display = "block";
         }
 
-        document.getElementById("hcpPassword").onblur = function () {
+        document.getElementById("ccPassword").onblur = function () {
             document.getElementById("passwordmessage").style.display = "none";
         }
 
-        function validEmail(input) {
-            const emailError = document.getElementById("mail_err");
+        function validOtp(input) {
+            const emailError = document.getElementById("otp_err");
             if (input.value != "") {
                 emailError.textContent = "";
             }
@@ -149,18 +156,19 @@
             }
         }
 
-        function validateLogin() {
-            var email = document.getElementById("hcpEmail").value;
-            var password = document.getElementById("hcpPassword").value;
+        function validateFields() {
+            var otp = document.getElementById("ccPwdOtp").value;
+            var password = document.getElementById("ccPassword").value;
+            var cnfmPassword = document.getElementById("ccCnfmPassword").value;
 
-            if (email == "") {
-                document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
+            if (otp == "") {
+                document.getElementById("otp_err").innerHTML = "OTP must be filled out.";
                 return false;
-            } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-                document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
+            } else if (otp < 1000 || otp > 9999  ) {
+                document.getElementById("otp_err").innerHTML = "Invalid OTP. Please 4-digits valid OTP.";
                 return false;
             } else {
-                document.getElementById("mail_err").innerHTML = "";
+                document.getElementById("otp_err").innerHTML = "";
             }
 
             if (password == "") {
@@ -172,12 +180,22 @@
             } {
                 document.getElementById("password_err").innerHTML = "";
             }
+
+            if (cnfmPassword == "") {
+                document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
+                return false;
+            } else if (cnfmPassword != password) {
+                document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
+                return false;
+            } else {
+                document.getElementById("cnfmpassword_err").innerHTML = "";
+            }
         }
     </script>
 
     <script>
         document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordField = document.getElementById('hcpPassword');
+            const passwordField = document.getElementById('ccPassword');
             const icon = document.getElementById('togglePassword');
             if (passwordField.type === 'password') {
                 passwordField.type = 'text';
@@ -199,6 +217,7 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
+
     <!-- Hide page source Ctrl + U -->
     <script>
         document.onkeydown = function (e) {

@@ -288,11 +288,12 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         list($patientId, $dbId) = explode('|', $post['patientId']);
-        list($ccId, $ccDbId) = explode('|', $post['referalDoctor']);
+        list($ccId, $ccDbId,$appLink) = explode('|', $post['referalDoctor']);
         $insert = array(
             'patientId' => $patientId,
             'patientDbId' => $dbId,
             'referalDoctor' => $ccId,
+            'appointmentLink' => $appLink,
             'referalDoctorDbId' => $ccDbId,
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
@@ -411,12 +412,49 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getAppointmentTime()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $details = "SELECT * FROM `appointment_details` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
     public function getMedicines()
     {
         $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
+
+    public function getAppMorTime()
+    {
+        $details = "SELECT * FROM `morning_time` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getAppAfterTime()
+    {
+        $details = "SELECT * FROM `afternoon_time` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getAppEveTime()
+    {
+        $details = "SELECT * FROM `evening_time` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getAppNightTime()
+    {
+        $details = "SELECT * FROM `night_time` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
 
     // public function do_upload()
     // {

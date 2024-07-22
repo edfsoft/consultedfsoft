@@ -136,10 +136,12 @@
                 <a class="" href="<?php echo base_url() . "Chiefconsultant/appointments" ?>" style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                     <div>
                         <i class="bi bi-calendar4 pe-3"></i> <span>Appointments</span>
+                        <?php if($appointmentListCount > 0) { ?>
                         <p class="text-dark float-end">
                             <i class="fas fa-envelope fa-2x"></i>
                             <span class="badge rounded-pill badge-notification bg-danger"><?php echo $appointmentListCount ?></span>
                         </p>
+                        <?php } ?>
                     </div>
                 </a>
             </li>
@@ -432,6 +434,7 @@
             <script>
                 document.getElementById('patients').style.color = "#66D1FF";
             </script>
+  
             <section>
                 <div class="card rounded">
                     <div class="card-body p-2 p-sm-4">
@@ -715,12 +718,12 @@
                 </div>
 
             </section>
+
             <script>
                 function goBack() {
                     window.history.back();
                 }
             </script>
-
 
         <?php
         } else if ($method == "appointments") {
@@ -800,7 +803,7 @@
                                                 <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
                                                 <td style="font-size: 16px">
                                                     <?php if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
-                                                        echo "Today";
+                                                        echo "<b>Today</b>";
                                                     } else {
                                                         echo date("d-m-Y", strtotime($value['dateOfAppoint']));
                                                     } ?>
@@ -811,9 +814,10 @@
                                                 <td style="font-size: 16px"><a href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfile/" . $value['hcpDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
                                                 </td>
                                                 <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
-                                                <td style="font-size: 16px">
-                                                    <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
-                                                </td>
+                                                <td style="font-size: 16px" class="d-flex d-lg-block">
+                                                                        <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
+                                                                        <a href="<?php echo $value['appointmentLink'] ?>" target="blank" ><button class="btn btn-success">Join</button></a>
+                                                                    </td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>

@@ -130,6 +130,16 @@ class edfadmin extends CI_Controller
         }
     }
 
+    public function addAppLink()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+           $this->CcModel->addAppLinkCc();
+            redirect('Edfadmin/ccList');
+        } else {
+           redirect('Edfadmin/');
+        }
+    }
+
     public function hcpList()
     {
         if (isset($_SESSION['adminIdDb'])) {

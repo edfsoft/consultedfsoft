@@ -415,7 +415,7 @@ class HcpModel extends CI_Model
     public function getAppointmentTime()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb ";
+        $details = "SELECT * FROM `appointment_details` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }

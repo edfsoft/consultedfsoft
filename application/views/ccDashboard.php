@@ -814,9 +814,10 @@
                                                 <td style="font-size: 16px"><a href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfile/" . $value['hcpDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
                                                 </td>
                                                 <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
-                                                <td style="font-size: 16px">
-                                                    <a href="#"><i class="bi bi-three-dots-vertical"></i></a>
-                                                </td>
+                                                <td style="font-size: 16px" class="d-flex d-lg-block">
+                                                                        <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
+                                                                        <a href="<?php echo $value['appointmentLink'] ?>" target="blank" ><button class="btn btn-success">Join</button></a>
+                                                                    </td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>

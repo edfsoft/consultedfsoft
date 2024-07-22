@@ -288,11 +288,12 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         list($patientId, $dbId) = explode('|', $post['patientId']);
-        list($ccId, $ccDbId) = explode('|', $post['referalDoctor']);
+        list($ccId, $ccDbId,$appLink) = explode('|', $post['referalDoctor']);
         $insert = array(
             'patientId' => $patientId,
             'patientDbId' => $dbId,
             'referalDoctor' => $ccId,
+            'appointmentLink' => $appLink,
             'referalDoctorDbId' => $ccDbId,
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],

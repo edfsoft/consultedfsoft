@@ -90,7 +90,9 @@ class CcModel extends CI_Model
     public function getAppointmentList()
     {
         $ccId = $_SESSION['ccId'];
-        $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor`=  '$ccId' AND `dateOfAppoint` >= CURDATE()  ORDER BY `dateOfAppoint`, `timeOfAppoint`";
+        $details = "SELECT * FROM `appointment_details` WHERE ``=   AND `dateOfAppoint` >= CURDATE()  ORDER BY `dateOfAppoint`, `timeOfAppoint`";
+        $details = "SELECT * FROM `appointment_details`WHERE `referalDoctor` = '$ccId' AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND `timeOfAppoint` <= ADDTIME(CURTIME(), '00:10:00') AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

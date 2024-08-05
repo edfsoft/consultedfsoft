@@ -288,7 +288,7 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         list($patientId, $dbId) = explode('|', $post['patientId']);
-        list($ccId, $ccDbId,$appLink) = explode('|', $post['referalDoctor']);
+        list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);
         $insert = array(
             'patientId' => $patientId,
             'patientDbId' => $dbId,
@@ -309,7 +309,7 @@ class HcpModel extends CI_Model
     public function getAppointmentList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND (`dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND `timeOfAppoint` > CURTIME() ) )  ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $details = "SELECT * FROM `appointment_details`WHERE `hcpDbId` = $hcpIdDb AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND `timeOfAppoint` <= ADDTIME(CURTIME(), '00:10:00') AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

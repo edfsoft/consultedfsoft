@@ -9,7 +9,7 @@ class CcModel extends CI_Model
     public function register()
     {
         $post = $this->input->post(null, true);
-        $approval = isset($post['approvalApproved'])?$post['approvalApproved']:'0';
+        $approval = isset($post['approvalApproved']) ? $post['approvalApproved'] : '0';
         $insert = array(
             'doctorName' => $post['ccName'],
             'doctorMobile' => $post['ccMobile'],
@@ -18,7 +18,7 @@ class CcModel extends CI_Model
             'doctorPassword' => $post['ccCnfmPassword'],
             'approvalStatus' => $approval
         );
-         $this->db->insert('cc_details', $insert);
+        $this->db->insert('cc_details', $insert);
     }
 
     public function generateCcId()
@@ -70,13 +70,13 @@ class CcModel extends CI_Model
         return $count->result_array();
     }
 
-    public function addAppLinkCc()
+    public function addAppLinkCc($ccIdDb)
     {
         $post = $this->input->post(null, true);
         $updatedata = array(
             'gMeetLink' => $post['appLink']
         );
-        $this->db->where('id', $post['ccIdDb']);
+        $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updatedata);
     }
 

@@ -284,7 +284,35 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function insertappointment()
+    public function getAppointmentListDash()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $todayDate = date('Y-m-d');
+        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo,
+        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
+        FROM patient_details AS pd
+        LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
+        WHERE hcpDbId = $hcpIdDb  AND dateOfAppoint = '$todayDate';";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
+    public function getAppointmentList()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $details = "SELECT * FROM `appointment_details`WHERE `hcpDbId` = $hcpIdDb AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND `timeOfAppoint` <= ADDTIME(CURTIME(), '00:10:00') AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    } 
+    
+    public function getAppointmentTime()
+    {
+        $details = "SELECT * FROM `appointment_details` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function insertAppointment()
     {
         $post = $this->input->post(null, true);
         list($patientId, $dbId) = explode('|', $post['patientId']);
@@ -305,26 +333,34 @@ class HcpModel extends CI_Model
         );
         $this->db->insert('appointment_details', $insert);
     }
-
-    public function getAppointmentList()
+    
+    public function getAppointmentReschedule()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `appointment_details`WHERE `hcpDbId` = $hcpIdDb AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND `timeOfAppoint` <= ADDTIME(CURTIME(), '00:10:00') AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND `dateOfAppoint` < CURDATE() AND `appStatus`= '0' ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    public function getAppointmentListDash()
+    public function editAppDetails($id)
     {
-        $hcpIdDb = $_SESSION['hcpIdDb'];
-        $todayDate = date('Y-m-d');
-        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo,
-        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
-        FROM patient_details AS pd
-        LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
-        WHERE hcpDbId = $hcpIdDb  AND dateOfAppoint = '$todayDate';";
+        $details = "SELECT * FROM `appointment_details` WHERE `id` = $id";
         $select = $this->db->query($details);
-        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+        return $select->result_array();
+    }
+
+    public function updateAppointment()
+    {
+        $post = $this->input->post(null, true);
+
+        $updatedata = array(
+            'modeOfConsultant' => $post['appConsult'],
+            'dateOfAppoint' => $post['appDate'],
+            'partOfDay' => $post['dayTime'],
+            'timeOfAppoint' => $post['appTime']
+        );
+        $this->db->where('id', $post['appTableId']);
+        $this->db->update('appointment_details', $updatedata);
     }
 
     public function getHcpDetails()
@@ -408,14 +444,6 @@ class HcpModel extends CI_Model
     public function getSymptoms()
     {
         $details = "SELECT * FROM `symptoms_list` ORDER BY `symptomsName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function getAppointmentTime()
-    {
-        $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `appointment_details` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }

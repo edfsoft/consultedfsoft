@@ -191,6 +191,8 @@ class healthcareprovider extends CI_Controller
             $this->data['method'] = "appointments";
             $appointmentList = $this->HcpModel->getAppointmentList();
             $this->data['appointmentList'] = $appointmentList['response'];
+            $appointmentReschedule = $this->HcpModel->getAppointmentReschedule();
+            $this->data['appointmentReschedule'] = $appointmentReschedule['response'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -224,10 +226,41 @@ class healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/');
         }
     }
-
+  
     public function newAppointment()
     {
-        $appointmentDetails = $this->HcpModel->insertappointment();
+        $appointmentDetails = $this->HcpModel->insertAppointment();
+        redirect('Healthcareprovider/appointments');
+    }
+
+    public function appointmentUpdate()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+           $this->data['method'] = "appointmentUpdate";
+            $appId = $this->uri->segment(3);
+            $editAppDetails = $this->HcpModel->editAppDetails($appId);
+            $this->data['updateAppDetails'] = $editAppDetails;
+            $appTime = $this->HcpModel->getAppointmentTime();
+            $this->data['appBookedDetails'] = $appTime;
+
+            $mtime = $this->HcpModel->getAppMorTime();
+            $this->data['morning'] = $mtime;
+            $atime = $this->HcpModel->getAppAfterTime();
+            $this->data['afternoon'] = $atime;
+            $etime = $this->HcpModel->getAppEveTime();
+            $this->data['evening'] = $etime;
+            $ntime = $this->HcpModel->getAppNightTime();
+            $this->data['night'] = $ntime;
+
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+    }
+
+    public function updateAppointmentForm()
+    {
+        $profileDetails = $this->HcpModel->updateAppointment();
         redirect('Healthcareprovider/appointments');
     }
 

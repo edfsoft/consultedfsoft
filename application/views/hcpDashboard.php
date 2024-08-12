@@ -285,7 +285,7 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[0]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[0]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime( $appointmentList[0]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -306,7 +306,7 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[1]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[1]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[1]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -327,7 +327,7 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[2]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[2]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[2]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -362,7 +362,7 @@
                                     <p class="px-5">
                                         <span style="font-size: 16px; font-weight: 500; color: #00ad8e">Name</span><br /><span
                                             style="font-size: 16px">
-                                            <?php echo $appointmentList[0]['firstName'], $appointmentList[0]['lastName']; ?></span>
+                                            <?php echo $appointmentList[0]['firstName']," ", $appointmentList[0]['lastName']; ?></span>
                                     </p>
                                     <p>
                                         <span style="font-size: 16px; font-weight: 500; color: #00ad8e">Patient
@@ -1929,10 +1929,6 @@
                                                                         <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
                                                                         <!-- <button class="me-1 btn btn-secondary" type="button" data-toggle="modal"
                                                                             data-target="#appointmentTime"><i class="bi bi-pencil"></i></button> -->
-                                                                        <a
-                                                                            href="<?php echo base_url() . "Healthcareprovider/appointmentUpdate/" . $value['id'] ?>">
-                                                                            <button class="btn btn-secondary">Edit</button>
-                                                                        </a>
                                                         <?php
                                                         date_default_timezone_set('Asia/Kolkata');
 
@@ -1960,6 +1956,8 @@
                                                                                 <button class="btn btn-success">Join</button>
                                                                             </a>
                                                     <?php } else { ?>
+                                                        <a href="<?php echo base_url() . "Healthcareprovider/appointmentUpdate/" . $value['id'] ?>">
+                                                                            <button class="btn btn-secondary">Edit</button> </a>
                                                                             <button class="btn btn-success" disabled>Join</button>
                                                     <?php } ?>
                                                                     </td>

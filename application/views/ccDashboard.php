@@ -283,7 +283,7 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[0]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[0]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[0]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -304,7 +304,7 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[1]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[1]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[1]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -325,7 +325,7 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[2]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[2]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[2]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php } ?>

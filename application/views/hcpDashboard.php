@@ -2011,7 +2011,7 @@
                                                         </ul>
                                                     </nav>
                             <?php } else { ?>
-                                                    <h5 class="text-center my-5"><b>No Records Found.</b> </h5>
+                                                    <h5 class="text-center my-5"><b> No Appointments Found.</b> </h5>
                             <?php } ?>
                                             </div>
                                         </div>

@@ -406,9 +406,6 @@
                                                 <th scope="col-6" style="font-size: 16px; font-weight: 600">
                                                     Diagonsis
                                                 </th>
-                                                <!-- <th scope="col-4" style="font-size: 16px; font-weight: 600" class="px-5">
-                                                    Height
-                                                </th> -->
                                                 <th scope="col-6" style="font-size: 16px; font-weight: 600">
                                                     Patient HCP ID
                                                 </th>
@@ -420,9 +417,6 @@
                                                     <span
                                                         style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint']; ?></span>
                                                 </td>
-                                                <!-- <td class="px-5">
-                                                    <span style="font-size: 16px; font-weight: 400">172cm</span>
-                                                </td> -->
                                                 <td>
                                                     <span
                                                         style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientHcp']; ?></span>
@@ -431,12 +425,12 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <p style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                <!-- <p style="font-size: 16px; font-weight: 500; color: #0079AD">
                                     Patient History
                                 </p>
                                 <p style="font-size: 16px;font-weight: 400;background-color: #e9eeed;padding: 10px;">
                                     Diabetes - Health care
-                                </p>
+                                </p> -->
                                 <div>
                                     <a href="tel:<?php echo $appointmentList[0]['mobileNumber']; ?>"><button
                                             style=" background-color: #0079AD; color: white; font-size: 16px;"
@@ -1196,6 +1190,8 @@
                                                             </a></p>
                                                     </div>
                                                 </div>
+                                                
+                                                <h5 class="my-3 fw-bolder">Profile Details:</h5>
 
                                                 <table>
                                                     <tr>

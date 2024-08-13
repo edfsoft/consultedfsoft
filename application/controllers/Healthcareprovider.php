@@ -264,6 +264,25 @@ class healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/appointments');
     }
 
+    public function appointmentSummary()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+           $this->data['method'] = "appointmentSummary";
+           $patientIdDb = $this->uri->segment(3);
+           $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
+           $this->data['patientDetails'] = $patientDetails;
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+    }
+
+    // public function precriptionForm()
+    // {
+    //     $profileDetails = $this->HcpModel->addPrecription();
+    //     redirect('Healthcareprovider/appointments');
+    // }
+
     public function chiefDoctors()
     {
         if (isset($_SESSION['hcpsName'])) {

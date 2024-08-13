@@ -3022,7 +3022,7 @@
                                                                 </div>
                             <?php }
                             } ?>
-                                                        <h5 class="my-3 fw-bolder pt-5 pb-3">Precription:</h5>
+                                                        <h5 class="my-3 fw-bolder pt-5 pb-3">Prescription:</h5>
                                                         <form action="<?php echo base_url() . "Healthcareprovider/precriptionForm" ?>" method="POST"
                                                             name="precriptionForm" class="col-md-6">
                                                             <div class="form-group pb-3">

@@ -9,7 +9,7 @@ class CcModel extends CI_Model
     public function register()
     {
         $post = $this->input->post(null, true);
-        $approval = isset($post['approvalApproved'])?$post['approvalApproved']:'0';
+        $approval = isset($post['approvalApproved']) ? $post['approvalApproved'] : '0';
         $insert = array(
             'doctorName' => $post['ccName'],
             'doctorMobile' => $post['ccMobile'],
@@ -18,7 +18,7 @@ class CcModel extends CI_Model
             'doctorPassword' => $post['ccCnfmPassword'],
             'approvalStatus' => $approval
         );
-         $this->db->insert('cc_details', $insert);
+        $this->db->insert('cc_details', $insert);
     }
 
     public function generateCcId()
@@ -70,13 +70,13 @@ class CcModel extends CI_Model
         return $count->result_array();
     }
 
-    public function addAppLinkCc()
+    public function addAppLinkCc($ccIdDb)
     {
         $post = $this->input->post(null, true);
         $updatedata = array(
             'gMeetLink' => $post['appLink']
         );
-        $this->db->where('id', $post['ccIdDb']);
+        $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updatedata);
     }
 
@@ -90,19 +90,10 @@ class CcModel extends CI_Model
     public function getAppointmentList()
     {
         $ccId = $_SESSION['ccId'];
-        $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor`=  '$ccId' AND `dateOfAppoint` >= CURDATE()  ORDER BY `dateOfAppoint`, `timeOfAppoint`";
+        $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor` = '$ccId' AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
-
-    // public function getAppointmentListDash()
-    // {
-    //     $ccId = $_SESSION['ccId'];
-    //     $todayDate = date('Y-m-d'); 
-    //     $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor`=  '$ccId' AND `dateOfAppoint`= '$todayDate'";
-    //     $select = $this->db->query($details);
-    //     return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
-    // }
 
     public function getAppointmentListDash()
     {
@@ -112,7 +103,7 @@ class CcModel extends CI_Model
         ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
         FROM patient_details AS pd
         LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
-        WHERE referalDoctorDbId = $ccId AND dateOfAppoint = '$todayDate';";
+        WHERE referalDoctorDbId = $ccId AND  `dateOfAppoint` = CURDATE()   AND `timeOfAppoint` >= CURTIME() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

@@ -20,7 +20,8 @@
     <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet" />
 
     <!-- Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
 
     <style>
         body {
@@ -70,7 +71,8 @@
                     <a href="#" class="m-2 me-4">
                         <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a>
 
-                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile" class="rounded-circle me-1" />
+                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
+                        class="rounded-circle me-1" />
 
                     <p class="text-dark w-50 d-none d-md-block me-2 my-auto" style="margin:15px;width:auto;">
                         Dr.
@@ -81,7 +83,8 @@
                         <span class="dropdown-toggle mx-4"></span>
                     </a>
 
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
+                        style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
                         <li class="dropdown-header">
                             <h6>
                                 <?php echo $_SESSION['ccName']; ?> /
@@ -96,7 +99,8 @@
                         </li>
 
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>">
+                            <a class="dropdown-item d-flex align-items-center"
+                                href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -106,7 +110,9 @@
                         </li>
 
                         <li>
-                            <a href="<?php echo base_url() . "Chiefconsultant/logout" ?>" class="dropdown-item d-flex align-items-center text-danger" onclick="return confirm('Are you sure to logout?')">
+                            <a href="<?php echo base_url() . "Chiefconsultant/logout" ?>"
+                                class="dropdown-item d-flex align-items-center text-danger"
+                                onclick="return confirm('Are you sure to logout?')">
                                 <i class="bi bi-box-arrow-right"></i>
                                 <span>Log Out</span>
                             </a>
@@ -120,34 +126,39 @@
     <aside id="sidebar" class="sidebar" style="background-color:#0079AD">
         <ul class="sidebar-nav pt-5 ps-4" id="sidebar-nav">
             <li class="">
-                <a class="" href="<?php echo base_url() . "Chiefconsultant/dashboard" ?>" id="dashboard" style="font-size: 18px; font-weight: 400;color:white;">
+                <a class="" href="<?php echo base_url() . "Chiefconsultant/dashboard" ?>" id="dashboard"
+                    style="font-size: 18px; font-weight: 400;color:white;">
                     <i class="bi bi-grid pe-3"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
 
             <li class="pt-4">
-                <a class="" style="font-size: 18px; font-weight: 400;color:white;" id="patients" href="<?php echo base_url() . "Chiefconsultant/patients" ?>">
+                <a class="" style="font-size: 18px; font-weight: 400;color:white;" id="patients"
+                    href="<?php echo base_url() . "Chiefconsultant/patients" ?>">
                     <div><i class="bi bi-person pe-3"></i> <span>Patients</span></div>
                 </a>
             </li>
 
             <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Chiefconsultant/appointments" ?>" style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
+                <a class="" href="<?php echo base_url() . "Chiefconsultant/appointments" ?>"
+                    style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                     <div>
                         <i class="bi bi-calendar4 pe-3"></i> <span>Appointments</span>
-                        <?php if($appointmentListCount > 0) { ?>
-                        <p class="text-dark float-end">
-                            <i class="fas fa-envelope fa-2x"></i>
-                            <span class="badge rounded-pill badge-notification bg-danger"><?php echo $appointmentListCount ?></span>
-                        </p>
+                        <?php if ($appointmentListCount > 0) { ?>
+                            <p class="text-dark float-end">
+                                <i class="fas fa-envelope fa-2x"></i>
+                                <span
+                                    class="badge rounded-pill badge-notification bg-danger"><?php echo $appointmentListCount ?></span>
+                            </p>
                         <?php } ?>
                     </div>
                 </a>
             </li>
 
             <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Chiefconsultant/healthCareProviders" ?>" style="font-size: 18px; font-weight: 400;color:white;" id="healthCareProviders">
+                <a class="" href="<?php echo base_url() . "Chiefconsultant/healthCareProviders" ?>"
+                    style="font-size: 18px; font-weight: 400;color:white;" id="healthCareProviders">
                     <div>
                         <i class="bi bi-person-hearts pe-3"></i>
                         <span>Health Care Providers</span>
@@ -156,7 +167,9 @@
             </li>
 
             <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Chiefconsultant/logout" ?>" style="font-size: 18px; font-weight: 400;color:white;" id="logout" onclick="return confirm('Are you sure to logout?')">
+                <a class="" href="<?php echo base_url() . "Chiefconsultant/logout" ?>"
+                    style="font-size: 18px; font-weight: 400;color:white;" id="logout"
+                    onclick="return confirm('Are you sure to logout?')">
                     <div>
                         <i class="bi bi-box-arrow-in-right pe-3"></i>
                         <span>Log Out</span>
@@ -170,7 +183,7 @@
 
         <?php
         if ($method == "dashboard") {
-        ?>
+            ?>
 
             <script>
                 document.getElementById('dashboard').style.color = "#66D1FF";
@@ -243,7 +256,8 @@
                                                 <th scope="col-4" style="font-size: 18px; font-weight: 500; color: #0079AD">
                                                     Patients
                                                 </th>
-                                                <th scope="col" style="font-size: 18px; font-weight: 500; color: #0079AD" class="px-5">
+                                                <th scope="col" style="font-size: 18px; font-weight: 500; color: #0079AD"
+                                                    class="px-5">
                                                     Name / Diagonsis
                                                 </th>
                                                 <th scope="col" style="font-size: 18px; font-weight: 500; color: #0079AD">
@@ -256,16 +270,20 @@
                                                 <tr>
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[0]['profilePhoto']) && $appointmentList[0]['profilePhoto'] != "No data") { ?>
-                                                            <img src="<?php echo base_url() . 'uploads/' . $appointmentList[0]['profilePhoto'] ?>" alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                            <img src="<?php echo base_url() . 'uploads/' . $appointmentList[0]['profilePhoto'] ?>"
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
                                                         <?php } else { ?>
-                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
                                                         <?php } ?>
                                                     </td>
                                                     <td class="px-5">
-                                                        <span style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[0]['patientId']; ?></span><br /><span style="font-size: 16px">
+                                                        <span
+                                                            style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[0]['patientId']; ?></span><br /><span
+                                                            style="font-size: 16px">
                                                             <?php echo $appointmentList[0]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[0]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[0]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -273,16 +291,20 @@
                                                 <tr>
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[1]['profilePhoto']) && $appointmentList[1]['profilePhoto'] != "No data") { ?>
-                                                            <img src="<?php echo base_url() . 'uploads/' . $appointmentList[1]['profilePhoto'] ?>" alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                            <img src="<?php echo base_url() . 'uploads/' . $appointmentList[1]['profilePhoto'] ?>"
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
                                                         <?php } else { ?>
-                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
                                                         <?php } ?>
                                                     </td>
                                                     <td class="px-5">
-                                                        <span style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[1]['patientId']; ?></span><br /><span style="font-size: 16px">
+                                                        <span
+                                                            style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[1]['patientId']; ?></span><br /><span
+                                                            style="font-size: 16px">
                                                             <?php echo $appointmentList[1]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[1]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[1]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -290,16 +312,20 @@
                                                 <tr>
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[2]['profilePhoto']) && $appointmentList[2]['profilePhoto'] != "No data") { ?>
-                                                            <img src="<?php echo base_url() . 'uploads/' . $appointmentList[2]['profilePhoto'] ?>" alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                            <img src="<?php echo base_url() . 'uploads/' . $appointmentList[2]['profilePhoto'] ?>"
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
                                                         <?php } else { ?>
-                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
                                                         <?php } ?>
                                                     </td>
                                                     <td class="px-5">
-                                                        <span style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[2]['patientId']; ?></span><br /><span style="font-size: 16px">
+                                                        <span
+                                                            style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[2]['patientId']; ?></span><br /><span
+                                                            style="font-size: 16px">
                                                             <?php echo $appointmentList[2]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo $appointmentList[2]['timeOfAppoint']; ?>
+                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[2]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -310,7 +336,8 @@
                                 <?php } ?>
                             </div>
                             <?php if (isset($appointmentList[3]['id'])) { ?>
-                                <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" class="text-decoration-underline">see all</a>
+                                <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
+                                    class="text-decoration-underline">see all</a>
                             <?php } ?>
                         </div>
                     </div>
@@ -324,17 +351,21 @@
                             <?php if (isset($appointmentList[0]['id'])) { ?>
                                 <div class="d-flex justify-content-evenly">
                                     <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
-                                        <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo" width="50" height="50" class="rounded-circle">
+                                        <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
+                                            alt="Profile Photo" width="50" height="50" class="rounded-circle">
                                     <?php } else { ?>
-                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="50" height="50" class="rounded-circle">
+                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="50"
+                                            height="50" class="rounded-circle">
                                     <?php } ?>
                                     <p class="px-5">
-                                        <span style="font-size: 16px; font-weight: 500; color: #0079AD">Name</span><br /><span style="font-size: 16px">
+                                        <span style="font-size: 16px; font-weight: 500; color: #0079AD">Name</span><br /><span
+                                            style="font-size: 16px">
                                             <?php echo $appointmentList[0]['firstName'], $appointmentList[0]['lastName']; ?></span>
                                     </p>
                                     <p>
                                         <span style="font-size: 16px; font-weight: 500; color: #0079AD">Patient
-                                            ID</span><br /><span style="font-size: 16px"><?php echo $appointmentList[0]['patientId']; ?></span>
+                                            ID</span><br /><span
+                                            style="font-size: 16px"><?php echo $appointmentList[0]['patientId']; ?></span>
                                     </p>
                                 </div>
                                 <div class="table-responsive">
@@ -355,13 +386,16 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <span style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['age']; ?></span>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['age']; ?></span>
                                                 </td>
                                                 <td>
-                                                    <span style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['gender']; ?></span>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['gender']; ?></span>
                                                 </td>
                                                 <td>
-                                                    <span style="font-size: 16px; font-weight: 400"><?php echo isset($appointmentList[0]['bloodGroup']) ? $appointmentList[0]['bloodGroup'] : '-' ?></span>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo isset($appointmentList[0]['bloodGroup']) ? $appointmentList[0]['bloodGroup'] : '-' ?></span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -372,9 +406,6 @@
                                                 <th scope="col-6" style="font-size: 16px; font-weight: 600">
                                                     Diagonsis
                                                 </th>
-                                                <!-- <th scope="col-4" style="font-size: 16px; font-weight: 600" class="px-5">
-                                                    Height
-                                                </th> -->
                                                 <th scope="col-6" style="font-size: 16px; font-weight: 600">
                                                     Patient HCP ID
                                                 </th>
@@ -383,36 +414,41 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <span style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint']; ?></span>
                                                 </td>
-                                                <!-- <td class="px-5">
-                                                    <span style="font-size: 16px; font-weight: 400">172cm</span>
-                                                </td> -->
                                                 <td>
-                                                    <span style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientHcp']; ?></span>
+                                                    <span
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientHcp']; ?></span>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <p style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                <!-- <p style="font-size: 16px; font-weight: 500; color: #0079AD">
                                     Patient History
                                 </p>
                                 <p style="font-size: 16px;font-weight: 400;background-color: #e9eeed;padding: 10px;">
                                     Diabetes - Health care
-                                </p>
+                                </p> -->
                                 <div>
-                                    <a href="tel:<?php echo $appointmentList[0]['mobileNumber']; ?>"><button style=" background-color: #0079AD; color: white; font-size: 16px;" class="border border-1 rounded p-2 p-md-3">
+                                    <a href="tel:<?php echo $appointmentList[0]['mobileNumber']; ?>"><button
+                                            style=" background-color: #0079AD; color: white; font-size: 16px;"
+                                            class="border border-1 rounded p-2 p-md-3">
                                             <i class="bi bi-telephone"></i> +91
                                             <?php echo $appointmentList[0]['mobileNumber']; ?>
                                         </button></a>
                                     <?php if ($appointmentList[0]['documentOne'] != "No data") { ?>
-                                        <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentOne'] ?>" target="blank"><button style="border: 2px solid #0079AD; background-color: white" class="rounded p-2 p-md-3 mt-2 mt-sm-0 mx-sm-2">
+                                        <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentOne'] ?>"
+                                            target="blank"><button style="border: 2px solid #0079AD; background-color: white"
+                                                class="rounded p-2 p-md-3 mt-2 mt-sm-0 mx-sm-2">
                                                 <i class="bi bi-folder2"></i> Reports
                                             </button></a>
                                     <?php }
                                     if ($appointmentList[0]['documentTwo'] != "No data") { ?>
-                                        <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentTwo'] ?>" target="blank"><button style="border: 2px solid #0079AD; background-color: white" class="rounded p-2 p-md-3 mt-2 mt-sm-0">
+                                        <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentTwo'] ?>"
+                                            target="blank"><button style="border: 2px solid #0079AD; background-color: white"
+                                                class="rounded p-2 p-md-3 mt-2 mt-sm-0">
                                                 <i class="bi bi-folder2"></i> Medicines
                                             </button></a>
                                     <?php } ?>
@@ -427,460 +463,500 @@
                 </div>
             </section>
 
-        <?php
+            <?php
         } else if ($method == "patients") {
-        ?>
+            ?>
 
-            <script>
-                document.getElementById('patients').style.color = "#66D1FF";
-            </script>
-  
-            <section>
-                <div class="card rounded">
-                    <div class="card-body p-2 p-sm-4">
-                        <div class="d-sm-flex justify-content-between mt-2 mb-3">
-                            <p style="font-size: 24px; font-weight: 500">
-                                Patients
-                            </p>
-                            <div class="input-group" style="width:250px;">
-                                <span class="input-group-text" id="searchIcon">
-                                    <i class="bi bi-search"></i>
-                                </span>
-                                <input type="text" id="searchInputPatients" class="form-control" placeholder="Search by name" aria-describedby="searchIcon">
-                                <button class="btn btn-outline-secondary" type="button" id="clearSearchPatients">
-                                    <i class="bi bi-x"></i>
-                                </button>
-                            </div>
-                        </div>
+                <script>
+                    document.getElementById('patients').style.color = "#66D1FF";
+                </script>
 
-                        <div class="table-responsive">
-                            <table class="table text-center" id="PatientList">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">S.NO</th>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">ID</th>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">NAME</th>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">MOBILE
-                                        </th>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">GENDER
-                                        </th>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">AGE</th>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">HCP ID
-                                        </th>
-                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">ACTION
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="patientContainer"></tbody>
-                            </table>
-                        </div>
-
-                        <div class="pagination justify-content-center mt-3" id="paginationContainerPatients"></div>
-                    </div>
-                </div>
-            </section>
-
-            <script>
-                const itemsPerPagePatients = 10;
-                const patientDetails = <?php echo json_encode($patientDetails); ?>;
-                let filteredPatientDetails = patientDetails;
-                const initialPagePatients = parseInt(localStorage.getItem('currentPagePatients')) || 1;
-
-                function displayPatientPage(page) {
-                    localStorage.setItem('currentPagePatients', page);
-                    const start = (page - 1) * itemsPerPagePatients;
-                    const end = start + itemsPerPagePatients;
-                    const itemsToShow = filteredPatientDetails.slice(start, end);
-
-                    const patientContainer = document.getElementById('patientContainer');
-                    patientContainer.innerHTML = '';
-
-                    if (itemsToShow.length === 0) {
-                        const noMatchesRow = document.createElement('tr');
-                        noMatchesRow.innerHTML = `
-                                    <td colspan="9" class="text-center">No matches found.</td>
-                                `;
-                        patientContainer.appendChild(noMatchesRow);
-                    } else {
-                        itemsToShow.forEach((value, index) => {
-                            const patientRow = document.createElement('tr');
-                            patientRow.innerHTML = `
-                                        <td>${start + index + 1}.</td>
-                                        <td style="font-size: 16px">${value.patientId}</td>
-                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                                        <td style="font-size: 16px">${value.mobileNumber}</td>
-                                        <td style="font-size: 16px">${value.gender}</td>
-                                        <td style="font-size: 16px">${value.age}</td>
-                                        <td style="font-size: 16px">
-                                            <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" 
-                                                class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
-                                                ${value.patientHcp}
-                                            </a>
-                                        </td>
-                                        <td style="font-size: 16px">
-                                            <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
-                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                                            </a>
-                                        </td>
-                                    `;
-                            patientContainer.appendChild(patientRow);
-                        });
-                    }
-
-                    generatePatientPagination(filteredPatientDetails.length, page);
-                }
-
-                function generatePatientPagination(totalItems, currentPage) {
-                    const totalPages = Math.ceil(totalItems / itemsPerPagePatients);
-                    const paginationContainer = document.getElementById('paginationContainerPatients');
-                    paginationContainer.innerHTML = '';
-
-                    const ul = document.createElement('ul');
-                    ul.className = 'pagination';
-
-                    const prevLi = document.createElement('li');
-                    prevLi.innerHTML = `
-                                <a href="#">
-                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                </a>
-                            `;
-                    prevLi.onclick = () => {
-                        if (currentPage > 1) displayPatientPage(currentPage - 1);
-                    };
-                    ul.appendChild(prevLi);
-
-                    const startPage = Math.max(1, currentPage - 2);
-                    const endPage = Math.min(totalPages, currentPage + 2);
-
-                    for (let i = startPage; i <= endPage; i++) {
-                        const li = document.createElement('li');
-                        li.innerHTML = `
-                                    <a href="#">
-                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                    </a>
-                                `;
-                        li.onclick = () => displayPatientPage(i);
-                        ul.appendChild(li);
-                    }
-
-                    const nextLi = document.createElement('li');
-                    nextLi.innerHTML = `
-                                <a href="#">
-                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                </a>
-                            `;
-                    nextLi.onclick = () => {
-                        if (currentPage < totalPages) displayPatientPage(currentPage + 1);
-                    };
-                    ul.appendChild(nextLi);
-
-                    paginationContainer.appendChild(ul);
-                }
-
-                document.getElementById('searchInputPatients').addEventListener('keyup', function() {
-                    const searchQuery = this.value.toLowerCase();
-                    filteredPatientDetails = patientDetails.filter(item => (item.firstName + ' ' + item.lastName).toLowerCase().includes(searchQuery));
-                    displayPatientPage(1);
-                });
-
-                document.getElementById('clearSearchPatients').addEventListener('click', function() {
-                    document.getElementById('searchInputPatients').value = '';
-                    filteredPatientDetails = patientDetails;
-                    displayPatientPage(1);
-                });
-
-                displayPatientPage(initialPagePatients);
-            </script>
-
-
-        <?php
-        } else if ($method == "patientDetails") {
-        ?>
-
-            <script>
-                document.getElementById('patients').style.color = "#66D1FF";
-            </script>
-
-            <section>
-                <div class="card rounded">
-                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
-                        <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
-                        <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i class="bi bi-arrow-left"></i> Back</button>
-                    </div>
-                    <div class="card-body p-2 p-sm-5">
-
-                        <?php
-                        foreach ($patientDetails as $key => $value) {
-                        ?>
-                            <div class="d-sm-flex justify-content-evenly mt-2 mb-5">
-                                <div class="ps-sm-5">
-                                    <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
-                                        <?php echo $value['lastName'] ?> | <?php echo $value['patientId'] ?>
-                                    </p>
-                                    <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> year(s)</p>
-                                    <p class="text-dark" style="font-weight:500;font-size:20px;">
-                                        <?php echo $value['diagonsis'] ?>
-                                    </p>
+                <section>
+                    <div class="card rounded">
+                        <div class="card-body p-2 p-sm-4">
+                            <div class="d-sm-flex justify-content-between mt-2 mb-3">
+                                <p style="font-size: 24px; font-weight: 500">
+                                    Patients
+                                </p>
+                                <div class="input-group" style="width:250px;">
+                                    <span class="input-group-text" id="searchIcon">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" id="searchInputPatients" class="form-control"
+                                        placeholder="Search by name" aria-describedby="searchIcon">
+                                    <button class="btn btn-outline-secondary" type="button" id="clearSearchPatients">
+                                        <i class="bi bi-x"></i>
+                                    </button>
                                 </div>
-                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
-                                    <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo" width="140" height="140" class="rounded-circle">
-                                <?php } else { ?>
-                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140" height="140" class="rounded-circle">
-                                <?php } ?>
                             </div>
 
-                            <h5 class="my-3 fw-bolder">Personal Details:</h5>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> - <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
-                                        <?php echo $value['mobileNumber'] ?></a></p>
-                                <p><span class="text-secondary ">Mail</span> - <a href="mailto:<?php echo $value['mailId'] ?>" class="text-decoration-none text-dark">
-                                        <?php echo $value['mailId'] ?></a></p>
-                            </div>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Blood group</span> -
-                                    <?php echo $value['bloodGroup'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Alternate mobile</span> -
-                                    <?php echo $value['alternateMobile'] ?>
-                                </p>
-                            </div>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Age </span> -
-                                    <?php echo $value['age'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Married status</span> - <?php echo $value['marriedSince'] ?>
-                                    <?php echo $value['maritalStatus'] ?>
-                                </p>
-                            </div>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Profession</span> -
-                                    <?php echo $value['profession'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Street address</span> - <?php echo $value['doorNumber'] ?>,
-                                    <?php echo $value['address'] ?>
-                                </p>
-                            </div>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">District</span> -
-                                    <?php echo $value['district'] ?> <?php echo $value['pincode'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Guardian name</span> - <?php echo $value['partnerName'] ?></p>
-                            </div>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Guardian mobile</span> -
-                                    <?php echo $value['partnerMobile'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Guardian blood group</span> -
-                                    <?php echo $value['partnerBlood'] ?>
-                                </p>
-                            </div>
-                            <h5 class="my-3 fw-bolder">Medical Records:</h5>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Weight</span> - <?php echo $value['weight'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Height</span> - <?php echo $value['height'] ?></p>
-                            </div>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> -
-                                    <?php echo $value['bloodPressure'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Cholestrol </span> - <?php echo $value['cholestrol'] ?></p>
-                            </div>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> -
-                                    <?php echo $value['bloodSugar'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Diagonsis / Complaints</span> -
-                                    <?php echo $value['diagonsis'] ?>
-                                </p>
-                            </div>
-                            <div class="d-md-flex">
-                                <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
-                                    <?php echo $value['symptoms'] ?>
-                                </p>
-                                <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
-                            </div>
-                            <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
-
-                                <h5 class="my-3 mt-5 fw-bolder">Documents / Reports:</h5>
-
-                                <div class="d-md-flex">
-                                    <?php if ($value['documentOne'] != "No data") { ?>
-                                        <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> - <a href="<?php echo base_url() . 'uploads/' . $value['documentOne'] ?>" target="blank" rel="Document 1"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
-                                    <?php } ?>
-                                    <?php if ($value['documentTwo'] != "No data") { ?>
-                                        <p><span class="text-secondary ">Test uploads</span> - <a href="<?php echo base_url() . 'uploads/' . $value['documentTwo'] ?>" target="blank" rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
-                                    <?php } ?>
-                                </div>
-                        <?php }
-                        } ?>
-                    </div>
-                </div>
-
-            </section>
-
-            <script>
-                function goBack() {
-                    window.history.back();
-                }
-            </script>
-
-        <?php
-        } else if ($method == "appointments") {
-        ?>
-            <script>
-                document.getElementById('appointments').style.color = "#66D1FF";
-            </script>
-
-            <section>
-                <div class="card rounded">
-                    <div class="card-body p-2 p-sm-4">
-                        <div class="d-flex justify-content-between mt-2 mb-3">
-                            <p style="font-size: 24px; font-weight: 500">
-                                Appointments
-                            </p>
-                        </div>
-
-                        <?php
-                        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-                        $items_per_page = 10;
-
-                        $total_items = count($appointmentList);
-                        $total_pages = ceil($total_items / $items_per_page);
-
-                        $offset = ($current_page - 1) * $items_per_page;
-
-                        $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
-
-                        if (isset($appointmentList[0]['id'])) {
-                        ?>
                             <div class="table-responsive">
-                                <table class="table text-center" id="appointmentTable">
+                                <table class="table text-center" id="PatientList">
                                     <thead>
                                         <tr>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                S.NO
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">S.NO</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">ID</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">NAME</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">MOBILE
                                             </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                PATIENT ID
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">GENDER
                                             </th>
-                                            <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">AGE</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">HCP ID
+                                            </th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">ACTION
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="patientContainer"></tbody>
+                                </table>
+                            </div>
+
+                            <div class="pagination justify-content-center mt-3" id="paginationContainerPatients"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <script>
+                    const itemsPerPagePatients = 10;
+                    const patientDetails = <?php echo json_encode($patientDetails); ?>;
+                    let filteredPatientDetails = patientDetails;
+                    const initialPagePatients = parseInt(localStorage.getItem('currentPagePatients')) || 1;
+
+                    function displayPatientPage(page) {
+                        localStorage.setItem('currentPagePatients', page);
+                        const start = (page - 1) * itemsPerPagePatients;
+                        const end = start + itemsPerPagePatients;
+                        const itemsToShow = filteredPatientDetails.slice(start, end);
+
+                        const patientContainer = document.getElementById('patientContainer');
+                        patientContainer.innerHTML = '';
+
+                        if (itemsToShow.length === 0) {
+                            const noMatchesRow = document.createElement('tr');
+                            noMatchesRow.innerHTML = `
+                                            <td colspan="9" class="text-center">No matches found.</td>
+                                        `;
+                            patientContainer.appendChild(noMatchesRow);
+                        } else {
+                            itemsToShow.forEach((value, index) => {
+                                const patientRow = document.createElement('tr');
+                                patientRow.innerHTML = `
+                                                <td>${start + index + 1}.</td>
+                                                <td style="font-size: 16px">${value.patientId}</td>
+                                                <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                                                <td style="font-size: 16px">${value.mobileNumber}</td>
+                                                <td style="font-size: 16px">${value.gender}</td>
+                                                <td style="font-size: 16px">${value.age}</td>
+                                                <td style="font-size: 16px">
+                                                    <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" 
+                                                        class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
+                                                        ${value.patientHcp}
+                                                    </a>
+                                                </td>
+                                                <td style="font-size: 16px">
+                                                    <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
+                                                        <button class="btn btn-success"><i class="bi bi-eye"></i></button>
+                                                    </a>
+                                                </td>
+                                            `;
+                                patientContainer.appendChild(patientRow);
+                            });
+                        }
+
+                        generatePatientPagination(filteredPatientDetails.length, page);
+                    }
+
+                    function generatePatientPagination(totalItems, currentPage) {
+                        const totalPages = Math.ceil(totalItems / itemsPerPagePatients);
+                        const paginationContainer = document.getElementById('paginationContainerPatients');
+                        paginationContainer.innerHTML = '';
+
+                        const ul = document.createElement('ul');
+                        ul.className = 'pagination';
+
+                        const prevLi = document.createElement('li');
+                        prevLi.innerHTML = `
+                                        <a href="#">
+                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                        </a>
+                                    `;
+                        prevLi.onclick = () => {
+                            if (currentPage > 1) displayPatientPage(currentPage - 1);
+                        };
+                        ul.appendChild(prevLi);
+
+                        const startPage = Math.max(1, currentPage - 2);
+                        const endPage = Math.min(totalPages, currentPage + 2);
+
+                        for (let i = startPage; i <= endPage; i++) {
+                            const li = document.createElement('li');
+                            li.innerHTML = `
+                                            <a href="#">
+                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                            </a>
+                                        `;
+                            li.onclick = () => displayPatientPage(i);
+                            ul.appendChild(li);
+                        }
+
+                        const nextLi = document.createElement('li');
+                        nextLi.innerHTML = `
+                                        <a href="#">
+                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                        </a>
+                                    `;
+                        nextLi.onclick = () => {
+                            if (currentPage < totalPages) displayPatientPage(currentPage + 1);
+                        };
+                        ul.appendChild(nextLi);
+
+                        paginationContainer.appendChild(ul);
+                    }
+
+                    document.getElementById('searchInputPatients').addEventListener('keyup', function () {
+                        const searchQuery = this.value.toLowerCase();
+                        filteredPatientDetails = patientDetails.filter(item => (item.firstName + ' ' + item.lastName).toLowerCase().includes(searchQuery));
+                        displayPatientPage(1);
+                    });
+
+                    document.getElementById('clearSearchPatients').addEventListener('click', function () {
+                        document.getElementById('searchInputPatients').value = '';
+                        filteredPatientDetails = patientDetails;
+                        displayPatientPage(1);
+                    });
+
+                    displayPatientPage(initialPagePatients);
+                </script>
+
+
+            <?php
+        } else if ($method == "patientDetails") {
+            ?>
+
+                    <script>
+                        document.getElementById('patients').style.color = "#66D1FF";
+                    </script>
+
+                    <section>
+                        <div class="card rounded">
+                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
+                                <p style="font-size: 24px; font-weight: 500"> Patient Details</p>
+                                <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                        class="bi bi-arrow-left"></i> Back</button>
+                            </div>
+                            <div class="card-body p-2 p-sm-5">
+
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+                                    <div class="d-sm-flex justify-content-evenly mt-2 mb-5">
+                                        <div class="ps-sm-5">
+                                            <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
+                                        <?php echo $value['lastName'] ?> | <?php echo $value['patientId'] ?>
+                                            </p>
+                                            <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> year(s)</p>
+                                            <p class="text-dark" style="font-weight:500;font-size:20px;">
+                                        <?php echo $value['diagonsis'] ?>
+                                            </p>
+                                        </div>
+                                <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                            <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
+                                                width="140" height="140" class="rounded-circle">
+                                <?php } else { ?>
+                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                height="140" class="rounded-circle">
+                                <?php } ?>
+                                    </div>
+
+                                    <h5 class="my-3 fw-bolder">Personal Details:</h5>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> - <a
+                                                href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                        <?php echo $value['mobileNumber'] ?></a></p>
+                                        <p><span class="text-secondary ">Mail</span> - <a href="mailto:<?php echo $value['mailId'] ?>"
+                                                class="text-decoration-none text-dark">
+                                        <?php echo $value['mailId'] ?></a></p>
+                                    </div>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Blood group</span> -
+                                    <?php echo $value['bloodGroup'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Alternate mobile</span> -
+                                    <?php echo $value['alternateMobile'] ?>
+                                        </p>
+                                    </div>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Age </span> -
+                                    <?php echo $value['age'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Married status</span> - <?php echo $value['marriedSince'] ?>
+                                    <?php echo $value['maritalStatus'] ?>
+                                        </p>
+                                    </div>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Profession</span> -
+                                    <?php echo $value['profession'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Street address</span> - <?php echo $value['doorNumber'] ?>,
+                                    <?php echo $value['address'] ?>
+                                        </p>
+                                    </div>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">District</span> -
+                                    <?php echo $value['district'] ?>         <?php echo $value['pincode'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Guardian name</span> - <?php echo $value['partnerName'] ?></p>
+                                    </div>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Guardian mobile</span> -
+                                    <?php echo $value['partnerMobile'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Guardian blood group</span> -
+                                    <?php echo $value['partnerBlood'] ?>
+                                        </p>
+                                    </div>
+                                    <h5 class="my-3 fw-bolder">Medical Records:</h5>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Weight</span> - <?php echo $value['weight'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Height</span> - <?php echo $value['height'] ?></p>
+                                    </div>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> -
+                                    <?php echo $value['bloodPressure'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Cholestrol </span> - <?php echo $value['cholestrol'] ?></p>
+                                    </div>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> -
+                                    <?php echo $value['bloodSugar'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Diagonsis / Complaints</span> -
+                                    <?php echo $value['diagonsis'] ?>
+                                        </p>
+                                    </div>
+                                    <div class="d-md-flex">
+                                        <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
+                                    <?php echo $value['symptoms'] ?>
+                                        </p>
+                                        <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
+                                    </div>
+                            <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
+
+                                        <h5 class="my-3 mt-5 fw-bolder">Documents / Reports:</h5>
+
+                                        <div class="d-md-flex">
+                                    <?php if ($value['documentOne'] != "No data") { ?>
+                                                <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> - <a
+                                                        href="<?php echo base_url() . 'uploads/' . $value['documentOne'] ?>" target="blank"
+                                                        rel="Document 1"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
+                                    <?php } ?>
+                                    <?php if ($value['documentTwo'] != "No data") { ?>
+                                                <p><span class="text-secondary ">Test uploads</span> - <a
+                                                        href="<?php echo base_url() . 'uploads/' . $value['documentTwo'] ?>" target="blank"
+                                                        rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
+                                    <?php } ?>
+                                        </div>
+                            <?php }
+                            } ?>
+                            </div>
+                        </div>
+
+                    </section>
+
+                    <script>
+                        function goBack() {
+                            window.history.back();
+                        }
+                    </script>
+
+            <?php
+        } else if ($method == "appointments") {
+            ?>
+                        <script>
+                            document.getElementById('appointments').style.color = "#66D1FF";
+                        </script>
+
+                        <section>
+                            <div class="card rounded">
+                                <div class="card-body p-2 p-sm-4">
+                                    <div class="d-flex justify-content-between mt-2 mb-3">
+                                        <p style="font-size: 24px; font-weight: 500">
+                                            Appointments
+                                        </p>
+                                    </div>
+
+                            <?php
+                            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                            $items_per_page = 10;
+
+                            $total_items = count($appointmentList);
+                            $total_pages = ceil($total_items / $items_per_page);
+
+                            $offset = ($current_page - 1) * $items_per_page;
+
+                            $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
+
+                            if (isset($appointmentList[0]['id'])) {
+                                ?>
+                                        <div class="table-responsive">
+                                            <table class="table text-center" id="appointmentTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            S.NO
+                                                        </th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            PATIENT ID
+                                                        </th>
+                                                        <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         PATIENT
                                                     </th> -->
-                                            <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD" class="">
+                                                        <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD" class="">
                                                         AGE
                                                     </th>
                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
                                                         GENDER
                                                     </th> -->
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                DATE
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                TIME
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                HCP ID
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                PURPOSE
-                                            </th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
-                                                ACTION
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $count = $offset;
-                                        foreach ($current_page_items as $key => $value) {
-                                            $count++;
-                                        ?>
-                                            <tr>
-                                                <td><?php echo $count; ?>. </td>
-                                                <td style="font-size: 16px"><a href="<?php echo base_url() . "Chiefconsultant/patientDetails/" . $value['patientDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"><?php echo $value['patientId'] ?></a>
-                                                </td>
-                                                <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
-                                                <td style="font-size: 16px">
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            DATE
+                                                        </th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            TIME
+                                                        </th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            HCP ID
+                                                        </th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            PURPOSE
+                                                        </th>
+                                                        <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
+                                                            ACTION
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                            <?php
+                                            $count = $offset;
+                                            foreach ($current_page_items as $key => $value) {
+                                                $count++;
+                                                ?>
+                                                        <tr>
+                                                            <td><?php echo $count; ?>. </td>
+                                                            <td style="font-size: 16px"><a
+                                                                    href="<?php echo base_url() . "Chiefconsultant/patientDetails/" . $value['patientDbId']; ?>"
+                                                                    class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                    onmouseout="style='text-decoration:none'"><?php echo $value['patientId'] ?></a>
+                                                            </td>
+                                                            <!-- <td class="px-4"><?php echo $value['patientName'] ?></td> -->
+                                                            <td style="font-size: 16px">
                                                     <?php if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
                                                         echo "<b>Today</b>";
                                                     } else {
                                                         echo date("d-m-Y", strtotime($value['dateOfAppoint']));
                                                     } ?>
-                                                </td>
-                                                <td class="" style="font-size: 16px">
+                                                            </td>
+                                                            <td class="" style="font-size: 16px">
                                                     <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
-                                                </td>
-                                                <td style="font-size: 16px"><a href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfile/" . $value['hcpDbId']; ?>" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
-                                                </td>
-                                                <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
-                                                <td style="font-size: 16px" class="d-flex d-lg-block">
-                                                                        <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
-                                                                        <a href="<?php echo $value['appointmentLink'] ?>" target="blank" ><button class="btn btn-success">Join</button></a>
-                                                                    </td>
-                                            </tr>
+                                                            </td>
+                                                            <td style="font-size: 16px"><a
+                                                                    href="<?php echo base_url() . "Chiefconsultant/healthCareProvidersProfile/" . $value['hcpDbId']; ?>"
+                                                                    class="text-dark" onmouseover="style='text-decoration:underline'"
+                                                                    onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
+                                                            </td>
+                                                            <td style="font-size: 16px"><?php echo $value['patientComplaint'] ?></td>
+                                                            <td style="font-size: 16px" class="d-flex d-lg-block">
+                                                        <?php
+                                                        date_default_timezone_set('Asia/Kolkata');
+
+                                                        $dateOfAppoint = $value['dateOfAppoint'];
+                                                        $timeOfAppoint = $value['timeOfAppoint'];
+
+                                                        $today = date('Y-m-d');
+                                                        $currentTime = date('H:i:s');
+
+                                                        $appointmentDateTime = strtotime("$dateOfAppoint $timeOfAppoint");
+                                                        $currentDateTime = strtotime("$today $currentTime");
+
+                                                        $isToday = ($dateOfAppoint == $today);
+
+                                                        $isWithin10Minutes = ($currentDateTime <= strtotime('+10 minutes', $appointmentDateTime)) &&
+                                                            ($currentDateTime >= $appointmentDateTime);
+                                                        $shouldEnableButton = $isToday && $isWithin10Minutes;
+
+                                                        if ($shouldEnableButton) { ?>
+                                                                    <a href="<?php echo $value['appointmentLink']; ?>" target="_blank">
+                                                                        <button class="btn btn-success">Join</button>
+                                                                    </a>
+                                                    <?php } else { ?>
+                                                                    <button class="btn btn-success" disabled>Join</button>
+                                                    <?php } ?>
+                                                            </td>
+                                                        </tr>
                                         <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center">
-                                    <?php if ($current_page > 1) : ?>
-                                        <li>
-                                            <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
-                                                <button type="button" class="bg-light border px-3 py-2">
-                                                    < </button>
-                                            </a>
-                                        </li>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center">
+                                    <?php if ($current_page > 1): ?>
+                                                    <li>
+                                                        <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                            <button type="button" class="bg-light border px-3 py-2">
+                                                                < </button>
+                                                        </a>
+                                                    </li>
                                     <?php endif; ?>
 
-                                    <?php
-                                    $start_page = max(1, $current_page - 2);
-                                    $end_page = min($total_pages, $current_page + 2);
+                                        <?php
+                                        $start_page = max(1, $current_page - 2);
+                                        $end_page = min($total_pages, $current_page + 2);
 
-                                    if ($start_page == 1) {
-                                        $end_page = min($total_pages, 5);
-                                    }
-                                    if ($end_page == $total_pages) {
-                                        $start_page = max(1, $total_pages - 4);
-                                    }
+                                        if ($start_page == 1) {
+                                            $end_page = min($total_pages, 5);
+                                        }
+                                        if ($end_page == $total_pages) {
+                                            $start_page = max(1, $total_pages - 4);
+                                        }
 
-                                    for ($i = $start_page; $i <= $end_page; $i++) : ?>
-                                        <li>
-                                            <a href="?page=<?php echo $i; ?>">
-                                                <button type="button" class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
+                                        for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                                    <li>
+                                                        <a href="?page=<?php echo $i; ?>">
+                                                            <button type="button"
+                                                                class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
                                                     <?php echo $i; ?></button>
-                                            </a>
-                                        </li>
+                                                        </a>
+                                                    </li>
                                     <?php endfor; ?>
 
-                                    <?php if ($current_page < $total_pages) : ?>
-                                        <li>
-                                            <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
-                                                <button type="button" class="bg-light border px-3 py-2">
-                                                    ></button>
-                                            </a>
-                                        </li>
+                                    <?php if ($current_page < $total_pages): ?>
+                                                    <li>
+                                                        <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                            <button type="button" class="bg-light border px-3 py-2">
+                                                                ></button>
+                                                        </a>
+                                                    </li>
                                     <?php endif; ?>
-                                </ul>
-                            </nav>
+                                            </ul>
+                                        </nav>
 
                         <?php } else { ?>
-                            <h5 class="text-center my-5"><b>No Records Found.</b> </h5>
+                                        <h5 class="text-center my-5"><b> No Appointments Found.</b> </h5>
                         <?php } ?>
-                    </div>
-                </div>
-            </section>
+                                </div>
+                            </div>
+                        </section>
 
-        <?php
+            <?php
         } else if ($method == "hcps") {
-        ?>
-            <script>
-                document.getElementById('healthCareProviders').style.color = "#66D1FF";
-            </script>
+            ?>
+                            <script>
+                                document.getElementById('healthCareProviders').style.color = "#66D1FF";
+                            </script>
 
-            <!-- Old code as per in design -->
-            <!-- <div class="card rounded">
+                            <!-- Old code as per in design -->
+                            <!-- <div class="card rounded">
                                 <div class="card-body p-4">
                                     <div class="d-flex justify-content-between mt-3 mb-3">
                                         <p class="ps-2" style="font-size: 24px; font-weight: 500">
@@ -890,7 +966,7 @@
                                     <div class="d-md-flex">
                                 <?php
                                 foreach ($hcpDetails as $key => $value) {
-                                ?>
+                                    ?>
                                             <div class="card rounded-2 mx-3">
                                                 <div class=" card-body text-center p-4">
                                                     <img src="<?php echo base_url(); ?>assets/happyPatients1.png" alt="dr1" width="122"
@@ -912,8 +988,8 @@
                                 </div>
                             </div> -->
 
-            <!-- Code to display all cards in single page -->
-            <!-- <div class="container">
+                            <!-- Code to display all cards in single page -->
+                            <!-- <div class="container">
                                     <div class="row justify-content-center">
                         <?php foreach ($hcpDetails as $key => $value) { ?>
                                             <div class="card col-lg-4 m-3">
@@ -943,585 +1019,624 @@
                                     </div>
                                 </div> -->
 
-            <section>
-                <div class="card rounded">
-                    <div class="d-sm-flex justify-content-between p-3">
-                        <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
-                            Health Care Providers
-                        </p>
-                        <div class="input-group pt-2 pt-sm-0" style="width:250px;">
-                            <span class="input-group-text" id="searchIconHcp">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <input type="text" id="searchInputHcp" class="form-control" placeholder="Search by name" aria-describedby="searchIconHcp">
-                            <button class="btn btn-outline-secondary" type="button" id="clearSearchHcp">
-                                <i class="bi bi-x"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="container">
-                    <div class="row justify-content-center" id="hcpContainer"></div>
-                    <div class="pagination justify-content-center mt-3" id="paginationContainerHcp"></div>
-                </div>
-            </section>
-
-            <script>
-                const itemsPerPageHcp = 6;
-                const hcpDetails = <?php echo json_encode($hcpDetails); ?>;
-                let filteredHcpDetails = hcpDetails;
-                const initialPageHcp = parseInt(localStorage.getItem('currentPageHcp')) || 1;
-
-                function displayHcpPage(page) {
-                    localStorage.setItem('currentPageHcp', page);
-                    const start = (page - 1) * itemsPerPageHcp;
-                    const end = start + itemsPerPageHcp;
-                    const itemsToShow = filteredHcpDetails.slice(start, end);
-
-                    const hcpContainer = document.getElementById('hcpContainer');
-                    hcpContainer.innerHTML = '';
-
-                    if (itemsToShow.length === 0) {
-                        const noMatchesDiv = document.createElement('div');
-                        noMatchesDiv.className = 'col-12 text-center';
-                        noMatchesDiv.innerHTML = `
-                                                                        <p>No matches found.</p>
-                                                                    `;
-                        hcpContainer.appendChild(noMatchesDiv);
-                    } else {
-                        itemsToShow.forEach(value => {
-                            const hcpItem = document.createElement('div');
-                            hcpItem.className = 'card col-lg-4 m-3 hcp-item';
-                            hcpItem.innerHTML = `
-                                                                            <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                                                <img src="${value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
-                                                                                     alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
-                                                                                <div>
-                                                                                    <p class="card-title"><b>${value.hcpName}</b> /<br>${value.hcpId}</p>
-                                                                                    <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
-                                                                                    <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.id}" 
-                                                                                       class="btn btn-secondary">Full Details</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        `;
-                            hcpContainer.appendChild(hcpItem);
-                        });
-                    }
-
-                    generateHcpPagination(filteredHcpDetails.length, page);
-                }
-
-                function generateHcpPagination(totalItems, currentPage) {
-                    const totalPages = Math.ceil(totalItems / itemsPerPageHcp);
-                    const paginationContainer = document.getElementById('paginationContainerHcp');
-                    paginationContainer.innerHTML = '';
-
-                    const ul = document.createElement('ul');
-                    ul.className = 'pagination';
-
-                    const prevLi = document.createElement('li');
-                    prevLi.innerHTML = `
-                                                                    <a href="#">
-                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                    </a>
-                                                                `;
-                    prevLi.onclick = () => {
-                        if (currentPage > 1) displayHcpPage(currentPage - 1);
-                    };
-                    ul.appendChild(prevLi);
-
-                    for (let i = 1; i <= totalPages; i++) {
-                        const li = document.createElement('li');
-                        li.innerHTML = `
-                                                                        <a href="#">
-                                                                            <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                        </a>
-                                                                    `;
-                        li.onclick = () => displayHcpPage(i);
-                        ul.appendChild(li);
-                    }
-
-                    const nextLi = document.createElement('li');
-                    nextLi.innerHTML = `
-                                                                    <a href="#">
-                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                    </a>
-                                                                `;
-                    nextLi.onclick = () => {
-                        if (currentPage < totalPages) displayHcpPage(currentPage + 1);
-                    };
-                    ul.appendChild(nextLi);
-
-                    paginationContainer.appendChild(ul);
-                }
-
-                document.getElementById('searchInputHcp').addEventListener('keyup', function() {
-                    const searchQuery = this.value.toLowerCase();
-                    filteredHcpDetails = hcpDetails.filter(item => item.hcpName.toLowerCase().includes(searchQuery));
-                    displayHcpPage(1);
-                });
-
-                document.getElementById('clearSearchHcp').addEventListener('click', function() {
-                    document.getElementById('searchInputHcp').value = '';
-                    filteredHcpDetails = hcpDetails;
-                    displayHcpPage(1);
-                });
-
-                displayHcpPage(initialPageHcp);
-            </script>
-
-        <?php
-        } else if ($method == "hcpsProfile") {
-        ?>
-            <script>
-                document.getElementById('healthCareProviders').style.color = "#66D1FF";
-            </script>
-
-            <section>
-                <div class="card rounded">
-                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
-                        <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
-                        <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i class="bi bi-arrow-left"></i> Back</button>
-                    </div>
-                    <div class="card-body p-2 p-sm-4">
-                        <?php
-                        foreach ($hcpDetails as $key => $value) {
-                        ?>
-                            <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
-                                    <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140" class="rounded-circle">
-                                <?php } else { ?>
-                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140" height="140" class="rounded-circle">
-                                <?php } ?>
-                                <div class="ps-sm-5">
-                                    <p style="font-size:20px;font-weight:500;">Dr.
-                                        <?php echo $value['hcpName']; ?>
-                                    </p>
-                                    <p style="font-size:16px;font-weight:400;color:#0079AD;">
-                                        <?php echo $value['hcpSpecialization']; ?>
-                                    </p>
-                                    <p><a href="tel:<?php echo $value['hcpMobile']; ?>" style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">+91
-                                            <?php echo $value['hcpMobile']; ?>
-                                        </a> | <a href="mailto:<?php echo $value['hcpMail']; ?>" style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
-                                            <?php echo $value['hcpMail']; ?>
-                                        </a></p>
+                            <section>
+                                <div class="card rounded">
+                                    <div class="d-sm-flex justify-content-between p-3">
+                                        <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
+                                            Health Care Providers
+                                        </p>
+                                        <div class="input-group pt-2 pt-sm-0" style="width:250px;">
+                                            <span class="input-group-text" id="searchIconHcp">
+                                                <i class="bi bi-search"></i>
+                                            </span>
+                                            <input type="text" id="searchInputHcp" class="form-control" placeholder="Search by name"
+                                                aria-describedby="searchIconHcp">
+                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchHcp">
+                                                <i class="bi bi-x"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <table>
-                                <tr>
-                                    <td class="col-5 py-2" style="color:#999292">Years of Experience</td>
-                                    <td class="col-5">
+                                <div class="container">
+                                    <div class="row justify-content-center" id="hcpContainer"></div>
+                                    <div class="pagination justify-content-center mt-3" id="paginationContainerHcp"></div>
+                                </div>
+                            </section>
+
+                            <script>
+                                const itemsPerPageHcp = 6;
+                                const hcpDetails = <?php echo json_encode($hcpDetails); ?>;
+                                let filteredHcpDetails = hcpDetails;
+                                const initialPageHcp = parseInt(localStorage.getItem('currentPageHcp')) || 1;
+
+                                function displayHcpPage(page) {
+                                    localStorage.setItem('currentPageHcp', page);
+                                    const start = (page - 1) * itemsPerPageHcp;
+                                    const end = start + itemsPerPageHcp;
+                                    const itemsToShow = filteredHcpDetails.slice(start, end);
+
+                                    const hcpContainer = document.getElementById('hcpContainer');
+                                    hcpContainer.innerHTML = '';
+
+                                    if (itemsToShow.length === 0) {
+                                        const noMatchesDiv = document.createElement('div');
+                                        noMatchesDiv.className = 'col-12 text-center';
+                                        noMatchesDiv.innerHTML = `
+                                                                                            <p>No matches found.</p>
+                                                                                        `;
+                                        hcpContainer.appendChild(noMatchesDiv);
+                                    } else {
+                                        itemsToShow.forEach(value => {
+                                            const hcpItem = document.createElement('div');
+                                            hcpItem.className = 'card col-lg-4 m-3 hcp-item';
+                                            hcpItem.innerHTML = `
+                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                                                                    <img src="${value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
+                                                                                                         alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
+                                                                                                    <div>
+                                                                                                        <p class="card-title"><b>${value.hcpName}</b> /<br>${value.hcpId}</p>
+                                                                                                        <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
+                                                                                                        <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.id}" 
+                                                                                                           class="btn btn-secondary">Full Details</a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            `;
+                                            hcpContainer.appendChild(hcpItem);
+                                        });
+                                    }
+
+                                    generateHcpPagination(filteredHcpDetails.length, page);
+                                }
+
+                                function generateHcpPagination(totalItems, currentPage) {
+                                    const totalPages = Math.ceil(totalItems / itemsPerPageHcp);
+                                    const paginationContainer = document.getElementById('paginationContainerHcp');
+                                    paginationContainer.innerHTML = '';
+
+                                    const ul = document.createElement('ul');
+                                    ul.className = 'pagination';
+
+                                    const prevLi = document.createElement('li');
+                                    prevLi.innerHTML = `
+                                                                                        <a href="#">
+                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                        </a>
+                                                                                    `;
+                                    prevLi.onclick = () => {
+                                        if (currentPage > 1) displayHcpPage(currentPage - 1);
+                                    };
+                                    ul.appendChild(prevLi);
+
+                                    for (let i = 1; i <= totalPages; i++) {
+                                        const li = document.createElement('li');
+                                        li.innerHTML = `
+                                                                                            <a href="#">
+                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                            </a>
+                                                                                        `;
+                                        li.onclick = () => displayHcpPage(i);
+                                        ul.appendChild(li);
+                                    }
+
+                                    const nextLi = document.createElement('li');
+                                    nextLi.innerHTML = `
+                                                                                        <a href="#">
+                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                        </a>
+                                                                                    `;
+                                    nextLi.onclick = () => {
+                                        if (currentPage < totalPages) displayHcpPage(currentPage + 1);
+                                    };
+                                    ul.appendChild(nextLi);
+
+                                    paginationContainer.appendChild(ul);
+                                }
+
+                                document.getElementById('searchInputHcp').addEventListener('keyup', function () {
+                                    const searchQuery = this.value.toLowerCase();
+                                    filteredHcpDetails = hcpDetails.filter(item => item.hcpName.toLowerCase().includes(searchQuery));
+                                    displayHcpPage(1);
+                                });
+
+                                document.getElementById('clearSearchHcp').addEventListener('click', function () {
+                                    document.getElementById('searchInputHcp').value = '';
+                                    filteredHcpDetails = hcpDetails;
+                                    displayHcpPage(1);
+                                });
+
+                                displayHcpPage(initialPageHcp);
+                            </script>
+
+            <?php
+        } else if ($method == "hcpsProfile") {
+            ?>
+                                <script>
+                                    document.getElementById('healthCareProviders').style.color = "#66D1FF";
+                                </script>
+
+                                <section>
+                                    <div class="card rounded">
+                                        <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
+                                            <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
+                                            <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
+                                                    class="bi bi-arrow-left"></i> Back</button>
+                                        </div>
+                                        <div class="card-body p-2 p-sm-4">
+                            <?php
+                            foreach ($hcpDetails as $key => $value) {
+                                ?>
+                                                <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
+                                                        <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
+                                                            class="rounded-circle">
+                                <?php } else { ?>
+                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                            height="140" class="rounded-circle">
+                                <?php } ?>
+                                                    <div class="ps-sm-5">
+                                                        <p style="font-size:20px;font-weight:500;">Dr.
+                                        <?php echo $value['hcpName']; ?>
+                                                        </p>
+                                                        <p style="font-size:16px;font-weight:400;color:#0079AD;">
+                                        <?php echo $value['hcpSpecialization']; ?>
+                                                        </p>
+                                                        <p><a href="tel:<?php echo $value['hcpMobile']; ?>" style="font-size:16px;font-weight:400;"
+                                                                class="text-decoration-none text-dark fs-6">+91
+                                            <?php echo $value['hcpMobile']; ?>
+                                                            </a> | <a href="mailto:<?php echo $value['hcpMail']; ?>"
+                                                                style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                            <?php echo $value['hcpMail']; ?>
+                                                            </a></p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <h5 class="my-3 fw-bolder">Profile Details:</h5>
+
+                                                <table>
+                                                    <tr>
+                                                        <td class="col-5 py-2" style="color:#999292">Years of Experience</td>
+                                                        <td class="col-5">
                                         <?php if ($value['hcpExperience'] != "") {
                                             echo $value['hcpExperience'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Qualification</td>
-                                    <td>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="py-2" style="color:#999292">Qualification</td>
+                                                        <td>
                                         <?php if ($value['hcpQualification'] != "") {
                                             echo $value['hcpQualification'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <!-- <tr>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- <tr>
                                                                 <td class="py-2" style="color:#999292">Specialization</td>
                                                                 <td>Diabetologist, Internal Medician Physician</td>
                                                             </tr> -->
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Date of Birth</td>
-                                    <td>
+                                                    <tr>
+                                                        <td class="py-2" style="color:#999292">Date of Birth</td>
+                                                        <td>
                                         <?php if ($value['hcpDob'] != "") {
                                             echo $value['hcpDob'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
-                                    <td>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
+                                                        <td>
                                         <?php if ($value['hcpHospitalName'] != "") {
                                             echo $value['hcpHospitalName'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Location</td>
-                                    <td>
-                                        c <?php if ($value['hcpLocation'] != "") {
-                                                echo $value['hcpLocation'];
-                                            } else {
-                                                echo "-";
-                                            } ?>
-                                    </td>
-                                </tr>
-                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="py-2" style="color:#999292">Location</td>
+                                                        <td>
+                                                            c <?php if ($value['hcpLocation'] != "") {
+                                                                echo $value['hcpLocation'];
+                                                            } else {
+                                                                echo "-";
+                                                            } ?>
+                                                        </td>
+                                                    </tr>
+                                                </table>
                         <?php } ?>
-                    </div>
-                </div>
-            </section>
-            <script>
-                function goBack() {
-                    window.history.back();
-                }
-            </script>
+                                        </div>
+                                    </div>
+                                </section>
+                                <script>
+                                    function goBack() {
+                                        window.history.back();
+                                    }
+                                </script>
 
-        <?php
+            <?php
         } else if ($method == "myProfile") {
-        ?>
+            ?>
 
-            <section>
-                <div class="card rounded">
-                    <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
-                        <p style="font-size: 24px; font-weight: 500">
-                            My Profile </p>
-                        <a href="<?php echo base_url() . "Chiefconsultant/dashboard" ?>" class="text-dark"><i class="bi bi-arrow-left"></i> Back</a>
-                    </div>
-                    <div class="card-body ps-2 p-sm-4">
-                        <?php
-                        foreach ($ccDetails as $key => $value) {
-                        ?>
-                            <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                    <section>
+                                        <div class="card rounded">
+                                            <div class="d-flex justify-content-between mt-2 p-2 pt-sm-4 px-sm-4">
+                                                <p style="font-size: 24px; font-weight: 500">
+                                                    My Profile </p>
+                                                <a href="<?php echo base_url() . "Chiefconsultant/dashboard" ?>" class="text-dark"><i
+                                                        class="bi bi-arrow-left"></i> Back</a>
+                                            </div>
+                                            <div class="card-body ps-2 p-sm-4">
+                            <?php
+                            foreach ($ccDetails as $key => $value) {
+                                ?>
+                                                    <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                    <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140" class="rounded-circle">
+                                                            <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
+                                                                class="rounded-circle">
                                 <?php } else { ?>
-                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140" height="140" class="rounded-circle">
+                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                                height="140" class="rounded-circle">
                                 <?php } ?>
-                                <div class="ps-sm-5">
-                                    <p style="font-size:20px;font-weight:500;">Dr.
+                                                        <div class="ps-sm-5">
+                                                            <p style="font-size:20px;font-weight:500;">Dr.
                                         <?php echo $value['doctorName']; ?>
-                                    </p>
-                                    <p style="font-size:16px;font-weight:400;color:#0079AD;">
+                                                            </p>
+                                                            <p style="font-size:16px;font-weight:400;color:#0079AD;">
                                         <?php echo $value['specialization']; ?>
-                                    </p>
-                                    <p><a href="tel:<?php echo $value['doctorMobile']; ?>" style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">+91
+                                                            </p>
+                                                            <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
+                                                                    style="font-size:16px;font-weight:400;"
+                                                                    class="text-decoration-none text-dark fs-6">+91
                                             <?php echo $value['doctorMobile']; ?>
-                                        </a> | <a href="mailto:<?php echo $value['doctorMail']; ?>" style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                                                </a> | <a href="mailto:<?php echo $value['doctorMail']; ?>"
+                                                                    style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['doctorMail']; ?>
-                                        </a></p>
-                                </div>
-                            </div>
+                                                                </a></p>
+                                                        </div>
+                                                    </div>
 
-                            <div class="d-flex justify-content-between mt-2 ">
-                                <h5 class="fw-bolder">Profile Details:</h5>
-                                <a href="<?php echo base_url() . "Chiefconsultant/editMyProfile" ?>"><i class="bi bi-pencil-square"></i> Edit</a>
-                            </div>
+                                                    <div class="d-flex justify-content-between mt-2 ">
+                                                        <h5 class="fw-bolder">Profile Details:</h5>
+                                                        <a href="<?php echo base_url() . "Chiefconsultant/editMyProfile" ?>"><i
+                                                                class="bi bi-pencil-square"></i> Edit</a>
+                                                    </div>
 
-                            <table>
-                                <tr>
-                                    <td class="col-2 py-2" style="color:#999292">Years of Experience</td>
-                                    <td class="col-5">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="col-2 py-2" style="color:#999292">Years of Experience</td>
+                                                            <td class="col-5">
                                         <?php if ($value['yearOfExperience'] != "") {
                                             echo $value['yearOfExperience'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Qualification</td>
-                                    <td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="py-2" style="color:#999292">Qualification</td>
+                                                            <td>
                                         <?php if ($value['qualification'] != "") {
                                             echo $value['qualification'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Registration detail</td>
-                                    <td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="py-2" style="color:#999292">Registration detail</td>
+                                                            <td>
                                         <?php if ($value['regDetails'] != "") {
                                             echo $value['regDetails'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Membership</td>
-                                    <td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="py-2" style="color:#999292">Membership</td>
+                                                            <td>
                                         <?php if ($value['membership'] != "") {
                                             echo $value['membership'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Services</td>
-                                    <td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="py-2" style="color:#999292">Services</td>
+                                                            <td>
                                         <?php if ($value['services'] != "") {
                                             echo $value['services'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Date of Birth</td>
-                                    <td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="py-2" style="color:#999292">Date of Birth</td>
+                                                            <td>
                                         <?php if ($value['dateOfBirth'] != "") {
                                             echo $value['dateOfBirth'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
-                                    <td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
+                                                            <td>
                                         <?php if ($value['hospitalName'] != "") {
                                             echo $value['hospitalName'];
                                         } else {
                                             echo "-";
                                         } ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="py-2" style="color:#999292">Location</td>
-                                    <td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="py-2" style="color:#999292">Location</td>
+                                                            <td>
                                         <?php if ($value['location'] != "") {
                                             echo $value['location'];
                                         } else {
                                             echo "-";
                                         }
                                         ?>
-                                    </td>
-                                </tr>
-                            </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                         <?php } ?>
-                    </div>
-                </div>
-            </section>
+                                            </div>
+                                        </div>
+                                    </section>
 
-        <?php
+            <?php
         } else if ($method == "editMyProfile") {
-        ?>
+            ?>
 
-            <section>
-                <div class="card rounded">
-                    <div class="d-flex justify-content-between mx-2 p-2 pt-sm-4 px-sm-4">
-                        <p style="font-size: 24px; font-weight: 500">
-                            Edit Profile Details</p>
-                        <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
-                    </div>
-                    <div class="card-body ps-2 p-sm-4">
+                                        <section>
+                                            <div class="card rounded">
+                                                <div class="d-flex justify-content-between mx-2 p-2 pt-sm-4 px-sm-4">
+                                                    <p style="font-size: 24px; font-weight: 500">
+                                                        Edit Profile Details</p>
+                                                    <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark"><i
+                                                            class="bi bi-arrow-left"></i> Back</a>
+                                                </div>
+                                                <div class="card-body ps-2 p-sm-4">
 
-                        <?php
-                        foreach ($ccDetails as $key => $value) {
-                        ?>
-                            <div class="">
-                                <div class="position-relative mb-5">
+                            <?php
+                            foreach ($ccDetails as $key => $value) {
+                                ?>
+                                                        <div class="">
+                                                            <div class="position-relative mb-5">
 
                                     <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                        <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="180" height="180" class="rounded-circle">
+                                                                    <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="180" height="180"
+                                                                        class="rounded-circle">
                                     <?php } else { ?>
-                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180" height="180" class="rounded-circle">
+                                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180"
+                                                                        height="180" class="rounded-circle">
                                     <?php } ?>
-                                    <button class="position-absolute bottom-0 " type="button" data-toggle="modal" data-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
-                                </div>
+                                                                <button class="position-absolute bottom-0 " type="button" data-toggle="modal"
+                                                                    data-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
+                                                            </div>
 
-                                <form action="<?php echo base_url() . "Chiefconsultant/updateMyProfile" ?>" name="profileEditForm" enctype="multipart/form-data" method="POST" onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="col-md-6">
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="drName" name="drName" value="<?php echo $value['doctorName']; ?>" placeholder="Suresh Kumar">
-                                        <div id="drName_err" class="text-danger pt-1"></div>
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="drMobile">Mobile <span class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" id="drMobile" name="drMobile" value="<?php echo $value['doctorMobile']; ?>" placeholder="9632587410">
-                                        <div id="drMobile_err" class="text-danger pt-1"></div>
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control" id="drEmail" name="drEmail" value="<?php echo $value['doctorMail']; ?>" placeholder="example@gmail.com">
-                                        <div id="drEmail_err" class="text-danger pt-1"></div>
-                                    </div>
-                                    <div class="form-group pb-3 ">
-                                        <label class="form-label" for="drPassword">Password <span class="text-danger">*</span></label>
-                                        <div class="d-flex">
-                                            <input type="password" class="form-control" id="drPassword" name="drPassword" value='<?php echo $value['doctorPassword']; ?>'>
-                                            <button type="button" class="btn btn-outline-secondary" onclick="togglePasswordVisibility('drPassword', 'visibilityIcon')">
-                                                <i id="visibilityIcon" class="bi bi-eye-slash"></i>
-                                            </button>
-                                        </div>
-                                        <div id="drPassword_err" class="text-danger pt-1"></div>
-                                    </div>
+                                                            <form action="<?php echo base_url() . "Chiefconsultant/updateMyProfile" ?>"
+                                                                name="profileEditForm" enctype="multipart/form-data" method="POST"
+                                                                onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="col-md-6">
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control" id="drName" name="drName"
+                                                                        value="<?php echo $value['doctorName']; ?>" placeholder="Suresh Kumar">
+                                                                    <div id="drName_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="drMobile">Mobile <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="number" class="form-control" id="drMobile" name="drMobile"
+                                                                        value="<?php echo $value['doctorMobile']; ?>" placeholder="9632587410">
+                                                                    <div id="drMobile_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
+                                                                    <input type="email" class="form-control" id="drEmail" name="drEmail"
+                                                                        value="<?php echo $value['doctorMail']; ?>" placeholder="example@gmail.com">
+                                                                    <div id="drEmail_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="form-group pb-3 ">
+                                                                    <label class="form-label" for="drPassword">Password <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <div class="d-flex">
+                                                                        <input type="password" class="form-control" id="drPassword" name="drPassword"
+                                                                            value='<?php echo $value['doctorPassword']; ?>'>
+                                                                        <button type="button" class="btn btn-outline-secondary"
+                                                                            onclick="togglePasswordVisibility('drPassword', 'visibilityIcon')">
+                                                                            <i id="visibilityIcon" class="bi bi-eye-slash"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div id="drPassword_err" class="text-danger pt-1"></div>
+                                                                </div>
 
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="specialization">Specialization</label>
-                                        <select class="form-control" id="specialization" name="specialization">
-                                            <?php
-                                            $defaultSelectedValue = $value['specialization'];
-                                            foreach ($specializationList as $key => $cvalue) {
-                                                $selected = ($cvalue['specializationName'] == $defaultSelectedValue) ? 'selected' : ''; ?>
-                                                <option value="<?php echo $cvalue['specializationName'] ?>" <?php echo $selected ?>>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="specialization">Specialization</label>
+                                                                    <select class="form-control" id="specialization" name="specialization">
+                                                <?php
+                                                $defaultSelectedValue = $value['specialization'];
+                                                foreach ($specializationList as $key => $cvalue) {
+                                                    $selected = ($cvalue['specializationName'] == $defaultSelectedValue) ? 'selected' : ''; ?>
+                                                                            <option value="<?php echo $cvalue['specializationName'] ?>" <?php echo $selected ?>>
                                                     <?php echo $cvalue['specializationName'] ?>
-                                                </option>
+                                                                            </option>
                                             <?php } ?>
-                                        </select>
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="yearOfExp">Years of Experience</label>
-                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp" value="<?php echo $value['yearOfExperience']; ?>" placeholder="25">
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="qualification">Qualification</label>
-                                        <input type="text" class="form-control" id="qualification" name="qualification" value="<?php echo $value['qualification']; ?>" placeholder="MBBS">
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="regDetails">Registration detail</label>
-                                        <input type="text" class="form-control" id="regDetails" name="regDetails" value="<?php echo $value['regDetails']; ?>" placeholder="Tamil Nadu Medical Council">
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="membership">Membership</label>
-                                        <input type="text" class="form-control" id="membership" name="membership" value="<?php echo $value['membership']; ?>" placeholder="Life member IMA">
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="dob">Date of Birth</label>
-                                        <input type="date" class="form-control" id="dob" name="dob" value="<?php echo $value['dateOfBirth']; ?>">
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="services">Services</label><br>
-                                        <textarea class="form-control" id="services" name="services" rows="" cols="" placeholder="Completed diabetes care under one roof"><?php echo $value['services']; ?></textarea>
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="hospitalName">Hospital / Clinic Name</label><br>
-                                        <input type="text" class="form-control" id="hospitalName" name="hospitalName" value="<?php echo $value['hospitalName']; ?>" placeholder="MMCH">
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <div class="form-group pb-3">
-                                        <label class="form-label" for="location">Location</label><br>
-                                        <input type="text" class="form-control" id="location" name="location" value="<?php echo $value['location']; ?>" placeholder="Erode">
-                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                    </div>
-                                    <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
-                                    <button type="submit" class="btn float-end mt-3 " style="color: white;background-color: #0079AD;">Save</button>
-                                </form>
+                                                                    </select>
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="yearOfExp">Years of Experience</label>
+                                                                    <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
+                                                                        value="<?php echo $value['yearOfExperience']; ?>" placeholder="25">
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="qualification">Qualification</label>
+                                                                    <input type="text" class="form-control" id="qualification" name="qualification"
+                                                                        value="<?php echo $value['qualification']; ?>" placeholder="MBBS">
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="regDetails">Registration detail</label>
+                                                                    <input type="text" class="form-control" id="regDetails" name="regDetails"
+                                                                        value="<?php echo $value['regDetails']; ?>"
+                                                                        placeholder="Tamil Nadu Medical Council">
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="membership">Membership</label>
+                                                                    <input type="text" class="form-control" id="membership" name="membership"
+                                                                        value="<?php echo $value['membership']; ?>" placeholder="Life member IMA">
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="dob">Date of Birth</label>
+                                                                    <input type="date" class="form-control" id="dob" name="dob"
+                                                                        value="<?php echo $value['dateOfBirth']; ?>">
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="services">Services</label><br>
+                                                                    <textarea class="form-control" id="services" name="services" rows="" cols=""
+                                                                        placeholder="Completed diabetes care under one roof"><?php echo $value['services']; ?></textarea>
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="hospitalName">Hospital / Clinic Name</label><br>
+                                                                    <input type="text" class="form-control" id="hospitalName" name="hospitalName"
+                                                                        value="<?php echo $value['hospitalName']; ?>" placeholder="MMCH">
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="location">Location</label><br>
+                                                                    <input type="text" class="form-control" id="location" name="location"
+                                                                        value="<?php echo $value['location']; ?>" placeholder="Erode">
+                                                                    <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
+                                                                <button type="submit" class="btn float-end mt-3 "
+                                                                    style="color: white;background-color: #0079AD;">Save</button>
+                                                            </form>
                             <?php } ?>
-                            </div>
-                    </div>
-                </div>
-            </section>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
 
-            <script>
-                function clearErrorDetails() {
-                    var doctorName = document.getElementById("drName").value;
-                    var doctorMobile = document.getElementById("drMobile").value;
-                    var doctorEmail = document.getElementById("drEmail").value;
-                    var doctorpassword = document.getElementById("drPassword").value;
-                    // var photo = document.getElementById("profilePhoto").value;
+                                        <script>
+                                            function clearErrorDetails() {
+                                                var doctorName = document.getElementById("drName").value;
+                                                var doctorMobile = document.getElementById("drMobile").value;
+                                                var doctorEmail = document.getElementById("drEmail").value;
+                                                var doctorpassword = document.getElementById("drPassword").value;
+                                                // var photo = document.getElementById("profilePhoto").value;
 
-                    if (doctorName != "") {
-                        document.getElementById("drName_err").innerHTML = "";
-                    }
-                    if (doctorMobile != "") {
-                        document.getElementById("drMobile_err").innerHTML = "";
-                    }
-                    if (doctorEmail != "") {
-                        document.getElementById("drEmail_err").innerHTML = "";
-                    }
-                    if (doctorpassword != "") {
-                        document.getElementById("drPassword_err").innerHTML = "";
-                    }
-                    // if (photo != "") {
-                    //     document.getElementById("profilePhoto_err").innerHTML = "";
-                    // }
-                }
-            </script>
-            <script>
-                function validateDetails() {
-                    var doctorNmae = document.getElementById("drName").value;
-                    var doctorMobile = document.getElementById("drMobile").value;
-                    var doctorEmail = document.getElementById("drEmail").value;
-                    var doctorPassword = document.getElementById("drPassword").value;
-                    // var photo = document.getElementById("profilePhoto").value;
+                                                if (doctorName != "") {
+                                                    document.getElementById("drName_err").innerHTML = "";
+                                                }
+                                                if (doctorMobile != "") {
+                                                    document.getElementById("drMobile_err").innerHTML = "";
+                                                }
+                                                if (doctorEmail != "") {
+                                                    document.getElementById("drEmail_err").innerHTML = "";
+                                                }
+                                                if (doctorpassword != "") {
+                                                    document.getElementById("drPassword_err").innerHTML = "";
+                                                }
+                                                // if (photo != "") {
+                                                //     document.getElementById("profilePhoto_err").innerHTML = "";
+                                                // }
+                                            }
+                                        </script>
+                                        <script>
+                                            function validateDetails() {
+                                                var doctorNmae = document.getElementById("drName").value;
+                                                var doctorMobile = document.getElementById("drMobile").value;
+                                                var doctorEmail = document.getElementById("drEmail").value;
+                                                var doctorPassword = document.getElementById("drPassword").value;
+                                                // var photo = document.getElementById("profilePhoto").value;
 
-                    if (doctorNmae == "") {
-                        document.getElementById("drName_err").innerHTML = "A name can't be blank.";
-                        document.getElementById("drName").focus();
-                        return false;
-                    } else {
-                        document.getElementById("drName_err").innerHTML = "";
-                    }
+                                                if (doctorNmae == "") {
+                                                    document.getElementById("drName_err").innerHTML = "A name can't be blank.";
+                                                    document.getElementById("drName").focus();
+                                                    return false;
+                                                } else {
+                                                    document.getElementById("drName_err").innerHTML = "";
+                                                }
 
-                    if (doctorMobile == "") {
-                        document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
-                        document.getElementById("drMobile").focus();
-                        return false;
-                    } else {
-                        document.getElementById("drMobile_err").innerHTML = "";
-                    }
+                                                if (doctorMobile == "") {
+                                                    document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
+                                                    document.getElementById("drMobile").focus();
+                                                    return false;
+                                                } else {
+                                                    document.getElementById("drMobile_err").innerHTML = "";
+                                                }
 
-                    if (doctorEmail == "") {
-                        document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
-                        document.getElementById("drEmail").focus();
-                        return false;
-                    } else {
-                        document.getElementById("drEmail_err").innerHTML = "";
-                    }
+                                                if (doctorEmail == "") {
+                                                    document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
+                                                    document.getElementById("drEmail").focus();
+                                                    return false;
+                                                } else {
+                                                    document.getElementById("drEmail_err").innerHTML = "";
+                                                }
 
-                    if (doctorPassword == "") {
-                        document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
-                        document.getElementById("drPassword").focus();
-                        return false;
-                    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
-                        document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
-                        document.getElementById("drPassword").focus();
-                        return false;
-                    } else {
-                        document.getElementById("drPassword_err").innerHTML = "";
-                    }
+                                                if (doctorPassword == "") {
+                                                    document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
+                                                    document.getElementById("drPassword").focus();
+                                                    return false;
+                                                } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
+                                                    document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
+                                                    document.getElementById("drPassword").focus();
+                                                    return false;
+                                                } else {
+                                                    document.getElementById("drPassword_err").innerHTML = "";
+                                                }
 
-                    // if (photo == "") {
-                    //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
-                    //     document.getElementById("profilePhoto").focus();
-                    //     return false;
-                    // } else {
-                    //     document.getElementById("profilePhoto_err").innerHTML = "";
-                    // }
+                                                // if (photo == "") {
+                                                //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
+                                                //     document.getElementById("profilePhoto").focus();
+                                                //     return false;
+                                                // } else {
+                                                //     document.getElementById("profilePhoto_err").innerHTML = "";
+                                                // }
 
 
-                }
-            </script>
-            <script>
-                function togglePasswordVisibility(inputId, iconId) {
-                    var passwordInput = document.getElementById(inputId);
-                    var visibilityIcon = document.getElementById(iconId);
+                                            }
+                                        </script>
+                                        <script>
+                                            function togglePasswordVisibility(inputId, iconId) {
+                                                var passwordInput = document.getElementById(inputId);
+                                                var visibilityIcon = document.getElementById(iconId);
 
-                    if (passwordInput.type === "password") {
-                        passwordInput.type = "text";
-                        visibilityIcon.classList.remove("bi-eye-slash");
-                        visibilityIcon.classList.add("bi-eye");
-                    } else {
-                        passwordInput.type = "password";
-                        visibilityIcon.classList.remove("bi-eye");
-                        visibilityIcon.classList.add("bi-eye-slash");
-                    }
-                }
-            </script>
+                                                if (passwordInput.type === "password") {
+                                                    passwordInput.type = "text";
+                                                    visibilityIcon.classList.remove("bi-eye-slash");
+                                                    visibilityIcon.classList.add("bi-eye");
+                                                } else {
+                                                    passwordInput.type = "password";
+                                                    visibilityIcon.classList.remove("bi-eye");
+                                                    visibilityIcon.classList.add("bi-eye-slash");
+                                                }
+                                            }
+                                        </script>
 
         <?php } ?>
 
         <!-- Popup Update Profile Photo -->
-        <div class="modal fade" id="updatePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="updatePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1531,9 +1646,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="<?php echo base_url() . "Chiefconsultant/updatePhoto" ?>" name="profilePhotoForm" name="profilePhotoForm" enctype="multipart/form-data" method="POST">
+                        <form action="<?php echo base_url() . "Chiefconsultant/updatePhoto" ?>" name="profilePhotoForm"
+                            name="profilePhotoForm" enctype="multipart/form-data" method="POST">
                             <label for="ccProfile" class="pb-2">Upload file: </label><br>
-                            <input type="file" name="ccProfile" id="ccProfile" accept="image/png ,image/jpg, image/jpeg" required><br><br>
+                            <input type="file" name="ccProfile" id="ccProfile" accept="image/png ,image/jpg, image/jpeg"
+                                required><br><br>
                             <button type="submit" class="btn btn-success">Save</button>
                         </form>
                     </div>
@@ -1551,10 +1668,10 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
-    
+
     <!-- Hide page source Ctrl + U -->
     <script>
-        document.onkeydown = function(e) {
+        document.onkeydown = function (e) {
             if (e.ctrlKey && e.keyCode === 85) {
                 return false;
             }

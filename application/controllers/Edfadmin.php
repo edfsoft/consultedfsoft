@@ -32,7 +32,7 @@ class edfadmin extends CI_Controller
             $this->session->set_userdata($LoggedInDetails);
             $this->dashboard();
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
             echo '<script>alert("Please valid details.");</script>';
         }
     }
@@ -49,7 +49,7 @@ class edfadmin extends CI_Controller
             $this->data['totalPatientList'] = $overallpatient['totalRows'];
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -61,7 +61,7 @@ class edfadmin extends CI_Controller
             $this->data['ccList'] = $overallcc['response'];
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -73,7 +73,7 @@ class edfadmin extends CI_Controller
             $this->data['specializationList'] = $specList;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -87,7 +87,7 @@ class edfadmin extends CI_Controller
                     window.location.href = "' . site_url('Edfadmin/ccList') . '";
                   </script>';
             exit();
-             } else {
+        } else {
             $postData = $this->input->post(null, true);
             $register = $this->CcModel->register();
             $generateid = $this->CcModel->generateCcId();
@@ -104,7 +104,7 @@ class edfadmin extends CI_Controller
             $this->data['ccDetails'] = $ccDetails;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -115,9 +115,21 @@ class edfadmin extends CI_Controller
             $this->AdminModel->approveCcDb($ccIdDb);
             redirect('Edfadmin/ccList');
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
+
+    public function addAppLink()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $ccIdDb = $this->uri->segment(3);
+            $this->CcModel->addAppLinkCc($ccIdDb);
+            redirect('Edfadmin/ccList');
+        } else {
+            redirect('Edfadmin/');
+        }
+    }
+
 
     public function deleteCc()
     {
@@ -126,17 +138,7 @@ class edfadmin extends CI_Controller
             $this->AdminModel->deleteCcDb($ccIdDb);
             redirect('Edfadmin/ccList');
         } else {
-           redirect('Edfadmin/');
-        }
-    }
-
-    public function addAppLink()
-    {
-        if (isset($_SESSION['adminIdDb'])) {
-           $this->CcModel->addAppLinkCc();
-            redirect('Edfadmin/ccList');
-        } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -148,7 +150,7 @@ class edfadmin extends CI_Controller
             $this->data['hcpList'] = $overallhcp['response'];
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -160,7 +162,7 @@ class edfadmin extends CI_Controller
             $this->data['specializationList'] = $specList;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -169,11 +171,11 @@ class edfadmin extends CI_Controller
         $hcpMobileNum = $this->input->post('hcpMobile');
 
         if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
-             echo '<script type="text/javascript">
+            echo '<script type="text/javascript">
             alert("Mobile number already exists. Please use a new number.");
             window.location.href = "' . site_url('Edfadmin/hcpList') . '";
           </script>';
-    exit();
+            exit();
         } else {
             $postData = $this->input->post(null, true);
             $register = $this->HcpModel->register();
@@ -191,7 +193,7 @@ class edfadmin extends CI_Controller
             $this->data['hcpDetails'] = $hcpDetails;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -202,7 +204,7 @@ class edfadmin extends CI_Controller
             $this->AdminModel->approveHcpDb($hcpIdDb);
             redirect('Edfadmin/hcpList');
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -213,7 +215,7 @@ class edfadmin extends CI_Controller
             $this->AdminModel->deleteHcpDb($hcpIdDb);
             redirect('Edfadmin/hcpList');
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -225,7 +227,7 @@ class edfadmin extends CI_Controller
             $this->data['patientList'] = $overallpatient['response'];
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -238,7 +240,7 @@ class edfadmin extends CI_Controller
             $this->data['patientDetails'] = $patientDetails;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -249,7 +251,7 @@ class edfadmin extends CI_Controller
             $this->AdminModel->deletePatientDb($patientIdDb);
             redirect('Edfadmin/patientList');
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -261,7 +263,7 @@ class edfadmin extends CI_Controller
             $this->data['specilalizationList'] = $list;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -287,7 +289,7 @@ class edfadmin extends CI_Controller
             $this->data['symptomsList'] = $list;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -313,7 +315,7 @@ class edfadmin extends CI_Controller
             $this->data['medicinesList'] = $list;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
-           redirect('Edfadmin/');
+            redirect('Edfadmin/');
         }
     }
 
@@ -337,6 +339,6 @@ class edfadmin extends CI_Controller
         $this->session->unset_userdata('adminName');
         $this->session->unset_userdata('adminMailId');
         $this->session->unset_userdata('adminMobileNum');
-       redirect('Edfadmin/');
+        redirect('Edfadmin/');
     }
 }

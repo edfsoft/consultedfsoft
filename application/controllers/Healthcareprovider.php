@@ -277,11 +277,37 @@ class healthcareprovider extends CI_Controller
         }
     }
 
-    // public function precriptionForm()
+    // public function prescriptionForm()
     // {
     //     $profileDetails = $this->HcpModel->addPrecription();
     //     redirect('Healthcareprovider/appointments');
     // }
+
+
+    public function appointmentReschedule()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+           $this->data['method'] = "appointmentReschedule";
+            $appId = $this->uri->segment(3);
+            $editAppDetails = $this->HcpModel->editAppDetails($appId);
+            $this->data['updateAppDetails'] = $editAppDetails;
+            $appTime = $this->HcpModel->getAppointmentTime();
+            $this->data['appBookedDetails'] = $appTime;
+
+            $mtime = $this->HcpModel->getAppMorTime();
+            $this->data['morning'] = $mtime;
+            $atime = $this->HcpModel->getAppAfterTime();
+            $this->data['afternoon'] = $atime;
+            $etime = $this->HcpModel->getAppEveTime();
+            $this->data['evening'] = $etime;
+            $ntime = $this->HcpModel->getAppNightTime();
+            $this->data['night'] = $ntime;
+
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+    }
 
     public function chiefDoctors()
     {

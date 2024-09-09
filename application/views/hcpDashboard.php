@@ -2493,7 +2493,7 @@
                                                     selectedValues.add(option.value);
                                                     option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                                     if (!option.innerHTML.includes('✓')) {
-                                                        option.innerHTML = `< span > ${option.textContent.trim()} <span class="ms-5">✓</span></span >`;
+                                                        option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span >`;
 
                                                     }
                                                 });

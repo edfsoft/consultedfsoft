@@ -742,6 +742,18 @@
                                         </p>
                                         <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
                                     </div>
+                                    <div class="d-md-flex pt-3">
+                                                <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> -
+                                    <?php echo $value['lastAppDate'] ?>
+                                                </p>
+                                                <p><span class="text-secondary ">Next Followup </span> - <?php echo $value['nextAppDate'] ?></p>
+                                            </div>
+                                            <div class="">
+                                                <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> -
+                                    <?php echo $value['adviceGiven'] ?>
+                                                </p>
+                                            </div>
+
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
 
                                         <h5 class="my-3 mt-5 fw-bolder">Documents / Reports:</h5>

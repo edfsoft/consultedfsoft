@@ -1968,11 +1968,7 @@
                                                                             <a href="<?php echo $value['appointmentLink']; ?>" target="_blank">
                                                                                 <button class="btn btn-success">Join</button>
                                                                             </a>
-                                                    <?php } else { ?>
-                                                                            <a
-                                                                                href="<?php echo base_url() . "Healthcareprovider/appointmentSummary/" . $value['patientDbId'] ?>">
-                                                                                <button class="btn btn-secondary">Summary</button>
-                                                                            </a>
+                                                    <?php } else { ?>                                                                            
                                                                             <a
                                                                                 href="<?php echo base_url() . "Healthcareprovider/appointmentUpdate/" . $value['id'] ?>">
                                                                                 <button class="btn btn-secondary">Edit</button> </a>

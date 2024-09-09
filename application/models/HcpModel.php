@@ -362,6 +362,20 @@ class HcpModel extends CI_Model
         $this->db->update('appointment_details', $updatedata);
     }
 
+    public function addPrescription()
+    {
+        $post = $this->input->post(null, true);
+
+        $updatedata = array(
+            // 'precriptionMedicine' => $post['precriptionMedicine'],
+            'adviceGiven' => $post['adviceGiven'],
+            'nextAppDate' => $post['nextFollowUp'],
+            'lastAppDate' => date('Y-m-d')
+        );
+        $this->db->where('id', $post['patientDbId']);
+        $this->db->update('patient_details', $updatedata);
+    }
+
     public function getHcpDetails()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];

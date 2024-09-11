@@ -283,7 +283,8 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[0]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[0]['timeOfAppoint'])); ?>
+                                                    <td style="font-size: 16px">
+                                                        <?php echo date('h:i a', strtotime($appointmentList[0]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -304,7 +305,8 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[1]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[1]['timeOfAppoint'])); ?>
+                                                    <td style="font-size: 16px">
+                                                        <?php echo date('h:i a', strtotime($appointmentList[1]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -325,7 +327,8 @@
                                                             style="font-size: 16px">
                                                             <?php echo $appointmentList[2]['patientComplaint']; ?></span>
                                                     </td>
-                                                    <td style="font-size: 16px"><?php echo date('h:i a', strtotime($appointmentList[2]['timeOfAppoint'])); ?>
+                                                    <td style="font-size: 16px">
+                                                        <?php echo date('h:i a', strtotime($appointmentList[2]['timeOfAppoint'])); ?>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -535,31 +538,31 @@
                         if (itemsToShow.length === 0) {
                             const noMatchesRow = document.createElement('tr');
                             noMatchesRow.innerHTML = `
-                                            <td colspan="9" class="text-center">No matches found.</td>
-                                        `;
+                                                    <td colspan="9" class="text-center">No matches found.</td>
+                                                `;
                             patientContainer.appendChild(noMatchesRow);
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const patientRow = document.createElement('tr');
                                 patientRow.innerHTML = `
-                                                <td>${start + index + 1}.</td>
-                                                <td style="font-size: 16px">${value.patientId}</td>
-                                                <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                                                <td style="font-size: 16px">${value.mobileNumber}</td>
-                                                <td style="font-size: 16px">${value.gender}</td>
-                                                <td style="font-size: 16px">${value.age}</td>
-                                                <td style="font-size: 16px">
-                                                    <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" 
-                                                        class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
-                                                        ${value.patientHcp}
-                                                    </a>
-                                                </td>
-                                                <td style="font-size: 16px">
-                                                    <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
-                                                        <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                                                    </a>
-                                                </td>
-                                            `;
+                                                        <td>${start + index + 1}.</td>
+                                                        <td style="font-size: 16px">${value.patientId}</td>
+                                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                                                        <td style="font-size: 16px">${value.mobileNumber}</td>
+                                                        <td style="font-size: 16px">${value.gender}</td>
+                                                        <td style="font-size: 16px">${value.age}</td>
+                                                        <td style="font-size: 16px">
+                                                            <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.patientHcpDbId}" 
+                                                                class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
+                                                                ${value.patientHcp}
+                                                            </a>
+                                                        </td>
+                                                        <td style="font-size: 16px">
+                                                            <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
+                                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
+                                                            </a>
+                                                        </td>
+                                                    `;
                                 patientContainer.appendChild(patientRow);
                             });
                         }
@@ -577,10 +580,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                                        <a href="#">
-                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                        </a>
-                                    `;
+                                                <a href="#">
+                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                </a>
+                                            `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayPatientPage(currentPage - 1);
                         };
@@ -592,20 +595,20 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                                            <a href="#">
-                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                            </a>
-                                        `;
+                                                    <a href="#">
+                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                    </a>
+                                                `;
                             li.onclick = () => displayPatientPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                                        <a href="#">
-                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                        </a>
-                                    `;
+                                                <a href="#">
+                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                </a>
+                                            `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                         };
@@ -740,19 +743,9 @@
                                         <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
                                     <?php echo $value['symptoms'] ?>
                                         </p>
-                                        <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
+                                        <p><span class="text-secondary ">Regular Medicines</span> - <?php echo $value['medicines'] ?>
+                                        </p>
                                     </div>
-                                    <div class="d-md-flex pt-3">
-                                                <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> -
-                                    <?php echo $value['lastAppDate'] ?>
-                                                </p>
-                                                <p><span class="text-secondary ">Next Followup </span> - <?php echo $value['nextAppDate'] ?></p>
-                                            </div>
-                                            <div class="">
-                                                <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> -
-                                    <?php echo $value['adviceGiven'] ?>
-                                                </p>
-                                            </div>
 
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
 
@@ -772,6 +765,23 @@
                                         </div>
                             <?php }
                             } ?>
+
+                                <h5 class="my-3 fw-bolder">Appointment Summary:</h5>
+                                <div class="d-md-flex">
+                                    <p class="col-sm-6"><span class="text-secondary ">Suggested Medcine</span> -
+                                <?php echo $value['precriptionMedicine'] ?>
+                                    </p>
+                                    <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> -
+                                <?php echo $value['adviceGiven'] ?>
+                                    </p>
+                                </div>
+                                <div class="d-md-flex">
+                                    <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> -
+                                <?php echo $value['lastAppDate'] ?>
+                                    </p>
+                                    <p><span class="text-secondary ">Next Followup </span> - <?php echo $value['nextAppDate'] ?></p>
+                                </div>
+
                             </div>
                         </div>
 
@@ -1075,25 +1085,25 @@
                                         const noMatchesDiv = document.createElement('div');
                                         noMatchesDiv.className = 'col-12 text-center';
                                         noMatchesDiv.innerHTML = `
-                                                                                            <p>No matches found.</p>
-                                                                                        `;
+                                                                                                                <p>No matches found.</p>
+                                                                                                            `;
                                         hcpContainer.appendChild(noMatchesDiv);
                                     } else {
                                         itemsToShow.forEach(value => {
                                             const hcpItem = document.createElement('div');
                                             hcpItem.className = 'card col-lg-4 m-3 hcp-item';
                                             hcpItem.innerHTML = `
-                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4">
-                                                                                                    <img src="${value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
-                                                                                                         alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
-                                                                                                    <div>
-                                                                                                        <p class="card-title"><b>${value.hcpName}</b> /<br>${value.hcpId}</p>
-                                                                                                        <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
-                                                                                                        <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.id}" 
-                                                                                                           class="btn btn-secondary">Full Details</a>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            `;
+                                                                                                                    <div class="d-sm-flex justify-content-evenly text-center p-4">
+                                                                                                                        <img src="${value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
+                                                                                                                             alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto">
+                                                                                                                        <div>
+                                                                                                                            <p class="card-title"><b>${value.hcpName}</b> /<br>${value.hcpId}</p>
+                                                                                                                            <p style="color: #0079AD;"><b>${value.hcpSpecialization}</b></p>
+                                                                                                                            <a href="<?php echo base_url(); ?>Chiefconsultant/healthCareProvidersProfile/${value.id}" 
+                                                                                                                               class="btn btn-secondary">Full Details</a>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                `;
                                             hcpContainer.appendChild(hcpItem);
                                         });
                                     }
@@ -1111,10 +1121,10 @@
 
                                     const prevLi = document.createElement('li');
                                     prevLi.innerHTML = `
-                                                                                        <a href="#">
-                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                        </a>
-                                                                                    `;
+                                                                                                            <a href="#">
+                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                            </a>
+                                                                                                        `;
                                     prevLi.onclick = () => {
                                         if (currentPage > 1) displayHcpPage(currentPage - 1);
                                     };
@@ -1123,20 +1133,20 @@
                                     for (let i = 1; i <= totalPages; i++) {
                                         const li = document.createElement('li');
                                         li.innerHTML = `
-                                                                                            <a href="#">
-                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                            </a>
-                                                                                        `;
+                                                                                                                <a href="#">
+                                                                                                                    <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                </a>
+                                                                                                            `;
                                         li.onclick = () => displayHcpPage(i);
                                         ul.appendChild(li);
                                     }
 
                                     const nextLi = document.createElement('li');
                                     nextLi.innerHTML = `
-                                                                                        <a href="#">
-                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                        </a>
-                                                                                    `;
+                                                                                                            <a href="#">
+                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                            </a>
+                                                                                                        `;
                                     nextLi.onclick = () => {
                                         if (currentPage < totalPages) displayHcpPage(currentPage + 1);
                                     };
@@ -1202,7 +1212,7 @@
                                                             </a></p>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <h5 class="my-3 fw-bolder">Profile Details:</h5>
 
                                                 <table>

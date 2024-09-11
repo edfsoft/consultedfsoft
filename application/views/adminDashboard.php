@@ -1615,18 +1615,7 @@
                                                                 <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
                                     <?php echo $value['symptoms'] ?>
                                                                 </p>
-                                                                <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
-                                                            </div>
-                                                            <div class="d-md-flex pt-3">
-                                                                <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> -
-                                    <?php echo $value['lastAppDate'] ?>
-                                                                </p>
-                                                                <p><span class="text-secondary ">Next Followup </span> - <?php echo $value['nextAppDate'] ?></p>
-                                                            </div>
-                                                            <div class="">
-                                                                <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> -
-                                    <?php echo $value['adviceGiven'] ?>
-                                                                </p>
+                                                                <p><span class="text-secondary ">Regular Medicines</span> - <?php echo $value['medicines'] ?></p>
                                                             </div>
 
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
@@ -1647,6 +1636,23 @@
                                                                 </div>
                             <?php }
                             } ?>
+                            
+                             <h5 class="my-3 fw-bolder">Appointment Summary:</h5>
+                                        <div class="d-md-flex">
+                                            <p class="col-sm-6"><span class="text-secondary ">Suggested Medcine</span> -
+                                <?php echo $value['precriptionMedicine'] ?>
+                                            </p>
+                                            <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> -
+                                <?php echo $value['adviceGiven'] ?>
+                                            </p>
+                                        </div>
+                                        <div class="d-md-flex">
+                                            <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> -
+                                <?php echo $value['lastAppDate'] ?>
+                                            </p>
+                                            <p><span class="text-secondary ">Next Followup </span> - <?php echo $value['nextAppDate'] ?></p>
+                                        </div>
+
                                                     </div>
                                                 </div>
                                                 </div>

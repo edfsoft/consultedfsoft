@@ -356,7 +356,8 @@ class HcpModel extends CI_Model
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
             'partOfDay' => $post['dayTime'],
-            'timeOfAppoint' => $post['appTime']
+            'timeOfAppoint' => $post['appTime'],
+             'appStatus' => "0"
         );
         $this->db->where('id', $post['appTableId']);
         $this->db->update('appointment_details', $updatedata);
@@ -367,13 +368,21 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
 
         $updatedata = array(
-            // 'precriptionMedicine' => $post['precriptionMedicine'],
+            'precriptionMedicine' => $post['precriptionMedicine'],
             'adviceGiven' => $post['adviceGiven'],
             'nextAppDate' => $post['nextFollowUp'],
-            'lastAppDate' => date('Y-m-d')
+            'lastAppDate' => date('Y-m-d'),
+            'appStatus' => "1"
         );
         $this->db->where('id', $post['patientDbId']);
         $this->db->update('patient_details', $updatedata);
+
+
+        $updateStatus = array(
+            'appStatus' => "1"
+        );
+        $this->db->where('patientDbId', $post['patientDbId']);
+        $this->db->update('appointment_details', $updateStatus);
     }
 
     public function getHcpDetails()

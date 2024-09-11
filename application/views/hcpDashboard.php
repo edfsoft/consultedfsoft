@@ -556,31 +556,31 @@
                         if (itemsToShow.length === 0) {
                             const noMatchesRow = document.createElement('tr');
                             noMatchesRow.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td colspan="8" class="text-center">No matches found.</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td colspan="8" class="text-center">No matches found.</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
                             patientContainer.appendChild(noMatchesRow);
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const patientRow = document.createElement('tr');
                                 patientRow.innerHTML = `
-                                        <td>${start + index + 1}.</td>
-                                        <td class="px-2">
-                                            <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile" width="40" height="40" class="rounded-circle">
-                                        </td >
-                                        <td style="font-size: 16px">${value.patientId}</td>
-                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                                        <td style="font-size: 16px">${value.mobileNumber}</td>
-                                        <td style="font-size: 16px">${value.gender}</td>
-                                        <td style="font-size: 16px">${value.age}</td>
-                                        <td class="d-flex d-lg-block" style="font-size: 16px">
-                                            <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
-                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                                            </a>
-                                            <a href="<?php echo base_url(); ?> Healthcareprovider / patientformUpdate / ${value.id} ">
-                                                                    <button class="btn btn-secondary" > <i class="bi bi-pencil"></i></button >
-                                            </a >
-                                        </td >
-                                                        `;
+                                                <td>${start + index + 1}.</td>
+                                                <td class="px-2">
+                                                    <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile" width="40" height="40" class="rounded-circle">
+                                                </td >
+                                                <td style="font-size: 16px">${value.patientId}</td>
+                                                <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                                                <td style="font-size: 16px">${value.mobileNumber}</td>
+                                                <td style="font-size: 16px">${value.gender}</td>
+                                                <td style="font-size: 16px">${value.age}</td>
+                                                <td class="d-flex d-lg-block" style="font-size: 16px">
+                                                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
+                                                        <button class="btn btn-success"><i class="bi bi-eye"></i></button>
+                                                    </a>
+                                                    <a href="<?php echo base_url(); ?> Healthcareprovider / patientformUpdate / ${value.id} ">
+                                                                            <button class="btn btn-secondary" > <i class="bi bi-pencil"></i></button >
+                                                    </a >
+                                                </td >
+                                                                `;
                                 patientContainer.appendChild(patientRow);
                             });
                         }
@@ -598,10 +598,10 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `
-                                                                                                                            <a href = "#" >
-                                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </a >
-                                                                                                                            `;
+                                                                                                                                    <a href = "#" >
+                                                                                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a >
+                                                                                                                                    `;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayPatientPage(currentPage - 1);
                         };
@@ -613,20 +613,20 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `
-                                                                                                                            <a href = "#" >
-                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                                                                                                                                                                                                                                                                                                        </a>
-                                                                                                                            `;
+                                                                                                                                    <a href = "#" >
+                                                                                                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                </a>
+                                                                                                                                    `;
                             li.onclick = () => displayPatientPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `
-                                                                                                                            <a href = "#" >
-                                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </a >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
+                                                                                                                                    <a href = "#" >
+                                                                                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </a >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                         };
@@ -1811,18 +1811,7 @@
                                                 <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
                                     <?php echo $value['symptoms'] ?>
                                                 </p>
-                                                <p><span class="text-secondary ">Medicines</span> - <?php echo $value['medicines'] ?></p>
-                                            </div>
-                                            <div class="d-md-flex pt-3">
-                                                <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> -
-                                    <?php echo $value['lastAppDate'] ?>
-                                                </p>
-                                                <p><span class="text-secondary ">Next Followup </span> - <?php echo $value['nextAppDate'] ?></p>
-                                            </div>
-                                            <div class="">
-                                                <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> -
-                                    <?php echo $value['adviceGiven'] ?>
-                                                </p>
+                                                <p><span class="text-secondary ">Regular Medicines</span> - <?php echo $value['medicines'] ?></p>
                                             </div>
 
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
@@ -1843,6 +1832,23 @@
                                                 </div>
                             <?php }
                             } ?>
+
+                                        <h5 class="my-3 fw-bolder">Appointment Summary:</h5>
+                                        <div class="d-md-flex">
+                                            <p class="col-sm-6"><span class="text-secondary ">Suggested Medcine</span> -
+                                <?php echo $value['precriptionMedicine'] ?>
+                                            </p>
+                                            <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> -
+                                <?php echo $value['adviceGiven'] ?>
+                                            </p>
+                                        </div>
+                                        <div class="d-md-flex">
+                                            <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> -
+                                <?php echo $value['lastAppDate'] ?>
+                                            </p>
+                                            <p><span class="text-secondary ">Next Followup </span> - <?php echo $value['nextAppDate'] ?></p>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                                 </div>
@@ -2116,7 +2122,6 @@
                                                     class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
                                             </div>
                                             <div class="card-body px-md-4 pb-4">
-
                                                 <!-- Form  -->
                                                 <div>
                                                     <div class="col-md-8">
@@ -2124,8 +2129,6 @@
                                                             name="patientDetails" onsubmit="return validateAppointment()"
                                                             oninput="clearErrorAppointment()">
                                                             <div>
-                                                                <!-- <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;">
-                                                                        Appointments Details</p> -->
                                                                 <div class="form-group pb-2">
                                                                     <label class="form-label" for="patientId">Patient Id <span
                                                                             class="text-danger">*</span></label>
@@ -2141,14 +2144,7 @@
                                                                     </select>
                                                                     <div id="patientId_err" class="text-danger pt-1"></div>
                                                                 </div>
-                                                                <!-- <div class="form-group pb-3">
-                                                                        <label class="form-label" for="patientName">Name <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control" id="patientName" name="patientName"
-                                                                            placeholder="E.g. Gopal">
-                                                                        <div id="patientName_err" class="text-danger pt-1"></div>
-                                                                    </div> -->
-                                                                <div class="form-group pb-3">
+                                                                 <div class="form-group pb-3">
                                                                     <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                                             class="text-danger">*</span></label>
                                                                     <select class="form-select" name="referalDoctor" id="referalDoctor"
@@ -2286,7 +2282,6 @@
                                             </div>
                                         </div>
                                     </section>
-
                                     <script>
                                         var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
 
@@ -2298,10 +2293,18 @@
 
                                             const timeButtons = document.querySelectorAll('.timeButton');
 
+                                            timeButtons.forEach(button => {
+                                                button.disabled = false;
+                                                button.classList.add('btn-outline-secondary');
+                                                button.classList.remove('btn-secondary');
+                                                button.innerHTML = button.innerHTML.replace(' Booked', '');
+                                            });
+
                                             appBookedDetails.forEach(appointment => {
                                                 const bookedDate = formatDate(appointment.dateOfAppoint);
                                                 const bookedTime = appointment.timeOfAppoint;
                                                 const bookedCcDoctor = appointment.referalDoctor;
+
                                                 if (bookedDate === selectedDate && bookedCcDoctor === referalCcId) {
                                                     timeButtons.forEach(button => {
                                                         if (button.value === bookedTime) {
@@ -2316,15 +2319,8 @@
                                                             }
                                                         }
                                                     });
-                                                } else {
-                                                    timeButtons.forEach(button => {
-                                                        button.disabled = false;
-                                                        button.classList.add('btn-outline-secondary');
-                                                        button.classList.remove('btn-secondary');
-                                                    });
                                                 }
                                             });
-
                                         }
 
                                         function formatDate(dateString) {
@@ -2332,7 +2328,7 @@
                                             const yyyy = date.getFullYear();
                                             const mm = String(date.getMonth() + 1).padStart(2, '0');
                                             const dd = String(date.getDate()).padStart(2, '0');
-                                            return `${yyyy} -${mm} -${dd}`;
+                                            return `${yyyy}-${mm}-${dd}`; // Ensure consistent format
                                         }
 
                                         var dateInput = document.getElementById('appDate');
@@ -2340,7 +2336,7 @@
                                         var dd = String(today.getDate()).padStart(2, '0');
                                         var mm = String(today.getMonth() + 1).padStart(2, '0');
                                         var yyyy = today.getFullYear();
-                                        var minDate = yyyy + '-' + mm + '-' + dd;
+                                        var minDate = `${yyyy}-${mm}-${dd}`;
                                         dateInput.setAttribute('min', minDate);
 
                                         var buttons = document.querySelectorAll('.timeButton');
@@ -2399,7 +2395,7 @@
                                                 });
                                             });
 
-                                            adjustTimeOptions();
+                                            adjustTimeOptions(); 
                                         };
 
                                         function adjustTimeOptionsBasedOnCurrentTime() {
@@ -2451,7 +2447,7 @@
                                         });
                                     </script>
 
-                                    <script>
+                                   <script>
                                         document.addEventListener("DOMContentLoaded", () => {
                                             const multiSelect = document.getElementById("multiSelectSymptoms");
                                             const selectedValuesInput = document.getElementById("appReason");
@@ -2504,9 +2500,7 @@
                                     <script>
                                         function clearErrorAppointment() {
                                             var patientId = document.getElementById("patientId").value;
-                                            // var name = document.getElementById("patientName").value;
                                             var referalDr = document.getElementById("referalDoctor").value;
-                                            // var consultMode = document.getElementById("appConsult").value;      
                                             var date = document.getElementById("appDate").value;
                                             var dayTime = document.getElementById("dayTime").value;
                                             var time = document.getElementById("appTime").value;
@@ -2515,15 +2509,9 @@
                                             if (patientId != "") {
                                                 document.getElementById("patientId_err").innerHTML = "";
                                             }
-                                            // if (name != "") {
-                                            //     document.getElementById("patientName_err").innerHTML = "";
-                                            // }
                                             if (referalDr != "") {
                                                 document.getElementById("referalDoctor_err").innerHTML = "";
                                             }
-                                            // if (consultMode != "") {
-                                            //     document.getElementById("appConsult_err").innerHTML = "";
-                                            // }
                                             if (date != "") {
                                                 document.getElementById("appDate_err").innerHTML = "";
                                             }
@@ -2540,9 +2528,7 @@
 
                                         function validateAppointment() {
                                             var patientId = document.getElementById("patientId").value;
-                                            // var name = document.getElementById("patientName").value;
                                             var referalDr = document.getElementById("referalDoctor").value;
-                                            // var consultMode = document.getElementById("appConsult").value;
                                             var date = document.getElementById("appDate").value;
                                             var dayTime = document.getElementById("dayTime").value;
                                             var time = document.getElementById("appTime").value;
@@ -2555,28 +2541,13 @@
                                             } else {
                                                 document.getElementById("patientId_err").innerHTML = "";
                                             }
-                                            // if (name == "") {
-                                            //     document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
-                                            //     document.getElementById("patientName").focus();
-                                            //     return false;
-                                            // } else {
-                                            //     document.getElementById("patientName_err").innerHTML = "";
-                                            // }
-                                            if (referalDr == "") {
+                                             if (referalDr == "") {
                                                 document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out.";
                                                 document.getElementById("referalDoctor").focus();
                                                 return false;
                                             } else {
                                                 document.getElementById("referalDoctor_err").innerHTML = "";
                                             }
-                                            // if (consultMode == "") {
-                                            //     document.getElementById("appConsult_err").innerHTML = "Select the mode of consultation.";
-                                            //     document.getElementById("appConsult").focus();
-                                            //     return false;
-                                            // } else {
-                                            //     document.getElementById("appConsult_err").innerHTML = "";
-                                            // }
-
                                             if (date == "") {
                                                 document.getElementById("appDate_err").innerHTML = "Date must be filled out.";
                                                 document.getElementById("appDate").focus();
@@ -2752,24 +2723,6 @@
                                                 </div>
                                             </div>
                                         </section>
-
-                                        <!-- <script>
-                                            function formatDate(dateString) {
-                                                const date = new Date(dateString);
-                                                const yyyy = date.getFullYear();
-                                                const mm = String(date.getMonth() + 1).padStart(2, '0');
-                                                const dd = String(date.getDate()).padStart(2, '0');
-                                                return `${yyyy}-${mm}-${dd}`;
-                                            }
-
-                                            var dateInput = document.getElementById('appDate');
-                                            var today = new Date();
-                                            var dd = String(today.getDate()).padStart(2, '0');
-                                            var mm = String(today.getMonth() + 1).padStart(2, '0');
-                                            var yyyy = today.getFullYear();
-                                            var minDate = yyyy + '-' + mm + '-' + dd;
-                                            dateInput.setAttribute('min', minDate);
-                                        </script> -->
 
                                         <script>
                                             var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
@@ -3019,8 +2972,6 @@
                                                                 class="float-end text-dark"><i class="bi bi-arrow-left"></i> Back</a>
                                                         </div>
                                                         <div class="card-body px-md-4 pb-4">
-
-                                                            <!-- Form  -->
                                                             <div>
                                                                 <div class="col-md-8">
                                     <?php
@@ -3181,10 +3132,11 @@
                                                                     button.disabled = false;
                                                                     button.classList.add('btn-outline-secondary');
                                                                     button.classList.remove('btn-secondary');
+                                                                    button.style.fontSize = '16px';
+                                                                    button.innerHTML = button.textContent.replace(' Booked', ''); // Reset the button text
                                                                 });
                                                             }
                                                         });
-
                                                     }
 
                                                     function formatDate(dateString) {
@@ -3192,7 +3144,7 @@
                                                         const yyyy = date.getFullYear();
                                                         const mm = String(date.getMonth() + 1).padStart(2, '0');
                                                         const dd = String(date.getDate()).padStart(2, '0');
-                                                        return `${yyyy} -${mm} -${dd}`;
+                                                        return `${yyyy}-${mm}-${dd}`;
                                                     }
 
                                                     var dateInput = document.getElementById('appDate');
@@ -3259,7 +3211,7 @@
                                                             });
                                                         });
 
-                                                        adjustTimeOptions();
+                                                        adjustTimeOptions(); // Initial adjustment for time options
                                                     };
 
                                                     function adjustTimeOptionsBasedOnCurrentTime() {
@@ -3311,7 +3263,7 @@
                                                     });
                                                 </script>
 
-                                                <script>
+                                               <script>
                                                     function clearErrorAppointment() {
                                                         var date = document.getElementById("appDate").value;
                                                         var dayTime = document.getElementById("dayTime").value;
@@ -3421,18 +3373,18 @@
                                                                     const doctorItem = document.createElement('div');
                                                                     doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
                                                                     doctorItem.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="d-sm-flex justify-content-evenly text-center p-4" >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <img src="${value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="d-sm-flex justify-content-evenly text-center p-4" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <img src="${value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'
                                                                         }" 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                alt = "Profile Photo" width = "122" height = "122" class= "rounded-circle my-auto" >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <p class="card-title"><b>${value.doctorName}</b>/<br>${value.ccId}</p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <p style="color: #00ad8e;"><b>${value.specialization}</b></p>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   <a href="<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/${value.id}"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    class="btn btn-secondary">Full Details</a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            alt = "Profile Photo" width = "122" height = "122" class= "rounded-circle my-auto" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <p class="card-title"><b>${value.doctorName}</b>/<br>${value.ccId}</p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <p style="color: #00ad8e;"><b>${value.specialization}</b></p>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               <a href="<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/${value.id}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                class="btn btn-secondary">Full Details</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
                                                                     doctorContainer.appendChild(doctorItem);
                                                                 });
                                                             }
@@ -3450,10 +3402,10 @@
 
                                                             const prevLi = document.createElement('li');
                                                             prevLi.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <a href = "#" >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </a >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href = "#" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
                                                             prevLi.onclick = () => {
                                                                 if (currentPage > 1) displayPage(currentPage - 1);
                                                             };
@@ -3462,20 +3414,20 @@
                                                             for (let i = 1; i <= totalPages; i++) {
                                                                 const li = document.createElement('li');
                                                                 li.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <a href = "#" >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </a >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href = "#" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </a >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
                                                                 li.onclick = () => displayPage(i);
                                                                 ul.appendChild(li);
                                                             }
 
                                                             const nextLi = document.createElement('li');
                                                             nextLi.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <a href = "#" >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </a >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            `;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href = "#" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `;
                                                             nextLi.onclick = () => {
                                                                 if (currentPage < totalPages) displayPage(currentPage + 1);
                                                             };

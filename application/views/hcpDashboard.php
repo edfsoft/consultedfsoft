@@ -465,8 +465,11 @@
                                     <?php } ?>
                                 </div>
                                 <br>
-                                <a href="#" class="text-decoration-underline">Last Appointment</a>
-                            <?php } else { ?>
+                                <!-- <a href="#" class="text-decoration-underline">Last Appointment</a> -->
+                                <?php  if ($appointmentList[0]['lastAppDate'] != "") { ?>
+                                 <p>Last Appointment Date - <?php echo $appointmentList[0]['lastAppDate']; ?></p>
+                            <?php } 
+                        } else { ?>
                                 <p class="m-md-5 px-md-5"><b> No appointments today.</b></p>
                             <?php } ?>
 

@@ -127,13 +127,13 @@
     </div>
 
     <script>
-        document.getElementById("hcpPassword").onfocus = function () {
-            document.getElementById("passwordmessage").style.display = "block";
-        }
+        // document.getElementById("hcpPassword").onfocus = function () {
+        //     document.getElementById("passwordmessage").style.display = "block";
+        // }
 
-        document.getElementById("hcpPassword").onblur = function () {
-            document.getElementById("passwordmessage").style.display = "none";
-        }
+        // document.getElementById("hcpPassword").onblur = function () {
+        //     document.getElementById("passwordmessage").style.display = "none";
+        // }
 
         function validEmail(input) {
             const emailError = document.getElementById("mail_err");
@@ -146,6 +146,12 @@
             const passwordError = document.getElementById("password_err");
             if (input.value != "") {
                 passwordError.textContent = "";
+            }
+
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(input.value)) {
+                document.getElementById("passwordmessage").style.display = "block";
+            } else {
+                document.getElementById("passwordmessage").style.display = "none";
             }
         }
 

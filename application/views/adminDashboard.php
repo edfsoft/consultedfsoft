@@ -656,91 +656,63 @@
                                             </div>
                                         </div>
 
-                                        <h5 class="my-3 fw-bolder">Profile Details:</h5>
+                                        <h5 class="fw-bolder pb-3">Profile Details:</h5>
 
-                                        <table>
-                                            <tr>
-                                                <td class="col-2 py-2" style="color:#999292">Years of Experience</td>
-                                                <td class="col-5">
-                                        <?php if ($value['yearOfExperience'] != "") {
-                                            echo $value['yearOfExperience'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2" style="color:#999292">Qualification</td>
-                                                <td>
-                                        <?php if ($value['qualification'] != "") {
-                                            echo $value['qualification'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2" style="color:#999292">Registration detail</td>
-                                                <td>
-                                        <?php if ($value['regDetails'] != "") {
-                                            echo $value['regDetails'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2" style="color:#999292">Membership</td>
-                                                <td>
-                                        <?php if ($value['membership'] != "") {
-                                            echo $value['membership'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2" style="color:#999292">Services</td>
-                                                <td>
-                                        <?php if ($value['services'] != "") {
-                                            echo $value['services'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2" style="color:#999292">Date of Birth</td>
-                                                <td>
-                                        <?php if ($value['dateOfBirth'] != "") {
-                                            echo $value['dateOfBirth'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
-                                                <td>
-                                        <?php if ($value['hospitalName'] != "") {
-                                            echo $value['hospitalName'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-2" style="color:#999292">Location</td>
-                                                <td>
-                                        <?php if ($value['location'] != "") {
-                                            echo $value['location'];
-                                        } else {
-                                            echo "-";
-                                        }
-                                        ?>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        <div class="d-md-flex pb-1">
+                                                                            <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "-"; ?>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="d-md-flex pb-1">
+                                                                            <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['qualification'] ? $value['qualification'] : "Not provided"; ?>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="d-md-flex pb-1">
+                                                                            <p class="text-secondary col-md-3 mb-1">Registration detail : </p>
+                                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['regDetails'] ? $value['regDetails'] : "Not provided"; ?>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="d-md-flex pb-1">
+                                                                            <p class="text-secondary col-md-3 mb-1">Membership : </p>
+                                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['membership'] ? $value['membership'] : "Not provided"; ?>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="d-md-flex pb-1">
+                                                                            <p class="text-secondary col-md-3 mb-1">Services : </p>
+                                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['services'] ? $value['services'] : "Not provided"; ?>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="d-md-flex pb-1">
+                                                                            <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['dateOfBirth'] ? $value['dateOfBirth'] : "Not provided"; ?>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="d-md-flex pb-1">
+                                                                            <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['hospitalName'] ? $value['hospitalName'] : "Not provided"; ?>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="d-md-flex pb-1">
+                                                                            <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['location'] ? $value['location'] : "Not provided"; ?>
+                                                                            </p>
+                                                                        </div>
 
                                         <h5 class="my-3 fw-bolder">Appointment Link:</h5>
                                         <form action="<?php echo base_url() . "Edfadmin/addAppLink/" . $value['id'] ?>" method="POST"
@@ -1228,63 +1200,43 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <h5 class="my-3 fw-bolder">Profile Details:</h5>
-                                                    <table>
-                                                        <tr>
-                                                            <td class="col-5 py-2" style="color:#999292">Years of Experience</td>
-                                                            <td class="col-5">
-                                        <?php if ($value['hcpExperience'] != "") {
-                                            echo $value['hcpExperience'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Qualification</td>
-                                                            <td>
-                                        <?php if ($value['hcpQualification'] != "") {
-                                            echo $value['hcpQualification'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                            </td>
-                                                        </tr>
-                                                        <!-- <tr>
-                                                                <td class="py-2" style="color:#999292">Specialization</td>
-                                                                <td>Diabetologist, Internal Medician Physician</td>
-                                                            </tr> -->
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Date of Birth</td>
-                                                            <td>
-                                        <?php if ($value['hcpDob'] != "") {
-                                            echo $value['hcpDob'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Hospital / Clinic Name</td>
-                                                            <td>
-                                        <?php if ($value['hcpHospitalName'] != "") {
-                                            echo $value['hcpHospitalName'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="py-2" style="color:#999292">Location</td>
-                                                            <td>
-                                        <?php if ($value['hcpLocation'] != "") {
-                                            echo $value['hcpLocation'];
-                                        } else {
-                                            echo "-";
-                                        } ?>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+                                                    <h5 class="fw-bolder pb-3">Profile Details:</h5>
+                                                   
+                                                    <div class="d-md-flex pb-1">
+                                                                                <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                                                                <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "-"; ?>
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="d-md-flex pb-1">
+                                                                                <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                                                                <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpQualification'] ? $value['hcpQualification'] : "Not provided"; ?>
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="d-md-flex pb-1">
+                                                                                <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                                                                <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpDob'] ? $value['hcpDob'] : "Not provided"; ?>
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="d-md-flex pb-1">
+                                                                                <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                                                                <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpHospitalName'] ? $value['hcpHospitalName'] : "Not provided"; ?>
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <div class="d-md-flex pb-1">
+                                                                                <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                                                                <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpLocation'] ? $value['hcpLocation'] : "Not provided"; ?>
+                                                                                </p>
+                                                                            </div>
+
                             <?php if ($value['approvalStatus'] == "0") { ?>
                                                         <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
                                                         <p>Please review the details and approve the Health Care Provider for login : <a

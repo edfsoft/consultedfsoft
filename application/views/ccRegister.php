@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="login-form mx-lg-5 p-3 p-sm-5">
+                <div class="login-form  mx-lg-2 mx-xxl-5 p-3 p-sm-4 p-xxl-5">
                     <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#E01A2B;">Create an Account</p>
                     <p class="" style="font-size:24px;font-weight:600;">CHIEF CONSULTANT</p>
                     <p class="" style="font-size:18px;font-weight:400;">We're thrilled to have you join us on your

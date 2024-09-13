@@ -201,8 +201,8 @@
                 <div class="d-lg-flex justify-content-evenly">
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_icon1.svg" alt="icon1" />
-                            <div class="px-4">
+                            <img src="<?php echo base_url(); ?>assets/dash_icon1.svg" class="my-auto" style="width:80px;height:80px" alt="icon1" />
+                            <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
                                     Total Patients
                                 </p>
@@ -215,8 +215,8 @@
                     </div>
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_icon2.svg" alt="icon2" />
-                            <div class="px-4">
+                            <img src="<?php echo base_url(); ?>assets/dash_icon2.svg" class="my-auto" style="width:80px;height:80px" alt="icon2" />
+                            <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
                                     Total Verified CCs
                                 </p>
@@ -229,8 +229,8 @@
                     </div>
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex -4 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_icon3.svg" alt="icon3" />
-                            <div class="px-4">
+                            <img src="<?php echo base_url(); ?>assets/dash_icon3.svg" class="my-auto" style="width:80px;height:80px" alt="icon3" />
+                            <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
                                     Today Appointments
                                 </p>

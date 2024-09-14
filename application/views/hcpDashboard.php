@@ -587,7 +587,7 @@
                                                                                                                                                     </a>
                                                                                                                                                     <a href="<?php echo base_url(); ?> Healthcareprovider/patientformUpdate/${value.id}">
                                                                                                                                                                             <button class="btn btn-secondary" > <i class="bi bi-prescription"></i></button >
-                                                                                                                                                    </a >
+                                                                                                                                                    </a>
                                                                                                                                                 </td >
                                                                                                                                                                 `;
                                 patientContainer.appendChild(patientRow);
@@ -3275,6 +3275,19 @@
                                                     });
 
                                                 </script>
+
+<script>
+                                            var buttons = document.querySelectorAll('.timeButton');
+                                            buttons.forEach(function (button) {
+                                                button.addEventListener('click', function () {
+                                                    buttons.forEach(function (btn) {
+                                                        btn.classList.remove('highlighted');
+                                                    });
+                                                    button.classList.add('highlighted');
+                                                    document.getElementById('appTime').value = button.value;
+                                                });
+                                            });                                           
+                                        </script>
 
                                                 <script>
                                                     function clearErrorAppointment() {

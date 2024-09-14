@@ -579,11 +579,14 @@
                                                                                                                                                 <td style="font-size: 16px">${value.gender}</td>
                                                                                                                                                 <td style="font-size: 16px">${value.age}</td>
                                                                                                                                                 <td class="d-flex d-lg-block" style="font-size: 16px">
+                                                                                                                                                <a href="<?php echo base_url(); ?> Healthcareprovider/patientformUpdate/${value.id}">
+                                                                                                                                                                            <button class="btn btn-secondary" > <i class="bi bi-pencil"></i></button >
+                                                                                                                                                    </a>
                                                                                                                                                     <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
                                                                                                                                                         <button class="btn btn-success"><i class="bi bi-eye"></i></button>
                                                                                                                                                     </a>
                                                                                                                                                     <a href="<?php echo base_url(); ?> Healthcareprovider/patientformUpdate/${value.id}">
-                                                                                                                                                                            <button class="btn btn-secondary" > <i class="bi bi-pencil"></i></button >
+                                                                                                                                                                            <button class="btn btn-secondary" > <i class="bi bi-prescription"></i></button >
                                                                                                                                                     </a >
                                                                                                                                                 </td >
                                                                                                                                                                 `;

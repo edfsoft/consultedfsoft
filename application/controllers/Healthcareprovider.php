@@ -185,6 +185,16 @@ class healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/patients');
     }
 
+    public function prescriptionView()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "prescription";
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+    }
+
     public function appointments()
     {
         if (isset($_SESSION['hcpsName'])) {

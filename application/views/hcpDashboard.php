@@ -60,32 +60,12 @@
         }
 
         /* Prescription download script */
-        /* .footerprint {
-            display: none;
-        }
-
-        @page {
+        /* @page {
             size: A4;
             margin: 20mm;
         }
 
         @media print {
-            .header {
-                position: fixed;
-                width: 100%;
-                left: 0;
-                background: white;
-                padding: 10px;
-                z-index: 1000;
-                top: 0;
-                height: 60px;
-                box-sizing: border-box;
-            }
-
-            .footerprint {
-                display: block;
-            }
-
             .prescriptioncontent {
                 margin-top: 30px;
                 margin-bottom: 60px;
@@ -624,7 +604,7 @@
                                                                                                                                                                             <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
                                                                                                                                                                                 <button class="btn btn-success"><i class="bi bi-eye"></i></button>
                                                                                                                                                                             </a>
-                                                                                                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView">
+                                                                                                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/${value.id}">
                                                                                                                                                                                                     <button class="btn btn-secondary" > <i class="bi bi-prescription"></i></button >
                                                                                                                                                                             </a>
                                                                                                                                                                         </td >
@@ -1954,21 +1934,21 @@
                                             <div class="containerheader">
                                                 <div class="row mb-3 border-bottom border-dark pb-3">
                                                     <div class="col-3 text-center">
-                                                        <img src="https://via.placeholder.com/100" class="img-fluid hospital-logo"
+                                                        <img src="<?php echo base_url(); ?>assets/edf_logo.png" class="img-fluid hospital-logo"
                                                             alt="Hospital Logo" />
                                                     </div>
                                                     <div class="col-9 ps-3">
                                                         <h1 class="fs-2 fw-bold text-success">
                                                             MAARUTHI MEDICAL CENTER AND HOSPITALS
                                                         </h1>
-                                                        <p class="mb-0">Perundurai Road, Erode - 11.</p>
-                                                        <p class="mb-0">Erode Diabetes Foundation, Erode.</p>
+                                                        <p class="mb-0" style="font-weight:500">Perundurai Road, Erode - 11.</p>
+                                                        <p class="mb-0" style="font-weight:500">Erode Diabetes Foundation, Erode.</p>
                                                     </div>
                                                 </div>
                                                 <div class="mt- mb-4">
-                                                    <p> Dr.<span class="text-uppercase fs-5" style="font-weight:600">
+                                                    <p style="font-weight:500" class="mb-0"> Dr.<span class="text-uppercase fs-5" style="font-weight:600">
                                                             A. S. Senthilvelu</span>, MD.,</p>
-                                                    <p class="mb-0">
+                                                    <p class="mb-0 mt-1">
                                                         Consultant Physician, Diabetologist, Ultrasound, Whole Body Color Doppler
                                                         Applications, Echocardiography, Critical Care Physician REGIONAL FACULTY FOR
                                                         CERTIFICATE COURSE IN EVIDENCE BASED DIABETES MANAGEMENT (PHFI)
@@ -1976,28 +1956,33 @@
                                                 </div>
                                             </div>
 
+                                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+
                                             <div class="container prescriptioncontent" id="prescription">
                                                 <div class="row mb-2">
                                                     <p class="col-6 mb-1">
-                                                        <span class="fw-bold">Patient Name: </span>Raja
+                                                        <span class="fw-bold">Patient Name : </span><?php echo $value['firstName'] ?>
+                                                        <?php echo $value['lastName'] ?>
                                                     </p>
                                                     <p class="col-sm-6 mb-1">
-                                                        <span class="fw-bold">Mobile: </span>9632587410
+                                                        <span class="fw-bold">Mobile : </span><?php echo $value['mobileNumber'] ?>
                                                     </p>
                                                 </div>
                                                 <div class="row mb-4">
                                                     <p class="col-6 mb-1">
-                                                        <span class="fw-bold">Age / Sex: </span>45y / M
+                                                        <span class="fw-bold">Age / Gender : </span><?php echo $value['age'] ?> / <?php echo $value['gender'] == "Male" ? "M" : "F" ; ?>
                                                     </p>
                                                     <p class="col-sm-6 mb-1">
-                                                        <span class="fw-bold">ID: </span>EDF000001
+                                                        <span class="fw-bold">ID : </span><?php echo $value['patientId'] ?>
                                                     </p>
                                                 </div>
                                                 <p>
-                                                    <span class="fw-bold">Symptoms: </span>Fever, headache, body aches
+                                                    <span class="fw-bold">Symptoms : </span><?php echo $value['symptoms'] ? $value['symptoms'] : "Not provided"; ?>
                                                 </p>
                                                 <p>
-                                                    <span class="fw-bold">Diagnosis: </span>Viral Infection
+                                                    <span class="fw-bold">Diagnosis : </span><?php echo $value['diagonsis'] ? $value['diagonsis'] : "Not provided"; ?>
                                                 </p>
 
                                                 <div class="table-responsive row my-4">
@@ -2008,25 +1993,18 @@
                                                                 <tr>
                                                                     <th scope="col">Rx</th>
                                                                     <th scope="col">Medicine</th>
-                                                                    <th scope="col">Dosage</th>
                                                                     <th scope="col">Frequency</th>
                                                                     <th scope="col">Duration</th>
+                                                                    <th scope="col">Notes</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
                                                                     <td>1.</td>
-                                                                    <td>Paracetamol 500mg</td>
-                                                                    <td>1 Tablet</td>
+                                                                    <td><?php echo $value['medicines'] ?></td>
                                                                     <td>1 - 0 - 1</td>
-                                                                    <td>5 days</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2.</td>
-                                                                    <td>Ibuprofen 200mg</td>
-                                                                    <td>1 Tablet</td>
-                                                                    <td>1 - 1 - 1</td>
-                                                                    <td>7 days</td>
+                                                                    <td>10 days</td>
+                                                                    <td>After Food</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -2034,14 +2012,16 @@
                                                 </div>
 
                                                 <p class="mt-2">
-                                                    <span class="fw-bold">Advice given: </span>Eat healthy food
+                                                    <span class="fw-bold">Advice given : </span><?php echo $value['adviceGiven'] ? $value['adviceGiven'] : "Not provided"; ?>
                                                 </p>
                                                 <p>
-                                                    <span class="fw-bold">Next follow-up date: </span>10-11-2024
+                                                    <span class="fw-bold">Next follow-up date : </span><?php echo date('d-m-Y', strtotime($value['nextAppDate'])); ?>
                                                 </p>
                                             </div>
 
-                                            <p class="text-end fw-bold pt-5">Dr. A. S. Senthil Velu</p>
+                                            <?php } ?>
+
+                                            <p class="text-end fw-bold mt-5 pt-5">Dr. A. S. Senthil Velu</p>
 
                                             <div class="footerView text-center mt-4">
                                                 <p class="border-top border-dark mb-0 py-2">
@@ -2055,20 +2035,6 @@
                                                     <strong>Website:</strong> www.erodediabetesfoundation.org
                                                 </p>
                                             </div>
-
-                                            <!-- <div class="footerprint text-center position-absolute bottom-0 ">
-                                                    <p class="border-top border-dark mt-3 pt-2">
-                                                        <strong>Hospital Timings:</strong> Morning : 8 AM - 2 PM, Evening :
-                                                        6 PM - 9 PM.
-                                                    </p>
-                                                    <p class="border-top border-dark pt-2">
-                                                        <strong>Phone:</strong> 2250517, 2264949 |
-                                                        <strong>Mobile:</strong> 97894 94299 |
-                                                        <strong>E-mail:</strong> a.s.senthilvelu@gmail.com |
-                                                        <strong>Website:</strong> www.erodediabetesfoundation.org
-                                                    </p>
-                                                </div> -->
-
                                         </div>
 
                                         <div class="row mt-5 action-buttons">

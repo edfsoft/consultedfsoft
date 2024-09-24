@@ -189,6 +189,9 @@ class healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "prescription";
+            $patientIdDb = $this->uri->segment(3);
+            $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
+            $this->data['patientDetails'] = $patientDetails;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');

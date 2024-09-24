@@ -287,7 +287,7 @@ class HcpModel extends CI_Model
     public function getAppointmentListDash()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo,
+        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo, pd.lastAppDate,
         ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
         FROM patient_details AS pd
         LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
@@ -356,7 +356,8 @@ class HcpModel extends CI_Model
             'modeOfConsultant' => $post['appConsult'],
             'dateOfAppoint' => $post['appDate'],
             'partOfDay' => $post['dayTime'],
-            'timeOfAppoint' => $post['appTime']
+            'timeOfAppoint' => $post['appTime'],
+             'appStatus' => "0"
         );
         $this->db->where('id', $post['appTableId']);
         $this->db->update('appointment_details', $updatedata);
@@ -367,13 +368,21 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
 
         $updatedata = array(
-            // 'precriptionMedicine' => $post['precriptionMedicine'],
+            'medicines' => $post['precriptionMedicine'],
             'adviceGiven' => $post['adviceGiven'],
             'nextAppDate' => $post['nextFollowUp'],
-            'lastAppDate' => date('Y-m-d')
+            'lastAppDate' => date('Y-m-d'),
+            'appStatus' => "1"
         );
         $this->db->where('id', $post['patientDbId']);
         $this->db->update('patient_details', $updatedata);
+
+
+        $updateStatus = array(
+            'appStatus' => "1"
+        );
+        $this->db->where('patientDbId', $post['patientDbId']);
+        $this->db->update('appointment_details', $updateStatus);
     }
 
     public function getHcpDetails()

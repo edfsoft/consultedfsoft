@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="login-form mx-lg-5 p-3 p-sm-5">
+                <div class="login-form mx-lg-2 mx-xxl-5 p-3 p-sm-4 p-xxl-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
                             alt="logo" class="img-fluid"></a>
                     <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
@@ -127,13 +127,13 @@
     </div>
 
     <script>
-        document.getElementById("hcpPassword").onfocus = function () {
-            document.getElementById("passwordmessage").style.display = "block";
-        }
+        // document.getElementById("hcpPassword").onfocus = function () {
+        //     document.getElementById("passwordmessage").style.display = "block";
+        // }
 
-        document.getElementById("hcpPassword").onblur = function () {
-            document.getElementById("passwordmessage").style.display = "none";
-        }
+        // document.getElementById("hcpPassword").onblur = function () {
+        //     document.getElementById("passwordmessage").style.display = "none";
+        // }
 
         function validEmail(input) {
             const emailError = document.getElementById("mail_err");
@@ -146,6 +146,12 @@
             const passwordError = document.getElementById("password_err");
             if (input.value != "") {
                 passwordError.textContent = "";
+            }
+
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(input.value)) {
+                document.getElementById("passwordmessage").style.display = "block";
+            } else {
+                document.getElementById("passwordmessage").style.display = "none";
             }
         }
 

@@ -619,7 +619,7 @@ function displayPatientPage(page) {
                             <i class="bi bi-eye"></i>
                         </button>
                     </a>
-                    ${prescriptionButton} <!-- Conditionally render prescription button here -->
+                    ${prescriptionButton}
                 </td>
             `;
             patientContainer.appendChild(patientRow);
@@ -1894,7 +1894,7 @@ function displayPatientPage(page) {
                             <?php }
                             } ?>
 
-                        <?php if ($value['lastAppDate'] != "" || $value['nextAppDate'] != "") { ?>
+                        <?php if ($value['consultedOnce'] === "1") { ?>
                                             <h5 class="my-3 mt-4 fw-bolder">Appointment Summary</h5>
 
                                             <div class="d-md-flex">

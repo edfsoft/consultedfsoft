@@ -547,6 +547,16 @@
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const patientRow = document.createElement('tr');
+
+                                const prescriptionButton = value.consultedOnce === '1' ? `
+                <a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/${value.id}">
+                    <button class="btn btn-secondary">
+                        <i class="bi bi-prescription"></i>
+                    </button>
+                </a>
+            ` : `<button class="btn btn-secondary" disabled>
+                        <i class="bi bi-prescription"></i>
+                    </button>`;
                                 patientRow.innerHTML = `
                                                         <td>${start + index + 1}.</td>
                                                         <td style="font-size: 16px">${value.patientId}</td>
@@ -564,6 +574,7 @@
                                                             <a href="<?php echo base_url(); ?>Chiefconsultant/patientdetails/${value.id}" class="px-1">
                                                                 <button class="btn btn-success"><i class="bi bi-eye"></i></button>
                                                             </a>
+                                                             ${prescriptionButton}
                                                         </td>
                                                     `;
                                 patientContainer.appendChild(patientRow);
@@ -786,7 +797,7 @@
                             <?php }
                             } ?>
 
-                        <?php if ($value['lastAppDate'] != "" || $value['nextAppDate'] != "") { ?>
+                    <?php if ($value['consultedOnce'] === "1") { ?>
                                             <h5 class="my-3 mt-4 fw-bolder">Appointment Summary</h5>
 
                                             <div class="d-md-flex">

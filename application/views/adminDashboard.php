@@ -1607,7 +1607,7 @@
                             <?php }
                             } ?>
 
-                        <?php if ($value['lastAppDate'] != "" || $value['nextAppDate'] != "") { ?>
+                        <?php if ($value['consultedOnce'] === "1") { ?>
                                             <h5 class="my-3 mt-4 fw-bolder">Appointment Summary</h5>
 
                                             <div class="d-md-flex">

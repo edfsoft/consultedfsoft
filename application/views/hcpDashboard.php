@@ -565,53 +565,67 @@
 
                 <script>
                     const itemsPerPagePatients = 10;
-                    const patientDetails = <?php echo json_encode($patientList); ?>;
-                    let filteredPatientDetails = patientDetails;
-                    const initialPagePatients = parseInt(localStorage.getItem('currentPagePatients')) || 1;
+const patientDetails = <?php echo json_encode($patientList); ?>;
+let filteredPatientDetails = patientDetails;
+const initialPagePatients = parseInt(localStorage.getItem('currentPagePatients')) || 1;
 
-                    function displayPatientPage(page) {
-                        localStorage.setItem('currentPagePatients', page);
-                        const start = (page - 1) * itemsPerPagePatients;
-                        const end = start + itemsPerPagePatients;
-                        const itemsToShow = filteredPatientDetails.slice(start, end);
+function displayPatientPage(page) {
+    localStorage.setItem('currentPagePatients', page);
+    const start = (page - 1) * itemsPerPagePatients;
+    const end = start + itemsPerPagePatients;
+    const itemsToShow = filteredPatientDetails.slice(start, end);
 
-                        const patientContainer = document.getElementById('patientContainer');
-                        patientContainer.innerHTML = '';
+    const patientContainer = document.getElementById('patientContainer');
+    patientContainer.innerHTML = '';
 
-                        if (itemsToShow.length === 0) {
-                            const noMatchesRow = document.createElement('tr');
-                            noMatchesRow.innerHTML = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td colspan="8" class="text-center">No matches found.</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `;
-                            patientContainer.appendChild(noMatchesRow);
-                        } else {
-                            itemsToShow.forEach((value, index) => {
-                                const patientRow = document.createElement('tr');
-                                patientRow.innerHTML = `
-                                                                                                                                                                        <td>${start + index + 1}.</td>
-                                                                                                                                                                        <td class="px-2">
-                                                                                                                                                                            <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile" width="40" height="40" class="rounded-circle">
-                                                                                                                                                                        </td >
-                                                                                                                                                                        <td style="font-size: 16px">${value.patientId}</td>
-                                                                                                                                                                        <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
-                                                                                                                                                                        <td style="font-size: 16px">${value.mobileNumber}</td>
-                                                                                                                                                                        <td style="font-size: 16px">${value.gender}</td>
-                                                                                                                                                                        <td style="font-size: 16px">${value.age}</td>
-                                                                                                                                                                        <td class="d-flex d-lg-block" style="font-size: 16px">
-                                                                                                                                                                        <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}">
-                                                                                                                                                                                                    <button class="btn btn-secondary" > <i class="bi bi-pencil"></i></button >
-                                                                                                                                                                            </a>
-                                                                                                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
-                                                                                                                                                                                <button class="btn btn-success"><i class="bi bi-eye"></i></button>
-                                                                                                                                                                            </a>
-                                                                                                                                                                            <a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/${value.id}">
-                                                                                                                                                                                                    <button class="btn btn-secondary" > <i class="bi bi-prescription"></i></button >
-                                                                                                                                                                            </a>
-                                                                                                                                                                        </td >
-                                                                                                                                                                                        `;
-                                patientContainer.appendChild(patientRow);
-                            });
-                        }
+    if (itemsToShow.length === 0) {
+        const noMatchesRow = document.createElement('tr');
+        noMatchesRow.innerHTML = `
+            <td colspan="8" class="text-center">No matches found.</td>
+        `;
+        patientContainer.appendChild(noMatchesRow);
+    } else {
+        itemsToShow.forEach((value, index) => {
+            const patientRow = document.createElement('tr');
+
+            const prescriptionButton = value.consultedOnce === '1' ? `
+                <a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/${value.id}">
+                    <button class="btn btn-secondary">
+                        <i class="bi bi-prescription"></i>
+                    </button>
+                </a>
+            ` : `<button class="btn btn-secondary" disabled>
+                        <i class="bi bi-prescription"></i>
+                    </button>`;
+
+            patientRow.innerHTML = `
+                <td>${start + index + 1}.</td>
+                <td class="px-2">
+                    <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile" width="40" height="40" class="rounded-circle">
+                </td>
+                <td style="font-size: 16px">${value.patientId}</td>
+                <td style="font-size: 16px">${value.firstName} ${value.lastName}</td>
+                <td style="font-size: 16px">${value.mobileNumber}</td>
+                <td style="font-size: 16px">${value.gender}</td>
+                <td style="font-size: 16px">${value.age}</td>
+                <td class="d-flex d-lg-block" style="font-size: 16px">
+                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}">
+                        <button class="btn btn-secondary">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </a>
+                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
+                        <button class="btn btn-success">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </a>
+                    ${prescriptionButton} <!-- Conditionally render prescription button here -->
+                </td>
+            `;
+            patientContainer.appendChild(patientRow);
+        });
+    }
+
 
                         generatePatientPagination(filteredPatientDetails.length, page);
                     }

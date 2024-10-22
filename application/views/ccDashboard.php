@@ -971,7 +971,7 @@
 
                                 <div class="row mt-5 action-buttons">
                                     <div class="col-12 text-center">
-                                        <button class="btn btn-primary me-3" onclick="printPrescription()">
+                                        <button class="btn btn-primary d-none d-lg-inline me-3" onclick="printPrescription()">
                                             <i class="bi bi-printer"></i>
                                         </button>
                                         <button class="btn btn-secondary" onclick="downloadPDF()">

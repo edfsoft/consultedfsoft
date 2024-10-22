@@ -368,7 +368,7 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
 
         $updatedata = array(
-            'medicines' => $post['precriptionMedicine'],
+            'medicines' => $post['preMedName'],
             'adviceGiven' => $post['adviceGiven'],
             'nextAppDate' => $post['nextFollowUp'],
             'lastAppDate' => date('Y-m-d'),

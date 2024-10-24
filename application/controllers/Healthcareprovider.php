@@ -9,6 +9,7 @@ class healthcareprovider extends CI_Controller
         parent::__construct();
         $this->load->model('HcpModel');
         $this->load->library('session');
+        $this->load->library('email');
     }
 
     public function index()
@@ -26,6 +27,47 @@ class healthcareprovider extends CI_Controller
     public function resetPassword()
     {
         $this->load->view('hcpForgetPassword.php');
+    }
+
+    public function send() {
+        $to = $this->input->post('hcpPassMail');
+        $message = 'Your OTP 963258 to change the new password.';
+
+        $config = array(
+            'protocol' => 'smtp',  
+            'smtp_host' => 'mail.arramjobs.in',
+            'smtp_port' => 465,
+            'smtp_user' => 'arramjobs@arramjobs.in',
+            'smtp_pass' => 'Arramjobs@6',
+            'mailtype'  => 'text',
+            'charset'   => 'utf-8',
+            'wordwrap'  => TRUE
+        );
+
+        $this->email->initialize($config);
+
+        $this->email->set_newline("\r\n");
+        $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
+        $this->email->to($to); 
+        $this->email->subject('Mail from Erode Diabetes Foundation');
+        $this->email->message($message);
+
+        if ($this->email->send()) {
+            $this->session->set_flashdata('email_sent', array(
+                'status'  => 'Email sent successfully.',
+                'from'    => 'arramjobs@arramjobs.in',
+                'to'      => $to,
+                'message' => $message
+            ));
+        } else {
+            $this->session->set_flashdata('email_sent', array(
+                'status'  => 'Failed to send email.',
+                'from'    => 'arramjobs@arramjobs.in',
+                'to'      => $to,
+                'message' => $message
+            ));
+        }
+        redirect('healthcareprovider/resetPassword');
     }
 
     public function hcpSignup()

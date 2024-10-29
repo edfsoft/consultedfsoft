@@ -49,11 +49,13 @@
             z-index: -1;
         }
 
-        #forgotPassword {
+        #resend,
+        #login {
             text-decoration: none;
         }
 
-        #forgotPassword:hover {
+        #resend:hover,
+        #login:hover {
             text-decoration: underline;
         }
 
@@ -65,6 +67,7 @@
 
             #bgcolor {
                 background-color: rgba(0, 173, 142, 0.4);
+                min-height: 100vh;   
             }
         }
     </style>
@@ -83,78 +86,103 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="login-form mx-lg-5 p-3 p-sm-5">
+                <div class="forgetPassword mx-lg-5 p-3 p-sm-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
                             alt="logo" class="img-fluid"></a>
-                    <p class="py-2" style="font-size:24px;font-weight:600;">HCP Password Reset</p>
 
-                    <form action="<?php echo base_url('healthcareprovider/send'); ?>" method="post"
-                        name="ccPasswordResetFormMail" class="mb-4">
-                        <div class="mb-3">
-                            <label for="hcpPassMail" class="form-label">Mail Id <span
-                                    class="text-danger">*</span></label>
-                            <input type="mail" name="hcpPassMail" id="hcpPassMail" placeholder="example@gmail.com"
-                                class="form-control rounded-pill p-3" value="<?php $email_data = $this->session->flashdata('email_sent');
-                                if ($email_data) {
-                                    echo $email_data['to'];
-                                } ?>" required>
-                            <div id="hcpPassMail_err" class="text-danger pt-1"></div>
-                        </div>
-                        <?php
-                        $email_data = $this->session->flashdata('email_sent');
-                        if ($email_data) { ?>
-                            <!-- <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3 mb-2"
-                                style="background-color:#00AD8E;font-size:16px;font-weight:600;cursor:no-drop" disabled>Send
-                                OTP</button> -->
-                            <?php echo "<p>" . $email_data['status'] . "</p>";
-                        } else { ?>
+                    <?php
+                    if ($method == "getMailId") {
+                        ?>
+                        <p class="py-2" style="font-size:24px;font-weight:600;">Forgot your password ?</p>
+                        <p class="text-justify" style="font-size:18px;font-weight:400;">Enter your registered mobile number
+                            and email address below to receive an OTP at the entered email address to change your password.
+                        </p>
+                        <form action="<?php echo base_url('healthcareprovider/send'); ?>" method="post"
+                            name="hcpPasswordResetFormMail">
+                            <div class="mb-3">
+                                <label for="hcpMobileNum" class="form-label">Mobile Number <span
+                                        class="text-danger">*</span></label>
+                                <input type="number" name="hcpMobileNum" id="hcpMobileNum" placeholder="9876543210"
+                                    class="form-control rounded-pill p-3" value="" required>
+                                <div id="hcpMobileNum_err" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="hcpPassMail" class="form-label">Mail Id <span
+                                        class="text-danger">*</span></label>
+                                <input type="mail" name="hcpPassMail" id="hcpPassMail" placeholder="example@gmail.com"
+                                    class="form-control rounded-pill p-3" value="" required>
+                                <div id="hcpPassMail_err" class="text-danger pt-1"></div>
+                            </div>
                             <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
                                 style="background-color:#00AD8E;font-size:16px;font-weight:600;">Send OTP</button>
-                        <?php } ?>
-                    </form>
-
-                    <?php if ($email_data) { ?>
-                        <p class="text-justify" style="font-size:18px;font-weight:400;">Enter the OTP that has been sent to
-                            this mail address : <b><?php if ($email_data) {
-                                echo $email_data['to'];
-                            } ?></b>.</p>
-                        <form action="#" method="post" name="ccPasswordResetForm" onsubmit="return validateFields()">
-                            <div class="mb-3">
-                                <label for="hcpPwdOtp" class="form-label">OTP <span class="text-danger">*</span></label>
-                                <input type="number" name="hcpPwdOtp" id="hcpPwdOtp" placeholder="1234"
-                                    oninput="validOtp(this)" class="form-control rounded-pill p-3" min="0">
-                                <div id="otp_err" class="text-danger pt-1"></div>
-                            </div>
-                            <div class="position-relative">
-                                <label for="hcpPassword" class="form-label">Password <span
-                                        class="text-danger">*</span></label>
-                                <input type="password" name="hcpPassword" id="hcpPassword" placeholder="New password"
-                                    oninput="validePassword(this)" class="form-control rounded-pill p-3">
-                                <i id="togglePassword"
-                                    class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
-                                    style="cursor: pointer;"></i>
-                            </div>
-                            <div id="password_err" class="text-danger pt-1"></div>
-
-                            <div class="text-secondary my-3" style="font-size:12px;display:none;" id="passwordmessage">
-                                Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
-                                and a minimum of 8 characters.</div>
-                            <div class="my-3">
-                                <label for="hcpCnfmPassword" class="form-label">Confirm Password <span
-                                        class="text-danger">*</span></label>
-                                <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
-                                    placeholder="Re-type password" class="form-control rounded-pill p-3">
-                                <div id="cnfmpassword_err" class="text-danger pt-1"></div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-5">
-                                <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
-                                    style="background-color:#00AD8E;font-size:16px;font-weight:600;">Submit</button>
-                            </div>
                         </form>
+
+                        <?php
+                    } else if ($method == "verifyOtp") { ?>
+
+                            <p class="py-2" style="font-size:24px;font-weight:600;">OTP verification</p>
+                            <p class="text-justify" style="font-size:18px;font-weight:400;"><?php echo $message; ?>
+                                <b><?php echo $toMail; ?></b>
+                            </p>
+                            <form action="<?php echo base_url() . "Healthcareprovider/verifyOtp" ?>" method="post"
+                                name="hcpOtpVerifyForm">
+                                <div class="">
+                                    <label for="hcpPwdOtp" class="form-label">OTP <span class="text-danger">*</span></label>
+                                    <input type="number" name="hcpPwdOtp" id="hcpPwdOtp" placeholder="1234"
+                                        oninput="validOtp(this)" class="form-control rounded-pill p-3" min="0">
+                                    <div id="otp_err" class="text-danger pt-1"></div>
+                                </div>
+                                <input type="hidden" id="hcpMobileNum" name="hcpMobileNum"
+                                    value="<?php echo $hcpMobileNumber ?>">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
+                                        style="background-color:#00AD8E;font-size:16px;font-weight:600;">Verify</button>
+                                    <p class="text-justify mt-3" style="font-size:18px;font-weight:400;">Didn't receive the
+                                        OTP? <a href="<?php echo base_url() . "Healthcareprovider/resetPassword" ?>" id="resend"
+                                            class="text-dark mt-5" style="font-weight:600;"> Resend</a></p>
+                                </div>
+                            </form>
+
+                        <?php
+                    } else if ($method == "newPassword") { ?>
+
+                                <p class="py-2" style="font-size:24px;font-weight:600;">Change password</p>
+                                <p class="text-justify" style="font-size:18px;font-weight:400;"><?php echo $message; ?></p>
+                                <form action="<?php echo base_url() . "Healthcareprovider/updateNewPassword" ?>" method="post"
+                                    name="hcpPasswordResetForm" onsubmit="return validateFields()">
+                                    <div class="position-relative">
+                                        <label for="hcpPassword" class="form-label">Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password" name="hcpPassword" id="hcpPassword" placeholder="New password"
+                                            oninput="validePassword(this)" class="form-control rounded-pill p-3">
+                                        <i id="togglePassword"
+                                            class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
+                                            style="cursor: pointer;"></i>
+                                    </div>
+                                    <div id="password_err" class="text-danger pt-1"></div>
+                                    <div class="text-secondary my-3" style="font-size:12px;display:none;" id="passwordmessage">
+                                        Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
+                                        and a minimum of 8 characters.</div>
+                                    <div class="my-3">
+                                        <label for="hcpCnfmPassword" class="form-label">Confirm Password <span
+                                                class="text-danger">*</span></label>
+                                        <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
+                                            placeholder="re-type password" class="form-control rounded-pill p-3">
+                                        <div id="cnfmpassword_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <input type="hidden" id="hcpMobileNum" name="hcpMobileNum"
+                                        value="<?php echo $hcpMobileNumber ?>">
+                                    <div class="d-flex justify-content-between mt-5">
+                                        <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
+                                            style="background-color:#00AD8E;font-size:16px;font-weight:600;">Change</button>
+                                    </div>
+                                </form>
+
                     <?php } ?>
+
                     <p class="float-end mt-3" style="font-size:18px;font-weight:400;">Back to <a
-                        href="<?php echo base_url() . "Healthcareprovider/" ?>" class="text-decoration-none text-dark"
-                        style="font-weight:600;">Login</a>.</p>
+                            href="<?php echo base_url() . "Healthcareprovider/" ?>" class="text-dark" id="login"
+                            style="font-weight:600;">Login</a>.</p>
                 </div>
             </div>
         </div>

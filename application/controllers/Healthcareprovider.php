@@ -26,48 +26,110 @@ class healthcareprovider extends CI_Controller
 
     public function resetPassword()
     {
-        $this->load->view('hcpForgetPassword.php');
+        $this->data['method'] = "getMailId";
+        $this->load->view('hcpForgetPassword.php', $this->data);
     }
 
-    public function send() {
+    // public function send() {
+    //     $to = $this->input->post('hcpPassMail');
+    //     $message = 'Your OTP 963258 to change the new password.';
+    //     $config = array(
+    //         'protocol' => 'smtp',  
+    //         'smtp_host' => 'mail.arramjobs.in',
+    //         'smtp_port' => 465,            
+    //         'smtp_user' => 'arramjobs@arramjobs.in',
+    //         'smtp_pass' => 'Arramjobs@6',
+    //         'mailtype'  => 'text',
+    //         'charset'   => 'utf-8',
+    //         'wordwrap'  => TRUE
+    //     );
+
+    //     $this->email->initialize($config);
+    //     $this->email->set_newline("\r\n");
+    //     $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
+    //     $this->email->to($to); 
+    //     $this->email->subject('Mail from Erode Diabetes Foundation');
+    //     $this->email->message($message);
+
+    //     if ($this->email->send()) {
+    //         $this->session->set_flashdata('email_sent', array(
+    //             'status'  => 'Email sent successfully.',
+    //             'from'    => 'arramjobs@arramjobs.in',
+    //             'to'      => $to,
+    //             'message' => $message
+    //         ));
+    //     } else {
+    //         $this->session->set_flashdata('email_sent', array(
+    //             'status'  => 'Failed to send email.',
+    //             'from'    => 'arramjobs@arramjobs.in',
+    //             'to'      => $to,
+    //             'message' => $message
+    //         ));
+    //     }
+    //     redirect('healthcareprovider/resetPassword');
+    // }
+
+    public function send()
+    {
         $to = $this->input->post('hcpPassMail');
-        $message = 'Your OTP 963258 to change the new password.';
+        $mobile = $this->input->post('hcpMobileNum');
+        $otp = rand(1000, 9999);
+        $this->session->set_userdata('generated_otp', $otp);
+
+        $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
 
         $config = array(
-            'protocol' => 'smtp',  
+            'protocol' => 'smtp',
             'smtp_host' => 'mail.arramjobs.in',
             'smtp_port' => 465,
             'smtp_user' => 'arramjobs@arramjobs.in',
             'smtp_pass' => 'Arramjobs@6',
-            'mailtype'  => 'text',
-            'charset'   => 'utf-8',
-            'wordwrap'  => TRUE
+            'mailtype' => 'text',
+            'charset' => 'utf-8',
+            'wordwrap' => TRUE
         );
 
         $this->email->initialize($config);
-
         $this->email->set_newline("\r\n");
         $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
-        $this->email->to($to); 
-        $this->email->subject('Mail from Erode Diabetes Foundation');
+        $this->email->to($to);
+        $this->email->subject('Consultation at Erode Diabetes Foundation');
         $this->email->message($message);
 
         if ($this->email->send()) {
-            $this->session->set_flashdata('email_sent', array(
-                'status'  => 'Email sent successfully.',
-                'from'    => 'arramjobs@arramjobs.in',
-                'to'      => $to,
-                'message' => $message
-            ));
+            $this->data['method'] = "verifyOtp";
+            $this->data['message'] = "Enter the OTP that has been sent to this mail address: ";
+            $this->data['toMail'] = $to;
+            $this->data['hcpMobileNumber'] = $mobile;
         } else {
-            $this->session->set_flashdata('email_sent', array(
-                'status'  => 'Failed to send email.',
-                'from'    => 'arramjobs@arramjobs.in',
-                'to'      => $to,
-                'message' => $message
-            ));
+            $this->data['method'] = "getMailId";
         }
-        redirect('healthcareprovider/resetPassword');
+        $this->load->view('hcpForgetPassword.php', $this->data);
+    }
+
+    public function verifyOtp()
+    {
+        $enteredOtp = isset($_POST['hcpPwdOtp']) ? $this->input->post('hcpPwdOtp') : NULL;
+        $mobile = $this->input->post('hcpMobileNum');
+        $generatedOtp = $this->session->userdata('generated_otp');
+
+        if ($enteredOtp == $generatedOtp) {
+            $this->session->unset_userdata('generated_otp');
+            $this->data['method'] = "newPassword";
+            $this->data['message'] = "Your OTP has been verified successfully.";
+            $this->data['hcpMobileNumber'] = $mobile;
+        } else {
+            $this->data['method'] = "verifyOtp";
+            $this->data['message'] = "Invalid OTP. Please try again.";
+            $this->data['toMail'] = NULL;
+        }
+        $this->load->view('hcpForgetPassword.php', $this->data);
+    }
+
+    public function updateNewPassword()
+    {
+        $profileDetails = $this->HcpModel->changeNewPassword();
+        redirect('Healthcareprovider/');
     }
 
     public function hcpSignup()

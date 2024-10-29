@@ -43,6 +43,14 @@
             z-index: -1;
         }
 
+        #login {
+            text-decoration: none;
+        }
+
+        #login:hover {
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .fixed-image {
                 width: 100%;
@@ -147,7 +155,7 @@
                             style="background-color:#0079AD;font-size:16px;font-weight:600;">Sign Up</button>
                     </form>
                     <p class="mt-4" style="font-size:18px;font-weight:400;">Already have an account ? <a
-                            href="<?php echo base_url() . "Chiefconsultant/" ?>" class="text-decoration-none text-dark"
+                            href="<?php echo base_url() . "Chiefconsultant/" ?>" id="login" class="text-dark"
                             style="font-weight:600;"> Login</a></p>
                 </div>
             </div>

@@ -60,6 +60,16 @@ class HcpModel extends CI_Model
         }
     }
 
+    public function changeNewPassword()
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            'hcpPassword' => $post['hcpCnfmPassword']
+        );
+        $this->db->where('hcpMobile', $post['hcpMobileNum']);
+        $this->db->update('hcp_details', $updatedata);
+    }
+
     public function hcpLoginDetails()
     {
         $postData = $this->input->post(null, true);

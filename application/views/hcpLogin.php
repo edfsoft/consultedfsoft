@@ -43,11 +43,13 @@
             z-index: -1;
         }
 
-        #forgotPassword {
+        #forgotPassword,
+        #newAccount {
             text-decoration: none;
         }
 
-        #forgotPassword:hover {
+        #forgotPassword:hover,
+        #newAccount:hover {
             text-decoration: underline;
         }
 
@@ -59,6 +61,16 @@
 
             #bgcolor {
                 background-color: rgba(0, 173, 142, 0.4);
+                min-height: 100vh;
+            }
+
+            #edfLogo {
+                display: block;
+                margin: 0 auto;
+            }
+
+            #hcpHeading{
+                text-align: center;
             }
         }
     </style>
@@ -79,8 +91,8 @@
             <div class="col-md-6">
                 <div class="login-form mx-lg-2 mx-xxl-5 p-3 p-sm-4 p-xxl-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
-                            alt="logo" class="img-fluid"></a>
-                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;">Healthcare Provider Login</p>
+                            id="edfLogo" alt="logo" class="img-fluid"></a>
+                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;" id="hcpHeading" >Healthcare Provider Login</p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
                     <p class="text-justify" style="font-size:18px;font-weight:400;">Empowering general practitioners to
                         provide personalized online diabetes consultations for comprehensive patient care. </p>
@@ -115,12 +127,13 @@
                             <button type="submit"
                                 class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
                                 style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
-                            <a href="#" id="forgotPassword" class="text-danger mt-5">Forgot password?</a>
+                            <a href="<?php echo base_url() . "Healthcareprovider/resetPassword" ?>" id="forgotPassword"
+                                class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
                     <p class="mt-4" style="font-size:18px;font-weight:400;">Don't have an account? <a
-                            href="<?php echo base_url() . "Healthcareprovider/register" ?>"
-                            class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
+                            href="<?php echo base_url() . "Healthcareprovider/register" ?>" id="newAccount"
+                            class="text-dark" style="font-weight:600;">Create free account</a></p>
                 </div>
             </div>
         </div>

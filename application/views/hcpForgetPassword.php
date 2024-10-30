@@ -28,6 +28,8 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        #hcpMobileNum::-webkit-outer-spin-button,
+        #hcpMobileNum::-webkit-inner-spin-button,
         #hcpPwdOtp::-webkit-outer-spin-button,
         #hcpPwdOtp::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -67,7 +69,12 @@
 
             #bgcolor {
                 background-color: rgba(0, 173, 142, 0.4);
-                min-height: 100vh;   
+                min-height: 100vh;
+            }
+
+            #edfLogo {
+                display: block;
+                margin: 0 auto;
             }
         }
     </style>
@@ -88,7 +95,7 @@
             <div class="col-md-6">
                 <div class="forgetPassword mx-lg-5 p-3 p-sm-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
-                            alt="logo" class="img-fluid"></a>
+                            alt="logo" class="img-fluid" id="edfLogo"></a>
 
                     <?php
                     if ($method == "getMailId") {
@@ -98,24 +105,64 @@
                             and email address below to receive an OTP at the entered email address to change your password.
                         </p>
                         <form action="<?php echo base_url('healthcareprovider/send'); ?>" method="post"
-                            name="hcpPasswordResetFormMail">
+                            name="hcpPasswordResetFormMail" onsubmit="return validateForm()" oninput="return removeError()">
                             <div class="mb-3">
                                 <label for="hcpMobileNum" class="form-label">Mobile Number <span
                                         class="text-danger">*</span></label>
                                 <input type="number" name="hcpMobileNum" id="hcpMobileNum" placeholder="9876543210"
-                                    class="form-control rounded-pill p-3" value="" required>
+                                    class="form-control rounded-pill p-3">
                                 <div id="hcpMobileNum_err" class="text-danger pt-1"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="hcpPassMail" class="form-label">Mail Id <span
                                         class="text-danger">*</span></label>
                                 <input type="mail" name="hcpPassMail" id="hcpPassMail" placeholder="example@gmail.com"
-                                    class="form-control rounded-pill p-3" value="" required>
+                                    class="form-control rounded-pill p-3">
                                 <div id="hcpPassMail_err" class="text-danger pt-1"></div>
                             </div>
                             <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
                                 style="background-color:#00AD8E;font-size:16px;font-weight:600;">Send OTP</button>
                         </form>
+
+                        <script>
+                            function validateForm() {
+                                var mobile = document.getElementById("hcpMobileNum").value;
+                                var email = document.getElementById("hcpPassMail").value;
+
+                                if (mobile == "") {
+                                    document.getElementById("hcpMobileNum_err").innerHTML = "Registered mobile number must be filled out.";
+                                    return false;
+                                } else if (!/^\d{10}$/.test(mobile)) {
+                                    document.getElementById("hcpMobileNum_err").innerHTML = "Invalid mobile number. Please enter valid number.";
+                                    return false;
+                                } else {
+                                    document.getElementById("hcpMobileNum_err").innerHTML = "";
+                                }
+
+                                if (email == "") {
+                                    document.getElementById("hcpPassMail_err").innerHTML = "Mail address must be filled out.";
+                                    return false;
+                                } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+                                    document.getElementById("hcpPassMail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
+                                    return false;
+                                } else {
+                                    document.getElementById("hcpPassMail_err").innerHTML = "";
+                                }
+                            }
+
+                            function removeError() {
+                                var mobile = document.getElementById("hcpMobileNum").value;
+                                var email = document.getElementById("hcpPassMail").value;
+
+                                if (mobile != "") {
+                                    document.getElementById("hcpMobileNum_err").innerHTML = "";
+                                }
+
+                                if (email != "") {
+                                    document.getElementById("hcpPassMail_err").innerHTML = "";
+                                }
+                            }
+                        </script>
 
                         <?php
                     } else if ($method == "verifyOtp") { ?>
@@ -125,15 +172,15 @@
                                 <b><?php echo $toMail; ?></b>
                             </p>
                             <form action="<?php echo base_url() . "Healthcareprovider/verifyOtp" ?>" method="post"
-                                name="hcpOtpVerifyForm">
+                                name="hcpOtpVerifyForm" onsubmit="return validOtp()">
                                 <div class="">
                                     <label for="hcpPwdOtp" class="form-label">OTP <span class="text-danger">*</span></label>
                                     <input type="number" name="hcpPwdOtp" id="hcpPwdOtp" placeholder="1234"
-                                        oninput="validOtp(this)" class="form-control rounded-pill p-3" min="0">
+                                        class="form-control rounded-pill p-3" min="0">
                                     <div id="otp_err" class="text-danger pt-1"></div>
                                 </div>
                                 <input type="hidden" id="hcpMobileNum" name="hcpMobileNum"
-                                    value="<?php echo $hcpMobileNumber ?>">
+                                    value="<?php echo $hcpMobileNumber; ?>">
                                 <div class="d-flex justify-content-between mt-4">
                                     <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
                                         style="background-color:#00AD8E;font-size:16px;font-weight:600;">Verify</button>
@@ -142,6 +189,23 @@
                                             class="text-dark mt-5" style="font-weight:600;"> Resend</a></p>
                                 </div>
                             </form>
+
+                            <script>
+                                function validOtp() {
+                                    var otp = document.getElementById("hcpPwdOtp").value;
+
+                                    if (otp === "") {
+                                        document.getElementById("otp_err").innerHTML = "OTP must be filled out.";
+                                        return false;
+                                    } else if (!/^\d{4}$/.test(otp)) {
+                                        document.getElementById("otp_err").innerHTML = "Invalid OTP. Please enter a valid 4-digit OTP.";
+                                        return false;
+                                    } else {
+                                        document.getElementById("otp_err").innerHTML = "";
+                                        return true;
+                                    }
+                                }
+                            </script>
 
                         <?php
                     } else if ($method == "newPassword") { ?>
@@ -178,6 +242,58 @@
                                     </div>
                                 </form>
 
+                                <script>
+                                    document.getElementById("hcpPassword").onfocus = function () {
+                                        document.getElementById("passwordmessage").style.display = "block";
+                                    }
+
+                                    document.getElementById("hcpPassword").onblur = function () {
+                                        document.getElementById("passwordmessage").style.display = "none";
+                                    }
+                                </script>
+
+                                <script>
+                                    function validateFields() {
+                                        var password = document.getElementById("hcpPassword").value;
+                                        var cnfmPassword = document.getElementById("hcpCnfmPassword").value;
+
+                                        if (password == "") {
+                                            document.getElementById("password_err").innerHTML = "Password must be filled out.";
+                                            return false;
+                                        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+                                            document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password.";
+                                            return false;
+                                        } else {
+                                            document.getElementById("password_err").innerHTML = "";
+                                        }
+
+                                        if (cnfmPassword == "") {
+                                            document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
+                                            return false;
+                                        } else if (cnfmPassword != password) {
+                                            document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
+                                            return false;
+                                        } else {
+                                            document.getElementById("cnfmpassword_err").innerHTML = "";
+                                        }
+                                    }
+                                </script>
+
+                                <script>
+                                    document.getElementById('togglePassword').addEventListener('click', function () {
+                                        const passwordField = document.getElementById('hcpPassword');
+                                        const icon = document.getElementById('togglePassword');
+                                        if (passwordField.type === 'password') {
+                                            passwordField.type = 'text';
+                                            icon.classList.remove('bi-eye');
+                                            icon.classList.add('bi-eye-slash');
+                                        } else {
+                                            passwordField.type = 'password';
+                                            icon.classList.remove('bi-eye-slash');
+                                            icon.classList.add('bi-eye');
+                                        }
+                                    });
+                                </script>
                     <?php } ?>
 
                     <p class="float-end mt-3" style="font-size:18px;font-weight:400;">Back to <a
@@ -187,82 +303,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById("hcpPassword").onfocus = function () {
-            document.getElementById("passwordmessage").style.display = "block";
-        }
-
-        document.getElementById("hcpPassword").onblur = function () {
-            document.getElementById("passwordmessage").style.display = "none";
-        }
-
-        function validOtp(input) {
-            const emailError = document.getElementById("otp_err");
-            if (input.value != "") {
-                emailError.textContent = "";
-            }
-        }
-
-        function validePassword(input) {
-            const passwordError = document.getElementById("password_err");
-            if (input.value != "") {
-                passwordError.textContent = "";
-            }
-        }
-
-        function validateFields() {
-            var otp = document.getElementById("hcpPwdOtp").value;
-            var password = document.getElementById("hcpPassword").value;
-            var cnfmPassword = document.getElementById("hcpCnfmPassword").value;
-
-            if (otp == "") {
-                document.getElementById("otp_err").innerHTML = "OTP must be filled out.";
-                return false;
-            } else if (otp < 1000 || otp > 9999) {
-                document.getElementById("otp_err").innerHTML = "Invalid OTP. Please 4-digits valid OTP.";
-                return false;
-            } else {
-                document.getElementById("otp_err").innerHTML = "";
-            }
-
-            if (password == "") {
-                document.getElementById("password_err").innerHTML = "Password must be filled out.";
-                return false;
-            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
-                document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password.";
-                return false;
-            } {
-                document.getElementById("password_err").innerHTML = "";
-            }
-
-            if (cnfmPassword == "") {
-                document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
-                return false;
-            } else if (cnfmPassword != password) {
-                document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
-                return false;
-            } else {
-                document.getElementById("cnfmpassword_err").innerHTML = "";
-            }
-        }
-    </script>
-
-    <script>
-        document.getElementById('togglePassword').addEventListener('click', function () {
-            const passwordField = document.getElementById('hcpPassword');
-            const icon = document.getElementById('togglePassword');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-            }
-        });
-    </script>
 
     <!-- Event listener to block right-click -->
     <script>

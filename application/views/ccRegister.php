@@ -33,6 +33,16 @@
             font-weight: 500;
         }
 
+        #ccMobile::-webkit-outer-spin-button,
+        #ccMobile::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        #edfLogo {
+            display: none;
+        }
+
         .fixed-image {
             position: fixed;
             top: 0;
@@ -59,13 +69,13 @@
 
             #bgcolor {
                 background-color: rgba(0, 121, 173, 0.6);
+                min-height: 100vh;
             }
-        }
 
-        #ccMobile::-webkit-outer-spin-button,
-        #ccMobile::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+            #edfLogo {
+                display: block;
+                margin: 0 auto;
+            }
         }
     </style>
 </head>
@@ -86,9 +96,11 @@
             </div>
             <div class="col-md-6">
                 <div class="login-form  mx-lg-2 mx-xxl-5 p-3 p-sm-4 p-xxl-5">
+                    <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
+                            id="edfLogo" alt="logo" class="img-fluid"></a>
                     <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#E01A2B;">Create an Account</p>
-                    <p class="" style="font-size:24px;font-weight:600;">CHIEF CONSULTANT</p>
-                    <p class="" style="font-size:18px;font-weight:400;">We're thrilled to have you join us on your
+                    <p style="font-size:24px;font-weight:600;">CHIEF CONSULTANT</p>
+                    <p style="font-size:18px;font-weight:400;">We're thrilled to have you join us on your
                         journey towards better health.</p>
                     <form action="<?php echo base_url() . "Chiefconsultant/ccSignup" ?>" method="post" name="signupform"
                         onsubmit="return validateSignup()" oninput="return removeError()">

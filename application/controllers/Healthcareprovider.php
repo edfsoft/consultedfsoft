@@ -109,7 +109,7 @@ class healthcareprovider extends CI_Controller
 
     public function verifyOtp()
     {
-        $enteredOtp = isset($_POST['hcpPwdOtp']) ? $this->input->post('hcpPwdOtp') : NULL;
+        $enteredOtp = isset($_POST['hcpPwdOtp']) ? $this->input->post('hcpPwdOtp') : '0';
         $mobile = $this->input->post('hcpMobileNum');
         $generatedOtp = $this->session->userdata('generated_otp');
 
@@ -122,6 +122,8 @@ class healthcareprovider extends CI_Controller
             $this->data['method'] = "verifyOtp";
             $this->data['message'] = "Invalid OTP. Please try again.";
             $this->data['toMail'] = NULL;
+            $this->data['hcpMobileNumber'] = NULL;
+
         }
         $this->load->view('hcpForgetPassword.php', $this->data);
     }

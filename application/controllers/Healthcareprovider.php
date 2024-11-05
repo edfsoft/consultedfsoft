@@ -298,6 +298,8 @@ class healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
+            $this->data['appMedicines'] = $appMedicines;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -398,7 +400,30 @@ class healthcareprovider extends CI_Controller
 
     public function prescriptionForm()
     {
-        $profileDetails = $this->HcpModel->addPrescription();
+      $this->HcpModel->addPrescription();
+
+        $medNames = $this->input->post('preMedName');
+        $frequencies = $this->input->post('preMedFrequency');
+        $durations = $this->input->post('preMedDuration');
+        $durationUnits = $this->input->post('preMedDurationUnit');
+        $notes = $this->input->post('preMedNotes');
+        $patientDbId = $this->input->post('patientDbId'); 
+        $adviceGiven = $this->input->post('adviceGiven'); 
+
+        $medicinesData = [];
+        for ($i = 0; $i < count($medNames); $i++) {
+            $medicinesData[] = [
+                'patientDbId' => $patientDbId, 
+                'medicineName' => $medNames[$i],
+                'frequency' => $frequencies[$i],
+                'duration' => $durations[$i],
+                'duration_unit' => $durationUnits[$i],
+                'notes' => $notes[$i],
+                'appointmentAdvice' => $adviceGiven
+            ];
+        }
+        $this->HcpModel->prescriptionMedicines($medicinesData);
+
         redirect('Healthcareprovider/appointments');
     }
 

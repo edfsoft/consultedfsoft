@@ -9,6 +9,7 @@ class healthcareprovider extends CI_Controller
         parent::__construct();
         $this->load->model('HcpModel');
         $this->load->library('session');
+        $this->load->library('email');
     }
 
     public function index()
@@ -25,7 +26,112 @@ class healthcareprovider extends CI_Controller
 
     public function resetPassword()
     {
-        $this->load->view('hcpForgetPassword.php');
+        $this->data['method'] = "getMailId";
+        $this->load->view('hcpForgetPassword.php', $this->data);
+    }
+
+    // public function send() {
+    //     $to = $this->input->post('hcpPassMail');
+    //     $message = 'Your OTP 963258 to change the new password.';
+    //     $config = array(
+    //         'protocol' => 'smtp',  
+    //         'smtp_host' => 'mail.arramjobs.in',
+    //         'smtp_port' => 465,            
+    //         'smtp_user' => 'arramjobs@arramjobs.in',
+    //         'smtp_pass' => 'Arramjobs@6',
+    //         'mailtype'  => 'text',
+    //         'charset'   => 'utf-8',
+    //         'wordwrap'  => TRUE
+    //     );
+
+    //     $this->email->initialize($config);
+    //     $this->email->set_newline("\r\n");
+    //     $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
+    //     $this->email->to($to); 
+    //     $this->email->subject('Mail from Erode Diabetes Foundation');
+    //     $this->email->message($message);
+
+    //     if ($this->email->send()) {
+    //         $this->session->set_flashdata('email_sent', array(
+    //             'status'  => 'Email sent successfully.',
+    //             'from'    => 'arramjobs@arramjobs.in',
+    //             'to'      => $to,
+    //             'message' => $message
+    //         ));
+    //     } else {
+    //         $this->session->set_flashdata('email_sent', array(
+    //             'status'  => 'Failed to send email.',
+    //             'from'    => 'arramjobs@arramjobs.in',
+    //             'to'      => $to,
+    //             'message' => $message
+    //         ));
+    //     }
+    //     redirect('healthcareprovider/resetPassword');
+    // }
+
+    public function send()
+    {
+        $to = $this->input->post('hcpPassMail');
+        $mobile = $this->input->post('hcpMobileNum');
+        $otp = rand(1000, 9999);
+        $this->session->set_userdata('generated_otp', $otp);
+
+        $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
+
+        $config = array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'mail.arramjobs.in',
+            'smtp_port' => 465,
+            'smtp_user' => 'arramjobs@arramjobs.in',
+            'smtp_pass' => 'Arramjobs@6',
+            'mailtype' => 'text',
+            'charset' => 'utf-8',
+            'wordwrap' => TRUE
+        );
+
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
+        $this->email->to($to);
+        $this->email->subject('Consultation at Erode Diabetes Foundation');
+        $this->email->message($message);
+
+        if ($this->email->send()) {
+            $this->data['method'] = "verifyOtp";
+            $this->data['message'] = "Enter the OTP that has been sent to this mail address: ";
+            $this->data['toMail'] = $to;
+            $this->data['hcpMobileNumber'] = $mobile;
+        } else {
+            $this->data['method'] = "getMailId";
+        }
+        $this->load->view('hcpForgetPassword.php', $this->data);
+    }
+
+    public function verifyOtp()
+    {
+        $enteredOtp = isset($_POST['hcpPwdOtp']) ? $this->input->post('hcpPwdOtp') : '0';
+        $mobile = $this->input->post('hcpMobileNum');
+        $generatedOtp = $this->session->userdata('generated_otp');
+
+        if ($enteredOtp == $generatedOtp) {
+            $this->session->unset_userdata('generated_otp');
+            $this->data['method'] = "newPassword";
+            $this->data['message'] = "Your OTP has been verified successfully.";
+            $this->data['hcpMobileNumber'] = $mobile;
+        } else {
+            $this->data['method'] = "verifyOtp";
+            $this->data['message'] = "Invalid OTP. Please try again.";
+            $this->data['toMail'] = NULL;
+            $this->data['hcpMobileNumber'] = NULL;
+
+        }
+        $this->load->view('hcpForgetPassword.php', $this->data);
+    }
+
+    public function updateNewPassword()
+    {
+        $profileDetails = $this->HcpModel->changeNewPassword();
+        redirect('Healthcareprovider/');
     }
 
     public function hcpSignup()
@@ -192,6 +298,8 @@ class healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
+            $this->data['appMedicines'] = $appMedicines;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -292,7 +400,30 @@ class healthcareprovider extends CI_Controller
 
     public function prescriptionForm()
     {
-        $profileDetails = $this->HcpModel->addPrescription();
+      $this->HcpModel->addPrescription();
+
+        $medNames = $this->input->post('preMedName');
+        $frequencies = $this->input->post('preMedFrequency');
+        $durations = $this->input->post('preMedDuration');
+        $durationUnits = $this->input->post('preMedDurationUnit');
+        $notes = $this->input->post('preMedNotes');
+        $patientDbId = $this->input->post('patientDbId'); 
+        $adviceGiven = $this->input->post('adviceGiven'); 
+
+        $medicinesData = [];
+        for ($i = 0; $i < count($medNames); $i++) {
+            $medicinesData[] = [
+                'patientDbId' => $patientDbId, 
+                'medicineName' => $medNames[$i],
+                'frequency' => $frequencies[$i],
+                'duration' => $durations[$i],
+                'duration_unit' => $durationUnits[$i],
+                'notes' => $notes[$i],
+                'appointmentAdvice' => $adviceGiven
+            ];
+        }
+        $this->HcpModel->prescriptionMedicines($medicinesData);
+
         redirect('Healthcareprovider/appointments');
     }
 

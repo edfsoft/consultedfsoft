@@ -43,11 +43,11 @@
             z-index: -1;
         }
 
-        #forgotPassword {
+        #forgotPassword, #newAccount {
             text-decoration: none;
         }
 
-        #forgotPassword:hover {
+        #forgotPassword:hover, #newAccount:hover {
             text-decoration: underline;
         }
 
@@ -59,6 +59,16 @@
 
             #bgcolor {
                 background-color: rgba(0, 121, 173, 0.4);
+                min-height: 100vh;   
+            }
+
+            #edfLogo {
+                display: block;
+                margin: 0 auto;
+            }
+            
+            #ccHeading{
+                text-align: center;
             }
         }
     </style>
@@ -79,11 +89,10 @@
             <div class="col-md-6">
                 <div class="login-form  mx-lg-2 mx-xxl-5 p-3 p-sm-4 p-xxl-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
-                            alt="logo" class="img-fluid"></a>
-                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#0079AD;">Chief Consultant Login</p>
+                    id="edfLogo" alt="logo" class="img-fluid"></a>
+                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#0079AD;" id="ccHeading" >Chief Consultant Login</p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
-                    <p class="" style="font-size:18px;font-weight:400;">Empowering chief practitioners to provide <br>
-                        personalized online diabetes consultations <br> for comprehensive patient care.
+                    <p class="" style="font-size:18px;font-weight:400;">Empowering chief practitioners to provide personalized online diabetes consultations for comprehensive patient care.
                     </p>
                     <form action="<?php echo base_url() . "Chiefconsultant/ccLogin" ?>" method="post" name="ccloginform"
                         onsubmit="return validateLogin()">
@@ -120,8 +129,8 @@
                     </form>
 
                     <p class="mt-4" style="font-size:18px;font-weight:400;">Don't have an account? <a
-                            href="<?php echo base_url() . "Chiefconsultant/register" ?>"
-                            class="text-decoration-none text-dark" style="font-weight:600;">Create free account</a></p>
+                            href="<?php echo base_url() . "Chiefconsultant/register" ?>" id="newAccount"
+                            class="text-dark" style="font-weight:600;">Create free account</a></p>
                 </div>
             </div>
         </div>

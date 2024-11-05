@@ -60,6 +60,16 @@ class HcpModel extends CI_Model
         }
     }
 
+    public function changeNewPassword()
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            'hcpPassword' => $post['hcpCnfmPassword']
+        );
+        $this->db->where('hcpMobile', $post['hcpMobileNum']);
+        $this->db->update('hcp_details', $updatedata);
+    }
+
     public function hcpLoginDetails()
     {
         $postData = $this->input->post(null, true);
@@ -284,6 +294,13 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getAppMedicinesDetails($id)
+    {
+        $details = "SELECT * FROM `appointment_summary` WHERE `patientDbId`= $id ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
     public function getAppointmentListDash()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
@@ -366,23 +383,25 @@ class HcpModel extends CI_Model
     public function addPrescription()
     {
         $post = $this->input->post(null, true);
-
-        $updatedata = array(
-            'medicines' => $post['precriptionMedicine'],
-            'adviceGiven' => $post['adviceGiven'],
-            'nextAppDate' => $post['nextFollowUp'],
+        $updatedata = array(   
             'lastAppDate' => date('Y-m-d'),
-            'appStatus' => "1"
+            'consultedOnce' => "1"
         );
         $this->db->where('id', $post['patientDbId']);
         $this->db->update('patient_details', $updatedata);
-
 
         $updateStatus = array(
             'appStatus' => "1"
         );
         $this->db->where('patientDbId', $post['patientDbId']);
         $this->db->update('appointment_details', $updateStatus);
+    }
+
+    public function prescriptionMedicines($medicinesData)
+    {
+        foreach ($medicinesData as $medicine) {
+            $this->db->insert('appointment_summary', $medicine);
+        }
     }
 
     public function getHcpDetails()

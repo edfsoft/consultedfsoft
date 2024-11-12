@@ -1809,7 +1809,7 @@
                                     <?php echo $value['doorNumber'] ? $value['doorNumber'] . "," . $value['address'] : "Not provided"; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">District</span> :
-                                    <?php echo $value['district'] ? $value['district'] . $value['pincode'] : "Not provided"; ?>
+                                    <?php echo $value['district'] ? $value['district'] ." - ". $value['pincode'] : "Not provided"; ?>
                                                 </p>
                                             </div>
                                             <div class="d-md-flex">

@@ -30,45 +30,6 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpForgetPassword.php', $this->data);
     }
 
-    // public function send() {
-    //     $to = $this->input->post('hcpPassMail');
-    //     $message = 'Your OTP 963258 to change the new password.';
-    //     $config = array(
-    //         'protocol' => 'smtp',  
-    //         'smtp_host' => 'mail.arramjobs.in',
-    //         'smtp_port' => 465,            
-    //         'smtp_user' => 'arramjobs@arramjobs.in',
-    //         'smtp_pass' => 'Arramjobs@6',
-    //         'mailtype'  => 'text',
-    //         'charset'   => 'utf-8',
-    //         'wordwrap'  => TRUE
-    //     );
-
-    //     $this->email->initialize($config);
-    //     $this->email->set_newline("\r\n");
-    //     $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
-    //     $this->email->to($to); 
-    //     $this->email->subject('Mail from Erode Diabetes Foundation');
-    //     $this->email->message($message);
-
-    //     if ($this->email->send()) {
-    //         $this->session->set_flashdata('email_sent', array(
-    //             'status'  => 'Email sent successfully.',
-    //             'from'    => 'arramjobs@arramjobs.in',
-    //             'to'      => $to,
-    //             'message' => $message
-    //         ));
-    //     } else {
-    //         $this->session->set_flashdata('email_sent', array(
-    //             'status'  => 'Failed to send email.',
-    //             'from'    => 'arramjobs@arramjobs.in',
-    //             'to'      => $to,
-    //             'message' => $message
-    //         ));
-    //     }
-    //     redirect('healthcareprovider/resetPassword');
-    // }
-
     public function send()
     {
         $to = $this->input->post('hcpPassMail');
@@ -242,13 +203,6 @@ class healthcareprovider extends CI_Controller
         }
     }
 
-    // public function addPatientsForm()
-    // {
-    //     $profileDetails = $this->HcpModel->insertPatients();
-    //     $generateid = $this->HcpModel->generatePatientId();
-    //     redirect('Healthcareprovider/patients');
-    // }
-
     public function patientdetails()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -256,6 +210,8 @@ class healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $appHistory = $this->HcpModel->getAppointmentHistory($patientIdDb);
+            $this->data['patientAppHistory'] = $appHistory;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -408,7 +364,6 @@ class healthcareprovider extends CI_Controller
         $durationUnits = $this->input->post('preMedDurationUnit');
         $notes = $this->input->post('preMedNotes');
         $patientDbId = $this->input->post('patientDbId'); 
-        $adviceGiven = $this->input->post('adviceGiven'); 
 
         $medicinesData = [];
         for ($i = 0; $i < count($medNames); $i++) {
@@ -419,7 +374,6 @@ class healthcareprovider extends CI_Controller
                 'duration' => $durations[$i],
                 'duration_unit' => $durationUnits[$i],
                 'notes' => $notes[$i],
-                'appointmentAdvice' => $adviceGiven
             ];
         }
         $this->HcpModel->prescriptionMedicines($medicinesData);

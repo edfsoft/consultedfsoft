@@ -372,7 +372,7 @@
                                     <p class="px-5">
                                         <span style="font-size: 16px; font-weight: 500; color: #0079AD">Name</span><br /><span
                                             style="font-size: 16px">
-                                            <?php echo $appointmentList[0]['firstName'], $appointmentList[0]['lastName']; ?></span>
+                                            <?php echo $appointmentList[0]['firstName'], " ", $appointmentList[0]['lastName']; ?></span>
                                     </p>
                                     <p>
                                         <span style="font-size: 16px; font-weight: 500; color: #0079AD">Patient

@@ -296,7 +296,7 @@ class HcpModel extends CI_Model
 
     public function getAppointmentHistory($id)
     {
-        $details = "SELECT * FROM `appointment_details` WHERE `patientDbId` = $id AND `appStatus` = '1' ";
+        $details = "SELECT * FROM `appointment_details` WHERE `patientDbId` = $id AND `appStatus` = '1' ORDER BY `dateOfAppoint` DESC ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -404,6 +404,7 @@ class HcpModel extends CI_Model
 
         );
         $this->db->where('patientDbId', $post['patientDbId']);
+        $this->db->where('dateOfAppoint', date('Y-m-d'));
         $this->db->update('appointment_details', $updateStatus);
     }
 

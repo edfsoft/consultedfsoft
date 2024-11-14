@@ -212,6 +212,8 @@ class healthcareprovider extends CI_Controller
             $this->data['patientDetails'] = $patientDetails;
             $appHistory = $this->HcpModel->getAppointmentHistory($patientIdDb);
             $this->data['patientAppHistory'] = $appHistory;
+            $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
+            $this->data['appMedicines'] = $appMedicines;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -374,6 +376,7 @@ class healthcareprovider extends CI_Controller
                 'duration' => $durations[$i],
                 'duration_unit' => $durationUnits[$i],
                 'notes' => $notes[$i],
+                'dateOfAppoint' => date('Y-m-d')
             ];
         }
         $this->HcpModel->prescriptionMedicines($medicinesData);

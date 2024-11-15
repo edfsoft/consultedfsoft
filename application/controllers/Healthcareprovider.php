@@ -360,19 +360,19 @@ class healthcareprovider extends CI_Controller
 
     public function prescriptionForm()
     {
-      $this->HcpModel->addPrescription();
+        $this->HcpModel->addPrescription();
 
         $medNames = $this->input->post('preMedName');
         $frequencies = $this->input->post('preMedFrequency');
         $durations = $this->input->post('preMedDuration');
         $durationUnits = $this->input->post('preMedDurationUnit');
         $notes = $this->input->post('preMedNotes');
-        $patientDbId = $this->input->post('patientDbId'); 
+        $patientDbId = $this->input->post('patientDbId');
 
         $medicinesData = [];
         for ($i = 0; $i < count($medNames); $i++) {
             $medicinesData[] = [
-                'patientDbId' => $patientDbId, 
+                'patientDbId' => $patientDbId,
                 'medicineName' => $medNames[$i],
                 'frequency' => $frequencies[$i],
                 'duration' => $durations[$i],

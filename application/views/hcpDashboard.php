@@ -2017,11 +2017,11 @@
                                                                         <th scope="col">Frequency</th>
                                                                         <th scope="col">Duration</th>
                                                                         <th scope="col">Notes</th>
-                                                                        <th scope="col">Advice Given</th>
                                                                     </tr>
                                                                 </thead>
                                             <?php $count = 0;
                                             foreach ($appMedicines as $key => $mvalue) {
+                                                if ($mvalue['dateOfAppoint'] == $pvalue['lastAppDate']) {
                                                 $count++; ?>
                                                                     <tbody>
                                                                         <tr>
@@ -2030,10 +2030,10 @@
                                                                             <td><?php echo $mvalue['frequency'] ?></td>
                                                                             <td><?php echo $mvalue['duration'] . ' ' . $mvalue['duration_unit']; ?></td>
                                                                             <td><?php echo $mvalue['notes'] ?></td>
-                                                                            <td><?php echo $mvalue['appointmentAdvice'] ?></td>
                                                                         </tr>
                                                                     </tbody>
-                                            <?php } ?>
+                                            <?php }
+                                         } ?>
                                                             </table>
                                                         </div>
                                                     </div>

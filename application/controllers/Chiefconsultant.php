@@ -120,6 +120,10 @@ class chiefconsultant extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $appHistory = $this->HcpModel->getAppointmentHistory($patientIdDb);
+            $this->data['patientAppHistory'] = $appHistory;
+            $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
+            $this->data['appMedicines'] = $appMedicines;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {

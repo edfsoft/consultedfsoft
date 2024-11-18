@@ -669,159 +669,210 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                    <div class="d-sm-flex text-center mb-4">
+                                            <div class="d-sm-flex text-center mb-4">
                                 <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
-                                            <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
-                                                width="140" height="140" class="rounded-circle">
+                                                    <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
+                                                        width="140" height="140" class="rounded-circle">
                                 <?php } else { ?>
-                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                height="140" class="rounded-circle">
+                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                        height="140" class="rounded-circle">
                                 <?php } ?>
-                                        <div class="mt-3 ps-sm-5">
-                                            <p class="text-dark" style="font-weight:600;font-size:20px;">
+                                                <div class="mt-3 ps-sm-5">
+                                                    <p class="text-dark" style="font-weight:600;font-size:20px;">
                                         <?php echo $value['patientId'] ?>
-                                            </p>
-                                            <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
+                                                    </p>
+                                                    <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
                                         <?php echo $value['lastName'] ?>
-                                            </p>
-                                            <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
-                                            <!-- <p class="text-dark" style="font-weight:500;font-size:20px;">
+                                                    </p>
+                                                    <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
+                                                    <!-- <p class="text-dark" style="font-weight:500;font-size:20px;">
                                         <?php echo $value['diagonsis'] ?>
                                                     </p> -->
-                                        </div>
+                                                </div>
 
-                                    </div>
+                                            </div>
 
-                                    <h5 class="my-3 mt-3 fw-bolder">Personal Details</h5>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> : <a
-                                                href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                            <h5 class="my-3 mt-3 fw-bolder">Personal Details</h5>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> : <a
+                                                        href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
                                         <?php echo $value['mobileNumber'] ?></a></p>
-                                        <p><span class="text-secondary ">Alternate mobile</span> :
+                                                <p><span class="text-secondary ">Alternate mobile</span> :
                                     <?php echo $value['alternateMobile'] ? $value['alternateMobile'] : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Mail</span> :
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Mail</span> :
                                         <?php
                                         $mailId = isset($value['mailId']) ? $value['mailId'] : null;
                                         ?>
-                                            <a href="mailto:<?php echo $mailId ? $mailId : '#'; ?>"
-                                                class="text-decoration-none text-dark">
+                                                    <a href="mailto:<?php echo $mailId ? $mailId : '#'; ?>"
+                                                        class="text-decoration-none text-dark">
                                         <?php echo $mailId ? $mailId : 'Not provided'; ?>
-                                            </a>
-                                        </p>
-                                        <p><span class="text-secondary ">Blood group</span> :
+                                                    </a>
+                                                </p>
+                                                <p><span class="text-secondary ">Blood group</span> :
                                     <?php echo $value['bloodGroup'] ? $value['bloodGroup'] : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Age </span> :
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Age </span> :
                                     <?php echo $value['age']; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Married status</span> :
+                                                </p>
+                                                <p><span class="text-secondary ">Married status</span> :
                                     <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . $value['marriedSince'] : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Street address</span> :
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Street address</span> :
                                     <?php echo $value['doorNumber'] ? $value['doorNumber'] . "," . $value['address'] : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">District</span> :
+                                                </p>
+                                                <p><span class="text-secondary ">District</span> :
                                     <?php echo $value['district'] ? $value['district'] . " - " . $value['pincode'] : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Profession</span> :
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Profession</span> :
                                     <?php echo $value['profession'] ? $value['profession'] : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Guardian name</span> :
+                                                </p>
+                                                <p><span class="text-secondary ">Guardian name</span> :
                                     <?php echo $value['partnerName'] ? $value['partnerName'] : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Guardian mobile</span> :
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Guardian mobile</span> :
                                     <?php echo $value['partnerMobile'] ? $value['partnerMobile'] : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Guardian blood group</span> :
+                                                </p>
+                                                <p><span class="text-secondary ">Guardian blood group</span> :
                                     <?php echo $value['partnerBlood'] ? $value['partnerBlood'] : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <h5 class="my-3 mt-4 fw-bolder">Medical Records</h5>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Weight</span> :
+                                                </p>
+                                            </div>
+                                            <h5 class="my-3 mt-4 fw-bolder">Medical Records</h5>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Weight</span> :
                                     <?php echo $value['weight'] ? $value['weight'] . " Kg" : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Height</span> :
+                                                </p>
+                                                <p><span class="text-secondary ">Height</span> :
                                     <?php echo $value['height'] ? $value['height'] . " Cm" : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> :
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> :
                                     <?php echo $value['bloodPressure'] ? $value['bloodPressure'] . " mmHg" : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Cholestrol </span> :
+                                                </p>
+                                                <p><span class="text-secondary ">Cholestrol </span> :
                                     <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dl" : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> :
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> :
                                     <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mmol/L" : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Diagonsis / Complaints</span> :
+                                                </p>
+                                                <p><span class="text-secondary ">Diagonsis / Complaints</span> :
                                     <?php echo $value['diagonsis'] ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> :
+                                                </p>
+                                            </div>
+                                            <div class="d-md-flex">
+                                                <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> :
                                     <?php echo $value['symptoms'] ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Medicines</span> :
+                                                </p>
+                                                <p><span class="text-secondary ">Medicines</span> :
                                     <?php echo $value['medicines'] ? $value['medicines'] : "Not provided"; ?>
-                                        </p>
-                                    </div>
+                                                </p>
+                                            </div>
 
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
 
-                                        <h5 class="my-3 mt-4 fw-bolder">Documents / Reports</h5>
+                                                <h5 class="my-3 mt-4 fw-bolder">Documents / Reports</h5>
 
-                                        <div class="d-md-flex">
+                                                <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
-                                                <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> : <a
-                                                        href="<?php echo base_url() . 'uploads/' . $value['documentOne'] ?>" target="blank"
-                                                        rel="Document 1"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
+                                                        <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> : <a
+                                                                href="<?php echo base_url() . 'uploads/' . $value['documentOne'] ?>" target="blank"
+                                                                rel="Document 1"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
                                     <?php } ?>
                                     <?php if ($value['documentTwo'] != "No data") { ?>
-                                                <p><span class="text-secondary ">Test uploads</span> : <a
-                                                        href="<?php echo base_url() . 'uploads/' . $value['documentTwo'] ?>" target="blank"
-                                                        rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
+                                                        <p><span class="text-secondary ">Test uploads</span> : <a
+                                                                href="<?php echo base_url() . 'uploads/' . $value['documentTwo'] ?>" target="blank"
+                                                                rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
                                     <?php } ?>
-                                        </div>
+                                                </div>
+                            <?php }
+                            if ($value['consultedOnce'] === "1") {
+                                ?>
+                                                <h5 class="my-3 mt-4 fw-bolder">Appointments History</h5>
+                                                <div class="d-md-flex">
+                                                    <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
+                                        <?php echo date('d-m-Y', strtotime($value['lastAppDate'])); ?>
+                                                    </p>
+                                                    <p><span class="text-secondary ">Next Followup </span> :
+                                        <?php echo date('d-m-Y', strtotime($value['nextAppDate'])); ?>
+                                                    </p>
+                                                </div>
+                                                <?php
+                                    $appCount = 0;
+                                    foreach ($patientAppHistory as $key => $svalue) {
+                                        $appCount++;
+                                        ?>
+                                                    <div class="card rounded shadow mt-3 p-4">
+                                                        <div class="d-sm-flex my-auto " style="font-weight:600;">
+                                                            <button style=" width:30px;height:30px;font-weight:500"
+                                                                class="text-light bg-secondary rounded-circle border-0 me-3"><?php echo $appCount; ?></button>
+                                                            <p class="pe-4 pt-1"><?php echo date('d F Y', strtotime($svalue['dateOfAppoint'])); ?> -
+                                                <?php echo date('h:i A', strtotime($svalue['timeOfAppoint'])); ?>
+                                                            </p>
+                                                            <p class="pe-4 pt-1"><?php echo $svalue['patientComplaint'] ?> </p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">CC Id : </p>
+                                                            <p class="col-md-9 ps-2"><?php echo $svalue['referalDoctor'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">HCP Id : </p>
+                                                            <p class="col-md-9 ps-2"><?php echo $svalue['patientHcp'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">Advice Given : </p>
+                                                            <p class="col-md-9 ps-2"> <?php echo $svalue['appointmentAdvice'] ?></p>
+                                                        </div>
+                                                        <p class="text-secondary">Medicines table : </p>
+
+                                                        <table class="table table-bordered table-hover border border-dark text-center">
+                                                            <thead class="table-light border border-dark">
+                                                                <tr>
+                                                                    <th scope="col">Rx</th>
+                                                                    <th scope="col">Medicine</th>
+                                                                    <th scope="col">Frequency</th>
+                                                                    <th scope="col">Duration</th>
+                                                                    <th scope="col">Notes</th>
+                                                                </tr>
+                                                            </thead>
+                                            <?php $count = 0;
+                                            foreach ($appMedicines as $key => $mvalue) {
+                                                if ($mvalue['dateOfAppoint'] == $svalue['dateOfAppoint']) {
+                                                    $count++; ?>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td><?php echo $count ?> .</td>
+                                                                            <td><?php echo $mvalue['medicineName'] ?></td>
+                                                                            <td><?php echo $mvalue['frequency'] ?></td>
+                                                                            <td><?php echo $mvalue['duration'] . ' ' . $mvalue['duration_unit']; ?></td>
+                                                                            <td><?php echo $mvalue['notes'] ?></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                <?php }
+                                            } ?>
+                                                        </table>
+                                                    </div>
+
+                                <?php } ?>
+
                             <?php }
                             } ?>
 
-                        <?php if ($value['consultedOnce'] === "1") { ?>
-                                    <h5 class="my-3 mt-4 fw-bolder">Appointment Summary</h5>
 
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
-                                    <?php echo date('d-m-Y', strtotime($value['lastAppDate'])); ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Next Followup </span> :
-                                    <?php echo date('d-m-Y', strtotime($value['nextAppDate'])); ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <!-- <p class="col-sm-6"><span class="text-secondary ">Suggested Medcine</span> :
-                                    <?php echo $value['precriptionMedicine'] ?>
-                                                </p> -->
-                                        <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> :
-                                    <?php echo $value['adviceGiven'] ?>
-                                        </p>
-                                    </div>
-                        <?php } ?>
 
-                            </div>
+                                    </div>
                         </div>
 
                     </section>

@@ -10,6 +10,7 @@ class chiefconsultant extends CI_Controller
         $this->load->model('CcModel');
         $this->load->model('HcpModel');
         $this->load->library('session');
+        $this->load->library('email');
     }
 
     public function index()
@@ -26,7 +27,73 @@ class chiefconsultant extends CI_Controller
 
     public function resetPassword()
     {
-        $this->load->view('ccForgetPassword.php');
+        $this->data['method'] = "getMailId";
+        $this->load->view('ccForgetPassword.php', $this->data);
+    }
+
+    public function send()
+    {
+        $to = $this->input->post('ccPassMail');
+        $mobile = $this->input->post('ccMobileNum');
+        $otp = rand(1000, 9999);
+        $this->session->set_userdata('generated_otp', $otp);
+
+        $message = "Your OTP is $otp to change the new password for your Chief Consultant [CC] account.";
+
+        $config = array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'mail.arramjobs.in',
+            'smtp_port' => 465,
+            'smtp_user' => 'arramjobs@arramjobs.in',
+            'smtp_pass' => 'Arramjobs@6',
+            'mailtype' => 'text',
+            'charset' => 'utf-8',
+            'wordwrap' => TRUE
+        );
+
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
+        $this->email->to($to);
+        $this->email->subject('Consultation at Erode Diabetes Foundation');
+        $this->email->message($message);
+
+        if ($this->email->send()) {
+            $this->data['method'] = "verifyOtp";
+            $this->data['message'] = "Enter the OTP that has been sent to this mail address: ";
+            $this->data['toMail'] = $to;
+            $this->data['ccMobileNumber'] = $mobile;
+        } else {
+            $this->data['method'] = "getMailId";
+        }
+        $this->load->view('ccForgetPassword.php', $this->data);
+    }
+
+    public function verifyOtp()
+    {
+        $enteredOtp = isset($_POST['ccPwdOtp']) ? $this->input->post('ccPwdOtp') : '0';
+        $mobile = $this->input->post('ccMobileNum');
+        $generatedOtp = $this->session->userdata('generated_otp');
+
+        if ($enteredOtp == $generatedOtp) {
+            $this->session->unset_userdata('generated_otp');
+            $this->data['method'] = "newPassword";
+            $this->data['message'] = "Your OTP has been verified successfully.";
+            $this->data['hcpMobileNumber'] = $mobile;
+        } else {
+            $this->data['method'] = "verifyOtp";
+            $this->data['message'] = "Invalid OTP. Please try again.";
+            $this->data['toMail'] = NULL;
+            $this->data['hcpMobileNumber'] = NULL;
+
+        }
+        $this->load->view('ccForgetPassword.php', $this->data);
+    }
+
+    public function updateNewPassword()
+    {
+        $profileDetails = $this->CcModel->changeNewPassword();
+        redirect('Chiefconsultant/');
     }
 
     public function ccSignup()

@@ -59,6 +59,15 @@ class CcModel extends CI_Model
         return $query->num_rows() > 0;
     }
 
+    public function changeNewPassword()
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            'doctorPassword' => $post['ccCnfmPassword']
+        );
+        $this->db->where('doctorMobile', $post['ccMobileNum']);
+        $this->db->update('cc_details', $updatedata);
+    }
 
     public function ccLoginDetails()
     {

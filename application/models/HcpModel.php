@@ -22,9 +22,16 @@ class HcpModel extends CI_Model
         $this->db->insert('hcp_details', $insert);
     }
 
-    public function checkUserExistence($hcpMobileNum)
+    public function checkMobileExistence($hcpMobileNum)
     {
         $this->db->where('hcpMobile', $hcpMobileNum);
+        $query = $this->db->get('hcp_details');
+        return $query->num_rows() > 0;
+    }
+
+    public function checkMailExistence($hcpMailId)
+    {
+        $this->db->where('hcpMail', $hcpMailId);
         $query = $this->db->get('hcp_details');
         return $query->num_rows() > 0;
     }

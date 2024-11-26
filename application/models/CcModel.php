@@ -52,9 +52,16 @@ class CcModel extends CI_Model
         }
     }
 
-    public function checkUserExistence($ccMobileNum)
+    public function checkMobileExistence($ccMobileNum)
     {
         $this->db->where('doctorMobile', $ccMobileNum);
+        $query = $this->db->get('cc_details');
+        return $query->num_rows() > 0;
+    }
+    
+    public function checkMailExistence($ccMailId)
+    {
+        $this->db->where('doctorMail', $ccMailId);
         $query = $this->db->get('cc_details');
         return $query->num_rows() > 0;
     }

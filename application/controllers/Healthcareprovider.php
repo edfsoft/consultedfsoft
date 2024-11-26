@@ -98,10 +98,17 @@ class healthcareprovider extends CI_Controller
     public function hcpSignup()
     {
         $hcpMobileNum = $this->input->post('hcpMobile');
+        $hcpMailId = $this->input->post('hcpEmail');
 
-        if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
+        if ($this->HcpModel->checkMobileExistence($hcpMobileNum)) {
             echo '<script type="text/javascript">
                     alert("Mobile number already exists. Please use a new number.");
+                    window.location.href = "' . site_url('Healthcareprovider/register') . '";
+                  </script>';
+            exit();
+        } elseif ($this->HcpModel->checkMailExistence($hcpMailId)) {
+            echo '<script type="text/javascript">
+                    alert("Mail id already exists. Please use a new mail id.");
                     window.location.href = "' . site_url('Healthcareprovider/register') . '";
                   </script>';
             exit();

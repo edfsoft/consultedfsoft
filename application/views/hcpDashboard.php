@@ -4266,7 +4266,7 @@
                                                                                                     value="<?php echo $value['hcpMail']; ?>" placeholder="E.g. example@gmail.com">
                                                                                                 <div id="drEmail_err" class="text-danger pt-1"></div>
                                                                                             </div>
-                                                                                            <div class="form-group pb-3 ">
+                                                                                            <!-- <div class="form-group pb-3 ">
                                                                                                 <label class="form-label" for="drPassword">Password <span
                                                                                                         class="text-danger">*</span></label>
                                                                                                 <div class="d-flex">
@@ -4278,7 +4278,7 @@
                                                                                                     </button>
                                                                                                 </div>
                                                                                                 <div id="drPassword_err" class="text-danger pt-1"></div>
-                                                                                            </div>
+                                                                                            </div> -->
                                                                                             <div class="form-group pb-3">
                                                                                                 <label class="form-label" for="specialization">Specialization <span
                                                                                                         class="text-danger">*</span></label>
@@ -4340,7 +4340,7 @@
                                                                             var doctorName = document.getElementById("drName").value;
                                                                             var doctorMobile = document.getElementById("drMobile").value;
                                                                             var doctorEmail = document.getElementById("drEmail").value;
-                                                                            var doctorpassword = document.getElementById("drPassword").value;
+                                                                            // var doctorpassword = document.getElementById("drPassword").value;
                                                                             // var photo = document.getElementById("profilePhoto").value;
 
                                                                             if (doctorName != "") {
@@ -4365,7 +4365,7 @@
                                                                             var doctorNmae = document.getElementById("drName").value;
                                                                             var doctorMobile = document.getElementById("drMobile").value;
                                                                             var doctorEmail = document.getElementById("drEmail").value;
-                                                                            var doctorPassword = document.getElementById("drPassword").value;
+                                                                            // var doctorPassword = document.getElementById("drPassword").value;
                                                                             // var photo = document.getElementById("profilePhoto").value;
 
                                                                             if (doctorNmae == "") {
@@ -4389,17 +4389,17 @@
                                                                             } else {
                                                                                 document.getElementById("drEmail_err").innerHTML = "";
                                                                             }
-                                                                            if (doctorPassword == "") {
-                                                                                document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
-                                                                                document.getElementById("drPassword").focus();
-                                                                                return false;
-                                                                            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
-                                                                                document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
-                                                                                document.getElementById("drPassword").focus();
-                                                                                return false;
-                                                                            } else {
-                                                                                document.getElementById("drPassword_err").innerHTML = "";
-                                                                            }
+                                                                            // if (doctorPassword == "") {
+                                                                            //     document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
+                                                                            //     document.getElementById("drPassword").focus();
+                                                                            //     return false;
+                                                                            // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
+                                                                            //     document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
+                                                                            //     document.getElementById("drPassword").focus();
+                                                                            //     return false;
+                                                                            // } else {
+                                                                            //     document.getElementById("drPassword_err").innerHTML = "";
+                                                                            // }
                                                                             // // if (photo == "") {
                                                                             //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
                                                                             //     document.getElementById("profilePhoto").focus();

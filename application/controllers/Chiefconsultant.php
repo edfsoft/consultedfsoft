@@ -99,12 +99,19 @@ class chiefconsultant extends CI_Controller
     public function ccSignup()
     {
         $ccMobileNum = $this->input->post('ccMobile');
-
-        if ($this->CcModel->checkUserExistence($ccMobileNum)) {
+        $ccMailId = $this->input->post('ccEmail');
+        
+        if ($this->CcModel->checkMobileExistence($ccMobileNum)) {
             echo '<script type="text/javascript">
-            alert("Mobile number already exists. Please use a new number.");
-            window.location.href = "' . site_url('Chiefconsultant/register') . '";
-          </script>';
+                    alert("Mobile number already exists. Please use a new number.");
+                    window.location.href = "' . site_url('Chiefconsultant/register') . '";
+                  </script>';
+            exit();
+        } elseif ($this->CcModel->checkMailExistence($ccMailId)) {
+            echo '<script type="text/javascript">
+                    alert("Mail id already exists. Please use a new mail id.");
+                    window.location.href = "' . site_url('Chiefconsultant/register') . '";
+                  </script>';
             exit();
         } else {
             $postData = $this->input->post(null, true);

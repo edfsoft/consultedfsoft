@@ -15,7 +15,8 @@ class CcModel extends CI_Model
             'doctorMobile' => $post['ccMobile'],
             'doctorMail' => $post['ccEmail'],
             'specialization' => $post['ccSpec'],
-            'doctorPassword' => $post['ccCnfmPassword'],
+            // 'doctorPassword' => $post['ccCnfmPassword'],
+            'doctorPassword' => password_hash($post['ccCnfmPassword'], PASSWORD_BCRYPT),
             'approvalStatus' => $approval
         );
         $this->db->insert('cc_details', $insert);
@@ -58,7 +59,7 @@ class CcModel extends CI_Model
         $query = $this->db->get('cc_details');
         return $query->num_rows() > 0;
     }
-    
+
     public function checkMailExistence($ccMailId)
     {
         $this->db->where('doctorMail', $ccMailId);
@@ -70,7 +71,8 @@ class CcModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         $updatedata = array(
-            'doctorPassword' => $post['ccCnfmPassword']
+            // 'doctorPassword' => $post['ccCnfmPassword']
+            'doctorPassword' => password_hash($post['ccCnfmPassword'], PASSWORD_BCRYPT),
         );
         $this->db->where('doctorMobile', $post['ccMobileNum']);
         $this->db->update('cc_details', $updatedata);
@@ -81,9 +83,17 @@ class CcModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['ccEmail'];
         $password = $postData['ccPassword'];
-        $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'  AND deleteStatus = '0'";
-        $count = $this->db->query($query);
-        return $count->result_array();
+        // $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'  AND deleteStatus = '0'";
+        // $count = $this->db->query($query);
+        // return $count->result_array();
+        $query = "SELECT * FROM cc_details WHERE doctorMail = ? AND deleteStatus = '0'";
+        $result = $this->db->query($query, array($emailid));
+        $user = $result->row_array();
+
+        $hashedPassword = $user['doctorPassword'];
+        if (password_verify($password, $hashedPassword)) {
+            return $user;
+        }
     }
 
     public function addAppLinkCc($ccIdDb)

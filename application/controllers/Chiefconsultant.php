@@ -123,19 +123,18 @@ class chiefconsultant extends CI_Controller
 
     public function ccLogin()
     {
-        $postData = $this->input->post(null, true);
         $login = $this->CcModel->ccLoginDetails();
-        if (isset($login[0]['id']) && ($login[0]['approvalStatus'] == "1")) {
+        if (isset($login['id']) && ($login['approvalStatus'] == "1")) {
             $LoggedInDetails = array(
-                'ccIdDb' => $login[0]['id'],
-                'ccId' => $login[0]['ccId'],
-                'ccName' => $login[0]['doctorName'],
-                'ccMailId' => $login[0]['doctorMail'],
-                'ccMobileNum' => $login[0]['doctorMobile'],
+                'ccIdDb' => $login['id'],
+                'ccId' => $login['ccId'],
+                'ccName' => $login['doctorName'],
+                'ccMailId' => $login['doctorMail'],
+                'ccMobileNum' => $login['doctorMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
             redirect('Chiefconsultant/dashboard');
-        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus'] == 0) {
+        } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
              echo '<script type="text/javascript">
             alert("You can log in once the verification process is done.");
             window.location.href = "' . site_url('Chiefconsultant/') . '";

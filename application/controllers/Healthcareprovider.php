@@ -123,17 +123,17 @@ class healthcareprovider extends CI_Controller
     public function hcpLogin()
     {
         $login = $this->HcpModel->hcpLoginDetails();
-        if (isset($login[0]['id']) && ($login[0]['approvalStatus'] == "1")) {
+        if (isset($login['id']) && ($login['approvalStatus'] == "1")) {
             $LoggedInDetails = array(
-                'hcpIdDb' => $login[0]['id'],
-                'hcpId' => $login[0]['hcpId'],
-                'hcpsName' => $login[0]['hcpName'],
-                'hcpsMailId' => $login[0]['hcpMail'],
-                'hcpsMobileNum' => $login[0]['hcpMobile'],
+                'hcpIdDb' => $login['id'],
+                'hcpId' => $login['hcpId'],
+                'hcpsName' => $login['hcpName'],
+                'hcpsMailId' => $login['hcpMail'],
+                'hcpsMobileNum' => $login['hcpMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
             redirect('Healthcareprovider/dashboard');
-        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus'] == 0) {
+        } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
             echo '<script type="text/javascript">
             alert("You can log in once the verification process is done.");
             window.location.href = "' . site_url('Healthcareprovider/') . '";

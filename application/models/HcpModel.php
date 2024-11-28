@@ -16,7 +16,8 @@ class HcpModel extends CI_Model
             'hcpMobile' => $post['hcpMobile'],
             'hcpMail' => $post['hcpEmail'],
             'hcpSpecialization' => $post['hcpSpec'],
-            'hcpPassword' => $post['hcpCnfmPassword'],
+            // 'hcpPassword' => $post['hcpCnfmPassword'],
+            'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
             'approvalStatus' => $approval
         );
         $this->db->insert('hcp_details', $insert);
@@ -71,7 +72,8 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         $updatedata = array(
-            'hcpPassword' => $post['hcpCnfmPassword']
+            // 'hcpPassword' => $post['hcpCnfmPassword']
+            'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
         );
         $this->db->where('hcpMobile', $post['hcpMobileNum']);
         $this->db->update('hcp_details', $updatedata);
@@ -82,9 +84,17 @@ class HcpModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['hcpEmail'];
         $password = $postData['hcpPassword'];
-        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0'";
-        $count = $this->db->query($query);
-        return $count->result_array();
+        // $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0'";
+        // $count = $this->db->query($query);
+        // return $count->result_array();
+        $query = "SELECT * FROM hcp_details WHERE hcpMail = ? AND deleteStatus = '0'";
+        $result = $this->db->query($query, array($emailid));
+        $user = $result->row_array();
+
+        $hashedPassword = $user['hcpPassword'];
+        if (password_verify($password, $hashedPassword)) {
+            return $user;
+        }
     }
 
     public function getPatientList()

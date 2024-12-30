@@ -16,15 +16,23 @@ class HcpModel extends CI_Model
             'hcpMobile' => $post['hcpMobile'],
             'hcpMail' => $post['hcpEmail'],
             'hcpSpecialization' => $post['hcpSpec'],
-            'hcpPassword' => $post['hcpCnfmPassword'],
+            // 'hcpPassword' => $post['hcpCnfmPassword'],
+            'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
             'approvalStatus' => $approval
         );
         $this->db->insert('hcp_details', $insert);
     }
 
-    public function checkUserExistence($hcpMobileNum)
+    public function checkMobileExistence($hcpMobileNum)
     {
         $this->db->where('hcpMobile', $hcpMobileNum);
+        $query = $this->db->get('hcp_details');
+        return $query->num_rows() > 0;
+    }
+
+    public function checkMailExistence($hcpMailId)
+    {
+        $this->db->where('hcpMail', $hcpMailId);
         $query = $this->db->get('hcp_details');
         return $query->num_rows() > 0;
     }
@@ -64,7 +72,8 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         $updatedata = array(
-            'hcpPassword' => $post['hcpCnfmPassword']
+            // 'hcpPassword' => $post['hcpCnfmPassword']
+            'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
         );
         $this->db->where('hcpMobile', $post['hcpMobileNum']);
         $this->db->update('hcp_details', $updatedata);
@@ -75,9 +84,17 @@ class HcpModel extends CI_Model
         $postData = $this->input->post(null, true);
         $emailid = $postData['hcpEmail'];
         $password = $postData['hcpPassword'];
-        $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0'";
-        $count = $this->db->query($query);
-        return $count->result_array();
+        // $query = "SELECT * FROM hcp_details WHERE hcpMail = '$emailid' AND hcpPassword = '$password' AND deleteStatus = '0'";
+        // $count = $this->db->query($query);
+        // return $count->result_array();
+        $query = "SELECT * FROM hcp_details WHERE hcpMail = ? AND deleteStatus = '0'";
+        $result = $this->db->query($query, array($emailid));
+        $user = $result->row_array();
+
+        $hashedPassword = $user['hcpPassword'];
+        if (password_verify($password, $hashedPassword)) {
+            return $user;
+        }
     }
 
     public function getPatientList()
@@ -294,9 +311,16 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getAppointmentHistory($id)
+    {
+        $details = "SELECT * FROM `appointment_details` WHERE `patientDbId` = $id AND `appStatus` = '1' ORDER BY `dateOfAppoint` DESC ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
     public function getAppMedicinesDetails($id)
     {
-        $details = "SELECT * FROM `appointment_summary` WHERE `patientDbId`= $id ";
+        $details = "SELECT * FROM `appointment_medicines` WHERE `patientDbId`= $id ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -316,7 +340,7 @@ class HcpModel extends CI_Model
     public function getAppointmentList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND `appStatus` = '0' AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -374,7 +398,7 @@ class HcpModel extends CI_Model
             'dateOfAppoint' => $post['appDate'],
             'partOfDay' => $post['dayTime'],
             'timeOfAppoint' => $post['appTime'],
-             'appStatus' => "0"
+            'appStatus' => "0"
         );
         $this->db->where('id', $post['appTableId']);
         $this->db->update('appointment_details', $updatedata);
@@ -383,24 +407,28 @@ class HcpModel extends CI_Model
     public function addPrescription()
     {
         $post = $this->input->post(null, true);
-        $updatedata = array(   
+        $updatedata = array(
             'lastAppDate' => date('Y-m-d'),
+            'nextAppDate' => $post['nextFollowUp'],
             'consultedOnce' => "1"
         );
         $this->db->where('id', $post['patientDbId']);
         $this->db->update('patient_details', $updatedata);
 
         $updateStatus = array(
-            'appStatus' => "1"
+            'appStatus' => "1",
+            'appointmentAdvice' => $post['adviceGiven']
+
         );
         $this->db->where('patientDbId', $post['patientDbId']);
+        $this->db->where('dateOfAppoint', date('Y-m-d'));
         $this->db->update('appointment_details', $updateStatus);
     }
 
     public function prescriptionMedicines($medicinesData)
     {
         foreach ($medicinesData as $medicine) {
-            $this->db->insert('appointment_summary', $medicine);
+            $this->db->insert('appointment_medicines', $medicine);
         }
     }
 

@@ -15,7 +15,8 @@ class CcModel extends CI_Model
             'doctorMobile' => $post['ccMobile'],
             'doctorMail' => $post['ccEmail'],
             'specialization' => $post['ccSpec'],
-            'doctorPassword' => $post['ccCnfmPassword'],
+            // 'doctorPassword' => $post['ccCnfmPassword'],
+            'doctorPassword' => password_hash($post['ccCnfmPassword'], PASSWORD_BCRYPT),
             'approvalStatus' => $approval
         );
         $this->db->insert('cc_details', $insert);
@@ -52,22 +53,47 @@ class CcModel extends CI_Model
         }
     }
 
-    public function checkUserExistence($ccMobileNum)
+    public function checkMobileExistence($ccMobileNum)
     {
         $this->db->where('doctorMobile', $ccMobileNum);
         $query = $this->db->get('cc_details');
         return $query->num_rows() > 0;
     }
 
+    public function checkMailExistence($ccMailId)
+    {
+        $this->db->where('doctorMail', $ccMailId);
+        $query = $this->db->get('cc_details');
+        return $query->num_rows() > 0;
+    }
+
+    public function changeNewPassword()
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            // 'doctorPassword' => $post['ccCnfmPassword']
+            'doctorPassword' => password_hash($post['ccCnfmPassword'], PASSWORD_BCRYPT),
+        );
+        $this->db->where('doctorMobile', $post['ccMobileNum']);
+        $this->db->update('cc_details', $updatedata);
+    }
 
     public function ccLoginDetails()
     {
         $postData = $this->input->post(null, true);
         $emailid = $postData['ccEmail'];
         $password = $postData['ccPassword'];
-        $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'  AND deleteStatus = '0'";
-        $count = $this->db->query($query);
-        return $count->result_array();
+        // $query = "SELECT * FROM cc_details WHERE doctorMail = '$emailid' AND doctorPassword = '$password'  AND deleteStatus = '0'";
+        // $count = $this->db->query($query);
+        // return $count->result_array();
+        $query = "SELECT * FROM cc_details WHERE doctorMail = ? AND deleteStatus = '0'";
+        $result = $this->db->query($query, array($emailid));
+        $user = $result->row_array();
+
+        $hashedPassword = $user['doctorPassword'];
+        if (password_verify($password, $hashedPassword)) {
+            return $user;
+        }
     }
 
     public function addAppLinkCc($ccIdDb)
@@ -90,7 +116,7 @@ class CcModel extends CI_Model
     public function getAppointmentList()
     {
         $ccId = $_SESSION['ccId'];
-        $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor` = '$ccId' AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $details = "SELECT * FROM `appointment_details` WHERE `referalDoctor` = '$ccId' AND `appStatus` = '0' AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

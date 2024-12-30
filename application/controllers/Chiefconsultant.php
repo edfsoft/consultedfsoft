@@ -10,6 +10,7 @@ class chiefconsultant extends CI_Controller
         $this->load->model('CcModel');
         $this->load->model('HcpModel');
         $this->load->library('session');
+        $this->load->library('email');
     }
 
     public function index()
@@ -26,18 +27,91 @@ class chiefconsultant extends CI_Controller
 
     public function resetPassword()
     {
-        $this->load->view('ccForgetPassword.php');
+        $this->data['method'] = "getMailId";
+        $this->load->view('ccForgetPassword.php', $this->data);
+    }
+
+    public function send()
+    {
+        $to = $this->input->post('ccPassMail');
+        $mobile = $this->input->post('ccMobileNum');
+        $otp = rand(1000, 9999);
+        $this->session->set_userdata('generated_otp', $otp);
+
+        $message = "Your OTP is $otp to change the new password for your Chief Consultant [CC] account.";
+
+        $config = array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'mail.arramjobs.in',
+            'smtp_port' => 465,
+            'smtp_user' => 'arramjobs@arramjobs.in',
+            'smtp_pass' => 'Arramjobs@6',
+            'mailtype' => 'text',
+            'charset' => 'utf-8',
+            'wordwrap' => TRUE
+        );
+
+        $this->email->initialize($config);
+        $this->email->set_newline("\r\n");
+        $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
+        $this->email->to($to);
+        $this->email->subject('Consultation at Erode Diabetes Foundation');
+        $this->email->message($message);
+
+        if ($this->email->send()) {
+            $this->data['method'] = "verifyOtp";
+            $this->data['message'] = "Enter the OTP that has been sent to this mail address: ";
+            $this->data['toMail'] = $to;
+            $this->data['ccMobileNumber'] = $mobile;
+        } else {
+            $this->data['method'] = "getMailId";
+        }
+        $this->load->view('ccForgetPassword.php', $this->data);
+    }
+
+    public function verifyOtp()
+    {
+        $enteredOtp = isset($_POST['ccPwdOtp']) ? $this->input->post('ccPwdOtp') : '0';
+        $mobile = $this->input->post('ccMobileNum');
+        $generatedOtp = $this->session->userdata('generated_otp');
+
+        if ($enteredOtp == $generatedOtp) {
+            $this->session->unset_userdata('generated_otp');
+            $this->data['method'] = "newPassword";
+            $this->data['message'] = "Your OTP has been verified successfully.";
+            $this->data['hcpMobileNumber'] = $mobile;
+        } else {
+            $this->data['method'] = "verifyOtp";
+            $this->data['message'] = "Invalid OTP. Please try again.";
+            $this->data['toMail'] = NULL;
+            $this->data['hcpMobileNumber'] = NULL;
+
+        }
+        $this->load->view('ccForgetPassword.php', $this->data);
+    }
+
+    public function updateNewPassword()
+    {
+        $profileDetails = $this->CcModel->changeNewPassword();
+        redirect('Chiefconsultant/');
     }
 
     public function ccSignup()
     {
         $ccMobileNum = $this->input->post('ccMobile');
-
-        if ($this->CcModel->checkUserExistence($ccMobileNum)) {
+        $ccMailId = $this->input->post('ccEmail');
+        
+        if ($this->CcModel->checkMobileExistence($ccMobileNum)) {
             echo '<script type="text/javascript">
-            alert("Mobile number already exists. Please use a new number.");
-            window.location.href = "' . site_url('Chiefconsultant/register') . '";
-          </script>';
+                    alert("Mobile number already exists. Please use a new number.");
+                    window.location.href = "' . site_url('Chiefconsultant/register') . '";
+                  </script>';
+            exit();
+        } elseif ($this->CcModel->checkMailExistence($ccMailId)) {
+            echo '<script type="text/javascript">
+                    alert("Mail id already exists. Please use a new mail id.");
+                    window.location.href = "' . site_url('Chiefconsultant/register') . '";
+                  </script>';
             exit();
         } else {
             $postData = $this->input->post(null, true);
@@ -49,19 +123,18 @@ class chiefconsultant extends CI_Controller
 
     public function ccLogin()
     {
-        $postData = $this->input->post(null, true);
         $login = $this->CcModel->ccLoginDetails();
-        if (isset($login[0]['id']) && ($login[0]['approvalStatus'] == "1")) {
+        if (isset($login['id']) && ($login['approvalStatus'] == "1")) {
             $LoggedInDetails = array(
-                'ccIdDb' => $login[0]['id'],
-                'ccId' => $login[0]['ccId'],
-                'ccName' => $login[0]['doctorName'],
-                'ccMailId' => $login[0]['doctorMail'],
-                'ccMobileNum' => $login[0]['doctorMobile'],
+                'ccIdDb' => $login['id'],
+                'ccId' => $login['ccId'],
+                'ccName' => $login['doctorName'],
+                'ccMailId' => $login['doctorMail'],
+                'ccMobileNum' => $login['doctorMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
             redirect('Chiefconsultant/dashboard');
-        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus'] == 0) {
+        } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
              echo '<script type="text/javascript">
             alert("You can log in once the verification process is done.");
             window.location.href = "' . site_url('Chiefconsultant/') . '";
@@ -120,6 +193,10 @@ class chiefconsultant extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $appHistory = $this->HcpModel->getAppointmentHistory($patientIdDb);
+            $this->data['patientAppHistory'] = $appHistory;
+            $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
+            $this->data['appMedicines'] = $appMedicines;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {

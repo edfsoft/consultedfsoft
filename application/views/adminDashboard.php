@@ -207,7 +207,8 @@
                 <div class="d-lg-flex justify-content-evenly">
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex px-3 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto" style="width:80px;height:80px" alt="icon1" />
+                            <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto"
+                                style="width:80px;height:80px" alt="icon1" />
                             <div class="text-center px-3">
                                 <p style="font-size: 20px; font-weight: 500;">
                                     Total Chief Consultants
@@ -221,7 +222,8 @@
                     </div>
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex px-3 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto" style="width:80px;height:80px" alt="icon2" />
+                            <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto"
+                                style="width:80px;height:80px" alt="icon2" />
                             <div class="text-center px-3">
                                 <p style="font-size: 20px; font-weight: 500;">
                                     Total Health Care Providers
@@ -237,7 +239,8 @@
                     </div>
                     <div class="card rounded-5 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
-                            <img src="<?php echo base_url(); ?>assets/dash_iconadmin1.svg" class="my-auto" style="width:80px;height:80px" alt="icon3" />
+                            <img src="<?php echo base_url(); ?>assets/dash_iconadmin1.svg" class="my-auto"
+                                style="width:80px;height:80px" alt="icon3" />
                             <div class="text-center px-3">
                                 <p style="font-size: 20px; font-weight: 500;">
                                     Total Patients
@@ -286,7 +289,7 @@
                         <div class="card-body p-2 p-sm-4">
 
                             <div class="table-responsive">
-                                <table class="table text-center" id="ccTable">
+                                <table class="table table-hover text-center" id="ccTable">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
@@ -324,30 +327,28 @@
 
                         if (itemsToShow.length === 0) {
                             const noMatchesRow = document.createElement('tr');
-                            noMatchesRow.innerHTML = `
-                                                                                                    <td colspan="7" class="text-center">No matches found.</td>
-                                                                                                `;
+                            noMatchesRow.innerHTML = '<td colspan="7" class="text-center">No matches found.</td>';
                             ccTableBody.appendChild(noMatchesRow);
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const ccRow = document.createElement('tr');
-                                ccRow.innerHTML = `
-                                                                                                        <td>${start + index + 1}.</td>
-                                                                                                        <td style="font-size: 16px">${value.ccId}</td>
-                                                                                                        <td style="font-size: 16px">${value.doctorName}</td>
-                                                                                                        <td style="font-size: 16px">${value.doctorMobile}</td>
-                                                                                                        <td style="font-size: 16px">${value.specialization}</td>
-                                                                                                        <td style="font-size: 16px">${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
-                                                                                                        <td class="d-flex d-md-block" style="font-size: 16px">
-                                                                                                            <a href="${baseUrl}Edfadmin/ccDetails/${value.id}">
-                                                                                                                <button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>
-                                                                                                            </a>
-                                                                                                            <a href="${baseUrl}Edfadmin/deleteCc/${value.id}" onclick="return confirm('Are you sure you want to delete?')">
-                                                                                                                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                                                                                                            </a>
-                                    
-                                                                                                        </td>
-                                                                                                    `;
+                                ccRow.innerHTML =
+                                    '<td class="pt-3">' + (start + index + 1) + '.</td>' +
+                                    '<td style="font-size: 16px" class="pt-3">' + value.ccId + '</td>' +
+                                    '<td style="font-size: 16px" class="pt-3">' + value.doctorName + '</td>' +
+                                    '<td style="font-size: 16px" class="pt-3">' + value.doctorMobile + '</td>' +
+                                    '<td style="font-size: 16px" class="pt-3">' + value.specialization + '</td>' +
+                                    '<td style="font-size: 16px" class="pt-3">' +
+                                    (value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>') +
+                                    '</td>' +
+                                    '<td class="d-flex d-md-block" style="font-size: 16px">' +
+                                    '<a href="' + baseUrl + 'Edfadmin/ccDetails/' + value.id + '">' +
+                                    '<button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>' +
+                                    '</a>' +
+                                    '<a href="' + baseUrl + 'Edfadmin/deleteCc/' + value.id + '" onclick="return confirm(\'Are you sure you want to delete?\')">' +
+                                    '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
+                                    '</a>' +
+                                    '</td>';
                                 ccTableBody.appendChild(ccRow);
                             });
                         }
@@ -364,11 +365,10 @@
                         ul.className = 'pagination';
 
                         const prevLi = document.createElement('li');
-                        prevLi.innerHTML = `
-                                                                                                <a href="#">
-                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                </a>
-                                                                                            `;
+                        prevLi.innerHTML =
+                            '<a href="#">' +
+                            '<button type="button" class="bg-light border px-3 py-2"' + (currentPage === 1 ? ' disabled' : '') + '>&lt;</button>' +
+                            '</a>';
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayCcPage(currentPage - 1);
                         };
@@ -379,21 +379,19 @@
 
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
-                            li.innerHTML = `
-                                                                                                    <a href="#">
-                                                                                                        <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                    </a>
-                                                                                                `;
+                            li.innerHTML =
+                                '<a href="#">' +
+                                '<button type="button" class="btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '">' + i + '</button>' +
+                                '</a>';
                             li.onclick = () => displayCcPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
-                        nextLi.innerHTML = `
-                                                                                                <a href="#">
-                                                                                                    <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                </a>
-                                                                                            `;
+                        nextLi.innerHTML =
+                            '<a href="#">' +
+                            '<button type="button" class="bg-light border px-3 py-2"' + (currentPage === totalPages ? ' disabled' : '') + '>&gt;</button>' +
+                            '</a>';
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayCcPage(currentPage + 1);
                         };
@@ -644,14 +642,14 @@
                                                         style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['doctorMail']; ?>
                                                     </a></p>
-                                                <div class="input-group">
+                                                <!-- <div class="input-group">
                                                     <input type="password" class="form-control" id="password" name="password"
                                                         value='<?php echo $value['doctorPassword']; ?>' readonly>
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         onclick="togglePasswordVisibility('password', 'visibilityIcon')">
                                                         <i id="visibilityIcon" class="bi bi-eye-slash"></i>
                                                     </button>
-                                                </div>
+                                                </div> -->
                                                 <p class="pt-3"><?php echo $value['gMeetLink']; ?></p>
                                             </div>
                                         </div>
@@ -659,60 +657,60 @@
                                         <h5 class="fw-bolder pb-3">Profile Details:</h5>
 
                                         <div class="d-md-flex pb-1">
-                                                                            <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
-                                                                            <p class="col-md-9 ps-2">
+                                            <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                            <p class="col-md-9 ps-2">
                                     <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "-"; ?>
-                                                                            </p>
-                                                                        </div>
+                                            </p>
+                                        </div>
 
-                                                                        <div class="d-md-flex pb-1">
-                                                                            <p class="text-secondary col-md-3 mb-1">Qualification : </p>
-                                                                            <p class="col-md-9 ps-2">
+                                        <div class="d-md-flex pb-1">
+                                            <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                            <p class="col-md-9 ps-2">
                                     <?php echo $value['qualification'] ? $value['qualification'] : "Not provided"; ?>
-                                                                            </p>
-                                                                        </div>
+                                            </p>
+                                        </div>
 
-                                                                        <div class="d-md-flex pb-1">
-                                                                            <p class="text-secondary col-md-3 mb-1">Registration detail : </p>
-                                                                            <p class="col-md-9 ps-2">
+                                        <div class="d-md-flex pb-1">
+                                            <p class="text-secondary col-md-3 mb-1">Registration detail : </p>
+                                            <p class="col-md-9 ps-2">
                                     <?php echo $value['regDetails'] ? $value['regDetails'] : "Not provided"; ?>
-                                                                            </p>
-                                                                        </div>
+                                            </p>
+                                        </div>
 
-                                                                        <div class="d-md-flex pb-1">
-                                                                            <p class="text-secondary col-md-3 mb-1">Membership : </p>
-                                                                            <p class="col-md-9 ps-2">
+                                        <div class="d-md-flex pb-1">
+                                            <p class="text-secondary col-md-3 mb-1">Membership : </p>
+                                            <p class="col-md-9 ps-2">
                                     <?php echo $value['membership'] ? $value['membership'] : "Not provided"; ?>
-                                                                            </p>
-                                                                        </div>
+                                            </p>
+                                        </div>
 
-                                                                        <div class="d-md-flex pb-1">
-                                                                            <p class="text-secondary col-md-3 mb-1">Services : </p>
-                                                                            <p class="col-md-9 ps-2">
+                                        <div class="d-md-flex pb-1">
+                                            <p class="text-secondary col-md-3 mb-1">Services : </p>
+                                            <p class="col-md-9 ps-2">
                                     <?php echo $value['services'] ? $value['services'] : "Not provided"; ?>
-                                                                            </p>
-                                                                        </div>
+                                            </p>
+                                        </div>
 
-                                                                        <div class="d-md-flex pb-1">
-                                                                            <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
-                                                                            <p class="col-md-9 ps-2">
+                                        <div class="d-md-flex pb-1">
+                                            <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                            <p class="col-md-9 ps-2">
                                     <?php echo $value['dateOfBirth'] ? $value['dateOfBirth'] : "Not provided"; ?>
-                                                                            </p>
-                                                                        </div>
+                                            </p>
+                                        </div>
 
-                                                                        <div class="d-md-flex pb-1">
-                                                                            <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
-                                                                            <p class="col-md-9 ps-2">
+                                        <div class="d-md-flex pb-1">
+                                            <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                            <p class="col-md-9 ps-2">
                                     <?php echo $value['hospitalName'] ? $value['hospitalName'] : "Not provided"; ?>
-                                                                            </p>
-                                                                        </div>
+                                            </p>
+                                        </div>
 
-                                                                        <div class="d-md-flex pb-1">
-                                                                            <p class="text-secondary col-md-3 mb-1">Location : </p>
-                                                                            <p class="col-md-9 ps-2">
+                                        <div class="d-md-flex pb-1">
+                                            <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                            <p class="col-md-9 ps-2">
                                     <?php echo $value['location'] ? $value['location'] : "Not provided"; ?>
-                                                                            </p>
-                                                                        </div>
+                                            </p>
+                                        </div>
 
                                         <h5 class="my-3 fw-bolder">Appointment Link:</h5>
                                         <form action="<?php echo base_url() . "Edfadmin/addAppLink/" . $value['id'] ?>" method="POST"
@@ -818,7 +816,7 @@
                                     </div>
                                     <div class="card-body p-2 p-sm-4">
                                         <div class="table-responsive">
-                                            <table class="table text-center" id="hcpTable">
+                                            <table class="table table-hover text-center" id="hcpTable">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
@@ -856,30 +854,27 @@
 
                                     if (paginatedData.length === 0) {
                                         const noMatchesRow = document.createElement('tr');
-                                        noMatchesRow.innerHTML = `
-                                                                                                                                                                                                                        <td colspan="7" class="text-center">No matches found.</td>
-                                                                                                                                                                                                                    `;
+                                        noMatchesRow.innerHTML = '<td colspan="7" class="text-center">No matches found.</td>';
                                         hcpTableBody.appendChild(noMatchesRow);
                                     } else {
                                         paginatedData.forEach((hcp, index) => {
-                                            const row = `
-                                                                                                                                                                                                                            <tr>
-                                                                                                                                                                                                                                <td>${start + index + 1}.</td>
-                                                                                                                                                                                                                                <td>${hcp.hcpId}</td>
-                                                                                                                                                                                                                                <td>${hcp.hcpName}</td>
-                                                                                                                                                                                                                                <td>${hcp.hcpMobile}</td>
-                                                                                                                                                                                                                                <td>${hcp.hcpSpecialization}</td>
-                                                                                                                                                                                                                                <td>${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}</td>
-                                                                                                                                                                                                                                <td class="d-flex d-md-block">
-                                                                                                                                                                                                                                    <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}">
-                                                                                                                                                                                                                                        <button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>
-                                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                                    <a href="${baseUrl}Edfadmin/deleteHcp/${hcp.id}" onclick="return confirm('Are you sure you want to delete?')">
-                                                                                                                                                                                                                                        <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                                </td>
-                                                                                                                                                                                                                            </tr>
-                                                                                                                                                                                                                        `;
+                                            const row =
+                                                '<tr>' +
+                                                '<td class="pt-3">' + (start + index + 1) + '.</td>' +
+                                                '<td class="pt-3">' + hcp.hcpId + '</td>' +
+                                                '<td class="pt-3">' + hcp.hcpName + '</td>' +
+                                                '<td class="pt-3">' + hcp.hcpMobile + '</td>' +
+                                                '<td class="pt-3">' + hcp.hcpSpecialization + '</td>' +
+                                                '<td class="pt-3">' + (hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>') + '</td>' +
+                                                '<td class="d-flex d-md-block">' +
+                                                '<a href="' + baseUrl + 'Edfadmin/hcpDetails/' + hcp.id + '">' +
+                                                '<button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>' +
+                                                '</a>' +
+                                                '<a href="' + baseUrl + 'Edfadmin/deleteHcp/' + hcp.id + '" onclick="return confirm(\'Are you sure you want to delete?\')">' +
+                                                '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
+                                                '</a>' +
+                                                '</td>' +
+                                                '</tr>';
                                             hcpTableBody.innerHTML += row;
                                         });
                                     }
@@ -896,11 +891,10 @@
                                     ul.className = 'pagination';
 
                                     const prevLi = document.createElement('li');
-                                    prevLi.innerHTML = `
-                                                                                                                                                                                                                    <a href="#">
-                                                                                                                                                                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>
-                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                `;
+                                    prevLi.innerHTML =
+                                        '<a href="#">' +
+                                        '<button type="button" class="bg-light border px-3 py-2"' + (currentPage === 1 ? ' disabled' : '') + '>&lt;</button>' +
+                                        '</a>';
                                     prevLi.onclick = () => {
                                         if (currentPage > 1) displayHcpPage(currentPage - 1);
                                     };
@@ -911,21 +905,19 @@
 
                                     for (let i = startPage; i <= endPage; i++) {
                                         const li = document.createElement('li');
-                                        li.innerHTML = `
-                                                                                                                                                                                                                        <a href="#">
-                                                                                                                                                                                                                            <button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}">${i}</button>
-                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                    `;
+                                        li.innerHTML =
+                                            '<a href="#">' +
+                                            '<button type="button" class="btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '">' + i + '</button>' +
+                                            '</a>';
                                         li.onclick = () => displayHcpPage(i);
                                         ul.appendChild(li);
                                     }
 
                                     const nextLi = document.createElement('li');
-                                    nextLi.innerHTML = `
-                                                                                                                                                                                                                    <a href="#">
-                                                                                                                                                                                                                        <button type="button" class="bg-light border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>
-                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                `;
+                                    nextLi.innerHTML =
+                                        '<a href="#">' +
+                                        '<button type="button" class="bg-light border px-3 py-2"' + (currentPage === totalPages ? ' disabled' : '') + '>&gt;</button>' +
+                                        '</a>';
                                     nextLi.onclick = () => {
                                         if (currentPage < totalPages) displayHcpPage(currentPage + 1);
                                     };
@@ -1190,52 +1182,52 @@
                                                                     style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['hcpMail']; ?>
                                                                 </a></p>
-                                                            <div class="input-group">
+                                                            <!-- <div class="input-group">
                                                                 <input type="password" class="form-control" id="password" name="password"
                                                                     value='<?php echo $value['hcpPassword']; ?>' readonly>
                                                                 <button type="button" class="btn btn-outline-secondary"
                                                                     onclick="togglePasswordVisibility('password', 'visibilityIcon')">
                                                                     <i id="visibilityIcon" class="bi bi-eye-slash"></i>
                                                                 </button>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>
                                                     <h5 class="fw-bolder pb-3">Profile Details:</h5>
-                                                   
+
                                                     <div class="d-md-flex pb-1">
-                                                                                <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
-                                                                                <p class="col-md-9 ps-2">
+                                                        <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                                        <p class="col-md-9 ps-2">
                                     <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "-"; ?>
-                                                                                </p>
-                                                                            </div>
+                                                        </p>
+                                                    </div>
 
-                                                                            <div class="d-md-flex pb-1">
-                                                                                <p class="text-secondary col-md-3 mb-1">Qualification : </p>
-                                                                                <p class="col-md-9 ps-2">
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                                        <p class="col-md-9 ps-2">
                                     <?php echo $value['hcpQualification'] ? $value['hcpQualification'] : "Not provided"; ?>
-                                                                                </p>
-                                                                            </div>
+                                                        </p>
+                                                    </div>
 
-                                                                            <div class="d-md-flex pb-1">
-                                                                                <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
-                                                                                <p class="col-md-9 ps-2">
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                                        <p class="col-md-9 ps-2">
                                     <?php echo $value['hcpDob'] ? $value['hcpDob'] : "Not provided"; ?>
-                                                                                </p>
-                                                                            </div>
+                                                        </p>
+                                                    </div>
 
-                                                                            <div class="d-md-flex pb-1">
-                                                                                <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
-                                                                                <p class="col-md-9 ps-2">
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                                        <p class="col-md-9 ps-2">
                                     <?php echo $value['hcpHospitalName'] ? $value['hcpHospitalName'] : "Not provided"; ?>
-                                                                                </p>
-                                                                            </div>
+                                                        </p>
+                                                    </div>
 
-                                                                            <div class="d-md-flex pb-1">
-                                                                                <p class="text-secondary col-md-3 mb-1">Location : </p>
-                                                                                <p class="col-md-9 ps-2">
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                                        <p class="col-md-9 ps-2">
                                     <?php echo $value['hcpLocation'] ? $value['hcpLocation'] : "Not provided"; ?>
-                                                                                </p>
-                                                                            </div>
+                                                        </p>
+                                                    </div>
 
                             <?php if ($value['approvalStatus'] == "0") { ?>
                                                         <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
@@ -1298,7 +1290,7 @@
                                                     </div>
 
                                                     <div class="table-responsive">
-                                                        <table class="table text-center" id="patientTable">
+                                                        <table class="table table-hover text-center" id="patientTable">
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
@@ -1323,13 +1315,13 @@
                                         <script>
                                             const baseUrl = '<?php echo base_url(); ?>';
                                             const patientList = <?php echo json_encode($patientList); ?>;
-                                            console.log("Patient List:", patientList);
+                                            console.log('Patient List:', patientList);
                                             const itemsPerPagePatient = 10;
                                             let filteredPatientList = patientList;
                                             let currentPagePatient = parseInt(localStorage.getItem('currentPagePatient')) || 1;
 
                                             function displayPatientPage(page) {
-                                                console.log("Display Page:", page);
+                                                console.log('Display Page:', page);
                                                 currentPagePatient = page;
                                                 localStorage.setItem('currentPagePatient', page);
                                                 const start = (page - 1) * itemsPerPagePatient;
@@ -1340,30 +1332,29 @@
 
                                                 if (paginatedData.length === 0) {
                                                     const noMatchesRow = document.createElement('tr');
-                                                    noMatchesRow.innerHTML = ` <td colspan="8" class="text-center">No matches found.</td> `;
+                                                    noMatchesRow.innerHTML = '<td colspan="8" class="text-center">No matches found.</td>';
                                                     patientTableBody.appendChild(noMatchesRow);
                                                 } else {
                                                     paginatedData.forEach((patient, index) => {
-                                                        const row = `
-                                                                                                                                                                                                                                                                                                                                                                                                                <tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td>${start + index + 1}.</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td>${patient.patientId}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td>${patient.firstName} ${patient.lastName}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td>${patient.mobileNumber}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td>${patient.gender}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td>${patient.age}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td style="font-size: 16px">
-                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="${baseUrl}Edfadmin/hcpDetails/${patient.patientHcpDbId}" 
-                                                                                                                                                                                                                                                                                                                                                                                                                            class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">
-                                                                                                                                                                                                                                                                                                                                                                                                                            ${patient.patientHcp}
-                                                                                                                                                                                                                                                                                                                                                                                                                        </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                    <td class="d-flex d-md-block">
-                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                                                                                                                                                                                                                                                                                                                                                                                                                        <a href="${baseUrl}Edfadmin/deletePatient/${patient.id}" onclick="return confirm('Are you sure you want to delete?')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                </tr>
-                                                                                                                                                                                                                                                                                                                                                                                                            `;
+                                                        const row =
+                                                            '<tr>' +
+                                                            '<td class="pt-3">' + (start + index + 1) + '.</td>' +
+                                                            '<td class="pt-3">' + patient.patientId + '</td>' +
+                                                            '<td class="pt-3">' + patient.firstName + ' ' + patient.lastName + '</td>' +
+                                                            '<td class="pt-3">' + patient.mobileNumber + '</td>' +
+                                                            '<td class="pt-3">' + patient.gender + '</td>' +
+                                                            '<td class="pt-3">' + patient.age + '</td>' +
+                                                            '<td style="font-size: 16px" class="pt-3">' +
+                                                            '<a href="' + baseUrl + 'Edfadmin/hcpDetails/' + patient.patientHcpDbId + '" ' +
+                                                            'class="text-dark" onmouseover="style=\'text-decoration:underline\'" onmouseout="style=\'text-decoration:none\'">' +
+                                                            patient.patientHcp +
+                                                            '</a>' +
+                                                            '</td>' +
+                                                            '<td class="d-flex d-md-block">' +
+                                                            '<a href="' + baseUrl + 'Edfadmin/patientdetails/' + patient.id + '"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>' +
+                                                            '<a href="' + baseUrl + 'Edfadmin/deletePatient/' + patient.id + '" onclick="return confirm(\'Are you sure you want to delete?\')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>' +
+                                                            '</td>' +
+                                                            '</tr>';
                                                         patientTableBody.innerHTML += row;
                                                     });
                                                 }
@@ -1372,7 +1363,7 @@
                                             }
 
                                             function generatePagination(totalItems, currentPage) {
-                                                console.log("Generate Pagination:", totalItems, currentPage); // Debugging
+                                                console.log('Generate Pagination:', totalItems, currentPage); // Debugging
                                                 const totalPages = Math.ceil(totalItems / itemsPerPagePatient);
                                                 const paginationContainer = document.getElementById('paginationContainerPatient');
                                                 paginationContainer.innerHTML = '';
@@ -1408,7 +1399,7 @@
 
                                                 for (let i = startPage; i <= endPage; i++) {
                                                     const li = document.createElement('li');
-                                                    li.innerHTML = `<button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'btn-secondary text-light' : ''}" onclick="displayPatientPage(${i})">${i}</button>`;
+                                                    li.innerHTML = '<button type="button" class="btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '" onclick="displayPatientPage(' + i + ')">' + i + '</button>';
                                                     paginationContainer.appendChild(li);
                                                 }
 
@@ -1455,7 +1446,6 @@
 
                                             displayPatientPage(currentPagePatient);
                                         </script>
-
 
             <?php
         } else if ($method == "patientDetails") {
@@ -1535,7 +1525,7 @@
                                     <?php echo $value['doorNumber'] ? $value['doorNumber'] . "," . $value['address'] : "Not provided"; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">District</span> :
-                                    <?php echo $value['district'] ? $value['district'] . $value['pincode'] : "Not provided"; ?>
+                                    <?php echo $value['district'] ? $value['district'] . " - " . $value['pincode'] : "Not provided"; ?>
                                                 </p>
                                             </div>
                                             <div class="d-md-flex">
@@ -1605,31 +1595,81 @@
                                     <?php } ?>
                                                 </div>
                             <?php }
+                            if ($value['consultedOnce'] === "1") {
+                                ?>
+                                                <h5 class="my-3 mt-4 fw-bolder">Appointments History</h5>
+                                                <div class="d-md-flex">
+                                                    <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
+                                        <?php echo date('d-m-Y', strtotime($value['lastAppDate'])); ?>
+                                                    </p>
+                                                    <p><span class="text-secondary ">Next Followup </span> :
+                                        <?php echo date('d-m-Y', strtotime($value['nextAppDate'])); ?>
+                                                    </p>
+                                                </div>
+                                                <?php
+                                    $appCount = 0;
+                                    foreach ($patientAppHistory as $key => $svalue) {
+                                        $appCount++;
+                                        ?>
+                                                    <div class="card rounded shadow mt-3 p-4">
+                                                        <div class="d-sm-flex my-auto " style="font-weight:600;">
+                                                            <button style=" width:30px;height:30px;font-weight:500"
+                                                                class="text-light bg-secondary rounded-circle border-0 me-3"><?php echo $appCount; ?></button>
+                                                            <p class="pe-4 pt-1"><?php echo date('d F Y', strtotime($svalue['dateOfAppoint'])); ?> -
+                                                <?php echo date('h:i A', strtotime($svalue['timeOfAppoint'])); ?>
+                                                            </p>
+                                                            <p class="pe-4 pt-1"><?php echo $svalue['patientComplaint'] ?> </p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">CC Id : </p>
+                                                            <p class="col-md-9 ps-2"><?php echo $svalue['referalDoctor'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">HCP Id : </p>
+                                                            <p class="col-md-9 ps-2"><?php echo $svalue['patientHcp'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">Advice Given : </p>
+                                                            <p class="col-md-9 ps-2"> <?php echo $svalue['appointmentAdvice'] ?></p>
+                                                        </div>
+                                                        <p class="text-secondary">Medicines table : </p>
+
+                                                        <table class="table table-bordered table-hover border border-dark text-center">
+                                                            <thead class="table-light border border-dark">
+                                                                <tr>
+                                                                    <th scope="col">Rx</th>
+                                                                    <th scope="col">Medicine</th>
+                                                                    <th scope="col">Frequency</th>
+                                                                    <th scope="col">Duration</th>
+                                                                    <th scope="col">Notes</th>
+                                                                </tr>
+                                                            </thead>
+                                            <?php $count = 0;
+                                            foreach ($appMedicines as $key => $mvalue) {
+                                                if ($mvalue['dateOfAppoint'] == $svalue['dateOfAppoint']) {
+                                                    $count++; ?>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td><?php echo $count ?> .</td>
+                                                                            <td><?php echo $mvalue['medicineName'] ?></td>
+                                                                            <td><?php echo $mvalue['frequency'] ?></td>
+                                                                            <td><?php echo $mvalue['duration'] . ' ' . $mvalue['duration_unit']; ?></td>
+                                                                            <td><?php echo $mvalue['notes'] ?></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                <?php }
+                                            } ?>
+                                                        </table>
+                                                    </div>
+
+                                <?php } ?>
+
+                            <?php }
                             } ?>
 
-                        <?php if ($value['consultedOnce'] === "1") { ?>
-                                            <h5 class="my-3 mt-4 fw-bolder">Appointment Summary</h5>
 
-                                            <div class="d-md-flex">
-                                                <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
-                                    <?php echo date('d-m-Y', strtotime($value['lastAppDate'])); ?>
-                                                </p>
-                                                <p><span class="text-secondary ">Next Followup </span> :
-                                    <?php echo date('d-m-Y', strtotime($value['nextAppDate'])); ?>
-                                                </p>
-                                            </div>
-                                            <div class="d-md-flex">
-                                                <!-- <p class="col-sm-6"><span class="text-secondary ">Suggested Medcine</span> :
-                                    <?php echo $value['precriptionMedicine'] ?>
-                                                </p> -->
-                                                <p class="col-sm-6"><span class="text-secondary ">Advice Given</span> :
-                                    <?php echo $value['adviceGiven'] ?>
-                                                </p>
-                                            </div>
-                        <?php } ?>
 
                                     </div>
-                                                </div>
                                                 </div>
                                             </section>
 
@@ -1670,7 +1710,7 @@
 
 
                                                             <div class="table-responsive">
-                                                                <table class="table text-center" id="specializationTable">
+                                                                <table class="table table-hover text-center" id="specializationTable">
                                                                     <thead>
                                                                         <tr>
                                                                             <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
@@ -1705,21 +1745,20 @@
 
                                                             if (paginatedData.length === 0) {
                                                                 const noMatchesRow = document.createElement('tr');
-                                                                noMatchesRow.innerHTML = `<td colspan="3" class="text-center">No matches found.</td>`;
+                                                                noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
                                                                 specializationTableBody.appendChild(noMatchesRow);
                                                             } else {
-                                                                paginatedData.forEach((specialization, index) => {
-                                                                    const row = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>${start + index + 1}.</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td style="font-size: 16px">${specialization.specializationName}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <a href="${baseUrl}Edfadmin/deleteSpecilization/${specialization.id}" onclick="return confirm('Are you sure to delete ?')" class="px-1">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        `;
+                                                                paginatedData.forEach(function (specialization, index) {
+                                                                    const row =
+                                                                        '<tr>' +
+                                                                        '<td class="pt-3">' + (start + index + 1) + '.</td>' +
+                                                                        '<td class="pt-3" style="font-size: 16px">' + specialization.specializationName + '</td>' +
+                                                                        '<td>' +
+                                                                        '<a href="' + baseUrl + 'Edfadmin/deleteSpecilization/' + specialization.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
+                                                                        '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
+                                                                        '</a>' +
+                                                                        '</td>' +
+                                                                        '</tr>';
                                                                     specializationTableBody.innerHTML += row;
                                                                 });
                                                             }
@@ -1737,7 +1776,7 @@
                                                             prevButton.type = 'button';
                                                             prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
                                                             prevButton.disabled = currentPage === 1;
-                                                            prevButton.addEventListener('click', () => {
+                                                            prevButton.addEventListener('click', function () {
                                                                 if (currentPage > 1) {
                                                                     displaySpecializationPage(currentPage - 1);
                                                                 }
@@ -1752,7 +1791,7 @@
                                                                     button.classList.add('btn-secondary', 'text-light');
                                                                 }
                                                                 button.textContent = i;
-                                                                button.addEventListener('click', () => {
+                                                                button.addEventListener('click', function () {
                                                                     displaySpecializationPage(i);
                                                                 });
                                                                 paginationContainer.appendChild(button);
@@ -1763,7 +1802,7 @@
                                                             nextButton.type = 'button';
                                                             nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
                                                             nextButton.disabled = currentPage === totalPages;
-                                                            nextButton.addEventListener('click', () => {
+                                                            nextButton.addEventListener('click', function () {
                                                                 if (currentPage < totalPages) {
                                                                     displaySpecializationPage(currentPage + 1);
                                                                 }
@@ -1773,7 +1812,7 @@
 
                                                         function filterSpecializationList(searchQuery) {
                                                             const lowerCaseQuery = searchQuery.toLowerCase();
-                                                            filteredSpecializationList = specializationList.filter(specialization => {
+                                                            filteredSpecializationList = specializationList.filter(function (specialization) {
                                                                 return specialization.specializationName.toLowerCase().includes(lowerCaseQuery);
                                                             });
                                                             displaySpecializationPage(1);
@@ -1797,6 +1836,7 @@
 
                                                         displaySpecializationPage(1);
                                                     });
+
                                                 </script>
 
             <?php
@@ -1828,7 +1868,7 @@
                                                                 </div>
 
                                                                 <div class="table-responsive">
-                                                                    <table class="table text-center" id="symptomsTable">
+                                                                    <table class="table table-hover text-center" id="symptomsTable">
                                                                         <thead>
                                                                             <tr>
                                                                                 <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
@@ -1841,8 +1881,6 @@
                                                                     </table>
                                                                     <div id="paginationContainerSymptoms" class="d-flex justify-content-center"></div>
                                                                 </div>
-
-
 
                                                             </div>
                                                         </div>
@@ -1866,21 +1904,20 @@
 
                                                                 if (paginatedData.length === 0) {
                                                                     const noMatchesRow = document.createElement('tr');
-                                                                    noMatchesRow.innerHTML = `<td colspan="3" class="text-center">No matches found.</td>`;
+                                                                    noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
                                                                     symptomsTableBody.appendChild(noMatchesRow);
                                                                 } else {
-                                                                    paginatedData.forEach((symptom, index) => {
-                                                                        const row = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>${start + index + 1}.</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td style="font-size: 16px">${symptom.symptomsName}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="${baseUrl}Edfadmin/deleteSymptoms/${symptom.id}" onclick="return confirm('Are you sure to delete ?')" class="px-1">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `;
+                                                                    paginatedData.forEach(function (symptom, index) {
+                                                                        const row =
+                                                                            '<tr>' +
+                                                                            '<td class="pt-3">' + (start + index + 1) + '.</td>' +
+                                                                            '<td class="pt-3" style="font-size: 16px">' + symptom.symptomsName + '</td>' +
+                                                                            '<td>' +
+                                                                            '<a href="' + baseUrl + 'Edfadmin/deleteSymptoms/' + symptom.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
+                                                                            '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
+                                                                            '</a>' +
+                                                                            '</td>' +
+                                                                            '</tr>';
                                                                         symptomsTableBody.innerHTML += row;
                                                                     });
                                                                 }
@@ -1898,7 +1935,7 @@
                                                                 prevButton.type = 'button';
                                                                 prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
                                                                 prevButton.disabled = currentPage === 1;
-                                                                prevButton.addEventListener('click', () => {
+                                                                prevButton.addEventListener('click', function () {
                                                                     if (currentPage > 1) {
                                                                         displaySymptomsPage(currentPage - 1);
                                                                     }
@@ -1913,7 +1950,7 @@
                                                                         button.classList.add('btn-secondary', 'text-light');
                                                                     }
                                                                     button.textContent = i;
-                                                                    button.addEventListener('click', () => {
+                                                                    button.addEventListener('click', function () {
                                                                         displaySymptomsPage(i);
                                                                     });
                                                                     paginationContainer.appendChild(button);
@@ -1924,7 +1961,7 @@
                                                                 nextButton.type = 'button';
                                                                 nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
                                                                 nextButton.disabled = currentPage === totalPages;
-                                                                nextButton.addEventListener('click', () => {
+                                                                nextButton.addEventListener('click', function () {
                                                                     if (currentPage < totalPages) {
                                                                         displaySymptomsPage(currentPage + 1);
                                                                     }
@@ -1934,7 +1971,7 @@
 
                                                             function filterSymptomsList(searchQuery) {
                                                                 const lowerCaseQuery = searchQuery.toLowerCase();
-                                                                filteredSymptomsList = symptomsList.filter(symptom => {
+                                                                filteredSymptomsList = symptomsList.filter(function (symptom) {
                                                                     return symptom.symptomsName.toLowerCase().includes(lowerCaseQuery);
                                                                 });
                                                                 displaySymptomsPage(1);
@@ -1958,6 +1995,7 @@
 
                                                             displaySymptomsPage(1);
                                                         });
+
                                                     </script>
 
             <?php
@@ -1991,7 +2029,7 @@
                                                                     </div>
 
                                                                     <div class="table-responsive">
-                                                                        <table class="table text-center" id="medicinesTable">
+                                                                        <table class="table table-hover text-center" id="medicinesTable">
                                                                             <thead>
                                                                                 <tr>
                                                                                     <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
@@ -2006,8 +2044,6 @@
                                                                         </table>
                                                                         <div id="paginationContainerMedicines" class="d-flex justify-content-center"></div>
                                                                     </div>
-
-
 
                                                                 </div>
                                                         </section>
@@ -2030,23 +2066,22 @@
 
                                                                     if (paginatedData.length === 0) {
                                                                         const noMatchesRow = document.createElement('tr');
-                                                                        noMatchesRow.innerHTML = `<td colspan="3" class="text-center">No matches found.</td>`;
+                                                                        noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
                                                                         medicinesTableBody.appendChild(noMatchesRow);
                                                                     } else {
-                                                                        paginatedData.forEach((medicine, index) => {
-                                                                            const row = `
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>${start + index + 1}.</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td style="font-size: 16px">${medicine.medicineBrand}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td style="font-size: 16px">${medicine.medicineName}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td style="font-size: 16px">${medicine.strength}</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <a href="${baseUrl}Edfadmin/deleteMedicine/${medicine.id}" onclick="return confirm('Are you sure to delete ?')" class="px-1">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    `;
+                                                                        paginatedData.forEach(function (medicine, index) {
+                                                                            const row =
+                                                                                '<tr>' +
+                                                                                '<td class="pt-3">' + (start + index + 1) + '.</td>' +
+                                                                                '<td class="pt-3" style="font-size: 16px">' + medicine.medicineBrand + '</td>' +
+                                                                                '<td class="pt-3" style="font-size: 16px">' + medicine.medicineName + '</td>' +
+                                                                                '<td class="pt-3" style="font-size: 16px">' + medicine.strength + '</td>' +
+                                                                                '<td>' +
+                                                                                '<a href="' + baseUrl + 'Edfadmin/deleteMedicine/' + medicine.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
+                                                                                '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
+                                                                                '</a>' +
+                                                                                '</td>' +
+                                                                                '</tr>';
                                                                             medicinesTableBody.innerHTML += row;
                                                                         });
                                                                     }
@@ -2064,7 +2099,7 @@
                                                                     prevButton.type = 'button';
                                                                     prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
                                                                     prevButton.disabled = currentPage === 1;
-                                                                    prevButton.addEventListener('click', () => {
+                                                                    prevButton.addEventListener('click', function () {
                                                                         if (currentPage > 1) {
                                                                             displayMedicinesPage(currentPage - 1);
                                                                         }
@@ -2079,7 +2114,7 @@
                                                                             button.classList.add('btn-secondary', 'text-light');
                                                                         }
                                                                         button.textContent = i;
-                                                                        button.addEventListener('click', () => {
+                                                                        button.addEventListener('click', function () {
                                                                             displayMedicinesPage(i);
                                                                         });
                                                                         paginationContainer.appendChild(button);
@@ -2090,7 +2125,7 @@
                                                                     nextButton.type = 'button';
                                                                     nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
                                                                     nextButton.disabled = currentPage === totalPages;
-                                                                    nextButton.addEventListener('click', () => {
+                                                                    nextButton.addEventListener('click', function () {
                                                                         if (currentPage < totalPages) {
                                                                             displayMedicinesPage(currentPage + 1);
                                                                         }
@@ -2100,7 +2135,7 @@
 
                                                                 function filterMedicinesList(searchQuery) {
                                                                     const lowerCaseQuery = searchQuery.toLowerCase();
-                                                                    filteredMedicinesList = medicinesList.filter(medicine => {
+                                                                    filteredMedicinesList = medicinesList.filter(function (medicine) {
                                                                         return medicine.medicineName.toLowerCase().includes(lowerCaseQuery);
                                                                     });
                                                                     displayMedicinesPage(1);
@@ -2124,11 +2159,11 @@
 
                                                                 displayMedicinesPage(1);
                                                             });
+
                                                         </script>
 
-
         <?php } ?>
-        
+
 
         <!-- Popup Add new specilization -->
         <div class="modal fade" id="newSpecilization" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

@@ -30,45 +30,6 @@ class healthcareprovider extends CI_Controller
         $this->load->view('hcpForgetPassword.php', $this->data);
     }
 
-    // public function send() {
-    //     $to = $this->input->post('hcpPassMail');
-    //     $message = 'Your OTP 963258 to change the new password.';
-    //     $config = array(
-    //         'protocol' => 'smtp',  
-    //         'smtp_host' => 'mail.arramjobs.in',
-    //         'smtp_port' => 465,            
-    //         'smtp_user' => 'arramjobs@arramjobs.in',
-    //         'smtp_pass' => 'Arramjobs@6',
-    //         'mailtype'  => 'text',
-    //         'charset'   => 'utf-8',
-    //         'wordwrap'  => TRUE
-    //     );
-
-    //     $this->email->initialize($config);
-    //     $this->email->set_newline("\r\n");
-    //     $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
-    //     $this->email->to($to); 
-    //     $this->email->subject('Mail from Erode Diabetes Foundation');
-    //     $this->email->message($message);
-
-    //     if ($this->email->send()) {
-    //         $this->session->set_flashdata('email_sent', array(
-    //             'status'  => 'Email sent successfully.',
-    //             'from'    => 'arramjobs@arramjobs.in',
-    //             'to'      => $to,
-    //             'message' => $message
-    //         ));
-    //     } else {
-    //         $this->session->set_flashdata('email_sent', array(
-    //             'status'  => 'Failed to send email.',
-    //             'from'    => 'arramjobs@arramjobs.in',
-    //             'to'      => $to,
-    //             'message' => $message
-    //         ));
-    //     }
-    //     redirect('healthcareprovider/resetPassword');
-    // }
-
     public function send()
     {
         $to = $this->input->post('hcpPassMail');
@@ -137,10 +98,17 @@ class healthcareprovider extends CI_Controller
     public function hcpSignup()
     {
         $hcpMobileNum = $this->input->post('hcpMobile');
+        $hcpMailId = $this->input->post('hcpEmail');
 
-        if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
+        if ($this->HcpModel->checkMobileExistence($hcpMobileNum)) {
             echo '<script type="text/javascript">
                     alert("Mobile number already exists. Please use a new number.");
+                    window.location.href = "' . site_url('Healthcareprovider/register') . '";
+                  </script>';
+            exit();
+        } elseif ($this->HcpModel->checkMailExistence($hcpMailId)) {
+            echo '<script type="text/javascript">
+                    alert("Mail id already exists. Please use a new mail id.");
                     window.location.href = "' . site_url('Healthcareprovider/register') . '";
                   </script>';
             exit();
@@ -155,17 +123,17 @@ class healthcareprovider extends CI_Controller
     public function hcpLogin()
     {
         $login = $this->HcpModel->hcpLoginDetails();
-        if (isset($login[0]['id']) && ($login[0]['approvalStatus'] == "1")) {
+        if (isset($login['id']) && ($login['approvalStatus'] == "1")) {
             $LoggedInDetails = array(
-                'hcpIdDb' => $login[0]['id'],
-                'hcpId' => $login[0]['hcpId'],
-                'hcpsName' => $login[0]['hcpName'],
-                'hcpsMailId' => $login[0]['hcpMail'],
-                'hcpsMobileNum' => $login[0]['hcpMobile'],
+                'hcpIdDb' => $login['id'],
+                'hcpId' => $login['hcpId'],
+                'hcpsName' => $login['hcpName'],
+                'hcpsMailId' => $login['hcpMail'],
+                'hcpsMobileNum' => $login['hcpMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
             redirect('Healthcareprovider/dashboard');
-        } else if (isset($login[0]['approvalStatus']) && $login[0]['approvalStatus'] == 0) {
+        } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
             echo '<script type="text/javascript">
             alert("You can log in once the verification process is done.");
             window.location.href = "' . site_url('Healthcareprovider/') . '";
@@ -242,13 +210,6 @@ class healthcareprovider extends CI_Controller
         }
     }
 
-    // public function addPatientsForm()
-    // {
-    //     $profileDetails = $this->HcpModel->insertPatients();
-    //     $generateid = $this->HcpModel->generatePatientId();
-    //     redirect('Healthcareprovider/patients');
-    // }
-
     public function patientdetails()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -256,6 +217,10 @@ class healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $appHistory = $this->HcpModel->getAppointmentHistory($patientIdDb);
+            $this->data['patientAppHistory'] = $appHistory;
+            $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
+            $this->data['appMedicines'] = $appMedicines;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -392,6 +357,8 @@ class healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $medicines = $this->HcpModel->getMedicines();
+            $this->data['medicinesList'] = $medicines;
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -400,26 +367,25 @@ class healthcareprovider extends CI_Controller
 
     public function prescriptionForm()
     {
-      $this->HcpModel->addPrescription();
+        $this->HcpModel->addPrescription();
 
         $medNames = $this->input->post('preMedName');
         $frequencies = $this->input->post('preMedFrequency');
         $durations = $this->input->post('preMedDuration');
         $durationUnits = $this->input->post('preMedDurationUnit');
         $notes = $this->input->post('preMedNotes');
-        $patientDbId = $this->input->post('patientDbId'); 
-        $adviceGiven = $this->input->post('adviceGiven'); 
+        $patientDbId = $this->input->post('patientDbId');
 
         $medicinesData = [];
         for ($i = 0; $i < count($medNames); $i++) {
             $medicinesData[] = [
-                'patientDbId' => $patientDbId, 
+                'patientDbId' => $patientDbId,
                 'medicineName' => $medNames[$i],
                 'frequency' => $frequencies[$i],
                 'duration' => $durations[$i],
                 'duration_unit' => $durationUnits[$i],
                 'notes' => $notes[$i],
-                'appointmentAdvice' => $adviceGiven
+                'dateOfAppoint' => date('Y-m-d')
             ];
         }
         $this->HcpModel->prescriptionMedicines($medicinesData);

@@ -1779,7 +1779,7 @@
                                             </div>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Street address</span> :
-                                    <?php echo $value['doorNumber'] ? $value['doorNumber'] . "," . $value['address'] : "Not provided"; ?>
+                                    <?php echo $value['doorNumber'] ? $value['doorNumber'] . ", " . $value['address'] : "Not provided"; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">District</span> :
                                     <?php echo $value['district'] ? $value['district'] . " - " . $value['pincode'] : "Not provided"; ?>

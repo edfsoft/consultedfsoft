@@ -720,12 +720,12 @@
                                     <?php echo $value['age']; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">Married status</span> :
-                                    <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . $value['marriedSince'] : "Not provided"; ?>
+                                    <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . " " . $value['marriedSince'] : "Not provided"; ?>
                                                 </p>
                                             </div>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Street address</span> :
-                                    <?php echo $value['doorNumber'] ? $value['doorNumber'] . "," . $value['address'] : "Not provided"; ?>
+                                    <?php echo $value['doorNumber'] ? $value['doorNumber'] . ", " . $value['address'] : "Not provided"; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">District</span> :
                                     <?php echo $value['district'] ? $value['district'] . " - " . $value['pincode'] : "Not provided"; ?>
@@ -1578,7 +1578,7 @@
                                                         <div class="d-md-flex pb-1">
                                                             <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
                                                             <p class="col-md-9 ps-2">
-                                    <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "-"; ?>
+                                    <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "Not provided"; ?>
                                                             </p>
                                                         </div>
 

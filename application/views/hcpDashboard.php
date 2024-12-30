@@ -1774,7 +1774,7 @@
                                     <?php echo $value['age']; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">Married status</span> :
-                                    <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . $value['marriedSince'] : "Not provided"; ?>
+                                    <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . " " . $value['marriedSince'] : "Not provided"; ?>
                                                 </p>
                                             </div>
                                             <div class="d-md-flex">
@@ -4177,7 +4177,7 @@
                                                                                 <div class="d-md-flex pb-1">
                                                                                     <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
                                                                                     <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "-"; ?>
+                                    <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "Not provided"; ?>
                                                                                     </p>
                                                                                 </div>
 

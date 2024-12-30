@@ -80,10 +80,17 @@ class edfadmin extends CI_Controller
     public function ccSignup()
     {
         $ccMobileNum = $this->input->post('ccMobile');
+        $ccMailId = $this->input->post('ccEmail');
 
-        if ($this->CcModel->checkUserExistence($ccMobileNum)) {
+        if ($this->CcModel->checkMobileExistence($ccMobileNum)) {
             echo '<script type="text/javascript">
                     alert("Mobile number already exists. Please use a new number.");
+                    window.location.href = "' . site_url('Edfadmin/ccList') . '";
+                  </script>';
+            exit();
+        } elseif ($this->CcModel->checkMailExistence($ccMailId)) {
+            echo '<script type="text/javascript">
+                    alert("Mail id already exists. Please use a new mail id.");
                     window.location.href = "' . site_url('Edfadmin/ccList') . '";
                   </script>';
             exit();
@@ -169,12 +176,19 @@ class edfadmin extends CI_Controller
     public function hcpSignup()
     {
         $hcpMobileNum = $this->input->post('hcpMobile');
+        $hcpMailId = $this->input->post('hcpEmail');
 
-        if ($this->HcpModel->checkUserExistence($hcpMobileNum)) {
+        if ($this->HcpModel->checkMobileExistence($hcpMobileNum)) {
             echo '<script type="text/javascript">
-            alert("Mobile number already exists. Please use a new number.");
-            window.location.href = "' . site_url('Edfadmin/hcpList') . '";
-          </script>';
+                    alert("Mobile number already exists. Please use a new number.");
+                       window.location.href = "' . site_url('Edfadmin/hcpList') . '";
+                  </script>';
+            exit();
+        } elseif ($this->HcpModel->checkMailExistence($hcpMailId)) {
+            echo '<script type="text/javascript">
+                    alert("Mail id already exists. Please use a new mail id.");
+                    window.location.href = "' . site_url('Edfadmin/hcpList') . '";
+                  </script>';
             exit();
         } else {
             $postData = $this->input->post(null, true);

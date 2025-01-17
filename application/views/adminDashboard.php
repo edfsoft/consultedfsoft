@@ -62,14 +62,14 @@
             <input type="text" class="form-control border-0" placeholder="Search here" />
         </div> -->
 
-        <nav class="header-nav ms-auto">
+        <nav class="header-nav ms-auto me-2 me-md-4">
             <ul class="d-flex align-items-center ms-5">
                 <li class="nav-item dropdown d-flex justify-content-evenly">
                     <!-- <a href="" class="m-2 me-4">
                          <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a> -->
                     <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
                         class="rounded-circle me-1" />
-                    <p class="text-light w-50 d-none d-md-block me-2 my-auto" style="margin:15px;width:auto;">
+                    <p class="text-light w-100 d-none d-md-block me-2 my-auto ps-2">
                         <?php echo $_SESSION['adminName']; ?>
                     </p>
                     <a class="nav-link nav-profile d-flex align-items-center text-light" href="#"
@@ -86,7 +86,7 @@
                             <hr class="dropdown-divider" />
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a href="#" class="dropdown-item d-flex align-items-center" >
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -107,6 +107,7 @@
                 </li>
             </ul>
         </nav>
+        
     </header>
 
     <aside id="sidebar" class="sidebar" style="background-color: #222d32">

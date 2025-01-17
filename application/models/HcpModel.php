@@ -72,7 +72,6 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         $updatedata = array(
-            // 'hcpPassword' => $post['hcpCnfmPassword']
             'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
         );
         $this->db->where('hcpMobile', $post['hcpMobileNum']);
@@ -474,10 +473,10 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $updatedata = array(
-            'hcpName' => $post['drName'],
-            'hcpMobile' => $post['drMobile'],
-            'hcpMail' => $post['drEmail'],
-            'hcpPassword' => $post['drPassword'],
+            // 'hcpName' => $post['drName'],
+            // 'hcpMobile' => $post['drMobile'],
+            // 'hcpMail' => $post['drEmail'],
+            // 'hcpPassword' => $post['drPassword'],
             'hcpExperience' => $post['yearOfExp'],
             'hcpQualification' => $post['qualification'],
             'hcpSpecialization' => $post['specialization'],

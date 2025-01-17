@@ -45,7 +45,7 @@ class chiefconsultant extends CI_Controller
             'smtp_host' => 'mail.arramjobs.in',
             'smtp_port' => 465,
             'smtp_user' => 'arramjobs@arramjobs.in',
-            'smtp_pass' => 'Arramjobs@6',
+            'smtp_pass' => '',  // Mail Password
             'mailtype' => 'text',
             'charset' => 'utf-8',
             'wordwrap' => TRUE
@@ -100,7 +100,7 @@ class chiefconsultant extends CI_Controller
     {
         $ccMobileNum = $this->input->post('ccMobile');
         $ccMailId = $this->input->post('ccEmail');
-        
+
         if ($this->CcModel->checkMobileExistence($ccMobileNum)) {
             echo '<script type="text/javascript">
                     alert("Mobile number already exists. Please use a new number.");
@@ -135,7 +135,7 @@ class chiefconsultant extends CI_Controller
             $this->session->set_userdata($LoggedInDetails);
             redirect('Chiefconsultant/dashboard');
         } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
-             echo '<script type="text/javascript">
+            echo '<script type="text/javascript">
             alert("You can log in once the verification process is done.");
             window.location.href = "' . site_url('Chiefconsultant/') . '";
           </script>';

@@ -190,10 +190,10 @@ class CcModel extends CI_Model
         $post = $this->input->post(null, true);
         $ccIdDb = $_SESSION['ccIdDb'];
         $updatedata = array(
-            'doctorName' => $post['drName'],
-            'doctorMobile' => $post['drMobile'],
-            'doctorMail' => $post['drEmail'],
-            'doctorPassword' => $post['drPassword'],
+            // 'doctorName' => $post['drName'],
+            // 'doctorMobile' => $post['drMobile'],
+            // 'doctorMail' => $post['drEmail'],
+            // 'doctorPassword' => $post['drPassword'],
             'yearOfExperience' => $post['yearOfExp'],
             'qualification' => $post['qualification'],
             'regDetails' => $post['regDetails'],

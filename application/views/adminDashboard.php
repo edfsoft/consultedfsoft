@@ -62,14 +62,14 @@
             <input type="text" class="form-control border-0" placeholder="Search here" />
         </div> -->
 
-        <nav class="header-nav ms-auto">
+        <nav class="header-nav ms-auto me-2 me-md-4">
             <ul class="d-flex align-items-center ms-5">
                 <li class="nav-item dropdown d-flex justify-content-evenly">
                     <!-- <a href="" class="m-2 me-4">
                          <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a> -->
                     <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
                         class="rounded-circle me-1" />
-                    <p class="text-light w-50 d-none d-md-block me-2 my-auto" style="margin:15px;width:auto;">
+                    <p class="text-light w-100 d-none d-md-block me-2 my-auto ps-2">
                         <?php echo $_SESSION['adminName']; ?>
                     </p>
                     <a class="nav-link nav-profile d-flex align-items-center text-light" href="#"
@@ -86,7 +86,7 @@
                             <hr class="dropdown-divider" />
                         </li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a href="#" class="dropdown-item d-flex align-items-center" >
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -107,6 +107,7 @@
                 </li>
             </ul>
         </nav>
+        
     </header>
 
     <aside id="sidebar" class="sidebar" style="background-color: #222d32">
@@ -276,36 +277,42 @@
                                 </button>
                             </a>
                         </div>
-                        <div class="input-group mx-auto" style="width:250px;">
-                            <span class="input-group-text" id="searchIconCc">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <input type="text" id="searchInputCc" class="form-control" placeholder="Search by name"
-                                aria-describedby="searchIconCc">
-                            <button class="btn btn-outline-secondary" type="button" id="clearSearchCc">
-                                <i class="bi bi-x"></i>
-                            </button>
-                        </div>
-                        <div class="card-body p-2 p-sm-4">
-
-                            <div class="table-responsive">
-                                <table class="table table-hover text-center" id="ccTable">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="ccTableBody"></tbody>
-                                </table>
+                    <?php if (isset($ccList[0]['id'])) { ?>
+                            <div class="input-group mx-auto" style="width:250px;">
+                                <span class="input-group-text" id="searchIconCc">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" id="searchInputCc" class="form-control" placeholder="Search by name"
+                                    aria-describedby="searchIconCc">
+                                <button class="btn btn-outline-secondary" type="button" id="clearSearchCc">
+                                    <i class="bi bi-x"></i>
+                                </button>
                             </div>
-                            <div class="pagination justify-content-center mt-3" id="paginationContainerCc"></div>
-                        </div>
+
+                            <div class="card-body p-2 p-sm-4">
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center" id="ccTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ccTableBody"></tbody>
+                                    </table>
+                                </div>
+                                <div class="pagination justify-content-center mt-3" id="paginationContainerCc"></div>
+                            </div>
+                    <?php } else { ?>
+                            <h5 class="text-center py-3"><b>No Records Found.</b> </h5>
+                    <?php } ?>
+
                     </div>
                 </section>
 
@@ -804,35 +811,41 @@
                                             </button>
                                         </a>
                                     </div>
-                                    <div class="input-group mx-auto" style="width:250px;">
-                                        <span class="input-group-text" id="searchIconHcp">
-                                            <i class="bi bi-search"></i>
-                                        </span>
-                                        <input type="text" id="searchInputHcp" class="form-control" placeholder="Search by name"
-                                            aria-describedby="searchIconHcp">
-                                        <button class="btn btn-outline-secondary" type="button" id="clearSearchHcp">
-                                            <i class="bi bi-x"></i>
-                                        </button>
-                                    </div>
-                                    <div class="card-body p-2 p-sm-4">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover text-center" id="hcpTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
-                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="hcpTableBody"></tbody>
-                                            </table>
+                    <?php if (isset($hcpList[0]['id'])) { ?>
+
+                                        <div class="input-group mx-auto" style="width:250px;">
+                                            <span class="input-group-text" id="searchIconHcp">
+                                                <i class="bi bi-search"></i>
+                                            </span>
+                                            <input type="text" id="searchInputHcp" class="form-control" placeholder="Search by name"
+                                                aria-describedby="searchIconHcp">
+                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchHcp">
+                                                <i class="bi bi-x"></i>
+                                            </button>
                                         </div>
-                                        <div class="pagination justify-content-center mt-3" id="paginationContainerHcp"></div>
-                                    </div>
+
+                                        <div class="card-body p-2 p-sm-4">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover text-center" id="hcpTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="hcpTableBody"></tbody>
+                                                </table>
+                                            </div>
+                                            <div class="pagination justify-content-center mt-3" id="paginationContainerHcp"></div>
+                                        </div>
+                    <?php } else { ?>
+                                        <h5 class="text-center py-3"><b>No Records Found.</b> </h5>
+                    <?php } ?>
                                 </div>
                             </section>
 
@@ -1289,25 +1302,29 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="table-responsive">
-                                                        <table class="table table-hover text-center" id="patientTable">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT ID</th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT NAME</th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">GENDER</th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">AGE</th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT HCP</th>
-                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="patientTableBody"></tbody>
-                                                        </table>
-                                                    </div>
+                        <?php if (isset($patientList[0]['id'])) { ?>
 
-                                                    <div class="pagination justify-content-center mt-3" id="paginationContainerPatient"></div>
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover text-center" id="patientTable">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT ID</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT NAME</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">GENDER</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">AGE</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT HCP</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="patientTableBody"></tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="pagination justify-content-center mt-3" id="paginationContainerPatient"></div>
+                        <?php } else { ?>
+                                                        <h5 class="text-center py-3"><b>No Records Found.</b> </h5>
+                        <?php } ?>
                                                 </div>
                                             </div>
                                         </section>

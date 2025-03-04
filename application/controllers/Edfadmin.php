@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class edfadmin extends CI_Controller
+class Edfadmin extends CI_Controller
 {
 
     function __construct()
@@ -27,13 +27,12 @@ class edfadmin extends CI_Controller
                 'adminName' => $login[0]['adminName'],
                 'adminMailId' => $login[0]['adminMailId'],
                 'adminMobileNum' => $login[0]['adminMobile'],
-
             );
             $this->session->set_userdata($LoggedInDetails);
             $this->dashboard();
         } else {
+            $this->session->set_flashdata('errorMessage', 'Please valid details.');
             redirect('Edfadmin/');
-            echo '<script>alert("Please valid details.");</script>';
         }
     }
 

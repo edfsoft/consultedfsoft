@@ -653,7 +653,7 @@
 
                             <div class="card-body px-md-4 pb-4">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                         <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
                                             name="patientDetails" id="patientDetails" enctype="multipart/form-data" method="POST"
                                             oninput="clearErrorPatientDetails()" onsubmit="return validatePatientDetails()">
@@ -828,20 +828,38 @@
                                                     <p class="mx-2 my-2">Cm</p>
                                                 </div>
                                             </div>
-                                            <div class="form-group pb-3">
+                                            <!-- <div class="form-group pb-3">
                                                 <label class="form-label" for="patientBp">Blood Pressure</label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control" id="patientBp" name="patientBp"
                                                         placeholder="E.g. 100">
                                                     <p class="mx-2 my-2">mmHg</p>
                                                 </div>
+                                            </div> -->
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="">Blood Pressure</label>
+                                                <div class="d-flex align-items-center">
+                                                    <div>
+                                                        <input type="text" class="form-control" id="patientSystolicBp"
+                                                            name="patientSystolicBp" placeholder="E.g. 120 (Systolic)">
+                                                        <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                                    </div>
+                                                    <span class="mx-2">/</span>
+                                                    <div>
+                                                        <input type="text" class="form-control" id="patientDiastolicBp"
+                                                            name="patientDiastolicBp" placeholder="E.g. 80 (Diastolic)">
+                                                        <div id="patientBp_err" class="text-danger pt-1"></div>
+                                                    </div>
+                                                    <p class="mx-2 my-2">mmHg</p>
+                                                </div>
                                             </div>
+
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="patientsCholestrol">Cholestrol</label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control" id="patientsCholestrol"
                                                         name="patientsCholestrol" min="0" placeholder="E.g. 50">
-                                                    <p class="mx-2 my-2">mg/dl</p>
+                                                    <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
                                             <div class="form-group pb-3">
@@ -849,7 +867,7 @@
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control" id="patientBsugar"
                                                         name="patientBsugar" min="0" placeholder="E.g. 200">
-                                                    <p class="mx-2 my-2">mmol/L</p>
+                                                    <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
                                             <div class="form-group pb-3">
@@ -1143,7 +1161,7 @@
                                                         onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')"><i
                                                             class="bi bi-pencil-square"></i></button>
                                                 </div>
-                                                <div class="col-md-8">
+                                                <div class="col-md-6">
 
                                                     <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
                                                         name="patientDetails" id="multi-step-form" enctype="multipart/form-data"
@@ -1341,12 +1359,32 @@
                                                                 <p class="mx-2 my-2">Cm</p>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group pb-3">
+                                                        <!-- <div class="form-group pb-3">
                                                             <label class="form-label" for="patientBp">Blood Pressure </label>
                                                             <div class="d-flex">
                                                                 <input type="number" class="form-control" id="patientBp" name="patientBp"
                                                                     value="<?php echo $value['bloodPressure'] ?>" min="0"
                                                                     placeholder="E.g. 100">
+                                                                <p class="mx-2 my-2">mmHg</p>
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="">Blood Pressure</label>
+                                                            <div class="d-flex align-items-center">
+                                                                <div>
+                                                                    <input type="text" class="form-control" id="patientSystolicBp"
+                                                                        name="patientSystolicBp" value="<?php echo $value['systolicBp'] ?>"
+                                                                        placeholder="E.g. 120 (Systolic)">
+                                                                    <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <span class="mx-2">/</span>
+                                                                <div>
+                                                                    <input type="text" class="form-control" id="patientDiastolicBp"
+                                                                        name="patientDiastolicBp"
+                                                                        value="<?php echo $value['diastolicBp'] ?>"
+                                                                        placeholder="E.g. 80 (Diastolic)">
+                                                                    <div id="patientBp_err" class="text-danger pt-1"></div>
+                                                                </div>
                                                                 <p class="mx-2 my-2">mmHg</p>
                                                             </div>
                                                         </div>
@@ -1356,7 +1394,7 @@
                                                                 <input type="number" class="form-control" id="patientsCholestrol"
                                                                     name="patientsCholestrol" min="0"
                                                                     value="<?php echo $value['cholestrol'] ?>" placeholder="E.g. 50">
-                                                                <p class="mx-2 my-2">mg/dl</p>
+                                                                <p class="mx-2 my-2">mg/dL</p>
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
@@ -1365,7 +1403,7 @@
                                                                 <input type="number" class="form-control" id="patientBsugar"
                                                                     name="patientBsugar" min="0" value="<?php echo $value['bloodSugar'] ?>"
                                                                     placeholder="E.g. 200">
-                                                                <p class="mx-2 my-2">mmol/L</p>
+                                                                <p class="mx-2 my-2">mg/dL</p>
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
@@ -1793,15 +1831,15 @@
                                             </div>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> :
-                                    <?php echo $value['bloodPressure'] ? $value['bloodPressure'] . " mmHg" : "Not provided"; ?>
+                                    <?php echo $value['systolicBp'] ? $value['systolicBp'] . " / " . $value['diastolicBp'] . " mmHg" : "Not provided"; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">Cholestrol </span> :
-                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dl" : "Not provided"; ?>
+                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dL" : "Not provided"; ?>
                                                 </p>
                                             </div>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> :
-                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mmol/L" : "Not provided"; ?>
+                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mg/dL" : "Not provided"; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">Diagonsis / Complaints</span> :
                                     <?php echo $value['diagonsis'] ?>
@@ -3162,15 +3200,15 @@
                                                                 </div>
                                                                 <div class="d-md-flex">
                                                                     <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> -
-                                    <?php echo $value['bloodPressure'] ? $value['bloodPressure'] . " mmHg" : "Not provided"; ?>
+                                    <?php echo $value['systolicBp'] ? $value['systolicBp'] . " / " . $value['diastolicBp'] . " mmHg" : "Not provided"; ?>
                                                                     </p>
                                                                     <p><span class="text-secondary ">Cholestrol </span> -
-                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dl" : "Not provided"; ?>
+                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dL" : "Not provided"; ?>
                                                                     </p>
                                                                 </div>
                                                                 <div class="d-md-flex">
                                                                     <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> -
-                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . "mmol/L" : "Not provided"; ?>
+                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . "mg/dL" : "Not provided"; ?>
                                                                     </p>
                                                                     <p><span class="text-secondary ">Diagonsis / Complaints</span> -
                                     <?php echo $value['diagonsis'] ? $value['diagonsis'] : "Not provided"; ?>

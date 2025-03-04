@@ -86,7 +86,7 @@
                             <hr class="dropdown-divider" />
                         </li>
                         <li>
-                            <a href="#" class="dropdown-item d-flex align-items-center" >
+                            <a href="#" class="dropdown-item d-flex align-items-center">
                                 <i class="bi bi-person"></i>
                                 <span>My Profile</span>
                             </a>
@@ -107,7 +107,7 @@
                 </li>
             </ul>
         </nav>
-        
+
     </header>
 
     <aside id="sidebar" class="sidebar" style="background-color: #222d32">
@@ -1572,15 +1572,15 @@
                                                             </div>
                                                             <div class="d-md-flex">
                                                                 <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> :
-                                    <?php echo $value['bloodPressure'] ? $value['bloodPressure'] . " mmHg" : "Not provided"; ?>
+                                    <?php echo $value['systolicBp'] ? $value['systolicBp'] . " / " . $value['diastolicBp'] . " mmHg" : "Not provided"; ?>
                                                                 </p>
                                                                 <p><span class="text-secondary ">Cholestrol </span> :
-                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dl" : "Not provided"; ?>
+                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dL" : "Not provided"; ?>
                                                                 </p>
                                                             </div>
                                                             <div class="d-md-flex">
                                                                 <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> :
-                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mmol/L" : "Not provided"; ?>
+                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mg/dL" : "Not provided"; ?>
                                                                 </p>
                                                                 <p><span class="text-secondary ">Diagonsis / Complaints</span> :
                                     <?php echo $value['diagonsis'] ?>

@@ -78,25 +78,24 @@ class Edfadmin extends CI_Controller
 
     public function ccSignup()
     {
-        $ccMobileNum = $this->input->post('ccMobile');
-        $ccMailId = $this->input->post('ccEmail');
+        $mobileNumber = $this->input->post('ccMobile');
+        $mailId = $this->input->post('ccEmail');
 
-        if ($this->CcModel->checkMobileExistence($ccMobileNum)) {
-            echo '<script type="text/javascript">
-                    alert("Mobile number already exists. Please use a new number.");
-                    window.location.href = "' . site_url('Edfadmin/ccList') . '";
-                  </script>';
-            exit();
-        } elseif ($this->CcModel->checkMailExistence($ccMailId)) {
-            echo '<script type="text/javascript">
-                    alert("Mail id already exists. Please use a new mail id.");
-                    window.location.href = "' . site_url('Edfadmin/ccList') . '";
-                  </script>';
+        $existingFields = $this->CcModel->check_existing_user($mobileNumber, $mailId);
+
+        if (!empty($existingFields)) {
+            $errorMessage = implode(', ', $existingFields) . ' already exist. Please use different credential.';
+            $this->session->set_flashdata('errorMessage', $errorMessage);
+            redirect('Edfadmin/ccList');
             exit();
         } else {
-            $postData = $this->input->post(null, true);
             $register = $this->CcModel->register();
-            $generateid = $this->CcModel->generateCcId();
+            $this->CcModel->generateCcId();
+            if ($register) {
+                $this->session->set_flashdata('showSuccessMessage', 'CC added successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in adding CC');
+            }
             redirect('Edfadmin/ccList');
         }
     }
@@ -118,7 +117,11 @@ class Edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $ccIdDb = $this->uri->segment(3);
-            $this->AdminModel->approveCcDb($ccIdDb);
+            if ($this->AdminModel->approveCcDb($ccIdDb)) {
+                $this->session->set_flashdata('showSuccessMessage', 'CC approved successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in approving CC');
+            }
             redirect('Edfadmin/ccList');
         } else {
             redirect('Edfadmin/');
@@ -129,7 +132,11 @@ class Edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $ccIdDb = $this->uri->segment(3);
-            $this->CcModel->addAppLinkCc($ccIdDb);
+            if ($this->CcModel->addAppLinkCc($ccIdDb)) {
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment link added successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in adding appointment link');
+            }
             redirect('Edfadmin/ccList');
         } else {
             redirect('Edfadmin/');
@@ -141,7 +148,11 @@ class Edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $ccIdDb = $this->uri->segment(3);
-            $this->AdminModel->deleteCcDb($ccIdDb);
+            if ($this->AdminModel->deleteCcDb($ccIdDb)) {
+                $this->session->set_flashdata('showSuccessMessage', 'CC deleted successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in deleting CC');
+            }
             redirect('Edfadmin/ccList');
         } else {
             redirect('Edfadmin/');
@@ -177,22 +188,21 @@ class Edfadmin extends CI_Controller
         $hcpMobileNum = $this->input->post('hcpMobile');
         $hcpMailId = $this->input->post('hcpEmail');
 
-        if ($this->HcpModel->checkMobileExistence($hcpMobileNum)) {
-            echo '<script type="text/javascript">
-                    alert("Mobile number already exists. Please use a new number.");
-                       window.location.href = "' . site_url('Edfadmin/hcpList') . '";
-                  </script>';
-            exit();
-        } elseif ($this->HcpModel->checkMailExistence($hcpMailId)) {
-            echo '<script type="text/javascript">
-                    alert("Mail id already exists. Please use a new mail id.");
-                    window.location.href = "' . site_url('Edfadmin/hcpList') . '";
-                  </script>';
+        $existingFields = $this->HcpModel->check_existing_user($hcpMobileNum, $hcpMailId);
+
+        if (!empty($existingFields)) {
+            $errorMessage = implode(', ', $existingFields) . ' already exist. Please use different credential.';
+            $this->session->set_flashdata('errorMessage', $errorMessage);
+            redirect('Edfadmin/hcpList');
             exit();
         } else {
-            $postData = $this->input->post(null, true);
             $register = $this->HcpModel->register();
-            $generateid = $this->HcpModel->generatehcpid();
+            $this->HcpModel->generatehcpid();
+            if ($register) {
+                $this->session->set_flashdata('showSuccessMessage', 'HCP added successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in adding HCP');
+            }
             redirect('Edfadmin/hcpList');
         }
     }
@@ -214,7 +224,11 @@ class Edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $hcpIdDb = $this->uri->segment(3);
-            $this->AdminModel->approveHcpDb($hcpIdDb);
+            if ($this->AdminModel->approveHcpDb($hcpIdDb)) {
+                $this->session->set_flashdata('showSuccessMessage', 'HCP approved successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in approving HCP');
+            }
             redirect('Edfadmin/hcpList');
         } else {
             redirect('Edfadmin/');
@@ -225,7 +239,11 @@ class Edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $hcpIdDb = $this->uri->segment(3);
-            $this->AdminModel->deleteHcpDb($hcpIdDb);
+            if ($this->AdminModel->deleteHcpDb($hcpIdDb)) {
+                $this->session->set_flashdata('showSuccessMessage', 'HCP deleted successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in deleting HCP');
+            }
             redirect('Edfadmin/hcpList');
         } else {
             redirect('Edfadmin/');
@@ -265,7 +283,11 @@ class Edfadmin extends CI_Controller
     {
         if (isset($_SESSION['adminIdDb'])) {
             $patientIdDb = $this->uri->segment(3);
-            $this->AdminModel->deletePatientDb($patientIdDb);
+            if ($this->AdminModel->deletePatientDb($patientIdDb)) {
+                $this->session->set_flashdata('showSuccessMessage', 'Patient deleting successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in deleting patient');
+            }
             redirect('Edfadmin/patientList');
         } else {
             redirect('Edfadmin/');
@@ -286,15 +308,22 @@ class Edfadmin extends CI_Controller
 
     public function addNewSpecilization()
     {
-        $postData = $this->input->post(null, true);
-        $register = $this->AdminModel->newSpecilization();
+        if ($this->AdminModel->newSpecilization()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Specilization added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding specilization');
+        }
         redirect('Edfadmin/specializationList');
     }
 
     public function deleteSpecilization()
     {
         $specilizationId = $this->uri->segment(3);
-        $register = $this->AdminModel->specilizationDelete($specilizationId);
+        if ($this->AdminModel->specilizationDelete($specilizationId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Specilization deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting specilization');
+        }
         redirect('Edfadmin/specializationList');
     }
 
@@ -312,15 +341,22 @@ class Edfadmin extends CI_Controller
 
     public function addNewSymptoms()
     {
-        $postData = $this->input->post(null, true);
-        $register = $this->AdminModel->newSymptoms();
+        if ($this->AdminModel->newSymptoms()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Symptoms added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding symptoms');
+        }
         redirect('Edfadmin/symptomsList');
     }
 
     public function deleteSymptoms()
     {
         $symptomsId = $this->uri->segment(3);
-        $register = $this->AdminModel->symptomsDelete($symptomsId);
+        if ($this->AdminModel->symptomsDelete($symptomsId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Symptoms deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting symptoms');
+        }
         redirect('Edfadmin/symptomsList');
     }
 
@@ -338,15 +374,22 @@ class Edfadmin extends CI_Controller
 
     public function addNewMedicine()
     {
-        $postData = $this->input->post(null, true);
-        $register = $this->AdminModel->newMedicine();
+        if ($this->AdminModel->newMedicine()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Medicine added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding medicine');
+        }
         redirect('Edfadmin/medicinesList');
     }
 
     public function deleteMedicine()
     {
         $medicineId = $this->uri->segment(3);
-        $register = $this->AdminModel->medicineDelete($medicineId);
+        if ($this->AdminModel->medicineDelete($medicineId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Medicine deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting edicine');
+        }
         redirect('Edfadmin/medicinesList');
     }
 
@@ -358,4 +401,7 @@ class Edfadmin extends CI_Controller
         $this->session->unset_userdata('adminMobileNum');
         redirect('Edfadmin/');
     }
+
+
+
 }

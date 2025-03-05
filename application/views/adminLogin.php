@@ -89,7 +89,7 @@
     <!-- Bootstrap 5.1.3 JS Bundle (includes Popper.js) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Display success error message -->
+    <!-- Display popup success error message -->
     <script>
         <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
             var displayMessage = new bootstrap.Modal(document.getElementById('display_message'));

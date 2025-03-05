@@ -44,9 +44,21 @@
 </head>
 
 <body>
-<?php $this->load->view('adminHeader'); ?>
+    <?php $this->load->view('adminHeader'); ?>
 
     <main id="main" class="main">
+
+        <?php if ($this->session->flashdata('showSuccessMessage')) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $this->session->flashdata('showSuccessMessage'); ?>
+            </div>
+        <?php } elseif ($this->session->flashdata('showErrorMessage')) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $this->session->flashdata('showErrorMessage'); ?>
+            </div>
+        <?php } ?>
         <?php
         if ($method == "dashboard") {
             ?>
@@ -1565,11 +1577,11 @@
                                                         <div class="card-body p-3 p-sm-4">
                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                 <p class="ps-2" style="font-size: 24px; font-weight: 500">Specialization List</p>
-                                                                <button style="background-color: #0081ff;" type="button" data-toggle="modal"
-                                                                    data-target="#newSpecilization"
+                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSpecilization"
+                                                                    style="background-color: #0081ff;"
                                                                     class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                     <i class="bi bi-plus-square-fill"></i> New
-                                                                </button>
+                                                                </a>
                                                             </div>
                                                             <div class="input-group mx-auto pb-4" style="width:280px;">
                                                                 <span class="input-group-text" id="searchIcon">
@@ -1725,11 +1737,11 @@
                                                             <div class="card-body p-3 p-sm-4">
                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                     <p class="ps-2" style="font-size: 24px; font-weight: 500">Symptoms List</p>
-                                                                    <button style="background-color: #0081ff;" type="button" data-toggle="modal"
-                                                                        data-target="#newSymptoms"
+                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSymptoms"
+                                                                        style="background-color: #0081ff;"
                                                                         class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                         <i class="bi bi-plus-square-fill"></i> New
-                                                                    </button>
+                                                                    </a>
                                                                 </div>
                                                                 <div class="input-group mx-auto pb-4" style="width:260px;">
                                                                     <span class="input-group-text" id="searchIcon">
@@ -1885,11 +1897,11 @@
 
                                                                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                                                                         <p class="ps-2" style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                        <button style="background-color: #0081ff;" type="button" data-toggle="modal"
-                                                                            data-target="#newMedicine"
+                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
+                                                                            style="background-color: #0081ff;"
                                                                             class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                             <i class="bi bi-plus-square-fill"></i> New
-                                                                        </button>
+                                                                        </a>
                                                                     </div>
 
                                                                     <div class="input-group mx-auto pb-4" style="width:250px;">
@@ -2039,12 +2051,12 @@
 
         <!-- Popup Add new specilization -->
         <div class="modal fade" id="newSpecilization" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add New Specilization</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
+                        <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -2065,12 +2077,12 @@
 
         <!-- Popup Add new symptom -->
         <div class="modal fade" id="newSymptoms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add New Symptom</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
+                        <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -2092,12 +2104,12 @@
 
         <!-- Popup Add new medicine -->
         <div class="modal fade" id="newMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add New Medicine</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
+                        <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -2124,7 +2136,82 @@
             </div>
         </div>
 
+        <!-- Log out confirmation -->
+        <div class="modal fade" id="confirmLogout" tabindex="-1" aria-labelledby="confirmLogoutLabel" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="confirmLogoutLabel">Confirm Logout</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to log out?</p>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        <a href="<?php echo base_url() . "Edfadmin/logout" ?>">
+                            <button class="btn btn-danger">Logout</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Display Message Popup Screen -->
+        <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <?php if ($this->session->flashdata('successMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
+                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                        </div>
+                    <?php }
+                    if ($this->session->flashdata('errorMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                        </div>
+                    <?php } ?>
+                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                            data-bs-dismiss="modal">Close</button> </div>
+                </div>
+            </div>
+        </div>
+
     </main>
+
+    <!-- Display popup success error message -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var messagePopup = document.getElementById('display_message_popup');
+
+            if (messagePopup) {
+                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+                    var displayMessage = new bootstrap.Modal(messagePopup);
+                    displayMessage.show();
+                <?php } ?>
+            }
+        });
+    </script>
+
+    <!-- Display message for 3 seconds  -->
+    <script>
+        setTimeout(() => {
+            const displayMessage = document.getElementById('display_message');
+            if (displayMessage) {
+                displayMessage.style.display = 'none';
+            }
+        }, 3000);
+    </script>
 
     <!-- Event listener to block right-click -->
     <script>
@@ -2142,23 +2229,18 @@
             }
         };
     </script>
-    
-<!-- Vendor JS Files -->
-<script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="assets/vendor/chart.js/chart.umd.js"></script> -->
-<!-- <script src="assets/vendor/echarts/echarts.min.js"></script> -->
-<!-- <script src="assets/vendor/quill/quill.min.js"></script> -->
-<!-- <script src="assets/vendor/simple-datatables/simple-datatables.js"></script> -->
-<!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
-<!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
-<!-- Template Main JS File -->
-<script src="<?php echo base_url(); ?>assets/js/main.js"></script>
-<!-- Bootstrap popup link -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
+    <!-- Vendor JS Files -->
+    <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="assets/vendor/chart.js/chart.umd.js"></script> -->
+    <!-- <script src="assets/vendor/echarts/echarts.min.js"></script> -->
+    <!-- <script src="assets/vendor/quill/quill.min.js"></script> -->
+    <!-- <script src="assets/vendor/simple-datatables/simple-datatables.js"></script> -->
+    <!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
+    <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
+    <!-- Template Main JS File -->
+    <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
 </body>
 
 </html>

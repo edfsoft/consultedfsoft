@@ -21,20 +21,35 @@ class HcpModel extends CI_Model
             'approvalStatus' => $approval
         );
         $this->db->insert('hcp_details', $insert);
+        return true;
     }
 
-    public function checkMobileExistence($hcpMobileNum)
-    {
-        $this->db->where('hcpMobile', $hcpMobileNum);
-        $query = $this->db->get('hcp_details');
-        return $query->num_rows() > 0;
-    }
+    // public function checkMobileExistence($hcpMobileNum)
+    // {
+    //     $this->db->where('hcpMobile', $hcpMobileNum);
+    //     $query = $this->db->get('hcp_details');
+    //     return $query->num_rows() > 0;
+    // }
 
-    public function checkMailExistence($hcpMailId)
+    // public function checkMailExistence($hcpMailId)
+    // {
+    //     $this->db->where('hcpMail', $hcpMailId);
+    //     $query = $this->db->get('hcp_details');
+    //     return $query->num_rows() > 0;
+    // }
+
+    public function check_existing_user($mobileNumber, $mailId)
     {
-        $this->db->where('hcpMail', $hcpMailId);
-        $query = $this->db->get('hcp_details');
-        return $query->num_rows() > 0;
+        $existingFields = [];
+
+        if ($this->db->where('hcpMobile', $mobileNumber)->get('hcp_details')->num_rows() > 0) {
+            $existingFields[] = 'Mobile Number';
+        }
+        if ($this->db->where('hcpMail', $mailId)->get('hcp_details')->num_rows() > 0) {
+            $existingFields[] = 'Mail Id';
+        }
+
+        return $existingFields;
     }
 
     public function generatehcpid()

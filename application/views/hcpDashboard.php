@@ -883,7 +883,7 @@
                                                         class="text-danger">*</span></label>
                                                 <input type="text" id="patientSymptoms" name="patientSymptoms" readonly
                                                     class="form-control" hidden>
-                                                <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer"> </div>
+                                                <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer"></div>
                                                 <select class="form-select" id="multiSelectSymptoms">
                                                     <option value="" selected disabled>Select Symptoms</option>
                                                 <?php
@@ -896,6 +896,11 @@
                                                         </option>
                                             <?php } ?>
                                                 </select>
+                                                <div class="input-group mt-2">
+                                                    <input type="text" id="customSymptomInput" class="form-control"
+                                                        placeholder="Add custom symptom">
+                                                    <button type="button" id="addCustomSymptom" class="btn btn-secondary">Add</button>
+                                                </div>
                                                 <div id="symptoms_err" class="text-danger pt-1"></div>
                                             </div>
                                             <div class="form-group pb-3">
@@ -968,11 +973,14 @@
                         </div>
                     </section>
 
+                    <!-- Symptoms / complaints  -->
                     <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             const multiSelect = document.getElementById("multiSelectSymptoms");
                             const selectedValuesInput = document.getElementById("patientSymptoms");
                             const selectedValuesContainer = document.getElementById("selectedValuesContainer");
+                            const customSymptomInput = document.getElementById("customSymptomInput");
+                            const addCustomSymptomBtn = document.getElementById("addCustomSymptom");
 
                             let selectedValues = new Set();
 
@@ -983,7 +991,7 @@
                                     span.classList.add('badge', 'bg-secondary', 'me-2', 'd-inline-flex', 'align-items-center');
                                     span.textContent = value;
                                     const button = document.createElement('button');
-                                    button.innerHTML = '&times;';
+                                    button.innerHTML = '×';
                                     button.classList.add('btn-close', 'btn-close-white', 'ms-2');
                                     button.addEventListener('click', () => {
                                         selectedValues.delete(value);
@@ -1009,11 +1017,31 @@
                                     selectedValues.add(option.value);
                                     option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                     if (!option.innerHTML.includes('✓')) {
-                                        option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span >`;
-
+                                        option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
                                     }
                                 });
                                 updateSelectedValues();
+                            });
+
+                            addCustomSymptomBtn.addEventListener("click", () => {
+                                const customValue = customSymptomInput.value.trim();
+                                if (customValue) {
+                                    selectedValues.add(customValue);
+                                    updateSelectedValues();
+                                    customSymptomInput.value = ''; // Clear the input after adding
+                                }
+                            });
+
+                            customSymptomInput.addEventListener("keypress", (e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault(); // Prevent form submission if inside a form
+                                    const customValue = customSymptomInput.value.trim();
+                                    if (customValue) {
+                                        selectedValues.add(customValue);
+                                        updateSelectedValues();
+                                        customSymptomInput.value = ''; // Clear the input after adding
+                                    }
+                                }
                             });
                         });
                     </script>
@@ -1415,7 +1443,7 @@
                                                             <div id="diagonsis_err" class="text-danger pt-1"></div>
                                                         </div>
 
-                                                        <div class="form-group pb-3">
+                                                      <div class="form-group pb-3">
                                                             <label class="form-label" for="patientSymptoms">Symptoms / Complaints <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" id="patientSymptoms" name="patientSymptoms"
@@ -1435,8 +1463,15 @@
                                                                     </option>
                                                     <?php } ?>
                                                             </select>
+                                                            <div class="input-group mt-2">
+                                                                <input type="text" id="customSymptomInput" class="form-control"
+                                                                    placeholder="Add custom symptom">
+                                                                <button type="button" id="addCustomSymptom"
+                                                                    class="btn btn-secondary">Add</button>
+                                                            </div>
                                                             <div id="symptoms_err" class="text-danger pt-1"></div>
                                                         </div>
+
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientMedicines">Medicines</label>
                                                             <select class="form-select" id="patientMedicines" name="patientMedicines">
@@ -1518,15 +1553,17 @@
                             </div>
                         </section>
 
+                        <!-- Symptoms / Complaints -->
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
                                 const multiSelect = document.getElementById("multiSelectSymptoms");
                                 const selectedValuesInput = document.getElementById("patientSymptoms");
                                 const selectedValuesContainer = document.getElementById("selectedValuesContainer");
+                                const customSymptomInput = document.getElementById("customSymptomInput");
+                                const addCustomSymptomBtn = document.getElementById("addCustomSymptom");
 
                                 const symptomsFromDatabase = "<?php echo $value['symptoms'] ?>";
-                                const initialSelectedValues = symptomsFromDatabase.split(', ').map(item => item.trim());
-
+                                const initialSelectedValues = symptomsFromDatabase ? symptomsFromDatabase.split(', ').map(item => item.trim()) : [];
                                 let selectedValues = new Set(initialSelectedValues);
 
                                 const updateSelectedValues = () => {
@@ -1536,7 +1573,7 @@
                                         span.classList.add('badge', 'bg-secondary', 'me-2', 'd-inline-flex', 'align-items-center');
                                         span.textContent = value;
                                         const button = document.createElement('button');
-                                        button.innerHTML = '&times;';
+                                        button.innerHTML = '×';
                                         button.classList.add('btn-close', 'btn-close-white', 'ms-2');
                                         button.addEventListener('click', () => {
                                             selectedValues.delete(value);
@@ -1563,7 +1600,7 @@
                                                 option.selected = true;
                                                 option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                                 if (!option.innerHTML.includes('✓')) {
-                                                    option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span > `;
+                                                    option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
                                                 }
                                             }
                                         });
@@ -1577,10 +1614,31 @@
                                         selectedValues.add(option.value);
                                         option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                         if (!option.innerHTML.includes('✓')) {
-                                            option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span >`;
+                                            option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
                                         }
                                     });
                                     updateSelectedValues();
+                                });
+
+                                addCustomSymptomBtn.addEventListener("click", () => {
+                                    const customValue = customSymptomInput.value.trim();
+                                    if (customValue) {
+                                        selectedValues.add(customValue);
+                                        updateSelectedValues();
+                                        customSymptomInput.value = '';
+                                    }
+                                });
+
+                                customSymptomInput.addEventListener("keypress", (e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        const customValue = customSymptomInput.value.trim();
+                                        if (customValue) {
+                                            selectedValues.add(customValue);
+                                            updateSelectedValues();
+                                            customSymptomInput.value = '';
+                                        }
+                                    }
                                 });
 
                                 initializeSelection();

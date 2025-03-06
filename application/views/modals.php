@@ -1,3 +1,59 @@
+<!-- Delete confirmation -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="confirmLogoutLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete ?</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <a id="deleteConfirmButton" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("click", (event) => {
+        let deleteButton = event.target.closest(".delete-btn");
+        if (deleteButton) {
+            let id = deleteButton.getAttribute("data-id");
+            let type = deleteButton.getAttribute("data-type");
+
+            let baseUrl = "<?php echo base_url(); ?>";
+            let deleteUrl = "";
+
+            switch (type) {
+                case "cc":
+                    deleteUrl = baseUrl + "Edfadmin/deleteCc/" + id;
+                    break;
+                case "hcp":
+                    deleteUrl = baseUrl + "Edfadmin/deleteHcp/" + id;
+                    break;
+                case "patient":
+                    deleteUrl = baseUrl + "Edfadmin/deletePatient/" + id;
+                    break;
+                case "specialization":
+                    deleteUrl = baseUrl + "Edfadmin/deleteSpecilization/" + id;
+                    break;
+                case "symptom":
+                    deleteUrl = baseUrl + "Edfadmin/deleteSymptoms/" + id;
+                    break;
+                case "medicine":
+                    deleteUrl = baseUrl + "Edfadmin/deleteMedicine/" + id;
+                    break;
+            }
+
+            document.getElementById("deleteConfirmButton").setAttribute("href", deleteUrl);
+        }
+    });
+</script>
+
 <!-- Popup Add new specilization -->
 <div class="modal fade" id="newSpecilization" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -16,7 +72,7 @@
                             class="text-danger">*</span></label><br>
                     <input type="text" name="specializationName" id="specializationName" class="form-control"
                         placeholder="E.g. Diabetologist" required><br><br>
-                    <button type="submit" class="btn btn-secondary float-end"> Add </button>
+                    <button type="submit" class="btn btn-primary float-end"> Add </button>
                 </form>
             </div>
         </div>
@@ -42,7 +98,7 @@
                             class="text-danger">*</span></label><br>
                     <input type="text" name="symptomsName" id="symptomsName" class="form-control"
                         placeholder="E.g. Head ache" required><br><br>
-                    <button type="submit" class="btn btn-secondary float-end"> Add </button>
+                    <button type="submit" class="btn btn-primary float-end"> Add </button>
                 </form>
             </div>
         </div>
@@ -75,7 +131,7 @@
                             class="text-danger">*</span></label><br>
                     <input type="text" name="maedicineStrength" id="maedicineStrength" class="form-control"
                         placeholder="E.g.  100 mg" required><br><br>
-                    <button type="submit" class="btn btn-secondary float-end"> Add </button>
+                    <button type="submit" class="btn btn-primary float-end"> Add </button>
                 </form>
             </div>
         </div>

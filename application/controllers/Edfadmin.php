@@ -118,7 +118,7 @@ class Edfadmin extends CI_Controller
         if (isset($_SESSION['adminIdDb'])) {
             $ccIdDb = $this->uri->segment(3);
             if ($this->AdminModel->approveCcDb($ccIdDb)) {
-                $this->session->set_flashdata('showSuccessMessage', 'CC approved successfully');
+                $this->session->set_flashdata('showSuccessMessage', 'CC status updated successfully');
             } else {
                 $this->session->set_flashdata('showErrorMessage', 'Error in approving CC');
             }
@@ -137,7 +137,7 @@ class Edfadmin extends CI_Controller
             } else {
                 $this->session->set_flashdata('showErrorMessage', 'Error in adding appointment link');
             }
-            redirect('Edfadmin/ccList');
+            redirect('Edfadmin/ccDetails/' . $ccIdDb);
         } else {
             redirect('Edfadmin/');
         }
@@ -225,7 +225,7 @@ class Edfadmin extends CI_Controller
         if (isset($_SESSION['adminIdDb'])) {
             $hcpIdDb = $this->uri->segment(3);
             if ($this->AdminModel->approveHcpDb($hcpIdDb)) {
-                $this->session->set_flashdata('showSuccessMessage', 'HCP approved successfully');
+                $this->session->set_flashdata('showSuccessMessage', 'HCP status updated successfully');
             } else {
                 $this->session->set_flashdata('showErrorMessage', 'Error in approving HCP');
             }

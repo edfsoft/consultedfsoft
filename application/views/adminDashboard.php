@@ -74,7 +74,7 @@
 
                 <!-- Section-1 -->
                 <div class="d-lg-flex justify-content-evenly">
-                    <div class="card rounded-5 mx-2">
+                    <div class="card position-relative rounded-5 mx-2">
                         <div class="card-body d-flex px-3 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon1" />
@@ -87,9 +87,14 @@
                                 </p>
                                 <p style="font-size: 16px"> <?php echo date("d - m - Y") ?></p>
                             </div>
+                            <a href="<?php echo base_url() . "Edfadmin/ccList" ?>"
+                                class="small position-absolute bottom-0 end-0 m-2 mt-3" style="color: #1f3861;"
+                                onmouseover="this.style.textDecoration='underline'"
+                                onmouseout="this.style.textDecoration='none'">
+                                View All <i class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>
-                    <div class="card rounded-5 mx-2">
+                    <div class="card position-relative rounded-5 mx-2">
                         <div class="card-body d-flex px-3 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon2" />
@@ -104,9 +109,14 @@
                                     <?php echo date("d - m - Y") ?>
                                 </p>
                             </div>
+                            <a href="<?php echo base_url() . "Edfadmin/hcpList" ?>"
+                                class="small position-absolute bottom-0 end-0 m-2 mt-3" style="color: #1f3861;"
+                                onmouseover="this.style.textDecoration='underline'"
+                                onmouseout="this.style.textDecoration='none'">
+                                View All <i class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>
-                    <div class="card rounded-5 mx-2">
+                    <div class="card position-relative rounded-5 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin1.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon3" />
@@ -121,6 +131,11 @@
                                     Till Today
                                 </p>
                             </div>
+                            <a href="<?php echo base_url() . "Edfadmin/patientList" ?>"
+                                class="small position-absolute bottom-0 end-0 m-2 mt-3" style="color: #1f3861;"
+                                onmouseover="this.style.textDecoration='underline'"
+                                onmouseout="this.style.textDecoration='none'">
+                                View All <i class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -214,18 +229,21 @@
                                     '<td style="font-size: 16px" class="pt-3">' + value.doctorMobile + '</td>' +
                                     '<td style="font-size: 16px" class="pt-3">' + value.specialization + '</td>' +
                                     '<td style="font-size: 16px" class="pt-3">' +
-                                    (value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>') +
+                                    (value.approvalStatus == 1
+                                        ? '<i class="bi bi-patch-check-fill text-success"></i>'
+                                        : '<i class="bi bi-patch-check-fill text-danger"></i>') +
                                     '</td>' +
                                     '<td class="d-flex d-md-block" style="font-size: 16px">' +
                                     '<a href="' + baseUrl + 'Edfadmin/ccDetails/' + value.id + '">' +
                                     '<button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>' +
                                     '</a>' +
-                                    '<a href="' + baseUrl + 'Edfadmin/deleteCc/' + value.id + '" onclick="return confirm(\'Are you sure you want to delete?\')">' +
-                                    '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                    '</a>' +
+                                    '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + value.id + '" data-type="cc">' +
+                                    '<i class="bi bi-trash"></i>' +
+                                    '</button>' +
                                     '</td>';
                                 ccTableBody.appendChild(ccRow);
                             });
+
                         }
 
                         generateCcPagination(filteredCcDetails.length, page);
@@ -361,8 +379,10 @@
                                         <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                     </div>
                                     <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
-                                    <button type="submit" class="btn btn-secondary text-light float-end mt-2">Sign
-                                        Up</button>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
+                                        <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -600,22 +620,31 @@
                                 <?php } else { ?>
                                                 <button type="submit" class="btn btn-primary my-2 float-end">Update</button>
                                 <?php } ?>
-
                                         </form>
-
-                            <?php if ($value['approvalStatus'] == "0") { ?>
-                                            <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
-                                            <p>Please review the details and approve the Chief Consultant for login : <a
-                                                    href="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>"
+                                        <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
+                                        <!--<p>Please review the details and approve the Chief Consultant for login :
+                                                  <a href="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>"
                                                     onclick="return confirm('The details have been verified and approved for login.')"><button
-                                                        class="btn btn-success px-2 py-1">Approve</button></a> </p>
-                            <?php }
+                                                        class="btn btn-success px-2 py-1">Approve</button></a> </p> -->
+                                        <form action="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>" method="post"
+                                            name="ccApproveForm" class="col-6 border border-2 rounded p-3">
+                                            <p>Verify the details and approve to login: </p>
+                                            <div class="mb-2 ps-2"><input type="radio" name="approveCc" value="0" id="notApproved" <?php if ($value['approvalStatus'] == '0')
+                                                echo "checked"; ?> required>
+                                                <label class="ps-2" for="notApproved">Not Approved</label>
+                                            </div>
+                                            <div class="mb-2 ps-2"><input type="radio" name="approveCc" value="1" id="approved" <?php if ($value['approvalStatus'] == '1')
+                                                echo "checked"; ?> required>
+                                                <label class="ps-2" for="approved">Approved</label>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary px-2 py-1 mt-2">Approve</button>
+                                        </form>
+                            <?php
                                 } ?>
-
-
                                 </div>
                             </div>
                         </section>
+
 
                         <script>
                             function validateLink() {
@@ -750,10 +779,8 @@
                                                 '<td class="d-flex d-md-block">' +
                                                 '<a href="' + baseUrl + 'Edfadmin/hcpDetails/' + hcp.id + '">' +
                                                 '<button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>' +
-                                                '</a>' +
-                                                '<a href="' + baseUrl + 'Edfadmin/deleteHcp/' + hcp.id + '" onclick="return confirm(\'Are you sure you want to delete?\')">' +
-                                                '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                                '</a>' +
+                                                '</a>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + hcp.id + '" data-type="hcp">' +
+                                                '<i class="bi bi-trash"></i>' + '</button>' +
                                                 '</td>' +
                                                 '</tr>';
                                             hcpTableBody.innerHTML += row;
@@ -906,8 +933,10 @@
                                                     <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
-                                                <button type="submit" class="btn btn-secondary text-light float-end mt-2">Sign
-                                                    Up</button>
+                                                <div class="d-flex justify-content-between">
+                                                    <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
+                                                    <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -1110,14 +1139,25 @@
                                                         </p>
                                                     </div>
 
-                            <?php if ($value['approvalStatus'] == "0") { ?>
-                                                        <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
-                                                        <p>Please review the details and approve the Health Care Provider for login : <a
+                                                    <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
+                                                    <!-- <p>Please review the details and approve the Health Care Provider for login : <a
                                                                 href="<?php echo base_url() . "Edfadmin/approveHcp/" . $value['id'] ?>"
                                                                 onclick="return confirm('The details have been verified and approved for login.')"><button
-                                                                    class="btn btn-success px-2 py-1">Approve</button></a> </p>
-                            <?php }
-                                } ?>
+                                                                    class="btn btn-success px-2 py-1">Approve</button></a> </p> -->
+                                                    <form action="<?php echo base_url() . "Edfadmin/approveHcp/" . $value['id'] ?>" method="post"
+                                                        name="hcpApproveForm" class="col-6 border border-2 rounded p-3">
+                                                        <p>Verify the details and approve to login: </p>
+                                                        <div class="mb-2 ps-2"><input type="radio" name="approveHcp" value="0" id="notApproved" <?php if ($value['approvalStatus'] == '0')
+                                                            echo "checked"; ?> required>
+                                                            <label class="ps-2" for="notApproved">Not Approved</label>
+                                                        </div>
+                                                        <div class="mb-2 ps-2"><input type="radio" name="approveHcp" value="1" id="approved" <?php if ($value['approvalStatus'] == '1')
+                                                            echo "checked"; ?> required>
+                                                            <label class="ps-2" for="approved">Approved</label>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary px-2 py-1 mt-2">Approve</button>
+                                                    </form>
+                        <?php } ?>
                                             </div>
 
                                     </section>
@@ -1237,7 +1277,8 @@
                                                             '</td>' +
                                                             '<td class="d-flex d-md-block">' +
                                                             '<a href="' + baseUrl + 'Edfadmin/patientdetails/' + patient.id + '"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>' +
-                                                            '<a href="' + baseUrl + 'Edfadmin/deletePatient/' + patient.id + '" onclick="return confirm(\'Are you sure you want to delete?\')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>' +
+                                                            '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + patient.id + '" data-type="patient">' +
+                                                            '<i class="bi bi-trash"></i>' + '</button>' +
                                                             '</td>' +
                                                             '</tr>';
                                                         patientTableBody.innerHTML += row;
@@ -1571,12 +1612,11 @@
 
                                                 <section>
                                                     <div class="card rounded">
-                                                        <div class="card-body p-3 p-sm-4">
+                                                        <div class="card-body">
                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                <p class="ps-2" style="font-size: 24px; font-weight: 500">Specialization List</p>
+                                                                <p style="font-size: 24px; font-weight: 500">Specialization List</p>
                                                                 <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSpecilization"
-                                                                    style="background-color: #0081ff;"
-                                                                    class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
+                                                                    class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                     <i class="bi bi-plus-square-fill"></i> New
                                                                 </a>
                                                             </div>
@@ -1635,10 +1675,8 @@
                                                                         '<tr>' +
                                                                         '<td class="pt-3">' + (start + index + 1) + '.</td>' +
                                                                         '<td class="pt-3" style="font-size: 16px">' + specialization.specializationName + '</td>' +
-                                                                        '<td>' +
-                                                                        '<a href="' + baseUrl + 'Edfadmin/deleteSpecilization/' + specialization.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
-                                                                        '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                                                        '</a>' +
+                                                                        '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + specialization.id + '" data-type="specialization">' +
+                                                                        '<i class="bi bi-trash"></i>' + '</button>' +
                                                                         '</td>' +
                                                                         '</tr>';
                                                                     specializationTableBody.innerHTML += row;
@@ -1731,12 +1769,11 @@
 
                                                     <section>
                                                         <div class="card rounded">
-                                                            <div class="card-body p-3 p-sm-4">
+                                                            <div class="card-body">
                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                    <p class="ps-2" style="font-size: 24px; font-weight: 500">Symptoms List</p>
+                                                                    <p style="font-size: 24px; font-weight: 500">Symptoms List</p>
                                                                     <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSymptoms"
-                                                                        style="background-color: #0081ff;"
-                                                                        class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
+                                                                        class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                         <i class="bi bi-plus-square-fill"></i> New
                                                                     </a>
                                                                 </div>
@@ -1794,10 +1831,8 @@
                                                                             '<tr>' +
                                                                             '<td class="pt-3">' + (start + index + 1) + '.</td>' +
                                                                             '<td class="pt-3" style="font-size: 16px">' + symptom.symptomsName + '</td>' +
-                                                                            '<td>' +
-                                                                            '<a href="' + baseUrl + 'Edfadmin/deleteSymptoms/' + symptom.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
-                                                                            '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                                                            '</a>' +
+                                                                            '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + symptom.id + '" data-type="symptom">' +
+                                                                            '<i class="bi bi-trash"></i>' + '</button>' +
                                                                             '</td>' +
                                                                             '</tr>';
                                                                         symptomsTableBody.innerHTML += row;
@@ -1891,12 +1926,10 @@
                                                         <section>
                                                             <div class="card rounded">
                                                                 <div class="card-body">
-
                                                                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Medicines List</p>
+                                                                        <p style="font-size: 24px; font-weight: 500">Medicines List</p>
                                                                         <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
-                                                                            style="background-color: #0081ff;"
-                                                                            class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
+                                                                            class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                             <i class="bi bi-plus-square-fill"></i> New
                                                                         </a>
                                                                     </div>
@@ -1958,10 +1991,8 @@
                                                                                 '<td class="pt-3" style="font-size: 16px">' + medicine.medicineBrand + '</td>' +
                                                                                 '<td class="pt-3" style="font-size: 16px">' + medicine.medicineName + '</td>' +
                                                                                 '<td class="pt-3" style="font-size: 16px">' + medicine.strength + '</td>' +
-                                                                                '<td>' +
-                                                                                '<a href="' + baseUrl + 'Edfadmin/deleteMedicine/' + medicine.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
-                                                                                '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                                                                '</a>' +
+                                                                                '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + medicine.id + '" data-type="medicine">' +
+                                                                                '<i class="bi bi-trash"></i>' + '</button>' +
                                                                                 '</td>' +
                                                                                 '</tr>';
                                                                             medicinesTableBody.innerHTML += row;

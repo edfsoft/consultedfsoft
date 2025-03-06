@@ -32,8 +32,9 @@ class AdminModel extends CI_Model
 
     public function approveCcDb($ccIdDb)
     {
+        $postData = $this->input->post(null, true);
         $updateStatus = array(
-            'approvalStatus' => '1',
+            'approvalStatus' => $postData['approveCc'],
         );
         $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updateStatus);
@@ -66,8 +67,9 @@ class AdminModel extends CI_Model
 
     public function approveHcpDb($hcpIdDb)
     {
+        $postData = $this->input->post(null, true);
         $updateStatus = array(
-            'approvalStatus' => '1',
+            'approvalStatus' => $postData['approveHcp'],
         );
         $this->db->where('id', $hcpIdDb);
         $this->db->update('hcp_details', $updateStatus);

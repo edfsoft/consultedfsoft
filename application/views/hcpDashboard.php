@@ -6,23 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon" />
     <title>Health Care Provider</title>
-
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-    <!-- <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"> -->
-    <!-- <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet"> -->
-    <!-- <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet"> -->
-    <!-- <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet"> -->
-    <!-- <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet"> -->
-
     <!-- Template Main CSS File -->
     <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet" />
-
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
-
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -68,112 +59,9 @@
 </head>
 
 <body>
-    <header id="header" class="header fixed-top d-flex align-items-center">
-        <div class="d-flex align-items-center justify-content-between">
-            <a href="https://erodediabetesfoundation.org/" target="blank" class="logo d-flex align-items-center">
-                <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="edf" />
-            </a>
-            <i class="bi bi-list toggle-sidebar-btn"></i>
-        </div>
-
-        <!-- <div class="input-group form-control rounded-pill d-none d-md-flex w-25 ms-3">
-            <span class="px-2 my-auto"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control border-0" placeholder="Search here" />
-        </div> -->
-
-        <nav class="header-nav ms-auto me-2 me-md-4">
-            <ul class="d-flex align-items-center">
-                <li class="nav-item dropdown d-flex justify-content-evenly">
-                    <a href="#" class="m-2 me-4">
-                        <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a>
-                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
-                        class="rounded-circle" />
-                    <p class="text-dark w-100 d-none d-md-block me-2 my-auto ps-2">
-                        Dr. <?php echo $_SESSION['hcpsName']; ?>
-                    </p>
-                    <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                        <span class="dropdown-toggle mx-4"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-                        style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
-                        <li class="dropdown-header">
-                            <h6> <?php echo $_SESSION['hcpsName']; ?> / </h6>
-                            <p> <?php echo $_SESSION['hcpId']; ?> </p>
-                            <span>Health Care Provider</span>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li> <a class="dropdown-item d-flex align-items-center"
-                                href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"> <i
-                                    class="bi bi-person"></i> <span>My Profile</span> </a> </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li> <a href="<?php echo base_url() . "Healthcareprovider/logout" ?>"
-                                class="dropdown-item d-flex align-items-center text-danger"
-                                onclick="return confirm('Are you sure to logout?')">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Log Out</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
-    <aside id="sidebar" class="sidebar" style="background-color: #00ad8e">
-        <ul class="sidebar-nav pt-5 ps-4" id="sidebar-nav">
-            <li class="">
-                <a class="" href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>" id="dashboard"
-                    style="font-size: 18px; font-weight: 400;color:white;">
-                    <i class="bi bi-grid pe-3"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" style="font-size: 18px; font-weight: 400;color:white;" id="patients"
-                    href="<?php echo base_url() . "Healthcareprovider/patients" ?>">
-                    <div><i class="bi bi-person pe-3"></i> <span>Patients</span></div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
-                    style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
-                    <div>
-                        <i class="bi bi-calendar4 pe-3"></i> <span>Appointments</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>"
-                    style="font-size: 18px; font-weight: 400;color:white;" id="chiefDoctor">
-                    <div>
-                        <i class="bi bi-person-hearts pe-3"></i>
-                        <span>Chief Doctors</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Healthcareprovider/logout" ?>"
-                    style="font-size: 18px; font-weight: 400;color:white;" id="logout"
-                    onclick="return confirm('Are you sure to logout?')">
-                    <div>
-                        <i class="bi bi-box-arrow-in-right pe-3"></i>
-                        <span>Log Out</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </aside>
+    <?php $this->load->view('hcpHeader'); ?>
 
     <main id="main" class="main">
-
         <?php
         if ($method == "dashboard") {
             ?>
@@ -560,7 +448,6 @@
                                 const prescriptionButton = value.consultedOnce === '1' ?
                                     '<a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-prescription"></i></button></a>' :
                                     '<button class="btn btn-secondary mb-1" disabled><i class="bi bi-prescription"></i></button>';
-
                                 patientRow.innerHTML =
                                     '<td class="pt-3">' + (start + index + 1) + '.</td>' +
                                     '<td class="px-2">' +
@@ -579,7 +466,6 @@
                                 patientContainer.appendChild(patientRow);
                             });
                         }
-
                         generatePatientPagination(filteredPatientDetails.length, page);
                     }
 
@@ -899,7 +785,8 @@
                                                 <div class="input-group mt-2">
                                                     <input type="text" id="customSymptomInput" class="form-control"
                                                         placeholder="Add custom symptom">
-                                                    <button type="button" id="addCustomSymptom" class="btn btn-secondary">Add</button>
+                                                    <button type="button" id="addCustomSymptom"
+                                                        class="btn btn-secondary">Add</button>
                                                 </div>
                                                 <div id="symptoms_err" class="text-danger pt-1"></div>
                                             </div>
@@ -1184,10 +1071,10 @@
                                                         <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo"
                                                             width="180" height="180" class="rounded-circle">
                                         <?php } ?>
-                                                    <button class="position-absolute bottom-0 " type="button" data-toggle="modal"
-                                                        data-target="#updateProfile"
-                                                        onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')"><i
-                                                            class="bi bi-pencil-square"></i></button>
+                                                    <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
+                                                        data-bs-target="#updateProfile"
+                                                        onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')">
+                                                        <i class="bi bi-pencil-square"></i></button>
                                                 </div>
                                                 <div class="col-md-6">
 
@@ -1443,7 +1330,7 @@
                                                             <div id="diagonsis_err" class="text-danger pt-1"></div>
                                                         </div>
 
-                                                      <div class="form-group pb-3">
+                                                        <div class="form-group pb-3">
                                                             <label class="form-label" for="patientSymptoms">Symptoms / Complaints <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" id="patientSymptoms" name="patientSymptoms"
@@ -4306,10 +4193,9 @@
                                                                                                     height="180" class="rounded-circle">
 
                                     <?php } ?>
-                                                                                            <button class="position-absolute bottom-0 " type="button" data-toggle="modal"
-                                                                                                data-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
+                                                                                            <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
+                                                                                                data-bs-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
                                                                                         </div>
-
 
                                                                                         <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
                                                                                             name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
@@ -4495,62 +4381,10 @@
                                                                             }
                                                                         }
                                                                     </script>
-
         <?php } ?>
 
-
-        <!-- Popup Update Profile Photo -->
-        <div class="modal fade" id="updatePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action=" <?php echo base_url() . "Healthcareprovider/updatePhoto" ?>"
-                            name="profilePhotoForm" name="profilePhotoForm" enctype="multipart/form-data" method="POST">
-                            <label for="hcpProfile" class="pb-2">Upload file: </label><br>
-                            <input type="file" name="hcpProfile" id="hcpProfile"
-                                accept="image/png ,image/jpg, image/jpeg" required><br><br>
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Popup Update Patient Profile Photo -->
-        <div class="modal fade" id="updateProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action=" <?php echo base_url() . "Healthcareprovider/updatePatientPhoto" ?>"
-                            name="profilePhotoForm" name="profilePhotoForm" enctype="multipart/form-data" method="POST">
-                            <label for="hcpProfile" class="pb-2">Upload file: </label><br>
-                            <input type="file" name="patientProfile" id="patientProfile"
-                                accept="image/png ,image/jpg, image/jpeg" required><br><br>
-                            <input type="hidden" id="photoPatientIdDb" name="photoPatientIdDb" value="">
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
+        <!-- All modal files -->
+        <?php include 'hcpModals.php'; ?>
     </main>
 
     <!-- Event listener to block right-click -->
@@ -4561,7 +4395,6 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
-
     <!-- Hide page source Ctrl + U -->
     <script>
         document.onkeydown = function (e) {
@@ -4570,29 +4403,14 @@
             }
         };
     </script>
+    <!-- Vendor JS Files -->
+    <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
+    <!-- PDF Download link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 </body>
-
-<!-- Vendor JS Files -->
-<script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="assets/vendor/chart.js/chart.umd.js"></script> -->
-<!-- <script src="assets/vendor/echarts/echarts.min.js"></script> -->
-<!-- <script src="assets/vendor/quill/quill.min.js"></script> -->
-<!-- <script src="assets/vendor/simple-datatables/simple-datatables.js"></script> -->
-<!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
-<!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
-
-<!-- Template Main JS File -->
-<script src="<?php echo base_url(); ?>assets/js/main.js"></script>
-
-<!-- Bootstrap popup link -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-<!-- PDF Download link -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-
 
 </html>

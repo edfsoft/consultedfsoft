@@ -170,7 +170,6 @@ class CcModel extends CI_Model
 
         $this->load->library('upload', $config);
 
-
         if ($this->upload->do_upload('ccProfile')) {
             $data = $this->upload->data();
             $photo = $data['file_name'];

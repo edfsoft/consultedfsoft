@@ -100,22 +100,16 @@ class healthcareprovider extends CI_Controller
         $hcpMobileNum = $this->input->post('hcpMobile');
         $hcpMailId = $this->input->post('hcpEmail');
 
-        if ($this->HcpModel->checkMobileExistence($hcpMobileNum)) {
-            echo '<script type="text/javascript">
-                    alert("Mobile number already exists. Please use a new number.");
-                    window.location.href = "' . site_url('Healthcareprovider/register') . '";
-                  </script>';
-            exit();
-        } elseif ($this->HcpModel->checkMailExistence($hcpMailId)) {
-            echo '<script type="text/javascript">
-                    alert("Mail id already exists. Please use a new mail id.");
-                    window.location.href = "' . site_url('Healthcareprovider/register') . '";
-                  </script>';
+        $existingFields = $this->HcpModel->check_existing_user($hcpMobileNum, $hcpMailId);
+
+        if (!empty($existingFields)) {
+            $errorMessage = implode(', ', $existingFields) . ' already exist. Please use different credential.';
+            $this->session->set_flashdata('errorMessage', $errorMessage);
+            redirect('Healthcareprovider/register');
             exit();
         } else {
-            $postData = $this->input->post(null, true);
-            $register = $this->HcpModel->register();
-            $generateid = $this->HcpModel->generatehcpid();
+            $this->HcpModel->register();
+            $this->HcpModel->generatehcpid();
             redirect('Healthcareprovider/');
         }
     }
@@ -134,16 +128,12 @@ class healthcareprovider extends CI_Controller
             $this->session->set_userdata($LoggedInDetails);
             redirect('Healthcareprovider/dashboard');
         } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
-            echo '<script type="text/javascript">
-            alert("You can log in once the verification process is done.");
-            window.location.href = "' . site_url('Healthcareprovider/') . '";
-          </script>';
+            $this->session->set_flashdata('errorMessage', 'You can log in once the verification process is done.');
+            redirect('Healthcareprovider/');
             exit();
         } else {
-            echo '<script type="text/javascript">
-            alert("Please enter registered details.");
-            window.location.href = "' . site_url('Healthcareprovider/') . '";
-          </script>';
+            $this->session->set_flashdata('errorMessage', 'Please enter registered details.');
+            redirect('Healthcareprovider/');
             exit();
         }
     }
@@ -162,7 +152,6 @@ class healthcareprovider extends CI_Controller
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
-            // echo '<script>alert("Please Login");</script>';
         }
     }
 
@@ -198,14 +187,17 @@ class healthcareprovider extends CI_Controller
         $patientMobileNum = $post['patientMobile'];
 
         if ($this->HcpModel->checkPatientExistence($patientMobileNum)) {
-            echo '<script type="text/javascript">
-                    alert("Mobile number already exists. Please use a new number.");
-                    window.location.href = "' . site_url('Healthcareprovider/patientform') . '";
-                  </script>';
+            $this->session->set_flashdata('errorMessage', 'Mobile number already exists. Please use a new number.');
+            redirect('Healthcareprovider/patientform');
             exit();
         } else {
-            $profileDetails = $this->HcpModel->insertPatients();
-            $generateid = $this->HcpModel->generatePatientId();
+            $register = $this->HcpModel->insertPatients();
+            $this->HcpModel->generatePatientId();
+            if ($register) {
+                $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
+            } else {
+                $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
+            }
             redirect('Healthcareprovider/patients');
         }
     }
@@ -246,14 +238,23 @@ class healthcareprovider extends CI_Controller
 
     public function updatePatientsForm()
     {
-        $profileDetails = $this->HcpModel->updatePatients();
+        if ($this->HcpModel->updatePatientsDetails()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Patient details updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating patient details');
+        }
         redirect('Healthcareprovider/patients');
     }
 
     public function updatePatientPhoto()
     {
-        $profilePhoto = $this->HcpModel->updatePatientProfile();
-        redirect('Healthcareprovider/patients');
+
+        if ($this->HcpModel->updatePatientProfilePhoto()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Patient photo updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating patient photo');
+        }
+        redirect('Healthcareprovider/updatePatientsForm');
     }
 
     public function prescriptionView()
@@ -315,7 +316,11 @@ class healthcareprovider extends CI_Controller
 
     public function newAppointment()
     {
-        $appointmentDetails = $this->HcpModel->insertAppointment();
+        if ($this->HcpModel->insertAppointment()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
+        }
         redirect('Healthcareprovider/appointments');
     }
 
@@ -346,7 +351,11 @@ class healthcareprovider extends CI_Controller
 
     public function updateAppointmentForm()
     {
-        $profileDetails = $this->HcpModel->updateAppointment();
+        if ($this->HcpModel->updateAppointment()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating appointment details');
+        }
         redirect('Healthcareprovider/appointments');
     }
 
@@ -389,7 +398,6 @@ class healthcareprovider extends CI_Controller
             ];
         }
         $this->HcpModel->prescriptionMedicines($medicinesData);
-
         redirect('Healthcareprovider/appointments');
     }
 
@@ -472,13 +480,21 @@ class healthcareprovider extends CI_Controller
 
     public function updatePhoto()
     {
-        $profileDetails = $this->HcpModel->updateProfilePhoto();
+        if ($this->HcpModel->updateProfilePhoto()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Profile photo updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating profile photo');
+        }
         redirect('Healthcareprovider/editMyProfile');
     }
 
     public function updateMyProfile()
     {
-        $profileDetails = $this->HcpModel->updateProfileDetails();
+        if ($this->HcpModel->updateProfileDetails()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Profile details updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating profile details');
+        }
         redirect('Healthcareprovider/myProfile');
     }
 
@@ -487,12 +503,6 @@ class healthcareprovider extends CI_Controller
     //     $patientList = $this->HcpModel->getPatientList();
     //     $this->data['patientList'] = $patientList['response'];
     //     $this->load->view('hcpDashboard.php',  $this->data);
-    // }
-
-    // public function logout()
-    // {
-    //     $this->session->sess_destroy();
-    //      redirect('Healthcareprovider/');
     // }
 
     public function logout()

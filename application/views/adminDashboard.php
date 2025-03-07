@@ -58,8 +58,7 @@
                 style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
                 <?php echo $this->session->flashdata('showErrorMessage'); ?>
             </div>
-        <?php } ?>
-        <?php
+        <?php } 
         if ($method == "dashboard") {
             ?>
 

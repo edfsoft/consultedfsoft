@@ -62,7 +62,17 @@
     <?php $this->load->view('hcpHeader'); ?>
 
     <main id="main" class="main">
-        <?php
+        <?php if ($this->session->flashdata('showSuccessMessage')) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $this->session->flashdata('showSuccessMessage'); ?>
+            </div>
+        <?php } elseif ($this->session->flashdata('showErrorMessage')) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $this->session->flashdata('showErrorMessage'); ?>
+            </div>
+        <?php }
         if ($method == "dashboard") {
             ?>
 
@@ -4385,7 +4395,61 @@
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
+
+        <!--Display Message Popup Screen -->
+        <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <?php if ($this->session->flashdata('successMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
+                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                        </div>
+                    <?php }
+                    if ($this->session->flashdata('errorMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                        </div>
+                    <?php } ?>
+                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                            data-bs-dismiss="modal">Close</button> </div>
+                </div>
+            </div>
+        </div>
+
     </main>
+
+    <!-- Display popup success error message -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var messagePopup = document.getElementById('display_message_popup');
+
+            if (messagePopup) {
+                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+                    var displayMessage = new bootstrap.Modal(messagePopup);
+                    displayMessage.show();
+                <?php } ?>
+            }
+        });
+    </script>
+
+    <!-- Display message for 3 seconds  -->
+    <script>
+        setTimeout(() => {
+            const displayMessage = document.getElementById('display_message');
+            if (displayMessage) {
+                displayMessage.style.display = 'none';
+            }
+        }, 3000);
+    </script>
 
     <!-- Event listener to block right-click -->
     <script>

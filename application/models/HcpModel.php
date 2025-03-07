@@ -24,20 +24,6 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    // public function checkMobileExistence($hcpMobileNum)
-    // {
-    //     $this->db->where('hcpMobile', $hcpMobileNum);
-    //     $query = $this->db->get('hcp_details');
-    //     return $query->num_rows() > 0;
-    // }
-
-    // public function checkMailExistence($hcpMailId)
-    // {
-    //     $this->db->where('hcpMail', $hcpMailId);
-    //     $query = $this->db->get('hcp_details');
-    //     return $query->num_rows() > 0;
-    // }
-
     public function check_existing_user($mobileNumber, $mailId)
     {
         $existingFields = [];
@@ -203,9 +189,10 @@ class HcpModel extends CI_Model
             );
             $this->db->insert('medicines_list', $insert);
         }
+        return true;
     }
 
-    public function updatePatients()
+    public function updatePatientsDetails()
     {
         $post = $this->input->post(null, true);
 
@@ -262,9 +249,10 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $post['patientIdDb']);
         $this->db->update('patient_details', $insertdata);
+        return true;
     }
 
-    public function updatePatientProfile()
+    public function updatePatientProfilePhoto()
     {
         $post = $this->input->post(null, true);
 
@@ -287,6 +275,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $post['photoPatientIdDb']);
         $this->db->update('patient_details', $updatedata);
+        return true;
     }
 
     public function generatePatientId()
@@ -388,6 +377,7 @@ class HcpModel extends CI_Model
             'hcpDbId' => $_SESSION['hcpIdDb']
         );
         $this->db->insert('appointment_details', $insert);
+        return true;
     }
 
     public function getAppointmentReschedule()
@@ -418,6 +408,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $post['appTableId']);
         $this->db->update('appointment_details', $updatedata);
+        return true;
     }
 
     public function addPrescription()
@@ -483,6 +474,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $hcpIdDb);
         $this->db->update('hcp_details', $updatedata);
+        return true;
     }
 
     public function updateProfileDetails()
@@ -503,6 +495,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $hcpIdDb);
         $this->db->update('hcp_details', $updatedata);
+        return true;
     }
 
     public function getCcProfile()

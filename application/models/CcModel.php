@@ -54,20 +54,6 @@ class CcModel extends CI_Model
         }
     }
 
-    // public function checkMobileExistence($ccMobileNum)
-    // {
-    //     $this->db->where('doctorMobile', $ccMobileNum);
-    //     $query = $this->db->get('cc_details');
-    //     return $query->num_rows() > 0;
-    // }
-
-    // public function checkMailExistence($ccMailId)
-    // {
-    //     $this->db->where('doctorMail', $ccMailId);
-    //     $query = $this->db->get('cc_details');
-    //     return $query->num_rows() > 0;
-    // }
-
     public function check_existing_user($mobileNumber, $mailId)
     {
         $existingFields = [];
@@ -199,6 +185,7 @@ class CcModel extends CI_Model
         );
         $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updatedata);
+        return true;
     }
 
     public function updateProfileDetails()
@@ -222,6 +209,7 @@ class CcModel extends CI_Model
         );
         $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updatedata);
+        return true;
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class healthcareprovider extends CI_Controller
+class Healthcareprovider extends CI_Controller
 {
 
     function __construct()
@@ -248,7 +248,6 @@ class healthcareprovider extends CI_Controller
 
     public function updatePatientPhoto()
     {
-
         if ($this->HcpModel->updatePatientProfilePhoto()) {
             $this->session->set_flashdata('showSuccessMessage', 'Patient photo updated successfully');
         } else {

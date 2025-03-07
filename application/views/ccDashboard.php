@@ -1833,29 +1833,14 @@
         };
     </script>
 
-</body>
-
 <!-- Vendor JS Files -->
 <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="assets/vendor/chart.js/chart.umd.js"></script> -->
-<!-- <script src="assets/vendor/echarts/echarts.min.js"></script> -->
-<!-- <script src="assets/vendor/quill/quill.min.js"></script> -->
-<!-- <script src="assets/vendor/simple-datatables/simple-datatables.js"></script> -->
-<!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
-<!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
-
 <!-- Template Main JS File -->
 <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
-
-<!-- bootstrap popup link -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
 <!-- PDF Download link -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
-
+</body>
 
 </html>

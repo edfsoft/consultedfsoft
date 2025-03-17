@@ -5,24 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CC Login Page</title>
-
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
+    <!-- Bootstrap 5.1.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-
-
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -43,11 +33,13 @@
             z-index: -1;
         }
 
-        #forgotPassword, #newAccount {
+        #forgotPassword,
+        #newAccount {
             text-decoration: none;
         }
 
-        #forgotPassword:hover, #newAccount:hover {
+        #forgotPassword:hover,
+        #newAccount:hover {
             text-decoration: underline;
         }
 
@@ -59,15 +51,15 @@
 
             #bgcolor {
                 background-color: rgba(0, 121, 173, 0.4);
-                min-height: 100vh;   
+                min-height: 100vh;
             }
 
             #edfLogo {
                 display: block;
                 margin: 0 auto;
             }
-            
-            #ccHeading{
+
+            #ccHeading {
                 text-align: center;
             }
         }
@@ -89,10 +81,12 @@
             <div class="col-md-6">
                 <div class="login-form  mx-lg-2 mx-xxl-5 p-3 p-sm-4 p-xxl-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
-                    id="edfLogo" alt="logo" class="img-fluid"></a>
-                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#0079AD;" id="ccHeading" >Chief Consultant Login</p>
+                            id="edfLogo" alt="logo" class="img-fluid"></a>
+                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#0079AD;" id="ccHeading">Chief Consultant
+                        Login</p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
-                    <p class="" style="font-size:18px;font-weight:400;">Empowering chief practitioners to provide personalized online diabetes consultations for comprehensive patient care.
+                    <p class="" style="font-size:18px;font-weight:400;">Empowering chief practitioners to provide
+                        personalized online diabetes consultations for comprehensive patient care.
                     </p>
                     <form action="<?php echo base_url() . "Chiefconsultant/ccLogin" ?>" method="post" name="ccloginform"
                         onsubmit="return validateLogin()">
@@ -110,9 +104,9 @@
                                 oninput="validePassword(this)" class="form-control rounded-pill p-3">
                             <i id="togglePassword"
                                 class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
-                                style="cursor: pointer;"></i> 
-                            </div>
-                            <div id="password_err" class="text-danger pt-1"></div>                      
+                                style="cursor: pointer;"></i>
+                        </div>
+                        <div id="password_err" class="text-danger pt-1"></div>
                         <div class="text-secondary my-3" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                             and a minimum of 8 characters.</div>
@@ -136,6 +130,48 @@
         </div>
     </div>
 
+    <!--Display Message Popup Screen -->
+    <div class="modal fade" id="display_message" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <?php if ($this->session->flashdata('successMessage')) { ?>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                    </div>
+                <?php }
+                if ($this->session->flashdata('errorMessage')) { ?>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                    </div>
+                <?php } ?>
+                <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                        data-bs-dismiss="modal">Close</button> </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.1.3 JS Bundle (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Display popup success error message -->
+    <script>
+        <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+            var displayMessage = new bootstrap.Modal(document.getElementById('display_message'));
+            displayMessage.show();
+        <?php } ?>
+    </script>
+
+
+    <!-- Validation -->
     <script>
         // document.getElementById("ccPassword").onfocus = function () {
         //     document.getElementById("passwordmessage").style.display = "block";
@@ -191,6 +227,7 @@
         }
     </script>
 
+    <!-- Password visiblity -->
     <script>
         document.getElementById('togglePassword').addEventListener('click', function () {
             const passwordField = document.getElementById('ccPassword');

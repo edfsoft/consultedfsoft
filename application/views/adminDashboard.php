@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon" />
     <title>EDF Admin</title>
-
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
@@ -15,18 +14,14 @@
     <!-- <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet"> -->
     <!-- <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet"> -->
     <!-- <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet"> -->
-
     <!-- Template Main CSS File -->
     <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet" />
-
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
-
     <!-- Google fonts link -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -49,149 +44,21 @@
 </head>
 
 <body>
-    <header id="header" class="header fixed-top d-flex align-items-center" style="background-color:#0081ff;">
-        <div class="d-flex align-items-center justify-content-between">
-            <a href="https://erodediabetesfoundation.org/" target="blank" class="logo d-flex align-items-center">
-                <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="edf" />
-            </a>
-            <i class="bi bi-list toggle-sidebar-btn text-light"></i>
-        </div>
-
-        <!-- <div class="input-group form-control rounded-pill d-none d-md-flex w-25 ms-3">
-            <span class="px-2 my-auto"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control border-0" placeholder="Search here" />
-        </div> -->
-
-        <nav class="header-nav ms-auto me-2 me-md-4">
-            <ul class="d-flex align-items-center ms-5">
-                <li class="nav-item dropdown d-flex justify-content-evenly">
-                    <!-- <a href="" class="m-2 me-4">
-                         <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a> -->
-                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
-                        class="rounded-circle me-1" />
-                    <p class="text-light w-100 d-none d-md-block me-2 my-auto ps-2">
-                        <?php echo $_SESSION['adminName']; ?>
-                    </p>
-                    <a class="nav-link nav-profile d-flex align-items-center text-light" href="#"
-                        data-bs-toggle="dropdown">
-                        <span class="dropdown-toggle mx-4"></span> </a>
-
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-                        style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
-                        <li class="dropdown-header">
-                            <h6> <?php echo $_SESSION['adminName']; ?></h6>
-                            <span>EDF Consult Adminstrator</span>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li>
-                            <a href="#" class="dropdown-item d-flex align-items-center" >
-                                <i class="bi bi-person"></i>
-                                <span>My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-
-                        <li>
-                            <a href="<?php echo base_url() . "Edfadmin/logout" ?>"
-                                class="dropdown-item d-flex align-items-center text-danger"
-                                onclick="return confirm('Are you sure to logout?')">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Log Out</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        
-    </header>
-
-    <aside id="sidebar" class="sidebar" style="background-color: #222d32">
-        <ul class="sidebar-nav pt-5 ps-4" id="sidebar-nav">
-            <li class="">
-                <a class="" href="<?php echo base_url() . "Edfadmin/dashboard" ?>" id="dashboard"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;">
-                    <i class="bi bi-grid pe-3"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" style="font-size: 18px; font-weight: 400;color:#8cafba;" id="ccs"
-                    href="<?php echo base_url() . "Edfadmin/ccList" ?>">
-                    <div><i class="bi bi-person-check pe-3"></i></i> <span>CC</span></div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Edfadmin/hcpList" ?>"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="hcps">
-                    <div>
-                        <i class="bi bi-person-hearts pe-3"></i> <span>HCP</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Edfadmin/patientList" ?>"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="patients">
-                    <div>
-                        <i class="bi bi-people pe-3"></i>
-                        <span>Patients</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Edfadmin/specializationList" ?>"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="specialization">
-                    <div>
-                        <span class="material-symbols-outlined pe-2">data_check</span>
-                        <span>Specializations</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Edfadmin/symptomsList" ?>"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="symptoms">
-                    <div>
-                        <span class="material-symbols-outlined pe-2"> conditions </span>
-                        <span>Symptoms</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Edfadmin/medicinesList" ?>"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="medicines">
-                    <div>
-                        <span class="material-symbols-outlined pe-2">vaccines</span>
-                        <span>Medicines</span>
-                    </div>
-                </a>
-            </li>
-
-            <!-- <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Edfadmin/logout" ?>"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="logout"
-                    onclick="return confirm('Are you sure to logout?')">
-                    <div>
-                        <i class="bi bi-box-arrow-in-right pe-3"></i>
-                        <span>Log Out</span>
-                    </div>
-                </a>
-            </li> -->
-        </ul>
-    </aside>
+    <?php $this->load->view('adminHeader'); ?>
 
     <main id="main" class="main">
 
-        <?php
+        <?php if ($this->session->flashdata('showSuccessMessage')) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $this->session->flashdata('showSuccessMessage'); ?>
+            </div>
+        <?php } elseif ($this->session->flashdata('showErrorMessage')) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $this->session->flashdata('showErrorMessage'); ?>
+            </div>
+        <?php }
         if ($method == "dashboard") {
             ?>
 
@@ -206,7 +73,7 @@
 
                 <!-- Section-1 -->
                 <div class="d-lg-flex justify-content-evenly">
-                    <div class="card rounded-5 mx-2">
+                    <div class="card position-relative rounded-5 mx-2">
                         <div class="card-body d-flex px-3 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon1" />
@@ -219,9 +86,14 @@
                                 </p>
                                 <p style="font-size: 16px"> <?php echo date("d - m - Y") ?></p>
                             </div>
+                            <a href="<?php echo base_url() . "Edfadmin/ccList" ?>"
+                                class="small position-absolute bottom-0 end-0 m-2 mt-3" style="color: #1f3861;"
+                                onmouseover="this.style.textDecoration='underline'"
+                                onmouseout="this.style.textDecoration='none'">
+                                View All <i class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>
-                    <div class="card rounded-5 mx-2">
+                    <div class="card position-relative rounded-5 mx-2">
                         <div class="card-body d-flex px-3 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon2" />
@@ -236,9 +108,14 @@
                                     <?php echo date("d - m - Y") ?>
                                 </p>
                             </div>
+                            <a href="<?php echo base_url() . "Edfadmin/hcpList" ?>"
+                                class="small position-absolute bottom-0 end-0 m-2 mt-3" style="color: #1f3861;"
+                                onmouseover="this.style.textDecoration='underline'"
+                                onmouseout="this.style.textDecoration='none'">
+                                View All <i class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>
-                    <div class="card rounded-5 mx-2">
+                    <div class="card position-relative rounded-5 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin1.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon3" />
@@ -253,6 +130,11 @@
                                     Till Today
                                 </p>
                             </div>
+                            <a href="<?php echo base_url() . "Edfadmin/patientList" ?>"
+                                class="small position-absolute bottom-0 end-0 m-2 mt-3" style="color: #1f3861;"
+                                onmouseover="this.style.textDecoration='underline'"
+                                onmouseout="this.style.textDecoration='none'">
+                                View All <i class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -346,18 +228,21 @@
                                     '<td style="font-size: 16px" class="pt-3">' + value.doctorMobile + '</td>' +
                                     '<td style="font-size: 16px" class="pt-3">' + value.specialization + '</td>' +
                                     '<td style="font-size: 16px" class="pt-3">' +
-                                    (value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>') +
+                                    (value.approvalStatus == 1
+                                        ? '<i class="bi bi-patch-check-fill text-success"></i>'
+                                        : '<i class="bi bi-patch-check-fill text-danger"></i>') +
                                     '</td>' +
                                     '<td class="d-flex d-md-block" style="font-size: 16px">' +
                                     '<a href="' + baseUrl + 'Edfadmin/ccDetails/' + value.id + '">' +
                                     '<button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>' +
                                     '</a>' +
-                                    '<a href="' + baseUrl + 'Edfadmin/deleteCc/' + value.id + '" onclick="return confirm(\'Are you sure you want to delete?\')">' +
-                                    '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                    '</a>' +
+                                    '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + value.id + '" data-type="cc">' +
+                                    '<i class="bi bi-trash"></i>' +
+                                    '</button>' +
                                     '</td>';
                                 ccTableBody.appendChild(ccRow);
                             });
+
                         }
 
                         generateCcPagination(filteredCcDetails.length, page);
@@ -493,8 +378,10 @@
                                         <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                     </div>
                                     <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
-                                    <button type="submit" class="btn btn-secondary text-light float-end mt-2">Sign
-                                        Up</button>
+                                    <div class="d-flex justify-content-between">
+                                        <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
+                                        <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -732,22 +619,31 @@
                                 <?php } else { ?>
                                                 <button type="submit" class="btn btn-primary my-2 float-end">Update</button>
                                 <?php } ?>
-
                                         </form>
-
-                            <?php if ($value['approvalStatus'] == "0") { ?>
-                                            <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
-                                            <p>Please review the details and approve the Chief Consultant for login : <a
-                                                    href="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>"
+                                        <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
+                                        <!--<p>Please review the details and approve the Chief Consultant for login :
+                                                  <a href="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>"
                                                     onclick="return confirm('The details have been verified and approved for login.')"><button
-                                                        class="btn btn-success px-2 py-1">Approve</button></a> </p>
-                            <?php }
+                                                        class="btn btn-success px-2 py-1">Approve</button></a> </p> -->
+                                        <form action="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>" method="post"
+                                            name="ccApproveForm" class="col-6 border border-2 rounded p-3">
+                                            <p>Verify the details and approve to login: </p>
+                                            <div class="mb-2 ps-2"><input type="radio" name="approveCc" value="0" id="notApproved" <?php if ($value['approvalStatus'] == '0')
+                                                echo "checked"; ?> required>
+                                                <label class="ps-2" for="notApproved">Not Approved</label>
+                                            </div>
+                                            <div class="mb-2 ps-2"><input type="radio" name="approveCc" value="1" id="approved" <?php if ($value['approvalStatus'] == '1')
+                                                echo "checked"; ?> required>
+                                                <label class="ps-2" for="approved">Approved</label>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary px-2 py-1 mt-2">Approve</button>
+                                        </form>
+                            <?php
                                 } ?>
-
-
                                 </div>
                             </div>
                         </section>
+
 
                         <script>
                             function validateLink() {
@@ -882,10 +778,8 @@
                                                 '<td class="d-flex d-md-block">' +
                                                 '<a href="' + baseUrl + 'Edfadmin/hcpDetails/' + hcp.id + '">' +
                                                 '<button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>' +
-                                                '</a>' +
-                                                '<a href="' + baseUrl + 'Edfadmin/deleteHcp/' + hcp.id + '" onclick="return confirm(\'Are you sure you want to delete?\')">' +
-                                                '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                                '</a>' +
+                                                '</a>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + hcp.id + '" data-type="hcp">' +
+                                                '<i class="bi bi-trash"></i>' + '</button>' +
                                                 '</td>' +
                                                 '</tr>';
                                             hcpTableBody.innerHTML += row;
@@ -1038,8 +932,10 @@
                                                     <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
-                                                <button type="submit" class="btn btn-secondary text-light float-end mt-2">Sign
-                                                    Up</button>
+                                                <div class="d-flex justify-content-between">
+                                                    <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
+                                                    <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -1242,14 +1138,25 @@
                                                         </p>
                                                     </div>
 
-                            <?php if ($value['approvalStatus'] == "0") { ?>
-                                                        <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
-                                                        <p>Please review the details and approve the Health Care Provider for login : <a
+                                                    <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
+                                                    <!-- <p>Please review the details and approve the Health Care Provider for login : <a
                                                                 href="<?php echo base_url() . "Edfadmin/approveHcp/" . $value['id'] ?>"
                                                                 onclick="return confirm('The details have been verified and approved for login.')"><button
-                                                                    class="btn btn-success px-2 py-1">Approve</button></a> </p>
-                            <?php }
-                                } ?>
+                                                                    class="btn btn-success px-2 py-1">Approve</button></a> </p> -->
+                                                    <form action="<?php echo base_url() . "Edfadmin/approveHcp/" . $value['id'] ?>" method="post"
+                                                        name="hcpApproveForm" class="col-6 border border-2 rounded p-3">
+                                                        <p>Verify the details and approve to login: </p>
+                                                        <div class="mb-2 ps-2"><input type="radio" name="approveHcp" value="0" id="notApproved" <?php if ($value['approvalStatus'] == '0')
+                                                            echo "checked"; ?> required>
+                                                            <label class="ps-2" for="notApproved">Not Approved</label>
+                                                        </div>
+                                                        <div class="mb-2 ps-2"><input type="radio" name="approveHcp" value="1" id="approved" <?php if ($value['approvalStatus'] == '1')
+                                                            echo "checked"; ?> required>
+                                                            <label class="ps-2" for="approved">Approved</label>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary px-2 py-1 mt-2">Approve</button>
+                                                    </form>
+                        <?php } ?>
                                             </div>
 
                                     </section>
@@ -1369,7 +1276,8 @@
                                                             '</td>' +
                                                             '<td class="d-flex d-md-block">' +
                                                             '<a href="' + baseUrl + 'Edfadmin/patientdetails/' + patient.id + '"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>' +
-                                                            '<a href="' + baseUrl + 'Edfadmin/deletePatient/' + patient.id + '" onclick="return confirm(\'Are you sure you want to delete?\')"><button class="btn btn-danger"><i class="bi bi-trash"></i></button></a>' +
+                                                            '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + patient.id + '" data-type="patient">' +
+                                                            '<i class="bi bi-trash"></i>' + '</button>' +
                                                             '</td>' +
                                                             '</tr>';
                                                         patientTableBody.innerHTML += row;
@@ -1500,8 +1408,8 @@
                                                                     </p>
                                                                     <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
                                                                     <!-- <p class="text-dark" style="font-weight:500;font-size:20px;">
-                                        <?php echo $value['diagonsis'] ?>
-                                                    </p> -->
+                        <?php echo $value['diagonsis'] ?>
+                                    </p> -->
                                                                 </div>
 
                                                             </div>
@@ -1572,15 +1480,15 @@
                                                             </div>
                                                             <div class="d-md-flex">
                                                                 <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> :
-                                    <?php echo $value['bloodPressure'] ? $value['bloodPressure'] . " mmHg" : "Not provided"; ?>
+                                    <?php echo $value['systolicBp'] ? $value['systolicBp'] . " / " . $value['diastolicBp'] . " mmHg" : "Not provided"; ?>
                                                                 </p>
                                                                 <p><span class="text-secondary ">Cholestrol </span> :
-                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dl" : "Not provided"; ?>
+                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dL" : "Not provided"; ?>
                                                                 </p>
                                                             </div>
                                                             <div class="d-md-flex">
                                                                 <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> :
-                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mmol/L" : "Not provided"; ?>
+                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mg/dL" : "Not provided"; ?>
                                                                 </p>
                                                                 <p><span class="text-secondary ">Diagonsis / Complaints</span> :
                                     <?php echo $value['diagonsis'] ?>
@@ -1683,9 +1591,6 @@
 
                             <?php }
                             } ?>
-
-
-
                                                     </div>
                                                 </div>
                                             </section>
@@ -1706,14 +1611,13 @@
 
                                                 <section>
                                                     <div class="card rounded">
-                                                        <div class="card-body p-3 p-sm-4">
+                                                        <div class="card-body">
                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                <p class="ps-2" style="font-size: 24px; font-weight: 500">Specialization List</p>
-                                                                <button style="background-color: #0081ff;" type="button" data-toggle="modal"
-                                                                    data-target="#newSpecilization"
-                                                                    class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
+                                                                <p style="font-size: 24px; font-weight: 500">Specialization List</p>
+                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSpecilization"
+                                                                    class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                     <i class="bi bi-plus-square-fill"></i> New
-                                                                </button>
+                                                                </a>
                                                             </div>
                                                             <div class="input-group mx-auto pb-4" style="width:280px;">
                                                                 <span class="input-group-text" id="searchIcon">
@@ -1770,10 +1674,8 @@
                                                                         '<tr>' +
                                                                         '<td class="pt-3">' + (start + index + 1) + '.</td>' +
                                                                         '<td class="pt-3" style="font-size: 16px">' + specialization.specializationName + '</td>' +
-                                                                        '<td>' +
-                                                                        '<a href="' + baseUrl + 'Edfadmin/deleteSpecilization/' + specialization.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
-                                                                        '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                                                        '</a>' +
+                                                                        '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + specialization.id + '" data-type="specialization">' +
+                                                                        '<i class="bi bi-trash"></i>' + '</button>' +
                                                                         '</td>' +
                                                                         '</tr>';
                                                                     specializationTableBody.innerHTML += row;
@@ -1866,14 +1768,13 @@
 
                                                     <section>
                                                         <div class="card rounded">
-                                                            <div class="card-body p-3 p-sm-4">
+                                                            <div class="card-body">
                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                    <p class="ps-2" style="font-size: 24px; font-weight: 500">Symptoms List</p>
-                                                                    <button style="background-color: #0081ff;" type="button" data-toggle="modal"
-                                                                        data-target="#newSymptoms"
-                                                                        class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
+                                                                    <p style="font-size: 24px; font-weight: 500">Symptoms List</p>
+                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSymptoms"
+                                                                        class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                         <i class="bi bi-plus-square-fill"></i> New
-                                                                    </button>
+                                                                    </a>
                                                                 </div>
                                                                 <div class="input-group mx-auto pb-4" style="width:260px;">
                                                                     <span class="input-group-text" id="searchIcon">
@@ -1929,10 +1830,8 @@
                                                                             '<tr>' +
                                                                             '<td class="pt-3">' + (start + index + 1) + '.</td>' +
                                                                             '<td class="pt-3" style="font-size: 16px">' + symptom.symptomsName + '</td>' +
-                                                                            '<td>' +
-                                                                            '<a href="' + baseUrl + 'Edfadmin/deleteSymptoms/' + symptom.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
-                                                                            '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                                                            '</a>' +
+                                                                            '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + symptom.id + '" data-type="symptom">' +
+                                                                            '<i class="bi bi-trash"></i>' + '</button>' +
                                                                             '</td>' +
                                                                             '</tr>';
                                                                         symptomsTableBody.innerHTML += row;
@@ -2026,14 +1925,12 @@
                                                         <section>
                                                             <div class="card rounded">
                                                                 <div class="card-body">
-
                                                                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                        <button style="background-color: #0081ff;" type="button" data-toggle="modal"
-                                                                            data-target="#newMedicine"
-                                                                            class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
+                                                                        <p style="font-size: 24px; font-weight: 500">Medicines List</p>
+                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
+                                                                            class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                                             <i class="bi bi-plus-square-fill"></i> New
-                                                                        </button>
+                                                                        </a>
                                                                     </div>
 
                                                                     <div class="input-group mx-auto pb-4" style="width:250px;">
@@ -2093,10 +1990,8 @@
                                                                                 '<td class="pt-3" style="font-size: 16px">' + medicine.medicineBrand + '</td>' +
                                                                                 '<td class="pt-3" style="font-size: 16px">' + medicine.medicineName + '</td>' +
                                                                                 '<td class="pt-3" style="font-size: 16px">' + medicine.strength + '</td>' +
-                                                                                '<td>' +
-                                                                                '<a href="' + baseUrl + 'Edfadmin/deleteMedicine/' + medicine.id + '" onclick="return confirm(\'Are you sure to delete ?\')" class="px-1">' +
-                                                                                '<button class="btn btn-danger"><i class="bi bi-trash"></i></button>' +
-                                                                                '</a>' +
+                                                                                '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + medicine.id + '" data-type="medicine">' +
+                                                                                '<i class="bi bi-trash"></i>' + '</button>' +
                                                                                 '</td>' +
                                                                                 '</tr>';
                                                                             medicinesTableBody.innerHTML += row;
@@ -2181,96 +2076,63 @@
 
         <?php } ?>
 
+        <!-- All modal files -->
+        <?php include 'adminModals.php'; ?>
 
-        <!-- Popup Add new specilization -->
-        <div class="modal fade" id="newSpecilization" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+        <!--Display Message Popup Screen -->
+        <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add New Specilization</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="<?php echo base_url() . "Edfadmin/addNewSpecilization" ?>" name="addSpecilization"
-                            name="addSpecilization" enctype="multipart/form-data" method="POST">
-                            <label for="specializationName" class="form-label pb-2">Specilization Name <span
-                                    class="text-danger">*</span></label><br>
-                            <input type="text" name="specializationName" id="specializationName" class="form-control"
-                                placeholder="E.g. Diabetologist" required><br><br>
-                            <button type="submit" class="btn btn-secondary float-end"> Add </button>
-                        </form>
-                    </div>
+                    <?php if ($this->session->flashdata('successMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
+                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                        </div>
+                    <?php }
+                    if ($this->session->flashdata('errorMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                        </div>
+                    <?php } ?>
+                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                            data-bs-dismiss="modal">Close</button> </div>
                 </div>
             </div>
         </div>
-
-        <!-- Popup Add new symptom -->
-        <div class="modal fade" id="newSymptoms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add New Symptom</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="<?php echo base_url() . "Edfadmin/addNewSymptoms" ?>" name="addSymptoms"
-                            enctype="multipart/form-data" method="POST">
-
-                            <label for="symptomsName" class="form-label pb-2">Symptom / Complaint Name <span
-                                    class="text-danger">*</span></label><br>
-                            <input type="text" name="symptomsName" id="symptomsName" class="form-control"
-                                placeholder="E.g. Head ache" required><br><br>
-                            <button type="submit" class="btn btn-secondary float-end"> Add </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Popup Add new medicine -->
-        <div class="modal fade" id="newMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add New Medicine</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="<?php echo base_url() . "Edfadmin/addNewMedicine" ?>" name="addMedicine"
-                            enctype="multipart/form-data" method="POST">
-                            <label for="medicineNameBrand" class="form-label pb-2">Medicine Brand Name <span
-                                    class="text-danger">*</span></label><br>
-                            <input type="text" name="medicineNameBrand" id="medicineNameBrand" class="form-control"
-                                placeholder="E.g. Dolo 650" required><br>
-                            <label for="medicineName" class="form-label pb-2">Medicine Name <span
-                                    class="text-danger">*</span></label><br>
-                            <input type="text" name="medicineName" id="medicineName" class="form-control"
-                                placeholder="E.g.  Paracetamol" required><br>
-                            <label for="maedicineStrength" class="form-label pb-2">Medicine Strength <span
-                                    class="text-danger">*</span></label><br>
-                            <input type="text" name="maedicineStrength" id="maedicineStrength" class="form-control"
-                                placeholder="E.g.  100 mg" required><br><br>
-                            <button type="submit" class="btn btn-secondary float-end"> Add </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
     </main>
+
+    <!-- Display popup success error message -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var messagePopup = document.getElementById('display_message_popup');
+
+            if (messagePopup) {
+                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+                    var displayMessage = new bootstrap.Modal(messagePopup);
+                    displayMessage.show();
+                <?php } ?>
+            }
+        });
+    </script>
+
+    <!-- Display message for 3 seconds  -->
+    <script>
+        setTimeout(() => {
+            const displayMessage = document.getElementById('display_message');
+            if (displayMessage) {
+                displayMessage.style.display = 'none';
+            }
+        }, 3000);
+    </script>
 
     <!-- Event listener to block right-click -->
     <script>
@@ -2280,7 +2142,6 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
-
     <!-- Hide page source Ctrl + U -->
     <script>
         document.onkeydown = function (e) {
@@ -2290,25 +2151,17 @@
         };
     </script>
 
+    <!-- Vendor JS Files -->
+    <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="assets/vendor/chart.js/chart.umd.js"></script> -->
+    <!-- <script src="assets/vendor/echarts/echarts.min.js"></script> -->
+    <!-- <script src="assets/vendor/quill/quill.min.js"></script> -->
+    <!-- <script src="assets/vendor/simple-datatables/simple-datatables.js"></script> -->
+    <!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
+    <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
+    <!-- Template Main JS File -->
+    <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
 </body>
-
-<!-- Vendor JS Files -->
-<script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="assets/vendor/chart.js/chart.umd.js"></script> -->
-<!-- <script src="assets/vendor/echarts/echarts.min.js"></script> -->
-<!-- <script src="assets/vendor/quill/quill.min.js"></script> -->
-<!-- <script src="assets/vendor/simple-datatables/simple-datatables.js"></script> -->
-<!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
-<!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
-
-<!-- Template Main JS File -->
-<script src="<?php echo base_url(); ?>assets/js/main.js"></script>
-
-<!-- bootstrap popup link -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
 
 </html>

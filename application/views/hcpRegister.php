@@ -5,23 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HCP Signup Page</title>
-
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
+    <!-- Bootstrap 5.1.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -59,8 +50,6 @@
         #login:hover {
             text-decoration: underline;
         }
-
-
 
         @media (max-width: 768px) {
             .fixed-image {
@@ -159,12 +148,10 @@
                                 placeholder="re-type password" class="form-control rounded-pill p-3">
                             <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                         </div>
-
                         <!-- <div class="mb-3">
                             <input type="checkbox" id="check" name="check" value="1">
                             <label for="check">I agree the Terms of Use and Privacy Policy.</label>
                         </div> -->
-
                         <button type="submit" class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
                             style="background-color:#00AD8E;font-size:16px;font-weight:600;">Sign Up</button>
                     </form>
@@ -176,6 +163,47 @@
         </div>
     </div>
 
+    <!--Display Message Popup Screen -->
+    <div class="modal fade" id="display_message" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <?php if ($this->session->flashdata('successMessage')) { ?>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                    </div>
+                <?php }
+                if ($this->session->flashdata('errorMessage')) { ?>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                    </div>
+                <?php } ?>
+                <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                        data-bs-dismiss="modal">Close</button> </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.1.3 JS Bundle (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Display popup success error message -->
+    <script>
+        <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+            var displayMessage = new bootstrap.Modal(document.getElementById('display_message'));
+            displayMessage.show();
+        <?php } ?>
+    </script>
+
+    <!-- Validation -->
     <script>
         function validateSignup() {
             var name = document.getElementById("hcpName").value;
@@ -248,7 +276,6 @@
             document.getElementById("passwordmessage").style.display = "none";
         }
 
-
         function removeError() {
             var name = document.getElementById("hcpName").value;
             var mobile = document.getElementById("hcpMobile").value;
@@ -283,6 +310,7 @@
         }
     </script>
 
+    <!-- Password visiblity -->
     <script>
         document.getElementById('togglePassword').addEventListener('click', function () {
             const passwordField = document.getElementById('hcpPassword');

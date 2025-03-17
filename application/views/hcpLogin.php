@@ -5,24 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HCP Login Page</title>
-
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-
+    <!-- Bootstrap 5.1.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-
-
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -69,7 +59,7 @@
                 margin: 0 auto;
             }
 
-            #hcpHeading{
+            #hcpHeading {
                 text-align: center;
             }
         }
@@ -92,7 +82,8 @@
                 <div class="login-form mx-lg-2 mx-xxl-5 p-3 p-sm-4 p-xxl-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
                             id="edfLogo" alt="logo" class="img-fluid"></a>
-                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;" id="hcpHeading" >Healthcare Provider Login</p>
+                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;" id="hcpHeading">Healthcare
+                        Provider Login</p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
                     <p class="text-justify" style="font-size:18px;font-weight:400;">Empowering general practitioners to
                         provide personalized online diabetes consultations for comprehensive patient care. </p>
@@ -139,6 +130,47 @@
         </div>
     </div>
 
+    <!--Display Message Popup Screen -->
+    <div class="modal fade" id="display_message" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <?php if ($this->session->flashdata('successMessage')) { ?>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                    </div>
+                <?php }
+                if ($this->session->flashdata('errorMessage')) { ?>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                            data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                    </div>
+                <?php } ?>
+                <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                        data-bs-dismiss="modal">Close</button> </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.1.3 JS Bundle (includes Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Display popup success error message -->
+    <script>
+        <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+            var displayMessage = new bootstrap.Modal(document.getElementById('display_message'));
+            displayMessage.show();
+        <?php } ?>
+    </script>
+
+    <!-- Validation -->
     <script>
         // document.getElementById("hcpPassword").onfocus = function () {
         //     document.getElementById("passwordmessage").style.display = "block";
@@ -194,6 +226,7 @@
         }
     </script>
 
+    <!-- Password Visiblity -->
     <script>
         document.getElementById('togglePassword').addEventListener('click', function () {
             const passwordField = document.getElementById('hcpPassword');
@@ -218,6 +251,7 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
+
     <!-- Hide page source Ctrl + U -->
     <script>
         document.onkeydown = function (e) {

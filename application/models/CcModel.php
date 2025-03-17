@@ -20,6 +20,7 @@ class CcModel extends CI_Model
             'approvalStatus' => $approval
         );
         $this->db->insert('cc_details', $insert);
+        return true;
     }
 
     public function generateCcId()
@@ -53,18 +54,18 @@ class CcModel extends CI_Model
         }
     }
 
-    public function checkMobileExistence($ccMobileNum)
+    public function check_existing_user($mobileNumber, $mailId)
     {
-        $this->db->where('doctorMobile', $ccMobileNum);
-        $query = $this->db->get('cc_details');
-        return $query->num_rows() > 0;
-    }
+        $existingFields = [];
 
-    public function checkMailExistence($ccMailId)
-    {
-        $this->db->where('doctorMail', $ccMailId);
-        $query = $this->db->get('cc_details');
-        return $query->num_rows() > 0;
+        if ($this->db->where('doctorMobile', $mobileNumber)->get('cc_details')->num_rows() > 0) {
+            $existingFields[] = 'Mobile Number';
+        }
+        if ($this->db->where('doctorMail', $mailId)->get('cc_details')->num_rows() > 0) {
+            $existingFields[] = 'Mail Id';
+        }
+
+        return $existingFields;
     }
 
     public function changeNewPassword()
@@ -104,6 +105,7 @@ class CcModel extends CI_Model
         );
         $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updatedata);
+        return true;
     }
 
     public function allPatientList()
@@ -168,7 +170,6 @@ class CcModel extends CI_Model
 
         $this->load->library('upload', $config);
 
-
         if ($this->upload->do_upload('ccProfile')) {
             $data = $this->upload->data();
             $photo = $data['file_name'];
@@ -183,6 +184,7 @@ class CcModel extends CI_Model
         );
         $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updatedata);
+        return true;
     }
 
     public function updateProfileDetails()
@@ -206,6 +208,7 @@ class CcModel extends CI_Model
         );
         $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updatedata);
+        return true;
     }
 
 }

@@ -171,8 +171,7 @@
                                         class="form-control rounded-pill p-3" min="0">
                                     <div id="otp_err" class="text-danger pt-1"></div>
                                 </div>
-                                <input type="hidden" id="ccMobileNum" name="ccMobileNum"
-                                    value="<?php echo $ccMobileNumber; ?>">
+                                <input type="hidden" id="ccMobileNum" name="ccMobileNum" value="<?php echo $ccMobileNumber; ?>">
                                 <div class="d-flex justify-content-between mt-4">
                                     <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
                                         style="background-color:#0079AD;font-size:16px;font-weight:600;">Verify</button>
@@ -226,8 +225,7 @@
                                             placeholder="re-type password" class="form-control rounded-pill p-3">
                                         <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <input type="hidden" id="ccMobileNum" name="ccMobileNum"
-                                        value="<?php echo $hcpMobileNumber ?>">
+                                    <input type="hidden" id="ccMobileNum" name="ccMobileNum" value="<?php echo $hcpMobileNumber ?>">
                                     <div class="d-flex justify-content-between mt-5">
                                         <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
                                             style="background-color:#0079AD;font-size:16px;font-weight:600;">Change</button>

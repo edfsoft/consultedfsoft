@@ -6,23 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon" />
     <title>Health Care Provider</title>
-
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
-    <!-- <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"> -->
-    <!-- <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet"> -->
-    <!-- <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet"> -->
-    <!-- <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet"> -->
-    <!-- <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet"> -->
-
     <!-- Template Main CSS File -->
     <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet" />
-
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
-
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -68,113 +59,20 @@
 </head>
 
 <body>
-    <header id="header" class="header fixed-top d-flex align-items-center">
-        <div class="d-flex align-items-center justify-content-between">
-            <a href="https://erodediabetesfoundation.org/" target="blank" class="logo d-flex align-items-center">
-                <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="edf" />
-            </a>
-            <i class="bi bi-list toggle-sidebar-btn"></i>
-        </div>
-
-        <!-- <div class="input-group form-control rounded-pill d-none d-md-flex w-25 ms-3">
-            <span class="px-2 my-auto"><i class="bi bi-search"></i></span>
-            <input type="text" class="form-control border-0" placeholder="Search here" />
-        </div> -->
-
-        <nav class="header-nav ms-auto me-2 me-md-4">
-            <ul class="d-flex align-items-center">
-                <li class="nav-item dropdown d-flex justify-content-evenly">
-                    <a href="#" class="m-2 me-4">
-                        <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a>
-                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
-                        class="rounded-circle" />
-                    <p class="text-dark w-100 d-none d-md-block me-2 my-auto ps-2">
-                        Dr. <?php echo $_SESSION['hcpsName']; ?>
-                    </p>
-                    <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                        <span class="dropdown-toggle mx-4"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-                        style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
-                        <li class="dropdown-header">
-                            <h6> <?php echo $_SESSION['hcpsName']; ?> / </h6>
-                            <p> <?php echo $_SESSION['hcpId']; ?> </p>
-                            <span>Health Care Provider</span>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li> <a class="dropdown-item d-flex align-items-center"
-                                href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"> <i
-                                    class="bi bi-person"></i> <span>My Profile</span> </a> </li>
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li> <a href="<?php echo base_url() . "Healthcareprovider/logout" ?>"
-                                class="dropdown-item d-flex align-items-center text-danger"
-                                onclick="return confirm('Are you sure to logout?')">
-                                <i class="bi bi-box-arrow-right"></i>
-                                <span>Log Out</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
-    <aside id="sidebar" class="sidebar" style="background-color: #00ad8e">
-        <ul class="sidebar-nav pt-5 ps-4" id="sidebar-nav">
-            <li class="">
-                <a class="" href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>" id="dashboard"
-                    style="font-size: 18px; font-weight: 400;color:white;">
-                    <i class="bi bi-grid pe-3"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" style="font-size: 18px; font-weight: 400;color:white;" id="patients"
-                    href="<?php echo base_url() . "Healthcareprovider/patients" ?>">
-                    <div><i class="bi bi-person pe-3"></i> <span>Patients</span></div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
-                    style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
-                    <div>
-                        <i class="bi bi-calendar4 pe-3"></i> <span>Appointments</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>"
-                    style="font-size: 18px; font-weight: 400;color:white;" id="chiefDoctor">
-                    <div>
-                        <i class="bi bi-person-hearts pe-3"></i>
-                        <span>Chief Doctors</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Healthcareprovider/logout" ?>"
-                    style="font-size: 18px; font-weight: 400;color:white;" id="logout"
-                    onclick="return confirm('Are you sure to logout?')">
-                    <div>
-                        <i class="bi bi-box-arrow-in-right pe-3"></i>
-                        <span>Log Out</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </aside>
+    <?php $this->load->view('hcpHeader'); ?>
 
     <main id="main" class="main">
-
-        <?php
+        <?php if ($this->session->flashdata('showSuccessMessage')) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $this->session->flashdata('showSuccessMessage'); ?>
+            </div>
+        <?php } elseif ($this->session->flashdata('showErrorMessage')) { ?>
+            <div id="display_message"
+                style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
+                <?php echo $this->session->flashdata('showErrorMessage'); ?>
+            </div>
+        <?php }
         if ($method == "dashboard") {
             ?>
 
@@ -560,7 +458,6 @@
                                 const prescriptionButton = value.consultedOnce === '1' ?
                                     '<a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-prescription"></i></button></a>' :
                                     '<button class="btn btn-secondary mb-1" disabled><i class="bi bi-prescription"></i></button>';
-
                                 patientRow.innerHTML =
                                     '<td class="pt-3">' + (start + index + 1) + '.</td>' +
                                     '<td class="px-2">' +
@@ -579,7 +476,6 @@
                                 patientContainer.appendChild(patientRow);
                             });
                         }
-
                         generatePatientPagination(filteredPatientDetails.length, page);
                     }
 
@@ -653,7 +549,7 @@
 
                             <div class="card-body px-md-4 pb-4">
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                         <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
                                             name="patientDetails" id="patientDetails" enctype="multipart/form-data" method="POST"
                                             oninput="clearErrorPatientDetails()" onsubmit="return validatePatientDetails()">
@@ -828,20 +724,38 @@
                                                     <p class="mx-2 my-2">Cm</p>
                                                 </div>
                                             </div>
-                                            <div class="form-group pb-3">
+                                            <!-- <div class="form-group pb-3">
                                                 <label class="form-label" for="patientBp">Blood Pressure</label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control" id="patientBp" name="patientBp"
                                                         placeholder="E.g. 100">
                                                     <p class="mx-2 my-2">mmHg</p>
                                                 </div>
+                                            </div> -->
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="">Blood Pressure</label>
+                                                <div class="d-flex align-items-center">
+                                                    <div>
+                                                        <input type="text" class="form-control" id="patientSystolicBp"
+                                                            name="patientSystolicBp" placeholder="E.g. 120 (Systolic)">
+                                                        <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                                    </div>
+                                                    <span class="mx-2">/</span>
+                                                    <div>
+                                                        <input type="text" class="form-control" id="patientDiastolicBp"
+                                                            name="patientDiastolicBp" placeholder="E.g. 80 (Diastolic)">
+                                                        <div id="patientBp_err" class="text-danger pt-1"></div>
+                                                    </div>
+                                                    <p class="mx-2 my-2">mmHg</p>
+                                                </div>
                                             </div>
+
                                             <div class="form-group pb-3">
                                                 <label class="form-label" for="patientsCholestrol">Cholestrol</label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control" id="patientsCholestrol"
                                                         name="patientsCholestrol" min="0" placeholder="E.g. 50">
-                                                    <p class="mx-2 my-2">mg/dl</p>
+                                                    <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
                                             <div class="form-group pb-3">
@@ -849,7 +763,7 @@
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control" id="patientBsugar"
                                                         name="patientBsugar" min="0" placeholder="E.g. 200">
-                                                    <p class="mx-2 my-2">mmol/L</p>
+                                                    <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
                                             <div class="form-group pb-3">
@@ -865,7 +779,7 @@
                                                         class="text-danger">*</span></label>
                                                 <input type="text" id="patientSymptoms" name="patientSymptoms" readonly
                                                     class="form-control" hidden>
-                                                <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer"> </div>
+                                                <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer"></div>
                                                 <select class="form-select" id="multiSelectSymptoms">
                                                     <option value="" selected disabled>Select Symptoms</option>
                                                 <?php
@@ -878,6 +792,12 @@
                                                         </option>
                                             <?php } ?>
                                                 </select>
+                                                <div class="input-group mt-2">
+                                                    <input type="text" id="customSymptomInput" class="form-control"
+                                                        placeholder="Add custom symptom">
+                                                    <button type="button" id="addCustomSymptom"
+                                                        class="btn btn-secondary">Add</button>
+                                                </div>
                                                 <div id="symptoms_err" class="text-danger pt-1"></div>
                                             </div>
                                             <div class="form-group pb-3">
@@ -950,11 +870,14 @@
                         </div>
                     </section>
 
+                    <!-- Symptoms / complaints  -->
                     <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             const multiSelect = document.getElementById("multiSelectSymptoms");
                             const selectedValuesInput = document.getElementById("patientSymptoms");
                             const selectedValuesContainer = document.getElementById("selectedValuesContainer");
+                            const customSymptomInput = document.getElementById("customSymptomInput");
+                            const addCustomSymptomBtn = document.getElementById("addCustomSymptom");
 
                             let selectedValues = new Set();
 
@@ -965,7 +888,7 @@
                                     span.classList.add('badge', 'bg-secondary', 'me-2', 'd-inline-flex', 'align-items-center');
                                     span.textContent = value;
                                     const button = document.createElement('button');
-                                    button.innerHTML = '&times;';
+                                    button.innerHTML = '×';
                                     button.classList.add('btn-close', 'btn-close-white', 'ms-2');
                                     button.addEventListener('click', () => {
                                         selectedValues.delete(value);
@@ -991,11 +914,31 @@
                                     selectedValues.add(option.value);
                                     option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                     if (!option.innerHTML.includes('✓')) {
-                                        option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span >`;
-
+                                        option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
                                     }
                                 });
                                 updateSelectedValues();
+                            });
+
+                            addCustomSymptomBtn.addEventListener("click", () => {
+                                const customValue = customSymptomInput.value.trim();
+                                if (customValue) {
+                                    selectedValues.add(customValue);
+                                    updateSelectedValues();
+                                    customSymptomInput.value = ''; // Clear the input after adding
+                                }
+                            });
+
+                            customSymptomInput.addEventListener("keypress", (e) => {
+                                if (e.key === "Enter") {
+                                    e.preventDefault(); // Prevent form submission if inside a form
+                                    const customValue = customSymptomInput.value.trim();
+                                    if (customValue) {
+                                        selectedValues.add(customValue);
+                                        updateSelectedValues();
+                                        customSymptomInput.value = ''; // Clear the input after adding
+                                    }
+                                }
                             });
                         });
                     </script>
@@ -1138,12 +1081,12 @@
                                                         <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo"
                                                             width="180" height="180" class="rounded-circle">
                                         <?php } ?>
-                                                    <button class="position-absolute bottom-0 " type="button" data-toggle="modal"
-                                                        data-target="#updateProfile"
-                                                        onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')"><i
-                                                            class="bi bi-pencil-square"></i></button>
+                                                    <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
+                                                        data-bs-target="#updateProfile"
+                                                        onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')">
+                                                        <i class="bi bi-pencil-square"></i></button>
                                                 </div>
-                                                <div class="col-md-8">
+                                                <div class="col-md-6">
 
                                                     <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
                                                         name="patientDetails" id="multi-step-form" enctype="multipart/form-data"
@@ -1341,12 +1284,32 @@
                                                                 <p class="mx-2 my-2">Cm</p>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group pb-3">
+                                                        <!-- <div class="form-group pb-3">
                                                             <label class="form-label" for="patientBp">Blood Pressure </label>
                                                             <div class="d-flex">
                                                                 <input type="number" class="form-control" id="patientBp" name="patientBp"
                                                                     value="<?php echo $value['bloodPressure'] ?>" min="0"
                                                                     placeholder="E.g. 100">
+                                                                <p class="mx-2 my-2">mmHg</p>
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="">Blood Pressure</label>
+                                                            <div class="d-flex align-items-center">
+                                                                <div>
+                                                                    <input type="text" class="form-control" id="patientSystolicBp"
+                                                                        name="patientSystolicBp" value="<?php echo $value['systolicBp'] ?>"
+                                                                        placeholder="E.g. 120 (Systolic)">
+                                                                    <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <span class="mx-2">/</span>
+                                                                <div>
+                                                                    <input type="text" class="form-control" id="patientDiastolicBp"
+                                                                        name="patientDiastolicBp"
+                                                                        value="<?php echo $value['diastolicBp'] ?>"
+                                                                        placeholder="E.g. 80 (Diastolic)">
+                                                                    <div id="patientBp_err" class="text-danger pt-1"></div>
+                                                                </div>
                                                                 <p class="mx-2 my-2">mmHg</p>
                                                             </div>
                                                         </div>
@@ -1356,7 +1319,7 @@
                                                                 <input type="number" class="form-control" id="patientsCholestrol"
                                                                     name="patientsCholestrol" min="0"
                                                                     value="<?php echo $value['cholestrol'] ?>" placeholder="E.g. 50">
-                                                                <p class="mx-2 my-2">mg/dl</p>
+                                                                <p class="mx-2 my-2">mg/dL</p>
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
@@ -1365,7 +1328,7 @@
                                                                 <input type="number" class="form-control" id="patientBsugar"
                                                                     name="patientBsugar" min="0" value="<?php echo $value['bloodSugar'] ?>"
                                                                     placeholder="E.g. 200">
-                                                                <p class="mx-2 my-2">mmol/L</p>
+                                                                <p class="mx-2 my-2">mg/dL</p>
                                                             </div>
                                                         </div>
                                                         <div class="form-group pb-3">
@@ -1397,8 +1360,15 @@
                                                                     </option>
                                                     <?php } ?>
                                                             </select>
+                                                            <div class="input-group mt-2">
+                                                                <input type="text" id="customSymptomInput" class="form-control"
+                                                                    placeholder="Add custom symptom">
+                                                                <button type="button" id="addCustomSymptom"
+                                                                    class="btn btn-secondary">Add</button>
+                                                            </div>
                                                             <div id="symptoms_err" class="text-danger pt-1"></div>
                                                         </div>
+
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="patientMedicines">Medicines</label>
                                                             <select class="form-select" id="patientMedicines" name="patientMedicines">
@@ -1480,15 +1450,17 @@
                             </div>
                         </section>
 
+                        <!-- Symptoms / Complaints -->
                         <script>
                             document.addEventListener("DOMContentLoaded", () => {
                                 const multiSelect = document.getElementById("multiSelectSymptoms");
                                 const selectedValuesInput = document.getElementById("patientSymptoms");
                                 const selectedValuesContainer = document.getElementById("selectedValuesContainer");
+                                const customSymptomInput = document.getElementById("customSymptomInput");
+                                const addCustomSymptomBtn = document.getElementById("addCustomSymptom");
 
                                 const symptomsFromDatabase = "<?php echo $value['symptoms'] ?>";
-                                const initialSelectedValues = symptomsFromDatabase.split(', ').map(item => item.trim());
-
+                                const initialSelectedValues = symptomsFromDatabase ? symptomsFromDatabase.split(', ').map(item => item.trim()) : [];
                                 let selectedValues = new Set(initialSelectedValues);
 
                                 const updateSelectedValues = () => {
@@ -1498,7 +1470,7 @@
                                         span.classList.add('badge', 'bg-secondary', 'me-2', 'd-inline-flex', 'align-items-center');
                                         span.textContent = value;
                                         const button = document.createElement('button');
-                                        button.innerHTML = '&times;';
+                                        button.innerHTML = '×';
                                         button.classList.add('btn-close', 'btn-close-white', 'ms-2');
                                         button.addEventListener('click', () => {
                                             selectedValues.delete(value);
@@ -1525,7 +1497,7 @@
                                                 option.selected = true;
                                                 option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                                 if (!option.innerHTML.includes('✓')) {
-                                                    option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span > `;
+                                                    option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
                                                 }
                                             }
                                         });
@@ -1539,10 +1511,31 @@
                                         selectedValues.add(option.value);
                                         option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
                                         if (!option.innerHTML.includes('✓')) {
-                                            option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span >`;
+                                            option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
                                         }
                                     });
                                     updateSelectedValues();
+                                });
+
+                                addCustomSymptomBtn.addEventListener("click", () => {
+                                    const customValue = customSymptomInput.value.trim();
+                                    if (customValue) {
+                                        selectedValues.add(customValue);
+                                        updateSelectedValues();
+                                        customSymptomInput.value = '';
+                                    }
+                                });
+
+                                customSymptomInput.addEventListener("keypress", (e) => {
+                                    if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        const customValue = customSymptomInput.value.trim();
+                                        if (customValue) {
+                                            selectedValues.add(customValue);
+                                            updateSelectedValues();
+                                            customSymptomInput.value = '';
+                                        }
+                                    }
                                 });
 
                                 initializeSelection();
@@ -1793,15 +1786,15 @@
                                             </div>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> :
-                                    <?php echo $value['bloodPressure'] ? $value['bloodPressure'] . " mmHg" : "Not provided"; ?>
+                                    <?php echo $value['systolicBp'] ? $value['systolicBp'] . " / " . $value['diastolicBp'] . " mmHg" : "Not provided"; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">Cholestrol </span> :
-                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dl" : "Not provided"; ?>
+                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dL" : "Not provided"; ?>
                                                 </p>
                                             </div>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> :
-                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mmol/L" : "Not provided"; ?>
+                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mg/dL" : "Not provided"; ?>
                                                 </p>
                                                 <p><span class="text-secondary ">Diagonsis / Complaints</span> :
                                     <?php echo $value['diagonsis'] ?>
@@ -3162,15 +3155,15 @@
                                                                 </div>
                                                                 <div class="d-md-flex">
                                                                     <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> -
-                                    <?php echo $value['bloodPressure'] ? $value['bloodPressure'] . " mmHg" : "Not provided"; ?>
+                                    <?php echo $value['systolicBp'] ? $value['systolicBp'] . " / " . $value['diastolicBp'] . " mmHg" : "Not provided"; ?>
                                                                     </p>
                                                                     <p><span class="text-secondary ">Cholestrol </span> -
-                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dl" : "Not provided"; ?>
+                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dL" : "Not provided"; ?>
                                                                     </p>
                                                                 </div>
                                                                 <div class="d-md-flex">
                                                                     <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> -
-                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . "mmol/L" : "Not provided"; ?>
+                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . "mg/dL" : "Not provided"; ?>
                                                                     </p>
                                                                     <p><span class="text-secondary ">Diagonsis / Complaints</span> -
                                     <?php echo $value['diagonsis'] ? $value['diagonsis'] : "Not provided"; ?>
@@ -4210,10 +4203,9 @@
                                                                                                     height="180" class="rounded-circle">
 
                                     <?php } ?>
-                                                                                            <button class="position-absolute bottom-0 " type="button" data-toggle="modal"
-                                                                                                data-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
+                                                                                            <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
+                                                                                                data-bs-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
                                                                                         </div>
-
 
                                                                                         <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
                                                                                             name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
@@ -4399,63 +4391,65 @@
                                                                             }
                                                                         }
                                                                     </script>
-
         <?php } ?>
 
+        <!-- All modal files -->
+        <?php include 'hcpModals.php'; ?>
 
-        <!-- Popup Update Profile Photo -->
-        <div class="modal fade" id="updatePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+        <!--Display Message Popup Screen -->
+        <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action=" <?php echo base_url() . "Healthcareprovider/updatePhoto" ?>"
-                            name="profilePhotoForm" name="profilePhotoForm" enctype="multipart/form-data" method="POST">
-                            <label for="hcpProfile" class="pb-2">Upload file: </label><br>
-                            <input type="file" name="hcpProfile" id="hcpProfile"
-                                accept="image/png ,image/jpg, image/jpeg" required><br><br>
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </form>
-                    </div>
+                    <?php if ($this->session->flashdata('successMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
+                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                        </div>
+                    <?php }
+                    if ($this->session->flashdata('errorMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                        </div>
+                    <?php } ?>
+                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                            data-bs-dismiss="modal">Close</button> </div>
                 </div>
             </div>
         </div>
-
-        <!-- Popup Update Patient Profile Photo -->
-        <div class="modal fade" id="updateProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update photo</h5>
-                        <button type="button" class="close btn btn-outline-danger" data-dismiss="modal"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action=" <?php echo base_url() . "Healthcareprovider/updatePatientPhoto" ?>"
-                            name="profilePhotoForm" name="profilePhotoForm" enctype="multipart/form-data" method="POST">
-                            <label for="hcpProfile" class="pb-2">Upload file: </label><br>
-                            <input type="file" name="patientProfile" id="patientProfile"
-                                accept="image/png ,image/jpg, image/jpeg" required><br><br>
-                            <input type="hidden" id="photoPatientIdDb" name="photoPatientIdDb" value="">
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
 
     </main>
+
+    <!-- Display popup success error message -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var messagePopup = document.getElementById('display_message_popup');
+
+            if (messagePopup) {
+                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+                    var displayMessage = new bootstrap.Modal(messagePopup);
+                    displayMessage.show();
+                <?php } ?>
+            }
+        });
+    </script>
+
+    <!-- Display message for 3 seconds  -->
+    <script>
+        setTimeout(() => {
+            const displayMessage = document.getElementById('display_message');
+            if (displayMessage) {
+                displayMessage.style.display = 'none';
+            }
+        }, 3000);
+    </script>
 
     <!-- Event listener to block right-click -->
     <script>
@@ -4465,7 +4459,6 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
-
     <!-- Hide page source Ctrl + U -->
     <script>
         document.onkeydown = function (e) {
@@ -4474,29 +4467,14 @@
             }
         };
     </script>
+    <!-- Vendor JS Files -->
+    <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
+    <!-- PDF Download link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 </body>
-
-<!-- Vendor JS Files -->
-<script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- <script src="assets/vendor/chart.js/chart.umd.js"></script> -->
-<!-- <script src="assets/vendor/echarts/echarts.min.js"></script> -->
-<!-- <script src="assets/vendor/quill/quill.min.js"></script> -->
-<!-- <script src="assets/vendor/simple-datatables/simple-datatables.js"></script> -->
-<!-- <script src="assets/vendor/tinymce/tinymce.min.js"></script> -->
-<!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
-
-<!-- Template Main JS File -->
-<script src="<?php echo base_url(); ?>assets/js/main.js"></script>
-
-<!-- Bootstrap popup link -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-<!-- PDF Download link -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-
 
 </html>

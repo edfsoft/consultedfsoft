@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class chiefconsultant extends CI_Controller
+class Chiefconsultant extends CI_Controller
 {
 
     function __construct()
@@ -101,20 +101,14 @@ class chiefconsultant extends CI_Controller
         $ccMobileNum = $this->input->post('ccMobile');
         $ccMailId = $this->input->post('ccEmail');
 
-        if ($this->CcModel->checkMobileExistence($ccMobileNum)) {
-            echo '<script type="text/javascript">
-                    alert("Mobile number already exists. Please use a new number.");
-                    window.location.href = "' . site_url('Chiefconsultant/register') . '";
-                  </script>';
-            exit();
-        } elseif ($this->CcModel->checkMailExistence($ccMailId)) {
-            echo '<script type="text/javascript">
-                    alert("Mail id already exists. Please use a new mail id.");
-                    window.location.href = "' . site_url('Chiefconsultant/register') . '";
-                  </script>';
+        $existingFields = $this->CcModel->check_existing_user($ccMobileNum, $ccMailId);
+
+        if (!empty($existingFields)) {
+            $errorMessage = implode(', ', $existingFields) . ' already exist. Please use different credential.';
+            $this->session->set_flashdata('errorMessage', $errorMessage);
+            redirect('Chiefconsultant/register');
             exit();
         } else {
-            $postData = $this->input->post(null, true);
             $register = $this->CcModel->register();
             $generateid = $this->CcModel->generateCcId();
             redirect('Chiefconsultant/');
@@ -135,16 +129,12 @@ class chiefconsultant extends CI_Controller
             $this->session->set_userdata($LoggedInDetails);
             redirect('Chiefconsultant/dashboard');
         } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
-            echo '<script type="text/javascript">
-            alert("You can log in once the verification process is done.");
-            window.location.href = "' . site_url('Chiefconsultant/') . '";
-          </script>';
+            $this->session->set_flashdata('errorMessage', 'You can log in once the verification process is done.');
+            redirect('Chiefconsultant/');
             exit();
         } else {
-            echo '<script type="text/javascript">
-            alert("Please enter registered details.");
-            window.location.href = "' . site_url('Chiefconsultant/') . '";
-          </script>';
+            $this->session->set_flashdata('errorMessage', 'Please enter registered details.');
+            redirect('Chiefconsultant/');
             exit();
         }
     }
@@ -288,22 +278,27 @@ class chiefconsultant extends CI_Controller
 
     public function updatePhoto()
     {
-        $profileDetails = $this->CcModel->updateProfilePhoto();
+        if ($this->CcModel->updateProfilePhoto()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Profile photo updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating profile photo');
+        }
         redirect('Chiefconsultant/editMyProfile');
     }
 
     public function updateMyProfile()
     {
-        $profileDetails = $this->CcModel->updateProfileDetails();
+        if ($this->CcModel->updateProfileDetails()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Profile details updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating profile details');
+        }
         redirect('Chiefconsultant/myProfile');
     }
 
     public function logout()
     {
         // $this->session->unset_userdata('LoggedInDetails');
-        // unset($this->session->LoggedInDetails('ccId'));
-        // unset($this->session->userdata('ccId'));
-        // $this->session->mark_as_flash('LoggedInDetails');
         $this->session->unset_userdata('ccIdDb');
         $this->session->unset_userdata('ccId');
         $this->session->unset_userdata('ccName');

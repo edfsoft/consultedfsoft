@@ -21,20 +21,21 @@ class HcpModel extends CI_Model
             'approvalStatus' => $approval
         );
         $this->db->insert('hcp_details', $insert);
+        return true;
     }
 
-    public function checkMobileExistence($hcpMobileNum)
+    public function check_existing_user($mobileNumber, $mailId)
     {
-        $this->db->where('hcpMobile', $hcpMobileNum);
-        $query = $this->db->get('hcp_details');
-        return $query->num_rows() > 0;
-    }
+        $existingFields = [];
 
-    public function checkMailExistence($hcpMailId)
-    {
-        $this->db->where('hcpMail', $hcpMailId);
-        $query = $this->db->get('hcp_details');
-        return $query->num_rows() > 0;
+        if ($this->db->where('hcpMobile', $mobileNumber)->get('hcp_details')->num_rows() > 0) {
+            $existingFields[] = 'Mobile Number';
+        }
+        if ($this->db->where('hcpMail', $mailId)->get('hcp_details')->num_rows() > 0) {
+            $existingFields[] = 'Mail Id';
+        }
+
+        return $existingFields;
     }
 
     public function generatehcpid()
@@ -165,7 +166,8 @@ class HcpModel extends CI_Model
             'partnerBlood' => $post['partnerBlood'],
             'weight	' => $post['patientWeight'],
             'height	' => $post['patientHeight'],
-            'bloodPressure' => $post['patientBp'],
+            'systolicBp' => $post['patientSystolicBp'],
+            'diastolicBp' => $post['patientDiastolicBp'],
             'cholestrol' => $post['patientsCholestrol'],
             'bloodSugar' => $post['patientBsugar'],
             'diagonsis	' => $post['patientDiagonsis'],
@@ -187,9 +189,10 @@ class HcpModel extends CI_Model
             );
             $this->db->insert('medicines_list', $insert);
         }
+        return true;
     }
 
-    public function updatePatients()
+    public function updatePatientsDetails()
     {
         $post = $this->input->post(null, true);
 
@@ -234,7 +237,8 @@ class HcpModel extends CI_Model
             'partnerBlood' => $post['partnerBlood'],
             'weight	' => $post['patientWeight'],
             'height	' => $post['patientHeight'],
-            'bloodPressure' => $post['patientBp'],
+            'patientSystolicBp' => $post['patientSystolicBp'],
+            'patientDiastolicBp' => $post['patientDiastolicBp'],
             'cholestrol' => $post['patientsCholestrol'],
             'bloodSugar' => $post['patientBsugar'],
             'diagonsis	' => $post['patientDiagonsis'],
@@ -245,9 +249,10 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $post['patientIdDb']);
         $this->db->update('patient_details', $insertdata);
+        return true;
     }
 
-    public function updatePatientProfile()
+    public function updatePatientProfilePhoto()
     {
         $post = $this->input->post(null, true);
 
@@ -270,6 +275,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $post['photoPatientIdDb']);
         $this->db->update('patient_details', $updatedata);
+        return true;
     }
 
     public function generatePatientId()
@@ -371,6 +377,7 @@ class HcpModel extends CI_Model
             'hcpDbId' => $_SESSION['hcpIdDb']
         );
         $this->db->insert('appointment_details', $insert);
+        return true;
     }
 
     public function getAppointmentReschedule()
@@ -401,6 +408,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $post['appTableId']);
         $this->db->update('appointment_details', $updatedata);
+        return true;
     }
 
     public function addPrescription()
@@ -466,6 +474,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $hcpIdDb);
         $this->db->update('hcp_details', $updatedata);
+        return true;
     }
 
     public function updateProfileDetails()
@@ -486,6 +495,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $hcpIdDb);
         $this->db->update('hcp_details', $updatedata);
+        return true;
     }
 
     public function getCcProfile()

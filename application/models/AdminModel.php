@@ -32,11 +32,13 @@ class AdminModel extends CI_Model
 
     public function approveCcDb($ccIdDb)
     {
+        $postData = $this->input->post(null, true);
         $updateStatus = array(
-            'approvalStatus' => '1',
+            'approvalStatus' => $postData['approveCc'],
         );
         $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updateStatus);
+        return true;
     }
 
     public function deleteCcDb($ccIdDb)
@@ -46,6 +48,7 @@ class AdminModel extends CI_Model
         );
         $this->db->where('id', $ccIdDb);
         $this->db->update('cc_details', $updateStatus);
+        return true;
     }
 
     public function hcpList()
@@ -64,11 +67,13 @@ class AdminModel extends CI_Model
 
     public function approveHcpDb($hcpIdDb)
     {
+        $postData = $this->input->post(null, true);
         $updateStatus = array(
-            'approvalStatus' => '1',
+            'approvalStatus' => $postData['approveHcp'],
         );
         $this->db->where('id', $hcpIdDb);
         $this->db->update('hcp_details', $updateStatus);
+        return true;
     }
 
     public function deleteHcpDb($hcpIdDb)
@@ -78,6 +83,7 @@ class AdminModel extends CI_Model
         );
         $this->db->where('id', $hcpIdDb);
         $this->db->update('hcp_details', $updateStatus);
+        return true;
     }
 
     public function patientList()
@@ -101,6 +107,7 @@ class AdminModel extends CI_Model
         );
         $this->db->where('id', $patientIdDb);
         $this->db->update('patient_details', $updateStatus);
+        return true;
     }
 
     public function getSpecializationList()
@@ -117,6 +124,7 @@ class AdminModel extends CI_Model
             'specializationName' => $post['specializationName'],
         );
         $this->db->insert('specialization_list', $insert);
+        return true;
     }
 
     public function specilizationDelete($id)
@@ -129,6 +137,7 @@ class AdminModel extends CI_Model
         // $this->db->update('specialization_list', $update);
         $this->db->where('id', $specilizationId);
         $this->db->delete('specialization_list');
+        return true;
     }
 
     public function newSymptoms()
@@ -138,6 +147,7 @@ class AdminModel extends CI_Model
             'symptomsName' => $post['symptomsName'],
         );
         $this->db->insert('symptoms_list', $insert);
+        return true;
     }
 
     public function getsymptomsList()
@@ -152,6 +162,7 @@ class AdminModel extends CI_Model
         $symptomsId = $id;
         $this->db->where('id', $symptomsId);
         $this->db->delete('symptoms_list');
+        return true;
     }
 
     public function newMedicine()
@@ -163,6 +174,7 @@ class AdminModel extends CI_Model
             'strength' => $post['maedicineStrength']
         );
         $this->db->insert('medicines_list', $insert);
+        return true;
     }
 
     public function getMedicinesList()
@@ -177,6 +189,7 @@ class AdminModel extends CI_Model
         $medicineId = $id;
         $this->db->where('id', $medicineId);
         $this->db->delete('medicines_list');
+        return true;
     }
 
 

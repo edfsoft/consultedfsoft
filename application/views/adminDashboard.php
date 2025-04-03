@@ -363,8 +363,12 @@
                                     <div class="mb-3">
                                         <label for="ccPassword" class="form-label">Password <span
                                                 class="text-danger">*</span></label>
-                                        <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
-                                            class="form-control">
+                                        <div style="position: relative;">
+                                            <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
+                                                class="form-control">
+                                            <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('ccPassword', this)"
+                                                style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                        </div>
                                         <div id="password_err" class="text-danger pt-1"></div>
                                     </div>
                                     <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
@@ -373,8 +377,12 @@
                                     <div class="mb-3">
                                         <label for="ccCnfmPassword" class="form-label">Confirm Password <span
                                                 class="text-danger">*</span></label>
-                                        <input type="password" name="ccCnfmPassword" id="ccCnfmPassword"
-                                            placeholder="confirm password" class="form-control">
+                                        <div style="position: relative;">
+                                            <input type="password" name="ccCnfmPassword" id="ccCnfmPassword"
+                                                placeholder="confirm password" class="form-control">
+                                            <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('ccCnfmPassword', this)"
+                                                style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                        </div>
                                         <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                     </div>
                                     <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
@@ -536,14 +544,14 @@
                                                         style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['doctorMail']; ?>
                                                     </a></p>
-                                                <!-- <div class="input-group">
+                                                <div class="input-group">
                                                     <input type="password" class="form-control" id="password" name="password"
                                                         value='<?php echo $value['doctorPassword']; ?>' readonly>
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         onclick="togglePasswordVisibility('password', 'visibilityIcon')">
                                                         <i id="visibilityIcon" class="bi bi-eye-slash"></i>
                                                     </button>
-                                                </div> -->
+                                                </div>
                                                 <p class="pt-3"><?php echo $value['gMeetLink']; ?></p>
                                             </div>
                                         </div>
@@ -662,29 +670,6 @@
                                 if (input.value != "") {
                                     linkError.textContent = "";
                                 }
-                            }
-                        </script>
-
-                        <script>
-                            function togglePasswordVisibility(inputId, iconId) {
-                                var passwordInput = document.getElementById(inputId);
-                                var visibilityIcon = document.getElementById(iconId);
-
-                                if (passwordInput.type === "password") {
-                                    passwordInput.type = "text";
-                                    visibilityIcon.classList.remove("bi-eye-slash");
-                                    visibilityIcon.classList.add("bi-eye");
-                                } else {
-                                    passwordInput.type = "password";
-                                    visibilityIcon.classList.remove("bi-eye");
-                                    visibilityIcon.classList.add("bi-eye-slash");
-                                }
-                            }
-                        </script>
-
-                        <script>
-                            function goBack() {
-                                window.history.back();
                             }
                         </script>
 
@@ -917,8 +902,12 @@
                                                 <div class="mb-3">
                                                     <label for="hcpPassword" class="form-label">Password <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
-                                                        class="form-control">
+                                                    <div style="position: relative;">
+                                                        <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
+                                                            class="form-control">
+                                                        <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('hcpPassword', this)"
+                                                            style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                                    </div>
                                                     <div id="password_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
@@ -927,8 +916,12 @@
                                                 <div class="mb-3">
                                                     <label for="hcpCnfmPassword" class="form-label">Confirm Password <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
-                                                        placeholder="confirm password" class="form-control">
+                                                    <div style="position: relative;">
+                                                        <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
+                                                            placeholder="confirm password" class="form-control">
+                                                        <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('hcpCnfmPassword', this)"
+                                                            style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                                    </div>
                                                     <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
@@ -1091,14 +1084,14 @@
                                                                     style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['hcpMail']; ?>
                                                                 </a></p>
-                                                            <!-- <div class="input-group">
+                                                            <div class="input-group">
                                                                 <input type="password" class="form-control" id="password" name="password"
                                                                     value='<?php echo $value['hcpPassword']; ?>' readonly>
                                                                 <button type="button" class="btn btn-outline-secondary"
                                                                     onclick="togglePasswordVisibility('password', 'visibilityIcon')">
                                                                     <i id="visibilityIcon" class="bi bi-eye-slash"></i>
                                                                 </button>
-                                                            </div> -->
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <h5 class="fw-bolder pb-3">Profile Details:</h5>
@@ -1160,29 +1153,6 @@
                                             </div>
 
                                     </section>
-
-                                    <script>
-                                        function togglePasswordVisibility(inputId, iconId) {
-                                            var passwordInput = document.getElementById(inputId);
-                                            var visibilityIcon = document.getElementById(iconId);
-
-                                            if (passwordInput.type === "password") {
-                                                passwordInput.type = "text";
-                                                visibilityIcon.classList.remove("bi-eye-slash");
-                                                visibilityIcon.classList.add("bi-eye");
-                                            } else {
-                                                passwordInput.type = "password";
-                                                visibilityIcon.classList.remove("bi-eye");
-                                                visibilityIcon.classList.add("bi-eye-slash");
-                                            }
-                                        }
-                                    </script>
-
-                                    <script>
-                                        function goBack() {
-                                            window.history.back();
-                                        }
-                                    </script>
 
             <?php
         } else if ($method == "patient") {
@@ -1594,12 +1564,6 @@
                                                     </div>
                                                 </div>
                                             </section>
-
-                                            <script>
-                                                function goBack() {
-                                                    window.history.back();
-                                                }
-                                            </script>
 
             <?php
         } else if ($method == "specialization") {
@@ -2134,6 +2098,48 @@
         }, 3000);
     </script>
 
+    <!-- Password visiblity add CC and HCP -->
+    <script>
+        function togglePasswordVisibility(id, icon) {
+            const passwordField = document.getElementById(id);
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                icon.classList.remove("bi-eye-slash");
+                icon.classList.add("bi-eye");
+            } else {
+                passwordField.type = "password";
+                icon.classList.remove("bi-eye");
+                icon.classList.add("bi-eye-slash");
+            }
+        }
+    </script>
+
+    <!-- View CC and HCP password -->
+    <script>
+        function togglePasswordVisibility(inputId, iconId) {
+            var passwordInput = document.getElementById(inputId);
+            var visibilityIcon = document.getElementById(iconId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                visibilityIcon.classList.remove("bi-eye-slash");
+                visibilityIcon.classList.add("bi-eye");
+            } else {
+                passwordInput.type = "password";
+                visibilityIcon.classList.remove("bi-eye");
+                visibilityIcon.classList.add("bi-eye-slash");
+            }
+        }
+    </script>
+
+    <!-- Go back -->
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
     <!-- Event listener to block right-click -->
     <script>
         function blockRightClick(event) {
@@ -2142,6 +2148,7 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
+
     <!-- Hide page source Ctrl + U -->
     <script>
         document.onkeydown = function (e) {

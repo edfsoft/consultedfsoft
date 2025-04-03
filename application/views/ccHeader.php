@@ -5,47 +5,54 @@
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
+
     <!-- <div class="input-group form-control rounded-pill d-none d-md-flex w-25 ms-3">
             <span class="px-2 my-auto"><i class="bi bi-search"></i></span>
             <input type="text" class="form-control border-0" placeholder="Search here" />
         </div> -->
+
     <nav class="header-nav ms-auto me-2 me-md-4">
         <ul class="d-flex align-items-center">
             <li class="nav-item dropdown d-flex justify-content-evenly">
-                <a href="#" class="m-2 me-4">
-                    <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a>
+                <!-- <a href="#" class="m-2 me-4">
+                    <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a> -->
                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
-                    class="rounded-circle" />
-                <p class="text-dark w-100 d-none d-md-block me-2 my-auto ps-2">
-                    Dr. <?php echo $_SESSION['ccName']; ?>
-                </p>
-                <a class="nav-link nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                    <span class="dropdown-toggle mx-4"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-                    style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
-                    <li class="dropdown-header">
-                        <h6> <?php echo $_SESSION['ccName']; ?> / </h6>
-                        <p> <?php echo $_SESSION['ccId']; ?> </p>
-                        <span>Health Care Provider</span>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li> <a class="dropdown-item d-flex align-items-center"
-                            href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>"> <i class="bi bi-person"></i>
-                            <span>My Profile</span> </a> </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#confirmLogout"
-                            class="dropdown-item d-flex align-items-center text-danger">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Log Out</span>
-                        </a>
-                    </li>
-                </ul>
+                    class="d-none d-md-block rounded-circle" />
+                <div class="ps-3">
+                    <a class="d-flex align-items-center text-dark fw-medium" href="#" data-bs-toggle="dropdown"
+                        onmouseover="this.style.textDecoration='underline';"
+                        onmouseout="this.style.textDecoration='none';">
+                        <?php echo $_SESSION['ccName']; ?> <span class="dropdown-toggle mx-2 mx-sm-3"></span>
+                    </a>
+                    <span class="fw-medium" style="font-size:16px;color: #0079AD;">CC</span>
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
+                        style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
+                        <li class="dropdown-header">
+                            <p class="fs-6 fw-medium text-dark"> <?php echo $_SESSION['ccName']; ?> / </p>
+                            <p> <?php echo $_SESSION['ccId']; ?> </p>
+                            <span>Health Care Provider</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li> <a class="dropdown-item d-flex align-items-center"
+                                href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>"
+                                onmouseover="this.style.textDecoration='underline';"
+                                onmouseout="this.style.textDecoration='none';"> <i class="bi bi-person"></i>
+                                <span>My Profile</span> </a> </li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#confirmLogout"
+                                class="dropdown-item d-flex align-items-center text-danger">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Log Out</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
     </nav>

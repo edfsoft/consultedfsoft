@@ -15,39 +15,42 @@
                 <!-- <a href="" class="m-2 me-4">
                          <img src="<?php echo base_url(); ?>assets/bell.svg" alt="Notification" /></a> -->
                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
-                    class="rounded-circle me-1" />
-                <p class="text-light w-100 d-none d-md-block me-2 my-auto ps-2">
-                    <?php echo $_SESSION['adminName']; ?>
-                </p>
-                <a class="nav-link nav-profile d-flex align-items-center text-light" href="#" data-bs-toggle="dropdown">
-                    <span class="dropdown-toggle mx-4"></span> </a>
+                    class="d-none d-md-block rounded-circle me-1" />
+                <div class="ps-3">
+                    <a class="d-flex align-items-center text-light fw-medium" href="#" data-bs-toggle="dropdown"
+                        onmouseover="this.style.textDecoration='underline';"
+                        onmouseout="this.style.textDecoration='none';">
+                        <?php echo $_SESSION['adminName']; ?> <span class="dropdown-toggle mx-2 mx-sm-3"></span>
+                    </a>
+                    <span class="fw-medium text-light" style="font-size:14px;">Admin</span>
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
-                    style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
-                    <li class="dropdown-header">
-                        <h6> <?php echo $_SESSION['adminName']; ?></h6>
-                        <span>EDF Consult Adminstrator</span>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                        <a href="#" class="dropdown-item d-flex align-items-center">
-                            <i class="bi bi-person"></i>
-                            <span>My Profile</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
+                        style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
+                        <li class="dropdown-header">
+                            <p class="fs-6 fw-medium text-dark"> <?php echo $_SESSION['adminName']; ?></p>
+                            <span>EDF Consult Adminstrator</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
+                        <li>
+                            <a href="#" class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-person"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
 
-                    <li>
-                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#confirmLogout"
-                            class="dropdown-item d-flex align-items-center text-danger">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Log Out</span></a>
-                    </li>
-                </ul>
+                        <li>
+                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#confirmLogout"
+                                class="dropdown-item d-flex align-items-center text-danger">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Log Out</span></a>
+                        </li>
+                    </ul>
+                </div>
             </li>
         </ul>
     </nav>

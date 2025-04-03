@@ -2148,7 +2148,6 @@
 
         document.addEventListener('contextmenu', blockRightClick);
     </script>
-
     <!-- Hide page source Ctrl + U -->
     <script>
         document.onkeydown = function (e) {

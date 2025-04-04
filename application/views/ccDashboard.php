@@ -763,12 +763,6 @@
 
                     </section>
 
-                    <script>
-                        function goBack() {
-                            window.history.back();
-                        }
-                    </script>
-
             <?php
         } else if ($method == "prescription") {
             ?>
@@ -914,11 +908,6 @@
                             </div>
                         </section>
 
-                        <script>
-                            function goBack() {
-                                window.history.back();
-                            }
-                        </script>
                         <script>
                             function printPrescription() {
                                 const printContents = document.getElementById("pdf-wrapper").innerHTML;
@@ -1410,11 +1399,6 @@
                                             </div>
                                         </div>
                                     </section>
-                                    <script>
-                                        function goBack() {
-                                            window.history.back();
-                                        }
-                                    </script>
 
             <?php
         } else if ($method == "myProfile") {
@@ -1742,24 +1726,6 @@
                                                     // } else {
                                                     //     document.getElementById("profilePhoto_err").innerHTML = "";
                                                     // }
-
-
-                                                }
-                                            </script>
-                                            <script>
-                                                function togglePasswordVisibility(inputId, iconId) {
-                                                    var passwordInput = document.getElementById(inputId);
-                                                    var visibilityIcon = document.getElementById(iconId);
-
-                                                    if (passwordInput.type === "password") {
-                                                        passwordInput.type = "text";
-                                                        visibilityIcon.classList.remove("bi-eye-slash");
-                                                        visibilityIcon.classList.add("bi-eye");
-                                                    } else {
-                                                        passwordInput.type = "password";
-                                                        visibilityIcon.classList.remove("bi-eye");
-                                                        visibilityIcon.classList.add("bi-eye-slash");
-                                                    }
                                                 }
                                             </script>
 
@@ -1767,80 +1733,9 @@
 
         <!-- All modal files -->
         <?php include 'ccModals.php'; ?>
-
-        <!--Display Message Popup Screen -->
-        <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <?php if ($this->session->flashdata('successMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
-                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
-                        </div>
-                    <?php }
-                    if ($this->session->flashdata('errorMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
-                        </div>
-                    <?php } ?>
-                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
-                            data-bs-dismiss="modal">Close</button> </div>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <!-- Display popup success error message -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var messagePopup = document.getElementById('display_message_popup');
-
-            if (messagePopup) {
-                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
-                    var displayMessage = new bootstrap.Modal(messagePopup);
-                    displayMessage.show();
-                <?php } ?>
-            }
-        });
-    </script>
-
-    <!-- Display message for 3 seconds  -->
-    <script>
-        setTimeout(() => {
-            const displayMessage = document.getElementById('display_message');
-            if (displayMessage) {
-                displayMessage.style.display = 'none';
-            }
-        }, 3000);
-    </script>
-
-    <!-- Event listener to block right-click -->
-    <script>
-        function blockRightClick(event) {
-            event.preventDefault();
-        }
-
-        document.addEventListener('contextmenu', blockRightClick);
-    </script>
-
-    <!-- Hide page source Ctrl + U -->
-    <script>
-        document.onkeydown = function (e) {
-            if (e.ctrlKey && e.keyCode === 85) {
-                return false;
-            }
-        };
-    </script>
-    <!-- Crop Image and Upload HCP profile -->
+    <!-- Crop Image and Upload CC profile -->
     <script>
         let cropper;
 
@@ -1912,6 +1807,9 @@
 
     <!-- Cropper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <!-- Common Script -->
+    <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
     <!-- Vendor JS Files -->
     <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>

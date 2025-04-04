@@ -504,6 +504,9 @@ class Healthcareprovider extends CI_Controller
     //     $this->load->view('hcpDashboard.php',  $this->data);
     // }
 
+
+
+    
     public function logout()
     {
         // $this->session->unset_userdata('LoggedInDetails');

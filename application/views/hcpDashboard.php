@@ -54,7 +54,7 @@
 
         .table-hoverr tbody tr:hover td,
         .table-hoverr tbody tr:hover th {
-            background-color: rgba(0,173,142, 0.1) !important;
+            background-color: rgba(0, 173, 142, 0.1) !important;
         }
 
         /* Prescription Print */
@@ -462,9 +462,9 @@
                             itemsToShow.forEach((value, index) => {
                                 const patientRow = document.createElement('tr');
 
-                                const prescriptionButton = value.consultedOnce === '1' ?
-                                    '<a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-prescription"></i></button></a>' :
-                                    '<button class="btn btn-secondary mb-1" disabled><i class="bi bi-prescription"></i></button>';
+                                // const prescriptionButton = value.consultedOnce === '1' ?
+                                //     '<a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-prescription"></i></button></a>' :
+                                //     '<button class="btn btn-secondary mb-1" disabled><i class="bi bi-prescription"></i></button>';
                                 patientRow.innerHTML =
                                     '<td class="pt-3">' + (start + index + 1) + '.</td>' +
                                     '<td class="px-2">' +
@@ -478,7 +478,8 @@
                                     '<td class="d-fle dlg-block pt-2" style="font-size: 16px;" >' +
                                     '<a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-pencil"></i></button></a>' +
                                     '<a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/' + value.id + '" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>' +
-                                    prescriptionButton +
+                                    // prescriptionButton + 
+                                    '<a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/' + value.id + '" class="px-1"><button class="btn btn-info mb-1"><i class="bi bi-eye"></i></button></a>' +
                                     '</td>';
                                 patientContainer.appendChild(patientRow);
                             });
@@ -1902,13 +1903,7 @@
                                 </div>
                             </section>
 
-                            <script>
-                                function goBack() {
-                                    window.history.back();
-                                }
-                            </script>
-
-            <?php
+                                 <?php
         } else if ($method == "prescription") {
             ?>
 
@@ -2054,13 +2049,7 @@
                                     </div>
                                 </section>
 
-                                <script>
-                                    function goBack() {
-                                        window.history.back();
-                                    }
-                                </script>
-
-                                <script>
+                               <script>
                                     function checkPrinterConnection() {
                                         document.getElementById("printButton").disabled = false;
                                     }
@@ -3536,12 +3525,6 @@
                                                     dateInput.setAttribute('min', minDate);
                                                 </script>
 
-                                                <script>
-                                                    function goBack() {
-                                                        window.history.back();
-                                                    }
-                                                </script>
-
             <?php
         } else if ($method == "appointmentReschedule") {
             ?>
@@ -4093,12 +4076,6 @@
                                                                 </div>
                                                             </section>
 
-                                                            <script>
-                                                                function goBack() {
-                                                                    window.history.back(); yy
-                                                                }
-                                                            </script>
-
             <?php
         } else if ($method == "myProfile") {
             ?>
@@ -4212,8 +4189,9 @@
                                     <?php } ?>
                                                                                             <!-- <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
                                                                                                 data-bs-target="#updateHCPPhoto"><i class="bi bi-pencil-square"></i></button> -->
-                                                                                                <a href="#" class="position-absolute bottom-0 rounded-circl px-2 py-1" style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%; " role="button" data-bs-toggle="modal"
-                                                                        data-bs-target="#updateHCPPhoto"><i class="bi bi-camera"></i></a>
+                                                                                            <a href="#" class="position-absolute bottom-0 rounded-circl px-2 py-1"
+                                                                                                style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%; " role="button"
+                                                                                                data-bs-toggle="modal" data-bs-target="#updateHCPPhoto"><i class="bi bi-camera"></i></a>
                                                                                         </div>
 
                                                                                         <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
@@ -4240,18 +4218,18 @@
                                                                                                 <div id="drEmail_err" class="text-danger pt-1"></div>
                                                                                             </div>
                                                                                             <!-- <div class="form-group pb-3 ">
-                                                                <label class="form-label" for="drPassword">Password <span
-                                                                        class="text-danger">*</span></label>
-                                                                <div class="d-flex">
-                                                                    <input type="password" class="form-control" id="drPassword" name="drPassword"
-                                                                        value='<?php echo $value['hcpPassword']; ?>'>
-                                                                    <button type="button" class="btn btn-outline-secondary"
-                                                                        onclick="togglePasswordVisibility('drPassword', 'visibilityIcon')">
-                                                                        <i id="visibilityIcon" class="bi bi-eye-slash"></i>
-                                                                    </button>
-                                                                </div>
-                                                                <div id="drPassword_err" class="text-danger pt-1"></div>
-                                                            </div> -->
+                                                                                                    <label class="form-label" for="drPassword">Password <span
+                                                                                                            class="text-danger">*</span></label>
+                                                                                                    <div class="d-flex">
+                                                                                                        <input type="password" class="form-control" id="drPassword" name="drPassword"
+                                                                                                            value='<?php echo $value['hcpPassword']; ?>'>
+                                                                                                        <button type="button" class="btn btn-outline-secondary"
+                                                                                                            onclick="togglePasswordVisibility('drPassword', 'visibilityIcon')">
+                                                                                                            <i id="visibilityIcon" class="bi bi-eye-slash"></i>
+                                                                                                        </button>
+                                                                                                    </div>
+                                                                                                    <div id="drPassword_err" class="text-danger pt-1"></div>
+                                                                                                </div> -->
                                                                                             <div class="form-group pb-3">
                                                                                                 <label class="form-label" for="specialization">Specialization <span
                                                                                                         class="text-danger">*</span></label>
@@ -4384,98 +4362,12 @@
                                                                         }
                                                                     </script>
 
-                                                                    <script>
-                                                                        function togglePasswordVisibility(inputId, iconId) {
-                                                                            var passwordInput = document.getElementById(inputId);
-                                                                            var visibilityIcon = document.getElementById(iconId);
-
-                                                                            if (passwordInput.type === "password") {
-                                                                                passwordInput.type = "text";
-                                                                                visibilityIcon.classList.remove("bi-eye-slash");
-                                                                                visibilityIcon.classList.add("bi-eye");
-                                                                            } else {
-                                                                                passwordInput.type = "password";
-                                                                                visibilityIcon.classList.remove("bi-eye");
-                                                                                visibilityIcon.classList.add("bi-eye-slash");
-                                                                            }
-                                                                        }
-                                                                    </script>
         <?php } ?>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
-
-        <!--Display Message Popup Screen -->
-        <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <?php if ($this->session->flashdata('successMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
-                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
-                        </div>
-                    <?php }
-                    if ($this->session->flashdata('errorMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
-                        </div>
-                    <?php } ?>
-                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
-                            data-bs-dismiss="modal">Close</button> </div>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <!-- Display popup success error message -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var messagePopup = document.getElementById('display_message_popup');
-
-            if (messagePopup) {
-                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
-                    var displayMessage = new bootstrap.Modal(messagePopup);
-                    displayMessage.show();
-                <?php } ?>
-            }
-        });
-    </script>
-
-    <!-- Display message for 3 seconds  -->
-    <script>
-        setTimeout(() => {
-            const displayMessage = document.getElementById('display_message');
-            if (displayMessage) {
-                displayMessage.style.display = 'none';
-            }
-        }, 3000);
-    </script>
-
-    <!-- Event listener to block right-click -->
-    <script>
-        function blockRightClick(event) {
-            event.preventDefault();
-        }
-
-        document.addEventListener('contextmenu', blockRightClick);
-    </script>
-    <!-- Hide page source Ctrl + U -->
-    <script>
-        document.onkeydown = function (e) {
-            if (e.ctrlKey && e.keyCode === 85) {
-                return false;
-            }
-        };
-    </script>
     <!-- Crop Image and Upload HCP profile -->
     <script>
         let cropper;
@@ -4548,6 +4440,10 @@
 
     <!-- Cropper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <!-- Common Script -->
+    <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
+
     <!-- Vendor JS Files -->
     <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

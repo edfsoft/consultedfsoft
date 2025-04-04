@@ -161,7 +161,7 @@ class Healthcareprovider extends CI_Controller
             $this->data['method'] = "patients";
             $patientList = $this->HcpModel->getPatientList();
             $this->data['patientList'] = $patientList['response'];
-            $this->load->view('hcpDashboard.php', $this->data);
+            $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
@@ -175,7 +175,7 @@ class Healthcareprovider extends CI_Controller
             $this->data['symptomsList'] = $symptoms;
             $medicines = $this->HcpModel->getMedicines();
             $this->data['medicinesList'] = $medicines;
-            $this->load->view('hcpDashboard.php', $this->data);
+            $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
@@ -213,7 +213,7 @@ class Healthcareprovider extends CI_Controller
             $this->data['patientAppHistory'] = $appHistory;
             $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
             $this->data['appMedicines'] = $appMedicines;
-            $this->load->view('hcpDashboard.php', $this->data);
+            $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
@@ -230,7 +230,7 @@ class Healthcareprovider extends CI_Controller
             $this->data['symptomsList'] = $symptoms;
             $medicines = $this->HcpModel->getMedicines();
             $this->data['medicinesList'] = $medicines;
-            $this->load->view('hcpDashboard.php', $this->data);
+            $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
@@ -265,7 +265,7 @@ class Healthcareprovider extends CI_Controller
             $this->data['patientDetails'] = $patientDetails;
             $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
             $this->data['appMedicines'] = $appMedicines;
-            $this->load->view('hcpDashboard.php', $this->data);
+            $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }

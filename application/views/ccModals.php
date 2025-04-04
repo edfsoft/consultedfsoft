@@ -1,5 +1,5 @@
 <!-- Popup Update Profile Photo -->
-<div class="modal fade" id="updatePhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="updateCCPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -16,6 +16,36 @@
                     <input type="file" name="ccProfile" id="ccProfile" accept="image/png ,image/jpg, image/jpeg"
                         required><br><br>
                     <button type="submit" class="btn text-light" style="background-color: #0079AD;">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="modal fade" id="updateCCPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="exampleModalLabel">Update Profile Photo</h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <label for="ccProfile" class="pb-2">Upload file: <span class="text-danger">*</span></label><br>
+                    <input type="file" name="ccProfile" id="ccProfile" accept="image/png ,image/jpg, image/jpeg"
+                        required>
+                    <br><br>
+                    <div style="max-width: 300px; max-height:300px; overflow: hidden;">
+                        <img id="previewImage" style="max-width: 100%;">
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="uploadButton" class="btn text-light"
+                            style="background-color: #0079AD;">Upload</button>
+                    </div>
                 </form>
             </div>
         </div>

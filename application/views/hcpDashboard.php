@@ -52,6 +52,11 @@
             font-weight: 500;
         }
 
+        .table-hoverr tbody tr:hover td,
+        .table-hoverr tbody tr:hover th {
+            background-color: rgba(0,173,142, 0.1) !important;
+        }
+
         /* Prescription Print */
         @page {
             size: A4;
@@ -406,7 +411,7 @@
                         ?>
                             <div class="card-body ps-2 p-sm-4">
                                 <div class="table-responsive">
-                                    <table class="table text-center table-hover" id="patientTable">
+                                    <table class="table text-center table-hoverr" id="patientTable">
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
@@ -1863,7 +1868,7 @@
                                                         </div>
                                                         <p class="text-secondary">Medicines table : </p>
 
-                                                        <table class="table table-bordered table-hover border border-dark text-center">
+                                                        <table class="table table-bordered table-hoverr border border-dark text-center">
                                                             <thead class="table-light border border-dark">
                                                                 <tr>
                                                                     <th scope="col">Rx</th>
@@ -1984,7 +1989,7 @@
                                                     <div class="table-responsive row my-4">
                                                         <div class="col-12">
                                                             <h5 class="fw-bold">Prescription:</h5>
-                                                            <table class="table table-bordered table-hover border border-dark">
+                                                            <table class="table table-bordered table-hoverr border border-dark">
                                                                 <thead class="table-light border border-dark">
                                                                     <tr>
                                                                         <th scope="col">Rx</th>
@@ -2136,7 +2141,7 @@
 
                                                 <div class="card-body p-2 p-sm-4">
                                                     <div class="table-responsive">
-                                                        <table class="table text-center table-hover" id="appointmentTable">
+                                                        <table class="table text-center table-hoverr" id="appointmentTable">
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
@@ -2287,7 +2292,7 @@
 
                                                 <div class="card-body p-2 p-sm-4">
                                                     <div class="table-responsive">
-                                                        <table class="table table-hover text-center" id="appointmentReschedule">
+                                                        <table class="table table-hoverr text-center" id="appointmentReschedule">
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
@@ -4193,7 +4198,7 @@
                                                                             </div>
                                                                             <div class="card-body ps-3 p-sm-4">
                                                                                 <div class="">
-                                                                                    <div class="position-relative mb-5">
+                                                                                    <div class="position-relative mb-5" style="height:200px;">
                                     <?php
                                     foreach ($hcpDetails as $key => $value) {
                                         ?>
@@ -4205,8 +4210,10 @@
                                                                                                     height="180" class="rounded-circle">
 
                                     <?php } ?>
-                                                                                            <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
-                                                                                                data-bs-target="#updateHCPPhoto"><i class="bi bi-pencil-square"></i></button>
+                                                                                            <!-- <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
+                                                                                                data-bs-target="#updateHCPPhoto"><i class="bi bi-pencil-square"></i></button> -->
+                                                                                                <a href="#" class="position-absolute bottom-0 rounded-circl px-2 py-1" style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%; " role="button" data-bs-toggle="modal"
+                                                                        data-bs-target="#updateHCPPhoto"><i class="bi bi-camera"></i></a>
                                                                                         </div>
 
                                                                                         <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
@@ -4469,39 +4476,7 @@
             }
         };
     </script>
-
-    <div class="modal fade" id="updateHCPPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-medium" id="exampleModalLabel">Update Profile Photo</h5>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                    <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal"
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        <label for="hcpProfile" class="pb-2">Upload file: </label><br>
-                        <input type="file" name="hcpProfile" id="hcpProfile" accept="image/png ,image/jpg, image/jpeg"
-                            required>
-                        <br><br>
-                        <div style="max-width: 300px; max-height:300px; overflow: hidden;">
-                            <img id="previewImage" style="max-width: 100%;">
-                        </div>
-                        <div class="modal-footer d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" id="uploadButton" class="btn text-light"
-                                style="background-color: #00ad8e;">Upload</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Crop Image and Upload -->
+    <!-- Crop Image and Upload HCP profile -->
     <script>
         let cropper;
 

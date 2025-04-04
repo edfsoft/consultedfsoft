@@ -14,6 +14,8 @@
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <!-- Image Cropper -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -37,6 +39,11 @@
         /* Form Labels */
         .form-label {
             font-weight: 500;
+        }
+
+        .table-hoverr tbody tr:hover td,
+        .table-hoverr tbody tr:hover th {
+            background-color: rgba(0, 121, 173, 0.1) !important;
         }
 
         /* Prescription Print */
@@ -382,7 +389,7 @@
                             ?>
 
                                 <div class="table-responsive">
-                                    <table class="table table-hover text-center" id="PatientList">
+                                    <table class="table table-hoverr text-center" id="PatientList">
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">S.NO</th>
@@ -716,7 +723,7 @@
                                                 </div>
                                                 <p class="text-secondary">Medicines table : </p>
 
-                                                <table class="table table-bordered table-hover border border-dark text-center">
+                                                <table class="table table-bordered table-hoverr border border-dark text-center">
                                                     <thead class="table-light border border-dark">
                                                         <tr>
                                                             <th scope="col">Rx</th>
@@ -842,7 +849,7 @@
                                             <div class="table-responsive row my-4">
                                                 <div class="col-12">
                                                     <h5 class="fw-bold">Prescription:</h5>
-                                                    <table class="table table-bordered table-hover border border-dark">
+                                                    <table class="table table-bordered table-hoverr border border-dark">
                                                         <thead class="table-light border border-dark">
                                                             <tr>
                                                                 <th scope="col">Rx</th>
@@ -969,7 +976,7 @@
                             if (isset($appointmentList[0]['id'])) {
                                 ?>
                                             <div class="table-responsive">
-                                                <table class="table table-hover class=" pt-3" text-center" id="appointmentTable">
+                                                <table class="table table-hoverr class=" pt-3" text-center" id="appointmentTable">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #0079AD">
@@ -1536,17 +1543,18 @@
                             foreach ($ccDetails as $key => $value) {
                                 ?>
                                                             <div class="">
-                                                                <div class="position-relative mb-5">
+                                                                <div class="position-relative mb-5" style="height:200px;">
 
                                     <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                                                        <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="180" height="180"
-                                                                            class="rounded-circle">
+                                                                        <div></div><img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="180"
+                                                                            height="180" class="rounded-circle">
                                     <?php } else { ?>
                                                                         <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180"
                                                                             height="180" class="rounded-circle">
                                     <?php } ?>
-                                                                    <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
-                                                                        data-bs-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
+                                                                    <a href="#" class="position-absolute bottom-0 rounded-circl px-2 py-1"
+                                                                        style="color: #0079AD;border: 2px solid #0079AD;border-radius: 50%; " role="button"
+                                                                        data-bs-toggle="modal" data-bs-target="#updateCCPhoto"><i class="bi bi-camera"></i></a>
                                                                 </div>
 
                                                                 <form action="<?php echo base_url() . "Chiefconsultant/updateMyProfile" ?>"
@@ -1832,14 +1840,86 @@
             }
         };
     </script>
+    <!-- Crop Image and Upload HCP profile -->
+    <script>
+        let cropper;
 
-<!-- Vendor JS Files -->
-<script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Template Main JS File -->
-<script src="<?php echo base_url(); ?>assets/js/main.js"></script>
-<!-- PDF Download link -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+        document.getElementById('ccProfile').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const image = document.getElementById('previewImage');
+                    image.src = e.target.result;
+
+                    if (cropper) cropper.destroy();
+
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        viewMode: 2,
+                        dragMode: 'move',
+                        cropBoxResizable: false,
+                        cropBoxMovable: true,
+                        ready: function () {
+                            cropper.setCropBoxData({
+                                width: 200,
+                                height: 200
+                            });
+                        }
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('uploadButton').addEventListener('click', function () {
+            if (!cropper) {
+                alert("Please select an image to upload.");
+                return;
+            }
+            cropper.getCroppedCanvas({ width: 200, height: 200 }).toBlob(blob => {
+                if (!blob) {
+                    alert("Cropping failed. Please try again.");
+                    return;
+                }
+
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+
+                const fileName = `doctorCC_${day}_${month}_${year}_${hours}_${minutes}.jpg`;
+
+                const formData = new FormData();
+                formData.append('ccProfile', blob, fileName);
+
+                fetch("<?php echo base_url() . 'Chiefconsultant/updatePhoto' ?>", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        var myModal = new bootstrap.Modal(document.getElementById('updateCCPhoto'));
+                        myModal.hide();
+                        location.reload();
+                    })
+                    .catch(error => console.error("Upload failed:", error));
+            }, "image/jpeg");
+        });
+    </script>
+
+    <!-- Cropper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+    <!-- Vendor JS Files -->
+    <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
+    <!-- PDF Download link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
 </body>
 

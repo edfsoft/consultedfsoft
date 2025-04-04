@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EDF Admin Login Page</title>
+    <title>Admin Login Page - EDF</title>
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
     <!-- Bootstrap 5.1.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">

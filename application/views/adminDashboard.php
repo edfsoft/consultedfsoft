@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon" />
-    <title>EDF Admin</title>
+    <title>Admin - EDF</title>
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />

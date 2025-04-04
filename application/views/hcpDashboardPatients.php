@@ -162,7 +162,7 @@
                                 '<a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-pencil"></i></button></a>' +
                                 '<a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/' + value.id + '" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>' +
                                 // prescriptionButton + 
-                                '<a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/' + value.id + '" class="px-1"><button class="btn btn-info mb-1"><i class="bi bi-eye"></i></button></a>' +
+                                '<a href="<?php echo base_url(); ?>Healthcareprovider/consultation/' + value.id + '" class=""><button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button></a>' +
                                 '</td>';
                             patientContainer.appendChild(patientRow);
                         });
@@ -1758,6 +1758,166 @@
                                         .save();
                                 }
                             </script>
+            <?php
+        } else if ($method == "newConsultation") {
+            ?>
+                                <section>
+                                    <div class="card rounded">
+                                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                            <p style="font-size: 24px; font-weight: 500"> Consultation </p>
+                                            <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>"
+                                                class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                        </div>
+
+                                        <div class="card-body px-md-4 pb-4">
+                                            <p class="my-3 fs-5 fw-medium">Patient Details:</p>
+
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+                                                <div class="text-center pt-2 pb-4">
+                                                    <p style="font-size: 16px; font-weight: 700"> <?php echo $value['firstName'] ?>
+                                    <?php echo $value['lastName'] ?> | <?php echo $value['patientId'] ?>
+                                                    </p>
+                                                    <p><a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                        <?php echo $value['mobileNumber'] ?></a> | <?php echo $value['gender'] ?> |
+                                    <?php echo $value['age'] ?> Year(s)
+                                                    </p>
+                                                </div>
+
+                                                <div class="d-md-flex">
+                                                    <p class="col-sm-6"><span class="text-secondary ">Weight</span> -
+                                    <?php echo $value['weight'] ? $value['weight'] . " Kg" : "Not provided"; ?>
+                                                    </p>
+                                                    <p><span class="text-secondary ">Height</span> -
+                                    <?php echo $value['height'] ? $value['height'] . " Cm" : "Not provided"; ?>
+                                                    </p>
+                                                </div>
+                                                <div class="d-md-flex">
+                                                    <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> -
+                                    <?php echo $value['systolicBp'] ? $value['systolicBp'] . " / " . $value['diastolicBp'] . " mmHg" : "Not provided"; ?>
+                                                    </p>
+                                                    <p><span class="text-secondary ">Cholestrol </span> -
+                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dL" : "Not provided"; ?>
+                                                    </p>
+                                                </div>
+                                                <div class="d-md-flex">
+                                                    <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> -
+                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . "mg/dL" : "Not provided"; ?>
+                                                    </p>
+                                                    <p><span class="text-secondary ">Diagonsis / Complaints</span> -
+                                    <?php echo $value['diagonsis'] ? $value['diagonsis'] : "Not provided"; ?>
+                                                    </p>
+                                                </div>
+                                                <div class="d-md-flex">
+                                                    <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
+                                    <?php echo $value['symptoms'] ? $value['symptoms'] : "Not provided"; ?>
+                                                    </p>
+                                                    <p><span class="text-secondary ">Medicines</span> -
+                                    <?php echo $value['medicines'] ? $value['medicines'] : "Not provided"; ?>
+                                                    </p>
+                                                </div>
+
+                        <?php } ?>
+
+                                            <!-- ********************************************************************************************************* -->
+                                            <div class="border rounded shadow mt-4 p-3">
+                                                <form id="patientForm" class="container">
+                                                    <!-- Repeatable Field Block -->
+                                                    <div class="mb-3">
+                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
+                                                            role="button">
+                                                            <span><strong>Symptoms</strong></span>
+                                                            <span class="toggle-icon">+</span>
+                                                        </div>
+                                                        <div class="collapse field-container mt-2">
+                                                            <textarea class="form-control mb-2" name="symptoms" rows="3"
+                                                                placeholder="Enter symptoms..."></textarea>
+                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
+                                                            role="button">
+                                                            <span><strong>Findings</strong></span>
+                                                            <span class="toggle-icon">+</span>
+                                                        </div>
+                                                        <div class="collapse field-container mt-2">
+                                                            <textarea class="form-control mb-2" name="findings" rows="3"
+                                                                placeholder="Enter findings..."></textarea>
+                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
+                                                            role="button">
+                                                            <span><strong>Diagnosis</strong></span>
+                                                            <span class="toggle-icon">+</span>
+                                                        </div>
+                                                        <div class="collapse field-container mt-2">
+                                                            <textarea class="form-control mb-2" name="diagnosis" rows="3"
+                                                                placeholder="Enter diagnosis..."></textarea>
+                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
+                                                            role="button">
+                                                            <span><strong>Investigations</strong></span>
+                                                            <span class="toggle-icon">+</span>
+                                                        </div>
+                                                        <div class="collapse field-container mt-2">
+                                                            <textarea class="form-control mb-2" name="investigations" rows="3"
+                                                                placeholder="Enter investigations..."></textarea>
+                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
+                                                            role="button">
+                                                            <span><strong>Medicines</strong></span>
+                                                            <span class="toggle-icon">+</span>
+                                                        </div>
+                                                        <div class="collapse field-container mt-2">
+                                                            <textarea class="form-control mb-2" name="medicines" rows="3"
+                                                                placeholder="Enter medicines..."></textarea>
+                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <button type="submit" class="btn btn-success mt-3">Submit</button>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <script>
+                                    // Toggle visibility and icon
+                                    document.querySelectorAll('.toggle-label').forEach(label => {
+                                        label.addEventListener('click', () => {
+                                            const container = label.nextElementSibling;
+                                            const icon = label.querySelector('.toggle-icon');
+
+                                            container.classList.toggle('show');
+                                            icon.textContent = container.classList.contains('show') ? '-' : '+';
+                                        });
+                                    });
+
+                                    // Clear textarea content
+                                    document.querySelectorAll('.clear-btn').forEach(button => {
+                                        button.addEventListener('click', (e) => {
+                                            const textarea = button.parentElement.querySelector('textarea');
+                                            textarea.value = '';
+                                            e.stopPropagation(); // Prevent toggling when clicking clear
+                                        });
+                                    });
+                                </script>
 
         <?php } ?>
 
@@ -1766,11 +1926,11 @@
     </main>
 
     <script>
-        <?php if ($method == "patients" || $method == "patientDetailsForm" || $method == "patientDetails" || $method == "prescription") { ?>
+        <?php if ($method == "patients" || $method == "patientDetailsForm" || $method == "patientDetails" || $method == "prescription" || $method == "newConsultation") { ?>
             document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
     </script>
-    
+
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 

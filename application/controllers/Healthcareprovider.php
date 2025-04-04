@@ -505,8 +505,18 @@ class Healthcareprovider extends CI_Controller
     // }
 
 
+    public function consultation($patientIdDb)
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "newConsultation";
+            $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
+            $this->data['patientDetails'] = $patientDetails;
+            $this->load->view('hcpDashboardPatients.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+    }
 
-    
     public function logout()
     {
         // $this->session->unset_userdata('LoggedInDetails');

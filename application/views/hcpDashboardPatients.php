@@ -68,11 +68,6 @@
         <?php }
         if ($method == "patients") {
             ?>
-
-            <script>
-                document.getElementById('patients').style.color = "#87F7E3";
-            </script>
-
             <section>
                 <div class="card rounded">
                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -231,10 +226,6 @@
             <?php
         } else if ($method == "patientDetailsForm") {
             ?>
-                <script>
-                    document.getElementById('patients').style.color = "#87F7E3";
-                </script>
-
                 <section>
                     <div class="card rounded">
                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -748,12 +739,8 @@
                 </script>
 
             <?php
-        } else if ($method == "patientDetailsFormUpdate") {
+        } else if ($method == "patientDetailsForm") {
             ?>
-                    <script>
-                        document.getElementById('patients').style.color = "#87F7E3";
-                    </script>
-
                     <section>
                         <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1377,11 +1364,6 @@
             <?php
         } else if ($method == "patientDetails") {
             ?>
-
-                        <script>
-                            document.getElementById('patients').style.color = "#87F7E3";
-                        </script>
-
                         <section>
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1594,11 +1576,6 @@
             <?php
         } else if ($method == "prescription") {
             ?>
-
-                            <script>
-                                document.getElementById('patients').style.color = "#87F7E3";
-                            </script>
-
                             <section>
                                 <div class="card rounded">
                                     <div class="d-flex justify-content-between mt-2 p-1 px-3">
@@ -1788,6 +1765,12 @@
         <?php include 'hcpModals.php'; ?>
     </main>
 
+    <script>
+        <?php if ($method == "patients" || $method == "patientDetailsForm" || $method == "patientDetails" || $method == "prescription") { ?>
+            document.getElementById('patients').style.color = "#87F7E3";
+        <?php } ?>
+    </script>
+    
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 

@@ -14,6 +14,8 @@
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <!-- Image Cropper -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -1082,7 +1084,7 @@
                                                             width="180" height="180" class="rounded-circle">
                                         <?php } ?>
                                                     <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
-                                                        data-bs-target="#updateProfile"
+                                                        data-bs-target="#updatePatientProfile"
                                                         onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')">
                                                         <i class="bi bi-pencil-square"></i></button>
                                                 </div>
@@ -4204,7 +4206,7 @@
 
                                     <?php } ?>
                                                                                             <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
-                                                                                                data-bs-target="#updatePhoto"><i class="bi bi-pencil-square"></i></button>
+                                                                                                data-bs-target="#updateHCPPhoto"><i class="bi bi-pencil-square"></i></button>
                                                                                         </div>
 
                                                                                         <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
@@ -4467,6 +4469,110 @@
             }
         };
     </script>
+
+    <div class="modal fade" id="updateHCPPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-medium" id="exampleModalLabel">Update Profile Photo</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                    <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <label for="hcpProfile" class="pb-2">Upload file: </label><br>
+                        <input type="file" name="hcpProfile" id="hcpProfile" accept="image/png ,image/jpg, image/jpeg"
+                            required>
+                        <br><br>
+                        <div style="max-width: 300px; max-height:300px; overflow: hidden;">
+                            <img id="previewImage" style="max-width: 100%;">
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" id="uploadButton" class="btn text-light"
+                                style="background-color: #00ad8e;">Upload</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Crop Image and Upload -->
+    <script>
+        let cropper;
+
+        document.getElementById('hcpProfile').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const image = document.getElementById('previewImage');
+                    image.src = e.target.result;
+
+                    if (cropper) cropper.destroy();
+
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        viewMode: 2,
+                        dragMode: 'move',
+                        cropBoxResizable: false,
+                        cropBoxMovable: true,
+                        ready: function () {
+                            cropper.setCropBoxData({
+                                width: 200,
+                                height: 200
+                            });
+                        }
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('uploadButton').addEventListener('click', function () {
+            if (!cropper) {
+                alert("Please select an image to upload.");
+                return;
+            }
+            cropper.getCroppedCanvas({ width: 200, height: 200 }).toBlob(blob => {
+                if (!blob) {
+                    alert("Cropping failed. Please try again.");
+                    return;
+                }
+
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+
+                const fileName = `doctorHCP_${day}_${month}_${year}_${hours}_${minutes}.jpg`;
+
+                const formData = new FormData();
+                formData.append('hcpProfile', blob, fileName);
+
+                fetch("<?php echo base_url() . 'Healthcareprovider/updatePhoto' ?>", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        var myModal = new bootstrap.Modal(document.getElementById('updateHCPPhoto'));
+                        myModal.hide();
+                        location.reload();
+                    })
+                    .catch(error => console.error("Upload failed:", error));
+            }, "image/jpeg");
+        });
+    </script>
+
+    <!-- Cropper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <!-- Vendor JS Files -->
     <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

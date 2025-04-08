@@ -14,6 +14,12 @@
     <!-- Font -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <!-- jQuery (required for Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -739,7 +745,7 @@
                 </script>
 
             <?php
-        } else if ($method == "patientDetailsForm") {
+        } else if ($method == "patientDetailsFormUpdate") {
             ?>
                     <section>
                         <div class="card rounded">
@@ -1764,7 +1770,7 @@
                                 <section>
                                     <div class="card rounded">
                                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                            <p style="font-size: 24px; font-weight: 500"> Consultation </p>
+                                            <p style="font-size: 24px; font-weight: 500">New Consultation </p>
                                             <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>"
                                                 class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                                         </div>
@@ -1813,82 +1819,91 @@
                                                     <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
                                     <?php echo $value['symptoms'] ? $value['symptoms'] : "Not provided"; ?>
                                                     </p>
-                                                    <p><span class="text-secondary ">Medicines</span> -
+                                                    <!-- <p><span class="text-secondary ">Medicines</span> -
                                     <?php echo $value['medicines'] ? $value['medicines'] : "Not provided"; ?>
-                                                    </p>
+                                                    </p> -->
                                                 </div>
-
                         <?php } ?>
-
                                             <!-- ********************************************************************************************************* -->
                                             <div class="border rounded shadow mt-4 p-3">
-                                                <form id="patientForm" class="container">
+                                                <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>" method="post"
+                                                    id="consultForm" class="container">
                                                     <!-- Repeatable Field Block -->
+                                                    <input type="hidden" id="patientIdDb" name="patientIdDb" value="72">
                                                     <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
-                                                            role="button">
+                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                            style="background-color:rgb(206, 206, 206);" role="button">
                                                             <span><strong>Symptoms</strong></span>
                                                             <span class="toggle-icon">+</span>
                                                         </div>
-                                                        <div class="collapse field-container mt-2">
-                                                            <textarea class="form-control mb-2" name="symptoms" rows="3"
-                                                                placeholder="Enter symptoms..."></textarea>
-                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
+                                                        <div class="collapse field-containe mt-2">
+                                                            <!-- <textarea class="form-control mb-2" name="symptoms" rows="3"
+                                                                placeholder="Enter symptoms..."></textarea> -->
+                                                            <select id="symptoms" name="symptoms[]" multiple="multiple" style="width:100%;">
+                                            <?php foreach ($symptomsList as $key => $value) { ?>
+                                                                    <option value="<?php echo $value['symptomsName'] ?>">
+                                                    <?php echo $value['symptomsName'] ?>
+                                                                    </option>
+                                            <?php } ?>
+                                                            </select>
                                                         </div>
                                                     </div>
 
                                                     <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
-                                                            role="button">
+                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                            style="background-color: rgb(206, 206, 206);" role="button">
                                                             <span><strong>Findings</strong></span>
                                                             <span class="toggle-icon">+</span>
                                                         </div>
                                                         <div class="collapse field-container mt-2">
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-danger clear-btn float-end">x</button>
                                                             <textarea class="form-control mb-2" name="findings" rows="3"
                                                                 placeholder="Enter findings..."></textarea>
-                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
                                                         </div>
                                                     </div>
 
                                                     <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
-                                                            role="button">
+                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                            style="background-color: rgb(206, 206, 206);" role="button">
                                                             <span><strong>Diagnosis</strong></span>
                                                             <span class="toggle-icon">+</span>
                                                         </div>
                                                         <div class="collapse field-container mt-2">
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-danger clear-btn float-end">x</button>
                                                             <textarea class="form-control mb-2" name="diagnosis" rows="3"
                                                                 placeholder="Enter diagnosis..."></textarea>
-                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
                                                         </div>
                                                     </div>
 
                                                     <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
-                                                            role="button">
+                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                            style="background-color: rgb(206, 206, 206);" role="button">
                                                             <span><strong>Investigations</strong></span>
                                                             <span class="toggle-icon">+</span>
                                                         </div>
                                                         <div class="collapse field-container mt-2">
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-danger clear-btn float-end">x</button>
                                                             <textarea class="form-control mb-2" name="investigations" rows="3"
                                                                 placeholder="Enter investigations..."></textarea>
-                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
                                                         </div>
                                                     </div>
 
                                                     <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center bg-light p-2 rounded toggle-label"
-                                                            role="button">
+                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                            style="background-color: rgb(206, 206, 206);" role="button">
                                                             <span><strong>Medicines</strong></span>
                                                             <span class="toggle-icon">+</span>
                                                         </div>
                                                         <div class="collapse field-container mt-2">
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-danger clear-btn float-end">x</button>
                                                             <textarea class="form-control mb-2" name="medicines" rows="3"
                                                                 placeholder="Enter medicines..."></textarea>
-                                                            <button type="button" class="btn btn-sm btn-danger clear-btn">Clear</button>
                                                         </div>
                                                     </div>
-
                                                     <button type="submit" class="btn btn-success mt-3">Submit</button>
                                                 </form>
                                             </div>
@@ -1896,6 +1911,15 @@
                                         </div>
                                     </div>
                                 </section>
+
+                                <script>
+                                    $(document).ready(function () {
+                                        $('#symptoms').select2({
+                                            placeholder: 'Type to search and select symptoms',
+                                            allowClear: true
+                                        });
+                                    });
+                                </script>
 
                                 <script>
                                     // Toggle visibility and icon
@@ -1926,7 +1950,7 @@
     </main>
 
     <script>
-        <?php if ($method == "patients" || $method == "patientDetailsForm" || $method == "patientDetails" || $method == "prescription" || $method == "newConsultation") { ?>
+        <?php if ($method == "patients" || $method == "patientDetailsForm" || $method == "patientDetailsFormUpdate" || $method == "patientDetails" || $method == "prescription" || $method == "newConsultation") { ?>
             document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
     </script>

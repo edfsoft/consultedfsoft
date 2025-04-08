@@ -400,7 +400,6 @@ class Healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/appointments');
     }
 
-
     public function appointmentReschedule()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -511,10 +510,24 @@ class Healthcareprovider extends CI_Controller
             $this->data['method'] = "newConsultation";
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $symptoms = $this->HcpModel->getSymptoms();
+            $this->data['symptomsList'] = $symptoms;
             $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
+    }
+
+    public function saveConsultation()
+    {
+        $post = $this->input->post(null, true);
+        $patientIdDb = $post['patientIdDb'];
+        if ($patientIdDb) {
+            $this->session->set_flashdata('showSuccessMessage', 'Consultation saved successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');
+        }
+        redirect('Healthcareprovider/patients/');
     }
 
     public function logout()

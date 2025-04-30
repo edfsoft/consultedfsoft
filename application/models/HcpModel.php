@@ -577,4 +577,35 @@ class HcpModel extends CI_Model
     //     }
     // }
 
+// ************************************************************************************************
+    public function newConsultationSave()
+    {
+        $post = $this->input->post(null, true);
+        $hcpId = $_SESSION['hcpId'];
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $symptom_string = implode(',', $post['symptoms']);
+        $saveConsult = array(
+            'patientId' => $post['patientId'],
+            'patientDbId' => $post['patientIdDb'],
+            'consultDoctorId' => $hcpId,
+            'consultDoctorDbId' => $hcpIdDb,
+            'date' => date('d-m-Y'),         
+            'symptoms' => $symptom_string,
+            'findings' => $post['findings'],
+            'diagnosis' => $post['diagnosis'],
+            'investigations' => $post['investigations'],
+            'adviceGiven' => $post['advices'],
+            // 'medicines' => $post['medicines'],
+            'nextFollowup' => $post['nextFollowUpDate'],
+        );
+        $this->db->insert('consultation_details', $saveConsult);
+        return true;
+    }
+    // ************************************************************************************************
+
+
+
+
+
+
 }

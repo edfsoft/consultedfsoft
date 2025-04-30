@@ -503,7 +503,7 @@ class Healthcareprovider extends CI_Controller
     //     $this->load->view('hcpDashboard.php',  $this->data);
     // }
 
-
+// ************************************************************************************************
     public function consultation($patientIdDb)
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -512,23 +512,26 @@ class Healthcareprovider extends CI_Controller
             $this->data['patientDetails'] = $patientDetails;
             $symptoms = $this->HcpModel->getSymptoms();
             $this->data['symptomsList'] = $symptoms;
+            $medicines = $this->HcpModel->getMedicines();
+            $this->data['medicinesList'] = $medicines;
             $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
     }
 
-    public function saveConsultation()
+    public function saveNewConsultation()
     {
-        $post = $this->input->post(null, true);
-        $patientIdDb = $post['patientIdDb'];
-        if ($patientIdDb) {
+        if ($this->HcpModel->newConsultationSave()) {
             $this->session->set_flashdata('showSuccessMessage', 'Consultation saved successfully');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');
         }
         redirect('Healthcareprovider/patients/');
     }
+
+    // ************************************************************************************************
+
 
     public function logout()
     {

@@ -1510,7 +1510,7 @@
                                     <?php } ?>
                                             </div>
                             <?php }
-                            if ($value['consultedOnce'] === "1") {
+                            if ($value['consultedOnce'] === "0") {
                                 ?>
                                             <h5 class="my-3 mt-4 fw-bolder">Appointments History</h5>
                                             <div class="d-md-flex">
@@ -1823,95 +1823,298 @@
                                     <?php echo $value['medicines'] ? $value['medicines'] : "Not provided"; ?>
                                                     </p> -->
                                                 </div>
+
+                                                <!-- ********************************************************************************************************* -->
+                                                <div class="border rounded shadow mt-4 p-3">
+                                                    <form action="<?php echo base_url() . 'Healthcareprovider/saveNewConsultation' ?>" method="post"
+                                                        id="consultForm" class="container">
+                                                        <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id'] ?>">
+                                                        <input type="hidden" id="patientId" name="patientId"
+                                                            value="<?php echo $value['patientId'] ?>">
+                                                        <div class="mb-3">
+                                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                                style="background-color:rgb(206, 206, 206);" role="button">
+                                                                <span><strong>Symptoms</strong></span>
+                                                                <span class="toggle-icon">+</span>
+                                                            </div>
+                                                            <div class="collapse field-containe mt-2">
+                                                                <select id="symptoms" name="symptoms[]" multiple="multiple" style="width:100%;">
+                                                <?php foreach ($symptomsList as $key => $value) { ?>
+                                                                        <option value="<?php echo $value['symptomsName'] ?>">
+                                                        <?php echo $value['symptomsName'] ?>
+                                                                        </option>
+                                                <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                                <span><strong>Findings</strong></span>
+                                                                <span class="toggle-icon">+</span>
+                                                            </div>
+                                                            <div class="collapse field-container mt-2">
+                                                                <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                                <textarea class="form-control mb-2" name="findings" rows="3"
+                                                                    placeholder="Enter findings..."></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                                <span><strong>Diagnosis</strong></span>
+                                                                <span class="toggle-icon">+</span>
+                                                            </div>
+                                                            <div class="collapse field-container mt-2">
+                                                                <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                                <textarea class="form-control mb-2" name="diagnosis" rows="3"
+                                                                    placeholder="Enter diagnosis..."></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                                <span><strong>Investigations</strong></span>
+                                                                <span class="toggle-icon">+</span>
+                                                            </div>
+                                                            <div class="collapse field-container mt-2">
+                                                                <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                                <textarea class="form-control mb-2" name="investigations" rows="3"
+                                                                    placeholder="Enter investigations..."></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- <div class="mb-3">
+                                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                                <span><strong>Medicines</strong></span>
+                                                                <span class="toggle-icon">+</span>
+                                                            </div>
+                                                            <div class="collapse field-container mt-2">
+                                                                <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                                <textarea class="form-control mb-2" name="medicines" rows="3"
+                                                                    placeholder="Enter medicines..."></textarea>
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="mb-3">
+                                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                                <span><strong>Advice</strong></span>
+                                                                <span class="toggle-icon">+</span>
+                                                            </div>
+                                                            <div class="collapse field-container mt-2">
+                                                                <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                                <textarea class="form-control mb-2" name="advices" rows="3"
+                                                                    placeholder="Enter Advices..."></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- --------------------------------------------------------------------- -->
+                                                        <div id="medicine-template" class="medicine-entry">
+                                                        <div class="card-header d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                                style="background-color: rgb(206, 206, 206);">
+                                                                <span class="text-dark"><strong>Medicines</strong></span>
+                                                                <button type="button" class="btn-close btn-remove d-none"
+                                                                    aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="form-group py-3">
+                                                                    <label class="form-label" for="preMedName">Medicine Name <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <!-- <input type="text" class="form-control preMedName" name="preMedName[]"
+                                                                                        placeholder="Medicine"> -->
+                                                                    <select class="form-select preMedName" id="preMedName[]" name="preMedName[]">
+                                                                        <option value="">Select Medicine</option>
+                                                        <?php
+                                                        foreach ($medicinesList as $key => $value) {
+                                                            ?>
+                                                                            <option
+                                                                                value="<?php echo $value['medicineBrand'] . " / " . $value['medicineName'] . " / " . $value['strength'] ?>">
+                                                            <?php echo $value['medicineBrand'] . " / " . $value['medicineName'] . " / " . $value['strength'] ?>
+                                                                            </option>
+                                                    <?php } ?>
+                                                                    </select>
+                                                                    <div id="preMedName_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="preMedFrequency">Frequency <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <input type="text" class="form-control preMedFrequency" name="preMedFrequency[]"
+                                                                        placeholder="1 - 0 - 1" maxlength="9">
+                                                                    <div id="preMedFrequency_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                                <div class="form-group pb-3">
+                                                                    <label class="form-label" for="preMedDuration">Duration <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <div class="input-group">
+                                                                        <input type="number" class="form-control preMedDuration"
+                                                                            name="preMedDuration[]" placeholder="Enter duration" min="1" max="31">
+                                                                        <select class="form-select preMedDurationUnit" name="preMedDurationUnit[]">
+                                                                            <option value="days">Days</option>
+                                                                            <option value="weeks">Weeks</option>
+                                                                            <option value="months">Months</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div id="preMedDuration_err" class="text-danger pt-1 pe-2"></div>
+                                                                    <!-- <div id="preMedDurationUnit_err" class="text-danger pt-1"></div> -->
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="form-label" for="preMedNotes">Notes <span
+                                                                            class="text-danger">*</span></label>
+                                                                    <select class="form-select preMedNotes" name="preMedNotes[]">
+                                                                        <option value=" ">Select Notes</option>
+                                                                        <option value="Before food">Before Food</option>
+                                                                        <option value="After food">After Food</option>
+                                                                    </select>
+                                                                    <div id="preMedNotes_err" class="text-danger pt-1"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div id="medicines-list"></div>
+                                                        <button type="button" id="addMoreBtn" class="btn btn-primary mt-0 mb-4">Add More</button>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="nextFollowUpDate">Next follow up <span
+                                                                    class="text-danger">*</span></label>
+                                                            <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate">
+                                                            <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
+                                                        </div>
+                                                        <!-- --------------------------------------------------------------------- -->
+
+                                                        <button type="submit" class="btn btn-success mt-3">Submit</button>
+                                                    </form>
+                                                </div>
                         <?php } ?>
-                                            <!-- ********************************************************************************************************* -->
-                                            <div class="border rounded shadow mt-4 p-3">
-                                                <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>" method="post"
-                                                    id="consultForm" class="container">
-                                                    <!-- Repeatable Field Block -->
-                                                    <input type="hidden" id="patientIdDb" name="patientIdDb" value="72">
-                                                    <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                            style="background-color:rgb(206, 206, 206);" role="button">
-                                                            <span><strong>Symptoms</strong></span>
-                                                            <span class="toggle-icon">+</span>
-                                                        </div>
-                                                        <div class="collapse field-containe mt-2">
-                                                            <!-- <textarea class="form-control mb-2" name="symptoms" rows="3"
-                                                                placeholder="Enter symptoms..."></textarea> -->
-                                                            <select id="symptoms" name="symptoms[]" multiple="multiple" style="width:100%;">
-                                            <?php foreach ($symptomsList as $key => $value) { ?>
-                                                                    <option value="<?php echo $value['symptomsName'] ?>">
-                                                    <?php echo $value['symptomsName'] ?>
-                                                                    </option>
-                                            <?php } ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                                            <span><strong>Findings</strong></span>
-                                                            <span class="toggle-icon">+</span>
-                                                        </div>
-                                                        <div class="collapse field-container mt-2">
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                                            <textarea class="form-control mb-2" name="findings" rows="3"
-                                                                placeholder="Enter findings..."></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                                            <span><strong>Diagnosis</strong></span>
-                                                            <span class="toggle-icon">+</span>
-                                                        </div>
-                                                        <div class="collapse field-container mt-2">
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                                            <textarea class="form-control mb-2" name="diagnosis" rows="3"
-                                                                placeholder="Enter diagnosis..."></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                                            <span><strong>Investigations</strong></span>
-                                                            <span class="toggle-icon">+</span>
-                                                        </div>
-                                                        <div class="collapse field-container mt-2">
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                                            <textarea class="form-control mb-2" name="investigations" rows="3"
-                                                                placeholder="Enter investigations..."></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                                            <span><strong>Medicines</strong></span>
-                                                            <span class="toggle-icon">+</span>
-                                                        </div>
-                                                        <div class="collapse field-container mt-2">
-                                                            <button type="button"
-                                                                class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                                            <textarea class="form-control mb-2" name="medicines" rows="3"
-                                                                placeholder="Enter medicines..."></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-success mt-3">Submit</button>
-                                                </form>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </section>
 
+                                <script>
+                                    document.getElementById("addMoreBtn").addEventListener("click", function () {
+                                        const medicineContainer = document.getElementById("medicine-template");
+                                        const newMedicine = medicineContainer.cloneNode(true);
+
+                                        newMedicine.querySelectorAll("input, select").forEach(function (input) {
+                                            input.value = "";
+                                            const errorDiv = input.parentNode.querySelector('.text-danger');
+                                            if (errorDiv) {
+                                                errorDiv.textContent = '';
+                                            }
+                                        });
+
+                                        newMedicine.querySelector(".btn-remove").classList.remove("d-none");
+                                        newMedicine.querySelector(".btn-remove").addEventListener("click", function () {
+                                            newMedicine.remove();
+                                        });
+
+                                        document.getElementById("medicines-list").appendChild(newMedicine);
+                                    });
+                                </script>
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        document.querySelectorAll(".preMedFrequency").forEach(function (frequencyInput) {
+                                            validateFrequencyPattern(frequencyInput);
+
+                                            frequencyInput.addEventListener("input", function (event) {
+                                                validateFrequencyPattern(event.target);
+                                            });
+                                        });
+                                    });
+
+                                    // document.getElementById("submitForm").addEventListener("click", function (event) {
+                                    //     event.preventDefault();
+
+                                    //     if (validateMedicines()) {
+                                    //         document.getElementById("prescriptionForm").submit();
+                                    //     }
+                                    // });
+
+                                    function validateFrequencyPattern(input) {
+                                        const frequencyPattern = /^[0-1]\s-\s[0-1]\s-\s[0-1]$/;
+                                        const errorDiv = input.closest(".medicine-entry").querySelector("#preMedFrequency_err");
+
+                                        let value = input.value.replace(/[^01]/g, '').substring(0, 3);
+                                        let formattedValue = '';
+                                        if (value.length > 0) formattedValue += value[0];
+                                        if (value.length > 1) formattedValue += ' - ' + value[1];
+                                        if (value.length > 2) formattedValue += ' - ' + value[2];
+                                        input.value = formattedValue;
+                                    }
+
+                                    function validateMedicines() {
+                                        let allFilled = true;
+
+                                        const adviceGiven = document.getElementById("adviceGiven");
+                                        const adviceGivenErr = document.getElementById("adviceGiven_err");
+                                        if (adviceGiven.value.trim() === "") {
+                                            adviceGivenErr.innerHTML = "Advice to patient must be filled out.";
+                                            allFilled = false;
+                                        } else {
+                                            adviceGivenErr.innerHTML = "";
+                                        }
+
+                                        const nextFollowUp = document.getElementById("nextFollowUp");
+                                        const nextFollowUpErr = document.getElementById("nextFollowUp_err");
+                                        if (nextFollowUp.value === "") {
+                                            nextFollowUpErr.innerHTML = "Next follow-up date must be filled out.";
+                                            allFilled = false;
+                                        } else {
+                                            nextFollowUpErr.innerHTML = "";
+                                        }
+
+                                        const medicineEntries = document.querySelectorAll(".medicine-entry:not(.d-none)");
+
+                                        medicineEntries.forEach(function (entry) {
+                                            const nameInput = entry.querySelector(".preMedName");
+                                            const frequencyInput = entry.querySelector(".preMedFrequency");
+                                            const durationInput = entry.querySelector(".preMedDuration");
+                                            // const durationUnitSelect = entry.querySelector(".preMedDurationUnit");
+                                            const notesSelect = entry.querySelector(".preMedNotes");
+
+                                            if (nameInput.value.trim() === "") {
+                                                entry.querySelector("#preMedName_err").innerHTML = "Medicine name must be filled out.";
+                                                allFilled = false;
+                                            } else {
+                                                entry.querySelector("#preMedName_err").innerHTML = "";
+                                            }
+
+                                            if (frequencyInput.value.trim() === "") {
+                                                entry.querySelector("#preMedFrequency_err").innerHTML = "Frequency must be filled out.";
+                                                allFilled = false;
+                                            } else {
+                                                entry.querySelector("#preMedFrequency_err").innerHTML = "";
+                                            }
+
+                                            if (durationInput.value.trim() === "") {
+                                                entry.querySelector("#preMedDuration_err").innerHTML = "Duration must be filled out.";
+                                                allFilled = false;
+                                            } else {
+                                                entry.querySelector("#preMedDuration_err").innerHTML = "";
+                                            }
+
+                                            // if (durationUnitSelect.value.trim() === "") {
+                                            //     entry.querySelector("#preMedDurationUnit_err").innerHTML = "Please select a duration unit.";
+                                            //     allFilled = false;
+                                            // } else {
+                                            //     entry.querySelector("#preMedDurationUnit_err").innerHTML = "";
+                                            // }
+
+                                            if (notesSelect.value.trim() === "") {
+                                                entry.querySelector("#preMedNotes_err").innerHTML = "Notes selection is required.";
+                                                allFilled = false;
+                                            } else {
+                                                entry.querySelector("#preMedNotes_err").innerHTML = "";
+                                            }
+                                        });
+
+                                        return allFilled;
+                                    }
+                                </script>
+
+                                <!-- Multiple Select 2  -->
                                 <script>
                                     $(document).ready(function () {
                                         $('#symptoms').select2({
@@ -1921,8 +2124,8 @@
                                     });
                                 </script>
 
+                                <!-- Toggle visibility and icon -->
                                 <script>
-                                    // Toggle visibility and icon
                                     document.querySelectorAll('.toggle-label').forEach(label => {
                                         label.addEventListener('click', () => {
                                             const container = label.nextElementSibling;
@@ -1933,7 +2136,6 @@
                                         });
                                     });
 
-                                    // Clear textarea content
                                     document.querySelectorAll('.clear-btn').forEach(button => {
                                         button.addEventListener('click', (e) => {
                                             const textarea = button.parentElement.querySelector('textarea');

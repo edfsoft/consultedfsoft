@@ -30,31 +30,25 @@ class Healthcareprovider extends CI_Controller
         $this->load->view('hcpForgetPassword.php', $this->data);
     }
 
-    public function send()
+    public function sendFPOtp()
     {
         $to = $this->input->post('hcpPassMail');
         $mobile = $this->input->post('hcpMobileNum');
         $otp = rand(1000, 9999);
         $this->session->set_userdata('generated_otp', $otp);
 
-        $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
+        // $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
+        $message = " Dear User, <br> <br>
+        Your One-Time Password (OTP) to reset your Health Care Provider (HCP) account password is:
+       <b> $otp </b> <br>
+        Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
+       <br> Best regards,<br>  
+        Health Care Provider Support Team ";
 
-        $config = array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'mail.arramjobs.in',
-            'smtp_port' => 465,
-            'smtp_user' => 'arramjobs@arramjobs.in',
-            'smtp_pass' => '',  // Mail Password
-            'mailtype' => 'text',
-            'charset' => 'utf-8',
-            'wordwrap' => TRUE
-        );
-
-        $this->email->initialize($config);
         $this->email->set_newline("\r\n");
-        $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
+        $this->email->from('erodediabetesfoundation@gmail.com', 'Consult EDF');
         $this->email->to($to);
-        $this->email->subject('Consultation at Erode Diabetes Foundation');
+        $this->email->subject('OTP to Reset Your HCP Account Password');
         $this->email->message($message);
 
         if ($this->email->send()) {
@@ -503,7 +497,7 @@ class Healthcareprovider extends CI_Controller
     //     $this->load->view('hcpDashboard.php',  $this->data);
     // }
 
-// ************************************************************************************************
+    // ************************************************************************************************
     public function consultation($patientIdDb)
     {
         if (isset($_SESSION['hcpsName'])) {

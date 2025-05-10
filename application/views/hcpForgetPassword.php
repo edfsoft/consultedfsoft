@@ -95,7 +95,7 @@
                         <p class="text-justify" style="font-size:18px;font-weight:400;">Enter your registered mobile number
                             and email address below to receive an OTP at the entered email address to change your password.
                         </p>
-                        <form action="<?php echo base_url('healthcareprovider/send'); ?>" method="post"
+                        <form action="<?php echo base_url('healthcareprovider/sendFPOtp'); ?>" method="post"
                             name="hcpPasswordResetFormMail" onsubmit="return validateForm()" oninput="return removeError()">
                             <div class="mb-3">
                                 <label for="hcpMobileNum" class="form-label">Mobile Number <span

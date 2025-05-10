@@ -31,7 +31,7 @@ class Chiefconsultant extends CI_Controller
         $this->load->view('ccForgetPassword.php', $this->data);
     }
 
-    public function send()
+    public function sendFPOtp()
     {
         $to = $this->input->post('ccPassMail');
         $mobile = $this->input->post('ccMobileNum');

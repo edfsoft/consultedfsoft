@@ -151,6 +151,7 @@
                         itemsToShow.forEach((value, index) => {
                             const patientRow = document.createElement('tr');
 
+                            // consultedOnce is removed from the db, use alternate method
                             // const prescriptionButton = value.consultedOnce === '1' ?
                             //     '<a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-prescription"></i></button></a>' :
                             //     '<button class="btn btn-secondary mb-1" disabled><i class="bi bi-prescription"></i></button>';
@@ -1403,8 +1404,7 @@
                                             </div>
 
                                         </div>
-
-                                        <h5 class="my-3 mt-3 fw-bolder">Personal Details</h5>
+                                        <p class="my-3 mt-3 fs-5 fw-semibold">Personal Details</p>
                                         <div class="d-md-flex">
                                             <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> : <a
                                                     href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
@@ -1459,7 +1459,9 @@
                                     <?php echo $value['partnerBlood'] ? $value['partnerBlood'] : "Not provided"; ?>
                                             </p>
                                         </div>
-                                        <h5 class="my-3 mt-4 fw-bolder">Medical Records</h5>
+
+                                        <p class="my-3 mt-3 fs-5 fw-semibold">Medical Records</p>
+
                                         <div class="d-md-flex">
                                             <p class="col-sm-6"><span class="text-secondary ">Weight</span> :
                                     <?php echo $value['weight'] ? $value['weight'] . " Kg" : "Not provided"; ?>
@@ -1495,7 +1497,7 @@
 
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
 
-                                            <h5 class="my-3 mt-4 fw-bolder">Documents / Reports</h5>
+                                            <p class="my-3 mt-3 fs-5 fw-semibold">Documents / Reports</p>
 
                                             <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
@@ -1509,10 +1511,10 @@
                                                             rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
                                     <?php } ?>
                                             </div>
-                            <?php }
-                            if ($value['consultedOnce'] === "0") {
-                                ?>
-                                            <h5 class="my-3 mt-4 fw-bolder">Appointments History</h5>
+                            <?php } ?>
+
+                            <?php if (!empty($consultDetails)) { ?>
+                                            <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
                                         <?php echo date('d-m-Y', strtotime($value['lastAppDate'])); ?>
@@ -1521,27 +1523,49 @@
                                         <?php echo date('d-m-Y', strtotime($value['nextAppDate'])); ?>
                                                 </p>
                                             </div>
+
                                     <?php
-                                    $appCount = 0;
-                                    foreach ($patientAppHistory as $key => $svalue) {
-                                        $appCount++;
+                                    $consultCount = 0;
+                                    foreach ($consultDetails as $key => $cvalue) {
+                                        $consultCount++;
                                         ?>
                                                 <div class="card rounded shadow mt-3 p-4">
                                                     <div class="d-sm-flex my-auto " style="font-weight:600;">
                                                         <button style=" width:30px;height:30px;font-weight:500"
-                                                            class="text-light bg-secondary rounded-circle border-0 me-3"><?php echo $appCount; ?></button>
-                                                        <p class="pe-4 pt-1"><?php echo date('d F Y', strtotime($svalue['dateOfAppoint'])); ?> -
-                                                <?php echo date('h:i A', strtotime($svalue['timeOfAppoint'])); ?>
+                                                            class="text-light bg-secondary rounded-circle border-0 me-3"><?php echo $consultCount; ?></button>
+                                                        <p class="pe-4 pt-1"><?php echo date('d F Y', strtotime($cvalue['date'])); ?> -
+                                                <?php echo date('h:i A', strtotime($cvalue['time'])); ?>
                                                         </p>
-                                                        <p class="pe-4 pt-1"><?php echo $svalue['patientComplaint'] ?> </p>
+                                                        <p class="pe-4 pt-1"><?php echo $cvalue['consultMode'] == '0' ? 'Direct' : 'Online' ?> </p>
                                                     </div>
                                                     <div class="d-sm-flex pb-1">
                                                         <p class="text-secondary col-md-2 mb-1">CC Id : </p>
-                                                        <p class="col-md-9 ps-2"><?php echo $svalue['referalDoctor'] ?></p>
+                                                        <p class="col-md-9 ps-2"><?php echo $cvalue['consultDoctorId'] ?></p>
+                                                    </div>
+                                                    <div class="d-sm-flex pb-1">
+                                                        <p class="text-secondary col-md-2 mb-1">Symptoms : </p>
+                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['symptoms'] ?></p>
+                                                    </div>
+                                                    <div class="d-sm-flex pb-1">
+                                                        <p class="text-secondary col-md-2 mb-1">Findings : </p>
+                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['findings'] ?></p>
+                                                    </div>
+                                                    <div class="d-sm-flex pb-1">
+                                                        <p class="text-secondary col-md-2 mb-1">Diagnosis : </p>
+                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['diagnosis'] ?></p>
+                                                    </div>
+                                                    <div class="d-sm-flex pb-1">
+                                                        <p class="text-secondary col-md-2 mb-1">Investigations : </p>
+                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['investigations'] ?></p>
                                                     </div>
                                                     <div class="d-sm-flex pb-1">
                                                         <p class="text-secondary col-md-2 mb-1">Advice Given : </p>
-                                                        <p class="col-md-9 ps-2"> <?php echo $svalue['appointmentAdvice'] ?></p>
+                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['adviceGiven'] ?></p>
+                                                    </div>
+                                                    <div class="d-sm-flex pb-1">
+                                                        <p class="text-secondary col-md-2 mb-1">Next Followup : </p>
+                                                        <p class="col-md-9 ps-2"> <?php echo date('d F Y', strtotime($cvalue['nextFollowup'])); ?>
+                                                        </p>
                                                     </div>
                                                     <p class="text-secondary">Medicines table : </p>
 
@@ -1556,8 +1580,8 @@
                                                             </tr>
                                                         </thead>
                                             <?php $count = 0;
-                                            foreach ($appMedicines as $key => $mvalue) {
-                                                if ($mvalue['dateOfAppoint'] == $svalue['dateOfAppoint']) {
+                                            foreach ($consultMedicines as $key => $mvalue) {
+                                                if ($mvalue['consultationDbId'] == $cvalue['id']) {
                                                     $count++; ?>
                                                                 <tbody>
                                                                     <tr>
@@ -1572,9 +1596,11 @@
                                             } ?>
                                                     </table>
                                                 </div>
-                                <?php }
-                            }
-                            } ?>
+                                <?php } ?>
+
+                            <?php } ?>
+
+                        <?php } ?>
                                 </div>
                             </div>
                         </section>
@@ -1666,7 +1692,7 @@
                                                                 </tr>
                                                             </thead>
                                             <?php $count = 0;
-                                            foreach ($appMedicines as $key => $mvalue) {
+                                            foreach ($consultMedicines as $key => $mvalue) {
                                                 if ($mvalue['dateOfAppoint'] == $pvalue['lastAppDate']) {
                                                     $count++; ?>
                                                                     <tbody>
@@ -1826,8 +1852,8 @@
 
                                                 <!-- ********************************************************************************************************* -->
                                                 <div class="border rounded shadow mt-4 p-3">
-                                                    <form action="<?php echo base_url() . 'Healthcareprovider/saveNewConsultation' ?>" method="post"
-                                                        id="consultForm" class="container">
+                                                    <form action="<?php echo base_url() . 'Healthcareprovider/saveDirectConsultation' ?>"
+                                                        method="post" id="consultForm" class="container">
                                                         <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id'] ?>">
                                                         <input type="hidden" id="patientId" name="patientId"
                                                             value="<?php echo $value['patientId'] ?>">
@@ -1914,7 +1940,7 @@
 
                                                         <!-- --------------------------------------------------------------------- -->
                                                         <div id="medicine-template" class="medicine-entry">
-                                                        <div class="card-header d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                            <div class="card-header d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                                 style="background-color: rgb(206, 206, 206);">
                                                                 <span class="text-dark"><strong>Medicines</strong></span>
                                                                 <button type="button" class="btn-close btn-remove d-none"

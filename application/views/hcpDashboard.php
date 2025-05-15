@@ -1473,9 +1473,11 @@
                             <?php } ?>
 
                                             <h5 class="my-3 fw-bolder pt-5 pb-2">Prescription:</h5>
-                                            <form action="<?php echo base_url() . "Healthcareprovider/prescriptionForm" ?>" method="POST"
+                                            <form action="<?php echo base_url() . "Healthcareprovider/saveOnlineConsutation" ?>" method="POST"
                                                 name="prescriptionForm" id="prescriptionForm" class="col-md-6">
-                                                <input type="hidden" id="patientDbId" name="patientDbId" value="<?php echo $value['id'] ?>">
+                                                <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id'] ?>">
+                                                 <input type="hidden" id="patientId" name="patientId"
+                                                            value="<?php echo $value['patientId'] ?>">
                                                 <div id="medicine-template" class="medicine-entry">
                                                     <div class="card -3">
                                                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -1539,7 +1541,7 @@
                                                 </div>
                                                 <div id="medicines-list"></div>
                                                 <button type="button" id="addMoreBtn" class="btn btn-primary mt-0 mb-4">Add More</button>
-
+                                                <!-- Need to add all other fields  -->
                                                 <div class="form-group pb-3">
                                                     <label class="form-label" for="adviceGiven">Advice to patient <span
                                                             class="text-danger">*</span></label>
@@ -1562,8 +1564,6 @@
                     <?php } ?>
                                 </div>
                             </section>
-
-
 
                             <script>
                                 document.getElementById("addMoreBtn").addEventListener("click", function () {

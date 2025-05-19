@@ -82,11 +82,6 @@
         <?php }
         if ($method == "dashboard") {
             ?>
-
-            <script>
-                document.getElementById('dashboard').style.color = "#87F7E3";
-            </script>
-
             <section>
                 <p class=" card ps-3 py-3" style="font-size: 24px; font-weight: 500">
                     Dashboard
@@ -380,11 +375,6 @@
             <?php
         } else if ($method == "appointments") {
             ?>
-
-                <script>
-                    document.getElementById('appointments').style.color = "#87F7E3";
-                </script>
-
                 <section>
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -628,11 +618,6 @@
             <?php
         } else if ($method == "appointmentsForm") {
             ?>
-
-                    <script>
-                        document.getElementById('appointments').style.color = "#87F7E3";
-                    </script>
-
                     <section>
                         <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1104,11 +1089,6 @@
             <?php
         } else if ($method == "appointmentUpdate") {
             ?>
-
-                        <script>
-                            document.getElementById('appointments').style.color = "#87F7E3";
-                        </script>
-
                         <section>
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1397,23 +1377,18 @@
             <?php
         } else if ($method == "appointmentSummary") {
             ?>
-
-                            <script>
-                                document.getElementById('appointments').style.color = "#87F7E3";
-                            </script>
-
                             <section>
                                 <div class="card rounded">
-                                    <div class="mt-2 p-3 pt-sm-4 px-sm-4">
-                                        <p style="font-size: 24px; font-weight: 500" class="text-center">Appointment Summary</p>
-                                        <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
-                                                class="bi bi-arrow-left"></i> Back</button>
+                                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                        <p style="font-size: 24px; font-weight: 500">Appointment Summary</p>
+                                        <a href="#" onclick="goBack()" class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i>
+                                            Back</a>
                                     </div>
                         <?php
                         foreach ($patientDetails as $key => $value) {
                             ?>
-                                        <div class="card-body p-3 p-md-5">
-                                            <h5 class="my-3 fw-bolder">Patient Details:</h5>
+                                        <div class="card-body px-md-4 pb-4">
+                                            <p class="my-3 fs-5 fw-semibold">Patient Details:</p>
                                             <div class="text-center pt-2 pb-4">
                                                 <p style="font-size: 16px; font-weight: 700"> <?php echo $value['firstName'] ?>
                                     <?php echo $value['lastName'] ?> | <?php echo $value['patientId'] ?>
@@ -1452,12 +1427,12 @@
                                                 <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> -
                                     <?php echo $value['symptoms'] ? $value['symptoms'] : "Not provided"; ?>
                                                 </p>
-                                                <p><span class="text-secondary ">Medicines</span> -
+                                                <!-- <p><span class="text-secondary ">Medicines</span> -
                                     <?php echo $value['medicines'] ? $value['medicines'] : "Not provided"; ?>
-                                                </p>
+                                                </p> -->
                                             </div>
-                            <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
 
+                                            <!-- <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
                                                 <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
                                                         <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> - <a
@@ -1470,27 +1445,82 @@
                                                                 rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
                                     <?php } ?>
                                                 </div>
-                            <?php } ?>
+                            <?php } ?> -->
 
-                                            <h5 class="my-3 fw-bolder pt-5 pb-2">Prescription:</h5>
+                                            <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details:</p>
                                             <form action="<?php echo base_url() . "Healthcareprovider/saveOnlineConsutation" ?>" method="POST"
-                                                name="prescriptionForm" id="prescriptionForm" class="col-md-6">
+                                                name="prescriptionForm" id="prescriptionForm" class="col-md-9">
                                                 <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id'] ?>">
-                                                 <input type="hidden" id="patientId" name="patientId"
-                                                            value="<?php echo $value['patientId'] ?>">
+                                                <input type="hidden" id="patientId" name="patientId" value="<?php echo $value['patientId'] ?>">
+
+                                                <div class="mb-3">
+                                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                        style="background-color:rgb(206, 206, 206);" role="button">
+                                                        <span><strong>Symptoms</strong></span>
+                                                        <span class="toggle-icon">+</span>
+                                                    </div>
+                                                    <div class="collapse field-containe mt-2">
+                                                        <select id="symptoms" name="symptoms[]" multiple="multiple" style="width:100%;">
+                                            <?php foreach ($symptomsList as $key => $value) { ?>
+                                                                <option value="<?php echo $value['symptomsName'] ?>">
+                                                    <?php echo $value['symptomsName'] ?>
+                                                                </option>
+                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                                        <span><strong>Findings</strong></span>
+                                                        <span class="toggle-icon">+</span>
+                                                    </div>
+                                                    <div class="collapse field-container mt-2">
+                                                        <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                        <textarea class="form-control mb-2" name="findings" rows="3"
+                                                            placeholder="Enter findings..."></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                                        <span><strong>Diagnosis</strong></span>
+                                                        <span class="toggle-icon">+</span>
+                                                    </div>
+                                                    <div class="collapse field-container mt-2">
+                                                        <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                        <textarea class="form-control mb-2" name="diagnosis" rows="3"
+                                                            placeholder="Enter diagnosis..."></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                                        <span><strong>Investigations</strong></span>
+                                                        <span class="toggle-icon">+</span>
+                                                    </div>
+                                                    <div class="collapse field-container mt-2">
+                                                        <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                        <textarea class="form-control mb-2" name="investigations" rows="3"
+                                                            placeholder="Enter investigations..."></textarea>
+                                                    </div>
+                                                </div>
+
                                                 <div id="medicine-template" class="medicine-entry">
-                                                    <div class="card -3">
-                                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                                            <span>Medicine Entry</span>
+                                                    <div class="card">
+                                                        <div class="card-header d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                            style="background-color: rgb(206, 206, 206);">
+                                                            <span class="text-dark"><strong>Medicines</strong></span>
                                                             <button type="button" class="btn-close btn-remove d-none"
                                                                 aria-label="Close"></button>
                                                         </div>
                                                         <div class="card-body">
-                                                            <div class="form-group pb-3">
+                                                            <div class="form-group  py-3">
                                                                 <label class="form-label" for="preMedName">Medicines <span
                                                                         class="text-danger">*</span></label>
-                                                                <!-- <input type="text" class="form-control preMedName" name="preMedName[]"
-                                                                                        placeholder="Medicine"> -->
                                                                 <select class="form-select preMedName" id="preMedName[]" name="preMedName[]">
                                                                     <option value="">Select Medicine</option>
                                                         <?php
@@ -1540,12 +1570,16 @@
                                                     </div>
                                                 </div>
                                                 <div id="medicines-list"></div>
-                                                <button type="button" id="addMoreBtn" class="btn btn-primary mt-0 mb-4">Add More</button>
+                                                <div class="d-flex justify-content-end">
+                                                    <button type="button" id="addMoreBtn" class="btn btn-secondary mt-0 mb-4"><i
+                                                            class="bi bi-plus-lg"></i> Medicine</button>
+                                                </div>
                                                 <!-- Need to add all other fields  -->
                                                 <div class="form-group pb-3">
-                                                    <label class="form-label" for="adviceGiven">Advice to patient <span
+                                                    <label class="form-label" for="adviceGiven">Advice <span
                                                             class="text-danger">*</span></label>
-                                                    <textarea class="form-control" name="adviceGiven" id="adviceGiven"></textarea>
+                                                    <textarea class="form-control" name="adviceGiven" id="adviceGiven"
+                                                        placeholder="Enter the advice to patient"></textarea>
                                                     <div id="adviceGiven_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <div class="form-group pb-3">
@@ -1689,107 +1723,6 @@
 
                             </script>
 
-                            <!-- <script>
-                                                    document.getElementById("submitForm").addEventListener("click", function (event) {
-                                                        event.preventDefault();
-
-                                                        if (validateMedicines()) {
-                                                            document.getElementById("prescriptionForm").submit();
-                                                        }
-                                                    });
-
-                                                    function validateMedicines() {
-                                                        let allFilled = true;
-
-                                                        const adviceGiven = document.getElementById("adviceGiven");
-                                                        const adviceGivenErr = document.getElementById("adviceGiven_err");
-                                                        if (adviceGiven.value.trim() === "") {
-                                                            adviceGivenErr.innerHTML = "Advice to patient must be filled out.";
-                                                            allFilled = false;
-                                                        } else {
-                                                            adviceGivenErr.innerHTML = "";
-                                                        }
-
-                                                        const nextFollowUp = document.getElementById("nextFollowUp");
-                                                        const nextFollowUpErr = document.getElementById("nextFollowUp_err");
-                                                        if (nextFollowUp.value === "") {
-                                                            nextFollowUpErr.innerHTML = "Next follow-up date must be filled out.";
-                                                            allFilled = false;
-                                                        } else {
-                                                            nextFollowUpErr.innerHTML = "";
-                                                        }
-
-                                                        const medicineEntries = document.querySelectorAll(".medicine-entry:not(.d-none)");
-
-                                                        medicineEntries.forEach(function (entry) {
-                                                            const nameInput = entry.querySelector(".preMedName");
-                                                            const frequencyInput = entry.querySelector(".preMedFrequency");
-                                                            const durationInput = entry.querySelector(".preMedDuration");
-                                                            const durationUnitSelect = entry.querySelector(".preMedDurationUnit");
-                                                            const notesSelect = entry.querySelector(".preMedNotes");
-
-                                                            if (nameInput.value.trim() === "") {
-                                                                entry.querySelector("#preMedName_err").innerHTML = "Medicine name must be filled out.";
-                                                                allFilled = false;
-                                                            } else {
-                                                                entry.querySelector("#preMedName_err").innerHTML = "";
-                                                            }
-
-                                                            const frequencyPattern = /^[0-1]\s-\s[0-1]\s-\s[0-1]$/;
-                                                            if (frequencyInput.value.trim() === "") {
-                                                                entry.querySelector("#preMedFrequency_err").innerHTML = "Frequency must be filled out.";
-                                                                allFilled = false;
-                                                            } else if (!frequencyPattern.test(frequencyInput.value.trim())) {
-                                                                entry.querySelector("#preMedFrequency_err").innerHTML = "Invalid format. Use: 1 - 0 - 1.";
-                                                                allFilled = false;
-                                                            } else {
-                                                                entry.querySelector("#preMedFrequency_err").innerHTML = "";
-                                                            }
-
-                                                            frequencyInput.addEventListener("input", function (event) {
-                                                                let value = event.target.value.replace(/[^01]/g, '').substring(0, 3);
-                                                                let formattedValue = '';
-                                                                if (value.length > 0) formattedValue += value[0];
-                                                                if (value.length > 1) formattedValue += ' - ' + value[1];
-                                                                if (value.length > 2) formattedValue += ' - ' + value[2];
-                                                                event.target.value = formattedValue;
-
-                                                                const errorDiv = entry.querySelector("#preMedFrequency_err");
-                                                                if (!frequencyPattern.test(event.target.value)) {
-                                                                    errorDiv.textContent = 'Please enter a valid format: 1 - 0 - 1';
-                                                                    event.target.classList.add('is-invalid');
-                                                                } else {
-                                                                    errorDiv.textContent = '';
-                                                                    event.target.classList.remove('is-invalid');
-                                                                }
-                                                            });
-
-                                                            if (durationInput.value.trim() === "") {
-                                                                entry.querySelector("#preMedDuration_err").innerHTML = "Duration must be filled out.";
-                                                                allFilled = false;
-                                                            } else {
-                                                                entry.querySelector("#preMedDuration_err").innerHTML = "";
-                                                            }
-
-                                                            if (durationUnitSelect.value.trim() === "") {
-                                                                entry.querySelector("#preMedDurationUnit_err").innerHTML = "Please select a duration unit.";
-                                                                allFilled = false;
-                                                            } else {
-                                                                entry.querySelector("#preMedDurationUnit_err").innerHTML = "";
-                                                            }
-
-                                                            if (notesSelect.value.trim() === "") {
-                                                                entry.querySelector("#preMedNotes_err").innerHTML = "Notes selection is required.";
-                                                                allFilled = false;
-                                                            } else {
-                                                                entry.querySelector("#preMedNotes_err").innerHTML = "";
-                                                            }
-                                                        });
-
-                                                        return allFilled;
-                                                    }
-                                                </script> -->
-
                             <script>
                                 function formatDate(dateString) {
                                     const date = new Date(dateString);
@@ -1808,14 +1741,40 @@
                                 dateInput.setAttribute('min', minDate);
                             </script>
 
+                            <!-- Multiple Select 2  -->
+                            <script>
+                                $(document).ready(function () {
+                                    $('#symptoms').select2({
+                                        placeholder: 'Type to search and select symptoms',
+                                        allowClear: true
+                                    });
+                                });
+                            </script>
+
+                            <!-- Toggle visibility and icon -->
+                            <script>
+                                document.querySelectorAll('.toggle-label').forEach(label => {
+                                    label.addEventListener('click', () => {
+                                        const container = label.nextElementSibling;
+                                        const icon = label.querySelector('.toggle-icon');
+
+                                        container.classList.toggle('show');
+                                        icon.textContent = container.classList.contains('show') ? '-' : '+';
+                                    });
+                                });
+
+                                document.querySelectorAll('.clear-btn').forEach(button => {
+                                    button.addEventListener('click', (e) => {
+                                        const textarea = button.parentElement.querySelector('textarea');
+                                        textarea.value = '';
+                                        e.stopPropagation(); // Prevent toggling when clicking clear
+                                    });
+                                });
+                            </script>
+
             <?php
         } else if ($method == "appointmentReschedule") {
             ?>
-
-                                <script>
-                                    document.getElementById('appointments').style.color = "#87F7E3";
-                                </script>
-
                                 <section>
                                     <div class="card rounded">
                                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -2114,11 +2073,6 @@
 
         } else if ($method == "chiefDoctors") {
             ?>
-
-                                    <script>
-                                        document.getElementById('chiefDoctor').style.color = "#87F7E3";
-                                    </script>
-
                                     <section>
                                         <div class="card rounded">
                                             <div class="d-sm-flex justify-content-between p-3">
@@ -2254,10 +2208,6 @@
             <?php
         } else if ($method == "chiefDoctorProfile") {
             ?>
-                                        <script>
-                                            document.getElementById('chiefDoctor').style.color = "#87F7E3";
-                                        </script>
-
                                         <section>
                                             <div class="card rounded">
                                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -2362,7 +2312,6 @@
             <?php
         } else if ($method == "myProfile") {
             ?>
-
                                             <section>
                                                 <div class="card rounded">
                                                     <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -2448,7 +2397,6 @@
             <?php
         } else if ($method == "editMyProfile") {
             ?>
-
                                                 <section>
                                                     <div class="card rounded">
                                                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -2650,6 +2598,16 @@
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
     </main>
+
+    <script>
+        <?php if ($method == "dashboard") { ?>
+            document.getElementById('dashboard').style.color = "#87F7E3";
+        <?php } elseif ($method == "appointments" || $method == "appointmentsForm" || $method == "appointmentUpdate" || $method == "appointmentSummary" || $method == "appointmentReschedule") { ?>
+            document.getElementById('appointments').style.color = "#87F7E3";
+        <?php } elseif ($method == "chiefDoctors" || $method == "chiefDoctorProfile") { ?>
+            document.getElementById('chiefDoctor').style.color = "#87F7E3";
+        <?php } ?>
+    </script>
 
     <!-- Crop Image and Upload HCP profile -->
     <script>

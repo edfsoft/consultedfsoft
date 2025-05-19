@@ -1378,7 +1378,7 @@
                                     <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
                                             class="bi bi-arrow-left"></i> Back</button>
                                 </div>
-                                <div class="card-body p-3 p-sm-5">
+                                <div class="card-body p-3 px-sm-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
@@ -1495,10 +1495,8 @@
                                             </p>
                                         </div>
 
+                                        <p class="my-3 mt-3 fs-5 fw-semibold">Documents / Reports</p>
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
-
-                                            <p class="my-3 mt-3 fs-5 fw-semibold">Documents / Reports</p>
-
                                             <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
                                                     <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> : <a
@@ -1511,10 +1509,12 @@
                                                             rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
                                     <?php } ?>
                                             </div>
+                            <?php } else { ?>
+                                            <p class="text-muted text-center pt-1 pb-2">No reports or documents have been uploaded yet.</p>
                             <?php } ?>
 
+                                        <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
                             <?php if (!empty($consultDetails)) { ?>
-                                            <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
                                             <div class="d-md-flex">
                                                 <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
                                         <?php echo date('d-m-Y', strtotime($value['lastAppDate'])); ?>
@@ -1529,18 +1529,32 @@
                                     foreach ($consultDetails as $key => $cvalue) {
                                         $consultCount++;
                                         ?>
-                                                <div class="card rounded shadow mt-3 p-4">
-                                                    <div class="d-sm-flex my-auto " style="font-weight:600;">
-                                                        <button style=" width:30px;height:30px;font-weight:500"
-                                                            class="text-light bg-secondary rounded-circle border-0 me-3"><?php echo $consultCount; ?></button>
-                                                        <p class="pe-4 pt-1"><?php echo date('d F Y', strtotime($cvalue['date'])); ?> -
-                                                <?php echo date('h:i A', strtotime($cvalue['time'])); ?>
-                                                        </p>
-                                                        <p class="pe-4 pt-1"><?php echo $cvalue['consultMode'] == '0' ? 'Direct' : 'Online' ?> </p>
+                                                <div class="card rounded shadow border mt-3 p-4">
+                                                    <div class="d-sm-flex justify-content-between my-auto mb-2" style="font-weight:600;">
+                                                        <div class="d-flex">
+                                                            <button style=" width:30px;height:30px;font-weight:500"
+                                                                class="text-light bg-secondary rounded-circle border-0 me-3"><?php echo $consultCount; ?></button>
+                                                            <p class="pe-4 pt-1"><?php echo date('d F Y', strtotime($cvalue['date'])); ?> -
+                                                    <?php echo date('h:i A', strtotime($cvalue['time'])); ?>
+                                                            </p>
+                                                        </div>
+                                            <?php if ($cvalue['consultMode'] == '0') { ?>
+                                                            <p class="pe-4 pt-1"><span class="badge bg-primary">Direct Consult</span></p>
+                                            <?php } else { ?>
+                                                            <p class="pe-4 pt-1 float-end"><span class="badge bg-success me-2">Online Consult</span>
+                                                            </p>
+                                            <?php } ?>
+
+                                                        <button class="btn btn-secondary"><i class="bi bi-download"></i> Prescription</button>
+                                                        <!-- <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/' + value.id + '" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a> -->
                                                     </div>
-                                                    <div class="d-sm-flex pb-1">
+                                                    <div class="d-sm-flex pb-3">
                                                         <p class="text-secondary col-md-2 mb-1">CC Id : </p>
-                                                        <p class="col-md-9 ps-2"><?php echo $cvalue['consultDoctorId'] ?></p>
+                                                        <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $cvalue['consultDoctorDbId']; ?>"
+                                                            class="col-md-9 text-dark ps-2" onmouseover="style='text-decoration:underline'"
+                                                            onmouseout="style='text-decoration:none'">
+                                                <?php echo $cvalue['consultDoctorId'] ?>
+                                                        </a>
                                                     </div>
                                                     <div class="d-sm-flex pb-1">
                                                         <p class="text-secondary col-md-2 mb-1">Symptoms : </p>
@@ -1598,6 +1612,8 @@
                                                 </div>
                                 <?php } ?>
 
+                            <?php } else { ?>
+                                            <p class="text-muted text-center pt-1 pb-2">No consultations have been conducted yet.</p>
                             <?php } ?>
 
                         <?php } ?>
@@ -1802,8 +1818,7 @@
                                         </div>
 
                                         <div class="card-body px-md-4 pb-4">
-                                            <p class="my-3 fs-5 fw-medium">Patient Details:</p>
-
+                                            <p class="my-3 fs-5 fw-semibold">Patient Details:</p>
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
@@ -1849,11 +1864,10 @@
                                     <?php echo $value['medicines'] ? $value['medicines'] : "Not provided"; ?>
                                                     </p> -->
                                                 </div>
-
-                                                <!-- ********************************************************************************************************* -->
-                                                <div class="border rounded shadow mt-4 p-3">
+                                                <p class="mb-2 mt-4 fs-5 fw-semibold">Consultation Details:</p>
+                                                <div class="p-3">
                                                     <form action="<?php echo base_url() . 'Healthcareprovider/saveDirectConsultation' ?>"
-                                                        method="post" id="consultForm" class="container">
+                                                        method="post" id="consultForm" class="containe col-md-9">
                                                         <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id'] ?>">
                                                         <input type="hidden" id="patientId" name="patientId"
                                                             value="<?php echo $value['patientId'] ?>">
@@ -1913,33 +1927,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <!-- <div class="mb-3">
-                                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                                style="background-color: rgb(206, 206, 206);" role="button">
-                                                                <span><strong>Medicines</strong></span>
-                                                                <span class="toggle-icon">+</span>
-                                                            </div>
-                                                            <div class="collapse field-container mt-2">
-                                                                <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                                                <textarea class="form-control mb-2" name="medicines" rows="3"
-                                                                    placeholder="Enter medicines..."></textarea>
-                                                            </div>
-                                                        </div> -->
-                                                        <div class="mb-3">
-                                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                                style="background-color: rgb(206, 206, 206);" role="button">
-                                                                <span><strong>Advice</strong></span>
-                                                                <span class="toggle-icon">+</span>
-                                                            </div>
-                                                            <div class="collapse field-container mt-2">
-                                                                <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                                                <textarea class="form-control mb-2" name="advices" rows="3"
-                                                                    placeholder="Enter Advices..."></textarea>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- --------------------------------------------------------------------- -->
-                                                        <div id="medicine-template" class="medicine-entry">
+                                                        <div id="medicine-template" class="card medicine-entry">
                                                             <div class="card-header d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                                 style="background-color: rgb(206, 206, 206);">
                                                                 <span class="text-dark"><strong>Medicines</strong></span>
@@ -1950,8 +1938,6 @@
                                                                 <div class="form-group py-3">
                                                                     <label class="form-label" for="preMedName">Medicine Name <span
                                                                             class="text-danger">*</span></label>
-                                                                    <!-- <input type="text" class="form-control preMedName" name="preMedName[]"
-                                                                                        placeholder="Medicine"> -->
                                                                     <select class="form-select preMedName" id="preMedName[]" name="preMedName[]">
                                                                         <option value="">Select Medicine</option>
                                                         <?php
@@ -2000,16 +1986,28 @@
                                                             </div>
                                                         </div>
                                                         <div id="medicines-list"></div>
-                                                        <button type="button" id="addMoreBtn" class="btn btn-primary mt-0 mb-4">Add More</button>
+                                                        <div class="d-flex justify-content-end">
+                                                            <button type="button" id="addMoreBtn" class="btn btn-secondary mt-0 mb-4"><i
+                                                                    class="bi bi-plus-lg"></i> Medicine</button>
+                                                        </div>
+                                                        <div class="form-group pb-3">
+                                                            <label class="form-label" for="advices">Advice <span
+                                                                    class="text-danger">*</span></label>
+                                                            <textarea class="form-control" name="advices" id="advices"
+                                                                placeholder="Enter the advice to patient"></textarea>
+                                                            <div id="advices_err" class="text-danger pt-1"></div>
+                                                        </div>
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="nextFollowUpDate">Next follow up <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate">
                                                             <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                                                         </div>
-                                                        <!-- --------------------------------------------------------------------- -->
-
-                                                        <button type="submit" class="btn btn-success mt-3">Submit</button>
+                                                        <div class="d-flex justify-content-between mt-2">
+                                                            <button type="reset" class="btn btn-secondary">Reset</button>
+                                                            <button type="submit" id="submitForm" class="btn text-light"
+                                                                style="background-color: #00ad8e;">Submit</button>
+                                                        </div>
                                                     </form>
                                                 </div>
                         <?php } ?>

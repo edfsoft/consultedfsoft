@@ -462,21 +462,17 @@ class HcpModel extends CI_Model
 
         $hcpId = $_SESSION['hcpId'];
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        // $symptom_string = implode(', ', $post['symptoms']);
+        $symptom_string = implode(', ', $post['symptoms']);
         $saveOnlineConsult = array(
             'patientId' => $post['patientId'],
             'patientDbId' => $post['patientIdDb'],
             'consultDoctorId' => $hcpId,
             'consultDoctorDbId' => $hcpIdDb,
             'date' => date('d-m-Y'),
-            // 'symptoms' => $symptom_string,
-            // 'findings' => $post['findings'],
-            // 'diagnosis' => $post['diagnosis'],
-            // 'investigations' => $post['investigations'],
-            'symptoms' => 'online symptoms',
-            'findings' => 'online findings',
-            'diagnosis' => 'online diagonsis',
-            'investigations' => 'online investigations',
+            'symptoms' => $symptom_string,
+            'findings' => $post['findings'],
+            'diagnosis' => $post['diagnosis'],
+            'investigations' => $post['investigations'],
             'adviceGiven' => $post['adviceGiven'],
             'nextFollowup' => $post['nextFollowUp'],
             'consultMode' => '1',

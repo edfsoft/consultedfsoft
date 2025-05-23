@@ -387,6 +387,8 @@ class Healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $symptoms = $this->HcpModel->getSymptoms();
+            $this->data['symptomsList'] = $symptoms;
             $medicines = $this->HcpModel->getMedicines();
             $this->data['medicinesList'] = $medicines;
             $this->load->view('hcpDashboard.php', $this->data);

@@ -528,14 +528,6 @@
                                                         style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['doctorMail']; ?>
                                                     </a></p>
-                                                <div class="input-group">
-                                                    <input type="password" class="form-control" id="password" name="password"
-                                                        value='<?php echo $value['doctorPassword']; ?>' readonly>
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        onclick="togglePasswordVisibility('password', 'visibilityIcon')">
-                                                        <i id="visibilityIcon" class="bi bi-eye-slash"></i>
-                                                    </button>
-                                                </div>
                                                 <p class="pt-3"><?php echo $value['gMeetLink']; ?></p>
                                             </div>
                                         </div>
@@ -1056,14 +1048,6 @@
                                                                     style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['hcpMail']; ?>
                                                                 </a></p>
-                                                            <div class="input-group">
-                                                                <input type="password" class="form-control" id="password" name="password"
-                                                                    value='<?php echo $value['hcpPassword']; ?>' readonly>
-                                                                <button type="button" class="btn btn-outline-secondary"
-                                                                    onclick="togglePasswordVisibility('password', 'visibilityIcon')">
-                                                                    <i id="visibilityIcon" class="bi bi-eye-slash"></i>
-                                                                </button>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <h5 class="fw-bolder pb-3">Profile Details:</h5>

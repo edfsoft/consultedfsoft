@@ -58,6 +58,20 @@
     <?php $this->load->view('ccHeader'); ?>
 
     <main id="main" class="main">
+        <?php
+        $firstLogin = $this->session->userdata('firstLogin');
+        if ($firstLogin !== null && $firstLogin == '0' && $method !== "passwordChange") {
+            ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var myModal = new bootstrap.Modal(document.getElementById('firstLoginAlert'), {
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    myModal.show();
+                });
+            </script>
+        <?php } ?>
         <?php if ($this->session->flashdata('showSuccessMessage')) { ?>
             <div id="display_message"
                 style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
@@ -1415,7 +1429,8 @@
                                                         </div>
 
                                                         <div class="d-flex justify-content-between mt-2 ">
-                                                            <h5 class="fw-bolder pb-3">Profile Details:</h5>
+                                                            <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details :</p>
+
                                                             <a href="<?php echo base_url() . "Chiefconsultant/editMyProfile" ?>"><i
                                                                     class="bi bi-pencil-square"></i> Edit</a>
                                                         </div>
@@ -1701,10 +1716,222 @@
                                                 }
                                             </script>
 
+
+            <?php
+        } else if ($method == "passwordChange") {
+            ?>
+                                                <section>
+                                                    <div class="card rounded m-2">
+                                                        <div class="d-flex justify-content-between mx-2 p-3 pt-sm-4 px-sm-4">
+                                                            <p style="font-size: 24px; font-weight: 500">
+                                                                Change Password</p>
+                                                            <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark mt-2"><i
+                                                                    class="bi bi-arrow-left"></i> Back</a>
+                                                        </div>
+                                                        <div class="card-body ps-5 p-sm-4">
+                            <?php
+                            foreach ($ccDetails as $key => $value) {
+                                ?>
+                                                                <form action="<?php echo base_url() . "Chiefconsultant/saveNewPassword" ?>" name="PasswordForm"
+                                                                    method="POST" class="" onsubmit="return validateNewPassword()" oninput="validateNewPassword()">
+                                                                    <div class="d-md-flex justify-content-between pb-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drName">Name</label>
+                                                                            <input type="text" class="fieldStyle form-control p-3" id="drName" name="drName"
+                                                                                style="cursor: no-drop;" value="<?php echo $value['doctorName']; ?>"
+                                                                                placeholder="Suresh Kumar" disabled readonly>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label class="form-label pb-2" for="drMobile">Mobile </label>
+                                                                            <input type="number" class="fieldStyle form-control p-3" id="drMobile" name="drMobile"
+                                                                                style="cursor: no-drop;" value="<?php echo $value['doctorMobile']; ?>"
+                                                                                placeholder="9632587410" disabled readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-md-flex justify-content-between pt-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drEmail">Email</label>
+                                                                            <div class="">
+                                                                                <input type="email" class="fieldStyle form-control p-3" id="drEmail" name="drEmail"
+                                                                                    style="cursor: no-drop;" value="<?php echo $value['doctorMail']; ?>"
+                                                                                    placeholder="example@gmail.com" disabled readonly>
+                                                                            </div>
+                                                                            <p type="button" class="float-end mt-2 m-0 p-0" style="color: #0079AD;"
+                                                                                id="sendEmailOtpBtn" onclick="sendEmailOtp()"
+                                                                                onmouseover="this.style.textDecoration='underline'"
+                                                                                onmouseout="this.style.textDecoration='none'">Send
+                                                                                OTP</p>
+                                                                            <small id="emailOtpStatus" class="text-success"></small>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label for="emailOtp" class="form-label pb-2">Enter OTP <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <input type="text" id="emailOtp" maxlength="6" class="fieldStyle form-control p-3"
+                                                                                placeholder="Enter OTP" disabled>
+                                                                            <small id="emailOtpError" class="text-danger"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-md-flex justify-content-between py-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drNewPassword">New Password <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <div style="position: relative;">
+                                                                                <input type="password" class="fieldStyle form-control p-3" id="drNewPassword"
+                                                                                    name="drNewPassword" placeholder="Enter New Password">
+                                                                                <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drNewPassword', this)"
+                                                                                    style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
+                                                                            </div>
+                                                                            <small id="passwordError" class="text-danger"></small>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label class="form-label pb-2" for="drCnfmPassword">Confirm Password <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <div style="position: relative;">
+                                                                                <input type="password" class="fieldStyle form-control p-3" id="drCnfmPassword"
+                                                                                    name="drCnfmPassword" placeholder="Re-Enter New Password">
+                                                                                <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drCnfmPassword', this)"
+                                                                                    style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
+                                                                            </div>
+                                                                            <small id="confirmPasswordError" class="text-danger"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="buttonStyle btn float-end mt-3 "
+                                                                        style="color: white;background-color: #0079AD;">Save</button>
+                                                                </form>
+                        <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                </section>
+
+                                                <script>
+                                                    function togglePasswordVisibility(id, icon) {
+                                                        const passwordField = document.getElementById(id);
+
+                                                        if (passwordField.type === "password") {
+                                                            passwordField.type = "text";
+                                                            icon.classList.remove('bi-eye-fill');
+                                                            icon.classList.add('bi-eye-slash-fill');
+                                                        } else {
+                                                            passwordField.type = "password";
+                                                            icon.classList.remove('bi-eye-slash-fill');
+                                                            icon.classList.add('bi-eye-fill');
+                                                        }
+                                                    }
+                                                </script>
+
+                                                <script>
+                                                    function sendEmailOtp() {
+                                                        const email = document.getElementById('drEmail').value.trim();
+
+                                                        fetch("<?= base_url('Santhosham/sendEmailOtp') ?>", {
+                                                            method: "POST",
+                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                            body: `email=${encodeURIComponent(email)}`
+                                                        })
+                                                            .then(res => res.json())
+                                                            .then(data => {
+                                                                if (data.status === "success") {
+                                                                    document.getElementById('emailOtp').disabled = false;
+                                                                    document.getElementById('emailOtp').focus();
+                                                                    document.getElementById('emailOtpStatus').textContent = "OTP sent to your email.";
+                                                                    alert("OTP sent to your email.");
+                                                                } else {
+                                                                    document.getElementById('emailOtpStatus').textContent = "Failed to send OTP.";
+                                                                }
+                                                            });
+                                                    }
+
+                                                    document.getElementById('emailOtp').addEventListener('input', () => {
+                                                        const otp = document.getElementById('emailOtp').value.trim();
+
+                                                        if (otp.length === 6) {
+                                                            fetch("<?= base_url('Santhosham/verifyEmailOtp') ?>", {
+                                                                method: "POST",
+                                                                headers: {
+                                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                                },
+                                                                body: `otp=${otp}`
+                                                            })
+                                                                .then(res => res.json())
+                                                                .then(data => {
+                                                                    if (data.status === "success") {
+                                                                        document.getElementById('emailOtpError').textContent = "";
+                                                                        document.getElementById('emailOtpStatus').textContent = "OTP verified successfully!";
+                                                                        document.getElementById('emailOtp').disabled = true;
+                                                                        document.getElementById('emailOtp').dataset.verified = "true";
+                                                                    } else {
+                                                                        document.getElementById('emailOtpError').textContent = "Invalid OTP.";
+                                                                        document.getElementById('emailOtpStatus').textContent = "";
+                                                                        document.getElementById('emailOtp').dataset.verified = "false";
+                                                                    }
+                                                                })
+                                                                .catch(err => {
+                                                                    console.error("OTP verification error:", err);
+                                                                    document.getElementById('emailOtpError').textContent = "Server error during OTP verification.";
+                                                                });
+                                                        }
+                                                    });
+
+                                                    function validateNewPassword() {
+                                                        let password = document.getElementById("drNewPassword").value.trim();
+                                                        let confirmPassword = document.getElementById("drCnfmPassword").value.trim();
+                                                        let otpVerified = document.getElementById("emailOtp").dataset.verified === "true";
+
+                                                        let isValid = true;
+
+                                                        if (password === "") {
+                                                            document.getElementById("passwordError").textContent = "Password must be filled out.";
+                                                            isValid = false;
+                                                        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+                                                            document.getElementById("passwordError").textContent = "Password must contain uppercase, lowercase, number, special char and min 8 chars.";
+                                                            isValid = false;
+                                                        } else {
+                                                            document.getElementById("passwordError").textContent = "";
+                                                        }
+
+                                                        if (confirmPassword === "") {
+                                                            document.getElementById("confirmPasswordError").textContent = "Please re-enter the password.";
+                                                            isValid = false;
+                                                        } else if (confirmPassword !== password) {
+                                                            document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+                                                            isValid = false;
+                                                        } else {
+                                                            document.getElementById("confirmPasswordError").textContent = "";
+                                                        }
+
+                                                        if (!otpVerified) {
+                                                            document.getElementById('emailOtpError').textContent = "Please enter a valid OTP and wait for verification.";
+                                                            isValid = false;
+                                                        }
+
+                                                        return isValid;
+                                                    }
+                                                </script>
         <?php } ?>
 
         <!-- All modal files -->
         <?php include 'ccModals.php'; ?>
+
+        <!-- Change Password Alert  -->
+        <div class="modal fade" id="firstLoginAlert" tabindex="-1" role="dialog" aria-labelledby="firstLoginLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="firstLoginLabel">Update Password Alert</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>⚠️ Please change your temporary password immediately before proceeding any further.</p>
+                        <div class="text-end">
+                            <a href="<?php echo base_url('Chiefconsultant/changePassword'); ?>" class="btn text-light"
+                                style="background-color: #0079AD;">Update
+                                Password</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>

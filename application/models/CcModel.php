@@ -17,7 +17,8 @@ class CcModel extends CI_Model
             'specialization' => $post['ccSpec'],
             // 'doctorPassword' => $post['ccCnfmPassword'],
             'doctorPassword' => password_hash($post['ccCnfmPassword'], PASSWORD_BCRYPT),
-            'approvalStatus' => $approval
+            'approvalStatus' => $approval,
+            'firstLoginPswd' => $post['firstLoginPswdChange']
         );
         $this->db->insert('cc_details', $insert);
         return true;

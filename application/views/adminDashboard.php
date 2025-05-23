@@ -374,6 +374,7 @@
                                         <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                     </div>
                                     <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
+                                    <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="0">
                                     <div class="d-flex justify-content-between">
                                         <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
                                         <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
@@ -893,6 +894,8 @@
                                                     <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
+                                                <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="0">
+
                                                 <div class="d-flex justify-content-between">
                                                     <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
                                                     <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>

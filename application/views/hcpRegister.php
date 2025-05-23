@@ -152,6 +152,8 @@
                             <input type="checkbox" id="check" name="check" value="1">
                             <label for="check">I agree the Terms of Use and Privacy Policy.</label>
                         </div> -->
+                        <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="1">
+
                         <button type="submit" class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
                             style="background-color:#00AD8E;font-size:16px;font-weight:600;">Sign Up</button>
                     </form>

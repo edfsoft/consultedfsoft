@@ -11,6 +11,7 @@ class Edfadmin extends CI_Controller
         $this->load->model('HcpModel');
         $this->load->model('AdminModel');
         $this->load->library('session');
+        $this->load->library('email');
     }
 
     public function index()
@@ -80,6 +81,7 @@ class Edfadmin extends CI_Controller
     {
         $mobileNumber = $this->input->post('ccMobile');
         $mailId = $this->input->post('ccEmail');
+        $pswd = $this->input->post('ccCnfmPassword');
 
         $existingFields = $this->CcModel->check_existing_user($mobileNumber, $mailId);
 
@@ -90,8 +92,26 @@ class Edfadmin extends CI_Controller
             exit();
         } else {
             $register = $this->CcModel->register();
-            $this->CcModel->generateCcId();
-            if ($register) {
+            $id = $this->CcModel->generateCcId();
+
+            $message = "Hi there, <br><br>
+            Your account has been created as Chief Consultant [CC].<br>
+            Login URL: <b>https://consult.edftech.in/</b><br>
+            Mail Id: <b>" . $mailId . " </b><br>
+            Password: <b>" . $pswd . " </b><br>
+            You will be required to change your password upon first login.
+            <br><br> Warm regards, <br>
+            Team EDF";
+            $this->email->from('erodediabetesfoundation@gmail.com', 'EDF Tech Account Creation');
+            $this->email->to($mailId);
+            $this->email->subject('Your Account Login Credentials');
+            $this->email->message($message);
+            $this->email->send();
+            // if ($this->email->send()) {
+            //     echo 'status success';
+            // }
+
+            if ($register && $id) {
                 $this->session->set_flashdata('showSuccessMessage', 'CC added successfully');
             } else {
                 $this->session->set_flashdata('showErrorMessage', 'Error in adding CC');
@@ -187,6 +207,7 @@ class Edfadmin extends CI_Controller
     {
         $hcpMobileNum = $this->input->post('hcpMobile');
         $hcpMailId = $this->input->post('hcpEmail');
+        $pswd = $this->input->post('hcpCnfmPassword');
 
         $existingFields = $this->HcpModel->check_existing_user($hcpMobileNum, $hcpMailId);
 
@@ -197,8 +218,26 @@ class Edfadmin extends CI_Controller
             exit();
         } else {
             $register = $this->HcpModel->register();
-            $this->HcpModel->generatehcpid();
-            if ($register) {
+            $id = $this->HcpModel->generatehcpid();
+
+            $message = "Hi there, <br><br>
+            Your account has been created as Health Care Provider [HCP].<br>
+            Login URL: <b>https://consult.edftech.in/</b><br>
+            Mail Id: <b>" . $hcpMailId . " </b><br>
+            Password: <b>" . $pswd . " </b><br>
+            You will be required to change your password upon first login.
+            <br><br> Warm regards, <br>
+            Team EDF";
+            $this->email->from('erodediabetesfoundation@gmail.com', 'EDF Tech Account Creation');
+            $this->email->to($hcpMailId);
+            $this->email->subject('Your Account Login Credentials');
+            $this->email->message($message);
+            $this->email->send();
+            // if ($this->email->send()) {
+            //     echo 'status success';
+            // }
+
+            if ($register && $id) {
                 $this->session->set_flashdata('showSuccessMessage', 'HCP added successfully');
             } else {
                 $this->session->set_flashdata('showErrorMessage', 'Error in adding HCP');

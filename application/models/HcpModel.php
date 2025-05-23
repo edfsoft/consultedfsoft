@@ -18,7 +18,8 @@ class HcpModel extends CI_Model
             'hcpSpecialization' => $post['hcpSpec'],
             // 'hcpPassword' => $post['hcpCnfmPassword'],
             'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
-            'approvalStatus' => $approval
+            'approvalStatus' => $approval,
+            'firstLoginPswd' => $post['firstLoginPswdChange']
         );
         $this->db->insert('hcp_details', $insert);
         return true;

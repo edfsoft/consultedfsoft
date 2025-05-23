@@ -127,6 +127,9 @@ class Chiefconsultant extends CI_Controller
                 'ccMobileNum' => $login['doctorMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
+            if ($login['firstLoginPswd'] == '0') {
+                $this->session->set_userdata('firstLogin', '0');
+            }
             redirect('Chiefconsultant/dashboard');
         } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
             $this->session->set_flashdata('errorMessage', 'You can log in once the verification process is done.');
@@ -266,9 +269,9 @@ class Chiefconsultant extends CI_Controller
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "editMyProfile";
             $ccDetails = $this->CcModel->getCcDetails();
+            $this->data['ccDetails'] = $ccDetails;
             $specList = $this->HcpModel->getSpecialization();
             $this->data['specializationList'] = $specList;
-            $this->data['ccDetails'] = $ccDetails;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
@@ -295,6 +298,29 @@ class Chiefconsultant extends CI_Controller
         }
         redirect('Chiefconsultant/myProfile');
     }
+
+    public function changePassword()
+    {
+        if (isset($_SESSION['ccName'])) {
+            $this->data['method'] = "passwordChange";
+            $this->data['ccDetails'] = $this->CcModel->getCcDetails();
+            $this->setVariable();
+            $this->load->view('ccDashboard.php', $this->data);
+        } else {
+            redirect('Chiefconsultant/');
+        }
+    }
+
+    // public function saveNewPassword()
+    // {
+    //     $this->session->unset_userdata('firstLogin');
+    //     if ($this->DoctorModel->updateNewPassword()) {
+    //         $this->session->set_flashdata('successMessage', 'Password updated successfully');
+    //     } else {
+    //         $this->session->set_flashdata('errorMessage', 'Error in updating password');
+    //     }
+    //     redirect('doctor/myProfile');
+    // }
 
     public function logout()
     {

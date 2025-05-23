@@ -2355,7 +2355,7 @@
                                                             </div>
 
                                                             <div class="d-flex justify-content-between mt-2 ">
-                                                                <h5 class="fw-bolder pb-3">Profile Details:</h5>
+                                                                <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details :</p>
                                                                 <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
                                                                         class="bi bi-pencil-square"></i> Edit</a>
                                                             </div>

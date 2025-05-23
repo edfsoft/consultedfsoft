@@ -72,10 +72,6 @@
         if ($method == "dashboard") {
             ?>
 
-            <script>
-                document.getElementById('dashboard').style.color = "#66D1FF";
-            </script>
-
             <section>
                 <p class="card ps-3 py-3" style="font-size: 24px; font-weight: 500">
                     Dashboard
@@ -363,10 +359,6 @@
         } else if ($method == "patients") {
             ?>
 
-                <script>
-                    document.getElementById('patients').style.color = "#66D1FF";
-                </script>
-
                 <section>
                     <div class="card rounded">
                         <div class="card-body p-3 p-sm-4">
@@ -539,10 +531,6 @@
             <?php
         } else if ($method == "patientDetails") {
             ?>
-
-                    <script>
-                        document.getElementById('patients').style.color = "#66D1FF";
-                    </script>
 
                     <section>
                         <div class="card rounded">
@@ -767,10 +755,6 @@
         } else if ($method == "prescription") {
             ?>
 
-                        <script>
-                            document.getElementById('patients').style.color = "#66D1FF";
-                        </script>
-
                         <section>
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-1 px-3">
@@ -938,10 +922,6 @@
             <?php
         } else if ($method == "appointments") {
             ?>
-                            <script>
-                                document.getElementById('appointments').style.color = "#66D1FF";
-                            </script>
-
                             <section>
                                 <div class="card rounded">
                                     <div class="card-body p-3 p-sm-4">
@@ -1116,10 +1096,6 @@
             <?php
         } else if ($method == "hcps") {
             ?>
-                                <script>
-                                    document.getElementById('healthCareProviders').style.color = "#66D1FF";
-                                </script>
-
                                 <!-- Old code as per in design -->
                                 <!-- <div class="card rounded">
                                 <div class="card-body p-4">
@@ -1319,10 +1295,6 @@
             <?php
         } else if ($method == "hcpsProfile") {
             ?>
-                                    <script>
-                                        document.getElementById('healthCareProviders').style.color = "#66D1FF";
-                                    </script>
-
                                     <section>
                                         <div class="card rounded">
                                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1734,6 +1706,18 @@
         <!-- All modal files -->
         <?php include 'ccModals.php'; ?>
     </main>
+
+    <script>
+        <?php if ($method == "dashboard") { ?>
+            document.getElementById('dashboard').style.color = "#66D1FF";
+        <?php } elseif ($method == "patients" || $method == "patientDetails" || $method == "prescription") { ?>
+            document.getElementById('patients').style.color = "#66D1FF";
+        <?php } elseif ($method == "appointments") { ?>
+            document.getElementById('appointments').style.color = "#66D1FF";
+        <?php } elseif ($method == "hcps" || $method == "hcpsProfile") { ?>
+            document.getElementById('healthCareProviders').style.color = "#66D1FF";
+        <?php } ?>
+    </script>
 
     <!-- Crop Image and Upload CC profile -->
     <script>

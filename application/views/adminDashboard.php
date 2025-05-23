@@ -62,10 +62,6 @@
         if ($method == "dashboard") {
             ?>
 
-            <script>
-                document.getElementById('dashboard').style.color = "white";
-            </script>
-
             <section>
                 <p class="card ps-3 py-3" style="font-size: 24px; font-weight: 500">
                     Dashboard
@@ -143,10 +139,6 @@
             <?php
         } else if ($method == "chiefConsultant") {
             ?>
-
-                <script>
-                    document.getElementById('ccs').style.color = "white";
-                </script>
 
                 <section>
                     <div class="card rounded">
@@ -310,10 +302,6 @@
             <?php
         } else if ($method == "ccRegisterForm") {
             ?>
-                    <script>
-                        document.getElementById('ccs').style.color = "white";
-                    </script>
-
                     <section>
                         <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -505,10 +493,6 @@
             <?php
         } else if ($method == "ccDetails") {
             ?>
-                        <script>
-                            document.getElementById('ccs').style.color = "white";
-                        </script>
-
                         <section>
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -676,10 +660,6 @@
             <?php
         } else if ($method == "healthCareProvider") {
             ?>
-
-                            <script>
-                                document.getElementById('hcps').style.color = "white";
-                            </script>
 
                             <section>
                                 <div class="card rounded">
@@ -849,10 +829,6 @@
             <?php
         } else if ($method == "hcpRegisterForm") {
             ?>
-                                <script>
-                                    document.getElementById('hcps').style.color = "white";
-                                </script>
-
                                 <section>
                                     <div class="card rounded">
                                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1045,10 +1021,6 @@
         } else if ($method == "hcpDetails") {
             ?>
 
-                                    <script>
-                                        document.getElementById('hcps').style.color = "white";
-                                    </script>
-
                                     <section>
                                         <div class="card rounded">
                                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1157,10 +1129,6 @@
             <?php
         } else if ($method == "patient") {
             ?>
-
-                                        <script>
-                                            document.getElementById('patients').style.color = "white";
-                                        </script>
 
                                         <section>
                                             <div class="card rounded">
@@ -1345,10 +1313,6 @@
             <?php
         } else if ($method == "patientDetails") {
             ?>
-
-                                            <script>
-                                                document.getElementById('patients').style.color = "white";
-                                            </script>
 
                                             <section>
                                                 <div class="card rounded">
@@ -1569,10 +1533,6 @@
         } else if ($method == "specialization") {
             ?>
 
-                                                <script>
-                                                    document.getElementById('specialization').style.color = "white";
-                                                </script>
-
                                                 <section>
                                                     <div class="card rounded">
                                                         <div class="card-body">
@@ -1726,10 +1686,6 @@
         } else if ($method == "symptoms") {
             ?>
 
-                                                    <script>
-                                                        document.getElementById('symptoms').style.color = "white";
-                                                    </script>
-
                                                     <section>
                                                         <div class="card rounded">
                                                             <div class="card-body">
@@ -1881,10 +1837,6 @@
             <?php
         } else if ($method == "medicines") {
             ?>
-
-                                                        <script>
-                                                            document.getElementById('medicines').style.color = "white";
-                                                        </script>
 
                                                         <section>
                                                             <div class="card rounded">
@@ -2043,9 +1995,27 @@
         <!-- All modal files -->
         <?php include 'adminModals.php'; ?>
     </main>
- 
- <!-- Common Script -->
- <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
+
+    <script>
+        <?php if ($method == "dashboard") { ?>
+            document.getElementById('dashboard').style.color = "white";
+        <?php } elseif ($method == "chiefConsultant" || $method == "ccRegisterForm" || $method == "ccDetails") { ?>
+            document.getElementById('ccs').style.color = "white";
+        <?php } elseif ($method == "healthCareProvider" || $method == "hcpRegisterForm" || $method == "hcpDetails") { ?>
+            document.getElementById('hcps').style.color = "white";
+        <?php } elseif ($method == "patient" || $method == "patientDetails") { ?>
+            document.getElementById('patients').style.color = "white";
+        <?php } elseif ($method == "specialization") { ?>
+            document.getElementById('specialization').style.color = "white";
+        <?php } elseif ($method == "symptoms") { ?>
+            document.getElementById('symptoms').style.color = "white";
+        <?php } elseif ($method == "medicines") { ?>
+            document.getElementById('medicines').style.color = "white";
+        <?php } ?>
+    </script>
+
+    <!-- Common Script -->
+    <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
     <!-- Vendor JS Files -->
     <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>

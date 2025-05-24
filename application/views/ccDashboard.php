@@ -1534,36 +1534,28 @@
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="drName" name="drName"
-                                                                            value="<?php echo $value['doctorName']; ?>" placeholder="Suresh Kumar">
+                                                                            value="<?php echo $value['doctorName']; ?>" placeholder="Suresh Kumar" style="cursor: no-drop;" disabled readonly>
                                                                         <div id="drName_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="drMobile">Mobile <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="number" class="form-control" id="drMobile" name="drMobile"
-                                                                            value="<?php echo $value['doctorMobile']; ?>" placeholder="9632587410">
+                                                                            value="<?php echo $value['doctorMobile']; ?>" placeholder="9632587410" style="cursor: no-drop;" disabled readonly>
                                                                         <div id="drMobile_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
                                                                         <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                                            value="<?php echo $value['doctorMail']; ?>" placeholder="example@gmail.com">
+                                                                            value="<?php echo $value['doctorMail']; ?>" placeholder="example@gmail.com" style="cursor: no-drop;" disabled readonly>
                                                                         <div id="drEmail_err" class="text-danger pt-1"></div>
                                                                     </div>
-                                                                    <!-- <div class="form-group pb-3 ">
-                                                                        <label class="form-label" for="drPassword">Password <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <div class="d-flex">
-                                                                            <input type="password" class="form-control" id="drPassword" name="drPassword"
-                                                                                value='<?php echo $value['doctorPassword']; ?>'>
-                                                                            <button type="button" class="btn btn-outline-secondary"
-                                                                                onclick="togglePasswordVisibility('drPassword', 'visibilityIcon')">
-                                                                                <i id="visibilityIcon" class="bi bi-eye-slash"></i>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div id="drPassword_err" class="text-danger pt-1"></div>
-                                                                    </div> -->
-
+                                                                    <div class="form-group pb-3">
+                                                                        <label class="form-label">Password</label><br>
+                                                                        <a href="<?php echo base_url('Chiefconsultant/changePassword'); ?>"
+                                                                            class="btn text-light" style="background-color: #0079AD;">
+                                                                            Change Password</a>
+                                                                    </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="specialization">Specialization</label>
                                                                         <select class="form-control" id="specialization" name="specialization">
@@ -1823,7 +1815,7 @@
                                                     function sendEmailOtp() {
                                                         const email = document.getElementById('drEmail').value.trim();
 
-                                                        fetch("<?= base_url('Santhosham/sendEmailOtp') ?>", {
+                                                        fetch("<?= base_url('Chiefconsultant/sendEmailOtp') ?>", {
                                                             method: "POST",
                                                             headers: { "Content-Type": "application/x-www-form-urlencoded" },
                                                             body: `email=${encodeURIComponent(email)}`
@@ -1845,7 +1837,7 @@
                                                         const otp = document.getElementById('emailOtp').value.trim();
 
                                                         if (otp.length === 6) {
-                                                            fetch("<?= base_url('Santhosham/verifyEmailOtp') ?>", {
+                                                            fetch("<?= base_url('Chiefconsultant/verifyEmailOtp') ?>", {
                                                                 method: "POST",
                                                                 headers: {
                                                                     "Content-Type": "application/x-www-form-urlencoded"

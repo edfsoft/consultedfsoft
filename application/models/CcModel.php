@@ -212,5 +212,20 @@ class CcModel extends CI_Model
         return true;
     }
 
+    public function updateNewPassword()
+    {
+        $post = $this->input->post(null, true);
+        $ccDbId = $_SESSION['ccIdDb'];
+        $ccPassword = array(
+            'doctorPassword' => password_hash($post['drNewPassword'], PASSWORD_DEFAULT),
+            'firstLoginPswd' => '1'
+        );
+        $this->db->where('id', $ccDbId);
+        $this->db->update('cc_details', $ccPassword);
+        return true;
+    }
+
+
+
 }
 ?>

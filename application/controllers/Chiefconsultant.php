@@ -311,16 +311,62 @@ class Chiefconsultant extends CI_Controller
         }
     }
 
-    // public function saveNewPassword()
-    // {
-    //     $this->session->unset_userdata('firstLogin');
-    //     if ($this->DoctorModel->updateNewPassword()) {
-    //         $this->session->set_flashdata('successMessage', 'Password updated successfully');
-    //     } else {
-    //         $this->session->set_flashdata('errorMessage', 'Error in updating password');
-    //     }
-    //     redirect('doctor/myProfile');
-    // }
+    public function sendEmailOtp()// For CC change password
+    {
+        $email = $this->input->post('email');
+
+        if (!$email) {
+            echo json_encode(['status' => 'fail', 'message' => 'Email required']);
+            return;
+        }
+
+        $otp = rand(100000, 999999);
+        $this->session->set_userdata('email_otp', $otp);
+        $this->session->set_userdata('email_otp_address', $email);
+
+        $message = "Hi there, <br><br>
+        Your OTP to change your CC account password is: <strong>$otp</strong><br>
+        This OTP is valid for 10 minutes.<br><br>
+        Warm regards,<br>
+        Team EDF";
+        $this->load->library('email');
+        $this->email->from('erodediabetesfoundation@gmail.com', 'EDF OTP Verification');
+        $this->email->to($email);
+        $this->email->subject('Change Password OTP');
+        $this->email->message($message);
+        $this->email->set_mailtype("html");
+
+        if ($this->email->send()) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            log_message('error', $this->email->print_debugger());
+            echo json_encode(['status' => 'fail']);
+        }
+    }
+
+    public function verifyEmailOtp()
+    {
+        $enteredOtp = $this->input->post('otp');
+        $sessionOtp = $this->session->userdata('email_otp');
+
+        if ($enteredOtp == $sessionOtp) {
+            echo json_encode(['status' => 'success']);
+            $this->session->unset_userdata(['email_otp', 'email_otp_address']);
+        } else {
+            echo json_encode(['status' => 'fail']);
+        }
+    }
+
+    public function saveNewPassword()
+    {
+        $this->session->unset_userdata('firstLogin');
+        if ($this->CcModel->updateNewPassword()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating password');
+        }
+        redirect('Chiefconsultant/myProfile');
+    }
 
     public function logout()
     {

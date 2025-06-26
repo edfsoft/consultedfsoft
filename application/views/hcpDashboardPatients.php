@@ -1519,7 +1519,7 @@
                                                 <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
                                         <?php echo date('d-m-Y', strtotime($value['lastAppDate'])); ?>
                                                 </p>
-                                                <p><span class="text-secondary ">Next Followup </span> :
+                                                <p><span class="text-secondary ">Next Followup Date</span> :
                                         <?php echo date('d-m-Y', strtotime($value['nextAppDate'])); ?>
                                                 </p>
                                             </div>
@@ -1532,84 +1532,97 @@
                                                 <div class="card rounded shadow border mt-3 p-4">
                                                     <div class="d-sm-flex justify-content-between my-auto mb-2" style="font-weight:600;">
                                                         <div class="d-flex">
-                                                            <button style=" width:30px;height:30px;font-weight:500"
-                                                                class="text-light bg-secondary rounded-circle border-0 me-3"><?php echo $consultCount; ?></button>
-                                                            <p class="pe-4 pt-1"><?php echo date('d F Y', strtotime($cvalue['date'])); ?> -
+                                                            <button style="width:30px;height:30px;font-weight:500"
+                                                                class="text-light bg-secondary rounded-circle border-0 me-3">
+                                                    <?php echo $consultCount; ?>
+                                                            </button>
+                                                            <p class="pe-4 pt-1">
+                                                    <?php echo date('d F Y', strtotime($cvalue['date'])); ?> -
                                                     <?php echo date('h:i A', strtotime($cvalue['time'])); ?>
                                                             </p>
                                                         </div>
                                             <?php if ($cvalue['consultMode'] == '0') { ?>
                                                             <p class="pe-4 pt-1"><span class="badge bg-primary">Direct Consult</span></p>
                                             <?php } else { ?>
-                                                            <p class="pe-4 pt-1 float-end"><span class="badge bg-success me-2">Online Consult</span>
-                                                            </p>
+                                                            <p class="pe-4 pt-1 float-end"><span class="badge bg-success me-2">Online Consult</span></p>
                                             <?php } ?>
-
                                                         <button class="btn btn-secondary"><i class="bi bi-download"></i> Prescription</button>
-                                                        <!-- <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/' + value.id + '" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a> -->
                                                     </div>
-                                                    <div class="d-sm-flex pb-3">
-                                                        <p class="text-secondary col-md-2 mb-1">CC Id : </p>
-                                                        <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $cvalue['consultDoctorDbId']; ?>"
-                                                            class="col-md-9 text-dark ps-2" onmouseover="style='text-decoration:underline'"
-                                                            onmouseout="style='text-decoration:none'">
-                                                <?php echo $cvalue['consultDoctorId'] ?>
-                                                        </a>
-                                                    </div>
-                                                    <div class="d-sm-flex pb-1">
-                                                        <p class="text-secondary col-md-2 mb-1">Symptoms : </p>
-                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['symptoms'] ?></p>
-                                                    </div>
-                                                    <div class="d-sm-flex pb-1">
-                                                        <p class="text-secondary col-md-2 mb-1">Findings : </p>
-                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['findings'] ?></p>
-                                                    </div>
-                                                    <div class="d-sm-flex pb-1">
-                                                        <p class="text-secondary col-md-2 mb-1">Diagnosis : </p>
-                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['diagnosis'] ?></p>
-                                                    </div>
-                                                    <div class="d-sm-flex pb-1">
-                                                        <p class="text-secondary col-md-2 mb-1">Investigations : </p>
-                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['investigations'] ?></p>
-                                                    </div>
-                                                    <div class="d-sm-flex pb-1">
-                                                        <p class="text-secondary col-md-2 mb-1">Advice Given : </p>
-                                                        <p class="col-md-9 ps-2"> <?php echo $cvalue['adviceGiven'] ?></p>
-                                                    </div>
-                                                    <div class="d-sm-flex pb-1">
-                                                        <p class="text-secondary col-md-2 mb-1">Next Followup : </p>
-                                                        <p class="col-md-9 ps-2"> <?php echo date('d F Y', strtotime($cvalue['nextFollowup'])); ?>
-                                                        </p>
-                                                    </div>
-                                                    <p class="text-secondary">Medicines table : </p>
 
-                                                    <table class="table table-bordered table-hoverr border border-dark text-center">
-                                                        <thead class="table-light border border-dark">
-                                                            <tr>
-                                                                <th scope="col">Rx</th>
-                                                                <th scope="col">Medicine</th>
-                                                                <th scope="col">Frequency</th>
-                                                                <th scope="col">Duration</th>
-                                                                <th scope="col">Notes</th>
-                                                            </tr>
-                                                        </thead>
-                                            <?php $count = 0;
-                                            foreach ($consultMedicines as $key => $mvalue) {
-                                                if ($mvalue['consultationDbId'] == $cvalue['id']) {
-                                                    $count++; ?>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td><?php echo $count ?> .</td>
-                                                                        <td><?php echo $mvalue['medicineName'] ?></td>
-                                                                        <td><?php echo $mvalue['frequency'] ?></td>
-                                                                        <td><?php echo $mvalue['duration'] . ' ' . $mvalue['duration_unit']; ?></td>
-                                                                        <td><?php echo $mvalue['notes'] ?></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                <?php }
-                                            } ?>
-                                                    </table>
+                                                    <!-- Toggle Button -->
+                                                    <div class="text-end">
+                                                        <button class="btn btn-link text-decoration-none toggle-btn" onclick="toggleCard(this)">
+                                                            Show More <i class="bi bi-chevron-down"></i>
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Expandable Content -->
+                                                    <div class="card-content d-none">
+                                                        <div class="d-sm-flex pb-3">
+                                                            <p class="text-secondary col-md-2 mb-1">CC Id : </p>
+                                                            <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $cvalue['consultDoctorDbId']; ?>"
+                                                                class="col-md-9 text-dark ps-2" onmouseover="style='text-decoration:underline'"
+                                                                onmouseout="style='text-decoration:none'">
+                                                    <?php echo $cvalue['consultDoctorId'] ?>
+                                                            </a>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">Symptoms : </p>
+                                                            <p class="col-md-9 ps-2"> <?php echo $cvalue['symptoms'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">Findings : </p>
+                                                            <p class="col-md-9 ps-2"> <?php echo $cvalue['findings'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">Diagnosis : </p>
+                                                            <p class="col-md-9 ps-2"> <?php echo $cvalue['diagnosis'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">Investigations : </p>
+                                                            <p class="col-md-9 ps-2"> <?php echo $cvalue['investigations'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">Advice Given : </p>
+                                                            <p class="col-md-9 ps-2"> <?php echo $cvalue['adviceGiven'] ?></p>
+                                                        </div>
+                                                        <div class="d-sm-flex pb-1">
+                                                            <p class="text-secondary col-md-2 mb-1">Next Followup : </p>
+                                                            <p class="col-md-9 ps-2">
+                                                    <?php echo date('d F Y', strtotime($cvalue['nextFollowup'])); ?>
+                                                            </p>
+                                                        </div>
+
+                                                        <p class="text-secondary">Medicines table :</p>
+                                                        <table class="table table-bordered table-hoverr border border-dark text-center">
+                                                            <thead class="table-light border border-dark">
+                                                                <tr>
+                                                                    <th scope="col">Rx</th>
+                                                                    <th scope="col">Medicine</th>
+                                                                    <th scope="col">Frequency</th>
+                                                                    <th scope="col">Duration</th>
+                                                                    <th scope="col">Notes</th>
+                                                                </tr>
+                                                            </thead>
+                                                <?php $count = 0;
+                                                foreach ($consultMedicines as $key => $mvalue) {
+                                                    if ($mvalue['consultationDbId'] == $cvalue['id']) {
+                                                        $count++; ?>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td><?php echo $count ?> .</td>
+                                                                            <td><?php echo $mvalue['medicineName'] ?></td>
+                                                                            <td><?php echo $mvalue['frequency'] ?></td>
+                                                                            <td><?php echo $mvalue['duration'] . ' ' . $mvalue['duration_unit']; ?></td>
+                                                                            <td><?php echo $mvalue['notes'] ?></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                    <?php }
+                                                } ?>
+                                                        </table>
+                                                    </div>
                                                 </div>
+
                                 <?php } ?>
 
                             <?php } else { ?>
@@ -2180,6 +2193,22 @@
             document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
     </script>
+
+<!-- Consultation card show more and less -->
+    <script>
+        function toggleCard(btn) {
+            const cardContent = btn.closest('.card').querySelector('.card-content');
+            cardContent.classList.toggle('d-none');
+
+            // Toggle button text and icon
+            if (cardContent.classList.contains('d-none')) {
+                btn.innerHTML = 'Show More <i class="bi bi-chevron-down"></i>';
+            } else {
+                btn.innerHTML = 'Show Less <i class="bi bi-chevron-up"></i>';
+            }
+        }
+    </script>
+
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

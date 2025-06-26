@@ -2194,7 +2194,7 @@
         <?php } ?>
     </script>
 
-<!-- Consultation card show more and less -->
+    <!-- Consultation card show more and less -->
     <script>
         function toggleCard(btn) {
             const cardContent = btn.closest('.card').querySelector('.card-content');

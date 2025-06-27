@@ -180,6 +180,7 @@ class HcpModel extends CI_Model
             'patientHcpDbId	' => $_SESSION['hcpIdDb'],
         );
         $this->db->insert('patient_details', $insertdata);
+        $registeredId = $this->db->insert_id();
 
         if ($post['patientMedicines'] == "addNew") {
             $post = $this->input->post(null, true);
@@ -190,7 +191,7 @@ class HcpModel extends CI_Model
             );
             $this->db->insert('medicines_list', $insert);
         }
-        return true;
+        return $registeredId;
     }
 
     public function updatePatientsDetails()
@@ -279,7 +280,7 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    public function generatePatientId()
+    public function generatePatientId($dbid)
     {
         $latest_customer_id = $this->getlastPatientId();
         $last_four_digits = substr($latest_customer_id, -6);
@@ -288,8 +289,7 @@ class HcpModel extends CI_Model
         $insert = array(
             'patientId' => $generate_id
         );
-        $MobileNumber = $this->input->post('patientMobile');
-        $this->db->where('mobileNumber', $MobileNumber);
+        $this->db->where('mobileNumber', $dbid);
         $this->db->update('patient_details', $insert);
         return $generate_id;
     }
@@ -356,6 +356,17 @@ class HcpModel extends CI_Model
         $details = "SELECT * FROM `appointment_details` ";
         $select = $this->db->query($details);
         return $select->result_array();
+    }
+
+    public function insertPartialPatient($data)
+    {
+        $this->db->insert('patient_details', $data);
+        return $this->db->insert_id();
+    }
+
+    public function update($id, $data)
+    {
+        $this->db->where('id', $id)->update('patient_details', $data);
     }
 
     public function insertAppointment()
@@ -628,7 +639,6 @@ class HcpModel extends CI_Model
         $select = $this->db->query($details);
         return $select->result_array();
     }
-
 
 
 

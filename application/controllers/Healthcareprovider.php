@@ -186,7 +186,7 @@ class Healthcareprovider extends CI_Controller
             exit();
         } else {
             $register = $this->HcpModel->insertPatients();
-            $this->HcpModel->generatePatientId();
+            $this->HcpModel->generatePatientId($register);
             if ($register) {
                 $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
             } else {
@@ -334,6 +334,45 @@ class Healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/');
         }
     }
+
+    // Add new patient in the appointment form
+
+    public function ajaxSavePatient()
+    {
+        header('Content-Type: application/json');
+        $input = json_decode(file_get_contents('php://input'), true);
+        $data = [
+            'firstName' => $input['firstName'],
+            'lastName' => $input['lastName'],
+            'mobileNumber' => $input['mobile'],
+            'mailId' => $input['email'],
+            'gender' => $input['gender'],
+            'age' => $input['age'],
+            'patientHcp' => $_SESSION['hcpId'],
+            'patientHcpDbId' => $_SESSION['hcpIdDb'],
+        ];
+
+        if ($this->HcpModel->checkPatientExistence($data['mobileNumber'])) {
+            echo json_encode(['success' => false, 'message' => 'Patient mobile number already exists']);
+            return;
+        }
+
+        $insertId = $this->HcpModel->insertPartialPatient($data);
+        $patientId = $this->HcpModel->generatePatientId($insertId);
+
+        if ($insertId && $patientId) {
+            $this->HcpModel->update($insertId, ['patientId' => $patientId]);
+            echo json_encode([
+                'success' => true,
+                'id' => $insertId,
+                'patientId' => $patientId,
+                'firstName' => $data['firstName']
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Insert failed']);
+        }
+    }
+
 
     public function newAppointment()
     {

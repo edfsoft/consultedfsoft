@@ -651,9 +651,26 @@
                                                         <?php echo $value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName'] ?>
                                                             </option>
                                                 <?php } ?>
+                                                        <option value="new">+ Add New Patient</option>
                                                     </select>
                                                     <div id="patientId_err" class="text-danger pt-1"></div>
                                                 </div>
+                                                <!-- Add New patient -->
+                                                <!-- <div id="newPatientFields" class="border p-3 mt-2 rounded d-none bg-light">
+                                                    <h6>Add New Patient</h6>
+                                                    <div class="form-group pb-2">
+                                                        <label>First Name <span class="text-danger">*</span></label>
+                                                        <input type="text" name="newFirstName" id="newFirstName"
+                                                            class="form-control">
+                                                    </div>
+                                                    <div class="form-group pb-2">
+                                                        <label>Mobile <span class="text-danger">*</span></label>
+                                                        <input type="text" name="newMobile" id="newMobile" class="form-control">
+                                                    </div>
+                                                    <button type="button" class="btn btn-sm btn-success mt-2"
+                                                        onclick="saveNewPatient()">Save Patient</button>
+                                                    <div id="newPatientStatus" class="text-success mt-2"></div>
+                                                </div> -->
                                                 <div class="form-group pb-3">
                                                     <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                             class="text-danger">*</span></label>
@@ -671,6 +688,7 @@
                                                     </select>
                                                     <div id="referalDoctor_err" class="text-danger pt-1"></div>
                                                 </div>
+
                                                 <div class="form-group pb-3">
                                                     <label class="form-label pb-2" for="appConsult">Mode of consult <span
                                                             class="text-danger">*</span></label><br>
@@ -704,7 +722,6 @@
                                                     </select>
                                                     <div id="dayTime_err" class="text-danger pt-1"></div>
                                                 </div>
-
                                                 <div class="form-group pb-1">
                                                     <label class="form-label" for="appTime">Time <span
                                                             class="text-danger">*</span></label>
@@ -792,6 +809,181 @@
                             </div>
                         </div>
                     </section>
+
+                    <!-- Modal for add new patient -->
+                    <div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel"
+                        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="newPatientModalLabel">Add New Patient</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group pb-2">
+                                        <label>First Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="newFirstName" id="newFirstName" class="form-control">
+                                        <div id="newFirstName_err" class="text-danger"></div>
+                                    </div>
+                                    <div class="form-group pb-2">
+                                        <label>Last Name</label>
+                                        <input type="text" name="newLastName" id="newLastName" class="form-control">
+                                        <div id="newLastName_err" class="text-danger"></div>
+                                    </div>
+                                    <div class="form-group pb-2">
+                                        <label>Mobile <span class="text-danger">*</span></label>
+                                        <input type="text" name="newMobile" id="newMobile" class="form-control">
+                                        <div id="newMobile_err" class="text-danger"></div>
+                                    </div>
+                                    <div class="form-group pb-2">
+                                        <label>Email</label>
+                                        <input type="email" name="newEmail" id="newEmail" class="form-control">
+                                        <div id="newEmail_err" class="text-danger"></div>
+                                    </div>
+                                    <div class="form-group pb-2">
+                                        <label>Gender <span class="text-danger">*</span></label>
+                                        <select name="newGender" id="newGender" class="form-control">
+                                            <option value="">Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <div id="newGender_err" class="text-danger"></div>
+                                    </div>
+                                    <div class="form-group pb-2">
+                                        <label>Age <span class="text-danger">*</span></label>
+                                        <input type="number" name="newAge" id="newAge" class="form-control">
+                                        <div id="newAge_err" class="text-danger"></div>
+                                    </div>
+                                    <div id="newPatientStatus" class="text-success mt-2"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                                        onclick="saveNewPatient()">Add Patient</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Open Modal and Close Modal -->
+                    <script>
+                        let patientDropdown = document.getElementById('patientId');
+
+                        patientDropdown.addEventListener('change', function () {
+                            if (this.value === 'new') {
+                                showNewPatientModal();
+                            }
+                        });
+
+                        function showNewPatientModal() {
+                            const modal = new bootstrap.Modal(document.getElementById('newPatientModal'));
+                            modal.show();
+                        }
+
+                        document.getElementById('newPatientModal').addEventListener('hidden.bs.modal', function () {
+                            document.getElementById('patientId').value = '';
+                        });
+                    </script>
+                    
+                    <!-- Add to db and validation -->
+                    <script>
+                        function saveNewPatient() {
+                            document.getElementById("newFirstName_err").innerHTML = "";
+                            document.getElementById("newLastName_err").innerHTML = "";
+                            document.getElementById("newMobile_err").innerHTML = "";
+                            document.getElementById("newEmail_err").innerHTML = "";
+                            document.getElementById("newGender_err").innerHTML = "";
+                            document.getElementById("newAge_err").innerHTML = "";
+                            document.getElementById("newPatientStatus").innerHTML = "";
+
+                            const firstName = document.getElementById("newFirstName").value.trim();
+                            const lastName = document.getElementById("newLastName").value.trim();
+                            const mobile = document.getElementById("newMobile").value.trim();
+                            const email = document.getElementById("newEmail").value.trim();
+                            const gender = document.getElementById("newGender").value;
+                            const age = document.getElementById("newAge").value.trim();
+
+                            let isValid = true;
+
+                            if (firstName === "") {
+                                document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
+                                isValid = false;
+                            } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+                                document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
+                                isValid = false;
+                            }
+
+                            if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
+                                document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
+                                isValid = false;
+                            }
+
+                            if (mobile === "") {
+                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
+                                isValid = false;
+                            } else if (!/^\d{10}$/.test(mobile)) {
+                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
+                                isValid = false;
+                            }
+
+                            if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
+                                isValid = false;
+                            }
+
+                            if (gender === "") {
+                                document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
+                                isValid = false;
+                            }
+
+                            if (age === "") {
+                                document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
+                                isValid = false;
+                            } else if (isNaN(age) || age < 2 || age > 120) {
+                                document.getElementById("newAge_err").innerHTML = "Age must be a number between 2 and 120.";
+                                isValid = false;
+                            }
+
+                            if (isValid) {
+                                fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ firstName, lastName, mobile, email, gender, age })
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
+                                            const patientId = data.patientId + '|' + data.id;
+                                            const patientName = data.patientId + ' / ' + data.firstName;
+
+                                            const select = document.getElementById('patientId');
+                                            const newOption = new Option(patientName, patientId, true, true);
+                                            select.add(newOption);
+
+                                            document.getElementById("newFirstName").value = "";
+                                            document.getElementById("newLastName").value = "";
+                                            document.getElementById("newMobile").value = "";
+                                            document.getElementById("newEmail").value = "";
+                                            document.getElementById("newGender").value = "";
+                                            document.getElementById("newAge").value = "";
+
+                                            const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
+                                            modal.hide();
+                                        } else {
+                                            document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        document.getElementById("newPatientStatus").innerHTML = "An error occurred while saving the patient.";
+                                    });
+                            }
+                        }
+                    </script>
+
+                    <!-- Appointment booking -->
                     <script>
                         var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
 

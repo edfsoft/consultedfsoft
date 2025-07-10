@@ -171,7 +171,8 @@
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[0]['profilePhoto']) && $appointmentList[0]['profilePhoto'] != "No data") { ?>
                                                             <img src="<?php echo base_url() . 'uploads/' . $appointmentList[0]['profilePhoto'] ?>"
-                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle"
+                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                                         <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
                                                                 alt="Profile Photo" width="40" height="40" class="rounded-circle">
@@ -193,7 +194,8 @@
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[1]['profilePhoto']) && $appointmentList[1]['profilePhoto'] != "No data") { ?>
                                                             <img src="<?php echo base_url() . 'uploads/' . $appointmentList[1]['profilePhoto'] ?>"
-                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle"
+                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                                         <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
                                                                 alt="Profile Photo" width="40" height="40" class="rounded-circle">
@@ -215,7 +217,8 @@
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[2]['profilePhoto']) && $appointmentList[2]['profilePhoto'] != "No data") { ?>
                                                             <img src="<?php echo base_url() . 'uploads/' . $appointmentList[2]['profilePhoto'] ?>"
-                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle"
+                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                                         <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
                                                                 alt="Profile Photo" width="40" height="40" class="rounded-circle">
@@ -255,7 +258,8 @@
                                 <div class="d-flex justify-content-evenly">
                                     <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                         <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
-                                            alt="Profile Photo" width="50" height="50" class="rounded-circle">
+                                            alt="Profile Photo" width="50" height="50" class="rounded-circle"
+                                            onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                     <?php } else { ?>
                                         <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="50"
                                             height="50" class="rounded-circle">
@@ -560,7 +564,8 @@
                                     <div class="d-sm-flex text-center mb-4">
                                 <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                             <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
-                                                width="140" height="140" class="rounded-circle">
+                                                width="140" height="140" class="rounded-circle"
+                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
                                                 height="140" class="rounded-circle">
@@ -1235,6 +1240,7 @@
                                                     '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
                                                     '<img src=\'' + (value.hcpPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + '\' ' +
                                                     'alt=\'Profile Photo\' width=\'122\' height=\'122\' class=\'rounded-circle my-auto\'>' +
+                                                    + 'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
                                                     '<div>' +
                                                     '<p class=\'card-title\'><b>' + value.hcpName + '</b> /<br>' + value.hcpId + '</p>' +
                                                     '<p style=\'color: #0079AD;\'><b>' + value.hcpSpecialization + '</b></p>' +
@@ -1323,7 +1329,7 @@
                                                     <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
                                                             <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                class="rounded-circle">
+                                                                class="rounded-circle" onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
                                                                 height="140" class="rounded-circle">
@@ -1405,7 +1411,7 @@
                                                         <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
                                                                 <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                    class="rounded-circle">
+                                                                    class="rounded-circle" onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
                                                                     height="140" class="rounded-circle">
@@ -1518,7 +1524,7 @@
 
                                     <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
                                                                         <div></div><img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="180"
-                                                                            height="180" class="rounded-circle">
+                                                                            height="180" class="rounded-circle" onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                     <?php } else { ?>
                                                                         <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180"
                                                                             height="180" class="rounded-circle">
@@ -1534,20 +1540,23 @@
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
                                                                         <input type="text" class="form-control" id="drName" name="drName"
-                                                                            value="<?php echo $value['doctorName']; ?>" placeholder="Suresh Kumar" style="cursor: no-drop;" disabled readonly>
+                                                                            value="<?php echo $value['doctorName']; ?>" placeholder="Suresh Kumar"
+                                                                            style="cursor: no-drop;" disabled readonly>
                                                                         <div id="drName_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="drMobile">Mobile <span
                                                                                 class="text-danger">*</span></label>
                                                                         <input type="number" class="form-control" id="drMobile" name="drMobile"
-                                                                            value="<?php echo $value['doctorMobile']; ?>" placeholder="9632587410" style="cursor: no-drop;" disabled readonly>
+                                                                            value="<?php echo $value['doctorMobile']; ?>" placeholder="9632587410"
+                                                                            style="cursor: no-drop;" disabled readonly>
                                                                         <div id="drMobile_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">
                                                                         <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
                                                                         <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                                            value="<?php echo $value['doctorMail']; ?>" placeholder="example@gmail.com" style="cursor: no-drop;" disabled readonly>
+                                                                            value="<?php echo $value['doctorMail']; ?>" placeholder="example@gmail.com"
+                                                                            style="cursor: no-drop;" disabled readonly>
                                                                         <div id="drEmail_err" class="text-danger pt-1"></div>
                                                                     </div>
                                                                     <div class="form-group pb-3">

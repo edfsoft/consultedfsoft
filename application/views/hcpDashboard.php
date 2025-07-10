@@ -172,7 +172,8 @@
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[0]['profilePhoto']) && $appointmentList[0]['profilePhoto'] != "No data") { ?>
                                                             <img src="<?php echo base_url() . 'uploads/' . $appointmentList[0]['profilePhoto'] ?>"
-                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle"
+                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                                         <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
                                                                 alt="Profile Photo" width="40" height="40" class="rounded-circle">
@@ -194,7 +195,8 @@
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[1]['profilePhoto']) && $appointmentList[1]['profilePhoto'] != "No data") { ?>
                                                             <img src="<?php echo base_url() . 'uploads/' . $appointmentList[1]['profilePhoto'] ?>"
-                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle"
+                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                                         <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
                                                                 alt="Profile Photo" width="40" height="40" class="rounded-circle">
@@ -216,7 +218,8 @@
                                                     <td class="px-4">
                                                         <?php if (isset($appointmentList[2]['profilePhoto']) && $appointmentList[2]['profilePhoto'] != "No data") { ?>
                                                             <img src="<?php echo base_url() . 'uploads/' . $appointmentList[2]['profilePhoto'] ?>"
-                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle">
+                                                                alt="Profile Photo" width="40" height="40" class="rounded-circle"
+                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                                         <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg"
                                                                 alt="Profile Photo" width="40" height="40" class="rounded-circle">
@@ -256,7 +259,8 @@
                                 <div class="d-flex justify-content-evenly">
                                     <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                         <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
-                                            alt="Profile Photo" width="50" height="50" class="rounded-circle">
+                                            alt="Profile Photo" width="50" height="50" class="rounded-circle"
+                                            onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                     <?php } else { ?>
                                         <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="50"
                                             height="50" class="rounded-circle">
@@ -885,7 +889,7 @@
                             document.getElementById('patientId').value = '';
                         });
                     </script>
-                    
+
                     <!-- Add to db and validation -->
                     <script>
                         function saveNewPatient() {
@@ -2330,8 +2334,9 @@
                                                     doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
                                                     doctorItem.innerHTML =
                                                         '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
-                                                        '<img src=\'' + (value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + '\' ' +
-                                                        'alt=\'Profile Photo\' width=\'122\' height=\'122\' class=\'rounded-circle my-auto\'>' +
+                                                        '<img src="' + (value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + '" ' +
+                                                        'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
+                                                        'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
                                                         '<div>' +
                                                         '<p class=\'card-title\'><b>' + value.doctorName + '</b><br>' + value.ccId + '</p>' +
                                                         '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
@@ -2423,7 +2428,8 @@
                                     ?>
                                 <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
                                                                 <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                    class="rounded-circle">
+                                                                    class="rounded-circle"
+                                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
                                                                     height="140" class="rounded-circle my-auto">
@@ -2524,7 +2530,8 @@
                                                             <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
                                                                     <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                        class="rounded-circle">
+                                                                        class="rounded-circle"
+                                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                                     <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt=" Profile Photo" width="140"
                                                                         height="140" class="rounded-circle">
@@ -2610,7 +2617,8 @@
                                         ?>
                                     <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
                                                                             <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="180" height="180"
-                                                                                class="rounded-circle">
+                                                                                class="rounded-circle"
+                                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                     <?php } else { ?>
                                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180"
                                                                                 height="180" class="rounded-circle">

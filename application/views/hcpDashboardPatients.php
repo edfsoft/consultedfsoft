@@ -2209,7 +2209,6 @@
         }
     </script>
 
-
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 

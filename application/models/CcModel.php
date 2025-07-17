@@ -17,7 +17,8 @@ class CcModel extends CI_Model
             'specialization' => $post['ccSpec'],
             // 'doctorPassword' => $post['ccCnfmPassword'],
             'doctorPassword' => password_hash($post['ccCnfmPassword'], PASSWORD_BCRYPT),
-            'approvalStatus' => $approval
+            'approvalStatus' => $approval,
+            'firstLoginPswd' => $post['firstLoginPswdChange']
         );
         $this->db->insert('cc_details', $insert);
         return true;
@@ -210,6 +211,21 @@ class CcModel extends CI_Model
         $this->db->update('cc_details', $updatedata);
         return true;
     }
+
+    public function updateNewPassword()
+    {
+        $post = $this->input->post(null, true);
+        $ccDbId = $_SESSION['ccIdDb'];
+        $ccPassword = array(
+            'doctorPassword' => password_hash($post['drNewPassword'], PASSWORD_DEFAULT),
+            'firstLoginPswd' => '1'
+        );
+        $this->db->where('id', $ccDbId);
+        $this->db->update('cc_details', $ccPassword);
+        return true;
+    }
+
+
 
 }
 ?>

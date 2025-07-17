@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HCP Login Page</title>
+    <title>HCP Login Page - EDF</title>
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon">
     <!-- Bootstrap 5.1.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -118,8 +118,8 @@
                             <button type="submit"
                                 class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
                                 style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
-                            <!-- <a href="<?php echo base_url() . "Healthcareprovider/resetPassword" ?>" id="forgotPassword"
-                                class="text-danger mt-5">Forgot password?</a> -->
+                            <a href="<?php echo base_url() . "Healthcareprovider/resetPassword" ?>" id="forgotPassword"
+                                class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
                     <p class="mt-4" style="font-size:18px;font-weight:400;">Don't have an account? <a

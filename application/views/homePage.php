@@ -14,6 +14,7 @@
     <style>
         html {
             scroll-behavior: auto !important;
+            scroll-padding-top: 90px !important;
         }
 
         body {
@@ -24,7 +25,7 @@
 
 <body>
     <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow px-5">
         <div class="container-fluid">
             <a class="navbar-brand" href="https://www.erodediabetesfoundation.org/" target="blank"><img
                     src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo"></a>
@@ -34,6 +35,9 @@
             </button>
             <div class="collapse navbar-collapse ps-5" id="navbarNavDropdown">
                 <ul class="navbar-nav ps-5">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark me-4" href="#home">Home</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark me-4" aria-current="page" href="#whychooseus">About us</a>
                     </li>
@@ -99,7 +103,7 @@
     </nav>
 
     <!-- Banner -->
-    <div class="d-lg-flex justify-content-between pt-sm-5 ps-sm-5" style="background-color:#EEF6F5;">
+    <div id="home" class="d-lg-flex justify-content-between pt-sm-5 ps-sm-5" style="background-color:#EEF6F5;">
         <div class="m-4 ms-sm-5 mt-3 mt-sm-5 pt-4 pt-sm-0 fs-1" style="font-weight:500;">
             Specialized <span class="text-danger">Diabetes Support</span> from the convenience of your
             own home
@@ -169,7 +173,8 @@
             </div>
             <div class="col-lg-2 text-center"> <img class="pt-3 pt-lg-4 pb-lg-3"
                     src="<?php echo base_url(); ?>assets/choose4.png" alt="4">
-                <p class="text-danger pt-2 pt-lg-5" style="font-size:20px;font-weight:500;">Secure Patient Records</p>
+                <p class="text-danger pt-2 pt-lg-5 mt-lg-3" style="font-size:20px;font-weight:500;">Secure Patient
+                    Records</p>
                 <p class="px-2" style="font-size:18px;font-weight:400;">Trust us for a confidential and secure platform
                     dedicated to your well-being.
                 </p>
@@ -178,7 +183,7 @@
     </div>
 
     <!-- Happy Patients -->
-    <div id="testimonials" class="my-5">
+    <div id="testimonials" class="my-5 pt-5">
         <div class="text-center">
             <img src="<?php echo base_url(); ?>assets/happysmile.svg" alt="happy">
             <p style="font-size:36px;font-weight:500;">Happy Patients</p>

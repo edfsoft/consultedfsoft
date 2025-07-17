@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="<?php echo base_url(); ?>assets/edfTitleLogo.png" rel="icon" />
-    <title>EDF Admin</title>
+    <title>Admin - EDF</title>
     <!-- Vendor CSS Files -->
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="<?php echo base_url(); ?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
@@ -61,10 +61,6 @@
         <?php }
         if ($method == "dashboard") {
             ?>
-
-            <script>
-                document.getElementById('dashboard').style.color = "white";
-            </script>
 
             <section>
                 <p class="card ps-3 py-3" style="font-size: 24px; font-weight: 500">
@@ -143,10 +139,6 @@
             <?php
         } else if ($method == "chiefConsultant") {
             ?>
-
-                <script>
-                    document.getElementById('ccs').style.color = "white";
-                </script>
 
                 <section>
                     <div class="card rounded">
@@ -310,10 +302,6 @@
             <?php
         } else if ($method == "ccRegisterForm") {
             ?>
-                    <script>
-                        document.getElementById('ccs').style.color = "white";
-                    </script>
-
                     <section>
                         <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -363,8 +351,12 @@
                                     <div class="mb-3">
                                         <label for="ccPassword" class="form-label">Password <span
                                                 class="text-danger">*</span></label>
-                                        <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
-                                            class="form-control">
+                                        <div style="position: relative;">
+                                            <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
+                                                class="form-control">
+                                            <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('ccPassword', this)"
+                                                style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                        </div>
                                         <div id="password_err" class="text-danger pt-1"></div>
                                     </div>
                                     <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
@@ -373,11 +365,16 @@
                                     <div class="mb-3">
                                         <label for="ccCnfmPassword" class="form-label">Confirm Password <span
                                                 class="text-danger">*</span></label>
-                                        <input type="password" name="ccCnfmPassword" id="ccCnfmPassword"
-                                            placeholder="confirm password" class="form-control">
+                                        <div style="position: relative;">
+                                            <input type="password" name="ccCnfmPassword" id="ccCnfmPassword"
+                                                placeholder="confirm password" class="form-control">
+                                            <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('ccCnfmPassword', this)"
+                                                style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                        </div>
                                         <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                     </div>
                                     <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
+                                    <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="0">
                                     <div class="d-flex justify-content-between">
                                         <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
                                         <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
@@ -497,10 +494,6 @@
             <?php
         } else if ($method == "ccDetails") {
             ?>
-                        <script>
-                            document.getElementById('ccs').style.color = "white";
-                        </script>
-
                         <section>
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -518,7 +511,8 @@
                                     ?>
                                 <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
                                                 <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                    class="rounded-circle">
+                                                    class="rounded-circle"
+                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
                                                     height="140" class="rounded-circle my-auto">
@@ -536,14 +530,6 @@
                                                         style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['doctorMail']; ?>
                                                     </a></p>
-                                                <!-- <div class="input-group">
-                                                    <input type="password" class="form-control" id="password" name="password"
-                                                        value='<?php echo $value['doctorPassword']; ?>' readonly>
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        onclick="togglePasswordVisibility('password', 'visibilityIcon')">
-                                                        <i id="visibilityIcon" class="bi bi-eye-slash"></i>
-                                                    </button>
-                                                </div> -->
                                                 <p class="pt-3"><?php echo $value['gMeetLink']; ?></p>
                                             </div>
                                         </div>
@@ -665,36 +651,9 @@
                             }
                         </script>
 
-                        <script>
-                            function togglePasswordVisibility(inputId, iconId) {
-                                var passwordInput = document.getElementById(inputId);
-                                var visibilityIcon = document.getElementById(iconId);
-
-                                if (passwordInput.type === "password") {
-                                    passwordInput.type = "text";
-                                    visibilityIcon.classList.remove("bi-eye-slash");
-                                    visibilityIcon.classList.add("bi-eye");
-                                } else {
-                                    passwordInput.type = "password";
-                                    visibilityIcon.classList.remove("bi-eye");
-                                    visibilityIcon.classList.add("bi-eye-slash");
-                                }
-                            }
-                        </script>
-
-                        <script>
-                            function goBack() {
-                                window.history.back();
-                            }
-                        </script>
-
             <?php
         } else if ($method == "healthCareProvider") {
             ?>
-
-                            <script>
-                                document.getElementById('hcps').style.color = "white";
-                            </script>
 
                             <section>
                                 <div class="card rounded">
@@ -864,10 +823,6 @@
             <?php
         } else if ($method == "hcpRegisterForm") {
             ?>
-                                <script>
-                                    document.getElementById('hcps').style.color = "white";
-                                </script>
-
                                 <section>
                                     <div class="card rounded">
                                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -917,8 +872,12 @@
                                                 <div class="mb-3">
                                                     <label for="hcpPassword" class="form-label">Password <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
-                                                        class="form-control">
+                                                    <div style="position: relative;">
+                                                        <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
+                                                            class="form-control">
+                                                        <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('hcpPassword', this)"
+                                                            style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                                    </div>
                                                     <div id="password_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
@@ -927,11 +886,17 @@
                                                 <div class="mb-3">
                                                     <label for="hcpCnfmPassword" class="form-label">Confirm Password <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
-                                                        placeholder="confirm password" class="form-control">
+                                                    <div style="position: relative;">
+                                                        <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
+                                                            placeholder="confirm password" class="form-control">
+                                                        <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('hcpCnfmPassword', this)"
+                                                            style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                                                    </div>
                                                     <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
+                                                <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="0">
+
                                                 <div class="d-flex justify-content-between">
                                                     <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
                                                     <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
@@ -1052,10 +1017,6 @@
         } else if ($method == "hcpDetails") {
             ?>
 
-                                    <script>
-                                        document.getElementById('hcps').style.color = "white";
-                                    </script>
-
                                     <section>
                                         <div class="card rounded">
                                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1072,7 +1033,8 @@
 
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
                                                             <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                class="rounded-circle">
+                                                                class="rounded-circle"
+                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
                                                                 height="140" class="rounded-circle">
@@ -1091,14 +1053,6 @@
                                                                     style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['hcpMail']; ?>
                                                                 </a></p>
-                                                            <!-- <div class="input-group">
-                                                                <input type="password" class="form-control" id="password" name="password"
-                                                                    value='<?php echo $value['hcpPassword']; ?>' readonly>
-                                                                <button type="button" class="btn btn-outline-secondary"
-                                                                    onclick="togglePasswordVisibility('password', 'visibilityIcon')">
-                                                                    <i id="visibilityIcon" class="bi bi-eye-slash"></i>
-                                                                </button>
-                                                            </div> -->
                                                         </div>
                                                     </div>
                                                     <h5 class="fw-bolder pb-3">Profile Details:</h5>
@@ -1161,36 +1115,9 @@
 
                                     </section>
 
-                                    <script>
-                                        function togglePasswordVisibility(inputId, iconId) {
-                                            var passwordInput = document.getElementById(inputId);
-                                            var visibilityIcon = document.getElementById(iconId);
-
-                                            if (passwordInput.type === "password") {
-                                                passwordInput.type = "text";
-                                                visibilityIcon.classList.remove("bi-eye-slash");
-                                                visibilityIcon.classList.add("bi-eye");
-                                            } else {
-                                                passwordInput.type = "password";
-                                                visibilityIcon.classList.remove("bi-eye");
-                                                visibilityIcon.classList.add("bi-eye-slash");
-                                            }
-                                        }
-                                    </script>
-
-                                    <script>
-                                        function goBack() {
-                                            window.history.back();
-                                        }
-                                    </script>
-
             <?php
         } else if ($method == "patient") {
             ?>
-
-                                        <script>
-                                            document.getElementById('patients').style.color = "white";
-                                        </script>
 
                                         <section>
                                             <div class="card rounded">
@@ -1376,10 +1303,6 @@
         } else if ($method == "patientDetails") {
             ?>
 
-                                            <script>
-                                                document.getElementById('patients').style.color = "white";
-                                            </script>
-
                                             <section>
                                                 <div class="card rounded">
                                                     <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1387,14 +1310,15 @@
                                                         <button onclick="goBack()" class="border-0 bg-light float-end text-dark"><i
                                                                 class="bi bi-arrow-left"></i> Back</button>
                                                     </div>
-                                                    <div class="card-body p-3 p-sm-5">
+                                                    <div class="card-body p-3 px-sm-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
                                                             <div class="d-sm-flex text-center mb-4">
                                 <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                                                     <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
-                                                                        width="140" height="140" class="rounded-circle">
+                                                                        width="140" height="140" class="rounded-circle"
+                                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                                     <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
                                                                         height="140" class="rounded-circle">
@@ -1408,13 +1332,12 @@
                                                                     </p>
                                                                     <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
                                                                     <!-- <p class="text-dark" style="font-weight:500;font-size:20px;">
-                        <?php echo $value['diagonsis'] ?>
-                                    </p> -->
+                                        <?php echo $value['diagonsis'] ?>
+                                                    </p> -->
                                                                 </div>
 
                                                             </div>
-
-                                                            <h5 class="my-3 mt-3 fw-bolder">Personal Details</h5>
+                                                            <p class="my-3 mt-3 fs-5 fw-semibold">Personal Details</p>
                                                             <div class="d-md-flex">
                                                                 <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> : <a
                                                                         href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
@@ -1469,7 +1392,9 @@
                                     <?php echo $value['partnerBlood'] ? $value['partnerBlood'] : "Not provided"; ?>
                                                                 </p>
                                                             </div>
-                                                            <h5 class="my-3 mt-4 fw-bolder">Medical Records</h5>
+
+                                                            <p class="my-3 mt-3 fs-5 fw-semibold">Medical Records</p>
+
                                                             <div class="d-md-flex">
                                                                 <p class="col-sm-6"><span class="text-secondary ">Weight</span> :
                                     <?php echo $value['weight'] ? $value['weight'] . " Kg" : "Not provided"; ?>
@@ -1503,10 +1428,8 @@
                                                                 </p>
                                                             </div>
 
+                                                            <p class="my-3 mt-3 fs-5 fw-semibold">Documents / Reports</p>
                             <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
-
-                                                                <h5 class="my-3 mt-4 fw-bolder">Documents / Reports</h5>
-
                                                                 <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
                                                                         <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> : <a
@@ -1519,95 +1442,134 @@
                                                                                 rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
                                     <?php } ?>
                                                                 </div>
-                            <?php }
-                            if ($value['consultedOnce'] === "1") {
-                                ?>
-                                                                <h5 class="my-3 mt-4 fw-bolder">Appointments History</h5>
+                            <?php } else { ?>
+                                                                <p class="text-muted text-center pt-1 pb-2">No reports or documents have been uploaded yet.</p>
+                            <?php } ?>
+
+                                                            <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
+                            <?php if (!empty($consultDetails)) { ?>
                                                                 <div class="d-md-flex">
                                                                     <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
                                         <?php echo date('d-m-Y', strtotime($value['lastAppDate'])); ?>
                                                                     </p>
-                                                                    <p><span class="text-secondary ">Next Followup </span> :
+                                                                    <p><span class="text-secondary ">Next Followup Date</span> :
                                         <?php echo date('d-m-Y', strtotime($value['nextAppDate'])); ?>
                                                                     </p>
                                                                 </div>
-                                    <?php
-                                    $appCount = 0;
-                                    foreach ($patientAppHistory as $key => $svalue) {
-                                        $appCount++;
-                                        ?>
-                                                                    <div class="card rounded shadow mt-3 p-4">
-                                                                        <div class="d-sm-flex my-auto " style="font-weight:600;">
-                                                                            <button style=" width:30px;height:30px;font-weight:500"
-                                                                                class="text-light bg-secondary rounded-circle border-0 me-3"><?php echo $appCount; ?></button>
-                                                                            <p class="pe-4 pt-1"><?php echo date('d F Y', strtotime($svalue['dateOfAppoint'])); ?> -
-                                                <?php echo date('h:i A', strtotime($svalue['timeOfAppoint'])); ?>
-                                                                            </p>
-                                                                            <p class="pe-4 pt-1"><?php echo $svalue['patientComplaint'] ?> </p>
-                                                                        </div>
-                                                                        <div class="d-sm-flex pb-1">
-                                                                            <p class="text-secondary col-md-2 mb-1">CC Id : </p>
-                                                                            <p class="col-md-9 ps-2"><?php echo $svalue['referalDoctor'] ?></p>
-                                                                        </div>
-                                                                        <div class="d-sm-flex pb-1">
-                                                                            <p class="text-secondary col-md-2 mb-1">HCP Id : </p>
-                                                                            <p class="col-md-9 ps-2"><?php echo $svalue['patientHcp'] ?></p>
-                                                                        </div>
-                                                                        <div class="d-sm-flex pb-1">
-                                                                            <p class="text-secondary col-md-2 mb-1">Advice Given : </p>
-                                                                            <p class="col-md-9 ps-2"> <?php echo $svalue['appointmentAdvice'] ?></p>
-                                                                        </div>
-                                                                        <p class="text-secondary">Medicines table : </p>
 
-                                                                        <table class="table table-bordered table-hover border border-dark text-center">
-                                                                            <thead class="table-light border border-dark">
-                                                                                <tr>
-                                                                                    <th scope="col">Rx</th>
-                                                                                    <th scope="col">Medicine</th>
-                                                                                    <th scope="col">Frequency</th>
-                                                                                    <th scope="col">Duration</th>
-                                                                                    <th scope="col">Notes</th>
-                                                                                </tr>
-                                                                            </thead>
-                                            <?php $count = 0;
-                                            foreach ($appMedicines as $key => $mvalue) {
-                                                if ($mvalue['dateOfAppoint'] == $svalue['dateOfAppoint']) {
-                                                    $count++; ?>
-                                                                                    <tbody>
-                                                                                        <tr>
-                                                                                            <td><?php echo $count ?> .</td>
-                                                                                            <td><?php echo $mvalue['medicineName'] ?></td>
-                                                                                            <td><?php echo $mvalue['frequency'] ?></td>
-                                                                                            <td><?php echo $mvalue['duration'] . ' ' . $mvalue['duration_unit']; ?></td>
-                                                                                            <td><?php echo $mvalue['notes'] ?></td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                <?php }
-                                            } ?>
-                                                                        </table>
+                                    <?php
+                                    $consultCount = 0;
+                                    foreach ($consultDetails as $key => $cvalue) {
+                                        $consultCount++;
+                                        ?>
+                                                                    <div class="card rounded shadow border mt-3 p-4">
+                                                                        <div class="d-sm-flex justify-content-between my-auto mb-2" style="font-weight:600;">
+                                                                            <div class="d-flex">
+                                                                                <button style="width:30px;height:30px;font-weight:500"
+                                                                                    class="text-light bg-secondary rounded-circle border-0 me-3">
+                                                    <?php echo $consultCount; ?>
+                                                                                </button>
+                                                                                <p class="pe-4 pt-1">
+                                                    <?php echo date('d F Y', strtotime($cvalue['date'])); ?> -
+                                                    <?php echo date('h:i A', strtotime($cvalue['time'])); ?>
+                                                                                </p>
+                                                                            </div>
+                                            <?php if ($cvalue['consultMode'] == '0') { ?>
+                                                                                <p class="pe-4 pt-1"><span class="badge bg-primary">Direct Consult</span></p>
+                                            <?php } else { ?>
+                                                                                <p class="pe-4 pt-1 float-end"><span class="badge bg-success me-2">Online Consult</span></p>
+                                            <?php } ?>
+                                                                            <button class="btn btn-secondary"><i class="bi bi-download"></i> Prescription</button>
+                                                                        </div>
+
+                                                                        <!-- Toggle Button -->
+                                                                        <div class="text-end">
+                                                                            <button class="btn btn-link text-decoration-none toggle-btn" onclick="toggleCard(this)">
+                                                                                Show More <i class="bi bi-chevron-down"></i>
+                                                                            </button>
+                                                                        </div>
+
+                                                                        <!-- Expandable Content -->
+                                                                        <div class="card-content d-none">
+                                                                            <div class="d-sm-flex pb-3">
+                                                                                <p class="text-secondary col-md-2 mb-1">CC Id : </p>
+                                                                                <a href="<?php echo base_url() . "Edfadmin/ccDetails/" . $cvalue['consultDoctorDbId']; ?>"
+                                                                                    class="col-md-9 text-dark ps-2" onmouseover="style='text-decoration:underline'"
+                                                                                    onmouseout="style='text-decoration:none'">
+                                                    <?php echo $cvalue['consultDoctorId'] ?>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="d-sm-flex pb-1">
+                                                                                <p class="text-secondary col-md-2 mb-1">Symptoms : </p>
+                                                                                <p class="col-md-9 ps-2"> <?php echo $cvalue['symptoms'] ?></p>
+                                                                            </div>
+                                                                            <div class="d-sm-flex pb-1">
+                                                                                <p class="text-secondary col-md-2 mb-1">Findings : </p>
+                                                                                <p class="col-md-9 ps-2"> <?php echo $cvalue['findings'] ?></p>
+                                                                            </div>
+                                                                            <div class="d-sm-flex pb-1">
+                                                                                <p class="text-secondary col-md-2 mb-1">Diagnosis : </p>
+                                                                                <p class="col-md-9 ps-2"> <?php echo $cvalue['diagnosis'] ?></p>
+                                                                            </div>
+                                                                            <div class="d-sm-flex pb-1">
+                                                                                <p class="text-secondary col-md-2 mb-1">Investigations : </p>
+                                                                                <p class="col-md-9 ps-2"> <?php echo $cvalue['investigations'] ?></p>
+                                                                            </div>
+                                                                            <div class="d-sm-flex pb-1">
+                                                                                <p class="text-secondary col-md-2 mb-1">Advice Given : </p>
+                                                                                <p class="col-md-9 ps-2"> <?php echo $cvalue['adviceGiven'] ?></p>
+                                                                            </div>
+                                                                            <div class="d-sm-flex pb-1">
+                                                                                <p class="text-secondary col-md-2 mb-1">Next Followup : </p>
+                                                                                <p class="col-md-9 ps-2">
+                                                    <?php echo date('d F Y', strtotime($cvalue['nextFollowup'])); ?>
+                                                                                </p>
+                                                                            </div>
+
+                                                                            <p class="text-secondary">Medicines table :</p>
+                                                                            <table class="table table-bordered table-hoverr border border-dark text-center">
+                                                                                <thead class="table-light border border-dark">
+                                                                                    <tr>
+                                                                                        <th scope="col">Rx</th>
+                                                                                        <th scope="col">Medicine</th>
+                                                                                        <th scope="col">Frequency</th>
+                                                                                        <th scope="col">Duration</th>
+                                                                                        <th scope="col">Notes</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                <?php $count = 0;
+                                                foreach ($consultMedicines as $key => $mvalue) {
+                                                    if ($mvalue['consultationDbId'] == $cvalue['id']) {
+                                                        $count++; ?>
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td><?php echo $count ?> .</td>
+                                                                                                <td><?php echo $mvalue['medicineName'] ?></td>
+                                                                                                <td><?php echo $mvalue['frequency'] ?></td>
+                                                                                                <td><?php echo $mvalue['duration'] . ' ' . $mvalue['duration_unit']; ?></td>
+                                                                                                <td><?php echo $mvalue['notes'] ?></td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                    <?php }
+                                                } ?>
+                                                                            </table>
+                                                                        </div>
                                                                     </div>
 
                                 <?php } ?>
 
-                            <?php }
-                            } ?>
+                            <?php } else { ?>
+                                                                <p class="text-muted text-center pt-1 pb-2">No consultations have been conducted yet.</p>
+                            <?php } ?>
+
+                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </section>
 
-                                            <script>
-                                                function goBack() {
-                                                    window.history.back();
-                                                }
-                                            </script>
-
             <?php
         } else if ($method == "specialization") {
             ?>
-
-                                                <script>
-                                                    document.getElementById('specialization').style.color = "white";
-                                                </script>
 
                                                 <section>
                                                     <div class="card rounded">
@@ -1762,10 +1724,6 @@
         } else if ($method == "symptoms") {
             ?>
 
-                                                    <script>
-                                                        document.getElementById('symptoms').style.color = "white";
-                                                    </script>
-
                                                     <section>
                                                         <div class="card rounded">
                                                             <div class="card-body">
@@ -1917,10 +1875,6 @@
             <?php
         } else if ($method == "medicines") {
             ?>
-
-                                                        <script>
-                                                            document.getElementById('medicines').style.color = "white";
-                                                        </script>
 
                                                         <section>
                                                             <div class="card rounded">
@@ -2078,78 +2032,43 @@
 
         <!-- All modal files -->
         <?php include 'adminModals.php'; ?>
-
-        <!--Display Message Popup Screen -->
-        <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <?php if ($this->session->flashdata('successMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
-                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
-                        </div>
-                    <?php }
-                    if ($this->session->flashdata('errorMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
-                        </div>
-                    <?php } ?>
-                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
-                            data-bs-dismiss="modal">Close</button> </div>
-                </div>
-            </div>
-        </div>
-
     </main>
 
-    <!-- Display popup success error message -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var messagePopup = document.getElementById('display_message_popup');
-
-            if (messagePopup) {
-                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
-                    var displayMessage = new bootstrap.Modal(messagePopup);
-                    displayMessage.show();
-                <?php } ?>
-            }
-        });
+        <?php if ($method == "dashboard") { ?>
+            document.getElementById('dashboard').style.color = "white";
+        <?php } elseif ($method == "chiefConsultant" || $method == "ccRegisterForm" || $method == "ccDetails") { ?>
+            document.getElementById('ccs').style.color = "white";
+        <?php } elseif ($method == "healthCareProvider" || $method == "hcpRegisterForm" || $method == "hcpDetails") { ?>
+            document.getElementById('hcps').style.color = "white";
+        <?php } elseif ($method == "patient" || $method == "patientDetails") { ?>
+            document.getElementById('patients').style.color = "white";
+        <?php } elseif ($method == "specialization") { ?>
+            document.getElementById('specialization').style.color = "white";
+        <?php } elseif ($method == "symptoms") { ?>
+            document.getElementById('symptoms').style.color = "white";
+        <?php } elseif ($method == "medicines") { ?>
+            document.getElementById('medicines').style.color = "white";
+        <?php } ?>
     </script>
 
-    <!-- Display message for 3 seconds  -->
+    <!-- Consultation card show more and less -->
     <script>
-        setTimeout(() => {
-            const displayMessage = document.getElementById('display_message');
-            if (displayMessage) {
-                displayMessage.style.display = 'none';
-            }
-        }, 3000);
-    </script>
+        function toggleCard(btn) {
+            const cardContent = btn.closest('.card').querySelector('.card-content');
+            cardContent.classList.toggle('d-none');
 
-    <!-- Event listener to block right-click -->
-    <script>
-        function blockRightClick(event) {
-            event.preventDefault();
+            // Toggle button text and icon
+            if (cardContent.classList.contains('d-none')) {
+                btn.innerHTML = 'Show More <i class="bi bi-chevron-down"></i>';
+            } else {
+                btn.innerHTML = 'Show Less <i class="bi bi-chevron-up"></i>';
+            }
         }
+    </script>
 
-        document.addEventListener('contextmenu', blockRightClick);
-    </script>
-    <!-- Hide page source Ctrl + U -->
-    <script>
-        document.onkeydown = function (e) {
-            if (e.ctrlKey && e.keyCode === 85) {
-                return false;
-            }
-        };
-    </script>
+    <!-- Common Script -->
+    <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
     <!-- Vendor JS Files -->
     <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>

@@ -18,7 +18,8 @@ class HcpModel extends CI_Model
             'hcpSpecialization' => $post['hcpSpec'],
             // 'hcpPassword' => $post['hcpCnfmPassword'],
             'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
-            'approvalStatus' => $approval
+            'approvalStatus' => $approval,
+            'firstLoginPswd' => $post['firstLoginPswdChange']
         );
         $this->db->insert('hcp_details', $insert);
         return true;
@@ -179,6 +180,7 @@ class HcpModel extends CI_Model
             'patientHcpDbId	' => $_SESSION['hcpIdDb'],
         );
         $this->db->insert('patient_details', $insertdata);
+        $registeredId = $this->db->insert_id();
 
         if ($post['patientMedicines'] == "addNew") {
             $post = $this->input->post(null, true);
@@ -189,7 +191,7 @@ class HcpModel extends CI_Model
             );
             $this->db->insert('medicines_list', $insert);
         }
-        return true;
+        return $registeredId;
     }
 
     public function updatePatientsDetails()
@@ -237,8 +239,8 @@ class HcpModel extends CI_Model
             'partnerBlood' => $post['partnerBlood'],
             'weight	' => $post['patientWeight'],
             'height	' => $post['patientHeight'],
-            'patientSystolicBp' => $post['patientSystolicBp'],
-            'patientDiastolicBp' => $post['patientDiastolicBp'],
+            'systolicBp' => $post['patientSystolicBp'],
+            'diastolicBp' => $post['patientDiastolicBp'],
             'cholestrol' => $post['patientsCholestrol'],
             'bloodSugar' => $post['patientBsugar'],
             'diagonsis	' => $post['patientDiagonsis'],
@@ -278,7 +280,7 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    public function generatePatientId()
+    public function generatePatientId($dbid)
     {
         $latest_customer_id = $this->getlastPatientId();
         $last_four_digits = substr($latest_customer_id, -6);
@@ -287,8 +289,7 @@ class HcpModel extends CI_Model
         $insert = array(
             'patientId' => $generate_id
         );
-        $MobileNumber = $this->input->post('patientMobile');
-        $this->db->where('mobileNumber', $MobileNumber);
+        $this->db->where('mobileNumber', $dbid);
         $this->db->update('patient_details', $insert);
         return $generate_id;
     }
@@ -316,16 +317,16 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function getAppointmentHistory($id)
+    public function getConsultationDetails($id)
     {
-        $details = "SELECT * FROM `appointment_details` WHERE `patientDbId` = $id AND `appStatus` = '1' ORDER BY `dateOfAppoint` DESC ";
+        $details = "SELECT * FROM `consultation_details` WHERE `patientDbId` = $id  ORDER BY `createdDateTime` DESC ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
-    public function getAppMedicinesDetails($id)
+    public function getConsultMedicinesDetails($id)
     {
-        $details = "SELECT * FROM `appointment_medicines` WHERE `patientDbId`= $id ";
+        $details = "SELECT * FROM `consultation_medicines` WHERE `patientDbId`= $id ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -355,6 +356,17 @@ class HcpModel extends CI_Model
         $details = "SELECT * FROM `appointment_details` ";
         $select = $this->db->query($details);
         return $select->result_array();
+    }
+
+    public function insertPartialPatient($data)
+    {
+        $this->db->insert('patient_details', $data);
+        return $this->db->insert_id();
+    }
+
+    public function update($id, $data)
+    {
+        $this->db->where('id', $id)->update('patient_details', $data);
     }
 
     public function insertAppointment()
@@ -411,31 +423,98 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    public function addPrescription()
+    public function directConsultationSave()
+    {
+        $post = $this->input->post(null, true);
+        $updatePatient = array(
+            'lastAppDate' => date('Y-m-d'),
+            'nextAppDate' => $post['nextFollowUpDate'],
+        );
+        $this->db->where('id', $post['patientIdDb']);
+        $this->db->update('patient_details', $updatePatient);
+
+        $post = $this->input->post(null, true);
+        $hcpId = $_SESSION['hcpId'];
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $symptom_string = implode(',', $post['symptoms']);
+        $saveDirectConsult = array(
+            'patientId' => $post['patientId'],
+            'patientDbId' => $post['patientIdDb'],
+            'consultDoctorId' => $hcpId,
+            'consultDoctorDbId' => $hcpIdDb,
+            'date' => date('d-m-Y'),
+            'symptoms' => $symptom_string,
+            'findings' => $post['findings'],
+            'diagnosis' => $post['diagnosis'],
+            'investigations' => $post['investigations'],
+            'adviceGiven' => $post['advices'],
+            'nextFollowup' => $post['nextFollowUpDate'],
+            'consultMode' => '0',
+        );
+        $this->db->insert('consultation_details', $saveDirectConsult);
+        return $this->db->insert_id();
+    }
+
+    public function onlineConsultationSave()
     {
         $post = $this->input->post(null, true);
         $updatedata = array(
             'lastAppDate' => date('Y-m-d'),
             'nextAppDate' => $post['nextFollowUp'],
-            'consultedOnce' => "1"
         );
-        $this->db->where('id', $post['patientDbId']);
+        $this->db->where('id', $post['patientIdDb']);
         $this->db->update('patient_details', $updatedata);
 
-        $updateStatus = array(
+        $updateAppStatus = array(
             'appStatus' => "1",
-            'appointmentAdvice' => $post['adviceGiven']
-
         );
-        $this->db->where('patientDbId', $post['patientDbId']);
+        $this->db->where('patientDbId', $post['patientIdDb']);
         $this->db->where('dateOfAppoint', date('Y-m-d'));
-        $this->db->update('appointment_details', $updateStatus);
+        $this->db->update('appointment_details', $updateAppStatus);
+
+        $hcpId = $_SESSION['hcpId'];
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $symptom_string = implode(', ', $post['symptoms']);
+        $saveOnlineConsult = array(
+            'patientId' => $post['patientId'],
+            'patientDbId' => $post['patientIdDb'],
+            'consultDoctorId' => $hcpId,
+            'consultDoctorDbId' => $hcpIdDb,
+            'date' => date('d-m-Y'),
+            'symptoms' => $symptom_string,
+            'findings' => $post['findings'],
+            'diagnosis' => $post['diagnosis'],
+            'investigations' => $post['investigations'],
+            'adviceGiven' => $post['adviceGiven'],
+            'nextFollowup' => $post['nextFollowUp'],
+            'consultMode' => '1',
+        );
+        $this->db->insert('consultation_details', $saveOnlineConsult);
+        return $this->db->insert_id();
+
     }
 
-    public function prescriptionMedicines($medicinesData)
+    public function consultMedicineSave($consultIdDb)
     {
-        foreach ($medicinesData as $medicine) {
-            $this->db->insert('appointment_medicines', $medicine);
+        $medNames = $this->input->post('preMedName');
+        $frequencies = $this->input->post('preMedFrequency');
+        $durations = $this->input->post('preMedDuration');
+        $durationUnits = $this->input->post('preMedDurationUnit');
+        $notes = $this->input->post('preMedNotes');
+        $patientDbId = $this->input->post('patientIdDb');
+
+        for ($i = 0; $i < count($medNames); $i++) {
+            $data = [
+                'patientDbId' => $patientDbId,
+                'consultationDbId' => $consultIdDb,
+                'medicineName' => $medNames[$i],
+                'frequency' => $frequencies[$i],
+                'duration' => $durations[$i],
+                'duration_unit' => $durationUnits[$i],
+                'notes' => $notes[$i],
+                'dateOfAppoint' => date('Y-m-d')
+            ];
+            $this->db->insert('consultation_medicines', $data);
         }
     }
 
@@ -562,19 +641,7 @@ class HcpModel extends CI_Model
     }
 
 
-    // public function do_upload()
-    // {
-    //     $config['upload_path'] = "./uploads/";
-    //     $config['allowed_types'] = "jpg|png|pdf";
-    //     $config['max_size'] = 1024;
 
-    //     $this->load->library('upload', $config);
 
-    //     if ($this->upload->do_upload('file')) {
-    //         $data = $this->upload->data();
-    //     } else {
-    //         $error = $this->upload->display_errors();
-    //     }
-    // }
 
 }

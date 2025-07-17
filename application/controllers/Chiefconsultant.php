@@ -31,7 +31,7 @@ class Chiefconsultant extends CI_Controller
         $this->load->view('ccForgetPassword.php', $this->data);
     }
 
-    public function send()
+    public function sendFPOtp()
     {
         $to = $this->input->post('ccPassMail');
         $mobile = $this->input->post('ccMobileNum');
@@ -127,6 +127,9 @@ class Chiefconsultant extends CI_Controller
                 'ccMobileNum' => $login['doctorMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
+            if ($login['firstLoginPswd'] == '0') {
+                $this->session->set_userdata('firstLogin', '0');
+            }
             redirect('Chiefconsultant/dashboard');
         } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
             $this->session->set_flashdata('errorMessage', 'You can log in once the verification process is done.');
@@ -183,10 +186,10 @@ class Chiefconsultant extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
-            $appHistory = $this->HcpModel->getAppointmentHistory($patientIdDb);
-            $this->data['patientAppHistory'] = $appHistory;
-            $appMedicines = $this->HcpModel->getAppMedicinesDetails($patientIdDb);
-            $this->data['appMedicines'] = $appMedicines;
+            $consultHistory = $this->HcpModel->getConsultationDetails($patientIdDb);
+            $this->data['consultDetails'] = $consultHistory;
+            $Medicinesconsult = $this->HcpModel->getConsultMedicinesDetails($patientIdDb);
+            $this->data['consultMedicines'] = $Medicinesconsult;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
@@ -266,9 +269,9 @@ class Chiefconsultant extends CI_Controller
         if (isset($_SESSION['ccName'])) {
             $this->data['method'] = "editMyProfile";
             $ccDetails = $this->CcModel->getCcDetails();
+            $this->data['ccDetails'] = $ccDetails;
             $specList = $this->HcpModel->getSpecialization();
             $this->data['specializationList'] = $specList;
-            $this->data['ccDetails'] = $ccDetails;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
@@ -292,6 +295,75 @@ class Chiefconsultant extends CI_Controller
             $this->session->set_flashdata('showSuccessMessage', 'Profile details updated successfully');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in updating profile details');
+        }
+        redirect('Chiefconsultant/myProfile');
+    }
+
+    public function changePassword()
+    {
+        if (isset($_SESSION['ccName'])) {
+            $this->data['method'] = "passwordChange";
+            $this->data['ccDetails'] = $this->CcModel->getCcDetails();
+            $this->setVariable();
+            $this->load->view('ccDashboard.php', $this->data);
+        } else {
+            redirect('Chiefconsultant/');
+        }
+    }
+
+    public function sendEmailOtp()// For CC change password
+    {
+        $email = $this->input->post('email');
+
+        if (!$email) {
+            echo json_encode(['status' => 'fail', 'message' => 'Email required']);
+            return;
+        }
+
+        $otp = rand(100000, 999999);
+        $this->session->set_userdata('email_otp', $otp);
+        $this->session->set_userdata('email_otp_address', $email);
+
+        $message = "Hi there, <br><br>
+        Your OTP to change your CC account password is: <strong>$otp</strong><br>
+        This OTP is valid for 10 minutes.<br><br>
+        Warm regards,<br>
+        Team EDF";
+        $this->load->library('email');
+        $this->email->from('erodediabetesfoundation@gmail.com', 'EDF OTP Verification');
+        $this->email->to($email);
+        $this->email->subject('Change Password OTP');
+        $this->email->message($message);
+        $this->email->set_mailtype("html");
+
+        if ($this->email->send()) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            log_message('error', $this->email->print_debugger());
+            echo json_encode(['status' => 'fail']);
+        }
+    }
+
+    public function verifyEmailOtp()
+    {
+        $enteredOtp = $this->input->post('otp');
+        $sessionOtp = $this->session->userdata('email_otp');
+
+        if ($enteredOtp == $sessionOtp) {
+            echo json_encode(['status' => 'success']);
+            $this->session->unset_userdata(['email_otp', 'email_otp_address']);
+        } else {
+            echo json_encode(['status' => 'fail']);
+        }
+    }
+
+    public function saveNewPassword()
+    {
+        $this->session->unset_userdata('firstLogin');
+        if ($this->CcModel->updateNewPassword()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating password');
         }
         redirect('Chiefconsultant/myProfile');
     }

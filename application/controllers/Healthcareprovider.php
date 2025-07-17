@@ -285,7 +285,7 @@ class Healthcareprovider extends CI_Controller
     {
         $consultIdDb = $this->HcpModel->directConsultationSave();
         $this->HcpModel->consultMedicineSave($consultIdDb);
-        if (consultIdDb) {
+        if ($consultIdDb) {
             $this->session->set_flashdata('showSuccessMessage', 'Direct consultation saved successfully');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');

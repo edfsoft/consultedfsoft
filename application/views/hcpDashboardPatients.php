@@ -80,16 +80,6 @@
                         <p style="font-size: 24px; font-weight: 500">
                             Patients
                         </p>
-                        <div class="input-group my-2 my-sm-0" style="width:250px;">
-                            <span class="input-group-text" id="searchIcon">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <input type="text" id="searchInputPatients" class="form-control" placeholder="Search by name"
-                                aria-describedby="searchIcon">
-                            <button class="btn btn-outline-secondary" type="button" id="clearSearchPatients">
-                                <i class="bi bi-x"></i>
-                            </button>
-                        </div>
                         <a href="<?php echo base_url() . 'Healthcareprovider/patientform'; ?>">
                             <button style="background-color: #00ad8e;" class="text-light border-0 rounded float-end p-2">
                                 <i class="bi bi-plus-square-fill"></i> Add Patient
@@ -98,6 +88,30 @@
                     </div>
                     <?php if (isset($patientList[0]['id'])) {
                         ?>
+                        <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between m-3">
+                            <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
+                                style="height: 50px; width: 250px;">
+                                <option value="All">Filter (All Genders)</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
+                                <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                    style="height: 50px; width: 250px" placeholder="Search (ID / NAME)">
+                                <span id="clearSearch" class="position-absolute"
+                                    style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                            </div>
+                        </div>
+                        <div class="ps-4">
+                            <label for="itemsPerPageDropdown">Show </label>
+                            <select id="itemsPerPageDropdown"
+                                class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                <option value="10" selected>10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                            <label for="itemsPerPageDropdown">Entries </label>
+                        </div>
                         <div class="card-body ps-2 p-sm-4">
                             <div class="table-responsive">
                                 <table class="table text-center table-hoverr" id="patientTable">
@@ -112,7 +126,6 @@
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">GENDER
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">AGE</th>
-                                            <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DIAGNOSIS</th> -->
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                             </th>
                                         </tr>
@@ -120,7 +133,10 @@
                                     <tbody id="patientContainer"></tbody>
                                 </table>
                             </div>
-                            <div class="pagination justify-content-center mt-3" id="paginationContainerPatients"></div>
+                            <div class="d-md-flex justify-content-between">
+                                <div id="entriesInfo" class="mt-4"></div>
+                                <div class="pagination justify-content-end mt-4" id="paginationContainerPatients"></div>
+                            </div>
                         </div>
                     <?php } else { ?>
                         <h5 class="text-center my-5"><b>No Patient Records Found.</b> </h5>
@@ -129,10 +145,72 @@
             </section>
 
             <script>
-                const itemsPerPagePatients = 10;
+                let itemsPerPagePatients = 10;
                 const patientDetails = <?php echo json_encode($patientList); ?>;
-                let filteredPatientDetails = patientDetails;
+                patientDetails.sort((a, b) => {
+                    const dateA = new Date(a.createdAt || a.enrolledTime);
+                    const dateB = new Date(b.createdAt || b.enrolledTime);
+                    return dateB - dateA;
+                });
+                let filteredPatientDetails = [...patientDetails];
                 const initialPagePatients = parseInt(localStorage.getItem('currentPagePatients')) || 1;
+
+                const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                const searchBar = document.getElementById('searchBar');
+                const clearSearch = document.getElementById('clearSearch');
+                const filterDropdown = document.getElementById('filterDropdown');
+
+                // Load saved itemsPerPage
+                const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPagePatients')) || itemsPerPagePatients;
+                itemsPerPageDropdown.value = savedItemsPerPage;
+                itemsPerPagePatients = savedItemsPerPage;
+
+                // Event Listeners
+                itemsPerPageDropdown.addEventListener('change', (event) => {
+                    itemsPerPagePatients = parseInt(event.target.value);
+                    localStorage.setItem('itemsPerPagePatients', itemsPerPagePatients);
+                    applyFilters();
+                });
+
+                searchBar.addEventListener('input', () => {
+                    toggleClearIcons();
+                    applyFilters();
+                });
+
+                clearSearch.addEventListener('click', () => {
+                    searchBar.value = '';
+                    toggleClearIcons();
+                    applyFilters();
+                });
+
+                filterDropdown.addEventListener('change', applyFilters);
+
+                function toggleClearIcons() {
+                    clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                }
+
+                function applyFilters() {
+                    const searchTerm = searchBar.value.toLowerCase();
+                    const genderFilter = filterDropdown.value;
+
+                    filteredPatientDetails = patientDetails.filter((patient) => {
+                        const fullName = `${patient.firstName || ''} ${patient.lastName || ''}`.trim();
+                        const patientId = patient.patientId || '';
+
+                        const matchesSearch =
+                            fullName.toLowerCase().includes(searchTerm) ||
+                            patientId.toLowerCase().includes(searchTerm);
+
+                        let matchesGender = true;
+                        if (genderFilter !== 'All') {
+                            matchesGender = patient.gender === genderFilter;
+                        }
+
+                        return matchesSearch && matchesGender;
+                    });
+
+                    displayPatientPage(1);
+                }
 
                 function displayPatientPage(page) {
                     localStorage.setItem('currentPagePatients', page);
@@ -143,6 +221,8 @@
                     const patientContainer = document.getElementById('patientContainer');
                     patientContainer.innerHTML = '';
 
+                    updateEntriesInfo(start + 1, Math.min(end, filteredPatientDetails.length), filteredPatientDetails.length);
+
                     if (itemsToShow.length === 0) {
                         const noMatchesRow = document.createElement('tr');
                         noMatchesRow.innerHTML = '<td colspan="8" class="text-center">No matches found.</td>';
@@ -150,31 +230,30 @@
                     } else {
                         itemsToShow.forEach((value, index) => {
                             const patientRow = document.createElement('tr');
-
-                            // consultedOnce is removed from the db, use alternate method
-                            // const prescriptionButton = value.consultedOnce === '1' ?
-                            //     '<a href="<?php echo base_url(); ?>Healthcareprovider/prescriptionView/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-prescription"></i></button></a>' :
-                            //     '<button class="btn btn-secondary mb-1" disabled><i class="bi bi-prescription"></i></button>';
-                            patientRow.innerHTML =
-                                '<td class="pt-3">' + (start + index + 1) + '.</td>' +
-                                '<td class="px-2">' +
-                                '<img src="' + (value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + '" alt="Profile" width="40" height="40" class="rounded-circle">' +
-                                '</td>' +
-                                '<td style="font-size: 16px" class="pt-3">' + value.patientId + '</td>' +
-                                '<td style="font-size: 16px" class="pt-3">' + value.firstName + ' ' + value.lastName + '</td>' +
-                                '<td style="font-size: 16px" class="pt-3">' + value.mobileNumber + '</td>' +
-                                '<td style="font-size: 16px" class="pt-3">' + value.gender + '</td>' +
-                                '<td style="font-size: 16px" class="pt-3">' + value.age + '</td>' +
-                                '<td class="d-fle dlg-block pt-2" style="font-size: 16px;" >' +
-                                '<a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/' + value.id + '"><button class="btn btn-secondary mb-1"><i class="bi bi-pencil"></i></button></a>' +
-                                '<a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/' + value.id + '" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>' +
-                                // prescriptionButton + 
-                                '<a href="<?php echo base_url(); ?>Healthcareprovider/consultation/' + value.id + '" class=""><button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button></a>' +
-                                '</td>';
+                            patientRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td class="px-2">
+                    <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile" width="40" height="40" class="rounded-circle">
+                </td>
+                <td style="font-size: 16px" class="pt-3">${value.patientId}</td>
+                <td style="font-size: 16px" class="pt-3">${value.firstName} ${value.lastName}</td>
+                <td style="font-size: 16px" class="pt-3">${value.mobileNumber}</td>
+                <td style="font-size: 16px" class="pt-3">${value.gender}</td>
+                <td style="font-size: 16px" class="pt-3">${value.age}</td>
+                <td class="pt-2" style="font-size: 16px;">
+                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}"><button class="btn btn-secondary mb-1"><i class="bi bi-pencil"></i></button></a>
+                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>
+                    <a href="<?php echo base_url(); ?>Healthcareprovider/consultation/${value.id}" class=""><button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button></a>
+                </td>`;
                             patientContainer.appendChild(patientRow);
                         });
                     }
                     generatePatientPagination(filteredPatientDetails.length, page);
+                }
+
+                function updateEntriesInfo(start, end, totalEntries) {
+                    const entriesInfo = document.getElementById('entriesInfo');
+                    entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
                 }
 
                 function generatePatientPagination(totalItems, currentPage) {
@@ -186,8 +265,7 @@
                     ul.className = 'pagination';
 
                     const prevLi = document.createElement('li');
-                    prevLi.innerHTML =
-                        '<a href="#"><button type="button" class="bg-light border px-3 py-2"' + (currentPage === 1 ? ' disabled' : '') + '>&lt;</button></a>';
+                    prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
                     prevLi.onclick = () => {
                         if (currentPage > 1) displayPatientPage(currentPage - 1);
                     };
@@ -198,15 +276,13 @@
 
                     for (let i = startPage; i <= endPage; i++) {
                         const li = document.createElement('li');
-                        li.innerHTML =
-                            '<a href="#"><button type="button" class="btn border px-3 py-2' + (i === currentPage ? ' btn-secondary text-light' : '') + '">' + i + '</button></a>';
+                        li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#00ad8e' : 'transparent'};">${i}</button></a>`;
                         li.onclick = () => displayPatientPage(i);
                         ul.appendChild(li);
                     }
 
                     const nextLi = document.createElement('li');
-                    nextLi.innerHTML =
-                        '<a href="#"><button type="button" class="bg-light border px-3 py-2"' + (currentPage === totalPages ? ' disabled' : '') + '>&gt;</button></a>';
+                    nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
                     nextLi.onclick = () => {
                         if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                     };
@@ -215,18 +291,9 @@
                     paginationContainer.appendChild(ul);
                 }
 
-                document.getElementById('searchInputPatients').addEventListener('keyup', function () {
-                    const searchQuery = this.value.toLowerCase();
-                    filteredPatientDetails = patientDetails.filter(item => (item.firstName + ' ' + item.lastName).toLowerCase().includes(searchQuery));
-                    displayPatientPage(1);
-                });
-
-                document.getElementById('clearSearchPatients').addEventListener('click', function () {
-                    document.getElementById('searchInputPatients').value = '';
-                    filteredPatientDetails = patientDetails;
-                    displayPatientPage(1);
-                });
-
+                // On load: Show all data, then render
+                toggleClearIcons();
+                filteredPatientDetails = [...patientDetails];
                 displayPatientPage(initialPagePatients);
             </script>
 
@@ -766,7 +833,8 @@
 
                                         <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                                     <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
-                                                        alt="Profile Photo" width="180" height="180" class="rounded-circle" onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
+                                                        alt="Profile Photo" width="180" height="180" class="rounded-circle"
+                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                         <?php } else { ?>
                                                     <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo"
                                                         width="180" height="180" class="rounded-circle">
@@ -1385,7 +1453,8 @@
                                         <div class="d-sm-flex text-center mb-4">
                                 <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                                 <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
-                                                    width="140" height="140" class="rounded-circle" onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
+                                                    width="140" height="140" class="rounded-circle"
+                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
                                                     height="140" class="rounded-circle">
@@ -1980,7 +2049,7 @@
                                                                         <select class="form-select preMedDurationUnit" name="preMedDurationUnit[]">
                                                                             <option value="days">Days</option>
                                                                             <option value="weeks">Weeks</option>
-                                                                            <option value="months">Months</option>
+                                                                            <option value="months">Month</option>
                                                                         </select>
                                                                     </div>
                                                                     <div id="preMedDuration_err" class="text-danger pt-1 pe-2"></div>

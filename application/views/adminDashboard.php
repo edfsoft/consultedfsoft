@@ -286,7 +286,7 @@
                 </td>
                 <td class="d-flex d-md-block" style="font-size: 16px">
                     <a href="${baseUrl}Edfadmin/ccDetails/${value.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${value.id}" data-type="cc"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${value.id}" data-name="${value.doctorName}" data-type="cc"><i class="bi bi-trash"></i></button>
                 </td>`;
                                 ccTableBody.appendChild(ccRow);
                             });
@@ -844,7 +844,7 @@
                 </td>
                 <td class="d-flex d-md-block" style="font-size: 16px">
                     <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${hcp.id}" data-type="hcp"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${hcp.id}" data-name="${hcp.hcpName}" data-type="hcp"><i class="bi bi-trash"></i></button>
                 </td>`;
                                             hcpTableBody.appendChild(hcpRow);
                                         });
@@ -1357,7 +1357,7 @@
                 </td>
                 <td class="d-flex d-md-block" style="font-size: 16px">
                     <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${patient.id}" data-type="patient"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${patient.id}" data-name="${patient.firstName} ${patient.lastName}" data-type="patient"><i class="bi bi-trash"></i></button>
                 </td>`;
                                                         patientTableBody.appendChild(patientRow);
                                                     });
@@ -1806,7 +1806,7 @@
                 <td class="pt-3">${start + index + 1}.</td>
                 <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
                 <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteSpecialization" data-id="${specialization.id}" data-name="${specialization.specializationName}" data-type="specialization"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${specialization.id}" data-name="${specialization.specializationName}" data-type="specialization"><i class="bi bi-trash"></i></button>
                 </td>`;
                                                                 specializationTableBody.appendChild(specializationRow);
                                                             });
@@ -1984,7 +1984,7 @@
                 <td class="pt-3">${start + index + 1}.</td>
                 <td style="font-size: 16px" class="pt-3">${symptom.symptomsName}</td>
                 <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${symptom.id}" data-type="symptom"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${symptom.id}" data-name="${symptom.symptomsName}" data-type="symptom"><i class="bi bi-trash"></i></button>
                 </td>`;
                                                                     symptomsTableBody.appendChild(symptomRow);
                                                                 });
@@ -2171,7 +2171,7 @@
                 <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
                 <td style="font-size: 16px" class="pt-3">${medicine.strength}</td>
                 <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-type="medicine"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
                 </td>`;
                                                                         medicinesTableBody.appendChild(medicineRow);
                                                                     });

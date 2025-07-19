@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete ?</p>
+                <p id="deleteItemMessage">Are you sure you want to delete <strong id="deleteItemName"></strong>?</p>
             </div>
             <div class="modal-footer d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
@@ -19,12 +19,14 @@
     </div>
 </div>
 
+
 <script>
     document.addEventListener("click", (event) => {
         let deleteButton = event.target.closest(".delete-btn");
         if (deleteButton) {
             let id = deleteButton.getAttribute("data-id");
             let type = deleteButton.getAttribute("data-type");
+            let name = deleteButton.getAttribute("data-name");
 
             let baseUrl = "<?php echo base_url(); ?>";
             let deleteUrl = "";
@@ -51,6 +53,7 @@
             }
 
             document.getElementById("deleteConfirmButton").setAttribute("href", deleteUrl);
+            document.getElementById("deleteItemName").textContent = name || '';
         }
     });
 </script>

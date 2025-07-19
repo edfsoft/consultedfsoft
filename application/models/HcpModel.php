@@ -289,7 +289,7 @@ class HcpModel extends CI_Model
         $insert = array(
             'patientId' => $generate_id
         );
-        $this->db->where('mobileNumber', $dbid);
+        $this->db->where('id', $dbid);
         $this->db->update('patient_details', $insert);
         return $generate_id;
     }

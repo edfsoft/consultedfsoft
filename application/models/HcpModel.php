@@ -289,7 +289,7 @@ class HcpModel extends CI_Model
         $insert = array(
             'patientId' => $generate_id
         );
-        $this->db->where('mobileNumber', $dbid);
+        $this->db->where('id', $dbid);
         $this->db->update('patient_details', $insert);
         return $generate_id;
     }
@@ -436,7 +436,9 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
         $hcpId = $_SESSION['hcpId'];
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $symptom_string = implode(',', $post['symptoms']);
+        // $symptom_string = implode(',', $post['symptoms']);
+        $symptom_string = isset($data['symptoms']) && is_array($post['symptoms'])
+            ? implode(',', $post['symptoms']) : '';
         $saveDirectConsult = array(
             'patientId' => $post['patientId'],
             'patientDbId' => $post['patientIdDb'],
@@ -503,15 +505,32 @@ class HcpModel extends CI_Model
         $notes = $this->input->post('preMedNotes');
         $patientDbId = $this->input->post('patientIdDb');
 
+        // for ($i = 0; $i < count($medNames); $i++) {
+        //     $data = [
+        //         'patientDbId' => $patientDbId,
+        //         'consultationDbId' => $consultIdDb,
+        //         'medicineName' => $medNames[$i],
+        //         'frequency' => $frequencies[$i],
+        //         'duration' => $durations[$i],
+        //         'duration_unit' => $durationUnits[$i],
+        //         'notes' => $notes[$i],
+        //         'dateOfAppoint' => date('Y-m-d')
+        //     ];
+        // $this->db->insert('consultation_medicines', $data);
         for ($i = 0; $i < count($medNames); $i++) {
+            $frequency = isset($frequencies[$i]) ? $frequencies[$i] : '';
+            $duration = isset($durations[$i]) ? $durations[$i] : '';
+            $durationUnit = isset($durationUnits[$i]) ? $durationUnits[$i] : '';
+            $note = isset($notes[$i]) ? $notes[$i] : '';
+
             $data = [
                 'patientDbId' => $patientDbId,
                 'consultationDbId' => $consultIdDb,
                 'medicineName' => $medNames[$i],
-                'frequency' => $frequencies[$i],
-                'duration' => $durations[$i],
-                'duration_unit' => $durationUnits[$i],
-                'notes' => $notes[$i],
+                'frequency' => $frequency,
+                'duration' => $duration,
+                'duration_unit' => $durationUnit,
+                'notes' => $note,
                 'dateOfAppoint' => date('Y-m-d')
             ];
             $this->db->insert('consultation_medicines', $data);

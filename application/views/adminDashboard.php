@@ -143,45 +143,58 @@
                 <section>
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                            <p class="ps-2" style="font-size: 24px; font-weight: 500">Chief Consultant List</p>
+                            <p style="font-size: 24px; font-weight: 500">Chief Consultant List</p>
                             <a href="<?php echo base_url() . "Edfadmin/ccSignupForm" ?>">
-                                <button style="background-color: #0081ff;"
+                                <button style="background-color: #2b353bf5;"
                                     class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                     <i class="bi bi-plus-square-fill"></i> Add CC
                                 </button>
                             </a>
                         </div>
                     <?php if (isset($ccList[0]['id'])) { ?>
-                            <div class="input-group mx-auto" style="width:250px;">
-                                <span class="input-group-text" id="searchIconCc">
-                                    <i class="bi bi-search"></i>
-                                </span>
-                                <input type="text" id="searchInputCc" class="form-control" placeholder="Search by name"
-                                    aria-describedby="searchIconCc">
-                                <button class="btn btn-outline-secondary" type="button" id="clearSearchCc">
-                                    <i class="bi bi-x"></i>
-                                </button>
+                            <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
+                                <div class="ms-2 py-2 py-md-0">
+                                    <label for="itemsPerPageDropdown">Show </label>
+                                    <select id="itemsPerPageDropdown"
+                                        class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                        <option value="10" selected>10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                    <label for="itemsPerPageDropdown">Entries </label>
+                                </div>
+                                <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
+                                    <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                        style="height: 50px; width: 250px" placeholder="Search (ID / NAME)">
+                                    <span id="clearSearch" class="position-absolute"
+                                        style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                                </div>
                             </div>
-
                             <div class="card-body p-2 p-sm-4">
-
                                 <div class="table-responsive">
                                     <table class="table table-hover text-center" id="ccTable">
                                         <thead>
                                             <tr>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">S.NO</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">ID</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">NAME</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">MOBILE
+                                                    NUMBER</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">SPECIALIST
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">STATUS
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">ACTION
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody id="ccTableBody"></tbody>
                                     </table>
                                 </div>
-                                <div class="pagination justify-content-center mt-3" id="paginationContainerCc"></div>
+                                <div class="d-md-flex justify-content-between ms-2">
+                                    <div id="entriesInfo" class="mt-4"></div>
+                                    <div class="pagination justify-content-end mt-4" id="paginationContainerCc"></div>
+                                </div>
                             </div>
                     <?php } else { ?>
                             <h5 class="text-center py-3"><b>No Records Found.</b> </h5>
@@ -192,10 +205,57 @@
 
                 <script>
                     const baseUrl = '<?php echo base_url(); ?>';
-                    const itemsPerPageCc = 10;
+                    let itemsPerPageCc = 10;
                     const ccDetails = <?php echo json_encode($ccList); ?>;
-                    let filteredCcDetails = ccDetails;
+                    let filteredCcDetails = [...ccDetails];
                     const initialPageCc = parseInt(localStorage.getItem('currentPageCc')) || 1;
+
+                    const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                    const searchBar = document.getElementById('searchBar');
+                    const clearSearch = document.getElementById('clearSearch');
+
+                    // Load saved itemsPerPage
+                    const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageCc')) || itemsPerPageCc;
+                    itemsPerPageDropdown.value = savedItemsPerPage;
+                    itemsPerPageCc = savedItemsPerPage;
+
+                    // Event Listeners
+                    itemsPerPageDropdown.addEventListener('change', (event) => {
+                        itemsPerPageCc = parseInt(event.target.value);
+                        localStorage.setItem('itemsPerPageCc', itemsPerPageCc);
+                        applyFilters();
+                    });
+
+                    searchBar.addEventListener('input', () => {
+                        toggleClearIcons();
+                        applyFilters();
+                    });
+
+                    clearSearch.addEventListener('click', () => {
+                        searchBar.value = '';
+                        toggleClearIcons();
+                        applyFilters();
+                    });
+
+                    function toggleClearIcons() {
+                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                    }
+
+                    function applyFilters() {
+                        const searchTerm = searchBar.value.toLowerCase();
+
+                        filteredCcDetails = ccDetails.filter((item) => {
+                            const fullName = item.doctorName || '';
+                            const ccId = item.ccId || '';
+
+                            return (
+                                fullName.toLowerCase().includes(searchTerm) ||
+                                ccId.toLowerCase().includes(searchTerm)
+                            );
+                        });
+
+                        displayCcPage(1);
+                    }
 
                     function displayCcPage(page) {
                         localStorage.setItem('currentPageCc', page);
@@ -206,6 +266,8 @@
                         const ccTableBody = document.getElementById('ccTableBody');
                         ccTableBody.innerHTML = '';
 
+                        updateEntriesInfo(start + 1, Math.min(end, filteredCcDetails.length), filteredCcDetails.length);
+
                         if (itemsToShow.length === 0) {
                             const noMatchesRow = document.createElement('tr');
                             noMatchesRow.innerHTML = '<td colspan="7" class="text-center">No matches found.</td>';
@@ -213,31 +275,29 @@
                         } else {
                             itemsToShow.forEach((value, index) => {
                                 const ccRow = document.createElement('tr');
-                                ccRow.innerHTML =
-                                    '<td class="pt-3">' + (start + index + 1) + '.</td>' +
-                                    '<td style="font-size: 16px" class="pt-3">' + value.ccId + '</td>' +
-                                    '<td style="font-size: 16px" class="pt-3">' + value.doctorName + '</td>' +
-                                    '<td style="font-size: 16px" class="pt-3">' + value.doctorMobile + '</td>' +
-                                    '<td style="font-size: 16px" class="pt-3">' + value.specialization + '</td>' +
-                                    '<td style="font-size: 16px" class="pt-3">' +
-                                    (value.approvalStatus == 1
-                                        ? '<i class="bi bi-patch-check-fill text-success"></i>'
-                                        : '<i class="bi bi-patch-check-fill text-danger"></i>') +
-                                    '</td>' +
-                                    '<td class="d-flex d-md-block" style="font-size: 16px">' +
-                                    '<a href="' + baseUrl + 'Edfadmin/ccDetails/' + value.id + '">' +
-                                    '<button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>' +
-                                    '</a>' +
-                                    '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + value.id + '" data-type="cc">' +
-                                    '<i class="bi bi-trash"></i>' +
-                                    '</button>' +
-                                    '</td>';
+                                ccRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td style="font-size: 16px;" class="pt-3">${value.ccId}</td>
+                <td style="font-size: 16px" class="pt-3">${value.doctorName}</td>
+                <td style="font-size: 16px" class="pt-3">${value.doctorMobile}</td>
+                <td style="font-size: 16px" class="pt-3">${value.specialization}</td>
+                <td style="font-size: 16px" class="pt-3">
+                    ${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}
+                </td>
+                <td class="d-flex d-md-block" style="font-size: 16px">
+                    <a href="${baseUrl}Edfadmin/ccDetails/${value.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${value.id}" data-name="${value.doctorName}" data-type="cc"><i class="bi bi-trash"></i></button>
+                </td>`;
                                 ccTableBody.appendChild(ccRow);
                             });
-
                         }
 
                         generateCcPagination(filteredCcDetails.length, page);
+                    }
+
+                    function updateEntriesInfo(start, end, totalEntries) {
+                        const entriesInfo = document.getElementById('entriesInfo');
+                        entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
                     }
 
                     function generateCcPagination(totalItems, currentPage) {
@@ -249,10 +309,7 @@
                         ul.className = 'pagination';
 
                         const prevLi = document.createElement('li');
-                        prevLi.innerHTML =
-                            '<a href="#">' +
-                            '<button type="button" class="bg-light border px-3 py-2"' + (currentPage === 1 ? ' disabled' : '') + '>&lt;</button>' +
-                            '</a>';
+                        prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
                         prevLi.onclick = () => {
                             if (currentPage > 1) displayCcPage(currentPage - 1);
                         };
@@ -263,19 +320,13 @@
 
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
-                            li.innerHTML =
-                                '<a href="#">' +
-                                '<button type="button" class="btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '">' + i + '</button>' +
-                                '</a>';
+                            li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
                             li.onclick = () => displayCcPage(i);
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
-                        nextLi.innerHTML =
-                            '<a href="#">' +
-                            '<button type="button" class="bg-light border px-3 py-2"' + (currentPage === totalPages ? ' disabled' : '') + '>&gt;</button>' +
-                            '</a>';
+                        nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
                         nextLi.onclick = () => {
                             if (currentPage < totalPages) displayCcPage(currentPage + 1);
                         };
@@ -284,18 +335,9 @@
                         paginationContainer.appendChild(ul);
                     }
 
-                    document.getElementById('searchInputCc').addEventListener('keyup', function () {
-                        const searchQuery = this.value.toLowerCase();
-                        filteredCcDetails = ccDetails.filter(item => item.doctorName.toLowerCase().includes(searchQuery) || item.ccId.toLowerCase().includes(searchQuery));
-                        displayCcPage(1);
-                    });
-
-                    document.getElementById('clearSearchCc').addEventListener('click', function () {
-                        document.getElementById('searchInputCc').value = '';
-                        filteredCcDetails = ccDetails;
-                        displayCcPage(1);
-                    });
-
+                    // On load: Show all data, then render
+                    toggleClearIcons();
+                    filteredCcDetails = [...ccDetails];
                     displayCcPage(initialPageCc);
                 </script>
 
@@ -310,8 +352,7 @@
                                 <a href="<?php echo base_url() . "Edfadmin/ccList" ?>" class="text-dark mt-2"><i
                                         class="bi bi-arrow-left"></i> Back</a>
                             </div>
-
-                            <div class="card-body col-md-8 p-3 px-sm-4">
+                            <div class="card-body col-md-8 px-sm-4">
                                 <p style="font-size: 20px; font-weight: 500">Create an Account for Chief Consultant</p>
                                 <form action="<?php echo base_url() . "Edfadmin/ccSignup" ?>" method="post" name="signupform"
                                     onsubmit="return validateSignup()" oninput="return removeError()">
@@ -322,13 +363,14 @@
                                         <div id="name_err" class="text-danger pt-1"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="ccMobile" class="form-label">Mobile <span class="text-danger">*</span></label>
+                                        <label for="ccMobile" class="form-label">Mobile Number <span
+                                                class="text-danger">*</span></label>
                                         <input type="number" name="ccMobile" id="ccMobile" placeholder="9876543210"
                                             class="form-control">
                                         <div id="mobile_err" class="text-danger pt-1"></div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="ccEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                                        <label for="ccEmail" class="form-label">Email Id <span class="text-danger">*</span></label>
                                         <input type="email" name="ccEmail" id="ccEmail" placeholder="example@gmail.com"
                                             class="form-control">
                                         <div id="mail_err" class="text-danger pt-1"></div>
@@ -377,7 +419,8 @@
                                     <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="0">
                                     <div class="d-flex justify-content-between">
                                         <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
-                                        <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
+                                        <button type="submit" style="background-color: #2b353bf5;"
+                                            class="btn text-light float-end mt-2">Sign Up</button>
                                     </div>
                                 </form>
                             </div>
@@ -601,9 +644,11 @@
                                                 oninput="validateLinkClearError(this)">
                                             <div id="link_err" class="text-danger pt-1"></div>
                                 <?php if ($value['gMeetLink'] == '') { ?>
-                                                <button type="submit" class="btn btn-primary my-2 float-end">Add</button>
+                                                <button type="submit" style="background-color: #2b353bf5;"
+                                                    class="btn text-light my-2 float-end">Add</button>
                                 <?php } else { ?>
-                                                <button type="submit" class="btn btn-primary my-2 float-end">Update</button>
+                                                <button type="submit" style="background-color: #2b353bf5;"
+                                                    class="btn text-light my-2 float-end">Update</button>
                                 <?php } ?>
                                         </form>
                                         <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
@@ -622,7 +667,8 @@
                                                 echo "checked"; ?> required>
                                                 <label class="ps-2" for="approved">Approved</label>
                                             </div>
-                                            <button type="submit" class="btn btn-primary px-2 py-1 mt-2">Approve</button>
+                                            <button type="submit" style="background-color: #2b353bf5;"
+                                                class="btn text-light px-2 py-1 mt-2">Approve</button>
                                         </form>
                             <?php
                                 } ?>
@@ -658,27 +704,33 @@
                             <section>
                                 <div class="card rounded">
                                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Health Care Provider List</p>
+                                        <p style="font-size: 24px; font-weight: 500">Health Care Provider List</p>
                                         <a href="<?php echo base_url() . 'Edfadmin/hcpSignupForm'; ?>">
-                                            <button style="background-color: #0081ff;"
+                                            <button style="background-color: #2b353bf5;"
                                                 class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
                                                 <i class="bi bi-plus-square-fill"></i> Add HCP
                                             </button>
                                         </a>
                                     </div>
                     <?php if (isset($hcpList[0]['id'])) { ?>
-
-                                        <div class="input-group mx-auto" style="width:250px;">
-                                            <span class="input-group-text" id="searchIconHcp">
-                                                <i class="bi bi-search"></i>
-                                            </span>
-                                            <input type="text" id="searchInputHcp" class="form-control" placeholder="Search by name"
-                                                aria-describedby="searchIconHcp">
-                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchHcp">
-                                                <i class="bi bi-x"></i>
-                                            </button>
+                                        <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
+                                            <div class="ms-2 py-2 py-md-0">
+                                                <label for="itemsPerPageDropdown">Show </label>
+                                                <select id="itemsPerPageDropdown"
+                                                    class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                    <option value="10" selected>10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                </select>
+                                                <label for="itemsPerPageDropdown">Entries </label>
+                                            </div>
+                                            <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
+                                                <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                    style="height: 50px; width: 250px" placeholder="Search (ID / NAME)">
+                                                <span id="clearSearch" class="position-absolute"
+                                                    style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                                            </div>
                                         </div>
-
                                         <div class="card-body p-2 p-sm-4">
                                             <div class="table-responsive">
                                                 <table class="table table-hover text-center" id="hcpTable">
@@ -696,7 +748,10 @@
                                                     <tbody id="hcpTableBody"></tbody>
                                                 </table>
                                             </div>
-                                            <div class="pagination justify-content-center mt-3" id="paginationContainerHcp"></div>
+                                            <div class="d-md-flex justify-content-between ms-2">
+                                                <div id="entriesInfo" class="mt-4"></div>
+                                                <div class="pagination justify-content-end mt-4" id="paginationContainerHcp"></div>
+                                            </div>
                                         </div>
                     <?php } else { ?>
                                         <h5 class="text-center py-3"><b>No Records Found.</b> </h5>
@@ -704,51 +759,106 @@
                                 </div>
                             </section>
 
+
+
                             <script>
                                 const baseUrl = '<?php echo base_url(); ?>';
-                                const itemsPerPageHcp = 10;
+                                let itemsPerPageHcp = 10;
                                 const hcpList = <?php echo json_encode($hcpList); ?>;
-                                let filteredHcpList = hcpList;
-                                let currentPageHcp = parseInt(localStorage.getItem('currentPageHcp')) || 1;
+                                let filteredHcpList = [...hcpList];
+                                const initialPageHcp = parseInt(localStorage.getItem('currentPageHcp')) || 1;
+
+                                const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                const searchBar = document.getElementById('searchBar');
+                                const clearSearch = document.getElementById('clearSearch');
+
+                                // Load saved itemsPerPage
+                                const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageHcp')) || itemsPerPageHcp;
+                                itemsPerPageDropdown.value = savedItemsPerPage;
+                                itemsPerPageHcp = savedItemsPerPage;
+
+                                // Event Listeners
+                                itemsPerPageDropdown.addEventListener('change', (event) => {
+                                    itemsPerPageHcp = parseInt(event.target.value);
+                                    localStorage.setItem('itemsPerPageHcp', itemsPerPageHcp);
+                                    applyFilters();
+                                });
+
+                                searchBar.addEventListener('input', () => {
+                                    toggleClearIcons();
+                                    applyFilters();
+                                });
+
+                                clearSearch.addEventListener('click', () => {
+                                    searchBar.value = '';
+                                    toggleClearIcons();
+                                    applyFilters();
+                                });
+
+                                function toggleClearIcons() {
+                                    clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                }
+
+                                function applyFilters() {
+                                    const searchTerm = searchBar.value.toLowerCase();
+
+                                    filteredHcpList = hcpList.filter((hcp) => {
+                                        const fullName = hcp.hcpName || '';
+                                        const hcpId = hcp.hcpId || '';
+
+                                        return (
+                                            fullName.toLowerCase().includes(searchTerm) ||
+                                            hcpId.toLowerCase().includes(searchTerm)
+                                        );
+                                    });
+
+                                    displayHcpPage(1);
+                                }
 
                                 function displayHcpPage(page) {
-                                    currentPageHcp = page;
                                     localStorage.setItem('currentPageHcp', page);
                                     const start = (page - 1) * itemsPerPageHcp;
                                     const end = start + itemsPerPageHcp;
-                                    const paginatedData = filteredHcpList.slice(start, end);
+                                    const itemsToShow = filteredHcpList.slice(start, end);
+
                                     const hcpTableBody = document.getElementById('hcpTableBody');
                                     hcpTableBody.innerHTML = '';
 
-                                    if (paginatedData.length === 0) {
+                                    updateEntriesInfo(start + 1, Math.min(end, filteredHcpList.length), filteredHcpList.length);
+
+                                    if (itemsToShow.length === 0) {
                                         const noMatchesRow = document.createElement('tr');
                                         noMatchesRow.innerHTML = '<td colspan="7" class="text-center">No matches found.</td>';
                                         hcpTableBody.appendChild(noMatchesRow);
                                     } else {
-                                        paginatedData.forEach((hcp, index) => {
-                                            const row =
-                                                '<tr>' +
-                                                '<td class="pt-3">' + (start + index + 1) + '.</td>' +
-                                                '<td class="pt-3">' + hcp.hcpId + '</td>' +
-                                                '<td class="pt-3">' + hcp.hcpName + '</td>' +
-                                                '<td class="pt-3">' + hcp.hcpMobile + '</td>' +
-                                                '<td class="pt-3">' + hcp.hcpSpecialization + '</td>' +
-                                                '<td class="pt-3">' + (hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>') + '</td>' +
-                                                '<td class="d-flex d-md-block">' +
-                                                '<a href="' + baseUrl + 'Edfadmin/hcpDetails/' + hcp.id + '">' +
-                                                '<button class="btn btn-success me-1"><i class="bi bi-eye"></i></button>' +
-                                                '</a>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + hcp.id + '" data-type="hcp">' +
-                                                '<i class="bi bi-trash"></i>' + '</button>' +
-                                                '</td>' +
-                                                '</tr>';
-                                            hcpTableBody.innerHTML += row;
+                                        itemsToShow.forEach((hcp, index) => {
+                                            const hcpRow = document.createElement('tr');
+                                            hcpRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td style="font-size: 16px" class="pt-3">${hcp.hcpId}</td>
+                <td style="font-size: 16px" class="pt-3">${hcp.hcpName}</td>
+                <td style="font-size: 16px" class="pt-3">${hcp.hcpMobile}</td>
+                <td style="font-size: 16px" class="pt-3">${hcp.hcpSpecialization}</td>
+                <td style="font-size: 16px" class="pt-3">
+                    ${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}
+                </td>
+                <td class="d-flex d-md-block" style="font-size: 16px">
+                    <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${hcp.id}" data-name="${hcp.hcpName}" data-type="hcp"><i class="bi bi-trash"></i></button>
+                </td>`;
+                                            hcpTableBody.appendChild(hcpRow);
                                         });
                                     }
 
-                                    generatePagination(filteredHcpList.length, page);
+                                    generateHcpPagination(filteredHcpList.length, page);
                                 }
 
-                                function generatePagination(totalItems, currentPage) {
+                                function updateEntriesInfo(start, end, totalEntries) {
+                                    const entriesInfo = document.getElementById('entriesInfo');
+                                    entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                }
+
+                                function generateHcpPagination(totalItems, currentPage) {
                                     const totalPages = Math.ceil(totalItems / itemsPerPageHcp);
                                     const paginationContainer = document.getElementById('paginationContainerHcp');
                                     paginationContainer.innerHTML = '';
@@ -757,10 +867,7 @@
                                     ul.className = 'pagination';
 
                                     const prevLi = document.createElement('li');
-                                    prevLi.innerHTML =
-                                        '<a href="#">' +
-                                        '<button type="button" class="bg-light border px-3 py-2"' + (currentPage === 1 ? ' disabled' : '') + '>&lt;</button>' +
-                                        '</a>';
+                                    prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
                                     prevLi.onclick = () => {
                                         if (currentPage > 1) displayHcpPage(currentPage - 1);
                                     };
@@ -771,19 +878,13 @@
 
                                     for (let i = startPage; i <= endPage; i++) {
                                         const li = document.createElement('li');
-                                        li.innerHTML =
-                                            '<a href="#">' +
-                                            '<button type="button" class="btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '">' + i + '</button>' +
-                                            '</a>';
+                                        li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
                                         li.onclick = () => displayHcpPage(i);
                                         ul.appendChild(li);
                                     }
 
                                     const nextLi = document.createElement('li');
-                                    nextLi.innerHTML =
-                                        '<a href="#">' +
-                                        '<button type="button" class="bg-light border px-3 py-2"' + (currentPage === totalPages ? ' disabled' : '') + '>&gt;</button>' +
-                                        '</a>';
+                                    nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
                                     nextLi.onclick = () => {
                                         if (currentPage < totalPages) displayHcpPage(currentPage + 1);
                                     };
@@ -792,32 +893,10 @@
                                     paginationContainer.appendChild(ul);
                                 }
 
-                                function filterHcpList(searchQuery) {
-                                    const lowerCaseQuery = searchQuery.toLowerCase();
-                                    filteredHcpList = hcpList.filter(hcp =>
-                                        hcp.hcpName.toLowerCase().includes(lowerCaseQuery) ||
-                                        hcp.hcpId.toLowerCase().includes(lowerCaseQuery)
-                                    );
-                                    displayHcpPage(1);
-                                }
-
-                                document.getElementById('searchInputHcp').addEventListener('input', function () {
-                                    const searchQuery = this.value.trim();
-                                    if (searchQuery === '') {
-                                        filteredHcpList = hcpList;
-                                        displayHcpPage(currentPageHcp);
-                                    } else {
-                                        filterHcpList(searchQuery);
-                                    }
-                                });
-
-                                document.getElementById('clearSearchHcp').addEventListener('click', function () {
-                                    document.getElementById('searchInputHcp').value = '';
-                                    filteredHcpList = hcpList;
-                                    displayHcpPage(currentPageHcp);
-                                });
-
-                                displayHcpPage(currentPageHcp);
+                                // On load: Show all data, then render
+                                toggleClearIcons();
+                                filteredHcpList = [...hcpList];
+                                displayHcpPage(initialPageHcp);
                             </script>
 
             <?php
@@ -831,8 +910,7 @@
                                             <a href="<?php echo base_url() . "Edfadmin/hcpList" ?>" class="text-dark mt-2"><i
                                                     class="bi bi-arrow-left"></i> Back</a>
                                         </div>
-
-                                        <div class="card-body col-md-8 p-3 px-sm-4">
+                                        <div class="card-body col-md-8 px-sm-4">
                                             <p style="font-size: 20px; font-weight: 500">Create an Account for Health Care Provider</p>
                                             <form action="<?php echo base_url() . "Edfadmin/hcpSignup" ?>" method="post" name="hcpsignupform"
                                                 onsubmit="return validateSignup()" oninput="return removeError()">
@@ -843,13 +921,14 @@
                                                     <div id="name_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="hcpMobile" class="form-label">Mobile <span class="text-danger">*</span></label>
+                                                    <label for="hcpMobile" class="form-label">Mobile Number <span
+                                                            class="text-danger">*</span></label>
                                                     <input type="number" name="hcpMobile" id="hcpMobile" placeholder="9876543210"
                                                         class="form-control">
                                                     <div id="mobile_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="hcpEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                                                    <label for="hcpEmail" class="form-label">Email Id <span class="text-danger">*</span></label>
                                                     <input type="email" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com"
                                                         class="form-control">
                                                     <div id="mail_err" class="text-danger pt-1"></div>
@@ -899,7 +978,8 @@
 
                                                 <div class="d-flex justify-content-between">
                                                     <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
-                                                    <button type="submit" class="btn btn-primary text-light float-end mt-2">Sign Up</button>
+                                                    <button type="submit" style="background-color: #2b353bf5;"
+                                                        class="btn text-light float-end mt-2">Sign Up</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -1108,7 +1188,8 @@
                                                             echo "checked"; ?> required>
                                                             <label class="ps-2" for="approved">Approved</label>
                                                         </div>
-                                                        <button type="submit" class="btn btn-primary px-2 py-1 mt-2">Approve</button>
+                                                        <button type="submit" style="background-color: #2b353bf5;"
+                                                            class="btn text-light px-2 py-1 mt-2">Approve</button>
                                                     </form>
                         <?php } ?>
                                             </div>
@@ -1121,23 +1202,35 @@
 
                                         <section>
                                             <div class="card rounded">
-                                                <div class="card-body p-3 p-sm-4">
-                                                    <div class="d-sm-flex justify-content-between mt-2 mb-3">
-                                                        <p class="ps-2" style="font-size: 24px; font-weight: 500">Patients List</p>
-                                                        <div class="input-group" style="width:250px;">
-                                                            <span class="input-group-text" id="searchIconPatient">
-                                                                <i class="bi bi-search"></i>
-                                                            </span>
-                                                            <input type="text" id="searchInputPatient" class="form-control" placeholder="Search by name"
-                                                                aria-describedby="searchIconPatient">
-                                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchPatient">
-                                                                <i class="bi bi-x"></i>
-                                                            </button>
+                                                <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                    <p style="font-size: 24px; font-weight: 500">Patients List</p>
+                                                </div>
+                    <?php if (isset($patientList[0]['id'])) { ?>
+                                                    <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-4">
+                                                        <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
+                                                            style="height: 50px; width: 250px;">
+                                                            <option value="All">Filter (All Genders)</option>
+                                                            <option value="Male">Male</option>
+                                                            <option value="Female">Female</option>
+                                                        </select>
+                                                        <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
+                                                            <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                                style="height: 50px; width: 260px" placeholder="Search (ID / NAME / MOBILE)">
+                                                            <span id="clearSearch" class="position-absolute"
+                                                                style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                         </div>
                                                     </div>
-
-                        <?php if (isset($patientList[0]['id'])) { ?>
-
+                                                    <div class="mt-3 ms-4">
+                                                        <label for="itemsPerPageDropdown">Show </label>
+                                                        <select id="itemsPerPageDropdown"
+                                                            class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                            <option value="10" selected>10</option>
+                                                            <option value="25">25</option>
+                                                            <option value="50">50</option>
+                                                        </select>
+                                                        <label for="itemsPerPageDropdown">Entries </label>
+                                                    </div>
+                                                    <div class="card-body p-2 p-sm-4">
                                                         <div class="table-responsive">
                                                             <table class="table table-hover text-center" id="patientTable">
                                                                 <thead>
@@ -1155,148 +1248,168 @@
                                                                 <tbody id="patientTableBody"></tbody>
                                                             </table>
                                                         </div>
-                                                        <div class="pagination justify-content-center mt-3" id="paginationContainerPatient"></div>
-                        <?php } else { ?>
-                                                        <h5 class="text-center py-3"><b>No Records Found.</b> </h5>
-                        <?php } ?>
-                                                </div>
+                                                        <div class="d-md-flex justify-content-between ms-2">
+                                                            <div id="entriesInfo" class="mt-4"></div>
+                                                            <div class="pagination justify-content-end mt-4" id="paginationContainerPatient"></div>
+                                                        </div>
+                                                    </div>
+
+                    <?php } else { ?>
+                                                    <h5 class="text-center py-3"><b>No Records Found.</b> </h5>
+                    <?php } ?>
                                             </div>
                                         </section>
 
+
                                         <script>
                                             const baseUrl = '<?php echo base_url(); ?>';
+                                            let itemsPerPagePatient = 10;
                                             const patientList = <?php echo json_encode($patientList); ?>;
-                                            console.log('Patient List:', patientList);
-                                            const itemsPerPagePatient = 10;
-                                            let filteredPatientList = patientList;
-                                            let currentPagePatient = parseInt(localStorage.getItem('currentPagePatient')) || 1;
+                                            let filteredPatientList = [...patientList];
+                                            const initialPagePatient = parseInt(localStorage.getItem('currentPagePatient')) || 1;
+
+                                            const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                            const searchBar = document.getElementById('searchBar');
+                                            const clearSearch = document.getElementById('clearSearch');
+                                            const filterDropdown = document.getElementById('filterDropdown');
+
+                                            // Load saved itemsPerPage
+                                            const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPagePatient')) || itemsPerPagePatient;
+                                            itemsPerPageDropdown.value = savedItemsPerPage;
+                                            itemsPerPagePatient = savedItemsPerPage;
+
+                                            // Event Listeners
+                                            itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                itemsPerPagePatient = parseInt(event.target.value);
+                                                localStorage.setItem('itemsPerPagePatient', itemsPerPagePatient);
+                                                applyFilters();
+                                            });
+
+                                            searchBar.addEventListener('input', () => {
+                                                toggleClearIcons();
+                                                applyFilters();
+                                            });
+
+                                            clearSearch.addEventListener('click', () => {
+                                                searchBar.value = '';
+                                                toggleClearIcons();
+                                                applyFilters();
+                                            });
+
+                                            filterDropdown.addEventListener('change', applyFilters);
+
+                                            function toggleClearIcons() {
+                                                clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                            }
+
+                                            function applyFilters() {
+                                                const searchTerm = searchBar.value.toLowerCase();
+                                                const genderFilter = filterDropdown.value;
+
+                                                filteredPatientList = patientList.filter((patient) => {
+                                                    const fullName = `${patient.firstName || ''} ${patient.lastName || ''}`.trim();
+                                                    const patientId = patient.patientId || '';
+                                                    const mobileNumber = patient.mobileNumber || '';
+
+                                                    const matchesSearch =
+                                                        fullName.toLowerCase().includes(searchTerm) ||
+                                                        patientId.toLowerCase().includes(searchTerm) ||
+                                                        mobileNumber.toLowerCase().includes(searchTerm);
+
+                                                    let matchesGender = true;
+                                                    if (genderFilter !== 'All') {
+                                                        matchesGender = patient.gender === genderFilter;
+                                                    }
+
+                                                    return matchesSearch && matchesGender;
+                                                });
+
+                                                displayPatientPage(1);
+                                            }
 
                                             function displayPatientPage(page) {
-                                                console.log('Display Page:', page);
-                                                currentPagePatient = page;
                                                 localStorage.setItem('currentPagePatient', page);
                                                 const start = (page - 1) * itemsPerPagePatient;
                                                 const end = start + itemsPerPagePatient;
-                                                const paginatedData = filteredPatientList.slice(start, end);
+                                                const itemsToShow = filteredPatientList.slice(start, end);
+
                                                 const patientTableBody = document.getElementById('patientTableBody');
                                                 patientTableBody.innerHTML = '';
 
-                                                if (paginatedData.length === 0) {
+                                                updateEntriesInfo(start + 1, Math.min(end, filteredPatientList.length), filteredPatientList.length);
+
+                                                if (itemsToShow.length === 0) {
                                                     const noMatchesRow = document.createElement('tr');
                                                     noMatchesRow.innerHTML = '<td colspan="8" class="text-center">No matches found.</td>';
                                                     patientTableBody.appendChild(noMatchesRow);
                                                 } else {
-                                                    paginatedData.forEach((patient, index) => {
-                                                        const row =
-                                                            '<tr>' +
-                                                            '<td class="pt-3">' + (start + index + 1) + '.</td>' +
-                                                            '<td class="pt-3">' + patient.patientId + '</td>' +
-                                                            '<td class="pt-3">' + patient.firstName + ' ' + patient.lastName + '</td>' +
-                                                            '<td class="pt-3">' + patient.mobileNumber + '</td>' +
-                                                            '<td class="pt-3">' + patient.gender + '</td>' +
-                                                            '<td class="pt-3">' + patient.age + '</td>' +
-                                                            '<td style="font-size: 16px" class="pt-3">' +
-                                                            '<a href="' + baseUrl + 'Edfadmin/hcpDetails/' + patient.patientHcpDbId + '" ' +
-                                                            'class="text-dark" onmouseover="style=\'text-decoration:underline\'" onmouseout="style=\'text-decoration:none\'">' +
-                                                            patient.patientHcp +
-                                                            '</a>' +
-                                                            '</td>' +
-                                                            '<td class="d-flex d-md-block">' +
-                                                            '<a href="' + baseUrl + 'Edfadmin/patientdetails/' + patient.id + '"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>' +
-                                                            '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + patient.id + '" data-type="patient">' +
-                                                            '<i class="bi bi-trash"></i>' + '</button>' +
-                                                            '</td>' +
-                                                            '</tr>';
-                                                        patientTableBody.innerHTML += row;
+                                                    itemsToShow.forEach((patient, index) => {
+                                                        const patientRow = document.createElement('tr');
+                                                        patientRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td style="font-size: 16px" class="pt-3">${patient.patientId}</td>
+                <td style="font-size: 16px" class="pt-3">${patient.firstName} ${patient.lastName}</td>
+                <td style="font-size: 16px" class="pt-3">${patient.mobileNumber}</td>
+                <td style="font-size: 16px" class="pt-3">${patient.gender}</td>
+                <td style="font-size: 16px" class="pt-3">${patient.age}</td>
+                <td style="font-size: 16px" class="pt-3">
+                    <a href="${baseUrl}Edfadmin/hcpDetails/${patient.patientHcpDbId}" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">${patient.patientHcp}</a>
+                </td>
+                <td class="d-flex d-md-block" style="font-size: 16px">
+                    <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${patient.id}" data-name="${patient.firstName} ${patient.lastName}" data-type="patient"><i class="bi bi-trash"></i></button>
+                </td>`;
+                                                        patientTableBody.appendChild(patientRow);
                                                     });
                                                 }
 
-                                                generatePagination(filteredPatientList.length, page);
+                                                generatePatientPagination(filteredPatientList.length, page);
                                             }
 
-                                            function generatePagination(totalItems, currentPage) {
-                                                console.log('Generate Pagination:', totalItems, currentPage); // Debugging
+                                            function updateEntriesInfo(start, end, totalEntries) {
+                                                const entriesInfo = document.getElementById('entriesInfo');
+                                                entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                            }
+
+                                            function generatePatientPagination(totalItems, currentPage) {
                                                 const totalPages = Math.ceil(totalItems / itemsPerPagePatient);
                                                 const paginationContainer = document.getElementById('paginationContainerPatient');
                                                 paginationContainer.innerHTML = '';
 
-                                                const prevButton = document.createElement('button');
-                                                prevButton.innerHTML = '&lt;';
-                                                prevButton.type = 'button';
-                                                prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                prevButton.disabled = currentPage === 1;
-                                                prevButton.addEventListener('click', () => {
-                                                    if (currentPage > 1) {
-                                                        displayPatientPage(currentPage - 1);
-                                                    }
-                                                });
-                                                paginationContainer.appendChild(prevButton);
+                                                const ul = document.createElement('ul');
+                                                ul.className = 'pagination';
 
-                                                let startPage, endPage;
-                                                if (totalPages <= 5) {
-                                                    startPage = 1;
-                                                    endPage = totalPages;
-                                                } else {
-                                                    if (currentPage <= 3) {
-                                                        startPage = 1;
-                                                        endPage = 5;
-                                                    } else if (currentPage + 2 >= totalPages) {
-                                                        startPage = totalPages - 4;
-                                                        endPage = totalPages;
-                                                    } else {
-                                                        startPage = currentPage - 2;
-                                                        endPage = currentPage + 2;
-                                                    }
-                                                }
+                                                const prevLi = document.createElement('li');
+                                                prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                prevLi.onclick = () => {
+                                                    if (currentPage > 1) displayPatientPage(currentPage - 1);
+                                                };
+                                                ul.appendChild(prevLi);
+
+                                                const startPage = Math.max(1, currentPage - 2);
+                                                const endPage = Math.min(totalPages, startPage + 4);
 
                                                 for (let i = startPage; i <= endPage; i++) {
                                                     const li = document.createElement('li');
-                                                    li.innerHTML = '<button type="button" class="btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '" onclick="displayPatientPage(' + i + ')">' + i + '</button>';
-                                                    paginationContainer.appendChild(li);
+                                                    li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                    li.onclick = () => displayPatientPage(i);
+                                                    ul.appendChild(li);
                                                 }
 
-                                                const nextButton = document.createElement('button');
-                                                nextButton.innerHTML = '&gt;';
-                                                nextButton.type = 'button';
-                                                nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                nextButton.disabled = currentPage === totalPages;
-                                                nextButton.addEventListener('click', () => {
-                                                    if (currentPage < totalPages) {
-                                                        displayPatientPage(currentPage + 1);
-                                                    }
-                                                });
-                                                paginationContainer.appendChild(nextButton);
+                                                const nextLi = document.createElement('li');
+                                                nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                nextLi.onclick = () => {
+                                                    if (currentPage < totalPages) displayPatientPage(currentPage + 1);
+                                                };
+                                                ul.appendChild(nextLi);
+
+                                                paginationContainer.appendChild(ul);
                                             }
 
-                                            function filterPatientList(searchQuery) {
-                                                const lowerCaseQuery = searchQuery.toLowerCase();
-                                                filteredPatientList = patientList.filter(patient => {
-                                                    return (
-                                                        patient.firstName.toLowerCase().includes(lowerCaseQuery) ||
-                                                        patient.lastName.toLowerCase().includes(lowerCaseQuery) ||
-                                                        patient.patientId.toLowerCase().includes(lowerCaseQuery)
-                                                    );
-                                                });
-                                                displayPatientPage(1);
-                                            }
-
-                                            document.getElementById('searchInputPatient').addEventListener('input', function () {
-                                                const searchQuery = this.value.trim();
-                                                if (searchQuery === '') {
-                                                    filteredPatientList = patientList;
-                                                    displayPatientPage(currentPagePatient);
-                                                } else {
-                                                    filterPatientList(searchQuery);
-                                                }
-                                            });
-
-                                            document.getElementById('clearSearchPatient').addEventListener('click', function () {
-                                                document.getElementById('searchInputPatient').value = '';
-                                                filteredPatientList = patientList;
-                                                displayPatientPage(currentPagePatient);
-                                            });
-
-                                            displayPatientPage(currentPagePatient);
+                                            // On load: Show all data, then render
+                                            toggleClearIcons();
+                                            filteredPatientList = [...patientList];
+                                            displayPatientPage(initialPagePatient);
                                         </script>
 
             <?php
@@ -1339,7 +1452,7 @@
                                                             </div>
                                                             <p class="my-3 mt-3 fs-5 fw-semibold">Personal Details</p>
                                                             <div class="d-md-flex">
-                                                                <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> : <a
+                                                                <p class="col-sm-6"><span class="text-secondary ">Mobile Number</span> : <a
                                                                         href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
                                         <?php echo $value['mobileNumber'] ?></a></p>
                                                                 <p><span class="text-secondary ">Alternate mobile</span> :
@@ -1347,7 +1460,7 @@
                                                                 </p>
                                                             </div>
                                                             <div class="d-md-flex">
-                                                                <p class="col-sm-6"><span class="text-secondary ">Mail</span> :
+                                                                <p class="col-sm-6"><span class="text-secondary ">Email Id</span> :
                                         <?php
                                         $mailId = isset($value['mailId']) ? $value['mailId'] : null;
                                         ?>
@@ -1573,303 +1686,356 @@
 
                                                 <section>
                                                     <div class="card rounded">
-                                                        <div class="card-body">
-                                                            <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                <p style="font-size: 24px; font-weight: 500">Specialization List</p>
-                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSpecilization"
-                                                                    class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
-                                                                    <i class="bi bi-plus-square-fill"></i> New
-                                                                </a>
+                                                        <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
+                                                            <p style="font-size: 24px; font-weight: 500">Specialization List</p>
+                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSpecilization"
+                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                <i class="bi bi-plus-square-fill"></i> New
+                                                            </a>
+                                                        </div>
+                                                        <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
+                                                            <div class="ms-2">
+                                                                <label for="itemsPerPageDropdown">Show </label>
+                                                                <select id="itemsPerPageDropdown"
+                                                                    class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                                    <option value="10" selected>10</option>
+                                                                    <option value="25">25</option>
+                                                                    <option value="50">50</option>
+                                                                </select>
+                                                                <label for="itemsPerPageDropdown">Entries </label>
                                                             </div>
-                                                            <div class="input-group mx-auto pb-4" style="width:280px;">
-                                                                <span class="input-group-text" id="searchIcon">
-                                                                    <i class="bi bi-search"></i>
-                                                                </span>
-                                                                <input type="text" id="searchInputSpecialization" placeholder="Search Specialization"
-                                                                    class="form-control">
-                                                                <button class="btn btn-outline-secondary" id="clearSearchSpecialization"> <i
-                                                                        class="bi bi-x"></i></button>
+                                                            <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
+                                                                <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                                    style="height: 50px; width: 250px" placeholder="Search (SPECIALIZATION)">
+                                                                <span id="clearSearch" class="position-absolute"
+                                                                    style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                             </div>
-
-
+                                                        </div>
+                                                        <div class="card-body p-2 p-sm-4">
                                                             <div class="table-responsive">
                                                                 <table class="table table-hover text-center" id="specializationTable">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                                            <th scope="col-6" style="font-size: 16px; font-weight: 500;">SPECIALIZATION NAME
+                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                             </th>
-                                                                            <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                SPECIALIZATION NAME</th>
+                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                            </th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody id="specializationTableBody">
-                                                                    </tbody>
+                                                                    <tbody id="specializationTableBody"></tbody>
                                                                 </table>
-                                                                <div id="paginationContainerSpecialization" class="d-flex justify-content-center"></div>
+                                                            </div>
+                                                            <div class="d-md-flex justify-content-between ms-2">
+                                                                <div id="entriesInfo" class="mt-4"></div>
+                                                                <div class="pagination justify-content-end mt-4" id="paginationContainerSpecialization">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                 </section>
 
                                                 <script>
-                                                    document.addEventListener("DOMContentLoaded", function () {
-                                                        const baseUrl = '<?php echo base_url(); ?>';
-                                                        const specializationList = <?php echo json_encode($specilalizationList); ?>;
-                                                        const itemsPerPageSpecialization = 15;
-                                                        let filteredSpecializationList = specializationList;
-                                                        let currentPageSpecialization = 1;
+                                                    const baseUrl = '<?php echo base_url(); ?>';
+                                                    let itemsPerPageSpecialization = 10;
+                                                    const specializationList = <?php echo json_encode($specilalizationList); ?>;
+                                                    let filteredSpecializationList = [...specializationList];
+                                                    const initialPageSpecialization = parseInt(localStorage.getItem('currentPageSpecialization')) || 1;
 
-                                                        function displaySpecializationPage(page) {
-                                                            currentPageSpecialization = page;
-                                                            const start = (page - 1) * itemsPerPageSpecialization;
-                                                            const end = start + itemsPerPageSpecialization;
-                                                            const paginatedData = filteredSpecializationList.slice(start, end);
-                                                            const specializationTableBody = document.getElementById('specializationTableBody');
-                                                            specializationTableBody.innerHTML = '';
+                                                    const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                                    const searchBar = document.getElementById('searchBar');
+                                                    const clearSearch = document.getElementById('clearSearch');
 
-                                                            if (paginatedData.length === 0) {
-                                                                const noMatchesRow = document.createElement('tr');
-                                                                noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
-                                                                specializationTableBody.appendChild(noMatchesRow);
-                                                            } else {
-                                                                paginatedData.forEach(function (specialization, index) {
-                                                                    const row =
-                                                                        '<tr>' +
-                                                                        '<td class="pt-3">' + (start + index + 1) + '.</td>' +
-                                                                        '<td class="pt-3" style="font-size: 16px">' + specialization.specializationName + '</td>' +
-                                                                        '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + specialization.id + '" data-type="specialization">' +
-                                                                        '<i class="bi bi-trash"></i>' + '</button>' +
-                                                                        '</td>' +
-                                                                        '</tr>';
-                                                                    specializationTableBody.innerHTML += row;
-                                                                });
-                                                            }
+                                                    // Load saved itemsPerPage
+                                                    const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageSpecialization')) || itemsPerPageSpecialization;
+                                                    itemsPerPageDropdown.value = savedItemsPerPage;
+                                                    itemsPerPageSpecialization = savedItemsPerPage;
 
-                                                            generatePaginationSpecialization(filteredSpecializationList.length, page);
-                                                        }
+                                                    // Event Listeners
+                                                    itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                        itemsPerPageSpecialization = parseInt(event.target.value);
+                                                        localStorage.setItem('itemsPerPageSpecialization', itemsPerPageSpecialization);
+                                                        applyFilters();
+                                                    });
 
-                                                        function generatePaginationSpecialization(totalItems, currentPage) {
-                                                            const totalPages = Math.ceil(totalItems / itemsPerPageSpecialization);
-                                                            const paginationContainer = document.getElementById('paginationContainerSpecialization');
-                                                            paginationContainer.innerHTML = '';
+                                                    searchBar.addEventListener('input', () => {
+                                                        toggleClearIcons();
+                                                        applyFilters();
+                                                    });
 
-                                                            const prevButton = document.createElement('button');
-                                                            prevButton.innerHTML = '&lt;';
-                                                            prevButton.type = 'button';
-                                                            prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                            prevButton.disabled = currentPage === 1;
-                                                            prevButton.addEventListener('click', function () {
-                                                                if (currentPage > 1) {
-                                                                    displaySpecializationPage(currentPage - 1);
-                                                                }
-                                                            });
-                                                            paginationContainer.appendChild(prevButton);
+                                                    clearSearch.addEventListener('click', () => {
+                                                        searchBar.value = '';
+                                                        toggleClearIcons();
+                                                        applyFilters();
+                                                    });
 
-                                                            for (let i = 1; i <= totalPages; i++) {
-                                                                const button = document.createElement('button');
-                                                                button.type = 'button';
-                                                                button.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                                if (i === currentPage) {
-                                                                    button.classList.add('btn-secondary', 'text-light');
-                                                                }
-                                                                button.textContent = i;
-                                                                button.addEventListener('click', function () {
-                                                                    displaySpecializationPage(i);
-                                                                });
-                                                                paginationContainer.appendChild(button);
-                                                            }
+                                                    function toggleClearIcons() {
+                                                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                                    }
 
-                                                            const nextButton = document.createElement('button');
-                                                            nextButton.innerHTML = '&gt;';
-                                                            nextButton.type = 'button';
-                                                            nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                            nextButton.disabled = currentPage === totalPages;
-                                                            nextButton.addEventListener('click', function () {
-                                                                if (currentPage < totalPages) {
-                                                                    displaySpecializationPage(currentPage + 1);
-                                                                }
-                                                            });
-                                                            paginationContainer.appendChild(nextButton);
-                                                        }
+                                                    function applyFilters() {
+                                                        const searchTerm = searchBar.value.toLowerCase();
 
-                                                        function filterSpecializationList(searchQuery) {
-                                                            const lowerCaseQuery = searchQuery.toLowerCase();
-                                                            filteredSpecializationList = specializationList.filter(function (specialization) {
-                                                                return specialization.specializationName.toLowerCase().includes(lowerCaseQuery);
-                                                            });
-                                                            displaySpecializationPage(1);
-                                                        }
-
-                                                        document.getElementById('searchInputSpecialization').addEventListener('input', function () {
-                                                            const searchQuery = this.value.trim();
-                                                            if (searchQuery === '') {
-                                                                filteredSpecializationList = specializationList;
-                                                                displaySpecializationPage(currentPageSpecialization);
-                                                            } else {
-                                                                filterSpecializationList(searchQuery);
-                                                            }
-                                                        });
-
-                                                        document.getElementById('clearSearchSpecialization').addEventListener('click', function () {
-                                                            document.getElementById('searchInputSpecialization').value = '';
-                                                            filteredSpecializationList = specializationList;
-                                                            displaySpecializationPage(currentPageSpecialization);
+                                                        filteredSpecializationList = specializationList.filter((specialization) => {
+                                                            const specializationName = specialization.specializationName || '';
+                                                            return specializationName.toLowerCase().includes(searchTerm);
                                                         });
 
                                                         displaySpecializationPage(1);
-                                                    });
+                                                    }
 
+                                                    function displaySpecializationPage(page) {
+                                                        localStorage.setItem('currentPageSpecialization', page);
+                                                        const start = (page - 1) * itemsPerPageSpecialization;
+                                                        const end = start + itemsPerPageSpecialization;
+                                                        const itemsToShow = filteredSpecializationList.slice(start, end);
+
+                                                        const specializationTableBody = document.getElementById('specializationTableBody');
+                                                        specializationTableBody.innerHTML = '';
+
+                                                        updateEntriesInfo(start + 1, Math.min(end, filteredSpecializationList.length), filteredSpecializationList.length);
+
+                                                        if (itemsToShow.length === 0) {
+                                                            const noMatchesRow = document.createElement('tr');
+                                                            noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
+                                                            specializationTableBody.appendChild(noMatchesRow);
+                                                        } else {
+                                                            itemsToShow.forEach((specialization, index) => {
+                                                                const specializationRow = document.createElement('tr');
+                                                                specializationRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
+                <td class="d-flex d-md-block">
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${specialization.id}" data-name="${specialization.specializationName}" data-type="specialization"><i class="bi bi-trash"></i></button>
+                </td>`;
+                                                                specializationTableBody.appendChild(specializationRow);
+                                                            });
+                                                        }
+
+                                                        generateSpecializationPagination(filteredSpecializationList.length, page);
+                                                    }
+
+                                                    function updateEntriesInfo(start, end, totalEntries) {
+                                                        const entriesInfo = document.getElementById('entriesInfo');
+                                                        entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                                    }
+
+                                                    function generateSpecializationPagination(totalItems, currentPage) {
+                                                        const totalPages = Math.ceil(totalItems / itemsPerPageSpecialization);
+                                                        const paginationContainer = document.getElementById('paginationContainerSpecialization');
+                                                        paginationContainer.innerHTML = '';
+
+                                                        const ul = document.createElement('ul');
+                                                        ul.className = 'pagination';
+
+                                                        const prevLi = document.createElement('li');
+                                                        prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                        prevLi.onclick = () => {
+                                                            if (currentPage > 1) displaySpecializationPage(currentPage - 1);
+                                                        };
+                                                        ul.appendChild(prevLi);
+
+                                                        const startPage = Math.max(1, currentPage - 2);
+                                                        const endPage = Math.min(totalPages, startPage + 4);
+
+                                                        for (let i = startPage; i <= endPage; i++) {
+                                                            const li = document.createElement('li');
+                                                            li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                            li.onclick = () => displaySpecializationPage(i);
+                                                            ul.appendChild(li);
+                                                        }
+
+                                                        const nextLi = document.createElement('li');
+                                                        nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                        nextLi.onclick = () => {
+                                                            if (currentPage < totalPages) displaySpecializationPage(currentPage + 1);
+                                                        };
+                                                        ul.appendChild(nextLi);
+
+                                                        paginationContainer.appendChild(ul);
+                                                    }
+
+                                                    // On load: Show all data, then render
+                                                    toggleClearIcons();
+                                                    filteredSpecializationList = [...specializationList];
+                                                    displaySpecializationPage(initialPageSpecialization);
                                                 </script>
-
             <?php
         } else if ($method == "symptoms") {
             ?>
 
                                                     <section>
                                                         <div class="card rounded">
-                                                            <div class="card-body">
-                                                                <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                    <p style="font-size: 24px; font-weight: 500">Symptoms List</p>
-                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSymptoms"
-                                                                        class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
-                                                                        <i class="bi bi-plus-square-fill"></i> New
-                                                                    </a>
+                                                            <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
+                                                                <p style="font-size: 24px; font-weight: 500">Symptoms List</p>
+                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSymptoms"
+                                                                    style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                    <i class="bi bi-plus-square-fill"></i> New
+                                                                </a>
+                                                            </div>
+                                                            <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
+                                                                <div class="ms-2">
+                                                                    <label for="itemsPerPageDropdown">Show </label>
+                                                                    <select id="itemsPerPageDropdown"
+                                                                        class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                                        <option value="10" selected>10</option>
+                                                                        <option value="25">25</option>
+                                                                        <option value="50">50</option>
+                                                                    </select>
+                                                                    <label for="itemsPerPageDropdown">Entries </label>
                                                                 </div>
-                                                                <div class="input-group mx-auto pb-4" style="width:260px;">
-                                                                    <span class="input-group-text" id="searchIcon">
-                                                                        <i class="bi bi-search"></i>
-                                                                    </span>
-                                                                    <input type="text" id="searchInputSymptoms" placeholder="Search Symptom" class="form-control">
-                                                                    <button class="btn btn-outline-secondary" id="clearSearchSymptoms"> <i
-                                                                            class="bi bi-x"></i></button>
+                                                                <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
+                                                                    <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                                        style="height: 50px; width: 250px" placeholder="Search (SYMPTOMS NAME)">
+                                                                    <span id="clearSearch" class="position-absolute"
+                                                                        style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                                 </div>
-
+                                                            </div>
+                                                            <div class="card-body p-2 p-sm-4">
                                                                 <div class="table-responsive">
                                                                     <table class="table table-hover text-center" id="symptomsTable">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                                                <th scope="col-6" style="font-size: 16px; font-weight: 500;">SYMPTOMS NAME</th>
-                                                                                <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                </th>
+                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                    SYMPTOMS NAME</th>
+                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                </th>
                                                                             </tr>
                                                                         </thead>
-                                                                        <tbody id="symptomsTableBody">
-                                                                        </tbody>
+                                                                        <tbody id="symptomsTableBody"></tbody>
                                                                     </table>
-                                                                    <div id="paginationContainerSymptoms" class="d-flex justify-content-center"></div>
                                                                 </div>
-
+                                                                <div class="d-md-flex justify-content-between">
+                                                                    <div id="entriesInfo" class="mt-4"></div>
+                                                                    <div class="pagination justify-content-end mt-4" id="paginationContainerSymptoms"></div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </section>
 
                                                     <script>
-                                                        document.addEventListener("DOMContentLoaded", function () {
-                                                            const baseUrl = '<?php echo base_url(); ?>';
-                                                            const symptomsList = <?php echo json_encode($symptomsList); ?>;
-                                                            const itemsPerPageSymptoms = 10;
-                                                            let filteredSymptomsList = symptomsList;
-                                                            let currentPageSymptoms = 1;
+                                                        const baseUrl = '<?php echo base_url(); ?>';
+                                                        let itemsPerPageSymptoms = 10;
+                                                        const symptomsList = <?php echo json_encode($symptomsList); ?>;
+                                                        let filteredSymptomsList = [...symptomsList];
+                                                        const initialPageSymptoms = parseInt(localStorage.getItem('currentPageSymptoms')) || 1;
 
-                                                            function displaySymptomsPage(page) {
-                                                                currentPageSymptoms = page;
-                                                                const start = (page - 1) * itemsPerPageSymptoms;
-                                                                const end = start + itemsPerPageSymptoms;
-                                                                const paginatedData = filteredSymptomsList.slice(start, end);
-                                                                const symptomsTableBody = document.getElementById('symptomsTableBody');
-                                                                symptomsTableBody.innerHTML = '';
+                                                        const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                                        const searchBar = document.getElementById('searchBar');
+                                                        const clearSearch = document.getElementById('clearSearch');
 
-                                                                if (paginatedData.length === 0) {
-                                                                    const noMatchesRow = document.createElement('tr');
-                                                                    noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
-                                                                    symptomsTableBody.appendChild(noMatchesRow);
-                                                                } else {
-                                                                    paginatedData.forEach(function (symptom, index) {
-                                                                        const row =
-                                                                            '<tr>' +
-                                                                            '<td class="pt-3">' + (start + index + 1) + '.</td>' +
-                                                                            '<td class="pt-3" style="font-size: 16px">' + symptom.symptomsName + '</td>' +
-                                                                            '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + symptom.id + '" data-type="symptom">' +
-                                                                            '<i class="bi bi-trash"></i>' + '</button>' +
-                                                                            '</td>' +
-                                                                            '</tr>';
-                                                                        symptomsTableBody.innerHTML += row;
-                                                                    });
-                                                                }
+                                                        const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageSymptoms')) || itemsPerPageSymptoms;
+                                                        itemsPerPageDropdown.value = savedItemsPerPage;
+                                                        itemsPerPageSymptoms = savedItemsPerPage;
 
-                                                                generatePaginationSymptoms(filteredSymptomsList.length, page);
-                                                            }
+                                                        itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                            itemsPerPageSymptoms = parseInt(event.target.value);
+                                                            localStorage.setItem('itemsPerPageSymptoms', itemsPerPageSymptoms);
+                                                            applyFilters();
+                                                        });
 
-                                                            function generatePaginationSymptoms(totalItems, currentPage) {
-                                                                const totalPages = Math.ceil(totalItems / itemsPerPageSymptoms);
-                                                                const paginationContainer = document.getElementById('paginationContainerSymptoms');
-                                                                paginationContainer.innerHTML = '';
+                                                        searchBar.addEventListener('input', () => {
+                                                            toggleClearIcons();
+                                                            applyFilters();
+                                                        });
 
-                                                                const prevButton = document.createElement('button');
-                                                                prevButton.innerHTML = '&lt;';
-                                                                prevButton.type = 'button';
-                                                                prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                                prevButton.disabled = currentPage === 1;
-                                                                prevButton.addEventListener('click', function () {
-                                                                    if (currentPage > 1) {
-                                                                        displaySymptomsPage(currentPage - 1);
-                                                                    }
-                                                                });
-                                                                paginationContainer.appendChild(prevButton);
+                                                        clearSearch.addEventListener('click', () => {
+                                                            searchBar.value = '';
+                                                            toggleClearIcons();
+                                                            applyFilters();
+                                                        });
 
-                                                                for (let i = 1; i <= totalPages; i++) {
-                                                                    const button = document.createElement('button');
-                                                                    button.type = 'button';
-                                                                    button.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                                    if (i === currentPage) {
-                                                                        button.classList.add('btn-secondary', 'text-light');
-                                                                    }
-                                                                    button.textContent = i;
-                                                                    button.addEventListener('click', function () {
-                                                                        displaySymptomsPage(i);
-                                                                    });
-                                                                    paginationContainer.appendChild(button);
-                                                                }
+                                                        function toggleClearIcons() {
+                                                            clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                                        }
 
-                                                                const nextButton = document.createElement('button');
-                                                                nextButton.innerHTML = '&gt;';
-                                                                nextButton.type = 'button';
-                                                                nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                                nextButton.disabled = currentPage === totalPages;
-                                                                nextButton.addEventListener('click', function () {
-                                                                    if (currentPage < totalPages) {
-                                                                        displaySymptomsPage(currentPage + 1);
-                                                                    }
-                                                                });
-                                                                paginationContainer.appendChild(nextButton);
-                                                            }
+                                                        function applyFilters() {
+                                                            const searchTerm = searchBar.value.toLowerCase();
 
-                                                            function filterSymptomsList(searchQuery) {
-                                                                const lowerCaseQuery = searchQuery.toLowerCase();
-                                                                filteredSymptomsList = symptomsList.filter(function (symptom) {
-                                                                    return symptom.symptomsName.toLowerCase().includes(lowerCaseQuery);
-                                                                });
-                                                                displaySymptomsPage(1);
-                                                            }
-
-                                                            document.getElementById('searchInputSymptoms').addEventListener('input', function () {
-                                                                const searchQuery = this.value.trim();
-                                                                if (searchQuery === '') {
-                                                                    filteredSymptomsList = symptomsList;
-                                                                    displaySymptomsPage(currentPageSymptoms);
-                                                                } else {
-                                                                    filterSymptomsList(searchQuery);
-                                                                }
-                                                            });
-
-                                                            document.getElementById('clearSearchSymptoms').addEventListener('click', function () {
-                                                                document.getElementById('searchInputSymptoms').value = '';
-                                                                filteredSymptomsList = symptomsList;
-                                                                displaySymptomsPage(currentPageSymptoms);
+                                                            filteredSymptomsList = symptomsList.filter((symptom) => {
+                                                                const symptomName = symptom.symptomsName || '';
+                                                                return symptomName.toLowerCase().includes(searchTerm);
                                                             });
 
                                                             displaySymptomsPage(1);
-                                                        });
+                                                        }
 
+                                                        function displaySymptomsPage(page) {
+                                                            localStorage.setItem('currentPageSymptoms', page);
+                                                            const start = (page - 1) * itemsPerPageSymptoms;
+                                                            const end = start + itemsPerPageSymptoms;
+                                                            const itemsToShow = filteredSymptomsList.slice(start, end);
+
+                                                            const symptomsTableBody = document.getElementById('symptomsTableBody');
+                                                            symptomsTableBody.innerHTML = '';
+
+                                                            updateEntriesInfo(start + 1, Math.min(end, filteredSymptomsList.length), filteredSymptomsList.length);
+
+                                                            if (itemsToShow.length === 0) {
+                                                                const noMatchesRow = document.createElement('tr');
+                                                                noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
+                                                                symptomsTableBody.appendChild(noMatchesRow);
+                                                            } else {
+                                                                itemsToShow.forEach((symptom, index) => {
+                                                                    const symptomRow = document.createElement('tr');
+                                                                    symptomRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td style="font-size: 16px" class="pt-3">${symptom.symptomsName}</td>
+                <td class="d-flex d-md-block">
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${symptom.id}" data-name="${symptom.symptomsName}" data-type="symptom"><i class="bi bi-trash"></i></button>
+                </td>`;
+                                                                    symptomsTableBody.appendChild(symptomRow);
+                                                                });
+                                                            }
+
+                                                            generateSymptomsPagination(filteredSymptomsList.length, page);
+                                                        }
+
+                                                        function updateEntriesInfo(start, end, totalEntries) {
+                                                            const entriesInfo = document.getElementById('entriesInfo');
+                                                            entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                                        }
+
+                                                        function generateSymptomsPagination(totalItems, currentPage) {
+                                                            const totalPages = Math.ceil(totalItems / itemsPerPageSymptoms);
+                                                            const paginationContainer = document.getElementById('paginationContainerSymptoms');
+                                                            paginationContainer.innerHTML = '';
+
+                                                            const ul = document.createElement('ul');
+                                                            ul.className = 'pagination';
+
+                                                            const prevLi = document.createElement('li');
+                                                            prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                            prevLi.onclick = () => {
+                                                                if (currentPage > 1) displaySymptomsPage(currentPage - 1);
+                                                            };
+                                                            ul.appendChild(prevLi);
+
+                                                            const startPage = Math.max(1, currentPage - 2);
+                                                            const endPage = Math.min(totalPages, startPage + 4);
+
+                                                            for (let i = startPage; i <= endPage; i++) {
+                                                                const li = document.createElement('li');
+                                                                li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                                li.onclick = () => displaySymptomsPage(i);
+                                                                ul.appendChild(li);
+                                                            }
+
+                                                            const nextLi = document.createElement('li');
+                                                            nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                            nextLi.onclick = () => {
+                                                                if (currentPage < totalPages) displaySymptomsPage(currentPage + 1);
+                                                            };
+                                                            ul.appendChild(nextLi);
+
+                                                            paginationContainer.appendChild(ul);
+                                                        }
+
+                                                        toggleClearIcons();
+                                                        filteredSymptomsList = [...symptomsList];
+                                                        displaySymptomsPage(initialPageSymptoms);
                                                     </script>
 
             <?php
@@ -1878,160 +2044,217 @@
 
                                                         <section>
                                                             <div class="card rounded">
-                                                                <div class="card-body">
-                                                                    <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                        <p style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
-                                                                            class="bg-primary text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
-                                                                            <i class="bi bi-plus-square-fill"></i> New
-                                                                        </a>
+                                                                <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                    <p style="font-size: 24px; font-weight: 500">Medicines List</p>
+                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
+                                                                        style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                        <i class="bi bi-plus-square-fill"></i> New
+                                                                    </a>
+                                                                </div>
+                                                                <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
+                                                                    <div class="ms-2">
+                                                                        <label for="itemsPerPageDropdown">Show </label>
+                                                                        <select id="itemsPerPageDropdown"
+                                                                            class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                                            <option value="10" selected>10</option>
+                                                                            <option value="25">25</option>
+                                                                            <option value="50">50</option>
+                                                                        </select>
+                                                                        <label for="itemsPerPageDropdown">Entries </label>
                                                                     </div>
-
-                                                                    <div class="input-group mx-auto pb-4" style="width:250px;">
-                                                                        <span class="input-group-text" id="searchIcon">
-                                                                            <i class="bi bi-search"></i>
-                                                                        </span>
-                                                                        <input type="text" id="searchInputMedicines" placeholder="Search Medicine" class="form-control">
-                                                                        <button class="btn btn-outline-secondary" id="clearSearchMedicines"> <i
-                                                                                class="bi bi-x"></i></button>
+                                                                    <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
+                                                                        <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                                            style="height: 50px; width: 250px" placeholder="Search (MEDICINE NAME)">
+                                                                        <span id="clearSearch" class="position-absolute"
+                                                                            style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                                     </div>
+                                                                </div>
 
+                                                                <div class="card-body p-2 p-sm-4">
                                                                     <div class="table-responsive">
                                                                         <table class="table table-hover text-center" id="medicinesTable">
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <th scope="col-3" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                                                    <th scope="col-6" style="font-size: 16px; font-weight: 500;">BRAND NAME</th>
-                                                                                    <th scope="col-6" style="font-size: 16px; font-weight: 500;">MEDICINE NAME</th>
-                                                                                    <th scope="col-6" style="font-size: 16px; font-weight: 500;">STRENGTH</th>
-                                                                                    <th scope="col-3" style="font-size: 16px; font-weight: 500;">ACTION</th>
+                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                    </th>
+                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">BRAND
+                                                                                        NAME</th>
+                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                        MEDICINE NAME</th>
+                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                        STRENGTH</th>
+                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                    </th>
                                                                                 </tr>
                                                                             </thead>
-                                                                            <tbody id="medicinesTableBody">
-                                                                            </tbody>
+                                                                            <tbody id="medicinesTableBody"></tbody>
                                                                         </table>
-                                                                        <div id="paginationContainerMedicines" class="d-flex justify-content-center"></div>
                                                                     </div>
-
+                                                                    <div class="d-md-flex justify-content-between ms-2">
+                                                                        <div id="entriesInfo" class="mt-4"></div>
+                                                                        <div class="pagination justify-content-end mt-4" id="paginationContainerMedicines"></div>
+                                                                    </div>
                                                                 </div>
+                                                            </div>
                                                         </section>
 
                                                         <script>
-                                                            document.addEventListener("DOMContentLoaded", function () {
-                                                                const baseUrl = '<?php echo base_url(); ?>';
-                                                                const medicinesList = <?php echo json_encode($medicinesList); ?>;
-                                                                const itemsPerPageMedicines = 10;
-                                                                let filteredMedicinesList = medicinesList;
-                                                                let currentPageMedicines = 1;
+                                                            const baseUrl = '<?php echo base_url(); ?>';
+                                                            let itemsPerPageMedicines = 10;
+                                                            const medicinesList = <?php echo json_encode($medicinesList); ?>;
+                                                            let filteredMedicinesList = [...medicinesList];
+                                                            const initialPageMedicines = parseInt(localStorage.getItem('currentPageMedicines')) || 1;
 
-                                                                function displayMedicinesPage(page) {
-                                                                    currentPageMedicines = page;
-                                                                    const start = (page - 1) * itemsPerPageMedicines;
-                                                                    const end = start + itemsPerPageMedicines;
-                                                                    const paginatedData = filteredMedicinesList.slice(start, end);
-                                                                    const medicinesTableBody = document.getElementById('medicinesTableBody');
-                                                                    medicinesTableBody.innerHTML = '';
+                                                            const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                                            const searchBar = document.getElementById('searchBar');
+                                                            const clearSearch = document.getElementById('clearSearch');
 
-                                                                    if (paginatedData.length === 0) {
-                                                                        const noMatchesRow = document.createElement('tr');
-                                                                        noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
-                                                                        medicinesTableBody.appendChild(noMatchesRow);
-                                                                    } else {
-                                                                        paginatedData.forEach(function (medicine, index) {
-                                                                            const row =
-                                                                                '<tr>' +
-                                                                                '<td class="pt-3">' + (start + index + 1) + '.</td>' +
-                                                                                '<td class="pt-3" style="font-size: 16px">' + medicine.medicineBrand + '</td>' +
-                                                                                '<td class="pt-3" style="font-size: 16px">' + medicine.medicineName + '</td>' +
-                                                                                '<td class="pt-3" style="font-size: 16px">' + medicine.strength + '</td>' +
-                                                                                '<td>' + '<button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="' + medicine.id + '" data-type="medicine">' +
-                                                                                '<i class="bi bi-trash"></i>' + '</button>' +
-                                                                                '</td>' +
-                                                                                '</tr>';
-                                                                            medicinesTableBody.innerHTML += row;
-                                                                        });
-                                                                    }
+                                                            // Load saved itemsPerPage
+                                                            const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageMedicines')) || itemsPerPageMedicines;
+                                                            itemsPerPageDropdown.value = savedItemsPerPage;
+                                                            itemsPerPageMedicines = savedItemsPerPage;
 
-                                                                    generatePaginationMedicines(filteredMedicinesList.length, page);
-                                                                }
+                                                            // Event Listeners
+                                                            itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                                itemsPerPageMedicines = parseInt(event.target.value);
+                                                                localStorage.setItem('itemsPerPageMedicines', itemsPerPageMedicines);
+                                                                applyFilters();
+                                                            });
 
-                                                                function generatePaginationMedicines(totalItems, currentPage) {
-                                                                    const totalPages = Math.ceil(totalItems / itemsPerPageMedicines);
-                                                                    const paginationContainer = document.getElementById('paginationContainerMedicines');
-                                                                    paginationContainer.innerHTML = '';
+                                                            searchBar.addEventListener('input', () => {
+                                                                toggleClearIcons();
+                                                                applyFilters();
+                                                            });
 
-                                                                    const prevButton = document.createElement('button');
-                                                                    prevButton.innerHTML = '&lt;';
-                                                                    prevButton.type = 'button';
-                                                                    prevButton.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                                    prevButton.disabled = currentPage === 1;
-                                                                    prevButton.addEventListener('click', function () {
-                                                                        if (currentPage > 1) {
-                                                                            displayMedicinesPage(currentPage - 1);
-                                                                        }
-                                                                    });
-                                                                    paginationContainer.appendChild(prevButton);
+                                                            clearSearch.addEventListener('click', () => {
+                                                                searchBar.value = '';
+                                                                toggleClearIcons();
+                                                                applyFilters();
+                                                            });
 
-                                                                    for (let i = 1; i <= totalPages; i++) {
-                                                                        const button = document.createElement('button');
-                                                                        button.type = 'button';
-                                                                        button.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                                        if (i === currentPage) {
-                                                                            button.classList.add('btn-secondary', 'text-light');
-                                                                        }
-                                                                        button.textContent = i;
-                                                                        button.addEventListener('click', function () {
-                                                                            displayMedicinesPage(i);
-                                                                        });
-                                                                        paginationContainer.appendChild(button);
-                                                                    }
+                                                            function toggleClearIcons() {
+                                                                clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                                            }
 
-                                                                    const nextButton = document.createElement('button');
-                                                                    nextButton.innerHTML = '&gt;';
-                                                                    nextButton.type = 'button';
-                                                                    nextButton.classList.add('btn', 'border', 'px-3', 'py-2');
-                                                                    nextButton.disabled = currentPage === totalPages;
-                                                                    nextButton.addEventListener('click', function () {
-                                                                        if (currentPage < totalPages) {
-                                                                            displayMedicinesPage(currentPage + 1);
-                                                                        }
-                                                                    });
-                                                                    paginationContainer.appendChild(nextButton);
-                                                                }
+                                                            function applyFilters() {
+                                                                const searchTerm = searchBar.value.toLowerCase();
 
-                                                                function filterMedicinesList(searchQuery) {
-                                                                    const lowerCaseQuery = searchQuery.toLowerCase();
-                                                                    filteredMedicinesList = medicinesList.filter(function (medicine) {
-                                                                        return medicine.medicineName.toLowerCase().includes(lowerCaseQuery);
-                                                                    });
-                                                                    displayMedicinesPage(1);
-                                                                }
-
-                                                                document.getElementById('searchInputMedicines').addEventListener('input', function () {
-                                                                    const searchQuery = this.value.trim();
-                                                                    if (searchQuery === '') {
-                                                                        filteredMedicinesList = medicinesList;
-                                                                        displayMedicinesPage(currentPageMedicines);
-                                                                    } else {
-                                                                        filterMedicinesList(searchQuery);
-                                                                    }
-                                                                });
-
-                                                                document.getElementById('clearSearchMedicines').addEventListener('click', function () {
-                                                                    document.getElementById('searchInputMedicines').value = '';
-                                                                    filteredMedicinesList = medicinesList;
-                                                                    displayMedicinesPage(currentPageMedicines);
+                                                                filteredMedicinesList = medicinesList.filter((medicine) => {
+                                                                    const medicineName = medicine.medicineName || '';
+                                                                    return medicineName.toLowerCase().includes(searchTerm);
                                                                 });
 
                                                                 displayMedicinesPage(1);
-                                                            });
+                                                            }
 
+                                                            function displayMedicinesPage(page) {
+                                                                localStorage.setItem('currentPageMedicines', page);
+                                                                const start = (page - 1) * itemsPerPageMedicines;
+                                                                const end = start + itemsPerPageMedicines;
+                                                                const itemsToShow = filteredMedicinesList.slice(start, end);
+
+                                                                const medicinesTableBody = document.getElementById('medicinesTableBody');
+                                                                medicinesTableBody.innerHTML = '';
+
+                                                                updateEntriesInfo(start + 1, Math.min(end, filteredMedicinesList.length), filteredMedicinesList.length);
+
+                                                                if (itemsToShow.length === 0) {
+                                                                    const noMatchesRow = document.createElement('tr');
+                                                                    noMatchesRow.innerHTML = '<td colspan="5" class="text-center">No matches found.</td>';
+                                                                    medicinesTableBody.appendChild(noMatchesRow);
+                                                                } else {
+                                                                    itemsToShow.forEach((medicine, index) => {
+                                                                        const medicineRow = document.createElement('tr');
+                                                                        medicineRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.medicineBrand}</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.strength}</td>
+                <td class="d-flex d-md-block">
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
+                </td>`;
+                                                                        medicinesTableBody.appendChild(medicineRow);
+                                                                    });
+                                                                }
+
+                                                                generateMedicinesPagination(filteredMedicinesList.length, page);
+                                                            }
+
+                                                            function updateEntriesInfo(start, end, totalEntries) {
+                                                                const entriesInfo = document.getElementById('entriesInfo');
+                                                                entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                                            }
+
+                                                            function generateMedicinesPagination(totalItems, currentPage) {
+                                                                const totalPages = Math.ceil(totalItems / itemsPerPageMedicines);
+                                                                const paginationContainer = document.getElementById('paginationContainerMedicines');
+                                                                paginationContainer.innerHTML = '';
+
+                                                                const ul = document.createElement('ul');
+                                                                ul.className = 'pagination';
+
+                                                                const prevLi = document.createElement('li');
+                                                                prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                                prevLi.onclick = () => {
+                                                                    if (currentPage > 1) displayMedicinesPage(currentPage - 1);
+                                                                };
+                                                                ul.appendChild(prevLi);
+
+                                                                const startPage = Math.max(1, currentPage - 2);
+                                                                const endPage = Math.min(totalPages, startPage + 4);
+
+                                                                for (let i = startPage; i <= endPage; i++) {
+                                                                    const li = document.createElement('li');
+                                                                    li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                                    li.onclick = () => displayMedicinesPage(i);
+                                                                    ul.appendChild(li);
+                                                                }
+
+                                                                const nextLi = document.createElement('li');
+                                                                nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                                nextLi.onclick = () => {
+                                                                    if (currentPage < totalPages) displayMedicinesPage(currentPage + 1);
+                                                                };
+                                                                ul.appendChild(nextLi);
+
+                                                                paginationContainer.appendChild(ul);
+                                                            }
+
+                                                            // On load: Show all data, then render
+                                                            toggleClearIcons();
+                                                            filteredMedicinesList = [...medicinesList];
+                                                            displayMedicinesPage(initialPageMedicines);
                                                         </script>
 
         <?php } ?>
 
         <!-- All modal files -->
         <?php include 'adminModals.php'; ?>
+        <!-- Delete Specialization -->
+        <div class="modal fade" id="deleteSpecialization" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                            id="exampleModalLabel">
+                            Delete Specialization</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure want to delete the specialization? <strong id="specNameDisplay"></strong></p>
+
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        <a id="confirmDeleteBtn" href="#">
+                            <button class="btn text-light" style="background-color: #2b353bf5;">Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -2065,6 +2288,23 @@
                 btn.innerHTML = 'Show Less <i class="bi bi-chevron-up"></i>';
             }
         }
+    </script>
+
+    <!-- Delete specialization id and name -->
+    <script>
+        const deleteModal = document.getElementById('deleteSpecialization');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+
+            const deleteUrl = "<?php echo base_url('admin/deleteSpecilization/'); ?>" + id;
+            const confirmDeleteBtn = deleteModal.querySelector('#confirmDeleteBtn');
+            confirmDeleteBtn.setAttribute('href', deleteUrl);
+
+            const nameDisplay = deleteModal.querySelector('#specNameDisplay');
+            nameDisplay.textContent = name;
+        });
     </script>
 
     <!-- Common Script -->

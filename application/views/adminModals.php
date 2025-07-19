@@ -13,12 +13,11 @@
             </div>
             <div class="modal-footer d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                <a id="deleteConfirmButton" href="#" class="btn btn-danger">Delete</a>
+                <a id="deleteConfirmButton" href="#" style="background-color: #2b353bf5;" class="btn text-light">Delete</a>
             </div>
         </div>
     </div>
 </div>
-
 
 <script>
     document.addEventListener("click", (event) => {

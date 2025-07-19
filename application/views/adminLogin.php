@@ -24,6 +24,10 @@
         .form-label {
             font-weight: 500;
         }
+
+        .card {
+            border-radius: 10px !important;
+        }
     </style>
 </head>
 
@@ -51,8 +55,8 @@
                         style="cursor: pointer;"></i>
                 </div>
                 <div id="password_err" class="text-danger pt-1"></div>
-                <button type="submit"
-                    class="bg-primary border-0 rounded-1 text-light float-end mt-2 px-4 py-2">Login</button>
+                <button type="submit" class="border-0 rounded-3 text-light float-end mt-4 px-4 py-2"
+                    style="background-color: #2b353bf5;">Login</button>
             </form>
         </div>
     </div>

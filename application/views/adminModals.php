@@ -4,7 +4,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="confirmLogoutLabel">Confirm Delete</h5>
+                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">
+                    Confirm Delete</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -60,7 +61,8 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New Specilization</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add New
+                    Specilization</h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -72,7 +74,8 @@
                             class="text-danger">*</span></label><br>
                     <input type="text" name="specializationName" id="specializationName" class="form-control"
                         placeholder="E.g. Diabetologist" required><br><br>
-                    <button type="submit" class="btn btn-primary float-end"> Add </button>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
+                    </button>
                 </form>
             </div>
         </div>
@@ -85,7 +88,8 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New Symptom</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add New Symptom
+                </h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -98,7 +102,8 @@
                             class="text-danger">*</span></label><br>
                     <input type="text" name="symptomsName" id="symptomsName" class="form-control"
                         placeholder="E.g. Head ache" required><br><br>
-                    <button type="submit" class="btn btn-primary float-end"> Add </button>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
+                    </button>
                 </form>
             </div>
         </div>
@@ -111,7 +116,8 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add New Medicine</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add New
+                    Medicine</h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -131,7 +137,7 @@
                             class="text-danger">*</span></label><br>
                     <input type="text" name="maedicineStrength" id="maedicineStrength" class="form-control"
                         placeholder="E.g.  100 mg" required><br><br>
-                    <button type="submit" class="btn btn-primary float-end"> Add </button>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn float-end"> Add </button>
                 </form>
             </div>
         </div>
@@ -144,7 +150,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="confirmLogoutLabel">Confirm Logout</h5>
+                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">
+                    Confirm Logout</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -153,7 +160,7 @@
             <div class="modal-footer d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
                 <a href="<?php echo base_url() . "Edfadmin/logout" ?>">
-                    <button class="btn btn-danger">Logout</button>
+                    <button class="btn text-light" style="background-color: #2b353bf5;">Logout</button>
                 </a>
             </div>
         </div>

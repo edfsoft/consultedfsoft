@@ -1,9 +1,9 @@
-<header id="header" class="header fixed-top d-flex align-items-center" style="background-color:#0081ff;">
+<header id="header" class="header fixed-top d-flex align-items-center shadow">
     <div class="d-flex align-items-center justify-content-between">
         <a href="https://erodediabetesfoundation.org/" target="blank" class="logo d-flex align-items-center">
             <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="edf" />
         </a>
-        <i class="bi bi-list toggle-sidebar-btn text-light"></i>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
     <!-- <div class="input-group form-control rounded-pill d-none d-md-flex w-25 ms-3">
             <span class="px-2 my-auto"><i class="bi bi-search"></i></span>
@@ -17,12 +17,12 @@
                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" width="40" height="40" alt="Profile"
                     class="d-none d-md-block rounded-circle me-1" />
                 <div class="ps-3">
-                    <a class="d-flex align-items-center text-light fw-medium" href="#" data-bs-toggle="dropdown"
+                    <a class="d-flex align-items-center fw-medium text-dark" href="#" data-bs-toggle="dropdown"
                         onmouseover="this.style.textDecoration='underline';"
                         onmouseout="this.style.textDecoration='none';">
                         <?php echo $_SESSION['adminName']; ?> <span class="dropdown-toggle mx-2 mx-sm-3"></span>
                     </a>
-                    <span class="fw-medium text-light" style="font-size:14px;">Admin</span>
+                    <span class="fw-medium" style="color: #2b353bf5;font-size:14px;">Admin</span>
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
                         style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
@@ -56,7 +56,7 @@
     </nav>
 </header>
 
-<aside id="sidebar" class="sidebar" style="background-color: #222d32">
+<aside id="sidebar" class="sidebar" style="background-color: #2b353bf5"><!-- 222d32 -->
     <ul class="sidebar-nav pt-5 ps-4" id="sidebar-nav">
         <li class="">
             <a class="" href="<?php echo base_url() . "Edfadmin/dashboard" ?>" id="dashboard"

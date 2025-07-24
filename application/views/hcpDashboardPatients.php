@@ -20,6 +20,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -235,11 +237,16 @@
                 <td class="px-2">
                     <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile" width="40" height="40" class="rounded-circle">
                 </td>
-                <td style="font-size: 16px" class="pt-3">${value.patientId}</td>
-                <td style="font-size: 16px" class="pt-3">${value.firstName} ${value.lastName}</td>
-                <td style="font-size: 16px" class="pt-3">${value.mobileNumber}</td>
-                <td style="font-size: 16px" class="pt-3">${value.gender}</td>
-                <td style="font-size: 16px" class="pt-3">${value.age}</td>
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                 class="fieldLink text-dark"> ${value.patientId}</a></td>
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                 class="fieldLink text-dark"> ${value.firstName} ${value.lastName}</a></td>
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                 class="fieldLink text-dark"> ${value.mobileNumber}</a></td>
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                 class="fieldLink text-dark"> ${value.gender}</a></td>
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                 class="fieldLink text-dark"> ${value.age}</a></td>
                 <td class="pt-2" style="font-size: 16px;">
                     <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}"><button class="btn btn-secondary mb-1"><i class="bi bi-pencil"></i></button></a>
                     <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>
@@ -750,8 +757,8 @@
                         var mobile = document.getElementById("patientMobile").value;
                         var gender = document.getElementById("patientGender").value;
                         var age = document.getElementById("patientAge").value;
-                        var diagonsis = document.getElementById("patientDiagonsis").value;
-                        var symptoms = document.getElementById("patientSymptoms").value;
+                        // var diagonsis = document.getElementById("patientDiagonsis").value;
+                        // var symptoms = document.getElementById("patientSymptoms").value;
 
                         if (name == "") {
                             document.getElementById("patientName_err").innerHTML = "Name must be filled out.";
@@ -793,21 +800,21 @@
                             document.getElementById("patientAge_err").innerHTML = "";
                         }
 
-                        if (diagonsis == "") {
-                            document.getElementById("diagonsis_err").innerHTML = "Diagonsis / Complaints must be filled out.";
-                            document.getElementById("patientDiagonsis").focus();
-                            return false;
-                        } else {
-                            document.getElementById("diagonsis_err").innerHTML = "";
-                        }
+                        // if (diagonsis == "") {
+                        //     document.getElementById("diagonsis_err").innerHTML = "Diagonsis / Complaints must be filled out.";
+                        //     document.getElementById("patientDiagonsis").focus();
+                        //     return false;
+                        // } else {
+                        //     document.getElementById("diagonsis_err").innerHTML = "";
+                        // }
 
-                        if (symptoms == "") {
-                            document.getElementById("symptoms_err").innerHTML = "Symptoms / Findings must be filled out.";
-                            document.getElementById("patientSymptoms").focus();
-                            return false;
-                        } else {
-                            document.getElementById("symptoms_err").innerHTML = "";
-                        }
+                        // if (symptoms == "") {
+                        //     document.getElementById("symptoms_err").innerHTML = "Symptoms / Findings must be filled out.";
+                        //     document.getElementById("patientSymptoms").focus();
+                        //     return false;
+                        // } else {
+                        //     document.getElementById("symptoms_err").innerHTML = "";
+                        // }
                         // return true;
                     }
                 </script>

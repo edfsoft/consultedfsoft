@@ -192,7 +192,7 @@ class Healthcareprovider extends CI_Controller
             } else {
                 $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
             }
-            redirect('Healthcareprovider/patients');
+            redirect('Healthcareprovider/consultation/' . $register);
         }
     }
 

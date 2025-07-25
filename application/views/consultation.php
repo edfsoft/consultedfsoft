@@ -18,8 +18,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
         body {
@@ -36,61 +34,31 @@
             padding: 10px;
         }
 
-
         /* ********************************************************** */
-
-        .findings-wrapper {
-            max-width: 500px;
-            position: relative;
-        }
 
         .tags-input {
             display: flex;
             flex-wrap: wrap;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 5px;
+            padding: 0.5rem;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
             min-height: 46px;
-            align-items: center;
             cursor: text;
         }
 
-        .tags-input input {
-            border: none;
-            outline: none;
-            flex-grow: 1;
-            padding: 5px;
-            min-width: 120px;
-            font-size: 14px;
-        }
-
-        .tag {
-            background-color: #007bff;
-            color: white;
-            border-radius: 10px;
-            padding: 4px 8px;
+        .tags-input .tag {
             margin: 2px;
-            display: flex;
-            align-items: center;
-            /* font-size: 14px; */
-        }
-
-        .tag .remove {
-            margin-left: 8px;
-            cursor: pointer;
-            font-weight: bold;
         }
 
         .suggestions-box {
-            border: 1px solid #ccc;
-            border-top: none;
+            border: 1px solid #ced4da;
             max-height: 200px;
             overflow-y: auto;
             display: none;
             position: absolute;
             background: white;
             width: 100%;
-            z-index: 1000;
+            z-index: 1050;
         }
 
         .suggestions-box div {
@@ -99,13 +67,7 @@
         }
 
         .suggestions-box div:hover {
-            background-color: #f0f0f0;
-        }
-
-        .no-match {
-            color: gray;
-            font-style: italic;
-            pointer-events: none;
+            background-color: #f8f9fa;
         }
     </style>
 </head>
@@ -264,13 +226,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <!-- <div class="findings-wrapper">
-                                        <div class="tags-input" id="findingsInput">
-                                            <input type="text" id="searchInput" placeholder="Search or type to add..." />
-                                        </div>
-                                        <div class="suggestions-box" id="suggestionsBox"></div>
-                                    </div> -->
-
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -278,15 +233,14 @@
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2">
-                                        <!--  <button type="button" class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                            <textarea class="form-control mb-2" name="findings" rows="3"
-                                                placeholder="Enter findings..."></textarea> -->
-                                        <div class="findings-wrapper">
-                                            <div class="tags-input" id="findingsInput">
-                                                <input type="text" id="searchInput"
-                                                    placeholder="Search or type to add..." />
+                                        <div id="findingsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="findingsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="searchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="suggestionsBox"></div>
                                             </div>
-                                            <div class="suggestions-box" id="suggestionsBox"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -407,6 +361,43 @@
 
 
             <!-- Finding Script -->
+            <!-- Bootstrap Modal -->
+            <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Enter Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="modalNote" class="form-label">Note</label>
+                                <input type="text" class="form-control" id="modalNote" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="modalSince" class="form-label">Since</label>
+                                <input type="text" class="form-control" id="modalSince" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="modalSeverity" class="form-label">Severity</label>
+                                <select id="modalSeverity" class="form-select">
+                                    <option value="">Select</option>
+                                    <option value="Mild">Mild</option>
+                                    <option value="Moderate">Moderate</option>
+                                    <option value="Severe">Severe</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-primary" onclick="saveModal()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
             <script>
                 const findingsList = [
                     "Blood Sugar High",
@@ -419,42 +410,47 @@
                     "Post Covid 19",
                     "Dysuria",
                     "Post Covid 19 weakness",
-                    "GIDDINESS",
+                    "GIDDINESS"
                 ];
 
                 const findingsInput = document.getElementById("searchInput");
                 const suggestionsBox = document.getElementById("suggestionsBox");
                 const tagContainer = document.getElementById("findingsInput");
 
+                const modal = new bootstrap.Modal(document.getElementById("inputModal"));
+                const modalNote = document.getElementById("modalNote");
+                const modalSince = document.getElementById("modalSince");
+                const modalSeverity = document.getElementById("modalSeverity");
+                const modalTitle = document.getElementById("modalTitle");
+
                 let selectedFindings = [];
+                let pendingTag = "";
+                let editingTagEl = null;
 
                 function renderSuggestions() {
                     const query = findingsInput.value.toLowerCase().trim();
                     suggestionsBox.innerHTML = "";
 
-                    let filtered = findingsList.filter(
-                        (f) =>
-                            f.toLowerCase().includes(query) && !selectedFindings.includes(f)
+                    const filtered = findingsList.filter(f =>
+                        f.toLowerCase().includes(query) &&
+                        !selectedFindings.some(obj => obj.finding === f)
                     );
 
-                    // If nothing matches, offer to add custom entry
                     if (filtered.length === 0 && query !== "") {
                         const customOption = document.createElement("div");
                         customOption.innerHTML = `Add "<strong>${query}</strong>"`;
                         customOption.onclick = () => {
-                            addTag(query);
+                            openModal(query);
                             findingsInput.value = "";
-                            renderSuggestions();
                         };
                         suggestionsBox.appendChild(customOption);
                     } else {
-                        filtered.forEach((item) => {
+                        filtered.forEach(item => {
                             const div = document.createElement("div");
                             div.textContent = item;
                             div.onclick = () => {
-                                addTag(item);
+                                openModal(item);
                                 findingsInput.value = "";
-                                renderSuggestions();
                             };
                             suggestionsBox.appendChild(div);
                         });
@@ -463,48 +459,97 @@
                     suggestionsBox.style.display = "block";
                 }
 
-                function addTag(text) {
-                    if (selectedFindings.includes(text)) return;
+                function openModal(tagName, existing = null, tagEl = null) {
+                    pendingTag = tagName;
+                    editingTagEl = tagEl;
 
-                    selectedFindings.push(text);
+                    modalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+                    modalNote.value = existing?.note || "";
+                    modalSince.value = existing?.since || "";
+                    modalSeverity.value = existing?.severity || "";
+
+                    modal.show();
+                }
+
+                function saveModal() {
+                    const note = modalNote.value.trim();
+                    const since = modalSince.value.trim();
+                    const severity = modalSeverity.value;
+
+                    if (!pendingTag) return;
+
+                    const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
+
+                    if (editingTagEl && existingIndex !== -1) {
+                        // Update existing tag
+                        selectedFindings[existingIndex] = { finding: pendingTag, note, since, severity };
+                        updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
+                    } else {
+                        const data = { finding: pendingTag, note, since, severity };
+                        selectedFindings.push(data);
+                        addTag(data);
+                    }
+
+                    modal.hide();
+                    pendingTag = "";
+                    editingTagEl = null;
+                }
+
+                function addTag(data) {
                     const tag = document.createElement("span");
-                    tag.className = "tag";
-                    tag.textContent = text;
+                    tag.className = "badge bg-primary tag";
+                    tag.style.cursor = "pointer";
+                    updateTagDisplay(tag, data);
 
-                    const removeBtn = document.createElement("span");
-                    removeBtn.textContent = "×";
-                    removeBtn.className = "remove";
-                    removeBtn.onclick = () => {
+                    tag.onclick = () => {
+                        openModal(data.finding, data, tag);
+                    };
+
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.className = "btn-close btn-close-white ms-2";
+                    removeBtn.style.fontSize = "0.6rem";
+                    removeBtn.onclick = (e) => {
+                        e.stopPropagation();
                         tag.remove();
-                        selectedFindings = selectedFindings.filter((f) => f !== text);
+                        selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
                     };
 
                     tag.appendChild(removeBtn);
                     tagContainer.insertBefore(tag, findingsInput);
                 }
 
+                function updateTagDisplay(tagEl, data) {
+                    const textParts = [data.finding];
+                    const details = [];
+
+                    if (data.note) details.push(`Note: ${data.note}`);
+                    if (data.since) details.push(`Since: ${data.since}`);
+                    if (data.severity) details.push(`Severity: ${data.severity}`);
+
+                    if (details.length > 0) {
+                        textParts.push(`(${details.join(", ")})`);
+                    }
+
+                    tagEl.innerHTML = textParts.join(" ");
+                }
+
                 findingsInput.addEventListener("input", renderSuggestions);
                 findingsInput.addEventListener("focus", renderSuggestions);
-
-                findingsInput.addEventListener("keydown", (e) => {
+                findingsInput.addEventListener("keydown", e => {
                     if (e.key === "Enter" && findingsInput.value.trim() !== "") {
                         e.preventDefault();
-                        addTag(findingsInput.value.trim());
+                        openModal(findingsInput.value.trim());
                         findingsInput.value = "";
-                        renderSuggestions();
                     }
                 });
 
                 document.addEventListener("click", (e) => {
-                    if (
-                        !tagContainer.contains(e.target) &&
-                        !suggestionsBox.contains(e.target)
-                    ) {
+                    if (!tagContainer.contains(e.target)) {
                         suggestionsBox.style.display = "none";
                     }
                 });
 
-                // Initial render to show all suggestions
                 renderSuggestions();
             </script>
 
@@ -668,7 +713,8 @@
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
-
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Vendor JS Files -->
     <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

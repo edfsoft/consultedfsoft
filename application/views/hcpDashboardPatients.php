@@ -470,13 +470,13 @@
                                                 <option value="AB -ve">AB -ve</option>
                                             </select>
                                         </div>
-                                        <p class="pt-4 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
+                                        <!-- <p class="pt-4 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
                                             <button
                                                 style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
                                                 class="text-light rounded-circle border-0">3</button> Medical Records
-                                        </p>
-
-                                        <!-- <div class="form-group pb-3">
+                                        </p> 
+                                        
+                                        <div class="form-group pb-3">
                                             <label class="form-label" for="patientWeight">Weight </label>
                                             <div class="d-flex">
                                                 <input type="number" class="form-control" id="patientWeight"
@@ -616,11 +616,11 @@
                                             <label class="form-label" for="medicalReceipts">Medical Receipts</label>
                                             <input type="file" class="form-control" id="medicalReceipts" name="medicalReceipts"
                                                 accept="image/png ,image/jpg, image/jpeg,application/pdf">
-                                        </div> -->
+                                        </div>
                                         <div class="form-group pb-3">
                                             <label class="form-label" for="medicalReports">Test Uploads</label>
                                             <input type="file" class="form-control" id="medicalReports" name="medicalReports">
-                                        </div>
+                                        </div> -->
                                         <button type="submit" class="btn float-end text-light mt-2"
                                             style="background-color: #00ad8e;">Submit</button>
                                     </form>

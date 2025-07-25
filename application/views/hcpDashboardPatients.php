@@ -476,7 +476,7 @@
                                                 class="text-light rounded-circle border-0">3</button> Medical Records
                                         </p>
 
-                                        <div class="form-group pb-3">
+                                        <!-- <div class="form-group pb-3">
                                             <label class="form-label" for="patientWeight">Weight </label>
                                             <div class="d-flex">
                                                 <input type="number" class="form-control" id="patientWeight"
@@ -492,14 +492,6 @@
                                                 <p class="mx-2 my-2">Cm</p>
                                             </div>
                                         </div>
-                                        <!-- <div class="form-group pb-3">
-                                                <label class="form-label" for="patientBp">Blood Pressure</label>
-                                                <div class="d-flex">
-                                                    <input type="number" class="form-control" id="patientBp" name="patientBp"
-                                                        placeholder="E.g. 100">
-                                                    <p class="mx-2 my-2">mmHg</p>
-                                                </div>
-                                            </div> -->
                                         <div class="form-group pb-3">
                                             <label class="form-label" for="">Blood Pressure</label>
                                             <div class="d-flex align-items-center">
@@ -583,7 +575,7 @@
                                             <?php } ?>
                                                 <option value="addNew">Add New</option>
                                             </select>
-                                        </div>
+                                        </div> -->
                                         <!-- <div class="form-group pb-3">
                                                 <label class="form-label" for="patientMedicines">Medicines</label>
                                                 <input list="medicinesList" id="patientMedicines" name="patientMedicines"
@@ -601,7 +593,7 @@
                                                     <option value="Add New">Add New</option>
                                                 </datalist>
                                             </div> -->
-                                        <div id="addMedicine" class="card p-3 ps-4" style="display: none;">
+                                        <!-- <div id="addMedicine" class="card p-3 ps-4" style="display: none;">
                                             <p class="fw-bolder">Enter New Medicine Details</p>
                                             <div class="form-group mt-1 pb-2 col-9">
                                                 <label class="form-lbel" for="newMedicineBrand">Medicine Brand Name</label>
@@ -624,7 +616,7 @@
                                             <label class="form-label" for="medicalReceipts">Medical Receipts</label>
                                             <input type="file" class="form-control" id="medicalReceipts" name="medicalReceipts"
                                                 accept="image/png ,image/jpg, image/jpeg,application/pdf">
-                                        </div>
+                                        </div> -->
                                         <div class="form-group pb-3">
                                             <label class="form-label" for="medicalReports">Test Uploads</label>
                                             <input type="file" class="form-control" id="medicalReports" name="medicalReports">

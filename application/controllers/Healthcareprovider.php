@@ -275,7 +275,8 @@ class Healthcareprovider extends CI_Controller
             $this->data['symptomsList'] = $symptoms;
             $medicines = $this->HcpModel->getMedicines();
             $this->data['medicinesList'] = $medicines;
-            $this->load->view('hcpDashboardPatients.php', $this->data);
+            // $this->load->view('hcpDashboardPatients.php', $this->data);
+              $this->load->view('consultation.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }

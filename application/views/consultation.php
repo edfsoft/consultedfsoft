@@ -533,7 +533,7 @@
 
                 function addTag(data) {
                     const tag = document.createElement("span");
-                    tag.className = "badge bg-primary tag";
+                    tag.className = "bg-success rounded-2 text-light p-2";
                     tag.style.cursor = "pointer";
                     updateTagDisplay(tag, data);
 
@@ -543,8 +543,12 @@
 
                     const removeBtn = document.createElement("button");
                     removeBtn.type = "button";
-                    removeBtn.className = "btn-close btn-close-white ms-2";
-                    removeBtn.style.fontSize = "0.6rem";
+                    removeBtn.className = "text-light ms-2";
+                    removeBtn.innerHTML = "&times;";
+                    removeBtn.style.fontSize = "1rem";
+                    removeBtn.style.border = "none";
+                    removeBtn.style.background = "transparent";
+
                     removeBtn.onclick = (e) => {
                         e.stopPropagation();
                         tag.remove();
@@ -678,7 +682,7 @@
 
                 function addDiagnosisTag(data) {
                     const tag = document.createElement("span");
-                    tag.className = "badge bg-success me-1 mb-1";
+                    tag.className = "bg-success rounded-2 text-light p-2";
                     tag.style.cursor = "pointer";
                     updateDiagnosisTag(tag, data);
 
@@ -688,8 +692,12 @@
 
                     const removeBtn = document.createElement("button");
                     removeBtn.type = "button";
-                    removeBtn.className = "btn-close btn-close-white ms-2";
-                    removeBtn.style.fontSize = "0.6rem";
+                    removeBtn.className = "text-light ms-2";
+                    removeBtn.innerHTML = "&times;";
+                    removeBtn.style.fontSize = "1rem";
+                    removeBtn.style.border = "none";
+                    removeBtn.style.background = "transparent";
+
                     removeBtn.onclick = (e) => {
                         e.stopPropagation();
                         tag.remove();

@@ -122,7 +122,7 @@
                         </div>
                         <div class="card-body ps-2 p-sm-4">
                             <div class="table-responsive">
-                                <table class="table text-center table-hoverr" id="patientTable">
+                                <table class="table text-center table-hoverr text-nowrap" id="patientTable">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
@@ -134,7 +134,7 @@
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">GENDER
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">AGE</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTIONS
                                             </th>
                                         </tr>
                                     </thead>
@@ -254,7 +254,6 @@
                 <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
                  class="fieldLink text-dark"> ${value.age}</a></td>
                 <td class="pt-2" style="font-size: 16px;">
-                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientformUpdate/${value.id}"><button class="btn btn-secondary mb-1"><i class="bi bi-pencil"></i></button></a>
                     <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>
                     <a href="<?php echo base_url(); ?>Healthcareprovider/consultation/${value.id}" class=""><button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button></a>
                 </td>`;
@@ -1140,7 +1139,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                    <div class="d-sm-flex text-center mb-4">
+                                    <div class="d-sm-flex text-center mb-4 position-relative">
                                 <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
                                             <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>" alt="Profile Photo"
                                                 width="140" height="140" class="rounded-circle"
@@ -1157,11 +1156,20 @@
                                         <?php echo $value['lastName'] ?>
                                             </p>
                                             <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
-                                            <!-- <p class="text-dark" style="font-weight:500;font-size:20px;">
-                                        <?php echo $value['diagonsis'] ?>
-                                                    </p> -->
                                         </div>
-
+                                        <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2 align-items-end">
+                                            <a
+                                                href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>">
+                                                <button class="btn btn-secondary btn-sm">
+                                                    <i class="bi bi-pen"></i> Edit
+                                                </button>
+                                            </a>
+                                            <a href="<?php echo base_url() . "Healthcareprovider/consultation/" . $value['id']; ?>">
+                                                <button class="btn btn-secondary btn-sm">
+                                                    <i class="bi bi-calendar-check"></i> Consult
+                                                </button>
+                                            </a>
+                                        </div>
                                     </div>
                                     <p class="my-3 mt-3 fs-5 fw-semibold">Personal Details</p>
                                     <div class="d-md-flex">
@@ -1255,7 +1263,7 @@
                                     </div> -->
 
                                     <p class="my-3 mt-3 fs-5 fw-semibold">Documents / Reports</p>
-                            <!-- <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
+                                    <!-- <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
                                         <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
                                                 <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> : <a

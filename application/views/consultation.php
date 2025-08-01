@@ -102,13 +102,19 @@
                         <?php
                         foreach ($patientDetails as $key => $value) {
                             ?>
-                            <div class="border border-2 rounded text-center py-2">
-                                <p style="font-size: 16px; font-weight: 700"> <?php echo $value['firstName'] ?>
-                                    <?php echo $value['lastName'] ?> | <?php echo $value['patientId'] ?>
+                            <div class="border border-2 rounded text-center py-2 position-relative">
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                    class="position-absolute top-0 end-0 m-2">
+                                    <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
+                                </a>
+                                <p style="font-size: 16px; font-weight: 700">
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['patientId'] ?>
                                 </p>
-                                <p><a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
-                                        <?php echo $value['mobileNumber'] ?></a> | <?php echo $value['gender'] ?> |
-                                    <?php echo $value['age'] ?> Year(s)
+                                <p>
+                                    <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                        <?php echo $value['mobileNumber'] ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
                                 </p>
                             </div>
                         <?php } ?>
@@ -196,11 +202,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between mt-2">
+                                <!-- <div class="d-flex justify-content-between mt-2">
                                     <button type="reset" class="btn btn-secondary">Reset</button>
                                     <button type="submit" id="submitForm" class="btn text-light"
                                         style="background-color: #00ad8e;">Submit</button>
-                                </div>
+                                </div> -->
                             </form>
                         </div>
                         <p class="mb-2 mt-4 fs-5 fw-semibold">Consultation Details:</p>
@@ -351,11 +357,11 @@
                                     <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate">
                                     <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                                 </div>
-                                <!-- <div class="d-flex justify-content-between mt-2">
+                                <div class="d-flex justify-content-between mt-2">
                                     <button type="reset" class="btn btn-secondary">Reset</button>
                                     <button type="submit" id="submitForm" class="btn text-light"
                                         style="background-color: #00ad8e;">Submit</button>
-                                </div> -->
+                                </div>
                             </form>
                         </div>
 

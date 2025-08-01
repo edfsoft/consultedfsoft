@@ -232,12 +232,13 @@ class Healthcareprovider extends CI_Controller
 
     public function updatePatientsForm()
     {
-        if ($this->HcpModel->updatePatientsDetails()) {
+        $updatePatient = $this->HcpModel->updatePatientsDetails();
+        if ($updatePatient) {
             $this->session->set_flashdata('showSuccessMessage', 'Patient details updated successfully');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in updating patient details');
         }
-        redirect('Healthcareprovider/patients');
+        redirect('Healthcareprovider/consultation/' . $updatePatient);
     }
 
     public function updatePatientPhoto()
@@ -276,7 +277,7 @@ class Healthcareprovider extends CI_Controller
             $medicines = $this->HcpModel->getMedicines();
             $this->data['medicinesList'] = $medicines;
             // $this->load->view('hcpDashboardPatients.php', $this->data);
-              $this->load->view('consultation.php', $this->data);
+            $this->load->view('consultation.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }

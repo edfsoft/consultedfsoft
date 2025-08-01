@@ -124,26 +124,14 @@ class HcpModel extends CI_Model
 
         // $this->load->library('upload', $config);
 
-        // $firstDocument = "No data";
-        // $secondDocument = "No data";
         // $photo = "No data";
 
-        // if ($this->upload->do_upload('medicalReceipts')) {
-        //     $data = $this->upload->data();
-        //     $firstDocument = $data['file_name'];
-        // }
-        // if ($this->upload->do_upload('medicalReports')) {
-        //     $data = $this->upload->data();
-        //     $secondDocument = $data['file_name'];
-        // }
         // if ($this->upload->do_upload('profilePhoto')) {
         //     $data = $this->upload->data();
         //     $photo = $data['file_name'];
         // } else {
         //     $error = $this->upload->display_errors();
         // }
-
-        // $medicine = $post['patientMedicines'] != "addNew" ? $post['patientMedicines'] : $post['newMedicineBrand'] . " / " . $post['newMedicineName'] . " / " . $post['newMedicineSrength'];
 
         $insertdata = array(
             'firstName' => $post['patientName'],
@@ -165,60 +153,18 @@ class HcpModel extends CI_Model
             'partnerName' => $post['partnersName'],
             'partnerMobile' => $post['partnerMobile'],
             'partnerBlood' => $post['partnerBlood'],
-            // 'weight	' => $post['patientWeight'],
-            // 'height	' => $post['patientHeight'],
-            // 'systolicBp' => $post['patientSystolicBp'],
-            // 'diastolicBp' => $post['patientDiastolicBp'],
-            // 'cholestrol' => $post['patientsCholestrol'],
-            // 'bloodSugar' => $post['patientBsugar'],
-            // 'diagonsis	' => $post['patientDiagonsis'],
-            // 'symptoms' => $post['patientSymptoms'],
-            // 'medicines' => $medicine,
-            // 'documentOne' => $firstDocument,
-            // 'documentTwo' => $secondDocument,
             'patientHcp	' => $_SESSION['hcpId'],
             'patientHcpDbId	' => $_SESSION['hcpIdDb'],
         );
         $this->db->insert('patient_details', $insertdata);
         $registeredId = $this->db->insert_id();
-
-        // if ($post['patientMedicines'] == "addNew") {
-        //     $post = $this->input->post(null, true);
-        //     $insert = array(
-        //         'medicineBrand' => $post['newMedicineBrand'],
-        //         'medicineName' => $post['newMedicineName'],
-        //         'strength' => $post['newMedicineSrength']
-        //     );
-        //     $this->db->insert('medicines_list', $insert);
-        // }
         return $registeredId;
     }
 
     public function updatePatientsDetails()
     {
         $post = $this->input->post(null, true);
-
-        // $config['upload_path'] = "./uploads/";
-        // $config['allowed_types'] = "jpg|png|jpeg|pdf";
-        // $config['max_size'] = 1024;
-
-        // $this->load->library('upload', $config);
-
-        // $firstDocument = $post['oldmedicalReceipts'];
-        // $secondDocument = $post['oldmedicalReports'];
-
-        // if ($this->upload->do_upload('medicalReceipts')) {
-        //     $data = $this->upload->data();
-        //     $firstDocument = $data['file_name'];
-        // }
-        // if ($this->upload->do_upload('medicalReports')) {
-        //     $data = $this->upload->data();
-        //     $secondDocument = $data['file_name'];
-        // } else {
-        //     $error = $this->upload->display_errors();
-        // }
-
-        $insertdata = array(
+        $updateData = array(
             'firstName' => $post['patientName'],
             'lastName' => $post['patientLastName'],
             'mobileNumber' => $post['patientMobile'],
@@ -236,22 +182,11 @@ class HcpModel extends CI_Model
             'pincode' => $post['patientPincode'],
             'partnerName' => $post['partnersName'],
             'partnerMobile' => $post['partnerMobile'],
-            'partnerBlood' => $post['partnerBlood'],
-            // 'weight	' => $post['patientWeight'],
-            // 'height	' => $post['patientHeight'],
-            // 'systolicBp' => $post['patientSystolicBp'],
-            // 'diastolicBp' => $post['patientDiastolicBp'],
-            // 'cholestrol' => $post['patientsCholestrol'],
-            // 'bloodSugar' => $post['patientBsugar'],
-            // 'diagonsis	' => $post['patientDiagonsis'],
-            // 'symptoms' => $post['patientSymptoms'],
-            // 'medicines	' => $post['patientMedicines'],
-            // 'documentOne' => $firstDocument,
-            // 'documentTwo' => $secondDocument,
+            'partnerBlood' => $post['partnerBlood']
         );
         $this->db->where('id', $post['patientIdDb']);
-        $this->db->update('patient_details', $insertdata);
-        return true;
+        $this->db->update('patient_details', $updateData);
+        return $post['patientIdDb'];
     }
 
     public function updatePatientProfilePhoto()

@@ -29,22 +29,24 @@
         }
 
         /* To remove the arrows in the  input type number*/
-        #patientMobile::-webkit-outer-spin-button,
+        /* #patientMobile::-webkit-outer-spin-button,
         #patientMobile::-webkit-inner-spin-button,
         #additionalContact::-webkit-outer-spin-button,
         #additionalContact::-webkit-inner-spin-button,
         #partnerMobile::-webkit-outer-spin-button,
         #partnerMobile::-webkit-inner-spin-button,
         #patientPincode::-webkit-outer-spin-button,
-        #patientPincode::-webkit-inner-spin-button,
+        #patientPincode::-webkit-inner-spin-button, 
         #patientAltMobile::-webkit-outer-spin-button,
-        #patientAltMobile::-webkit-inner-spin-button,
-        #patientId::-webkit-outer-spin-button,
-        #patientId::-webkit-inner-spin-button,
+        #patientAltMobile::-webkit-inner-spin-button, 
         #drMobile::-webkit-outer-spin-button,
-        #drMobile::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        #drMobile::-webkit-inner-spin-button */
+
+        #patientId: :-webkit-outer-spin-button,
+        #patientId::-webkit-inner-spin-button,
+        {
+        -webkit-appearance: none;
+        margin: 0;
         }
 
         /* Form Labels */
@@ -320,171 +322,183 @@
                         </div>
 
                         <div class="card-body px-md-4 pb-4">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
-                                        name="patientDetails" id="patientDetails" enctype="multipart/form-data" method="POST"
-                                        oninput="clearErrorPatientDetails()" onsubmit="return validatePatientDetails()">
-                                        <p class="pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
-                                            <button
-                                                style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
-                                                class="text-light rounded-circle border-0">1</button> Basic Details
-                                        </p>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientName">First Name <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="patientName" name="patientName"
-                                                placeholder="E.g. Siva">
-                                            <div id="patientName_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientLastName">Last Name</label>
-                                            <input type="text" class="form-control" id="" name="patientLastName"
-                                                placeholder="E.g. Kumar">
-                                            <div id="patientLastName_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientMobile">Moblie Number <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="patientMobile" name="patientMobile"
-                                                placeholder="E.g. 9638527410">
-                                            <div id="patientMobile_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientAltMobile">Alternate Moblie
-                                                Number</label>
-                                            <input type="number" class="form-control" id="patientAltMobile"
-                                                name="patientAltMobile" placeholder="E.g. 9876543210">
-                                            <div id="patientMobile_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientEmail">Email</label>
-                                            <input type="mail" class="form-control" id="patientEmail" name="patientEmail"
-                                                placeholder="E.g. example@gmail.com">
-                                            <div id="patientEmail_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientGender">Gender <span
-                                                    class="text-danger">*</span></label>
-                                            <select class="form-control" id="patientGender" name="patientGender">
-                                                <option value="">Select Gender</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                            </select>
-                                            <div id="patientGender_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-2">
-                                            <label class="form-label" for="patientAge">Age <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="patientAge" name="patientAge" min="0"
-                                                placeholder="E.g. 41">
-                                            <div id="patientAge_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientBlood">Blood Group</label>
-                                            <select class="form-select" id="patientBlood" name="patientBlood">
-                                                <option value="">Select Blood Group</option>
-                                                <option value="A +ve">A +ve</option>
-                                                <option value="A -ve">A -ve</option>
-                                                <option value="B +ve">B +ve</option>
-                                                <option value="B -ve">B -ve</option>
-                                                <option value="O +ve">O +ve</option>
-                                                <option value="O -ve">O -ve</option>
-                                                <option value="AB +ve">AB +ve</option>
-                                                <option value="AB -ve">AB -ve</option>
-                                            </select>
-                                            <div id="patientBlood_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientMarital">Marital Status</label>
-                                            <select class="form-select" id="patientMarital" name="patientMarital">
-                                                <option value="">Select Marital Status</option>
-                                                <option value="Single">Single</option>
-                                                <option value="Married">Married</option>
-                                            </select>
-                                            <div id="patientMarital_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="marriedSince">Married Since</label>
-                                            <input type="text" class="form-control" id="marriedSince" name="marriedSince"
-                                                placeholder="E.g. 2012">
-                                        </div>
-
-                                        <p class="pt-4 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
-                                            <button
-                                                style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
-                                                class="text-light rounded-circle border-0">2</button> Additional
-                                            Information
-                                        </p>
-
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="profilePhoto">Profile Photo</label>
-                                            <input type="file" class="form-control" id="profilePhoto" name="profilePhoto"
-                                                accept="image/png ,image/jpg, image/jpeg">
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientProfessions">Patient's
-                                                Profession</label>
-                                            <input type="text" class="form-control" id="patientProfessions"
-                                                name="patientProfessions" placeholder="E.g. IT employee">
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientDoorNo">Door Number</label>
-                                            <input type="text" class="form-control" id="patientDoorNo" name="patientDoorNo"
-                                                placeholder="E.g. 96">
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientStreet">Street Address</label>
-                                            <input type="text" class="form-control" id="patientStreet" name="patientStreet"
-                                                placeholder="E.g. Abc street">
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientDistrict">District</label>
-                                            <input type="text" class="form-control" id="patientDistrict" name="patientDistrict"
-                                                placeholder="E.g. Erode">
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="patientPincode">Pincode</label>
-                                            <input type="number" class="form-control" id="patientPincode" name="patientPincode"
-                                                placeholder="E.g. 638001">
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="partnersName">Guardian's Name </label>
-                                            <input type="text" class="form-control" id="partnersName" name="partnersName"
-                                                placeholder="E.g. Rohith">
-                                            <div id="partnersName_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
-                                            <input type="number" class="form-control" id="partnerMobile" name="partnerMobile"
-                                                placeholder="E.g. 9874563210">
-                                            <div id="partnerMobile_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
-                                            <select class="form-select" id="partnerBlood" name="partnerBlood">
-                                                <option value="">Select Blood Group</option>
-                                                <option value="A +ve">A +ve</option>
-                                                <option value="A -ve">A -ve</option>
-                                                <option value="B +ve">B +ve</option>
-                                                <option value="B -ve">B -ve</option>
-                                                <option value="O +ve">O +ve</option>
-                                                <option value="O -ve">O -ve</option>
-                                                <option value="AB +ve">AB +ve</option>
-                                                <option value="AB -ve">AB -ve</option>
-                                            </select>
-                                        </div>
-                                        <button type="submit" class="btn float-end text-light mt-2"
-                                            style="background-color: #00ad8e;">Add</button>
-                                    </form>
+                            <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>" name="patientDetails"
+                                id="patientDetails" enctype="multipart/form-data" method="POST"
+                                oninput="clearErrorPatientDetails()" onsubmit="return validatePatientDetails()">
+                                <p class="pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
+                                    <button
+                                        style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
+                                        class="text-light rounded-circle border-0">1</button> Basic Details
+                                </p>
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientName">First Name <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="patientName" name="patientName"
+                                            maxlength="30" placeholder="E.g. Siva">
+                                        <div id="patientName_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="patientLastName">Last Name</label>
+                                        <input type="text" class="form-control" id="" name="patientLastName" maxlength="30"
+                                            placeholder="E.g. Kumar">
+                                        <div id="patientLastName_err" class="text-danger pt-1"></div>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientMobile">Mobile Number <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" id="patientMobile" name="patientMobile"
+                                            maxlength="10" placeholder="E.g. 9638527410">
+                                        <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="patientAltMobile">Alternate Moblie
+                                            Number</label>
+                                        <input type="text" class="form-control" id="patientAltMobile" name="patientAltMobile"
+                                            maxlength="10" placeholder="E.g. 9876543210">
+                                        <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientEmail">Email Id</label>
+                                        <input type="email" class="form-control" id="patientEmail" name="patientEmail"
+                                            placeholder="E.g. example@gmail.com">
+                                        <div id="patientEmail_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="patientGender">Gender <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-control" id="patientGender" name="patientGender">
+                                            <option value="">Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                        <div id="patientGender_err" class="text-danger pt-1"></div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientAge">Age <span
+                                                class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" id="patientAge" name="patientAge" max="120"
+                                            min="2" maxlength="3" placeholder="E.g. 41">
+                                        <div id="patientAge_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="patientBlood">Blood Group</label>
+                                        <select class="form-select" id="patientBlood" name="patientBlood">
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A +ve">A +ve</option>
+                                            <option value="A -ve">A -ve</option>
+                                            <option value="B +ve">B +ve</option>
+                                            <option value="B -ve">B -ve</option>
+                                            <option value="O +ve">O +ve</option>
+                                            <option value="O -ve">O -ve</option>
+                                            <option value="AB +ve">AB +ve</option>
+                                            <option value="AB -ve">AB -ve</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientMarital">Marital Status</label>
+                                        <select class="form-select" id="patientMarital" name="patientMarital">
+                                            <option value="">Select Marital Status</option>
+                                            <option value="Single">Single</option>
+                                            <option value="Married">Married</option>
+                                        </select>
+                                        <div id="patientMarital_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="marriedSince">Married Since</label>
+                                        <input type="text" class="form-control" id="marriedSince" name="marriedSince"
+                                            maxlength="20" placeholder="E.g. 2012">
+                                    </div>
+                                </div>
+                                <p class="pt-4 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
+                                    <button
+                                        style="width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
+                                        class="text-light rounded-circle border-0">2</button> Additional
+                                    Information
+                                </p>
+                                <!-- Need to add crop option and move to top of the form -->
+                                <!-- <div class="form-group pb-3">
+                                    <label class="form-label" for="profilePhoto">Profile Photo</label>
+                                    <input type="file" class="form-control" id="profilePhoto" name="profilePhoto"
+                                        accept="image/png ,image/jpg, image/jpeg">
+                                </div> -->
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientProfessions">Patient's
+                                            Profession</label>
+                                        <input type="text" class="form-control" id="patientProfessions"
+                                            name="patientProfessions" maxlength="30" placeholder="E.g. IT employee">
+                                    </div>
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="patientDoorNo">Door Number</label>
+                                        <input type="text" class="form-control" id="patientDoorNo" name="patientDoorNo"
+                                            maxlength="30" placeholder="E.g. 96">
+                                    </div>
+                                </div>
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientStreet">Street Address</label>
+                                        <input type="text" class="form-control" id="patientStreet" name="patientStreet"
+                                            maxlength="50" placeholder="E.g. Abc street">
+                                    </div>
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="patientDistrict">District</label>
+                                        <input type="text" class="form-control" id="patientDistrict" name="patientDistrict"
+                                            maxlength="30" placeholder="E.g. Erode">
+                                    </div>
+                                </div>
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientPincode">Pincode</label>
+                                        <input type="text" class="form-control" id="patientPincode" name="patientPincode"
+                                            maxlength="6" placeholder="E.g. 638001">
+                                    </div>
+
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="partnersName">Guardian's Name </label>
+                                        <input type="text" class="form-control" id="partnersName" name="partnersName"
+                                            maxlength="30" placeholder="E.g. Rohith">
+                                    </div>
+                                </div>
+                                <div class="d-md-flex justify-content-between pb-3">
+                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
+                                        <input type="number" class="form-control" id="partnerMobile" name="partnerMobile"
+                                            maxlength="10" placeholder="E.g. 9874563210">
+                                        <div id="partnerMobile_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                        <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
+                                        <select class="form-select" id="partnerBlood" name="partnerBlood">
+                                            <option value="">Select Blood Group</option>
+                                            <option value="A +ve">A +ve</option>
+                                            <option value="A -ve">A -ve</option>
+                                            <option value="B +ve">B +ve</option>
+                                            <option value="B -ve">B -ve</option>
+                                            <option value="O +ve">O +ve</option>
+                                            <option value="O -ve">O -ve</option>
+                                            <option value="AB +ve">AB +ve</option>
+                                            <option value="AB -ve">AB -ve</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn float-end text-light mt-2"
+                                    style="background-color: #00ad8e;">Add</button>
+                            </form>
                         </div>
                     </div>
                 </section>
 
                 <!-- Symptoms / complaints  -->
-                <script>
+                <!-- <script>
                     document.addEventListener("DOMContentLoaded", () => {
                         const multiSelect = document.getElementById("multiSelectSymptoms");
                         const selectedValuesInput = document.getElementById("patientSymptoms");
@@ -554,9 +568,9 @@
                             }
                         });
                     });
-                </script>
+                </script> -->
 
-                <script>
+                <!-- <script>
                     function addNewMedicines() {
                         var medicines = document.getElementById("patientMedicines").value;
 
@@ -566,7 +580,7 @@
                             document.getElementById("addMedicine").style.display = "none";
                         }
                     }
-                </script>
+                </script> -->
 
                 <script>
                     function clearErrorPatientDetails() {
@@ -661,212 +675,231 @@
                                 <?php
                                 foreach ($patientDetails as $key => $value) {
                                     ?>
-                                        <div class="row">
-                                            <div class="position-relative mb-5">
-                                        <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
-                                                    <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
-                                                        alt="Profile Photo" width="180" height="180" class="rounded-circle"
-                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
-                                        <?php } else { ?>
-                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo"
-                                                        width="180" height="180" class="rounded-circle">
-                                        <?php } ?>
-                                                <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
-                                                    data-bs-target="#updatePatientProfile"
-                                                    onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')">
-                                                    <i class="bi bi-pencil-square"></i></button>
+                                        <div class="position-relative mb-5">
+                                    <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
+                                                <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
+                                                    alt="Profile Photo" width="180" height="180" class="rounded-circle"
+                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
+                                    <?php } else { ?>
+                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180"
+                                                    height="180" class="rounded-circle">
+                                    <?php } ?>
+                                            <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
+                                                data-bs-target="#updatePatientProfile"
+                                                onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')">
+                                                <i class="bi bi-pencil-square"></i></button>
+                                        </div>
+                                        <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
+                                            name="patientDetails" id="multi-step-form" enctype="multipart/form-data" method="POST"
+                                            oninput="clearErrorPatientDetails()">
+                                            <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
+                                                <button
+                                                    style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
+                                                    class="text-light rounded-circle border-0">1</button> Basic Details
+                                            </p>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientName">First Name <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="patientName" name="patientName"
+                                                        value="<?php echo $value['firstName'] ?>" maxlength="30"
+                                                        placeholder="E.g. Siva">
+                                                    <div id="patientName_err" class="text-danger pt-1"></div>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientLastName">Last Name</label>
+                                                    <input type="text" class="form-control" id="" name="patientLastName"
+                                                        value="<?php echo $value['lastName'] ?>" maxlength="30"
+                                                        placeholder="E.g. Kumar">
+                                                    <div id="patientLastName_err" class="text-danger pt-1"></div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
-                                                    name="patientDetails" id="multi-step-form" enctype="multipart/form-data"
-                                                    method="POST" oninput="clearErrorPatientDetails()">
-                                                    <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
-                                                        <button
-                                                            style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
-                                                            class="text-light rounded-circle border-0">1</button> Basic Details
-                                                    </p>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientName">First Name <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="patientName" name="patientName"
-                                                            value="<?php echo $value['firstName'] ?>" placeholder="E.g. Siva">
-                                                        <div id="patientName_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientLastName">Last Name</label>
-                                                        <input type="text" class="form-control" id="" name="patientLastName"
-                                                            value="<?php echo $value['lastName'] ?>" placeholder="E.g. Kumar">
-                                                        <div id="patientLastName_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientMobile">Moblie Number <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="number" class="form-control" id="patientMobile"
-                                                            name="patientMobile" value="<?php echo $value['mobileNumber'] ?>"
-                                                            placeholder="E.g. 9638527410">
-                                                        <div id="patientMobile_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientAltMobile">Alternate Moblie
-                                                            Number</label>
-                                                        <input type="number" class="form-control" id="patientAltMobile"
-                                                            name="patientAltMobile" value="<?php echo $value['alternateMobile'] ?>"
-                                                            placeholder="E.g. 9876543210">
-                                                        <div id="patientMobile_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientEmail">Email</label>
-                                                        <input type="mail" class="form-control" id="patientEmail" name="patientEmail"
-                                                            value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com">
-                                                        <div id="patientEmail_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientGender">Gender <span
-                                                                class="text-danger">*</span></label>
-                                                        <select class="form-select" id="patientGender" name="patientGender">
-                                                            <option value="">Select Gender</option>
-                                                            <option value="Male" <?php if (isset($value['gender']) && $value['gender'] === 'Male')
-                                                                echo 'selected'; ?>>Male</option>
-                                                            <option value="Female" <?php if (isset($value['gender']) && $value['gender'] === 'Female')
-                                                                echo 'selected'; ?>>Female</option>
-                                                        </select>
-                                                        <div id="patientGender_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-2">
-                                                        <label class="form-label" for="patientAge">Age <span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="number" class="form-control" id="patientAge" name="patientAge"
-                                                            min="0" value="<?php echo $value['age'] ?>" placeholder="E.g. 41">
-                                                        <div id="patientAge_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientBlood">Blood Group</label>
-                                                        <select class="form-select" id="patientBlood" name="patientBlood">
-                                                            <option value="">Select Blood Group</option>
-                                                            <option value="A +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'A +ve')
-                                                                echo 'selected'; ?>>A +ve</option>
-                                                            <option value="A -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'A -ve')
-                                                                echo 'selected'; ?>>A -ve</option>
-                                                            <option value="B +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'B +ve')
-                                                                echo 'selected'; ?>>B +ve</option>
-                                                            <option value="B -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'B -ve')
-                                                                echo 'selected'; ?>>B -ve</option>
-                                                            <option value="O +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'O +ve')
-                                                                echo 'selected'; ?>>O +ve</option>
-                                                            <option value="O -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'O -ve')
-                                                                echo 'selected'; ?>>O -ve</option>
-                                                            <option value="AB +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'AB +ve')
-                                                                echo 'selected'; ?>>AB +ve</option>
-                                                            <option value="AB -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'AB -ve')
-                                                                echo 'selected'; ?>>AB -ve</option>
-                                                        </select>
-                                                        <div id="patientBlood_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientMarital">Marital Status</label>
-                                                        <select class="form-select" id="patientMarital" name="patientMarital">
-                                                            <option value="">Select Marital Status</option>
-                                                            <option value="Single" <?php if (isset($value['maritalStatus']) && $value['maritalStatus'] === 'Single')
-                                                                echo 'selected'; ?>>Single</option>
-                                                            <option value="Married" <?php if (isset($value['maritalStatus']) && $value['maritalStatus'] === 'Married')
-                                                                echo 'selected'; ?>>Married
-                                                            </option>
-                                                        </select>
-                                                        <div id="patientMarital_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="marriedSince">Married Since</label>
-                                                        <input type="text" class="form-control" id="marriedSince"
-                                                            value="<?php echo $value['marriedSince'] ?>" name="marriedSince"
-                                                            placeholder="E.g. 2012">
-                                                    </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientMobile">Moblie Number <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="patientMobile" name="patientMobile"
+                                                        value="<?php echo $value['mobileNumber'] ?>" maxlength="10"
+                                                        placeholder="E.g. 9638527410">
+                                                    <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientAltMobile">Alternate Moblie
+                                                        Number</label>
+                                                    <input type="text" class="form-control" id="patientAltMobile"
+                                                        name="patientAltMobile" value="<?php echo $value['alternateMobile'] ?>"
+                                                        maxlength="10" placeholder="E.g. 9876543210">
+                                                    <div id="patientMobile_err" class="text-danger pt-1"></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientEmail">Email</label>
+                                                    <input type="email" class="form-control" id="patientEmail" name="patientEmail"
+                                                        value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com">
+                                                    <div id="patientEmail_err" class="text-danger pt-1"></div>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientGender">Gender <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" id="patientGender" name="patientGender">
+                                                        <option value="">Select Gender</option>
+                                                        <option value="Male" <?php if (isset($value['gender']) && $value['gender'] === 'Male')
+                                                            echo 'selected'; ?>>Male</option>
+                                                        <option value="Female" <?php if (isset($value['gender']) && $value['gender'] === 'Female')
+                                                            echo 'selected'; ?>>Female</option>
+                                                    </select>
+                                                    <div id="patientGender_err" class="text-danger pt-1"></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientAge">Age <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" id="patientAge" name="patientAge" min="0"
+                                                        max="120" maxlength="3" value="<?php echo $value['age'] ?>"
+                                                        placeholder="E.g. 41">
+                                                    <div id="patientAge_err" class="text-danger pt-1"></div>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientBlood">Blood Group</label>
+                                                    <select class="form-select" id="patientBlood" name="patientBlood">
+                                                        <option value="">Select Blood Group</option>
+                                                        <option value="A +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'A +ve')
+                                                            echo 'selected'; ?>>A +ve</option>
+                                                        <option value="A -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'A -ve')
+                                                            echo 'selected'; ?>>A -ve</option>
+                                                        <option value="B +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'B +ve')
+                                                            echo 'selected'; ?>>B +ve</option>
+                                                        <option value="B -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'B -ve')
+                                                            echo 'selected'; ?>>B -ve</option>
+                                                        <option value="O +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'O +ve')
+                                                            echo 'selected'; ?>>O +ve</option>
+                                                        <option value="O -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'O -ve')
+                                                            echo 'selected'; ?>>O -ve</option>
+                                                        <option value="AB +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'AB +ve')
+                                                            echo 'selected'; ?>>AB +ve</option>
+                                                        <option value="AB -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'AB -ve')
+                                                            echo 'selected'; ?>>AB -ve</option>
+                                                    </select>
+                                                    <div id="patientBlood_err" class="text-danger pt-1"></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientMarital">Marital Status</label>
+                                                    <select class="form-select" id="patientMarital" name="patientMarital">
+                                                        <option value="">Select Marital Status</option>
+                                                        <option value="Single" <?php if (isset($value['maritalStatus']) && $value['maritalStatus'] === 'Single')
+                                                            echo 'selected'; ?>>Single</option>
+                                                        <option value="Married" <?php if (isset($value['maritalStatus']) && $value['maritalStatus'] === 'Married')
+                                                            echo 'selected'; ?>>Married
+                                                        </option>
+                                                    </select>
+                                                    <div id="patientMarital_err" class="text-danger pt-1"></div>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="marriedSince">Married Since</label>
+                                                    <input type="text" class="form-control" id="marriedSince"
+                                                        value="<?php echo $value['marriedSince'] ?>" name="marriedSince" maxlength="20"
+                                                        placeholder="E.g. 2012">
+                                                </div>
+                                            </div>
 
-                                                    <p class="py-3" style="font-size: 20px; font-weight: 500;color:#00ad8e"> <button
-                                                            style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
-                                                            class="text-light rounded-circle border-0">2</button> Additional Information
-                                                    </p>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientProfessions">Patient's
-                                                            Profession</label>
-                                                        <input type="text" class="form-control" id="patientProfessions"
-                                                            name="patientProfessions" value="<?php echo $value['profession'] ?>"
-                                                            placeholder="E.g. IT employee">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientDoorNo">Door Number</label>
-                                                        <input type="text" class="form-control" id="patientDoorNo" name="patientDoorNo"
-                                                            value="<?php echo $value['doorNumber'] ?>" placeholder="E.g. 96">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientStreet">Street Address</label>
-                                                        <input type="text" class="form-control" id="patientStreet" name="patientStreet"
-                                                            value="<?php echo $value['address'] ?>" placeholder="E.g. Abc street">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientDistrict">District</label>
-                                                        <input type="text" class="form-control" id="patientDistrict"
-                                                            name="patientDistrict" value="<?php echo $value['district'] ?>"
-                                                            placeholder="E.g. Erode">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="patientPincode">Pincode</label>
-                                                        <input type="number" class="form-control" id="patientPincode"
-                                                            name="patientPincode" value="<?php echo $value['pincode'] ?>"
-                                                            placeholder="E.g. 638001">
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="partnersName">Guardian's Name </label>
-                                                        <input type="text" class="form-control" id="partnersName" name="partnersName"
-                                                            value="<?php echo $value['partnerName'] ?>" placeholder="E.g. Rohith">
-                                                        <div id="partnersName_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
-                                                        <input type="number" class="form-control" id="partnerMobile"
-                                                            name="partnerMobile" value="<?php echo $value['partnerMobile'] ?>"
-                                                            placeholder="E.g. 9874563210">
-                                                        <div id="partnerMobile_err" class="text-danger pt-1"></div>
-                                                    </div>
-                                                    <div class="form-group pb-3">
-                                                        <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
-                                                        <select class="form-select" id="partnerBlood" name="partnerBlood">
-                                                            <option value="">Select Blood Group</option>
-                                                            <option value="A +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'A +ve')
-                                                                echo 'selected'; ?>>A +ve</option>
-                                                            <option value="A -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'A -ve')
-                                                                echo 'selected'; ?>>A -ve</option>
-                                                            <option value="B +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'B +ve')
-                                                                echo 'selected'; ?>>B +ve</option>
-                                                            <option value="B -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'B -ve')
-                                                                echo 'selected'; ?>>B -ve</option>
-                                                            <option value="O +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'O +ve')
-                                                                echo 'selected'; ?>>O +ve</option>
-                                                            <option value="O -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'O -ve')
-                                                                echo 'selected'; ?>>O -ve</option>
-                                                            <option value="AB +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'AB +ve')
-                                                                echo 'selected'; ?>>AB +ve</option>
-                                                            <option value="AB -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'AB -ve')
-                                                                echo 'selected'; ?>>AB -ve</option>
-                                                        </select>
-                                                    </div>
-                                                    <input type="hidden" id="patientIdDb" name="patientIdDb"
-                                                        value="<?php echo $value['id']; ?>">
-                                                    <div class="d-flex justify-content-between mt-3">
-                                                        <button type="reset" class="btn btn-secondary">Reset</button>
-                                                        <button type="submit" class="btn text-light" style="background-color: #00ad8e;"
-                                                            onclick="return validatePatientDetails()">Update</button>
-                                                    </div>
-                                                </form>
+                                            <p class="py-3" style="font-size: 20px; font-weight: 500;color:#00ad8e"> <button
+                                                    style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
+                                                    class="text-light rounded-circle border-0">2</button> Additional Information
+                                            </p>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientProfessions">Patient's
+                                                        Profession</label>
+                                                    <input type="text" class="form-control" id="patientProfessions"
+                                                        name="patientProfessions" value="<?php echo $value['profession'] ?>"
+                                                        maxlength="30" placeholder="E.g. IT employee">
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientDoorNo">Door Number</label>
+                                                    <input type="text" class="form-control" id="patientDoorNo" name="patientDoorNo"
+                                                        value="<?php echo $value['doorNumber'] ?>" maxlength="30" placeholder="E.g. 96">
+                                                </div>
                                             </div>
-                                <?php } ?>
-                                    </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientStreet">Street Address</label>
+                                                    <input type="text" class="form-control" id="patientStreet" name="patientStreet"
+                                                        value="<?php echo $value['address'] ?>" maxlength="30"
+                                                        placeholder="E.g. Abc street">
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientDistrict">District</label>
+                                                    <input type="text" class="form-control" id="patientDistrict" name="patientDistrict"
+                                                        value="<?php echo $value['district'] ?>" maxlength="30"
+                                                        placeholder="E.g. Erode">
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientPincode">Pincode</label>
+                                                    <input type="text" class="form-control" id="patientPincode" name="patientPincode"
+                                                        value="<?php echo $value['pincode'] ?>" maxlength="6" placeholder="E.g. 638001">
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="partnersName">Guardian's Name </label>
+                                                    <input type="text" class="form-control" id="partnersName" name="partnersName"
+                                                        value="<?php echo $value['partnerName'] ?>" maxlength="30"
+                                                        placeholder="E.g. Rohith">
+                                                    <div id="partnersName_err" class="text-danger pt-1"></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
+                                                    <input type="text" class="form-control" id="partnerMobile" name="partnerMobile"
+                                                        value="<?php echo $value['partnerMobile'] ?>" maxlength="30"
+                                                        placeholder="E.g. 9874563210">
+                                                    <div id="partnerMobile_err" class="text-danger pt-1"></div>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
+                                                    <select class="form-select" id="partnerBlood" name="partnerBlood">
+                                                        <option value="">Select Blood Group</option>
+                                                        <option value="A +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'A +ve')
+                                                            echo 'selected'; ?>>A +ve</option>
+                                                        <option value="A -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'A -ve')
+                                                            echo 'selected'; ?>>A -ve</option>
+                                                        <option value="B +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'B +ve')
+                                                            echo 'selected'; ?>>B +ve</option>
+                                                        <option value="B -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'B -ve')
+                                                            echo 'selected'; ?>>B -ve</option>
+                                                        <option value="O +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'O +ve')
+                                                            echo 'selected'; ?>>O +ve</option>
+                                                        <option value="O -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'O -ve')
+                                                            echo 'selected'; ?>>O -ve</option>
+                                                        <option value="AB +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'AB +ve')
+                                                            echo 'selected'; ?>>AB +ve</option>
+                                                        <option value="AB -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'AB -ve')
+                                                            echo 'selected'; ?>>AB -ve</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                                value="<?php echo $value['id']; ?>">
+                                            <div class="d-flex justify-content-between mt-3">
+                                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                                <button type="submit" class="btn text-light" style="background-color: #00ad8e;"
+                                                    onclick="return validatePatientDetails()">Update</button>
+                                            </div>
+                                        </form>
+                            <?php } ?>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </section>
 
                     <!-- Symptoms / Complaints -->
-                    <script>
+                    <!-- <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             const multiSelect = document.getElementById("multiSelectSymptoms");
                             const selectedValuesInput = document.getElementById("patientSymptoms");
@@ -989,7 +1022,7 @@
                                 fileInputLabeltu.textContent = "Select a File";
                             }
                         });
-                    </script>
+                    </script> -->
 
                     <script>
                         function patientPhotoUpdate(dbId) {
@@ -1188,7 +1221,7 @@
 
                                     <p class="my-3 mt-3 fs-5 fw-semibold">Medical Records</p>
 
-                                    <div class="d-md-flex">
+                                    <!-- <div class="d-md-flex">
                                         <p class="col-sm-6"><span class="text-secondary ">Weight</span> :
                                     <?php echo $value['weight'] ? $value['weight'] . " Kg" : "Not provided"; ?>
                                         </p>
@@ -1219,10 +1252,10 @@
                                         <p><span class="text-secondary ">Medicines</span> :
                                     <?php echo $value['medicines'] ? $value['medicines'] : "Not provided"; ?>
                                         </p>
-                                    </div>
+                                    </div> -->
 
                                     <p class="my-3 mt-3 fs-5 fw-semibold">Documents / Reports</p>
-                            <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
+                            <!-- <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
                                         <div class="d-md-flex">
                                     <?php if ($value['documentOne'] != "No data") { ?>
                                                 <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> : <a
@@ -1237,7 +1270,7 @@
                                         </div>
                             <?php } else { ?>
                                         <p class="text-muted text-center pt-1 pb-2">No reports or documents have been uploaded yet.</p>
-                            <?php } ?>
+                            <?php } ?> -->
 
                                     <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
                             <?php if (!empty($consultDetails)) { ?>

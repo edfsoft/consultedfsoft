@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="card-body px-md-4 pb-2">
-                        <!-- <p class="my-3 fs-5 fw-semibold">Patient's Info:</p> -->
+                        <p class="my-3 fs-5 fw-semibold">Patient's Info:</p>
                         <?php
                         foreach ($patientDetails as $key => $value) {
                             ?>
@@ -119,13 +119,14 @@
                             </div>
                         <?php } ?>
 
-                        <p class="mb-2 mt-4 fs-5 fw-semibold">Vitals:</p>
-                        <div class="p-3">
-                            <form action="<?php echo base_url() . 'Healthcareprovider/saveVitals' ?>" method="post"
-                                id="vitalsForm" class="">
-                                <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id'] ?>">
-                                <input type="hidden" id="patientId" name="patientId"
-                                    value="<?php echo $value['patientId'] ?>">
+
+                        <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>" method="post"
+                            id="vitalsForm" class="">
+                            <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id'] ?>">
+                            <input type="hidden" id="patientId" name="patientId" value="<?php echo $value['patientId'] ?>">
+
+                            <p class="mb-2 mt-4 fs-5 fw-semibold">Vitals:</p>
+                            <div class="p-3">
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label fieldLabel" for="patientWeight">Weight </label>
@@ -202,20 +203,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="d-flex justify-content-between mt-2">
-                                    <button type="reset" class="btn btn-secondary">Reset</button>
-                                    <button type="submit" id="submitForm" class="btn text-light"
-                                        style="background-color: #00ad8e;">Submit</button>
-                                </div> -->
-                            </form>
-                        </div>
-                        <p class="mb-2 mt-4 fs-5 fw-semibold">Consultation Details:</p>
-                        <div class="p-3">
-                            <form action="<?php echo base_url() . 'Healthcareprovider/saveDirectConsultation' ?>"
-                                method="post" id="consultForm" class="containe col-md-9">
-                                <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id'] ?>">
-                                <input type="hidden" id="patientId" name="patientId"
-                                    value="<?php echo $value['patientId'] ?>">
+                            </div>
+                            <p class="mb-2 mt-4 fs-5 fw-semibold">Consultation Details:</p>
+                            <div class="p-3">
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color:rgb(206, 206, 206);" role="button">
@@ -357,38 +347,39 @@
                                     <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate">
                                     <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                                 </div>
-                                <div class="d-flex justify-content-between mt-2">
-                                    <button type="reset" class="btn btn-secondary">Reset</button>
-                                    <button type="submit" id="submitForm" class="btn text-light"
-                                        style="background-color: #00ad8e;">Submit</button>
-                                </div>
-                            </form>
-                        </div>
-
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <button type="submit" id="submitForm" class="btn text-light"
+                                    style="background-color: #00ad8e;">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </section>
 
+            <!-- Findings Modal -->
             <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Enter Details</h5>
+                            <h5 class="modal-title fw-medium" id="modalTitle" style="font-family: Poppins, sans-serif;">
+                                Enter Details</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="modalNote" class="form-label">Note</label>
-                                <input type="text" class="form-control" id="modalNote" />
+                                <input type="text" class="form-control" id="modalNote" placeholder="Enter note" />
                             </div>
                             <div class="mb-3">
                                 <label for="modalSince" class="form-label">Since</label>
-                                <input type="text" class="form-control" id="modalSince" />
+                                <input type="text" class="form-control" id="modalSince" placeholder="Enter since" />
                             </div>
                             <div class="mb-3">
                                 <label for="modalSeverity" class="form-label">Severity</label>
                                 <select id="modalSeverity" class="form-select">
-                                    <option value="">Select</option>
+                                    <option value="">Select severity</option>
                                     <option value="Mild">Mild</option>
                                     <option value="Moderate">Moderate</option>
                                     <option value="Severe">Severe</option>
@@ -397,7 +388,8 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-primary" onclick="saveModal()">OK</button>
+                            <button class="btn text-light" style="background-color: #00ad8e;"
+                                onclick="saveModal()">OK</button>
                         </div>
                     </div>
                 </div>
@@ -408,22 +400,23 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Diagnosis Details</h5>
+                            <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Diagnosis Details
+                            </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="diagnosisNote" class="form-label">Note</label>
-                                <input type="text" class="form-control" id="diagnosisNote">
+                                <input type="text" class="form-control" id="diagnosisNote" placeholder="Enter note">
                             </div>
                             <div class="mb-3">
                                 <label for="diagnosisSince" class="form-label">Location</label>
-                                <input type="text" class="form-control" id="diagnosisSince">
+                                <input type="text" class="form-control" id="diagnosisSince" placeholder="Enter location">
                             </div>
                             <div class="mb-3">
                                 <label for="diagnosisSeverity" class="form-label">Description</label>
                                 <select class="form-select" id="diagnosisSeverity">
-                                    <option value="">Select</option>
+                                    <option value="">Select description</option>
                                     <option>To rule out</option>
                                     <option>Suspect</option>
                                     <option>Follow up</option>
@@ -432,14 +425,15 @@
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button class="btn btn-primary" onclick="saveDiagnosisModal()">OK</button>
+                            <button class="btn text-light" style="background-color: #00ad8e;"
+                                onclick="saveDiagnosisModal()">OK</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Finding Script -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Finding Script -->
             <script>
                 const findingsList = [
                     "Blood Sugar High",

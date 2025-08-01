@@ -338,7 +338,6 @@ class Healthcareprovider extends CI_Controller
     }
 
     // Add new patient in the appointment form
-
     public function ajaxSavePatient()
     {
         header('Content-Type: application/json');
@@ -438,17 +437,17 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function saveOnlineConsutation()
-    {
-        $consultIdDb = $this->HcpModel->onlineConsultationSave();
-        $this->HcpModel->consultMedicineSave($consultIdDb);
-        if (consultIdDb) {
-            $this->session->set_flashdata('showSuccessMessage', 'Online consultation saved successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');
-        }
-        redirect('Healthcareprovider/appointments');
-    }
+    // public function saveOnlineConsutation()
+    // {
+    //     $consultIdDb = $this->HcpModel->onlineConsultationSave();
+    //     $this->HcpModel->consultMedicineSave($consultIdDb);
+    //     if (consultIdDb) {
+    //         $this->session->set_flashdata('showSuccessMessage', 'Online consultation saved successfully');
+    //     } else {
+    //         $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');
+    //     }
+    //     redirect('Healthcareprovider/appointments');
+    // }
 
     public function appointmentReschedule()
     {
@@ -552,6 +551,22 @@ class Healthcareprovider extends CI_Controller
     //     $this->data['patientList'] = $patientList['response'];
     //     $this->load->view('hcpDashboard.php',  $this->data);
     // }
+
+
+    // ***************************************************************************
+    // New 
+    public function saveConsultation()
+    {
+        // vitals
+        if ($this->HcpModel->save_vitals()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Vitals saved successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to save vitals.');
+        }
+
+        redirect('Healthcareprovider/consultation/' . $this->input->post('patientIdDb'));
+    }
+
 
 
     public function logout()

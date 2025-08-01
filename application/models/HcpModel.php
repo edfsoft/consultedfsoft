@@ -594,6 +594,26 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    // *************************************************************************
+    // New
+    public function save_vitals()
+    {
+        $data = array(
+            'patient_id' => $this->input->post('patientIdDb'),
+            // 'consultation_id' => $this->input->post('consultationId'), 
+            'consultation_id' => '1',
+            'weight_kg' => $this->input->post('patientWeight'),
+            'height_cm' => $this->input->post('patientHeight'),
+            'systolic_bp' => $this->input->post('patientSystolicBp'),
+            'diastolic_bp' => $this->input->post('patientDiastolicBp'),
+            'cholesterol_mg_dl' => $this->input->post('patientsCholestrol'),
+            'blood_sugar_mg_dl' => $this->input->post('patientBsugar'),
+            'spo2_percent' => $this->input->post('patientSpo2'),
+            'temperature_f' => $this->input->post('patientTemperature'),
+        );
+        return $this->db->insert('patient_vitals', $data);
+    }
+
 
 
 

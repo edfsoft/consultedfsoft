@@ -596,20 +596,21 @@ class HcpModel extends CI_Model
 
     // *************************************************************************
     // New
-    public function save_vitals()
+    public function save_consultation()
     {
+        $post = $this->input->post(null, true);
         $data = array(
-            'patient_id' => $this->input->post('patientIdDb'),
+            'patient_id' => $post('patientIdDb'),
             // 'consultation_id' => $this->input->post('consultationId'), 
             'consultation_id' => '1',
-            'weight_kg' => $this->input->post('patientWeight'),
-            'height_cm' => $this->input->post('patientHeight'),
-            'systolic_bp' => $this->input->post('patientSystolicBp'),
-            'diastolic_bp' => $this->input->post('patientDiastolicBp'),
-            'cholesterol_mg_dl' => $this->input->post('patientsCholestrol'),
-            'blood_sugar_mg_dl' => $this->input->post('patientBsugar'),
-            'spo2_percent' => $this->input->post('patientSpo2'),
-            'temperature_f' => $this->input->post('patientTemperature'),
+            'weight_kg' => $post['patientWeight'],
+            'height_cm' => $post['patientHeight'],
+            'systolic_bp' => $post['patientSystolicBp'],
+            'diastolic_bp' => $post['patientDiastolicBp'],
+            'cholesterol_mg_dl' => $post['patientsCholestrol'],
+            'blood_sugar_mg_dl' => $post['patientBsugar'],
+            'spo2_percent' => $post['patientSpo2'],
+            'temperature_f' => $post['patientTemperature'],
         );
         return $this->db->insert('patient_vitals', $data);
     }

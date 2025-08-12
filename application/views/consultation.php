@@ -158,15 +158,16 @@
                                 </button>
                             </li>
                         </ul>
-
                         <div class="tab-content border p-4 rounded shadow-sm" id="consultationTabsContent">
                             <div class="tab-pane fade show active" id="new-consultation" role="tabpanel">
                                 <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>"
-                                    method="post" id="vitalsForm" class="">
+                                    method="post" id="consultationForm" class="">
                                     <!-- <input type="hidden" id="patientIdDb" name="patientIdDb"
                                         value="<?php echo $value['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
                                         value="<?php echo $value['patientId'] ?>"> -->
+                                    <input type="hidden" id="patientIdDb" name="patientIdDb" value="84">
+                                    <input type="hidden" id="patientId" name="patientId" value="EDF000031">
 
                                     <p class="mb-2 mt-4 fs-5 fw-semibold">Vitals:</p>
                                     <div class="p-3">
@@ -257,7 +258,7 @@
                                     </div>
                                     <p class="mb-2 mt-4 fs-5 fw-semibold">Consultation Details:</p>
                                     <div class="p-3">
-                                        <div class="mb-3">
+                                        <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color:rgb(206, 206, 206);" role="button">
                                                 <span><strong>Symptoms</strong></span>
@@ -273,8 +274,8 @@
                                                     <?php } ?>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="mb-3">
+                                        </div> -->
+                                        <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
                                                 <span><strong>Findings</strong></span>
@@ -293,6 +294,31 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <input type="hidden" name="findingsJson" id="findingsJson"> -->
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-toggle="collapse" data-target="#findingsCollapse">
+                                                <span><strong>Findings</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2" id="findingsCollapse">
+                                                <div id="findingsWrapper">
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="tags-input" id="findingsInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="searchInput" placeholder="Search or type to add..." />
+                                                        </div>
+                                                        <div class="suggestions-box" id="suggestionsBox"></div>
+                                                    </div>
+                                                    <div id="findingsList" class="mt-2"></div>
+                                                    <!-- Display added findings -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="findingsJson" id="findingsJson">
+
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -420,9 +446,9 @@
                         </div>
                     </div>
 
-
                 </div>
 
+                <!-- ******************************************************************************************************************************************** -->
                 <!-- Findings Modal -->
                 <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
                     <div class="modal-dialog">
@@ -499,9 +525,10 @@
                     </div>
                 </div>
 
+                <!-- ******************************************************************************************************************************************** -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-                <!-- Finding Script -->
+                <!-- Finding Modal Script -->
                 <script>
                     const findingsList = [
                         "Blood Sugar High",
@@ -660,7 +687,7 @@
 
                     renderSuggestions();
                 </script>
-                <!-- Diagonsis script -->
+                <!-- Diagonsis Modal Script -->
                 <script>
                     const diagnosisList = [
                         "Diabetes", "Hypertension", "Asthma", "Tuberculosis", "Anemia", "Arthritis"
@@ -805,6 +832,69 @@
                     renderDiagnosisSuggestions();
                 </script>
 
+                <!-- Findings save script -->
+                <script>
+                    $(document).ready(function () {
+                        // Function to parse a tag's text back into an object
+                        function parseTagText(text) {
+                            // Clean up text: remove any extra spaces or button content
+                            text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
+
+                            let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
+                            let match = text.match(regex);
+                            if (match) {
+                                return {
+                                    name: match[1].trim(),
+                                    note: match[2].trim(),
+                                    since: match[3].trim(),
+                                    severity: match[4].trim()
+                                };
+                            }
+
+                            // If no details, just the finding name
+                            regex = /^(.+?)$/;
+                            match = text.match(regex);
+                            if (match) {
+                                return {
+                                    name: match[1].trim(),
+                                    note: '',
+                                    since: '',
+                                    severity: ''
+                                };
+                            }
+
+                            return null;
+                        }
+
+                        // Update hidden input by parsing displayed tags
+                        function updateFindingsJson() {
+                            let findings = [];
+                            $('#findingsInput > span.bg-success').each(function () {
+                                let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
+                                let finding = parseTagText(tagText);
+                                if (finding) {
+                                    findings.push(finding);
+                                }
+                            });
+                            $('#findingsJson').val(JSON.stringify(findings));
+                            console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
+                        }
+
+                        // Use MutationObserver to detect changes in the tag container
+                        const observer = new MutationObserver(updateFindingsJson);
+                        observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
+
+                        // Also update before form submission
+                        $('#consultationForm').on('submit', function (e) {
+                            updateFindingsJson(); // Ensure latest data
+                            console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
+                            // Form will submit normally
+                        });
+                    });
+                </script>
+
+                <!-- ******************************************************************************************************************************************** -->
+
 
                 <!-- Medicine Add More Script -->
                 <!-- <script>
@@ -938,6 +1028,8 @@
                     });
                 });
             </script> -->
+
+
                 <!-- Toggle visibility and icon for all fields -->
                 <script>
                     document.querySelectorAll('.toggle-label').forEach(label => {
@@ -954,7 +1046,7 @@
                         button.addEventListener('click', (e) => {
                             const textarea = button.parentElement.querySelector('textarea');
                             textarea.value = '';
-                            e.stopPropagation(); // Prevent toggling when clicking clear
+                            e.stopPropagation();
                         });
                     });
                 </script>

@@ -576,33 +576,50 @@ class Healthcareprovider extends CI_Controller
     //     }
     // }
     public function consultation($patientIdDb)
-{
-    if (isset($_SESSION['hcpsName'])) {
-        $this->data['method'] = "newConsultation"; // default tab
-        $this->data['patientId'] = $patientIdDb;
-        $this->data['patientDetails'] = $this->HcpModel->getPatientDetails($patientIdDb);
-        $this->data['symptomsList'] = $this->HcpModel->getSymptoms();
-        $this->data['medicinesList'] = $this->HcpModel->getMedicines();
-        $this->load->view('consultation.php', $this->data);
-    } else {
-        redirect('Healthcareprovider/');
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "newConsultation"; // default tab
+            $this->data['patientId'] = $patientIdDb;
+            $this->data['patientDetails'] = $this->HcpModel->getPatientDetails($patientIdDb);
+            $this->data['symptomsList'] = $this->HcpModel->getSymptoms();
+            $this->data['medicinesList'] = $this->HcpModel->getMedicines();
+            $this->load->view('consultation.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
     }
-}
 
-    
     public function saveConsultation()
     {
-        // vitals
-        if ($this->HcpModel->save_consultation()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Vitals saved successfully.');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Failed to save vitals.');
+        $post = $this->input->post(null, true);
+        // Vitals
+        $vitalsSaved = $this->HcpModel->save_vitals();
+        // Findings
+        $findings_json = $this->input->post('findingsJson');
+        $findings = json_decode($findings_json, true);
+
+        if ($findings && is_array($findings)) {
+            foreach ($findings as $finding) {
+                $data = array(
+                    // 'consultation_id' => $consultation_id, 
+                    'consultation_id' => '1',
+                    'finding_name' => $finding['name'],
+                    'note' => $finding['note'],
+                    'since' => $finding['since'],
+                    'severity' => $finding['severity']
+                );
+                $findingSaved = $this->HcpModel->save_finding($data);
+            }
         }
 
-        redirect('Healthcareprovider/consultation/' . $this->input->post('patientIdDb'));
+        if ($vitalsSaved && $findingSaved) {
+            $this->session->set_flashdata('showSuccessMessage', 'Vitals and findings saved successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to save details.');
+        }
+
+        redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
     }
-
-
 
     public function logout()
     {

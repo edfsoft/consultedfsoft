@@ -592,8 +592,26 @@ class Healthcareprovider extends CI_Controller
     public function saveConsultation()
     {
         $post = $this->input->post(null, true);
+
         // Vitals
         $vitalsSaved = $this->HcpModel->save_vitals();
+
+        // Symptoms
+        $symptoms_json = $this->input->post('symptomsJson');
+        $symptoms = json_decode($symptoms_json, true);
+        if ($symptoms && is_array($symptoms)) {
+            foreach ($symptoms as $symptom) {
+                $data = array(
+                    'consultation_id' => '1',
+                    'symptom_name' => $symptom['symptom'],
+                    'note' => $symptom['note'],
+                    'since' => $symptom['since'],
+                    'severity' => $symptom['severity']
+                );
+                $symptomSaved = $this->HcpModel->save_symptom($data);
+            }
+        }
+
         // Findings
         $findings_json = $this->input->post('findingsJson');
         $findings = json_decode($findings_json, true);
@@ -612,10 +630,9 @@ class Healthcareprovider extends CI_Controller
             }
         }
 
-        // Diagonsis
+        // Diagnosis
         $diagnosis_json = $this->input->post('diagnosisJson');
         $diagnoses = json_decode($diagnosis_json, true);
-
         if ($diagnoses && is_array($diagnoses) && !empty($diagnoses)) {
             foreach ($diagnoses as $diagnosis) {
                 $data = array(
@@ -632,12 +649,12 @@ class Healthcareprovider extends CI_Controller
         }
 
         $investigationSaved = $this->HcpModel->save_investigation();
-         $instructionSaved = $this->HcpModel->save_instruction();
-         $procedureSaved = $this->HcpModel->save_procedure();
+        $instructionSaved = $this->HcpModel->save_instruction();
+        $procedureSaved = $this->HcpModel->save_procedure();
 
 
         if ($vitalsSaved && $findingSaved && $diagnosisSaved) {
-            $this->session->set_flashdata('showSuccessMessage', 'Vitals, findings, diagnosis saved successfully.');
+            $this->session->set_flashdata('showSuccessMessage', 'Vitals, findings, symptoms, diagnosis saved successfully.');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to save details.');
         }

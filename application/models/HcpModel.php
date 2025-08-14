@@ -598,23 +598,28 @@ class HcpModel extends CI_Model
     // New
     public function save_vitals()
     {
-        // $post = $this->input->post(null, true);
-        // // Vitals
-        // $vitalData = array(
-        //     'patient_id' => $post['patientIdDb'],
-        //     // 'consultation_id' => $this->input->post('consultationId'), 
-        //     'consultation_id' => '1',
-        //     'weight_kg' => $post['patientWeight'],
-        //     'height_cm' => $post['patientHeight'],
-        //     'systolic_bp' => $post['patientSystolicBp'],
-        //     'diastolic_bp' => $post['patientDiastolicBp'],
-        //     'cholesterol_mg_dl' => $post['patientsCholestrol'],
-        //     'blood_sugar_mg_dl' => $post['patientBsugar'],
-        //     'spo2_percent' => $post['patientSpo2'],
-        //     'temperature_f' => $post['patientTemperature'],
-        // );
-        // return $this->db->insert('patient_vitals', $vitalData);
-        return true;
+        $post = $this->input->post(null, true);
+        // Vitals
+        $vitalData = array(
+            'patient_id' => $post['patientIdDb'],
+            // 'consultation_id' => $this->input->post('consultationId'), 
+            'consultation_id' => '1',
+            'weight_kg' => $post['patientWeight'],
+            'height_cm' => $post['patientHeight'],
+            'systolic_bp' => $post['patientSystolicBp'],
+            'diastolic_bp' => $post['patientDiastolicBp'],
+            'cholesterol_mg_dl' => $post['patientsCholestrol'],
+            'blood_sugar_mg_dl' => $post['patientBsugar'],
+            'spo2_percent' => $post['patientSpo2'],
+            'temperature_f' => $post['patientTemperature'],
+        );
+        return $this->db->insert('patient_vitals', $vitalData);
+        // return true;
+    }
+
+    public function save_symptom($data)
+    {
+        return $this->db->insert('patient_symptoms', $data);
     }
 
     public function save_finding($data)
@@ -671,6 +676,7 @@ class HcpModel extends CI_Model
         }
         return true;
     }
+
 
 
 

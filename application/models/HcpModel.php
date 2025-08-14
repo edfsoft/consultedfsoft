@@ -622,7 +622,55 @@ class HcpModel extends CI_Model
         return $this->db->insert('patient_findings', $data);
     }
 
+    public function save_diagnosis($data)
+    {
+        return $this->db->insert('patient_diagnosis', $data);
+    }
 
+    public function save_investigation()
+    {
+        $investigations = $this->input->post('investigations');
+        if (!empty($investigations) && is_array($investigations)) {
+            foreach ($investigations as $investigation) {
+                $this->db->insert('patient_investigations', [
+                    // 'consultation_id'    => $consultation_id,
+                    'consultation_id' => '1',
+                    'investigation_name' => $investigation
+                ]);
+            }
+        }
+        return true;
+    }
+
+    public function save_instruction()
+    {
+        $instructions = $this->input->post('instructions');
+        if (!empty($instructions) && is_array($instructions)) {
+            foreach ($instructions as $instruction) {
+                $this->db->insert('patient_instructions', [
+                    // 'consultation_id'    => $consultation_id,
+                    'consultation_id' => '1',
+                    'instruction_name' => $instruction
+                ]);
+            }
+        }
+        return true;
+    }
+
+    public function save_procedure()
+    {
+        $procedures = $this->input->post('procedures');
+        if (!empty($procedures) && is_array($procedures)) {
+            foreach ($procedures as $procedure) {
+                $this->db->insert('patient_procedures', [
+                    // 'consultation_id'    => $consultation_id,
+                    'consultation_id' => '1',
+                    'procedure_name' => $procedure
+                ]);
+            }
+        }
+        return true;
+    }
 
 
 

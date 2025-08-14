@@ -612,8 +612,32 @@ class Healthcareprovider extends CI_Controller
             }
         }
 
-        if ($vitalsSaved && $findingSaved) {
-            $this->session->set_flashdata('showSuccessMessage', 'Vitals and findings saved successfully.');
+        // Diagonsis
+        $diagnosis_json = $this->input->post('diagnosisJson');
+        $diagnoses = json_decode($diagnosis_json, true);
+
+        if ($diagnoses && is_array($diagnoses) && !empty($diagnoses)) {
+            foreach ($diagnoses as $diagnosis) {
+                $data = array(
+                    // 'consultation_id' => $consultation_id, 
+                    'consultation_id' => '1',
+                    'diagnosis_name' => $diagnosis['name'],
+                    'note' => $diagnosis['note'],
+                    'since' => $diagnosis['since'],
+                    'severity' => $diagnosis['severity']
+                );
+
+                $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
+            }
+        }
+
+        $investigationSaved = $this->HcpModel->save_investigation();
+         $instructionSaved = $this->HcpModel->save_instruction();
+         $procedureSaved = $this->HcpModel->save_procedure();
+
+
+        if ($vitalsSaved && $findingSaved && $diagnosisSaved) {
+            $this->session->set_flashdata('showSuccessMessage', 'Vitals, findings, diagnosis saved successfully.');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to save details.');
         }

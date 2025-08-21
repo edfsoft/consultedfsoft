@@ -583,6 +583,10 @@ class Healthcareprovider extends CI_Controller
             $this->data['patientDetails'] = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['symptomsList'] = $this->HcpModel->getSymptoms();
             $this->data['medicinesList'] = $this->HcpModel->getMedicines();
+
+            $this->data['consultations'] = $this->HcpModel->get_consultations_by_patient($patientIdDb);
+            $this->data['patient_id'] = $patientIdDb;
+
             $this->load->view('consultation.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -608,7 +612,7 @@ class Healthcareprovider extends CI_Controller
                     'since' => $symptom['since'],
                     'severity' => $symptom['severity']
                 );
-                $symptomSaved = $this->HcpModel->save_symptom($data);
+                // $symptomSaved = $this->HcpModel->save_symptom($data);
             }
         }
 
@@ -626,7 +630,7 @@ class Healthcareprovider extends CI_Controller
                     'since' => $finding['since'],
                     'severity' => $finding['severity']
                 );
-                $findingSaved = $this->HcpModel->save_finding($data);
+                // $findingSaved = $this->HcpModel->save_finding($data);
             }
         }
 
@@ -644,20 +648,20 @@ class Healthcareprovider extends CI_Controller
                     'severity' => $diagnosis['severity']
                 );
 
-                $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
+                // $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
             }
         }
 
-        $investigationSaved = $this->HcpModel->save_investigation();
-        $instructionSaved = $this->HcpModel->save_instruction();
-        $procedureSaved = $this->HcpModel->save_procedure();
+        // $investigationSaved = $this->HcpModel->save_investigation();
+        // $instructionSaved = $this->HcpModel->save_instruction();
+        // $procedureSaved = $this->HcpModel->save_procedure();
 
 
-        if ($vitalsSaved && $findingSaved && $diagnosisSaved) {
-            $this->session->set_flashdata('showSuccessMessage', 'Vitals, findings, symptoms, diagnosis saved successfully.');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Failed to save details.');
-        }
+        // if ($vitalsSaved && $findingSaved && $diagnosisSaved) {
+        //     $this->session->set_flashdata('showSuccessMessage', 'Vitals, findings, symptoms, diagnosis saved successfully.');
+        // } else {
+        //     $this->session->set_flashdata('showErrorMessage', 'Failed to save details.');
+        // }
 
         redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
     }

@@ -599,6 +599,7 @@ class HcpModel extends CI_Model
     public function save_vitals()
     {
         $post = $this->input->post(null, true);
+        
         // Vitals
         $vitalData = array(
             'patient_id' => $post['patientIdDb'],
@@ -676,6 +677,58 @@ class HcpModel extends CI_Model
         }
         return true;
     }
+
+    public function get_consultations_by_patient($patient_id)
+    {
+        // Get all consultations for the patient
+        $this->db->select('*');
+        $this->db->from('consultations');
+        $this->db->where('patient_id', $patient_id);
+        $this->db->order_by('created_at', 'DESC');
+        $consultations = $this->db->get()->result_array();
+
+        foreach ($consultations as &$consultation) {
+            $consultation_id = $consultation['id'];
+
+            // Vitals
+            $consultation['vitals'] = $this->db
+                ->get_where('patient_vitals', ['consultation_id' => $consultation_id])
+                ->row_array();
+
+            // Symptoms
+            $consultation['symptoms'] = $this->db
+                ->get_where('patient_symptoms', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Findings
+            $consultation['findings'] = $this->db
+                ->get_where('patient_findings', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Diagnosis
+            $consultation['diagnosis'] = $this->db
+                ->get_where('patient_diagnosis', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Investigations
+            $consultation['investigations'] = $this->db
+                ->get_where('patient_investigations', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Instructions
+            $consultation['instructions'] = $this->db
+                ->get_where('patient_instructions', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Procedures
+            $consultation['procedures'] = $this->db
+                ->get_where('patient_procedures', ['consultation_id' => $consultation_id])
+                ->result_array();
+        }
+
+        return $consultations;
+    }
+
 
 
 

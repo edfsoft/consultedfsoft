@@ -162,9 +162,9 @@
 
                                 <?php if (!empty($consultations)): ?>
                                     <?php foreach ($consultations as $consultation): ?>
-                                        <div class="card mb-3 shadow-sm">
+                                        <div class="border mb-3 shadow-sm">
                                             <div class="card-body">
-                                                <h5 class="card-title">Consultation on
+                                                <h5 class="card-title">
                                                     <?= date('d-m-Y h:i A', strtotime($consultation['created_at'])) ?>
                                                 </h5>
 
@@ -172,9 +172,19 @@
                                                 <?php if (!empty($consultation['vitals'])): ?>
                                                     <p><strong>Vitals:</strong></p>
                                                     <ul>
-                                                        <li>Pulse: <?= $consultation['vitals']['pulse'] ?? 'N/A' ?></li>
-                                                        <li>BP: <?= $consultation['vitals']['bp'] ?? 'N/A' ?></li>
-                                                        <li>Temperature: <?= $consultation['vitals']['temperature'] ?? 'N/A' ?></li>
+                                                        <li>Weight: <?= $consultation['vitals']['weight_kg'] ?? 'N/A' ?> kg</li>
+                                                        <li>Height: <?= $consultation['vitals']['height_cm'] ?? 'N/A' ?> cm</li>
+                                                        <li>BP:
+                                                            <?= $consultation['vitals']['systolic_bp'] ?? 'N/A' ?>/<?= $consultation['vitals']['diastolic_bp'] ?? 'N/A' ?>
+                                                            mmHg
+                                                        </li>
+                                                        <li>Cholesterol: <?= $consultation['vitals']['cholesterol_mg_dl'] ?? 'N/A' ?>
+                                                            mg/dL</li>
+                                                        <li>Blood Sugar: <?= $consultation['vitals']['blood_sugar_mg_dl'] ?? 'N/A' ?>
+                                                            mg/dL</li>
+                                                        <li>SPO2: <?= $consultation['vitals']['spo2_percent'] ?? 'N/A' ?> %</li>
+                                                        <li>Temperature: <?= $consultation['vitals']['temperature_f'] ?? 'N/A' ?> °F
+                                                        </li>
                                                     </ul>
                                                 <?php endif; ?>
 
@@ -244,6 +254,18 @@
                                                         <?php foreach ($consultation['procedures'] as $proc): ?>
                                                             <li><?= $proc['procedure_name'] ?></li>
                                                         <?php endforeach; ?>
+                                                    </ul>
+                                                <?php endif; ?>
+                                                <?php if (!empty($consultation['advice_given'])): ?>
+                                                    <p><strong>Advice Given:</strong></p>
+                                                    <ul>
+                                                        <li><?= $consultation['advice_given'] ?></li>
+                                                    </ul>
+                                                <?php endif; ?>
+                                                <?php if (!empty($consultation['next_follow_up'])): ?>
+                                                    <p><strong>Next Follow Up Date:</strong></p>
+                                                    <ul>
+                                                        <li><?= $consultation['next_follow_up'] ?></li>
                                                     </ul>
                                                 <?php endif; ?>
                                             </div>
@@ -860,7 +882,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                                <button type="button" class="btn text-light"
+                                    style="background-color: #00ad8e;">Save</button>
                             </div>
                         </div>
                     </div>

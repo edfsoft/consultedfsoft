@@ -81,7 +81,7 @@
         .tab-buttons .btn.active-tab {
             background-color: #ffffff;
             border-bottom: none;
-            color: #0d6efd;
+            color: #26a854ff;
             font-weight: 600;
             position: relative;
             z-index: 2;
@@ -116,7 +116,6 @@
             </div>
         <?php }
         if ($method == "newConsultation") { ?>
-
             <section>
                 <div class="card rounded">
                     <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -146,22 +145,23 @@
                     <div class="card-body mx-3 px-md-4 pb-2">
                         <ul class="nav nav-tabs mb-3" id="consultationTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link active btn bg-secondary" id="new-tab" data-bs-toggle="tab"
                                     data-bs-target="#new-consultation" type="button" role="tab">
                                     New Consultation
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="followup-tab" data-bs-toggle="tab"
+                                <button class="nav-link btn bg-secondary" id="followup-tab" data-bs-toggle="tab"
                                     data-bs-target="#followup-consultation" type="button" role="tab">
                                     Follow Up
                                 </button>
                             </li>
                         </ul>
                         <div class="tab-content border p-4 rounded shadow-sm" id="consultationTabsContent">
+                            <!-- New Consultation -->
                             <div class="tab-pane fade show active" id="new-consultation" role="tabpanel">
                                 <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>"
-                                    method="post" id="consultationForm" class="">
+                                    method="post" id="consultationForm" class="mb-5">
                                     <!-- <input type="hidden" id="patientIdDb" name="patientIdDb"
                                         value="<?php echo $value['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
@@ -169,7 +169,7 @@
                                     <input type="hidden" id="patientIdDb" name="patientIdDb" value="84">
                                     <input type="hidden" id="patientId" name="patientId" value="EDF000031">
 
-                                    <p class="mb-2 mt-4 fs-5 fw-semibold">Vitals:</p>
+                                    <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                                     <div class="p-3">
                                         <div class="d-md-flex mb-3">
                                             <div class="col-md-6">
@@ -256,9 +256,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <p class="mb-2 mt-4 fs-5 fw-semibold">Consultation Details:</p>
+
+                                    <p class="my-3 fs-5 fw-semibold">Consultation Details:</p>
                                     <div class="p-3">
-                                        <!-- Symptoms Section -->
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
@@ -283,43 +283,7 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="symptomsJson" id="symptomsJson">
-                                        <!-- <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color:rgb(206, 206, 206);" role="button">
-                                                <span><strong>Symptoms</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-containe mt-2">
-                                                <select id="symptoms" name="symptoms[]" multiple="multiple"
-                                                    style="width:100%;">
-                                                    <?php foreach ($symptomsList as $key => $value) { ?>
-                                                        <option value="<?php echo $value['symptomsName'] ?>">
-                                                            <?php echo $value['symptomsName'] ?>
-                                                        </option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div> -->
-                                        <!-- <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong>Findings</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-container mt-2">
-                                                <div id="findingsWrapper">
-                                                    <div class="mb-3 position-relative">
-                                                        <div class="tags-input" id="findingsInput">
-                                                            <input type="text"
-                                                                class="form-control border-0 p-0 m-0 shadow-none"
-                                                                id="searchInput" placeholder="Search or type to add..." />
-                                                        </div>
-                                                        <div class="suggestions-box" id="suggestionsBox"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="findingsJson" id="findingsJson"> -->
+
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
@@ -344,24 +308,6 @@
                                         </div>
                                         <input type="hidden" name="findingsJson" id="findingsJson">
 
-
-                                        <!-- <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong>Diagnosis</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-container mt-2">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="diagnosisInputBox">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="diagnosisInput"
-                                                            placeholder="Search or type to add diagnosis..." />
-                                                    </div>
-                                                    <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
-                                                </div>
-                                            </div>
-                                        </div> -->
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
@@ -381,7 +327,6 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="diagnosisJson" id="diagnosisJson">
-
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -623,22 +568,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong>Medicines</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-container mt-2">
-                                                <button type="button"
-                                                    class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                                <div class="">
-                                                    Medicines
-                                                </div>
-                                            </div>
-                                        </div> -->
-
-                                        <!-- Medicines Section -->
+                                        <!-- Medicine section -->
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
@@ -646,12 +576,10 @@
                                                 <span><strong>Medicines</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
-
                                             <div class="collapse field-container mt-2" id="medicineField">
                                                 <button type="button"
                                                     class="btn btn-sm btn-danger clear-btn float-end">x</button>
                                                 <div>
-                                                    <!-- Medicine List -->
                                                     <select class="form-select" id="medicineSelect">
                                                         <option value="">-- Select Medicine --</option>
                                                         <option value="Paracetamol">Paracetamol</option>
@@ -662,133 +590,9 @@
                                             </div>
                                         </div>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Medicine Details</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form id="medicineForm">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Medicine Name</label>
-                                                                <input type="text" id="selectedMedicine"
-                                                                    class="form-control" readonly>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Dosage</label>
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="e.g. 500mg">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Duration</label>
-                                                                <input type="text" class="form-control"
-                                                                    placeholder="e.g. 5 days">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label">Frequency</label>
-                                                                <select class="form-select">
-                                                                    <option>Once a day</option>
-                                                                    <option>Twice a day</option>
-                                                                    <option>Thrice a day</option>
-                                                                </select>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="button" class="btn btn-primary">Save</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <script>
-                                            // When medicine is selected, open modal
-                                            document.getElementById("medicineSelect").addEventListener("change", function () {
-                                                let selected = this.value;
-                                                if (selected) {
-                                                    document.getElementById("selectedMedicine").value = selected;
-                                                    let modal = new bootstrap.Modal(document.getElementById("medicineModal"));
-                                                    modal.show();
-                                                }
-                                            });
-                                        </script>
-
-
                                     </div>
 
-                                    <!-- <div id="medicine-template" class="card medicine-entry">
-                                            <div class="card-header d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);">
-                                                <span class="text-dark"><strong>Medicines</strong></span>
-                                                <button type="button" class="btn-close btn-remove d-none"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="form-group py-3">
-                                                    <label class="form-label" for="preMedName">Medicine Name <span
-                                                            class="text-danger">*</span></label>
-                                                    <select class="form-select preMedName" id="preMedName[]"
-                                                        name="preMedName[]">
-                                                        <option value="">Select Medicine</option>
-                                                        <?php
-                                                        foreach ($medicinesList as $key => $value) {
-                                                            ?>
-                                                            <option
-                                                                value="<?php echo $value['medicineBrand'] . " / " . $value['medicineName'] . " / " . $value['strength'] ?>">
-                                                                <?php echo $value['medicineBrand'] . " / " . $value['medicineName'] . " / " . $value['strength'] ?>
-                                                            </option>
-                                                        <?php } ?>
-                                                    </select>
-                                                    <div id="preMedName_err" class="text-danger pt-1"></div>
-                                                </div>
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label" for="preMedFrequency">Frequency <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control preMedFrequency"
-                                                        name="preMedFrequency[]" placeholder="1 - 0 - 1" maxlength="9">
-                                                    <div id="preMedFrequency_err" class="text-danger pt-1"></div>
-                                                </div>
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label" for="preMedDuration">Duration <span
-                                                            class="text-danger">*</span></label>
-                                                    <div class="input-group">
-                                                        <input type="number" class="form-control preMedDuration"
-                                                            name="preMedDuration[]" placeholder="Enter duration" min="1"
-                                                            max="31">
-                                                        <select class="form-select preMedDurationUnit"
-                                                            name="preMedDurationUnit[]">
-                                                            <option value="days">Days</option>
-                                                            <option value="weeks">Weeks</option>
-                                                            <option value="months">Month</option>
-                                                        </select>
-                                                    </div>
-                                                    <div id="preMedDuration_err" class="text-danger pt-1 pe-2"></div> -->
-                                    <!-- <div id="preMedDurationUnit_err" class="text-danger pt-1"></div> -->
-                                    <!-- </div>
-                                                <div class="form-group">
-                                                    <label class="form-label" for="preMedNotes">Notes <span
-                                                            class="text-danger">*</span></label>
-                                                    <select class="form-select preMedNotes" name="preMedNotes[]">
-                                                        <option value=" ">Select Notes</option>
-                                                        <option value="Before food">Before Food</option>
-                                                        <option value="After food">After Food</option>
-                                                    </select>
-                                                    <div id="preMedNotes_err" class="text-danger pt-1"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="medicines-list"></div>
-                                        <div class="d-flex justify-content-end">
-                                            <button type="button" id="addMoreBtn" class="btn btn-secondary mt-0 mb-4"><i
-                                                    class="bi bi-plus-lg"></i> Medicine</button>
-                                        </div> -->
-                                    <div class="form-group pb-3">
+                                    <!-- <div class="form-group pb-3">
                                         <label class="form-label" for="advices">Advice <span
                                                 class="text-danger">*</span></label>
                                         <textarea class="form-control" name="advices" id="advices"
@@ -801,933 +605,861 @@
                                         <input type="date" class="form-control" id="nextFollowUpDate"
                                             name="nextFollowUpDate">
                                         <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
-                                    </div>
-                            </div>
-                            <div class="d-flex justify-content-between mt-2">
-                                <button type="reset" class="btn btn-secondary">Reset</button>
-                                <button type="submit" id="submitForm" class="btn text-light"
-                                    style="background-color: #00ad8e;">Save</button>
+                                    </div> -->
+
+                                    <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
+                                        style="background-color: #00ad8e;">Save</button>
                                 </form>
                             </div>
+                            <!-- Follow Up Consultation -->
                             <div class="tab-pane fade" id="followup-consultation" role="tabpanel">
                                 <h4 class="mb-3">Follow Up Consultation</h4>
                                 <p>No Previous Consultation</p>
                             </div>
                         </div>
-                    </div>
 
-                </div>
 
-                <!-- ******************************************************************************************************************************************** -->
-                <!-- Findings Modal -->
-                <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title fw-medium" id="modalTitle" style="font-family: Poppins, sans-serif;">
-                                    Enter Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="modalNote" class="form-label">Note</label>
-                                    <input type="text" class="form-control" id="modalNote" placeholder="Enter note" />
+                        <!-- ******************************************************************************************************************************************** -->
+                        <!-- Findings Modal -->
+                        <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" id="modalTitle"
+                                            style="font-family: Poppins, sans-serif;">
+                                            Enter Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="modalNote" class="form-label">Note</label>
+                                            <input type="text" class="form-control" id="modalNote"
+                                                placeholder="Enter note" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="modalSince" class="form-label">Since</label>
+                                            <input type="text" class="form-control" id="modalSince"
+                                                placeholder="Enter since" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="modalSeverity" class="form-label">Severity</label>
+                                            <select id="modalSeverity" class="form-select">
+                                                <option value="">Select severity</option>
+                                                <option value="Mild">Mild</option>
+                                                <option value="Moderate">Moderate</option>
+                                                <option value="Severe">Severe</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button class="btn text-light" style="background-color: #00ad8e;"
+                                            onclick="saveModal()">OK</button>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="modalSince" class="form-label">Since</label>
-                                    <input type="text" class="form-control" id="modalSince" placeholder="Enter since" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="modalSeverity" class="form-label">Severity</label>
-                                    <select id="modalSeverity" class="form-select">
-                                        <option value="">Select severity</option>
-                                        <option value="Mild">Mild</option>
-                                        <option value="Moderate">Moderate</option>
-                                        <option value="Severe">Severe</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button class="btn text-light" style="background-color: #00ad8e;"
-                                    onclick="saveModal()">OK</button>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Diagnosis Modal -->
-                <div class="modal fade" id="diagnosisModal" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Diagnosis
-                                    Details
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="diagnosisNote" class="form-label">Note</label>
-                                    <input type="text" class="form-control" id="diagnosisNote" placeholder="Enter note">
+                        <!-- Diagnosis Modal -->
+                        <div class="modal fade" id="diagnosisModal" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">
+                                            Diagnosis
+                                            Details
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="diagnosisNote" class="form-label">Note</label>
+                                            <input type="text" class="form-control" id="diagnosisNote"
+                                                placeholder="Enter note">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="diagnosisSince" class="form-label">Location</label>
+                                            <input type="text" class="form-control" id="diagnosisSince"
+                                                placeholder="Enter location">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="diagnosisSeverity" class="form-label">Description</label>
+                                            <select class="form-select" id="diagnosisSeverity">
+                                                <option value="">Select description</option>
+                                                <option>To rule out</option>
+                                                <option>Suspect</option>
+                                                <option>Follow up</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button class="btn text-light" style="background-color: #00ad8e;"
+                                            onclick="saveDiagnosisModal()">OK</button>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="diagnosisSince" class="form-label">Location</label>
-                                    <input type="text" class="form-control" id="diagnosisSince"
-                                        placeholder="Enter location">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="diagnosisSeverity" class="form-label">Description</label>
-                                    <select class="form-select" id="diagnosisSeverity">
-                                        <option value="">Select description</option>
-                                        <option>To rule out</option>
-                                        <option>Suspect</option>
-                                        <option>Follow up</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button class="btn text-light" style="background-color: #00ad8e;"
-                                    onclick="saveDiagnosisModal()">OK</button>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Symptoms Modal -->
-                <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title fw-medium" id="symptomsModalTitle"
-                                    style="font-family: Poppins, sans-serif;">
-                                    Enter Symptom Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="symptomNote" class="form-label">Note</label>
-                                    <input type="text" class="form-control" id="symptomNote" placeholder="Enter note" />
+                        <!-- Symptoms Modal -->
+                        <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" id="symptomsModalTitle"
+                                            style="font-family: Poppins, sans-serif;">
+                                            Enter Symptom Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="symptomNote" class="form-label">Note</label>
+                                            <input type="text" class="form-control" id="symptomNote"
+                                                placeholder="Enter note" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="symptomSince" class="form-label">Since</label>
+                                            <input type="text" class="form-control" id="symptomSince"
+                                                placeholder="Enter since" />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="symptomSeverity" class="form-label">Severity</label>
+                                            <select id="symptomSeverity" class="form-select">
+                                                <option value="">Select severity</option>
+                                                <option value="Mild">Mild</option>
+                                                <option value="Moderate">Moderate</option>
+                                                <option value="Severe">Severe</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button class="btn text-light" style="background-color: #00ad8e;"
+                                            onclick="saveSymptomModal()">OK</button>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="symptomSince" class="form-label">Since</label>
-                                    <input type="text" class="form-control" id="symptomSince" placeholder="Enter since" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="symptomSeverity" class="form-label">Severity</label>
-                                    <select id="symptomSeverity" class="form-select">
-                                        <option value="">Select severity</option>
-                                        <option value="Mild">Mild</option>
-                                        <option value="Moderate">Moderate</option>
-                                        <option value="Severe">Severe</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button class="btn text-light" style="background-color: #00ad8e;"
-                                    onclick="saveSymptomModal()">OK</button>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- ******************************************************************************************************************************************** -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+                        <!-- Medicine Modal -->
+                        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Medicine Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="medicineForm">
+                                            <div class="mb-3">
+                                                <label class="form-label">Medicine Name</label>
+                                                <input type="text" id="selectedMedicine" class="form-control" readonly>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Dosage</label>
+                                                <input type="text" class="form-control" placeholder="e.g. 500mg">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Duration</label>
+                                                <input type="text" class="form-control" placeholder="e.g. 5 days">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Frequency</label>
+                                                <select class="form-select">
+                                                    <option>Once a day</option>
+                                                    <option>Twice a day</option>
+                                                    <option>Thrice a day</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Symptoms Modal Script -->
-                <script>
-                    const symptomsList = [
-                        "bodyache", "fever", "headache", "followup cough", "cold"
-                    ];
 
-                    const symptomsInput = document.getElementById("symptomsSearchInput");
-                    const symptomsSuggestionsBox = document.getElementById("symptomsSuggestionsBox");
-                    const symptomsTagContainer = document.getElementById("symptomsInput");
 
-                    const symptomsModal = new bootstrap.Modal(document.getElementById("symptomsModal"));
-                    const symptomNote = document.getElementById("symptomNote");
-                    const symptomSince = document.getElementById("symptomSince");
-                    const symptomSeverity = document.getElementById("symptomSeverity");
-                    const symptomsModalTitle = document.getElementById("symptomsModalTitle");
+                        <!-- ******************************************************************************************************************************************** -->
 
-                    let selectedSymptoms = [];
-                    let pendingSymptom = "";
-                    let editingSymptomTag = null;
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-                    function renderSymptomsSuggestions() {
-                        const query = symptomsInput.value.toLowerCase().trim();
-                        symptomsSuggestionsBox.innerHTML = "";
+                        <!-- Symptoms Modal Script -->
+                        <script>
+                            const symptomsList = [
+                                "bodyache", "fever", "headache", "followup cough", "cold"
+                            ];
 
-                        const filtered = symptomsList.filter(s =>
-                            s.toLowerCase().includes(query) &&
-                            !selectedSymptoms.some(obj => obj.symptom === s)
-                        );
+                            const symptomsInput = document.getElementById("symptomsSearchInput");
+                            const symptomsSuggestionsBox = document.getElementById("symptomsSuggestionsBox");
+                            const symptomsTagContainer = document.getElementById("symptomsInput");
 
-                        if (filtered.length === 0 && query !== "") {
-                            const customOption = document.createElement("div");
-                            customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                            customOption.onclick = () => {
-                                openSymptomModal(query);
-                                symptomsInput.value = "";
-                            };
-                            symptomsSuggestionsBox.appendChild(customOption);
-                        } else {
-                            filtered.forEach(item => {
-                                const div = document.createElement("div");
-                                div.textContent = item;
-                                div.onclick = () => {
-                                    openSymptomModal(item);
+                            const symptomsModal = new bootstrap.Modal(document.getElementById("symptomsModal"));
+                            const symptomNote = document.getElementById("symptomNote");
+                            const symptomSince = document.getElementById("symptomSince");
+                            const symptomSeverity = document.getElementById("symptomSeverity");
+                            const symptomsModalTitle = document.getElementById("symptomsModalTitle");
+
+                            let selectedSymptoms = [];
+                            let pendingSymptom = "";
+                            let editingSymptomTag = null;
+
+                            function renderSymptomsSuggestions() {
+                                const query = symptomsInput.value.toLowerCase().trim();
+                                symptomsSuggestionsBox.innerHTML = "";
+
+                                const filtered = symptomsList.filter(s =>
+                                    s.toLowerCase().includes(query) &&
+                                    !selectedSymptoms.some(obj => obj.symptom === s)
+                                );
+
+                                if (filtered.length === 0 && query !== "") {
+                                    const customOption = document.createElement("div");
+                                    customOption.innerHTML = `Add "<strong>${query}</strong>"`;
+                                    customOption.onclick = () => {
+                                        openSymptomModal(query);
+                                        symptomsInput.value = "";
+                                    };
+                                    symptomsSuggestionsBox.appendChild(customOption);
+                                } else {
+                                    filtered.forEach(item => {
+                                        const div = document.createElement("div");
+                                        div.textContent = item;
+                                        div.onclick = () => {
+                                            openSymptomModal(item);
+                                            symptomsInput.value = "";
+                                        };
+                                        symptomsSuggestionsBox.appendChild(div);
+                                    });
+                                }
+
+                                symptomsSuggestionsBox.style.display = "block";
+                            }
+
+                            function openSymptomModal(tagName, existing = null, tagEl = null) {
+                                pendingSymptom = tagName;
+                                editingSymptomTag = tagEl;
+
+                                symptomsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+                                symptomNote.value = existing?.note || "";
+                                symptomSince.value = existing?.since || "";
+                                symptomSeverity.value = existing?.severity || "";
+
+                                symptomsModal.show();
+                            }
+
+                            function saveSymptomModal() {
+                                const note = symptomNote.value.trim();
+                                const since = symptomSince.value.trim();
+                                const severity = symptomSeverity.value;
+
+                                if (!pendingSymptom) return;
+
+                                const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
+
+                                if (editingSymptomTag && existingIndex !== -1) {
+                                    // Update existing tag
+                                    selectedSymptoms[existingIndex] = { symptom: pendingSymptom, note, since, severity };
+                                    updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
+                                } else {
+                                    const data = { symptom: pendingSymptom, note, since, severity };
+                                    selectedSymptoms.push(data);
+                                    addSymptomTag(data);
+                                }
+
+                                symptomsModal.hide();
+                                pendingSymptom = "";
+                                editingSymptomTag = null;
+                            }
+
+                            function addSymptomTag(data) {
+                                const tag = document.createElement("span");
+                                tag.className = "bg-success rounded-2 text-light p-2";
+                                tag.style.cursor = "pointer";
+                                updateSymptomTagDisplay(tag, data);
+
+                                tag.onclick = () => {
+                                    openSymptomModal(data.symptom, data, tag);
+                                };
+
+                                const removeBtn = document.createElement("button");
+                                removeBtn.type = "button";
+                                removeBtn.className = "text-light ms-2";
+                                removeBtn.innerHTML = "&times;";
+                                removeBtn.style.fontSize = "1rem";
+                                removeBtn.style.border = "none";
+                                removeBtn.style.background = "transparent";
+
+                                removeBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    tag.remove();
+                                    selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
+                                };
+
+                                tag.appendChild(removeBtn);
+                                symptomsTagContainer.insertBefore(tag, symptomsInput);
+                            }
+
+                            function updateSymptomTagDisplay(tagEl, data) {
+                                const textParts = [data.symptom];
+                                const details = [];
+
+                                if (data.note) details.push(`Note: ${data.note}`);
+                                if (data.since) details.push(`Since: ${data.since}`);
+                                if (data.severity) details.push(`Severity: ${data.severity}`);
+
+                                if (details.length > 0) {
+                                    textParts.push(`(${details.join(", ")})`);
+                                }
+
+                                tagEl.innerHTML = textParts.join(" ");
+                            }
+
+                            symptomsInput.addEventListener("input", renderSymptomsSuggestions);
+                            symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
+                            symptomsInput.addEventListener("keydown", e => {
+                                if (e.key === "Enter" && symptomsInput.value.trim() !== "") {
+                                    e.preventDefault();
+                                    openSymptomModal(symptomsInput.value.trim());
                                     symptomsInput.value = "";
-                                };
-                                symptomsSuggestionsBox.appendChild(div);
+                                }
                             });
-                        }
 
-                        symptomsSuggestionsBox.style.display = "block";
-                    }
+                            document.addEventListener("click", (e) => {
+                                if (!symptomsTagContainer.contains(e.target)) {
+                                    symptomsSuggestionsBox.style.display = "none";
+                                }
+                            });
 
-                    function openSymptomModal(tagName, existing = null, tagEl = null) {
-                        pendingSymptom = tagName;
-                        editingSymptomTag = tagEl;
+                            renderSymptomsSuggestions();
+                        </script>
 
-                        symptomsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-                        symptomNote.value = existing?.note || "";
-                        symptomSince.value = existing?.since || "";
-                        symptomSeverity.value = existing?.severity || "";
+                        <!-- Finding Modal Script -->
+                        <script>
+                            const findingsList = [
+                                "Blood Sugar High",
+                                "DYSLIPIDEMIA",
+                                "Foot swelling",
+                                "Burning sensation in urine",
+                                "HIGH BP",
+                                "Asymptomatic",
+                                "Heart Sounds",
+                                "Post Covid 19",
+                                "Dysuria",
+                                "Post Covid 19 weakness",
+                                "GIDDINESS"
+                            ];
 
-                        symptomsModal.show();
-                    }
+                            const findingsInput = document.getElementById("searchInput");
+                            const suggestionsBox = document.getElementById("suggestionsBox");
+                            const tagContainer = document.getElementById("findingsInput");
 
-                    function saveSymptomModal() {
-                        const note = symptomNote.value.trim();
-                        const since = symptomSince.value.trim();
-                        const severity = symptomSeverity.value;
+                            const modal = new bootstrap.Modal(document.getElementById("inputModal"));
+                            const modalNote = document.getElementById("modalNote");
+                            const modalSince = document.getElementById("modalSince");
+                            const modalSeverity = document.getElementById("modalSeverity");
+                            const modalTitle = document.getElementById("modalTitle");
 
-                        if (!pendingSymptom) return;
+                            let selectedFindings = [];
+                            let pendingTag = "";
+                            let editingTagEl = null;
 
-                        const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
+                            function renderSuggestions() {
+                                const query = findingsInput.value.toLowerCase().trim();
+                                suggestionsBox.innerHTML = "";
 
-                        if (editingSymptomTag && existingIndex !== -1) {
-                            // Update existing tag
-                            selectedSymptoms[existingIndex] = { symptom: pendingSymptom, note, since, severity };
-                            updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
-                        } else {
-                            const data = { symptom: pendingSymptom, note, since, severity };
-                            selectedSymptoms.push(data);
-                            addSymptomTag(data);
-                        }
+                                const filtered = findingsList.filter(f =>
+                                    f.toLowerCase().includes(query) &&
+                                    !selectedFindings.some(obj => obj.finding === f)
+                                );
 
-                        symptomsModal.hide();
-                        pendingSymptom = "";
-                        editingSymptomTag = null;
-                    }
+                                if (filtered.length === 0 && query !== "") {
+                                    const customOption = document.createElement("div");
+                                    customOption.innerHTML = `Add "<strong>${query}</strong>"`;
+                                    customOption.onclick = () => {
+                                        openModal(query);
+                                        findingsInput.value = "";
+                                    };
+                                    suggestionsBox.appendChild(customOption);
+                                } else {
+                                    filtered.forEach(item => {
+                                        const div = document.createElement("div");
+                                        div.textContent = item;
+                                        div.onclick = () => {
+                                            openModal(item);
+                                            findingsInput.value = "";
+                                        };
+                                        suggestionsBox.appendChild(div);
+                                    });
+                                }
 
-                    function addSymptomTag(data) {
-                        const tag = document.createElement("span");
-                        tag.className = "bg-success rounded-2 text-light p-2";
-                        tag.style.cursor = "pointer";
-                        updateSymptomTagDisplay(tag, data);
+                                suggestionsBox.style.display = "block";
+                            }
 
-                        tag.onclick = () => {
-                            openSymptomModal(data.symptom, data, tag);
-                        };
+                            function openModal(tagName, existing = null, tagEl = null) {
+                                pendingTag = tagName;
+                                editingTagEl = tagEl;
 
-                        const removeBtn = document.createElement("button");
-                        removeBtn.type = "button";
-                        removeBtn.className = "text-light ms-2";
-                        removeBtn.innerHTML = "&times;";
-                        removeBtn.style.fontSize = "1rem";
-                        removeBtn.style.border = "none";
-                        removeBtn.style.background = "transparent";
+                                modalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+                                modalNote.value = existing?.note || "";
+                                modalSince.value = existing?.since || "";
+                                modalSeverity.value = existing?.severity || "";
 
-                        removeBtn.onclick = (e) => {
-                            e.stopPropagation();
-                            tag.remove();
-                            selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
-                        };
+                                modal.show();
+                            }
 
-                        tag.appendChild(removeBtn);
-                        symptomsTagContainer.insertBefore(tag, symptomsInput);
-                    }
+                            function saveModal() {
+                                const note = modalNote.value.trim();
+                                const since = modalSince.value.trim();
+                                const severity = modalSeverity.value;
 
-                    function updateSymptomTagDisplay(tagEl, data) {
-                        const textParts = [data.symptom];
-                        const details = [];
+                                if (!pendingTag) return;
 
-                        if (data.note) details.push(`Note: ${data.note}`);
-                        if (data.since) details.push(`Since: ${data.since}`);
-                        if (data.severity) details.push(`Severity: ${data.severity}`);
+                                const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
 
-                        if (details.length > 0) {
-                            textParts.push(`(${details.join(", ")})`);
-                        }
+                                if (editingTagEl && existingIndex !== -1) {
+                                    // Update existing tag
+                                    selectedFindings[existingIndex] = { finding: pendingTag, note, since, severity };
+                                    updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
+                                } else {
+                                    const data = { finding: pendingTag, note, since, severity };
+                                    selectedFindings.push(data);
+                                    addTag(data);
+                                }
 
-                        tagEl.innerHTML = textParts.join(" ");
-                    }
+                                modal.hide();
+                                pendingTag = "";
+                                editingTagEl = null;
+                            }
 
-                    symptomsInput.addEventListener("input", renderSymptomsSuggestions);
-                    symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
-                    symptomsInput.addEventListener("keydown", e => {
-                        if (e.key === "Enter" && symptomsInput.value.trim() !== "") {
-                            e.preventDefault();
-                            openSymptomModal(symptomsInput.value.trim());
-                            symptomsInput.value = "";
-                        }
-                    });
+                            function addTag(data) {
+                                const tag = document.createElement("span");
+                                tag.className = "bg-success rounded-2 text-light p-2";
+                                tag.style.cursor = "pointer";
+                                updateTagDisplay(tag, data);
 
-                    document.addEventListener("click", (e) => {
-                        if (!symptomsTagContainer.contains(e.target)) {
-                            symptomsSuggestionsBox.style.display = "none";
-                        }
-                    });
+                                tag.onclick = () => {
+                                    openModal(data.finding, data, tag);
+                                };
 
-                    renderSymptomsSuggestions();
-                </script>
+                                const removeBtn = document.createElement("button");
+                                removeBtn.type = "button";
+                                removeBtn.className = "text-light ms-2";
+                                removeBtn.innerHTML = "&times;";
+                                removeBtn.style.fontSize = "1rem";
+                                removeBtn.style.border = "none";
+                                removeBtn.style.background = "transparent";
 
+                                removeBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    tag.remove();
+                                    selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
+                                };
 
-                <!-- Finding Modal Script -->
-                <script>
-                    const findingsList = [
-                        "Blood Sugar High",
-                        "DYSLIPIDEMIA",
-                        "Foot swelling",
-                        "Burning sensation in urine",
-                        "HIGH BP",
-                        "Asymptomatic",
-                        "Heart Sounds",
-                        "Post Covid 19",
-                        "Dysuria",
-                        "Post Covid 19 weakness",
-                        "GIDDINESS"
-                    ];
+                                tag.appendChild(removeBtn);
+                                tagContainer.insertBefore(tag, findingsInput);
+                            }
 
-                    const findingsInput = document.getElementById("searchInput");
-                    const suggestionsBox = document.getElementById("suggestionsBox");
-                    const tagContainer = document.getElementById("findingsInput");
+                            function updateTagDisplay(tagEl, data) {
+                                const textParts = [data.finding];
+                                const details = [];
 
-                    const modal = new bootstrap.Modal(document.getElementById("inputModal"));
-                    const modalNote = document.getElementById("modalNote");
-                    const modalSince = document.getElementById("modalSince");
-                    const modalSeverity = document.getElementById("modalSeverity");
-                    const modalTitle = document.getElementById("modalTitle");
+                                if (data.note) details.push(`Note: ${data.note}`);
+                                if (data.since) details.push(`Since: ${data.since}`);
+                                if (data.severity) details.push(`Severity: ${data.severity}`);
 
-                    let selectedFindings = [];
-                    let pendingTag = "";
-                    let editingTagEl = null;
+                                if (details.length > 0) {
+                                    textParts.push(`(${details.join(", ")})`);
+                                }
 
-                    function renderSuggestions() {
-                        const query = findingsInput.value.toLowerCase().trim();
-                        suggestionsBox.innerHTML = "";
+                                tagEl.innerHTML = textParts.join(" ");
+                            }
 
-                        const filtered = findingsList.filter(f =>
-                            f.toLowerCase().includes(query) &&
-                            !selectedFindings.some(obj => obj.finding === f)
-                        );
-
-                        if (filtered.length === 0 && query !== "") {
-                            const customOption = document.createElement("div");
-                            customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                            customOption.onclick = () => {
-                                openModal(query);
-                                findingsInput.value = "";
-                            };
-                            suggestionsBox.appendChild(customOption);
-                        } else {
-                            filtered.forEach(item => {
-                                const div = document.createElement("div");
-                                div.textContent = item;
-                                div.onclick = () => {
-                                    openModal(item);
+                            findingsInput.addEventListener("input", renderSuggestions);
+                            findingsInput.addEventListener("focus", renderSuggestions);
+                            findingsInput.addEventListener("keydown", e => {
+                                if (e.key === "Enter" && findingsInput.value.trim() !== "") {
+                                    e.preventDefault();
+                                    openModal(findingsInput.value.trim());
                                     findingsInput.value = "";
-                                };
-                                suggestionsBox.appendChild(div);
+                                }
                             });
-                        }
 
-                        suggestionsBox.style.display = "block";
-                    }
+                            document.addEventListener("click", (e) => {
+                                if (!tagContainer.contains(e.target)) {
+                                    suggestionsBox.style.display = "none";
+                                }
+                            });
 
-                    function openModal(tagName, existing = null, tagEl = null) {
-                        pendingTag = tagName;
-                        editingTagEl = tagEl;
+                            renderSuggestions();
+                        </script>
 
-                        modalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-                        modalNote.value = existing?.note || "";
-                        modalSince.value = existing?.since || "";
-                        modalSeverity.value = existing?.severity || "";
+                        <!-- Diagonsis Modal Script -->
+                        <script>
+                            const diagnosisList = [
+                                "Diabetes", "Hypertension", "Asthma", "Tuberculosis", "Anemia", "Arthritis"
+                            ];
 
-                        modal.show();
-                    }
+                            const diagnosisInput = document.getElementById("diagnosisInput");
+                            const diagnosisSuggestionsBox = document.getElementById("diagnosisSuggestionsBox");
+                            const diagnosisTagContainer = document.getElementById("diagnosisInputBox");
 
-                    function saveModal() {
-                        const note = modalNote.value.trim();
-                        const since = modalSince.value.trim();
-                        const severity = modalSeverity.value;
+                            const diagnosisModal = new bootstrap.Modal(document.getElementById("diagnosisModal"));
+                            const diagnosisNote = document.getElementById("diagnosisNote");
+                            const diagnosisSince = document.getElementById("diagnosisSince");
+                            const diagnosisSeverity = document.getElementById("diagnosisSeverity");
 
-                        if (!pendingTag) return;
+                            let selectedDiagnosis = [];
+                            let pendingDiagnosis = "";
+                            let editingDiagnosisTag = null;
 
-                        const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
+                            function renderDiagnosisSuggestions() {
+                                const query = diagnosisInput.value.toLowerCase().trim();
+                                diagnosisSuggestionsBox.innerHTML = "";
 
-                        if (editingTagEl && existingIndex !== -1) {
-                            // Update existing tag
-                            selectedFindings[existingIndex] = { finding: pendingTag, note, since, severity };
-                            updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
-                        } else {
-                            const data = { finding: pendingTag, note, since, severity };
-                            selectedFindings.push(data);
-                            addTag(data);
-                        }
+                                const filtered = diagnosisList.filter(d =>
+                                    d.toLowerCase().includes(query) &&
+                                    !selectedDiagnosis.some(obj => obj.name === d)
+                                );
 
-                        modal.hide();
-                        pendingTag = "";
-                        editingTagEl = null;
-                    }
+                                if (filtered.length === 0 && query !== "") {
+                                    const customOption = document.createElement("div");
+                                    customOption.innerHTML = `Add "<strong>${query}</strong>"`;
+                                    customOption.onclick = () => {
+                                        openDiagnosisModal(query);
+                                        diagnosisInput.value = "";
+                                    };
+                                    diagnosisSuggestionsBox.appendChild(customOption);
+                                } else {
+                                    filtered.forEach(item => {
+                                        const div = document.createElement("div");
+                                        div.textContent = item;
+                                        div.onclick = () => {
+                                            openDiagnosisModal(item);
+                                            diagnosisInput.value = "";
+                                        };
+                                        diagnosisSuggestionsBox.appendChild(div);
+                                    });
+                                }
 
-                    function addTag(data) {
-                        const tag = document.createElement("span");
-                        tag.className = "bg-success rounded-2 text-light p-2";
-                        tag.style.cursor = "pointer";
-                        updateTagDisplay(tag, data);
+                                diagnosisSuggestionsBox.style.display = "block";
+                            }
 
-                        tag.onclick = () => {
-                            openModal(data.finding, data, tag);
-                        };
+                            function openDiagnosisModal(name, existing = null, tagEl = null) {
+                                pendingDiagnosis = name;
+                                editingDiagnosisTag = tagEl;
 
-                        const removeBtn = document.createElement("button");
-                        removeBtn.type = "button";
-                        removeBtn.className = "text-light ms-2";
-                        removeBtn.innerHTML = "&times;";
-                        removeBtn.style.fontSize = "1rem";
-                        removeBtn.style.border = "none";
-                        removeBtn.style.background = "transparent";
+                                // ✅ Set the title like this:
+                                document.querySelector('#diagnosisModal .modal-title').textContent =
+                                    `Diagnosis Details for: ${name}`;
 
-                        removeBtn.onclick = (e) => {
-                            e.stopPropagation();
-                            tag.remove();
-                            selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
-                        };
+                                diagnosisNote.value = existing?.note || "";
+                                diagnosisSince.value = existing?.since || "";
+                                diagnosisSeverity.value = existing?.severity || "";
 
-                        tag.appendChild(removeBtn);
-                        tagContainer.insertBefore(tag, findingsInput);
-                    }
+                                diagnosisModal.show();
+                            }
 
-                    function updateTagDisplay(tagEl, data) {
-                        const textParts = [data.finding];
-                        const details = [];
+                            function saveDiagnosisModal() {
+                                const note = diagnosisNote.value.trim();
+                                const since = diagnosisSince.value.trim();
+                                const severity = diagnosisSeverity.value;
 
-                        if (data.note) details.push(`Note: ${data.note}`);
-                        if (data.since) details.push(`Since: ${data.since}`);
-                        if (data.severity) details.push(`Severity: ${data.severity}`);
+                                const data = { name: pendingDiagnosis, note, since, severity };
 
-                        if (details.length > 0) {
-                            textParts.push(`(${details.join(", ")})`);
-                        }
+                                const index = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
 
-                        tagEl.innerHTML = textParts.join(" ");
-                    }
+                                if (editingDiagnosisTag && index !== -1) {
+                                    selectedDiagnosis[index] = data;
+                                    updateDiagnosisTag(editingDiagnosisTag, data);
+                                } else {
+                                    selectedDiagnosis.push(data);
+                                    addDiagnosisTag(data);
+                                }
 
-                    findingsInput.addEventListener("input", renderSuggestions);
-                    findingsInput.addEventListener("focus", renderSuggestions);
-                    findingsInput.addEventListener("keydown", e => {
-                        if (e.key === "Enter" && findingsInput.value.trim() !== "") {
-                            e.preventDefault();
-                            openModal(findingsInput.value.trim());
-                            findingsInput.value = "";
-                        }
-                    });
+                                diagnosisModal.hide();
+                                pendingDiagnosis = "";
+                                editingDiagnosisTag = null;
+                            }
 
-                    document.addEventListener("click", (e) => {
-                        if (!tagContainer.contains(e.target)) {
-                            suggestionsBox.style.display = "none";
-                        }
-                    });
+                            function addDiagnosisTag(data) {
+                                const tag = document.createElement("span");
+                                tag.className = "bg-success rounded-2 text-light p-2";
+                                tag.style.cursor = "pointer";
+                                updateDiagnosisTag(tag, data);
 
-                    renderSuggestions();
-                </script>
+                                tag.onclick = () => {
+                                    openDiagnosisModal(data.name, data, tag);
+                                };
 
-                <!-- Diagonsis Modal Script -->
-                <script>
-                    const diagnosisList = [
-                        "Diabetes", "Hypertension", "Asthma", "Tuberculosis", "Anemia", "Arthritis"
-                    ];
+                                const removeBtn = document.createElement("button");
+                                removeBtn.type = "button";
+                                removeBtn.className = "text-light ms-2";
+                                removeBtn.innerHTML = "&times;";
+                                removeBtn.style.fontSize = "1rem";
+                                removeBtn.style.border = "none";
+                                removeBtn.style.background = "transparent";
 
-                    const diagnosisInput = document.getElementById("diagnosisInput");
-                    const diagnosisSuggestionsBox = document.getElementById("diagnosisSuggestionsBox");
-                    const diagnosisTagContainer = document.getElementById("diagnosisInputBox");
+                                removeBtn.onclick = (e) => {
+                                    e.stopPropagation();
+                                    tag.remove();
+                                    selectedDiagnosis = selectedDiagnosis.filter(d => d.name !== data.name);
+                                };
 
-                    const diagnosisModal = new bootstrap.Modal(document.getElementById("diagnosisModal"));
-                    const diagnosisNote = document.getElementById("diagnosisNote");
-                    const diagnosisSince = document.getElementById("diagnosisSince");
-                    const diagnosisSeverity = document.getElementById("diagnosisSeverity");
+                                tag.appendChild(removeBtn);
+                                diagnosisTagContainer.insertBefore(tag, diagnosisInput);
+                            }
 
-                    let selectedDiagnosis = [];
-                    let pendingDiagnosis = "";
-                    let editingDiagnosisTag = null;
+                            function updateDiagnosisTag(tagEl, data) {
+                                let text = data.name;
+                                const details = [];
+                                if (data.note) details.push(`Note: ${data.note}`);
+                                if (data.since) details.push(`Since: ${data.since}`);
+                                if (data.severity) details.push(`Severity: ${data.severity}`);
+                                if (details.length) text += ` (${details.join(", ")})`;
+                                tagEl.innerHTML = text;
+                            }
 
-                    function renderDiagnosisSuggestions() {
-                        const query = diagnosisInput.value.toLowerCase().trim();
-                        diagnosisSuggestionsBox.innerHTML = "";
-
-                        const filtered = diagnosisList.filter(d =>
-                            d.toLowerCase().includes(query) &&
-                            !selectedDiagnosis.some(obj => obj.name === d)
-                        );
-
-                        if (filtered.length === 0 && query !== "") {
-                            const customOption = document.createElement("div");
-                            customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                            customOption.onclick = () => {
-                                openDiagnosisModal(query);
-                                diagnosisInput.value = "";
-                            };
-                            diagnosisSuggestionsBox.appendChild(customOption);
-                        } else {
-                            filtered.forEach(item => {
-                                const div = document.createElement("div");
-                                div.textContent = item;
-                                div.onclick = () => {
-                                    openDiagnosisModal(item);
+                            diagnosisInput.addEventListener("input", renderDiagnosisSuggestions);
+                            diagnosisInput.addEventListener("focus", renderDiagnosisSuggestions);
+                            diagnosisInput.addEventListener("keydown", (e) => {
+                                if (e.key === "Enter" && diagnosisInput.value.trim()) {
+                                    e.preventDefault();
+                                    openDiagnosisModal(diagnosisInput.value.trim());
                                     diagnosisInput.value = "";
-                                };
-                                diagnosisSuggestionsBox.appendChild(div);
-                            });
-                        }
-
-                        diagnosisSuggestionsBox.style.display = "block";
-                    }
-
-                    function openDiagnosisModal(name, existing = null, tagEl = null) {
-                        pendingDiagnosis = name;
-                        editingDiagnosisTag = tagEl;
-
-                        // ✅ Set the title like this:
-                        document.querySelector('#diagnosisModal .modal-title').textContent =
-                            `Diagnosis Details for: ${name}`;
-
-                        diagnosisNote.value = existing?.note || "";
-                        diagnosisSince.value = existing?.since || "";
-                        diagnosisSeverity.value = existing?.severity || "";
-
-                        diagnosisModal.show();
-                    }
-
-                    function saveDiagnosisModal() {
-                        const note = diagnosisNote.value.trim();
-                        const since = diagnosisSince.value.trim();
-                        const severity = diagnosisSeverity.value;
-
-                        const data = { name: pendingDiagnosis, note, since, severity };
-
-                        const index = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
-
-                        if (editingDiagnosisTag && index !== -1) {
-                            selectedDiagnosis[index] = data;
-                            updateDiagnosisTag(editingDiagnosisTag, data);
-                        } else {
-                            selectedDiagnosis.push(data);
-                            addDiagnosisTag(data);
-                        }
-
-                        diagnosisModal.hide();
-                        pendingDiagnosis = "";
-                        editingDiagnosisTag = null;
-                    }
-
-                    function addDiagnosisTag(data) {
-                        const tag = document.createElement("span");
-                        tag.className = "bg-success rounded-2 text-light p-2";
-                        tag.style.cursor = "pointer";
-                        updateDiagnosisTag(tag, data);
-
-                        tag.onclick = () => {
-                            openDiagnosisModal(data.name, data, tag);
-                        };
-
-                        const removeBtn = document.createElement("button");
-                        removeBtn.type = "button";
-                        removeBtn.className = "text-light ms-2";
-                        removeBtn.innerHTML = "&times;";
-                        removeBtn.style.fontSize = "1rem";
-                        removeBtn.style.border = "none";
-                        removeBtn.style.background = "transparent";
-
-                        removeBtn.onclick = (e) => {
-                            e.stopPropagation();
-                            tag.remove();
-                            selectedDiagnosis = selectedDiagnosis.filter(d => d.name !== data.name);
-                        };
-
-                        tag.appendChild(removeBtn);
-                        diagnosisTagContainer.insertBefore(tag, diagnosisInput);
-                    }
-
-                    function updateDiagnosisTag(tagEl, data) {
-                        let text = data.name;
-                        const details = [];
-                        if (data.note) details.push(`Note: ${data.note}`);
-                        if (data.since) details.push(`Since: ${data.since}`);
-                        if (data.severity) details.push(`Severity: ${data.severity}`);
-                        if (details.length) text += ` (${details.join(", ")})`;
-                        tagEl.innerHTML = text;
-                    }
-
-                    diagnosisInput.addEventListener("input", renderDiagnosisSuggestions);
-                    diagnosisInput.addEventListener("focus", renderDiagnosisSuggestions);
-                    diagnosisInput.addEventListener("keydown", (e) => {
-                        if (e.key === "Enter" && diagnosisInput.value.trim()) {
-                            e.preventDefault();
-                            openDiagnosisModal(diagnosisInput.value.trim());
-                            diagnosisInput.value = "";
-                        }
-                    });
-
-                    document.addEventListener("click", (e) => {
-                        if (!diagnosisTagContainer.contains(e.target)) {
-                            diagnosisSuggestionsBox.style.display = "none";
-                        }
-                    });
-
-                    renderDiagnosisSuggestions();
-                </script>
-
-                <!-- Symptoms save script -->
-                <script>
-                    $(document).ready(function () {
-                        // Function to parse a tag's text back into an object
-                        function parseSymptomTagText(text) {
-                            text = text.trim().replace(/&times;$/g, '').trim();
-
-                            let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                            let match = text.match(regex);
-                            if (match) {
-                                return {
-                                    symptom: match[1].trim(),
-                                    note: match[2].trim(),
-                                    since: match[3].trim(),
-                                    severity: match[4].trim()
-                                };
-                            }
-
-                            regex = /^(.+?)$/;
-                            match = text.match(regex);
-                            if (match) {
-                                return {
-                                    symptom: match[1].trim(),
-                                    note: '',
-                                    since: '',
-                                    severity: ''
-                                };
-                            }
-
-                            return null;
-                        }
-
-                        // Update hidden input by parsing displayed tags
-                        function updateSymptomsJson() {
-                            let symptoms = [];
-                            $('#symptomsInput > span.bg-success').each(function () {
-                                let tagText = $(this).clone().children().remove().end().text().trim();
-                                let symptom = parseSymptomTagText(tagText);
-                                if (symptom) {
-                                    symptoms.push(symptom);
                                 }
                             });
-                            $('#symptomsJson').val(JSON.stringify(symptoms));
-                            // console.log('Symptoms JSON updated:', $('#symptomsJson').val());
-                        }
 
-                        // Use MutationObserver to detect changes in the tag container
-                        const observer = new MutationObserver(updateSymptomsJson);
-                        observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
-
-                        // Also update before form submission
-                        $('#consultationForm').on('submit', function (e) {
-                            updateSymptomsJson();
-                        });
-                    });
-                </script>
-                <!-- Findings save script -->
-                <script>
-                    $(document).ready(function () {
-                        // Function to parse a tag's text back into an object
-                        function parseTagText(text) {
-                            // Clean up text: remove any extra spaces or button content
-                            text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
-
-                            let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                            let match = text.match(regex);
-                            if (match) {
-                                return {
-                                    name: match[1].trim(),
-                                    note: match[2].trim(),
-                                    since: match[3].trim(),
-                                    severity: match[4].trim()
-                                };
-                            }
-
-                            // If no details, just the finding name
-                            regex = /^(.+?)$/;
-                            match = text.match(regex);
-                            if (match) {
-                                return {
-                                    name: match[1].trim(),
-                                    note: '',
-                                    since: '',
-                                    severity: ''
-                                };
-                            }
-
-                            return null;
-                        }
-
-                        // Update hidden input by parsing displayed tags
-                        function updateFindingsJson() {
-                            let findings = [];
-                            $('#findingsInput > span.bg-success').each(function () {
-                                let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
-                                let finding = parseTagText(tagText);
-                                if (finding) {
-                                    findings.push(finding);
+                            document.addEventListener("click", (e) => {
+                                if (!diagnosisTagContainer.contains(e.target)) {
+                                    diagnosisSuggestionsBox.style.display = "none";
                                 }
                             });
-                            $('#findingsJson').val(JSON.stringify(findings));
-                            console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
-                        }
 
-                        // Use MutationObserver to detect changes in the tag container
-                        const observer = new MutationObserver(updateFindingsJson);
-                        observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
+                            renderDiagnosisSuggestions();
+                        </script>
 
-                        // Also update before form submission
-                        $('#consultationForm').on('submit', function (e) {
-                            updateFindingsJson(); // Ensure latest data
-                            console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
-                            // Form will submit normally
-                        });
-                    });
-                </script>
-
-                <!-- Diagnosis save script -->
-                <script>
-                    $(document).ready(function () {
-                        // Function to parse a tag's text back into an object
-                        function parseDiagnosisTagText(text) {
-                            // Clean up text: remove any extra spaces or button content
-                            text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
-
-                            let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                            let match = text.match(regex);
-                            if (match) {
-                                return {
-                                    name: match[1].trim(),
-                                    note: match[2].trim(),
-                                    since: match[3].trim(),
-                                    severity: match[4].trim()
-                                };
-                            }
-
-                            // If no details, just the diagnosis name
-                            regex = /^(.+?)$/;
-                            match = text.match(regex);
-                            if (match) {
-                                return {
-                                    name: match[1].trim(),
-                                    note: '',
-                                    since: '',
-                                    severity: ''
-                                };
-                            }
-
-                            return null;
-                        }
-
-                        // Update hidden input by parsing displayed tags
-                        function updateDiagnosisJson() {
-                            let diagnoses = [];
-                            $('#diagnosisInputBox > span.bg-success').each(function () {
-                                let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
-                                let diagnosis = parseDiagnosisTagText(tagText);
-                                if (diagnosis) {
-                                    diagnoses.push(diagnosis);
+                        <!-- Medicine Modal Script -->
+                        <script>
+                            document.getElementById("medicineSelect").addEventListener("change", function () {
+                                let selected = this.value;
+                                if (selected) {
+                                    document.getElementById("selectedMedicine").value = selected;
+                                    let modal = new bootstrap.Modal(document.getElementById("medicineModal"));
+                                    modal.show();
                                 }
                             });
-                            $('#diagnosisJson').val(JSON.stringify(diagnoses));
-                            console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
-                        }
+                        </script>
 
-                        // Use MutationObserver to detect changes in the tag container
-                        const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
-                        diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
+                        <!-- ----------------------------------------------------------- -->
 
-                        // Also update before form submission
-                        $('#consultationForm').on('submit', function (e) {
-                            updateDiagnosisJson(); // Ensure latest data
-                            console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
-                            // Form will submit normally
-                        });
-                    });
-                </script>
+                        <!-- Symptoms save script -->
+                        <script>
+                            $(document).ready(function () {
+                                // Function to parse a tag's text back into an object
+                                function parseSymptomTagText(text) {
+                                    text = text.trim().replace(/&times;$/g, '').trim();
 
-                <!-- ******************************************************************************************************************************************** -->
+                                    let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
+                                    let match = text.match(regex);
+                                    if (match) {
+                                        return {
+                                            symptom: match[1].trim(),
+                                            note: match[2].trim(),
+                                            since: match[3].trim(),
+                                            severity: match[4].trim()
+                                        };
+                                    }
+
+                                    regex = /^(.+?)$/;
+                                    match = text.match(regex);
+                                    if (match) {
+                                        return {
+                                            symptom: match[1].trim(),
+                                            note: '',
+                                            since: '',
+                                            severity: ''
+                                        };
+                                    }
+
+                                    return null;
+                                }
+
+                                // Update hidden input by parsing displayed tags
+                                function updateSymptomsJson() {
+                                    let symptoms = [];
+                                    $('#symptomsInput > span.bg-success').each(function () {
+                                        let tagText = $(this).clone().children().remove().end().text().trim();
+                                        let symptom = parseSymptomTagText(tagText);
+                                        if (symptom) {
+                                            symptoms.push(symptom);
+                                        }
+                                    });
+                                    $('#symptomsJson').val(JSON.stringify(symptoms));
+                                    // console.log('Symptoms JSON updated:', $('#symptomsJson').val());
+                                }
+
+                                // Use MutationObserver to detect changes in the tag container
+                                const observer = new MutationObserver(updateSymptomsJson);
+                                observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
+
+                                // Also update before form submission
+                                $('#consultationForm').on('submit', function (e) {
+                                    updateSymptomsJson();
+                                });
+                            });
+                        </script>
+                        <!-- Findings save script -->
+                        <script>
+                            $(document).ready(function () {
+                                // Function to parse a tag's text back into an object
+                                function parseTagText(text) {
+                                    // Clean up text: remove any extra spaces or button content
+                                    text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
+
+                                    let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
+                                    let match = text.match(regex);
+                                    if (match) {
+                                        return {
+                                            name: match[1].trim(),
+                                            note: match[2].trim(),
+                                            since: match[3].trim(),
+                                            severity: match[4].trim()
+                                        };
+                                    }
+
+                                    // If no details, just the finding name
+                                    regex = /^(.+?)$/;
+                                    match = text.match(regex);
+                                    if (match) {
+                                        return {
+                                            name: match[1].trim(),
+                                            note: '',
+                                            since: '',
+                                            severity: ''
+                                        };
+                                    }
+
+                                    return null;
+                                }
+
+                                // Update hidden input by parsing displayed tags
+                                function updateFindingsJson() {
+                                    let findings = [];
+                                    $('#findingsInput > span.bg-success').each(function () {
+                                        let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
+                                        let finding = parseTagText(tagText);
+                                        if (finding) {
+                                            findings.push(finding);
+                                        }
+                                    });
+                                    $('#findingsJson').val(JSON.stringify(findings));
+                                    console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
+                                }
+
+                                // Use MutationObserver to detect changes in the tag container
+                                const observer = new MutationObserver(updateFindingsJson);
+                                observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
+
+                                // Also update before form submission
+                                $('#consultationForm').on('submit', function (e) {
+                                    updateFindingsJson(); // Ensure latest data
+                                    console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
+                                    // Form will submit normally
+                                });
+                            });
+                        </script>
+                        <!-- Diagnosis save script -->
+                        <script>
+                            $(document).ready(function () {
+                                // Function to parse a tag's text back into an object
+                                function parseDiagnosisTagText(text) {
+                                    // Clean up text: remove any extra spaces or button content
+                                    text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
+
+                                    let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
+                                    let match = text.match(regex);
+                                    if (match) {
+                                        return {
+                                            name: match[1].trim(),
+                                            note: match[2].trim(),
+                                            since: match[3].trim(),
+                                            severity: match[4].trim()
+                                        };
+                                    }
+
+                                    // If no details, just the diagnosis name
+                                    regex = /^(.+?)$/;
+                                    match = text.match(regex);
+                                    if (match) {
+                                        return {
+                                            name: match[1].trim(),
+                                            note: '',
+                                            since: '',
+                                            severity: ''
+                                        };
+                                    }
+
+                                    return null;
+                                }
+
+                                // Update hidden input by parsing displayed tags
+                                function updateDiagnosisJson() {
+                                    let diagnoses = [];
+                                    $('#diagnosisInputBox > span.bg-success').each(function () {
+                                        let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
+                                        let diagnosis = parseDiagnosisTagText(tagText);
+                                        if (diagnosis) {
+                                            diagnoses.push(diagnosis);
+                                        }
+                                    });
+                                    $('#diagnosisJson').val(JSON.stringify(diagnoses));
+                                    console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
+                                }
+
+                                // Use MutationObserver to detect changes in the tag container
+                                const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
+                                diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
+
+                                // Also update before form submission
+                                $('#consultationForm').on('submit', function (e) {
+                                    updateDiagnosisJson(); // Ensure latest data
+                                    console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
+                                    // Form will submit normally
+                                });
+                            });
+                        </script>
+
+                        <!-- ******************************************************************************************************************************************** -->
 
 
-                <!-- Medicine Add More Script -->
-                <!-- <script>
-                document.getElementById("addMoreBtn").addEventListener("click", function () {
-                    const medicineContainer = document.getElementById("medicine-template");
-                    const newMedicine = medicineContainer.cloneNode(true);
+                        <!-- Toggle visibility and icon for all fields -->
+                        <script>
+                            document.querySelectorAll('.toggle-label').forEach(label => {
+                                label.addEventListener('click', () => {
+                                    const container = label.nextElementSibling;
+                                    const icon = label.querySelector('.toggle-icon');
 
-                    newMedicine.querySelectorAll("input, select").forEach(function (input) {
-                        input.value = "";
-                        const errorDiv = input.parentNode.querySelector('.text-danger');
-                        if (errorDiv) {
-                            errorDiv.textContent = '';
-                        }
-                    });
+                                    container.classList.toggle('show');
+                                    icon.textContent = container.classList.contains('show') ? '-' : '+';
+                                });
+                            });
 
-                    newMedicine.querySelector(".btn-remove").classList.remove("d-none");
-                    newMedicine.querySelector(".btn-remove").addEventListener("click", function () {
-                        newMedicine.remove();
-                    });
-
-                    document.getElementById("medicines-list").appendChild(newMedicine);
-                });
-            </script> -->
-                <!-- Medicines Field Validation Script -->
-                <!-- <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    document.querySelectorAll(".preMedFrequency").forEach(function (frequencyInput) {
-                        validateFrequencyPattern(frequencyInput);
-
-                        frequencyInput.addEventListener("input", function (event) {
-                            validateFrequencyPattern(event.target);
-                        });
-                    });
-                });
-
-                // document.getElementById("submitForm").addEventListener("click", function (event) {
-                //     event.preventDefault();
-
-                //     if (validateMedicines()) {
-                //         document.getElementById("prescriptionForm").submit();
-                //     }
-                // });
-
-                function validateFrequencyPattern(input) {
-                    const frequencyPattern = /^[0-1]\s-\s[0-1]\s-\s[0-1]$/;
-                    const errorDiv = input.closest(".medicine-entry").querySelector("#preMedFrequency_err");
-
-                    let value = input.value.replace(/[^01]/g, '').substring(0, 3);
-                    let formattedValue = '';
-                    if (value.length > 0) formattedValue += value[0];
-                    if (value.length > 1) formattedValue += ' - ' + value[1];
-                    if (value.length > 2) formattedValue += ' - ' + value[2];
-                    input.value = formattedValue;
-                }
-
-                function validateMedicines() {
-                    let allFilled = true;
-
-                    const adviceGiven = document.getElementById("adviceGiven");
-                    const adviceGivenErr = document.getElementById("adviceGiven_err");
-                    if (adviceGiven.value.trim() === "") {
-                        adviceGivenErr.innerHTML = "Advice to patient must be filled out.";
-                        allFilled = false;
-                    } else {
-                        adviceGivenErr.innerHTML = "";
-                    }
-
-                    const nextFollowUp = document.getElementById("nextFollowUp");
-                    const nextFollowUpErr = document.getElementById("nextFollowUp_err");
-                    if (nextFollowUp.value === "") {
-                        nextFollowUpErr.innerHTML = "Next follow-up date must be filled out.";
-                        allFilled = false;
-                    } else {
-                        nextFollowUpErr.innerHTML = "";
-                    }
-
-                    const medicineEntries = document.querySelectorAll(".medicine-entry:not(.d-none)");
-
-                    medicineEntries.forEach(function (entry) {
-                        const nameInput = entry.querySelector(".preMedName");
-                        const frequencyInput = entry.querySelector(".preMedFrequency");
-                        const durationInput = entry.querySelector(".preMedDuration");
-                        // const durationUnitSelect = entry.querySelector(".preMedDurationUnit");
-                        const notesSelect = entry.querySelector(".preMedNotes");
-
-                        if (nameInput.value.trim() === "") {
-                            entry.querySelector("#preMedName_err").innerHTML = "Medicine name must be filled out.";
-                            allFilled = false;
-                        } else {
-                            entry.querySelector("#preMedName_err").innerHTML = "";
-                        }
-
-                        if (frequencyInput.value.trim() === "") {
-                            entry.querySelector("#preMedFrequency_err").innerHTML = "Frequency must be filled out.";
-                            allFilled = false;
-                        } else {
-                            entry.querySelector("#preMedFrequency_err").innerHTML = "";
-                        }
-
-                        if (durationInput.value.trim() === "") {
-                            entry.querySelector("#preMedDuration_err").innerHTML = "Duration must be filled out.";
-                            allFilled = false;
-                        } else {
-                            entry.querySelector("#preMedDuration_err").innerHTML = "";
-                        }
-
-                        // if (durationUnitSelect.value.trim() === "") {
-                        //     entry.querySelector("#preMedDurationUnit_err").innerHTML = "Please select a duration unit.";
-                        //     allFilled = false;
-                        // } else {
-                        //     entry.querySelector("#preMedDurationUnit_err").innerHTML = "";
-                        // }
-
-                        if (notesSelect.value.trim() === "") {
-                            entry.querySelector("#preMedNotes_err").innerHTML = "Notes selection is required.";
-                            allFilled = false;
-                        } else {
-                            entry.querySelector("#preMedNotes_err").innerHTML = "";
-                        }
-                    });
-
-                    return allFilled;
-                }
-            </script> -->
-                <!--  Multiple Select 2 Old Symptoms -->
-                <!-- <script>
-                $(document).ready(function () {
-                    $('#symptoms').select2({
-                        placeholder: 'Type to search and select symptoms',
-                        allowClear: true
-                    });
-                });
-            </script> -->
-
-
-                <!-- Toggle visibility and icon for all fields -->
-                <script>
-                    document.querySelectorAll('.toggle-label').forEach(label => {
-                        label.addEventListener('click', () => {
-                            const container = label.nextElementSibling;
-                            const icon = label.querySelector('.toggle-icon');
-
-                            container.classList.toggle('show');
-                            icon.textContent = container.classList.contains('show') ? '-' : '+';
-                        });
-                    });
-
-                    document.querySelectorAll('.clear-btn').forEach(button => {
-                        button.addEventListener('click', (e) => {
-                            const textarea = button.parentElement.querySelector('textarea');
-                            textarea.value = '';
-                            e.stopPropagation();
-                        });
-                    });
-                </script>
+                            document.querySelectorAll('.clear-btn').forEach(button => {
+                                button.addEventListener('click', (e) => {
+                                    const textarea = button.parentElement.querySelector('textarea');
+                                    textarea.value = '';
+                                    e.stopPropagation();
+                                });
+                            });
+                        </script>
 
             </section>
         <?php } ?>
@@ -1747,7 +1479,6 @@
     <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
     <!-- PDF Download link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-
 
 
 </body>

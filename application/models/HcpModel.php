@@ -604,15 +604,16 @@ class HcpModel extends CI_Model
         $consultData = array(
             'patient_id' => $post['patientIdDb'],
             'doctor_id' => $hcpIdDb,
+            'advice_given' => $post['advices'],
+            'next_follow_up' => $post['nextFollowUpDate'],
         );
 
         $this->db->insert('consultations', $consultData);
         return $this->db->insert_id();
     }
-    
-    // Vitals
+
     public function save_vitals($post)
-    {        
+    {
         $vitalData = array(
             'patient_id' => $post['patientIdDb'],
             'consultation_id' => $post['consultationId'],
@@ -626,7 +627,6 @@ class HcpModel extends CI_Model
             'temperature_f' => $post['patientTemperature'],
         );
         return $this->db->insert('patient_vitals', $vitalData);
-        // return true;
     }
 
     public function save_symptom($data)
@@ -664,7 +664,7 @@ class HcpModel extends CI_Model
         if (!empty($instructions) && is_array($instructions)) {
             foreach ($instructions as $instruction) {
                 $this->db->insert('patient_instructions', [
-                   'consultation_id' => $post['consultationId'],
+                    'consultation_id' => $post['consultationId'],
                     'instruction_name' => $instruction
                 ]);
             }

@@ -258,12 +258,10 @@
                             <div class="tab-pane fade" id="new-consultation" role="tabpanel">
                                 <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>"
                                     method="post" id="consultationForm" class="mb-5">
-                                     <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                    <input type="hidden" id="patientIdDb" name="patientIdDb"
                                         value="<?php echo $patientDetails[0]['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
                                         value="<?php echo $patientDetails[0]['patientId'] ?>">
-                                    <!-- <input type="hidden" id="patientIdDb" name="patientIdDb" value="84">
-                                    <input type="hidden" id="patientId" name="patientId" value="EDF000031"> -->
 
                                     <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                                     <div class="p-3">
@@ -688,7 +686,7 @@
 
                                     </div>
 
-                                    <!-- <div class="form-group pb-3">
+                                    <div class="form-group pb-3">
                                         <label class="form-label" for="advices">Advice <span
                                                 class="text-danger">*</span></label>
                                         <textarea class="form-control" name="advices" id="advices"
@@ -701,7 +699,7 @@
                                         <input type="date" class="form-control" id="nextFollowUpDate"
                                             name="nextFollowUpDate">
                                         <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
-                                    </div> -->
+                                    </div>
 
                                     <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                         style="background-color: #00ad8e;">Save</button>
@@ -862,7 +860,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn text-light" style="background-color: #00ad8e;">Save</button>
                             </div>
                         </div>
                     </div>

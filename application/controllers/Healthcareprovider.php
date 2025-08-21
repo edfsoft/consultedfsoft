@@ -624,7 +624,6 @@ class Healthcareprovider extends CI_Controller
         if ($findings && is_array($findings)) {
             foreach ($findings as $finding) {
                 $data = array(
-                    // 'consultation_id' => $consultation_id, 
                     'consultation_id' => $consultationId,
                     'finding_name' => $finding['name'],
                     'note' => $finding['note'],
@@ -658,14 +657,16 @@ class Healthcareprovider extends CI_Controller
 
 
         if ($vitalsSaved && $findingSaved && $diagnosisSaved && $symptomSaved && $investigationSaved && $instructionSaved && $procedureSaved) {
-            $this->session->set_flashdata('showSuccessMessage', 'Vitals, findings, symptoms, diagnosis saved successfully.');
+            $this->session->set_flashdata('showSuccessMessage', 'Consultation details saved successfully.');
         } else {
-            $this->session->set_flashdata('showErrorMessage', 'Failed to save details.');
+            $this->session->set_flashdata('showErrorMessage', 'Failed to save consultation details.');
         }
 
         redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
     }
 
+
+    
     public function logout()
     {
         // $this->session->unset_userdata('LoggedInDetails');

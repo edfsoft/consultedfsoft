@@ -596,15 +596,26 @@ class HcpModel extends CI_Model
 
     // *************************************************************************
     // New
-    public function save_vitals()
+
+    public function save_consultation()
     {
         $post = $this->input->post(null, true);
-        
-        // Vitals
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $consultData = array(
+            'patient_id' => $post['patientIdDb'],
+            'doctor_id' => $hcpIdDb,
+        );
+
+        $this->db->insert('consultations', $consultData);
+        return $this->db->insert_id();
+    }
+    
+    // Vitals
+    public function save_vitals($post)
+    {        
         $vitalData = array(
             'patient_id' => $post['patientIdDb'],
-            // 'consultation_id' => $this->input->post('consultationId'), 
-            'consultation_id' => '1',
+            'consultation_id' => $post['consultationId'],
             'weight_kg' => $post['patientWeight'],
             'height_cm' => $post['patientHeight'],
             'systolic_bp' => $post['patientSystolicBp'],
@@ -633,14 +644,13 @@ class HcpModel extends CI_Model
         return $this->db->insert('patient_diagnosis', $data);
     }
 
-    public function save_investigation()
+    public function save_investigation($post)
     {
         $investigations = $this->input->post('investigations');
         if (!empty($investigations) && is_array($investigations)) {
             foreach ($investigations as $investigation) {
                 $this->db->insert('patient_investigations', [
-                    // 'consultation_id'    => $consultation_id,
-                    'consultation_id' => '1',
+                    'consultation_id' => $post['consultationId'],
                     'investigation_name' => $investigation
                 ]);
             }
@@ -648,14 +658,13 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    public function save_instruction()
+    public function save_instruction($post)
     {
         $instructions = $this->input->post('instructions');
         if (!empty($instructions) && is_array($instructions)) {
             foreach ($instructions as $instruction) {
                 $this->db->insert('patient_instructions', [
-                    // 'consultation_id'    => $consultation_id,
-                    'consultation_id' => '1',
+                   'consultation_id' => $post['consultationId'],
                     'instruction_name' => $instruction
                 ]);
             }
@@ -663,14 +672,13 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    public function save_procedure()
+    public function save_procedure($post)
     {
         $procedures = $this->input->post('procedures');
         if (!empty($procedures) && is_array($procedures)) {
             foreach ($procedures as $procedure) {
                 $this->db->insert('patient_procedures', [
-                    // 'consultation_id'    => $consultation_id,
-                    'consultation_id' => '1',
+                    'consultation_id' => $post['consultationId'],
                     'procedure_name' => $procedure
                 ]);
             }
@@ -680,7 +688,6 @@ class HcpModel extends CI_Model
 
     public function get_consultations_by_patient($patient_id)
     {
-        // Get all consultations for the patient
         $this->db->select('*');
         $this->db->from('consultations');
         $this->db->where('patient_id', $patient_id);

@@ -258,12 +258,12 @@
                             <div class="tab-pane fade" id="new-consultation" role="tabpanel">
                                 <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>"
                                     method="post" id="consultationForm" class="mb-5">
-                                    <!-- <input type="hidden" id="patientIdDb" name="patientIdDb"
-                                        value="<?php echo $value['id'] ?>">
+                                     <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                        value="<?php echo $patientDetails[0]['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
-                                        value="<?php echo $value['patientId'] ?>"> -->
-                                    <input type="hidden" id="patientIdDb" name="patientIdDb" value="84">
-                                    <input type="hidden" id="patientId" name="patientId" value="EDF000031">
+                                        value="<?php echo $patientDetails[0]['patientId'] ?>">
+                                    <!-- <input type="hidden" id="patientIdDb" name="patientIdDb" value="84">
+                                    <input type="hidden" id="patientId" name="patientId" value="EDF000031"> -->
 
                                     <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                                     <div class="p-3">

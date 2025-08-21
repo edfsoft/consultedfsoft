@@ -596,9 +596,10 @@ class Healthcareprovider extends CI_Controller
     public function saveConsultation()
     {
         $post = $this->input->post(null, true);
-
+        $consultationId = $this->HcpModel->save_consultation();
+        $post['consultationId'] = $consultationId;
         // Vitals
-        $vitalsSaved = $this->HcpModel->save_vitals();
+        $vitalsSaved = $this->HcpModel->save_vitals($post);
 
         // Symptoms
         $symptoms_json = $this->input->post('symptomsJson');
@@ -606,13 +607,13 @@ class Healthcareprovider extends CI_Controller
         if ($symptoms && is_array($symptoms)) {
             foreach ($symptoms as $symptom) {
                 $data = array(
-                    'consultation_id' => '1',
+                    'consultation_id' => $consultationId,
                     'symptom_name' => $symptom['symptom'],
                     'note' => $symptom['note'],
                     'since' => $symptom['since'],
-                    'severity' => $symptom['severity']
+                    'severity' => $symptom['severity'],
                 );
-                // $symptomSaved = $this->HcpModel->save_symptom($data);
+                $symptomSaved = $this->HcpModel->save_symptom($data);
             }
         }
 
@@ -624,13 +625,13 @@ class Healthcareprovider extends CI_Controller
             foreach ($findings as $finding) {
                 $data = array(
                     // 'consultation_id' => $consultation_id, 
-                    'consultation_id' => '1',
+                    'consultation_id' => $consultationId,
                     'finding_name' => $finding['name'],
                     'note' => $finding['note'],
                     'since' => $finding['since'],
                     'severity' => $finding['severity']
                 );
-                // $findingSaved = $this->HcpModel->save_finding($data);
+                $findingSaved = $this->HcpModel->save_finding($data);
             }
         }
 
@@ -640,28 +641,27 @@ class Healthcareprovider extends CI_Controller
         if ($diagnoses && is_array($diagnoses) && !empty($diagnoses)) {
             foreach ($diagnoses as $diagnosis) {
                 $data = array(
-                    // 'consultation_id' => $consultation_id, 
-                    'consultation_id' => '1',
+                    'consultation_id' => $consultationId,
                     'diagnosis_name' => $diagnosis['name'],
                     'note' => $diagnosis['note'],
                     'since' => $diagnosis['since'],
                     'severity' => $diagnosis['severity']
                 );
 
-                // $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
+                $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
             }
         }
 
-        // $investigationSaved = $this->HcpModel->save_investigation();
-        // $instructionSaved = $this->HcpModel->save_instruction();
-        // $procedureSaved = $this->HcpModel->save_procedure();
+        $investigationSaved = $this->HcpModel->save_investigation($post);
+        $instructionSaved = $this->HcpModel->save_instruction($post);
+        $procedureSaved = $this->HcpModel->save_procedure($post);
 
 
-        // if ($vitalsSaved && $findingSaved && $diagnosisSaved) {
-        //     $this->session->set_flashdata('showSuccessMessage', 'Vitals, findings, symptoms, diagnosis saved successfully.');
-        // } else {
-        //     $this->session->set_flashdata('showErrorMessage', 'Failed to save details.');
-        // }
+        if ($vitalsSaved && $findingSaved && $diagnosisSaved && $symptomSaved && $investigationSaved && $instructionSaved && $procedureSaved) {
+            $this->session->set_flashdata('showSuccessMessage', 'Vitals, findings, symptoms, diagnosis saved successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to save details.');
+        }
 
         redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
     }

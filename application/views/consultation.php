@@ -69,32 +69,29 @@
         .suggestions-box div:hover {
             background-color: #f8f9fa;
         }
-    </style>
-    <style>
-        .tab-buttons .btn {
-            border-radius: 0.5rem 0.5rem 0 0;
-            border: 1px solid #dee2e6;
-            background-color: #f8f9fa;
+
+        #consultationTabs {
+            border-bottom: 2px solid #cccdcdff;
+            gap: 6px;
+        }
+
+        #consultationTabs .nav-link {
+            border: none;
+            border-radius: 4px 4px 0 0;
+            background: #d5d5d5ff;
+            color: #495057;
+            padding: 10px 20px;
             font-weight: 500;
+            transition: all 0.
         }
 
-        .tab-buttons .btn.active-tab {
-            background-color: #ffffff;
-            border-bottom: none;
-            color: #26a854ff;
+        #consultationTabs .nav-link.active {
+            background: #bababaff;
+            color: #000;
             font-weight: 600;
-            position: relative;
-            z-index: 2;
-        }
-
-        .tab-content-box {
-            border: 1px solid #dee2e6;
-            border-top: none;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 0 0 0.5rem 0.5rem;
-            position: relative;
-            z-index: 1;
+            border: 2px solid #9b9d9cff;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
         }
     </style>
 
@@ -145,19 +142,19 @@
                     <div class="card-body mx-3 px-md-4">
                         <ul class="nav nav-tabs mb-3" id="consultationTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active btn bg-secondary" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link active btn" id="new-tab" data-bs-toggle="tab"
                                     data-bs-target="#consultation-dashboard" type="button" role="tab">
                                     Consultation Dashboard
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn bg-secondary" id="new-tab" data-bs-toggle="tab"
+                                <button class="nav-link btn" id="new-tab" data-bs-toggle="tab"
                                     data-bs-target="#new-consultation" type="button" role="tab">
                                     New Consultation
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link btn bg-secondary" id="followup-tab" data-bs-toggle="tab"
+                                <button class="nav-link btn" id="followup-tab" data-bs-toggle="tab"
                                     data-bs-target="#followup-consultation" type="button" role="tab">
                                     Follow Up
                                 </button>
@@ -165,8 +162,9 @@
                         </ul>
 
                         <div class="tab-content border p-4 rounded shadow-sm" id="consultationTabsContent">
+                            <!-- Consultation Dashboard -->
                             <div class="tab-pane fade active show" id="consultation-dashboard" role="tabpanel">
-                                <h4 class="mb-3">All Consultations Page</h4>
+                                <p class="fs-5 fw-semibold mb-3">All Consultations:</p>
                                 <p>No Previous Consultation.</p>
                             </div>
                             <!-- New Consultation -->
@@ -622,11 +620,6 @@
                                         style="background-color: #00ad8e;">Save</button>
                                 </form>
                             </div>
-                            <!-- Follow Up Consultation -->
-                            <div class="tab-pane fade" id="followup-consultation" role="tabpanel">
-                                <h4 class="mb-3">Follow Up Consultation</h4>
-                                <p>No Previous Consultation</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -787,7 +780,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <!-- ******************************************************************************************************************************************** -->
 

@@ -623,6 +623,103 @@
                                             </div>
                                         </div>
 
+                                        <!-- <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                <span><strong>Medicines</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2">
+                                                <button type="button"
+                                                    class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                <div class="">
+                                                    Medicines
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <!-- Medicines Section -->
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-bs-toggle="collapse" data-bs-target="#medicineField">
+                                                <span><strong>Medicines</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+
+                                            <div class="collapse field-container mt-2" id="medicineField">
+                                                <button type="button"
+                                                    class="btn btn-sm btn-danger clear-btn float-end">x</button>
+                                                <div>
+                                                    <!-- Medicine List -->
+                                                    <select class="form-select" id="medicineSelect">
+                                                        <option value="">-- Select Medicine --</option>
+                                                        <option value="Paracetamol">Paracetamol</option>
+                                                        <option value="Amoxicillin">Amoxicillin</option>
+                                                        <option value="Cetirizine">Cetirizine</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Medicine Details</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="medicineForm">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Medicine Name</label>
+                                                                <input type="text" id="selectedMedicine"
+                                                                    class="form-control" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Dosage</label>
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="e.g. 500mg">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Duration</label>
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="e.g. 5 days">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Frequency</label>
+                                                                <select class="form-select">
+                                                                    <option>Once a day</option>
+                                                                    <option>Twice a day</option>
+                                                                    <option>Thrice a day</option>
+                                                                </select>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                            // When medicine is selected, open modal
+                                            document.getElementById("medicineSelect").addEventListener("change", function () {
+                                                let selected = this.value;
+                                                if (selected) {
+                                                    document.getElementById("selectedMedicine").value = selected;
+                                                    let modal = new bootstrap.Modal(document.getElementById("medicineModal"));
+                                                    modal.show();
+                                                }
+                                            });
+                                        </script>
+
+
                                     </div>
 
                                     <!-- <div id="medicine-template" class="card medicine-entry">
@@ -1296,7 +1393,7 @@
                     renderDiagnosisSuggestions();
                 </script>
 
-<!-- Symptoms save script -->
+                <!-- Symptoms save script -->
                 <script>
                     $(document).ready(function () {
                         // Function to parse a tag's text back into an object

@@ -94,7 +94,42 @@
             border-radius: 4px 4px 0 0;
         }
     </style>
+    <style>
+        .consultation-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
 
+        .consultation-item {
+            display: none;
+            width: 100%;
+        }
+
+        .consultation-item.active {
+            display: block;
+        }
+
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .nav-arrow.left {
+            left: 10px;
+        }
+
+        .nav-arrow.right {
+            right: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -159,118 +194,159 @@
                             <!-- Consultation Dashboard -->
                             <div class="tab-pane fade active show" id="consultation-dashboard" role="tabpanel">
                                 <p class="fs-5 fw-semibold mb-3">All Consultations:</p>
-
                                 <?php if (!empty($consultations)): ?>
-                                    <?php foreach ($consultations as $consultation): ?>
-                                        <div class="border mb-3 shadow-sm">
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <?= date('d-m-Y h:i A', strtotime($consultation['created_at'])) ?>
-                                                </h5>
+                                    <div class="consultation-container">
+                                        <?php
+                                        usort($consultations, function ($a, $b) {
+                                            return strtotime($b['created_at']) - strtotime($a['created_at']);
+                                        });
+                                        ?>
+                                        <?php foreach ($consultations as $index => $consultation): ?>
+                                            <div class="consultation-item <?= $index === 0 ? 'active' : '' ?>"
+                                                data-index="<?= $index ?>">
+                                                <div class="border border-5 mb-3 shadow-sm">
+                                                    <div class="card-body">
+                                                        <div class="d-flex justify-content-between">
+                                                            <h5 class="card-title">
+                                                                <?= date('d-m-Y h:i A', strtotime($consultation['created_at'])) ?>
+                                                            </h5>
+                                                            <div class="mt-3">
+                                                                <button class="btn btn-secondary">Edit</button>
+                                                                <button class="btn btn-primary">Followup / Repeat</button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Vitals -->
+                                                        <?php if (!empty($consultation['vitals'])): ?>
+                                                            <p><strong>Vitals:</strong></p>
+                                                            <ul>
+                                                                <li>Weight: <?= $consultation['vitals']['weight_kg'] ?? 'N/A' ?> kg</li>
+                                                                <li>Height: <?= $consultation['vitals']['height_cm'] ?? 'N/A' ?> cm</li>
+                                                                <li>BP:
+                                                                    <?= $consultation['vitals']['systolic_bp'] ?? 'N/A' ?>/<?= $consultation['vitals']['diastolic_bp'] ?? 'N/A' ?>
+                                                                    mmHg
+                                                                </li>
+                                                                <li>Cholesterol:
+                                                                    <?= $consultation['vitals']['cholesterol_mg_dl'] ?? 'N/A' ?> mg/dL
+                                                                </li>
+                                                                <li>Blood Sugar:
+                                                                    <?= $consultation['vitals']['blood_sugar_mg_dl'] ?? 'N/A' ?> mg/dL
+                                                                </li>
+                                                                <li>SPO2: <?= $consultation['vitals']['spo2_percent'] ?? 'N/A' ?> %</li>
+                                                                <li>Temperature:
+                                                                    <?= $consultation['vitals']['temperature_f'] ?? 'N/A' ?> °F
+                                                                </li>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                <!-- Vitals -->
-                                                <?php if (!empty($consultation['vitals'])): ?>
-                                                    <p><strong>Vitals:</strong></p>
-                                                    <ul>
-                                                        <li>Weight: <?= $consultation['vitals']['weight_kg'] ?? 'N/A' ?> kg</li>
-                                                        <li>Height: <?= $consultation['vitals']['height_cm'] ?? 'N/A' ?> cm</li>
-                                                        <li>BP:
-                                                            <?= $consultation['vitals']['systolic_bp'] ?? 'N/A' ?>/<?= $consultation['vitals']['diastolic_bp'] ?? 'N/A' ?>
-                                                            mmHg
-                                                        </li>
-                                                        <li>Cholesterol: <?= $consultation['vitals']['cholesterol_mg_dl'] ?? 'N/A' ?>
-                                                            mg/dL</li>
-                                                        <li>Blood Sugar: <?= $consultation['vitals']['blood_sugar_mg_dl'] ?? 'N/A' ?>
-                                                            mg/dL</li>
-                                                        <li>SPO2: <?= $consultation['vitals']['spo2_percent'] ?? 'N/A' ?> %</li>
-                                                        <li>Temperature: <?= $consultation['vitals']['temperature_f'] ?? 'N/A' ?> °F
-                                                        </li>
-                                                    </ul>
-                                                <?php endif; ?>
+                                                        <!-- Symptoms -->
+                                                        <?php if (!empty($consultation['symptoms'])): ?>
+                                                            <p><strong>Symptoms:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['symptoms'] as $symptom): ?>
+                                                                    <li><?= $symptom['symptom_name'] ?> (<?= $symptom['severity'] ?>,
+                                                                        <?= $symptom['since'] ?>) - <?= $symptom['note'] ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                <!-- Symptoms -->
-                                                <?php if (!empty($consultation['symptoms'])): ?>
-                                                    <p><strong>Symptoms:</strong></p>
-                                                    <ul>
-                                                        <?php foreach ($consultation['symptoms'] as $symptom): ?>
-                                                            <li><?= $symptom['symptom_name'] ?>
-                                                                (<?= $symptom['severity'] ?>, <?= $symptom['since'] ?>)
-                                                                - <?= $symptom['note'] ?>
-                                                            </li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                <?php endif; ?>
+                                                        <!-- Findings -->
+                                                        <?php if (!empty($consultation['findings'])): ?>
+                                                            <p><strong>Findings:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['findings'] as $finding): ?>
+                                                                    <li><?= $finding['finding_name'] ?> (<?= $finding['severity'] ?>,
+                                                                        <?= $finding['since'] ?>) - <?= $finding['note'] ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                <!-- Findings -->
-                                                <?php if (!empty($consultation['findings'])): ?>
-                                                    <p><strong>Findings:</strong></p>
-                                                    <ul>
-                                                        <?php foreach ($consultation['findings'] as $finding): ?>
-                                                            <li><?= $finding['finding_name'] ?>
-                                                                (<?= $finding['severity'] ?>, <?= $finding['since'] ?>)
-                                                                - <?= $finding['note'] ?>
-                                                            </li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                <?php endif; ?>
+                                                        <!-- Diagnosis -->
+                                                        <?php if (!empty($consultation['diagnosis'])): ?>
+                                                            <p><strong>Diagnosis:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
+                                                                    <li><?= $diagnosis['diagnosis_name'] ?> (<?= $diagnosis['severity'] ?>,
+                                                                        <?= $diagnosis['since'] ?>) - <?= $diagnosis['note'] ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                <!-- Diagnosis -->
-                                                <?php if (!empty($consultation['diagnosis'])): ?>
-                                                    <p><strong>Diagnosis:</strong></p>
-                                                    <ul>
-                                                        <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
-                                                            <li><?= $diagnosis['diagnosis_name'] ?>
-                                                                (<?= $diagnosis['severity'] ?>, <?= $diagnosis['since'] ?>)
-                                                                - <?= $diagnosis['note'] ?>
-                                                            </li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                <?php endif; ?>
+                                                        <!-- Investigations -->
+                                                        <?php if (!empty($consultation['investigations'])): ?>
+                                                            <p><strong>Investigations:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['investigations'] as $inv): ?>
+                                                                    <li><?= $inv['investigation_name'] ?></li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                <!-- Investigations -->
-                                                <?php if (!empty($consultation['investigations'])): ?>
-                                                    <p><strong>Investigations:</strong></p>
-                                                    <ul>
-                                                        <?php foreach ($consultation['investigations'] as $inv): ?>
-                                                            <li><?= $inv['investigation_name'] ?> </li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                <?php endif; ?>
+                                                        <!-- Instructions -->
+                                                        <?php if (!empty($consultation['instructions'])): ?>
+                                                            <p><strong>Instructions:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['instructions'] as $ins): ?>
+                                                                    <li><?= $ins['instruction_name'] ?></li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                <!-- Instructions -->
-                                                <?php if (!empty($consultation['instructions'])): ?>
-                                                    <p><strong>Instructions:</strong></p>
-                                                    <ul>
-                                                        <?php foreach ($consultation['instructions'] as $ins): ?>
-                                                            <li><?= $ins['instruction_name'] ?></li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                <?php endif; ?>
+                                                        <!-- Procedures -->
+                                                        <?php if (!empty($consultation['procedures'])): ?>
+                                                            <p><strong>Procedures:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['procedures'] as $proc): ?>
+                                                                    <li><?= $proc['procedure_name'] ?></li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                <!-- Procedures -->
-                                                <?php if (!empty($consultation['procedures'])): ?>
-                                                    <p><strong>Procedures:</strong></p>
-                                                    <ul>
-                                                        <?php foreach ($consultation['procedures'] as $proc): ?>
-                                                            <li><?= $proc['procedure_name'] ?></li>
-                                                        <?php endforeach; ?>
-                                                    </ul>
-                                                <?php endif; ?>
-                                                <?php if (!empty($consultation['advice_given'])): ?>
-                                                    <p><strong>Advice Given:</strong></p>
-                                                    <ul>
-                                                        <li><?= $consultation['advice_given'] ?></li>
-                                                    </ul>
-                                                <?php endif; ?>
-                                                <?php if (!empty($consultation['next_follow_up'])): ?>
-                                                    <p><strong>Next Follow Up Date:</strong></p>
-                                                    <ul>
-                                                        <li><?= $consultation['next_follow_up'] ?></li>
-                                                    </ul>
-                                                <?php endif; ?>
+                                                        <!-- Advice Given -->
+                                                        <?php if (!empty($consultation['advice_given'])): ?>
+                                                            <p><strong>Advice Given:</strong></p>
+                                                            <ul>
+                                                                <li><?= $consultation['advice_given'] ?></li>
+                                                            </ul>
+                                                        <?php endif; ?>
+
+                                                        <!-- Next Follow Up -->
+                                                        <?php if (!empty($consultation['next_follow_up'])): ?>
+                                                            <p><strong>Next Follow Up Date:</strong></p>
+                                                            <ul>
+                                                                <li><?= $consultation['next_follow_up'] ?></li>
+                                                            </ul>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    <?php endforeach; ?>
+                                        <?php endforeach; ?>
+                                        <span class="nav-arrow left" onclick="navigateConsultations(-1)">&#9664;</span>
+                                        <span class="nav-arrow right" onclick="navigateConsultations(1)">&#9654;</span>
+                                    </div>
+
+                                    <script>
+                                        let currentIndex = 0;
+                                        const consultationItems = document.querySelectorAll('.consultation-item');
+                                        const totalItems = consultationItems.length;
+
+                                        function navigateConsultations(direction) {
+                                            consultationItems[currentIndex].classList.remove('active');
+                                            currentIndex = (currentIndex + direction + totalItems) % totalItems;
+                                            consultationItems[currentIndex].classList.add('active');
+                                        }
+
+                                        // Keyboard navigation
+                                        document.addEventListener('keydown', function (event) {
+                                            if (event.key === 'ArrowLeft') {
+                                                navigateConsultations(-1);
+                                            } else if (event.key === 'ArrowRight') {
+                                                navigateConsultations(1);
+                                            }
+                                        });
+                                    </script>
                                 <?php else: ?>
                                     <p>No Previous Consultation.</p>
                                 <?php endif; ?>

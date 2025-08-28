@@ -578,7 +578,7 @@ class Healthcareprovider extends CI_Controller
     public function consultation($patientIdDb)
     {
         if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "newConsultation"; // default tab
+            $this->data['method'] = "newConsultation";
             $this->data['patientId'] = $patientIdDb;
             $this->data['patientDetails'] = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['symptomsList'] = $this->HcpModel->getSymptoms();
@@ -666,7 +666,54 @@ class Healthcareprovider extends CI_Controller
     }
 
 
-    
+    public function followupConsultation($consultation_id)
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $data['method'] = "followupConsult";
+            $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
+            $data['vitals'] = $this->HcpModel->get_vitals_by_consultation_id($consultation_id);
+            $data['symptoms'] = $this->HcpModel->get_symptoms_by_consultation_id($consultation_id);
+
+            $data['patient_id'] = $data['consultation']['patient_id'];
+            $data['previous_consultation_id'] = $consultation_id;
+            $data['patientDetails'] = $this->HcpModel->getPatientDetails($data['patient_id']);
+
+            $this->load->view('consultation.php', $data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function logout()
     {
         // $this->session->unset_userdata('LoggedInDetails');

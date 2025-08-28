@@ -736,7 +736,27 @@ class HcpModel extends CI_Model
         return $consultations;
     }
 
+    // --------------------------------------------------------
 
+    public function get_consultation_by_id($id)
+    {
+        $query = $this->db->get_where('consultations', array('id' => $id));
+        return $query->row_array();
+    }
+
+    public function get_vitals_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_vitals', array('consultation_id' => $consultation_id));
+        return $query->row_array(); // Assuming one vitals record per consultation
+    }
+
+    public function get_symptoms_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_symptoms', array('consultation_id' => $consultation_id));
+        return $query->result_array(); // Multiple symptoms
+    }
+
+    // ----------------------------------------------------------
 
 
 

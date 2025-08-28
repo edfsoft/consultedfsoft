@@ -759,13 +759,13 @@ class HcpModel extends CI_Model
     public function get_findings_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where('patient_findings', array('consultation_id' => $consultation_id));
-        return $query->result_array(); 
+        return $query->result_array();
     }
 
     public function get_diagnosis_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where('patient_diagnosis', array('consultation_id' => $consultation_id));
-        return $query->result_array(); 
+        return $query->result_array();
     }
 
     // ----------------------------------------------------------

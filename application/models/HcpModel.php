@@ -554,7 +554,7 @@ class HcpModel extends CI_Model
 
     public function getSymptoms()
     {
-        $details = "SELECT * FROM `symptoms_list` ORDER BY `symptomsName` ";
+        $details = "SELECT * FROM `symptoms_list` WHERE `activeStatus` = '0' ORDER BY `symptomsName` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
@@ -753,7 +753,19 @@ class HcpModel extends CI_Model
     public function get_symptoms_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where('patient_symptoms', array('consultation_id' => $consultation_id));
-        return $query->result_array(); // Multiple symptoms
+        return $query->result_array();
+    }
+
+    public function get_findings_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_findings', array('consultation_id' => $consultation_id));
+        return $query->result_array(); 
+    }
+
+    public function get_diagnosis_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_diagnosis', array('consultation_id' => $consultation_id));
+        return $query->result_array(); 
     }
 
     // ----------------------------------------------------------

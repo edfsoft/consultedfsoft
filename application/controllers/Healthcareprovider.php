@@ -165,11 +165,7 @@ class Healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "patientDetailsForm";
-            $symptoms = $this->HcpModel->getSymptoms();
-            $this->data['symptomsList'] = $symptoms;
-            $medicines = $this->HcpModel->getMedicines();
-            $this->data['medicinesList'] = $medicines;
-            $this->load->view('hcpDashboardPatients.php', $this->data);
+          $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
@@ -220,10 +216,6 @@ class Healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
-            $symptoms = $this->HcpModel->getSymptoms();
-            $this->data['symptomsList'] = $symptoms;
-            $medicines = $this->HcpModel->getMedicines();
-            $this->data['medicinesList'] = $medicines;
             $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -558,31 +550,14 @@ class Healthcareprovider extends CI_Controller
     // ***************************************************************************
     // New 
 
-
-    //  public function consultation($patientIdDb)
-    // {
-    //     if (isset($_SESSION['hcpsName'])) {
-    //         $this->data['method'] = "newConsultation";
-    //         $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
-    //         $this->data['patientDetails'] = $patientDetails;
-    //         $symptoms = $this->HcpModel->getSymptoms();
-    //         $this->data['symptomsList'] = $symptoms;
-    //         $medicines = $this->HcpModel->getMedicines();
-    //         $this->data['medicinesList'] = $medicines;
-    //         // $this->load->view('hcpDashboardPatients.php', $this->data);
-    //         $this->load->view('consultation.php', $this->data);
-    //     } else {
-    //         redirect('Healthcareprovider/');
-    //     }
-    // }
-    public function consultation($patientIdDb)
+public function consultation($patientIdDb)
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "newConsultation";
             $this->data['patientId'] = $patientIdDb;
             $this->data['patientDetails'] = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['symptomsList'] = $this->HcpModel->getSymptoms();
-            $this->data['medicinesList'] = $this->HcpModel->getMedicines();
+            // $this->data['medicinesList'] = $this->HcpModel->getMedicines();
 
             $this->data['consultations'] = $this->HcpModel->get_consultations_by_patient($patientIdDb);
             $this->data['patient_id'] = $patientIdDb;
@@ -669,9 +644,12 @@ class Healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $data['method'] = "followupConsult";
+             $data['symptomsList'] = $this->HcpModel->getSymptoms();
             $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
             $data['vitals'] = $this->HcpModel->get_vitals_by_consultation_id($consultation_id);
             $data['symptoms'] = $this->HcpModel->get_symptoms_by_consultation_id($consultation_id);
+             $data['findings'] = $this->HcpModel->get_findings_by_consultation_id($consultation_id);
+              $data['diagnosis'] = $this->HcpModel->get_diagnosis_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;

@@ -213,7 +213,7 @@
                                                             </h5>
                                                             <div class="mt-3">
                                                                 <button class="btn btn-secondary">Edit</button>
-                                                                <button class="btn btn-primary"
+                                                                <button class="btn text-light" style="background-color: #00ad8e;"
                                                                     onclick="window.location.href='<?php echo site_url('Healthcareprovider/followupConsultation/' . $consultation['id']); ?>'">Followup
                                                                     / Repeat</button>
                                                             </div>
@@ -957,7 +957,51 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="symptomsJson" id="symptomsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#findingsCollapse">
+                                        <span><strong>Findings</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="findingsCollapse">
+                                        <div id="findingsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="findingsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="searchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="suggestionsBox"></div>
+                                            </div>
+                                            <div id="findingsList" class="mt-2"></div>
+                                            <!-- Display added findings -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="findingsJson" id="findingsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#diagnosisCollapse">
+                                        <span><strong>Diagnosis</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                        <div class="mb-3 position-relative">
+                                            <div class="tags-input" id="diagnosisInputBox">
+                                                <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                    id="diagnosisInput" placeholder="Search or type to add diagnosis..." />
+                                            </div>
+                                            <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="diagnosisJson" id="diagnosisJson">
+
                             </div>
+
                             <div class="form-group pb-3">
                                 <label class="form-label" for="advices">Advice <span class="text-danger">*</span></label>
                                 <textarea class="form-control" name="advices" id="advices"
@@ -1149,9 +1193,7 @@
 
     <!-- Symptoms Modal Script -->
     <script>
-        const symptomsList = [
-            "bodyache", "fever", "headache", "followup cough", "cold"
-        ];
+        const symptomsList = <?php echo json_encode(array_column($symptomsList, 'symptomsName')); ?>;
 
         const symptomsInput = document.getElementById("symptomsSearchInput");
         const symptomsSuggestionsBox = document.getElementById("symptomsSuggestionsBox");
@@ -1303,9 +1345,7 @@
 
         renderSymptomsSuggestions();
 
-        // -------------------------------
         // ✅ PRELOAD symptoms for followup
-        // -------------------------------
         document.addEventListener("DOMContentLoaded", () => {
             const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
 
@@ -1421,11 +1461,12 @@
             modal.hide();
             pendingTag = "";
             editingTagEl = null;
+            updateHiddenInput();
         }
 
         function addTag(data) {
             const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2";
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
             updateTagDisplay(tag, data);
 
@@ -1445,6 +1486,7 @@
                 e.stopPropagation();
                 tag.remove();
                 selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
+                updateHiddenInput();
             };
 
             tag.appendChild(removeBtn);
@@ -1466,6 +1508,11 @@
             tagEl.innerHTML = textParts.join(" ");
         }
 
+        function updateHiddenInput() {
+            document.getElementById("findingsJson").value = JSON.stringify(selectedFindings);
+        }
+
+        // Input events
         findingsInput.addEventListener("input", renderSuggestions);
         findingsInput.addEventListener("focus", renderSuggestions);
         findingsInput.addEventListener("keydown", e => {
@@ -1483,6 +1530,25 @@
         });
 
         renderSuggestions();
+
+        // ✅ PRELOAD findings for followup
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloadFindings = <?php echo isset($findings) ? json_encode($findings) : '[]'; ?>;
+
+            if (preloadFindings.length > 0) {
+                preloadFindings.forEach(item => {
+                    const data = {
+                        finding: item.finding_name,
+                        note: item.note || "",
+                        since: item.since || "",
+                        severity: item.severity || ""
+                    };
+                    selectedFindings.push(data);
+                    addTag(data);
+                });
+                updateHiddenInput();
+            }
+        });
     </script>
 
     <!-- Diagonsis Modal Script -->
@@ -1540,9 +1606,8 @@
             pendingDiagnosis = name;
             editingDiagnosisTag = tagEl;
 
-            // ✅ Set the title like this:
             document.querySelector('#diagnosisModal .modal-title').textContent =
-                `Diagnosis Details for: ${name}`;
+                existing ? `Edit Diagnosis: ${name}` : `Diagnosis Details for: ${name}`;
 
             diagnosisNote.value = existing?.note || "";
             diagnosisSince.value = existing?.since || "";
@@ -1571,11 +1636,12 @@
             diagnosisModal.hide();
             pendingDiagnosis = "";
             editingDiagnosisTag = null;
+            updateDiagnosisHidden();
         }
 
         function addDiagnosisTag(data) {
             const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2";
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
             updateDiagnosisTag(tag, data);
 
@@ -1595,6 +1661,7 @@
                 e.stopPropagation();
                 tag.remove();
                 selectedDiagnosis = selectedDiagnosis.filter(d => d.name !== data.name);
+                updateDiagnosisHidden();
             };
 
             tag.appendChild(removeBtn);
@@ -1611,6 +1678,11 @@
             tagEl.innerHTML = text;
         }
 
+        function updateDiagnosisHidden() {
+            document.getElementById("diagnosisJson").value = JSON.stringify(selectedDiagnosis);
+        }
+
+        // Input events
         diagnosisInput.addEventListener("input", renderDiagnosisSuggestions);
         diagnosisInput.addEventListener("focus", renderDiagnosisSuggestions);
         diagnosisInput.addEventListener("keydown", (e) => {
@@ -1628,6 +1700,25 @@
         });
 
         renderDiagnosisSuggestions();
+
+        // ✅ PRELOAD diagnosis for followup
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloadDiagnosis = <?php echo isset($diagnosis) ? json_encode($diagnosis) : '[]'; ?>;
+
+            if (preloadDiagnosis.length > 0) {
+                preloadDiagnosis.forEach(item => {
+                    const data = {
+                        name: item.diagnosis_name,
+                        note: item.note || "",
+                        since: item.since || "",
+                        severity: item.severity || ""
+                    };
+                    selectedDiagnosis.push(data);
+                    addDiagnosisTag(data);
+                });
+                updateDiagnosisHidden();
+            }
+        });
     </script>
 
     <!-- Medicine Modal Script -->
@@ -1643,7 +1734,6 @@
     </script>
 
     <!-- ----------------------------------------------------------- -->
-
     <!-- Symptoms save script -->
     <script>
         $(document).ready(function () {

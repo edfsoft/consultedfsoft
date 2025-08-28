@@ -165,7 +165,7 @@ class Healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "patientDetailsForm";
-          $this->load->view('hcpDashboardPatients.php', $this->data);
+            $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
         }
@@ -550,7 +550,7 @@ class Healthcareprovider extends CI_Controller
     // ***************************************************************************
     // New 
 
-public function consultation($patientIdDb)
+    public function consultation($patientIdDb)
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "newConsultation";
@@ -644,12 +644,12 @@ public function consultation($patientIdDb)
     {
         if (isset($_SESSION['hcpsName'])) {
             $data['method'] = "followupConsult";
-             $data['symptomsList'] = $this->HcpModel->getSymptoms();
+            $data['symptomsList'] = $this->HcpModel->getSymptoms();
             $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
             $data['vitals'] = $this->HcpModel->get_vitals_by_consultation_id($consultation_id);
             $data['symptoms'] = $this->HcpModel->get_symptoms_by_consultation_id($consultation_id);
-             $data['findings'] = $this->HcpModel->get_findings_by_consultation_id($consultation_id);
-              $data['diagnosis'] = $this->HcpModel->get_diagnosis_by_consultation_id($consultation_id);
+            $data['findings'] = $this->HcpModel->get_findings_by_consultation_id($consultation_id);
+            $data['diagnosis'] = $this->HcpModel->get_diagnosis_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;

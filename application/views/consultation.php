@@ -214,7 +214,7 @@
                                                             <div class="mt-3">
                                                                 <button class="btn btn-secondary">Edit</button>
                                                                 <button class="btn text-light" style="background-color: #00ad8e;"
-                                                                    onclick="window.location.href='<?php echo site_url('Healthcareprovider/followupConsultation/' . $consultation['id']); ?>'">Followup
+                                                                    onclick="window.location.href='<?php echo site_url('Healthcareprovider/followupConsultation/' . $consultation['id']); ?>'">Follow-up
                                                                     / Repeat</button>
                                                             </div>
                                                         </div>
@@ -315,9 +315,9 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-                                                        <!-- Next Follow Up -->
+                                                        <!-- Next Follow-Up -->
                                                         <?php if (!empty($consultation['next_follow_up'])): ?>
-                                                            <p><strong>Next Follow Up Date:</strong></p>
+                                                            <p><strong>Next Follow-Up Date:</strong></p>
                                                             <ul>
                                                                 <li><?= $consultation['next_follow_up'] ?></li>
                                                             </ul>
@@ -529,79 +529,21 @@
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2">
-                                                <button type="button"
-                                                    class="btn btn-sm btn-danger clear-btn float-end">x</button>
-                                                <!-- <textarea class="form-control mb-2" name="investigations" rows="3"
-                                                    placeholder="Enter investigations..."></textarea> -->
                                                 <div class="mb-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]"
-                                                            value="PPBS-Postprandial Blood Sugar Test" id="inv1">
-                                                        <label class="form-check-label" for="inv1">PPBS - Postprandial Blood
-                                                            Sugar Test</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]" value="Serum Creatinine" id="inv2">
-                                                        <label class="form-check-label" for="inv2">Serum Creatinine</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]"
-                                                            value="CBC - Complete Blood Count Haemogram" id="inv3">
-                                                        <label class="form-check-label" for="inv3">CBC - Complete Blood
-                                                            Count Haemogram</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]" value="FBS- Fasting Blood Sugar"
-                                                            id="inv4">
-                                                        <label class="form-check-label" for="inv4">FBS - Fasting Blood
-                                                            Sugar</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]" value="SGOT/SGPT" id="inv5">
-                                                        <label class="form-check-label" for="inv5">SGOT / SGPT</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]" value="HbA1c Test" id="inv6">
-                                                        <label class="form-check-label" for="inv6">HbA1c Test</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]" value="Lipid Profile Test" id="inv7">
-                                                        <label class="form-check-label" for="inv7">Lipid Profile
-                                                            Test</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]" value="D Dimer" id="inv8">
-                                                        <label class="form-check-label" for="inv8">D Dimer</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]" value="CRP" id="inv9">
-                                                        <label class="form-check-label" for="inv9">CRP</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="investigations[]" value="ECG" id="inv10">
-                                                        <label class="form-check-label" for="inv10">ECG</label>
-                                                    </div>
+                                                    <?php if (!empty($symptomsList)): ?>
+                                                        <?php foreach ($symptomsList as $inv): ?>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="investigations[]"
+                                                                    value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
+                                                                    id="inv<?php echo $inv['id']; ?>">
+                                                                <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
+                                                                    <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </div>
-
                                             </div>
                                         </div>
 
@@ -612,90 +554,20 @@
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2">
-                                                <button type="button"
-                                                    class="btn btn-sm btn-danger clear-btn float-end">x</button>
                                                 <div class="mb-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]" value="Low fat in diet" id="inst1">
-                                                        <label class="form-check-label" for="inst1">Low fat in diet</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]" value="Plenty of fluids" id="inst2">
-                                                        <label class="form-check-label" for="inst2">Plenty of fluids</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]" value="Diet & exercise as advised"
-                                                            id="inst3">
-                                                        <label class="form-check-label" for="inst3">Diet & exercise as
-                                                            advised</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]"
-                                                            value="Plenty of green vegetables & fruits" id="inst4">
-                                                        <label class="form-check-label" for="inst4">Plenty of green
-                                                            vegetables &
-                                                            fruits</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]" value="Diet 1500 Kcal for Diabetes"
-                                                            id="inst5">
-                                                        <label class="form-check-label" for="inst5">Diet 1500 Kcal for
-                                                            Diabetes</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]"
-                                                            value="Self monitoring of blood glucose (SMBG) as advised"
-                                                            id="inst6">
-                                                        <label class="form-check-label" for="inst6">Self monitoring of blood
-                                                            glucose (SMBG) as advised</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]" value="Luke warm water to drink"
-                                                            id="inst7">
-                                                        <label class="form-check-label" for="inst7">Luke warm water to
-                                                            drink</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]"
-                                                            value="High protein diet suggested - soya bean, sprouts of moong, moth, black grams, egg"
-                                                            id="inst8">
-                                                        <label class="form-check-label" for="inst8">High protein diet
-                                                            suggested
-                                                            - soya bean, sprouts of moong, moth, black grams, egg</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]"
-                                                            value="Add healthy foods to your diet like green leafy vegetables, fruits, whole grains, lean protein, beans, nuts, dairy"
-                                                            id="inst9">
-                                                        <label class="form-check-label" for="inst9">Add healthy foods to
-                                                            your
-                                                            diet like green leafy vegetables, fruits, whole grains, lean
-                                                            protein, beans, nuts, dairy</label>
-                                                    </div>
-
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            name="instructions[]" value="Low Salt in diet" id="inst10">
-                                                        <label class="form-check-label" for="inst10">Low Salt in
-                                                            diet</label>
-                                                    </div>
+                                                    <?php if (!empty($symptomsList)): ?>
+                                                        <?php foreach ($symptomsList as $inv): ?>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="instructions[]"
+                                                                    value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
+                                                                    id="inv<?php echo $inv['id']; ?>">
+                                                                <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
+                                                                    <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -707,63 +579,25 @@
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2">
-                                                <button type="button"
-                                                    class="btn btn-sm btn-danger clear-btn float-end">x</button>
                                                 <div class="mb-3">
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]"
-                                                            value="Coronary angiogram">
-                                                        Coronary angiogram
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]"
-                                                            value="HD - Hemodialysis">
-                                                        HD - Hemodialysis
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]" value="Colonoscopy">
-                                                        Colonoscopy
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]" value="Injection">
-                                                        Injection
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]" value="Catheterization">
-                                                        Catheterization
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]"
-                                                            value="Debridement of infected wound/fistula/sinus">
-                                                        Debridement of infected wound/fistula/sinus
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]" value="Circumcision">
-                                                        Circumcision
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]"
-                                                            value="Abscess - small, or cellulitis requiring incision and drainage with local anaesthetic">
-                                                        Abscess - small, or cellulitis requiring incision and drainage with
-                                                        local anaesthetic
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]"
-                                                            value="Debridement of infected wound area & closure">
-                                                        Debridement of infected wound area & closure
-                                                    </div>
-                                                    <div>
-                                                        <input type="checkbox" name="procedures[]"
-                                                            value="Pleural Aspiration">
-                                                        Pleural Aspiration
-                                                    </div>
+                                                    <?php if (!empty($symptomsList)): ?>
+                                                        <?php foreach ($symptomsList as $inv): ?>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="procedures[]"
+                                                                    value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
+                                                                    id="inv<?php echo $inv['id']; ?>">
+                                                                <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
+                                                                    <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </div>
-
                                             </div>
                                         </div>
 
                                         <!-- Medicine section -->
-                                        <div class="mb-3">
+                                        <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
                                                 data-bs-toggle="collapse" data-bs-target="#medicineField">
@@ -771,8 +605,6 @@
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2" id="medicineField">
-                                                <button type="button"
-                                                    class="btn btn-sm btn-danger clear-btn float-end">x</button>
                                                 <div>
                                                     <select class="form-select" id="medicineSelect">
                                                         <option value="">-- Select Medicine --</option>
@@ -782,20 +614,27 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                     </div>
 
                                     <div class="form-group pb-3">
-                                        <label class="form-label" for="advices">Advice <span
+                                        <label class="form-label fieldLabel" for="advices">Advice <span
                                                 class="text-danger">*</span></label>
                                         <textarea class="form-control" name="advices" id="advices"
                                             placeholder="Enter the advice to patient"></textarea>
                                         <div id="advices_err" class="text-danger pt-1"></div>
                                     </div>
                                     <div class="form-group pb-3">
-                                        <label class="form-label" for="nextFollowUpDate">Next follow up <span
+                                        <label class="form-label fieldLabel" for="notes">Notes <span
                                                 class="text-danger">*</span></label>
+                                        <textarea class="form-control" name="notes" id="notes"
+                                            placeholder="Enter the notes"></textarea>
+                                        <div id="advices_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date
+                                            <span class="text-danger">*</span></label>
                                         <input type="date" class="form-control" id="nextFollowUpDate"
                                             name="nextFollowUpDate">
                                         <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
@@ -844,7 +683,7 @@
                                 value="<?php echo $patientDetails[0]['id'] ?>">
                             <input type="hidden" id="patientId" name="patientId"
                                 value="<?php echo $patientDetails[0]['patientId'] ?>">
-                            <p class="fs-4 fw-semibold mb-3">Followup Consultation:</p>
+                            <p class="fs-4 fw-semibold mb-3">Follow-up Consultation:</p>
                             <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
@@ -1000,16 +839,96 @@
                                 </div>
                                 <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong>Investigations</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <?php if (!empty($symptomsList)): ?>
+                                                <?php foreach ($symptomsList as $inv): ?>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="investigations[]"
+                                                            value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
+                                                            id="inv<?php echo $inv['id']; ?>">
+                                                        <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
+                                                            <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong>Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <?php if (!empty($symptomsList)): ?>
+                                                <?php foreach ($symptomsList as $inv): ?>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
+                                                            value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
+                                                            id="inv<?php echo $inv['id']; ?>">
+                                                        <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
+                                                            <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong>Procedures</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <?php if (!empty($symptomsList)): ?>
+                                                <?php foreach ($symptomsList as $inv): ?>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="procedures[]"
+                                                            value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
+                                                            id="inv<?php echo $inv['id']; ?>">
+                                                        <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
+                                                            <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="form-group pb-3">
-                                <label class="form-label" for="advices">Advice <span class="text-danger">*</span></label>
+                                <label class="form-label fieldLabel" for="advices">Advice <span
+                                        class="text-danger">*</span></label>
                                 <textarea class="form-control" name="advices" id="advices"
                                     placeholder="Enter the advice to patient"> <?= isset($consultation['advice_given']) ? $consultation['advice_given'] : '' ?></textarea>
                                 <div id="advices_err" class="text-danger pt-1"></div>
                             </div>
                             <div class="form-group pb-3">
-                                <label class="form-label" for="nextFollowUpDate">Next follow up <span
+                                <label class="form-label fieldLabel" for="notes">Notes <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="notes" id="notes"
+                                    placeholder="Enter the notes"> <?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
+                                <div id="advices_err" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
                                         class="text-danger">*</span></label>
                                 <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
                                     value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
@@ -1128,7 +1047,7 @@
                                 <option value="">Select description</option>
                                 <option>To rule out</option>
                                 <option>Suspect</option>
-                                <option>Follow up</option>
+                                <option>Follow-up</option>
                             </select>
                         </div>
                     </div>
@@ -1920,14 +1839,6 @@
 
                 container.classList.toggle('show');
                 icon.textContent = container.classList.contains('show') ? '-' : '+';
-            });
-        });
-
-        document.querySelectorAll('.clear-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const textarea = button.parentElement.querySelector('textarea');
-                textarea.value = '';
-                e.stopPropagation();
             });
         });
     </script>

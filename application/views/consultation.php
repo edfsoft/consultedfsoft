@@ -473,7 +473,6 @@
                                                         <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
                                                     </div>
                                                     <div id="symptomsList" class="mt-2"></div>
-                                                    <!-- Display added symptoms -->
                                                 </div>
                                             </div>
                                         </div>
@@ -936,6 +935,42 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="p-3">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#symptomsCollapse">
+                                        <span><strong>Symptoms</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="symptomsCollapse">
+                                        <div id="symptomsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="symptomsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="symptomsSearchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
+                                            </div>
+                                            <div id="symptomsList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="symptomsJson" id="symptomsJson">
+                            </div>
+                            <div class="form-group pb-3">
+                                <label class="form-label" for="advices">Advice <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="advices" id="advices"
+                                    placeholder="Enter the advice to patient"> <?= isset($consultation['advice_given']) ? $consultation['advice_given'] : '' ?></textarea>
+                                <div id="advices_err" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
+                                <label class="form-label" for="nextFollowUpDate">Next follow up <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
+                                    value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
+                                <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
+                            </div>
 
                             <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                 style="background-color: #00ad8e;">Save as new</button>
@@ -947,6 +982,45 @@
         <?php } ?>
 
         <!-- ******************************************************************************************************************************************** -->
+        <!-- Symptoms Modal -->
+        <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="symptomsModalTitle"
+                            style="font-family: Poppins, sans-serif;">
+                            Enter Symptom Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="symptomNote" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="symptomNote" placeholder="Enter note" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="symptomSince" class="form-label">Since</label>
+                            <input type="text" class="form-control" id="symptomSince" placeholder="Enter since" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="symptomSeverity" class="form-label">Severity</label>
+                            <select id="symptomSeverity" class="form-select">
+                                <option value="">Select severity</option>
+                                <option value="Mild">Mild</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Severe">Severe</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn text-light" style="background-color: #00ad8e;"
+                            onclick="saveSymptomModal()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Findings Modal -->
         <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
             <div class="modal-dialog">
@@ -1018,45 +1092,6 @@
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button class="btn text-light" style="background-color: #00ad8e;"
                             onclick="saveDiagnosisModal()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Symptoms Modal -->
-        <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="symptomsModalTitle"
-                            style="font-family: Poppins, sans-serif;">
-                            Enter Symptom Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="symptomNote" class="form-label">Note</label>
-                            <input type="text" class="form-control" id="symptomNote" placeholder="Enter note" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="symptomSince" class="form-label">Since</label>
-                            <input type="text" class="form-control" id="symptomSince" placeholder="Enter since" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="symptomSeverity" class="form-label">Severity</label>
-                            <select id="symptomSeverity" class="form-select">
-                                <option value="">Select severity</option>
-                                <option value="Mild">Mild</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Severe">Severe</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn text-light" style="background-color: #00ad8e;"
-                            onclick="saveSymptomModal()">OK</button>
                     </div>
                 </div>
             </div>
@@ -1198,11 +1233,12 @@
             symptomsModal.hide();
             pendingSymptom = "";
             editingSymptomTag = null;
+            updateHiddenInput();
         }
 
         function addSymptomTag(data) {
             const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2";
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
             updateSymptomTagDisplay(tag, data);
 
@@ -1222,6 +1258,7 @@
                 e.stopPropagation();
                 tag.remove();
                 selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
+                updateHiddenInput();
             };
 
             tag.appendChild(removeBtn);
@@ -1243,6 +1280,11 @@
             tagEl.innerHTML = textParts.join(" ");
         }
 
+        function updateHiddenInput() {
+            document.getElementById("symptomsJson").value = JSON.stringify(selectedSymptoms);
+        }
+
+        // Input events
         symptomsInput.addEventListener("input", renderSymptomsSuggestions);
         symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
         symptomsInput.addEventListener("keydown", e => {
@@ -1260,6 +1302,27 @@
         });
 
         renderSymptomsSuggestions();
+
+        // -------------------------------
+        // ✅ PRELOAD symptoms for followup
+        // -------------------------------
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
+
+            if (preloadSymptoms.length > 0) {
+                preloadSymptoms.forEach(item => {
+                    const data = {
+                        symptom: item.symptom_name,
+                        note: item.note || "",
+                        since: item.since || "",
+                        severity: item.severity || ""
+                    };
+                    selectedSymptoms.push(data);
+                    addSymptomTag(data);
+                });
+                updateHiddenInput();
+            }
+        });
     </script>
 
     <!-- Finding Modal Script -->
@@ -1780,7 +1843,6 @@
     </script>
 
     <!-- ******************************************************************************************************************************************** -->
-
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

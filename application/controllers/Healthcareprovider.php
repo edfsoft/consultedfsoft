@@ -665,7 +665,6 @@ class Healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
     }
 
-
     public function followupConsultation($consultation_id)
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -684,34 +683,6 @@ class Healthcareprovider extends CI_Controller
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public function logout()

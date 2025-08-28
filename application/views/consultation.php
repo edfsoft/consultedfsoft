@@ -811,7 +811,7 @@
                 </div>
             </section>
 
-        <?php } elseif ($method == "followupcon") { ?>
+        <?php } elseif ($method == "followupConsult") { ?>
             <section>
                 <div class="card rounded pb-3">
                     <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">

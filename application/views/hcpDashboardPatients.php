@@ -1231,60 +1231,8 @@
                                         </p>
                                     </div>
 
-                                    <p class="my-3 mt-3 fs-5 fw-semibold">Medical Records</p>
-
-                                    <!-- <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Weight</span> :
-                                    <?php echo $value['weight'] ? $value['weight'] . " Kg" : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Height</span> :
-                                    <?php echo $value['height'] ? $value['height'] . " Cm" : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Blood Pressure</span> :
-                                    <?php echo $value['systolicBp'] ? $value['systolicBp'] . " / " . $value['diastolicBp'] . " mmHg" : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Cholestrol </span> :
-                                    <?php echo $value['cholestrol'] ? $value['cholestrol'] . " mg/dL" : "Not provided"; ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Blood Sugar</span> :
-                                    <?php echo $value['bloodSugar'] ? $value['bloodSugar'] . " mg/dL" : "Not provided"; ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Diagonsis / Complaints</span> :
-                                    <?php echo $value['diagonsis'] ?>
-                                        </p>
-                                    </div>
-                                    <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Symptoms / Findings</span> :
-                                    <?php echo $value['symptoms'] ?>
-                                        </p>
-                                        <p><span class="text-secondary ">Medicines</span> :
-                                    <?php echo $value['medicines'] ? $value['medicines'] : "Not provided"; ?>
-                                        </p>
-                                    </div> -->
-
-                                    <p class="my-3 mt-3 fs-5 fw-semibold">Documents / Reports</p>
-                                    <!-- <?php if ($value['documentOne'] != "No data" || $value['documentTwo'] != "No data") { ?>
-                                        <div class="d-md-flex">
-                                    <?php if ($value['documentOne'] != "No data") { ?>
-                                                <p class="col-sm-6"><span class="text-secondary ">Medical Receipts</span> : <a
-                                                        href="<?php echo base_url() . 'uploads/' . $value['documentOne'] ?>" target="blank"
-                                                        rel="Document 1"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
-                                    <?php } ?>
-                                    <?php if ($value['documentTwo'] != "No data") { ?>
-                                                <p><span class="text-secondary ">Test uploads</span> : <a
-                                                        href="<?php echo base_url() . 'uploads/' . $value['documentTwo'] ?>" target="blank"
-                                                        rel="Document 2"> <i class="bi bi-box-arrow-up-right"></i> Open</a> </p>
-                                    <?php } ?>
-                                        </div>
-                            <?php } else { ?>
-                                        <p class="text-muted text-center pt-1 pb-2">No reports or documents have been uploaded yet.</p>
-                            <?php } ?> -->
-
-                                    <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
+ <!-- This is old code, but can be changed to display the new consultation details -->
+                               <!--      <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
                             <?php if (!empty($consultDetails)) { ?>
                                         <div class="d-md-flex">
                                             <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
@@ -1320,14 +1268,12 @@
                                                     <button class="btn btn-secondary"><i class="bi bi-download"></i> Prescription</button>
                                                 </div>
 
-                                                <!-- Toggle Button -->
                                                 <div class="text-end">
                                                     <button class="btn btn-link text-decoration-none toggle-btn" onclick="toggleCard(this)">
                                                         Show More <i class="bi bi-chevron-down"></i>
                                                     </button>
                                                 </div>
 
-                                                <!-- Expandable Content -->
                                                 <div class="card-content d-none">
                                                     <div class="d-sm-flex pb-3">
                                                         <p class="text-secondary col-md-2 mb-1">CC Id : </p>
@@ -1398,7 +1344,7 @@
 
                             <?php } else { ?>
                                         <p class="text-muted text-center pt-1 pb-2">No consultations have been conducted yet.</p>
-                            <?php } ?>
+                            <?php } ?> -->
 
                         <?php } ?>
                             </div>
@@ -1594,6 +1540,7 @@
             <?php
         } else if ($method == "newConsultation") {
             ?>
+            <!-- This method/section currently not in use. -->
                 <section>
                     <div class="card rounded">
                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">

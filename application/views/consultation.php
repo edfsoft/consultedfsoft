@@ -171,8 +171,8 @@
                                 </p>
                             <?php } ?>
                         </div>
-                        <a href="<?php echo base_url() . "Healthcareprovider/patients" ?>"
-                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                        <button onclick="goBack()" class="border-0 bg-light float-end text-dark mb-5"><i
+                                class="bi bi-arrow-left"></i> Back</button>
                     </div>
 
                     <div class="card-body mx-3 px-md-4">
@@ -555,7 +555,8 @@
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong><i class="bi bi-clipboard2-pulse me-2"></i> Instructions</strong></span>
+                                                <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                        Instructions</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2">
@@ -580,7 +581,8 @@
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong><i class="bi bi-prescription2 me-2"></i> Procedures</strong></span>
+                                                <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                        Procedures</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2">
@@ -1849,7 +1851,14 @@
         });
     </script>
 
+
     <!-- ******************************************************************************************************************************************** -->
+    <!-- Sidebar active color change code -->
+    <script>
+        <?php if ($method == "newConsultation" || $method == "followupConsult") { ?>
+            document.getElementById('patients').style.color = "#87F7E3";
+        <?php } ?>
+    </script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

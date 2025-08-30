@@ -1231,8 +1231,8 @@
                                         </p>
                                     </div>
 
- <!-- This is old code, but can be changed to display the new consultation details -->
-                               <!--      <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
+                                    <!-- This is old code, but can be changed to display the new consultation details -->
+                                    <!--      <p class="my-3 mt-3 fs-5 fw-semibold">Consultation Details</p>
                             <?php if (!empty($consultDetails)) { ?>
                                         <div class="d-md-flex">
                                             <p class="col-sm-6"><span class="text-secondary ">Last Appointment Date</span> :
@@ -1353,6 +1353,7 @@
 
         <?php } ?>
 
+        <!-- This methods/sections currently not in use. -->
         <?php if ($method == "prescription") {
             ?>
             <section>
@@ -1540,7 +1541,6 @@
             <?php
         } else if ($method == "newConsultation") {
             ?>
-            <!-- This method/section currently not in use. -->
                 <section>
                     <div class="card rounded">
                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1919,7 +1919,6 @@
             const cardContent = btn.closest('.card').querySelector('.card-content');
             cardContent.classList.toggle('d-none');
 
-            // Toggle button text and icon
             if (cardContent.classList.contains('d-none')) {
                 btn.innerHTML = 'Show More <i class="bi bi-chevron-down"></i>';
             } else {

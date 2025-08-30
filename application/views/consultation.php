@@ -209,7 +209,7 @@
                                                     <div class="card-body">
                                                         <div class="d-flex justify-content-between">
                                                             <h5 class="card-title">
-                                                                <?= date('d-m-Y h:i A', strtotime($consultation['created_at'])) ?>
+                                                                <?= date('d M Y h:i A', strtotime($consultation['created_at'])) ?>
                                                             </h5>
                                                             <div class="mt-3">
                                                                 <button class="btn btn-secondary" disabled><i
@@ -322,7 +322,8 @@
                                                         <?php if (!empty($consultation['next_follow_up'])): ?>
                                                             <p><strong>Next Follow-Up Date:</strong></p>
                                                             <ul>
-                                                                <li><?= $consultation['next_follow_up'] ?></li>
+                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
+                                                                </li>
                                                             </ul>
                                                         <?php endif; ?>
                                                     </div>

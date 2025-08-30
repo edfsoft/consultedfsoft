@@ -1472,9 +1472,10 @@
 
     <!-- Diagonsis Modal Script -->
     <script>
-        const diagnosisList = [
-            "Diabetes", "Hypertension", "Asthma", "Tuberculosis", "Anemia", "Arthritis"
-        ];
+        // const diagnosisList = [
+        //     "Diabetes", "Hypertension", "Asthma", "Tuberculosis", "Anemia", "Arthritis"
+        // ];
+        const diagnosisList = <?php echo json_encode(array_column($diagnosisList, 'diagnosisName')); ?>;
 
         const diagnosisInput = document.getElementById("diagnosisInput");
         const diagnosisSuggestionsBox = document.getElementById("diagnosisSuggestionsBox");

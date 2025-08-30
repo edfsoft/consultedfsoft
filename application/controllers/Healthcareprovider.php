@@ -557,6 +557,7 @@ class Healthcareprovider extends CI_Controller
             $this->data['patientId'] = $patientIdDb;
             $this->data['patientDetails'] = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['symptomsList'] = $this->HcpModel->getSymptoms();
+            $this->data['diagnosisList'] = $this->HcpModel->getDiagnosis();
             // $this->data['medicinesList'] = $this->HcpModel->getMedicines();
 
             $this->data['consultations'] = $this->HcpModel->get_consultations_by_patient($patientIdDb);
@@ -645,6 +646,7 @@ class Healthcareprovider extends CI_Controller
         if (isset($_SESSION['hcpsName'])) {
             $data['method'] = "followupConsult";
             $data['symptomsList'] = $this->HcpModel->getSymptoms();
+            $data['diagnosisList'] = $this->HcpModel->getDiagnosis();
             $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
             $data['vitals'] = $this->HcpModel->get_vitals_by_consultation_id($consultation_id);
             $data['symptoms'] = $this->HcpModel->get_symptoms_by_consultation_id($consultation_id);

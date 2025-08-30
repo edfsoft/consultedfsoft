@@ -199,10 +199,10 @@ class Healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
-            $consultHistory = $this->HcpModel->getConsultationDetails($patientIdDb);
-            $this->data['consultDetails'] = $consultHistory;
-            $Medicinesconsult = $this->HcpModel->getConsultMedicinesDetails($patientIdDb);
-            $this->data['consultMedicines'] = $Medicinesconsult;
+            // $consultHistory = $this->HcpModel->getConsultationDetails($patientIdDb);
+            // $this->data['consultDetails'] = $consultHistory;
+            // $Medicinesconsult = $this->HcpModel->getConsultMedicinesDetails($patientIdDb);
+            // $this->data['consultMedicines'] = $Medicinesconsult;
             $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -277,17 +277,17 @@ class Healthcareprovider extends CI_Controller
     //     }
     // }
 
-    public function saveDirectConsultation()
-    {
-        $consultIdDb = $this->HcpModel->directConsultationSave();
-        $this->HcpModel->consultMedicineSave($consultIdDb);
-        if ($consultIdDb) {
-            $this->session->set_flashdata('showSuccessMessage', 'Direct consultation saved successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');
-        }
-        redirect('Healthcareprovider/patients/');
-    }
+    // public function saveDirectConsultation()
+    // {
+    //     $consultIdDb = $this->HcpModel->directConsultationSave();
+    //     $this->HcpModel->consultMedicineSave($consultIdDb);
+    //     if ($consultIdDb) {
+    //         $this->session->set_flashdata('showSuccessMessage', 'Direct consultation saved successfully');
+    //     } else {
+    //         $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');
+    //     }
+    //     redirect('Healthcareprovider/patients/');
+    // }
 
     public function appointments()
     {

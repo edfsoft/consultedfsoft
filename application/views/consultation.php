@@ -148,7 +148,7 @@
             </div>
             <?php
         }
-        if ($method == "newConsultation") { ?>
+        if ($method == "consultDashboard") { ?>
             <section>
                 <div class="card rounded pb-3">
                     <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1856,7 +1856,7 @@
     <!-- ******************************************************************************************************************************************** -->
     <!-- Sidebar active color change code -->
     <script>
-        <?php if ($method == "newConsultation" || $method == "followupConsult") { ?>
+        <?php if ($method == "consultDashboard" || $method == "followupConsult") { ?>
             document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
     </script>

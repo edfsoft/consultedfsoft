@@ -563,6 +563,13 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getFindings()
+    {
+        $details = "SELECT * FROM `findings_list` WHERE `activeStatus` = '0' ORDER BY `findingsName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
     public function getDiagnosis()
     {
         $details = "SELECT * FROM `diagnosis_list` WHERE `activeStatus` = '0' ORDER BY `diagnosisName` ";
@@ -570,12 +577,33 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function getMedicines()
+    public function getInvestigations()
     {
-        $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
+        $details = "SELECT * FROM `investigations_list` WHERE `activeStatus` = '0' ORDER BY `investigationsName` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
+
+    public function getInstructions()
+    {
+        $details = "SELECT * FROM `instructions_list` WHERE `activeStatus` = '0' ORDER BY `instructionsName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getProcedures()
+    {
+        $details = "SELECT * FROM `procedures_list` WHERE `activeStatus` = '0' ORDER BY `proceduresName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    // public function getMedicines()
+    // {
+    //     $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
+    //     $select = $this->db->query($details);
+    //     return $select->result_array();
+    // }
 
     public function getAppMorTime()
     {

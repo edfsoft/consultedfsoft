@@ -472,8 +472,8 @@
                                                 </label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle"
-                                                        id="patientTemperature" name="patientTemperature" min="0" step="0.01"
-                                                        placeholder="E.g. 98.6">
+                                                        id="patientTemperature" name="patientTemperature" min="0"
+                                                        step="0.01" placeholder="E.g. 98.6">
                                                     <p class="mx-2 my-2">°F</p>
                                                 </div>
                                             </div>
@@ -524,7 +524,6 @@
                                                         <div class="suggestions-box" id="suggestionsBox"></div>
                                                     </div>
                                                     <div id="findingsList" class="mt-2"></div>
-                                                    <!-- Display added findings -->
                                                 </div>
                                             </div>
                                         </div>
@@ -560,15 +559,15 @@
                                             </div>
                                             <div class="collapse field-container mt-2">
                                                 <div class="mb-3">
-                                                    <?php if (!empty($symptomsList)): ?>
-                                                        <?php foreach ($symptomsList as $inv): ?>
+                                                    <?php if (!empty($investigationsList)): ?>
+                                                        <?php foreach ($investigationsList as $inv): ?>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="investigations[]"
-                                                                    value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
+                                                                    value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
                                                                     id="inv<?php echo $inv['id']; ?>">
                                                                 <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                                    <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                                    <?php echo htmlspecialchars($inv['investigationsName']); ?>
                                                                 </label>
                                                             </div>
                                                         <?php endforeach; ?>
@@ -586,15 +585,15 @@
                                             </div>
                                             <div class="collapse field-container mt-2">
                                                 <div class="mb-3">
-                                                    <?php if (!empty($symptomsList)): ?>
-                                                        <?php foreach ($symptomsList as $inv): ?>
+                                                    <?php if (!empty($instructionsList)): ?>
+                                                        <?php foreach ($instructionsList as $ins): ?>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="instructions[]"
-                                                                    value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
-                                                                    id="inv<?php echo $inv['id']; ?>">
-                                                                <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                                    <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                                    value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                                    id="ins<?php echo $ins['id']; ?>">
+                                                                <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                                    <?php echo htmlspecialchars($ins['instructionsName']); ?>
                                                                 </label>
                                                             </div>
                                                         <?php endforeach; ?>
@@ -612,14 +611,14 @@
                                             </div>
                                             <div class="collapse field-container mt-2">
                                                 <div class="mb-3">
-                                                    <?php if (!empty($symptomsList)): ?>
-                                                        <?php foreach ($symptomsList as $inv): ?>
+                                                    <?php if (!empty($proceduresList)): ?>
+                                                        <?php foreach ($proceduresList as $pro): ?>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="procedures[]"
-                                                                    value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
-                                                                    id="inv<?php echo $inv['id']; ?>">
-                                                                <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                                    <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                                    value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
+                                                                    id="pro<?php echo $pro['id']; ?>">
+                                                                <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
+                                                                    <?php echo htmlspecialchars($pro['proceduresName']); ?>
                                                                 </label>
                                                             </div>
                                                         <?php endforeach; ?>
@@ -629,7 +628,7 @@
                                         </div>
 
                                         <!-- Medicine section -->
-                                        <!-- <div class="mb-3">
+                                        <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
                                                 data-bs-toggle="collapse" data-bs-target="#medicineField">
@@ -646,7 +645,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div> -->
+                                        </div>
 
                                     </div>
 
@@ -1142,6 +1141,12 @@
     <!-- ******************************************************************************************************************************************** -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Next follow update date field disable -->
+    <script>
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("nextFollowUpDate").setAttribute("min", today);
+    </script>
+
     <!-- Symptoms Modal Script -->
     <script>
         const symptomsList = <?php echo json_encode(array_column($symptomsList, 'symptomsName')); ?>;
@@ -1318,19 +1323,7 @@
 
     <!-- Finding Modal Script -->
     <script>
-        const findingsList = [
-            "Blood Sugar High",
-            "DYSLIPIDEMIA",
-            "Foot swelling",
-            "Burning sensation in urine",
-            "HIGH BP",
-            "Asymptomatic",
-            "Heart Sounds",
-            "Post Covid 19",
-            "Dysuria",
-            "Post Covid 19 weakness",
-            "GIDDINESS"
-        ];
+        const findingsList = <?php echo json_encode(array_column($findingsList, 'findingsName')); ?>;
 
         const findingsInput = document.getElementById("searchInput");
         const suggestionsBox = document.getElementById("suggestionsBox");

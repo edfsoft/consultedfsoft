@@ -375,7 +375,6 @@
                                             }
                                         });
 
-                                        // Initialize counter and button states
                                         updateCounterAndButtons();
                                     </script>
                                 <?php else: ?>
@@ -564,21 +563,26 @@
                                                             placeholder="Search investigations...">
                                                         <button class="btn btn-outline-secondary" type="button"
                                                             id="clearSearch">✖</button>
+                                                        <button class="btn btn-outline-primary d-none" type="button"
+                                                            id="addNew">+ Add</button>
                                                     </div>
 
-                                                    <?php if (!empty($investigationsList)): ?>
-                                                        <?php foreach ($investigationsList as $inv): ?>
-                                                            <div class="form-check investigation-item">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="investigations[]"
-                                                                    value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                                    id="inv<?php echo $inv['id']; ?>">
-                                                                <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                                    <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                                </label>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    <?php endif; ?>
+                                                    <div id="investigationList">
+                                                        <?php if (!empty($investigationsList)): ?>
+                                                            <?php foreach ($investigationsList as $inv): ?>
+                                                                <div class="form-check investigation-item">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        name="investigations[]"
+                                                                        value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
+                                                                        id="inv<?php echo (int) $inv['id']; ?>">
+                                                                    <label class="form-check-label"
+                                                                        for="inv<?php echo (int) $inv['id']; ?>">
+                                                                        <?php echo htmlspecialchars($inv['investigationsName']); ?>
+                                                                    </label>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1098,6 +1102,36 @@
             </div>
         </div>
 
+        <!-- Investigation Add New Modal -->
+        <div class="modal fade" id="addInvestigationModal" tabindex="-1" aria-labelledby="addInvestigationLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                            id="addInvestigationLabel">Add New
+                            Investigation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addInvestigationForm">
+                            <div class="mb-3">
+                                <label for="newInvestigationName" class="form-label fieldLabel">Investigation Name <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control fieldStyle" id="newInvestigationName"
+                                    name="newInvestigationName" placeholder="Enter new investigation" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" form="addInvestigationForm" class="btn text-light"
+                            style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Medicine Modal -->
         <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -1504,9 +1538,6 @@
 
     <!-- Diagonsis Modal Script -->
     <script>
-        // const diagnosisList = [
-        //     "Diabetes", "Hypertension", "Asthma", "Tuberculosis", "Anemia", "Arthritis"
-        // ];
         const diagnosisList = <?php echo json_encode(array_column($diagnosisList, 'diagnosisName')); ?>;
 
         const diagnosisInput = document.getElementById("diagnosisInput");
@@ -1675,24 +1706,84 @@
 
     <!-- Investigation search button -->
     <script>
-        const searchInput = document.getElementById("investigationSearch");
-        const clearBtn = document.getElementById("clearSearch");
-        const items = document.querySelectorAll(".investigation-item");
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('investigationSearch');
+            const clearBtn = document.getElementById('clearSearch');
+            const addBtn = document.getElementById('addNew');
+            const list = document.getElementById('investigationList');
+            const modalEl = document.getElementById('addInvestigationModal');
+            const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
+            const newInvestigationInput = document.getElementById('newInvestigationName');
+            const addForm = document.getElementById('addInvestigationForm');
 
-        function filterItems() {
-            const query = searchInput.value.toLowerCase();
-            items.forEach(item => {
-                const label = item.querySelector("label").textContent.toLowerCase();
-                item.style.display = label.includes(query) ? "" : "none";
+            function norm(s) { return s.toLowerCase().trim(); }
+
+            function filter() {
+                const q = norm(searchInput.value);
+                let matches = 0;
+                list.querySelectorAll('.investigation-item').forEach(item => {
+                    const labelText = item.querySelector('label').textContent;
+                    const show = norm(labelText).includes(q) || q === '';
+                    item.classList.toggle('d-none', !show);
+                    if (show) matches++;
+                });
+                addBtn.classList.toggle('d-none', !(q && matches === 0));
+            }
+
+            searchInput.addEventListener('input', filter);
+
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                filter();
+                searchInput.focus();
             });
-        }
 
-        searchInput.addEventListener("keyup", filterItems);
+            addBtn.addEventListener('click', () => {
+                newInvestigationInput.value = searchInput.value.trim();
+                if (modal) {
+                    modal.show();
+                } else {
+                    modalEl.classList.add('show');
+                    modalEl.style.display = 'block';
+                }
+            });
 
-        clearBtn.addEventListener("click", function () {
-            searchInput.value = "";
-            filterItems(); // reset list
-            searchInput.focus();
+            addForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = newInvestigationInput.value.trim();
+                if (!name) return;
+
+                fetch("<?= site_url('Healthcareprovider/addInvestigation') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(name)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            // Add to list with new DB id
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'form-check investigation-item';
+                            wrapper.innerHTML = `
+                    <input class="form-check-input" type="checkbox" 
+                           name="investigations[]" 
+                           value="${data.name}" 
+                           id="inv${data.id}" checked>
+                    <label class="form-check-label" for="inv${data.id}">${data.name}</label>
+                `;
+                            list.prepend(wrapper);
+
+                            if (modal) { modal.hide(); }
+                            searchInput.value = '';
+                            filter();
+                        } else {
+                            alert(data.message || "Error saving investigation");
+                        }
+                    })
+                    .catch(err => console.error(err));
+            });
+
+            filter();
         });
     </script>
 

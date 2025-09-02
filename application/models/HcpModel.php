@@ -605,6 +605,12 @@ class HcpModel extends CI_Model
     //     return $select->result_array();
     // }
 
+    public function insertInvestigation($name)
+    {
+        $this->db->insert('investigations_list', ['investigationsName' => $name]);
+        return $this->db->insert_id();
+    }
+
     public function getAppMorTime()
     {
         $details = "SELECT * FROM `morning_time` ";

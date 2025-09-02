@@ -559,9 +559,16 @@
                                             </div>
                                             <div class="collapse field-container mt-2">
                                                 <div class="mb-3">
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" id="investigationSearch" class="form-control"
+                                                            placeholder="Search investigations...">
+                                                        <button class="btn btn-outline-secondary" type="button"
+                                                            id="clearSearch">✖</button>
+                                                    </div>
+
                                                     <?php if (!empty($investigationsList)): ?>
                                                         <?php foreach ($investigationsList as $inv): ?>
-                                                            <div class="form-check">
+                                                            <div class="form-check investigation-item">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="investigations[]"
                                                                     value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
@@ -1663,6 +1670,29 @@
                 });
                 updateDiagnosisHidden();
             }
+        });
+    </script>
+
+    <!-- Investigation search button -->
+    <script>
+        const searchInput = document.getElementById("investigationSearch");
+        const clearBtn = document.getElementById("clearSearch");
+        const items = document.querySelectorAll(".investigation-item");
+
+        function filterItems() {
+            const query = searchInput.value.toLowerCase();
+            items.forEach(item => {
+                const label = item.querySelector("label").textContent.toLowerCase();
+                item.style.display = label.includes(query) ? "" : "none";
+            });
+        }
+
+        searchInput.addEventListener("keyup", filterItems);
+
+        clearBtn.addEventListener("click", function () {
+            searchInput.value = "";
+            filterItems(); // reset list
+            searchInput.focus();
         });
     </script>
 

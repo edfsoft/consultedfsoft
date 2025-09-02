@@ -352,7 +352,7 @@
                                         const navRight = document.getElementById('nav-right');
 
                                         function updateCounterAndButtons() {
-                                            counterDisplay.textContent = `< ${currentIndex + 1} of ${totalItems} >`;
+                                            counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
                                             navLeft.disabled = currentIndex === 0;
                                             navRight.disabled = currentIndex === totalItems - 1;
                                         }
@@ -472,7 +472,7 @@
                                                 </label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle"
-                                                        id="patientTemperature" name="patientTemperature" min="0"
+                                                        id="patientTemperature" name="patientTemperature" min="0" step="0.01"
                                                         placeholder="E.g. 98.6">
                                                     <p class="mx-2 my-2">°F</p>
                                                 </div>
@@ -799,7 +799,7 @@
                                         </label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" min="0" placeholder="E.g. 98.6"
+                                                name="patientTemperature" min="0" step="0.01" placeholder="E.g. 98.6"
                                                 value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
                                             <p class="mx-2 my-2">°F</p>
                                         </div>

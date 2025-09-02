@@ -35,7 +35,6 @@
         }
 
         /* ********************************************************** */
-
         .tags-input {
             display: flex;
             flex-wrap: wrap;
@@ -93,8 +92,8 @@
             border-bottom: none;
             border-radius: 4px 4px 0 0;
         }
-    </style>
-    <style>
+
+        /* Consultation arrows container style */
         .consultation-container {
             position: relative;
             width: 100%;
@@ -108,26 +107,6 @@
 
         .consultation-item.active {
             display: block;
-        }
-
-        .nav-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 2rem;
-            cursor: pointer;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .nav-arrow.left {
-            left: 10px;
-        }
-
-        .nav-arrow.right {
-            right: 10px;
         }
     </style>
 </head>

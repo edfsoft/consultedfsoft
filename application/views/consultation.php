@@ -197,6 +197,17 @@
                                 <p class="fs-5 fw-semibold mb-3">All Consultations:</p>
                                 <?php if (!empty($consultations)): ?>
                                     <div class="consultation-container">
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <div class="consultation-nav">
+                                                <button id="nav-left" class="btn btn-outline-secondary me-2"
+                                                    onclick="navigateConsultations(-1)">&#9664;</button>
+                                                <span id="consultation-counter">
+                                                    < 1 of <?= count($consultations) ?> >
+                                                </span>
+                                                <button id="nav-right" class="btn btn-outline-secondary ms-2"
+                                                    onclick="navigateConsultations(1)">&#9654;</button>
+                                            </div>
+                                        </div>
                                         <?php
                                         usort($consultations, function ($a, $b) {
                                             return strtotime($b['created_at']) - strtotime($a['created_at']);
@@ -330,29 +341,42 @@
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
-                                        <span class="nav-arrow left" onclick="navigateConsultations(-1)">&#9664;</span>
-                                        <span class="nav-arrow right" onclick="navigateConsultations(1)">&#9654;</span>
                                     </div>
-
                                     <!-- Previous and Next arrows script -->
                                     <script>
                                         let currentIndex = 0;
                                         const consultationItems = document.querySelectorAll('.consultation-item');
                                         const totalItems = consultationItems.length;
+                                        const counterDisplay = document.getElementById('consultation-counter');
+                                        const navLeft = document.getElementById('nav-left');
+                                        const navRight = document.getElementById('nav-right');
+
+                                        function updateCounterAndButtons() {
+                                            counterDisplay.textContent = `< ${currentIndex + 1} of ${totalItems} >`;
+                                            navLeft.disabled = currentIndex === 0;
+                                            navRight.disabled = currentIndex === totalItems - 1;
+                                        }
 
                                         function navigateConsultations(direction) {
+                                            if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
+                                                return;
+                                            }
                                             consultationItems[currentIndex].classList.remove('active');
                                             currentIndex = (currentIndex + direction + totalItems) % totalItems;
                                             consultationItems[currentIndex].classList.add('active');
+                                            updateCounterAndButtons();
                                         }
 
                                         document.addEventListener('keydown', function (event) {
-                                            if (event.key === 'ArrowLeft') {
+                                            if (event.key === 'ArrowLeft' && currentIndex > 0) {
                                                 navigateConsultations(-1);
-                                            } else if (event.key === 'ArrowRight') {
+                                            } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
                                                 navigateConsultations(1);
                                             }
                                         });
+
+                                        // Initialize counter and button states
+                                        updateCounterAndButtons();
                                     </script>
                                 <?php else: ?>
                                     <p>No Previous Consultation.</p>

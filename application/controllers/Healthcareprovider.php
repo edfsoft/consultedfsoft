@@ -589,6 +589,26 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    public function addInstruction()
+    {
+        $name = $this->input->post('name', true);
+
+        if (!$name) {
+            echo json_encode(["status" => "error", "message" => "Instruction name required"]);
+            return;
+        }
+
+        $data = ["instructionsName" => $name];
+        $this->db->insert("instructions_list", $data);
+        $id = $this->db->insert_id();
+
+        echo json_encode([
+            "status" => "success",
+            "id" => $id,
+            "name" => $name
+        ]);
+    }
+
     public function saveConsultation()
     {
         $post = $this->input->post(null, true);

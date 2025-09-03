@@ -575,9 +575,21 @@
                                             </div>
                                             <div class="collapse field-container mt-2">
                                                 <div class="mb-3">
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" class="form-control" id="instructionSearch"
+                                                            placeholder="Search Instructions">
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearInstructionSearch">✖</button>
+                                                        <button type="button" class="btn btn-outline-primary d-none"
+                                                            id="addInstruction">+ Add</button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Instructions List -->
+                                                <div id="instructionList">
                                                     <?php if (!empty($instructionsList)): ?>
                                                         <?php foreach ($instructionsList as $ins): ?>
-                                                            <div class="form-check">
+                                                            <div class="form-check instruction-item">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     name="instructions[]"
                                                                     value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
@@ -1110,6 +1122,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- Instruction Add New Modal -->
+        <div class="modal fade" id="addInstructionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <form id="addInstructionForm" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Add New Instruction
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="newInstructionName" class="form-label fieldLabel">Instruction Name <span
+                                class="text-danger">*</span></label>
+                        <input type="text" id="newInstructionName" class="form-control" name="name"
+                            placeholder="Enter new instruction" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
 
         <!-- Medicine Modal -->
         <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true">
@@ -1683,7 +1720,7 @@
         });
     </script>
 
-    <!-- Investigation search button -->
+    <!-- Investigation Search Button -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('investigationSearch');
@@ -1757,6 +1794,84 @@
                             filter();
                         } else {
                             alert(data.message || "Error saving investigation");
+                        }
+                    })
+                    .catch(err => console.error(err));
+            });
+
+            filter();
+        });
+    </script>
+
+    <!-- Instrction Search Button -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('instructionSearch');
+            const clearBtn = document.getElementById('clearInstructionSearch');
+            const addBtn = document.getElementById('addInstruction');
+            const list = document.getElementById('instructionList');
+            const modalEl = document.getElementById('addInstructionModal');
+            const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
+            const newInstructionInput = document.getElementById('newInstructionName');
+            const addForm = document.getElementById('addInstructionForm');
+
+            function norm(s) { return s.toLowerCase().trim(); }
+
+            function filter() {
+                const q = norm(searchInput.value);
+                let matches = 0;
+                list.querySelectorAll('.instruction-item').forEach(item => {
+                    const labelText = item.querySelector('label').textContent;
+                    const show = norm(labelText).includes(q) || q === '';
+                    item.classList.toggle('d-none', !show);
+                    if (show) matches++;
+                });
+                addBtn.classList.toggle('d-none', !(q && matches === 0));
+            }
+
+            searchInput.addEventListener('input', filter);
+
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                filter();
+                searchInput.focus();
+            });
+
+            addBtn.addEventListener('click', () => {
+                newInstructionInput.value = searchInput.value.trim();
+                if (modal) { modal.show(); }
+                else { modalEl.classList.add('show'); modalEl.style.display = 'block'; }
+            });
+
+            addForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = newInstructionInput.value.trim();
+                if (!name) return;
+
+                fetch("<?= site_url('Healthcareprovider/addInstruction') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(name)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'form-check instruction-item';
+                            wrapper.innerHTML = `
+                    <input class="form-check-input" type="checkbox" 
+                           name="instructions[]" 
+                           value="${data.name}" 
+                           id="ins${data.id}" checked>
+                    <label class="form-check-label" for="ins${data.id}">${data.name}</label>
+                `;
+                            list.prepend(wrapper);
+
+                            if (modal) { modal.hide(); }
+                            searchInput.value = '';
+                            filter();
+                        } else {
+                            alert(data.message || "Error saving instruction");
                         }
                     })
                     .catch(err => console.error(err));

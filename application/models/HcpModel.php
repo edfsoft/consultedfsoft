@@ -117,33 +117,21 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
 
-        $config['upload_path'] = "./uploads/";
-        // $basepath = base_url() . 'uploads/';
-        $config['allowed_types'] = "jpg|png|jpeg|pdf";
-        $config['max_size'] = 1024;
+        // $config['upload_path'] = "./uploads/";
+        // // $basepath = base_url() . 'uploads/';
+        // $config['allowed_types'] = "jpg|png|jpeg|pdf";
+        // $config['max_size'] = 1024;
 
-        $this->load->library('upload', $config);
+        // $this->load->library('upload', $config);
 
-        $firstDocument = "No data";
-        $secondDocument = "No data";
-        $photo = "No data";
+        // $photo = "No data";
 
-        if ($this->upload->do_upload('medicalReceipts')) {
-            $data = $this->upload->data();
-            $firstDocument = $data['file_name'];
-        }
-        if ($this->upload->do_upload('medicalReports')) {
-            $data = $this->upload->data();
-            $secondDocument = $data['file_name'];
-        }
-        if ($this->upload->do_upload('profilePhoto')) {
-            $data = $this->upload->data();
-            $photo = $data['file_name'];
-        } else {
-            $error = $this->upload->display_errors();
-        }
-
-        $medicine = $post['patientMedicines'] != "addNew" ? $post['patientMedicines'] : $post['newMedicineBrand'] . " / " . $post['newMedicineName'] . " / " . $post['newMedicineSrength'];
+        // if ($this->upload->do_upload('profilePhoto')) {
+        //     $data = $this->upload->data();
+        //     $photo = $data['file_name'];
+        // } else {
+        //     $error = $this->upload->display_errors();
+        // }
 
         $insertdata = array(
             'firstName' => $post['patientName'],
@@ -156,7 +144,7 @@ class HcpModel extends CI_Model
             'bloodGroup' => $post['patientBlood'],
             'maritalStatus' => $post['patientMarital'],
             'marriedSince' => $post['marriedSince'],
-            'profilePhoto' => $photo,
+            // 'profilePhoto' => $photo,
             'profession' => $post['patientProfessions'],
             'doorNumber' => $post['patientDoorNo'],
             'address' => $post['patientStreet'],
@@ -165,60 +153,18 @@ class HcpModel extends CI_Model
             'partnerName' => $post['partnersName'],
             'partnerMobile' => $post['partnerMobile'],
             'partnerBlood' => $post['partnerBlood'],
-            'weight	' => $post['patientWeight'],
-            'height	' => $post['patientHeight'],
-            'systolicBp' => $post['patientSystolicBp'],
-            'diastolicBp' => $post['patientDiastolicBp'],
-            'cholestrol' => $post['patientsCholestrol'],
-            'bloodSugar' => $post['patientBsugar'],
-            'diagonsis	' => $post['patientDiagonsis'],
-            'symptoms' => $post['patientSymptoms'],
-            'medicines' => $medicine,
-            'documentOne' => $firstDocument,
-            'documentTwo' => $secondDocument,
             'patientHcp	' => $_SESSION['hcpId'],
             'patientHcpDbId	' => $_SESSION['hcpIdDb'],
         );
         $this->db->insert('patient_details', $insertdata);
         $registeredId = $this->db->insert_id();
-
-        if ($post['patientMedicines'] == "addNew") {
-            $post = $this->input->post(null, true);
-            $insert = array(
-                'medicineBrand' => $post['newMedicineBrand'],
-                'medicineName' => $post['newMedicineName'],
-                'strength' => $post['newMedicineSrength']
-            );
-            $this->db->insert('medicines_list', $insert);
-        }
         return $registeredId;
     }
 
     public function updatePatientsDetails()
     {
         $post = $this->input->post(null, true);
-
-        $config['upload_path'] = "./uploads/";
-        $config['allowed_types'] = "jpg|png|jpeg|pdf";
-        $config['max_size'] = 1024;
-
-        $this->load->library('upload', $config);
-
-        $firstDocument = $post['oldmedicalReceipts'];
-        $secondDocument = $post['oldmedicalReports'];
-
-        if ($this->upload->do_upload('medicalReceipts')) {
-            $data = $this->upload->data();
-            $firstDocument = $data['file_name'];
-        }
-        if ($this->upload->do_upload('medicalReports')) {
-            $data = $this->upload->data();
-            $secondDocument = $data['file_name'];
-        } else {
-            $error = $this->upload->display_errors();
-        }
-
-        $insertdata = array(
+        $updateData = array(
             'firstName' => $post['patientName'],
             'lastName' => $post['patientLastName'],
             'mobileNumber' => $post['patientMobile'],
@@ -236,22 +182,11 @@ class HcpModel extends CI_Model
             'pincode' => $post['patientPincode'],
             'partnerName' => $post['partnersName'],
             'partnerMobile' => $post['partnerMobile'],
-            'partnerBlood' => $post['partnerBlood'],
-            'weight	' => $post['patientWeight'],
-            'height	' => $post['patientHeight'],
-            'systolicBp' => $post['patientSystolicBp'],
-            'diastolicBp' => $post['patientDiastolicBp'],
-            'cholestrol' => $post['patientsCholestrol'],
-            'bloodSugar' => $post['patientBsugar'],
-            'diagonsis	' => $post['patientDiagonsis'],
-            'symptoms' => $post['patientSymptoms'],
-            'medicines	' => $post['patientMedicines'],
-            'documentOne' => $firstDocument,
-            'documentTwo' => $secondDocument,
+            'partnerBlood' => $post['partnerBlood']
         );
         $this->db->where('id', $post['patientIdDb']);
-        $this->db->update('patient_details', $insertdata);
-        return true;
+        $this->db->update('patient_details', $updateData);
+        return $post['patientIdDb'];
     }
 
     public function updatePatientProfilePhoto()
@@ -317,24 +252,26 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function getConsultationDetails($id)
-    {
-        $details = "SELECT * FROM `consultation_details` WHERE `patientDbId` = $id  ORDER BY `createdDateTime` DESC ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
+    // consultation_details table deleted
+    // public function getConsultationDetails($id)
+    // {
+    //     $details = "SELECT * FROM `consultation_details` WHERE `patientDbId` = $id  ORDER BY `createdDateTime` DESC ";
+    //     $select = $this->db->query($details);
+    //     return $select->result_array();
+    // }
 
-    public function getConsultMedicinesDetails($id)
-    {
-        $details = "SELECT * FROM `consultation_medicines` WHERE `patientDbId`= $id ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
+    // consultation_medicines table deleted
+    // public function getConsultMedicinesDetails($id)
+    // {
+    //     $details = "SELECT * FROM `consultation_medicines` WHERE `patientDbId`= $id ";
+    //     $select = $this->db->query($details);
+    //     return $select->result_array();
+    // }
 
     public function getAppointmentListDash()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto , pd.documentOne , pd.documentTwo, pd.lastAppDate,
+        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto,
         ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
         FROM patient_details AS pd
         LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
@@ -423,119 +360,121 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    public function directConsultationSave()
-    {
-        $post = $this->input->post(null, true);
-        $updatePatient = array(
-            'lastAppDate' => date('Y-m-d'),
-            'nextAppDate' => $post['nextFollowUpDate'],
-        );
-        $this->db->where('id', $post['patientIdDb']);
-        $this->db->update('patient_details', $updatePatient);
+    // consultation_details table deleted
+    // public function directConsultationSave()
+    // {
+    //     $post = $this->input->post(null, true);
+    //     $updatePatient = array(
+    //         'lastAppDate' => date('Y-m-d'),
+    //         'nextAppDate' => $post['nextFollowUpDate'],
+    //     );
+    //     $this->db->where('id', $post['patientIdDb']);
+    //     $this->db->update('patient_details', $updatePatient);
 
-        $post = $this->input->post(null, true);
-        $hcpId = $_SESSION['hcpId'];
-        $hcpIdDb = $_SESSION['hcpIdDb'];
-        // $symptom_string = implode(',', $post['symptoms']);
-        $symptom_string = isset($data['symptoms']) && is_array($post['symptoms'])
-            ? implode(',', $post['symptoms']) : '';
-        $saveDirectConsult = array(
-            'patientId' => $post['patientId'],
-            'patientDbId' => $post['patientIdDb'],
-            'consultDoctorId' => $hcpId,
-            'consultDoctorDbId' => $hcpIdDb,
-            'date' => date('d-m-Y'),
-            'symptoms' => $symptom_string,
-            'findings' => $post['findings'],
-            'diagnosis' => $post['diagnosis'],
-            'investigations' => $post['investigations'],
-            'adviceGiven' => $post['advices'],
-            'nextFollowup' => $post['nextFollowUpDate'],
-            'consultMode' => '0',
-        );
-        $this->db->insert('consultation_details', $saveDirectConsult);
-        return $this->db->insert_id();
-    }
+    //     $post = $this->input->post(null, true);
+    //     $hcpId = $_SESSION['hcpId'];
+    //     $hcpIdDb = $_SESSION['hcpIdDb'];
+    //     // $symptom_string = implode(',', $post['symptoms']);
+    //     $symptom_string = isset($data['symptoms']) && is_array($post['symptoms'])
+    //         ? implode(',', $post['symptoms']) : '';
+    //     $saveDirectConsult = array(
+    //         'patientId' => $post['patientId'],
+    //         'patientDbId' => $post['patientIdDb'],
+    //         'consultDoctorId' => $hcpId,
+    //         'consultDoctorDbId' => $hcpIdDb,
+    //         'date' => date('d-m-Y'),
+    //         'symptoms' => $symptom_string,
+    //         'findings' => $post['findings'],
+    //         'diagnosis' => $post['diagnosis'],
+    //         'investigations' => $post['investigations'],
+    //         'adviceGiven' => $post['advices'],
+    //         'nextFollowup' => $post['nextFollowUpDate'],
+    //         'consultMode' => '0',
+    //     );
+    //     $this->db->insert('consultation_details', $saveDirectConsult);
+    //     return $this->db->insert_id();
+    // }
 
-    public function onlineConsultationSave()
-    {
-        $post = $this->input->post(null, true);
-        $updatedata = array(
-            'lastAppDate' => date('Y-m-d'),
-            'nextAppDate' => $post['nextFollowUp'],
-        );
-        $this->db->where('id', $post['patientIdDb']);
-        $this->db->update('patient_details', $updatedata);
+    // consultation_details table deleted
+    // public function onlineConsultationSave()
+    // {
+    //     $post = $this->input->post(null, true);
+    //     $updatedata = array(
+    //         'lastAppDate' => date('Y-m-d'),
+    //         'nextAppDate' => $post['nextFollowUp'],
+    //     );
+    //     $this->db->where('id', $post['patientIdDb']);
+    //     $this->db->update('patient_details', $updatedata);
 
-        $updateAppStatus = array(
-            'appStatus' => "1",
-        );
-        $this->db->where('patientDbId', $post['patientIdDb']);
-        $this->db->where('dateOfAppoint', date('Y-m-d'));
-        $this->db->update('appointment_details', $updateAppStatus);
+    //     $updateAppStatus = array(
+    //         'appStatus' => "1",
+    //     );
+    //     $this->db->where('patientDbId', $post['patientIdDb']);
+    //     $this->db->where('dateOfAppoint', date('Y-m-d'));
+    //     $this->db->update('appointment_details', $updateAppStatus);
 
-        $hcpId = $_SESSION['hcpId'];
-        $hcpIdDb = $_SESSION['hcpIdDb'];
-        $symptom_string = implode(', ', $post['symptoms']);
-        $saveOnlineConsult = array(
-            'patientId' => $post['patientId'],
-            'patientDbId' => $post['patientIdDb'],
-            'consultDoctorId' => $hcpId,
-            'consultDoctorDbId' => $hcpIdDb,
-            'date' => date('d-m-Y'),
-            'symptoms' => $symptom_string,
-            'findings' => $post['findings'],
-            'diagnosis' => $post['diagnosis'],
-            'investigations' => $post['investigations'],
-            'adviceGiven' => $post['adviceGiven'],
-            'nextFollowup' => $post['nextFollowUp'],
-            'consultMode' => '1',
-        );
-        $this->db->insert('consultation_details', $saveOnlineConsult);
-        return $this->db->insert_id();
+    //     $hcpId = $_SESSION['hcpId'];
+    //     $hcpIdDb = $_SESSION['hcpIdDb'];
+    //     $symptom_string = implode(', ', $post['symptoms']);
+    //     $saveOnlineConsult = array(
+    //         'patientId' => $post['patientId'],
+    //         'patientDbId' => $post['patientIdDb'],
+    //         'consultDoctorId' => $hcpId,
+    //         'consultDoctorDbId' => $hcpIdDb,
+    //         'date' => date('d-m-Y'),
+    //         'symptoms' => $symptom_string,
+    //         'findings' => $post['findings'],
+    //         'diagnosis' => $post['diagnosis'],
+    //         'investigations' => $post['investigations'],
+    //         'adviceGiven' => $post['adviceGiven'],
+    //         'nextFollowup' => $post['nextFollowUp'],
+    //         'consultMode' => '1',
+    //     );
+    //     $this->db->insert('consultation_details', $saveOnlineConsult);
+    //     return $this->db->insert_id();
+    // }
 
-    }
+    // consultation_medicines table deleted
+    // public function consultMedicineSave($consultIdDb)
+    // {
+    //     $medNames = $this->input->post('preMedName');
+    //     $frequencies = $this->input->post('preMedFrequency');
+    //     $durations = $this->input->post('preMedDuration');
+    //     $durationUnits = $this->input->post('preMedDurationUnit');
+    //     $notes = $this->input->post('preMedNotes');
+    //     $patientDbId = $this->input->post('patientIdDb');
 
-    public function consultMedicineSave($consultIdDb)
-    {
-        $medNames = $this->input->post('preMedName');
-        $frequencies = $this->input->post('preMedFrequency');
-        $durations = $this->input->post('preMedDuration');
-        $durationUnits = $this->input->post('preMedDurationUnit');
-        $notes = $this->input->post('preMedNotes');
-        $patientDbId = $this->input->post('patientIdDb');
+    //     // for ($i = 0; $i < count($medNames); $i++) {
+    //     //     $data = [
+    //     //         'patientDbId' => $patientDbId,
+    //     //         'consultationDbId' => $consultIdDb,
+    //     //         'medicineName' => $medNames[$i],
+    //     //         'frequency' => $frequencies[$i],
+    //     //         'duration' => $durations[$i],
+    //     //         'duration_unit' => $durationUnits[$i],
+    //     //         'notes' => $notes[$i],
+    //     //         'dateOfAppoint' => date('Y-m-d')
+    //     //     ];
+    //     // $this->db->insert('consultation_medicines', $data);
+    //     for ($i = 0; $i < count($medNames); $i++) {
+    //         $frequency = isset($frequencies[$i]) ? $frequencies[$i] : '';
+    //         $duration = isset($durations[$i]) ? $durations[$i] : '';
+    //         $durationUnit = isset($durationUnits[$i]) ? $durationUnits[$i] : '';
+    //         $note = isset($notes[$i]) ? $notes[$i] : '';
 
-        // for ($i = 0; $i < count($medNames); $i++) {
-        //     $data = [
-        //         'patientDbId' => $patientDbId,
-        //         'consultationDbId' => $consultIdDb,
-        //         'medicineName' => $medNames[$i],
-        //         'frequency' => $frequencies[$i],
-        //         'duration' => $durations[$i],
-        //         'duration_unit' => $durationUnits[$i],
-        //         'notes' => $notes[$i],
-        //         'dateOfAppoint' => date('Y-m-d')
-        //     ];
-        // $this->db->insert('consultation_medicines', $data);
-        for ($i = 0; $i < count($medNames); $i++) {
-            $frequency = isset($frequencies[$i]) ? $frequencies[$i] : '';
-            $duration = isset($durations[$i]) ? $durations[$i] : '';
-            $durationUnit = isset($durationUnits[$i]) ? $durationUnits[$i] : '';
-            $note = isset($notes[$i]) ? $notes[$i] : '';
-
-            $data = [
-                'patientDbId' => $patientDbId,
-                'consultationDbId' => $consultIdDb,
-                'medicineName' => $medNames[$i],
-                'frequency' => $frequency,
-                'duration' => $duration,
-                'duration_unit' => $durationUnit,
-                'notes' => $note,
-                'dateOfAppoint' => date('Y-m-d')
-            ];
-            $this->db->insert('consultation_medicines', $data);
-        }
-    }
+    //         $data = [
+    //             'patientDbId' => $patientDbId,
+    //             'consultationDbId' => $consultIdDb,
+    //             'medicineName' => $medNames[$i],
+    //             'frequency' => $frequency,
+    //             'duration' => $duration,
+    //             'duration_unit' => $durationUnit,
+    //             'notes' => $note,
+    //             'dateOfAppoint' => date('Y-m-d')
+    //         ];
+    //         $this->db->insert('consultation_medicines', $data);
+    //     }
+    // }
 
     public function getHcpDetails()
     {
@@ -619,16 +558,57 @@ class HcpModel extends CI_Model
 
     public function getSymptoms()
     {
-        $details = "SELECT * FROM `symptoms_list` ORDER BY `symptomsName` ";
+        $details = "SELECT * FROM `symptoms_list` WHERE `activeStatus` = '0' ORDER BY `symptomsName` ";
         $select = $this->db->query($details);
         return $select->result_array();
     }
 
-    public function getMedicines()
+    public function getFindings()
     {
-        $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
+        $details = "SELECT * FROM `findings_list` WHERE `activeStatus` = '0' ORDER BY `findingsName` ";
         $select = $this->db->query($details);
         return $select->result_array();
+    }
+
+    public function getDiagnosis()
+    {
+        $details = "SELECT * FROM `diagnosis_list` WHERE `activeStatus` = '0' ORDER BY `diagnosisName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getInvestigations()
+    {
+        $details = "SELECT * FROM `investigations_list` WHERE `activeStatus` = '0' ORDER BY `investigationsName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getInstructions()
+    {
+        $details = "SELECT * FROM `instructions_list` WHERE `activeStatus` = '0' ORDER BY `instructionsName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getProcedures()
+    {
+        $details = "SELECT * FROM `procedures_list` WHERE `activeStatus` = '0' ORDER BY `proceduresName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    // public function getMedicines()
+    // {
+    //     $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
+    //     $select = $this->db->query($details);
+    //     return $select->result_array();
+    // }
+
+    public function insertInvestigation($name)
+    {
+        $this->db->insert('investigations_list', ['investigationsName' => $name]);
+        return $this->db->insert_id();
     }
 
     public function getAppMorTime()
@@ -659,7 +639,181 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    // *************************************************************************
+    // New
 
+    public function save_consultation()
+    {
+        $post = $this->input->post(null, true);
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $consultData = array(
+            'patient_id' => $post['patientIdDb'],
+            'doctor_id' => $hcpIdDb,
+            'advice_given' => $post['advices'],
+            'next_follow_up' => $post['nextFollowUpDate'],
+        );
+
+        $this->db->insert('consultations', $consultData);
+        return $this->db->insert_id();
+    }
+
+    public function save_vitals($post)
+    {
+        $vitalData = array(
+            'patient_id' => $post['patientIdDb'],
+            'consultation_id' => $post['consultationId'],
+            'weight_kg' => $post['patientWeight'],
+            'height_cm' => $post['patientHeight'],
+            'systolic_bp' => $post['patientSystolicBp'],
+            'diastolic_bp' => $post['patientDiastolicBp'],
+            'cholesterol_mg_dl' => $post['patientsCholestrol'],
+            'blood_sugar_mg_dl' => $post['patientBsugar'],
+            'spo2_percent' => $post['patientSpo2'],
+            'temperature_f' => $post['patientTemperature'],
+        );
+        return $this->db->insert('patient_vitals', $vitalData);
+    }
+
+    public function save_symptom($data)
+    {
+        return $this->db->insert('patient_symptoms', $data);
+    }
+
+    public function save_finding($data)
+    {
+        return $this->db->insert('patient_findings', $data);
+    }
+
+    public function save_diagnosis($data)
+    {
+        return $this->db->insert('patient_diagnosis', $data);
+    }
+
+    public function save_investigation($post)
+    {
+        $investigations = $this->input->post('investigations');
+        if (!empty($investigations) && is_array($investigations)) {
+            foreach ($investigations as $investigation) {
+                $this->db->insert('patient_investigations', [
+                    'consultation_id' => $post['consultationId'],
+                    'investigation_name' => $investigation
+                ]);
+            }
+        }
+        return true;
+    }
+
+    public function save_instruction($post)
+    {
+        $instructions = $this->input->post('instructions');
+        if (!empty($instructions) && is_array($instructions)) {
+            foreach ($instructions as $instruction) {
+                $this->db->insert('patient_instructions', [
+                    'consultation_id' => $post['consultationId'],
+                    'instruction_name' => $instruction
+                ]);
+            }
+        }
+        return true;
+    }
+
+    public function save_procedure($post)
+    {
+        $procedures = $this->input->post('procedures');
+        if (!empty($procedures) && is_array($procedures)) {
+            foreach ($procedures as $procedure) {
+                $this->db->insert('patient_procedures', [
+                    'consultation_id' => $post['consultationId'],
+                    'procedure_name' => $procedure
+                ]);
+            }
+        }
+        return true;
+    }
+
+    public function get_consultations_by_patient($patient_id)
+    {
+        $this->db->select('*');
+        $this->db->from('consultations');
+        $this->db->where('patient_id', $patient_id);
+        $this->db->order_by('created_at', 'DESC');
+        $consultations = $this->db->get()->result_array();
+
+        foreach ($consultations as &$consultation) {
+            $consultation_id = $consultation['id'];
+
+            // Vitals
+            $consultation['vitals'] = $this->db
+                ->get_where('patient_vitals', ['consultation_id' => $consultation_id])
+                ->row_array();
+
+            // Symptoms
+            $consultation['symptoms'] = $this->db
+                ->get_where('patient_symptoms', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Findings
+            $consultation['findings'] = $this->db
+                ->get_where('patient_findings', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Diagnosis
+            $consultation['diagnosis'] = $this->db
+                ->get_where('patient_diagnosis', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Investigations
+            $consultation['investigations'] = $this->db
+                ->get_where('patient_investigations', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Instructions
+            $consultation['instructions'] = $this->db
+                ->get_where('patient_instructions', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Procedures
+            $consultation['procedures'] = $this->db
+                ->get_where('patient_procedures', ['consultation_id' => $consultation_id])
+                ->result_array();
+        }
+
+        return $consultations;
+    }
+
+    // --------------------------------------------------------
+
+    public function get_consultation_by_id($id)
+    {
+        $query = $this->db->get_where('consultations', array('id' => $id));
+        return $query->row_array();
+    }
+
+    public function get_vitals_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_vitals', array('consultation_id' => $consultation_id));
+        return $query->row_array(); // Assuming one vitals record per consultation
+    }
+
+    public function get_symptoms_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_symptoms', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+    public function get_findings_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_findings', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+    public function get_diagnosis_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_diagnosis', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+    // ----------------------------------------------------------
 
 
 

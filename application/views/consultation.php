@@ -204,7 +204,8 @@
                                                             <div class="mt-3">
                                                                 <button class="btn btn-secondary" disabled><i
                                                                         class="bi bi-download"></i></button>
-                                                                <button class="btn btn-secondary" disabled><i
+                                                                <button class="btn btn-secondary"
+                                                                    onclick="window.location.href='<?php echo site_url('Healthcareprovider/editConsultation/' . $consultation['id']); ?>'"><i
                                                                         class="bi bi-pen"></i></button>
                                                                 <button class="btn text-light" style="background-color: #00ad8e;"
                                                                     onclick="window.location.href='<?php echo site_url('Healthcareprovider/followupConsultation/' . $consultation['id']); ?>'">Follow-up
@@ -839,7 +840,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#symptomsCollapse">
-                                        <span><strong>Symptoms</strong></span>
+                                        <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="symptomsCollapse">
@@ -861,7 +862,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#findingsCollapse">
-                                        <span><strong>Findings</strong></span>
+                                        <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="findingsCollapse">
@@ -884,7 +885,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#diagnosisCollapse">
-                                        <span><strong>Diagnosis</strong></span>
+                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i> Diagnosis</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="diagnosisCollapse">
@@ -902,19 +903,20 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong>Investigations</strong></span>
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
+                                                Investigations</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2">
                                         <div class="mb-3">
-                                            <?php if (!empty($symptomsList)): ?>
-                                                <?php foreach ($symptomsList as $inv): ?>
+                                            <?php if (!empty($investigationsList)): ?>
+                                                <?php foreach ($investigationsList as $inv): ?>
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" name="investigations[]"
-                                                            value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
+                                                            value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
                                                             id="inv<?php echo $inv['id']; ?>">
                                                         <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                            <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                            <?php echo htmlspecialchars($inv['investigationsName']); ?>
                                                         </label>
                                                     </div>
                                                 <?php endforeach; ?>
@@ -926,7 +928,8 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong>Instructions</strong></span>
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2">
@@ -950,7 +953,7 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong>Procedures</strong></span>
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i> Procedures</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2">
@@ -1002,6 +1005,8 @@
                     </div>
 
             </section>
+        <?php } elseif ($method == "editConsult") { ?>
+
         <?php } ?>
 
         <!-- ******************************************************************************************************************************************** -->

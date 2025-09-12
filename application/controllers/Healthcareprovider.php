@@ -189,7 +189,7 @@ class Healthcareprovider extends CI_Controller
 
     public function addPatientsForm()
     {
-        $post = $this->input->post(null, true);
+        // $post = $this->input->post(null, true);
         // $patientMobileNum = $post['patientMobile'];
 
         // if ($this->HcpModel->checkPatientExistence($patientMobileNum)) {
@@ -702,7 +702,12 @@ class Healthcareprovider extends CI_Controller
         if (isset($_SESSION['hcpsName'])) {
             $data['method'] = "followupConsult";
             $data['symptomsList'] = $this->HcpModel->getSymptoms();
+            $data['findingsList'] = $this->HcpModel->getFindings();
             $data['diagnosisList'] = $this->HcpModel->getDiagnosis();
+            $data['investigationsList'] = $this->HcpModel->getInvestigations();
+            $data['instructionsList'] = $this->HcpModel->getInstructions();
+            $data['proceduresList'] = $this->HcpModel->getProcedures();
+            // $data['medicinesList'] = $this->HcpModel->getMedicines();
             $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
             $data['vitals'] = $this->HcpModel->get_vitals_by_consultation_id($consultation_id);
             $data['symptoms'] = $this->HcpModel->get_symptoms_by_consultation_id($consultation_id);
@@ -718,6 +723,28 @@ class Healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/');
         }
 
+    }
+
+    public function editConsultation($consultation_id)
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $data['method'] = "editConsult";
+            $data['symptomsList'] = $this->HcpModel->getSymptoms();
+            $data['diagnosisList'] = $this->HcpModel->getDiagnosis();
+            $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
+            $data['vitals'] = $this->HcpModel->get_vitals_by_consultation_id($consultation_id);
+            $data['symptoms'] = $this->HcpModel->get_symptoms_by_consultation_id($consultation_id);
+            $data['findings'] = $this->HcpModel->get_findings_by_consultation_id($consultation_id);
+            $data['diagnosis'] = $this->HcpModel->get_diagnosis_by_consultation_id($consultation_id);
+
+            $data['patient_id'] = $data['consultation']['patient_id'];
+            $data['previous_consultation_id'] = $consultation_id;
+            $data['patientDetails'] = $this->HcpModel->getPatientDetails($data['patient_id']);
+
+            $this->load->view('consultation.php', $data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
     }
 
 

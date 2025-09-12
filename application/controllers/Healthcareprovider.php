@@ -171,25 +171,41 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    public function check_duplicate_field()
+    {
+        $field = $this->input->post('field');
+        $value = $this->input->post('value');
+        $table = $this->input->post('table');
+
+        $this->db->where($field, $value);
+        $query = $this->db->get($table);
+
+        if ($query->num_rows() > 0) {
+            echo json_encode(['exists' => true]);
+        } else {
+            echo json_encode(['exists' => false]);
+        }
+    }
+
     public function addPatientsForm()
     {
         $post = $this->input->post(null, true);
-        $patientMobileNum = $post['patientMobile'];
+        // $patientMobileNum = $post['patientMobile'];
 
-        if ($this->HcpModel->checkPatientExistence($patientMobileNum)) {
-            $this->session->set_flashdata('errorMessage', 'Mobile number already exists. Please use a new number.');
-            redirect('Healthcareprovider/patientform');
-            exit();
+        // if ($this->HcpModel->checkPatientExistence($patientMobileNum)) {
+        //     $this->session->set_flashdata('errorMessage', 'Mobile number already exists. Please use a new number.');
+        //     redirect('Healthcareprovider/patientform');
+        //     exit();
+        // } else {
+        $register = $this->HcpModel->insertPatients();
+        $this->HcpModel->generatePatientId($register);
+        if ($register) {
+            $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
         } else {
-            $register = $this->HcpModel->insertPatients();
-            $this->HcpModel->generatePatientId($register);
-            if ($register) {
-                $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
-            } else {
-                $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
-            }
-            redirect('Healthcareprovider/consultation/' . $register);
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
         }
+        redirect('Healthcareprovider/consultation/' . $register);
+        // }
     }
 
     public function patientdetails()
@@ -347,10 +363,10 @@ class Healthcareprovider extends CI_Controller
             'patientHcpDbId' => $_SESSION['hcpIdDb'],
         ];
 
-        if ($this->HcpModel->checkPatientExistence($data['mobileNumber'])) {
-            echo json_encode(['success' => false, 'message' => 'Patient mobile number already exists']);
-            return;
-        }
+        // if ($this->HcpModel->checkPatientExistence($data['mobileNumber'])) {
+        //     echo json_encode(['success' => false, 'message' => 'Patient mobile number already exists']);
+        //     return;
+        // }
 
         $insertId = $this->HcpModel->insertPartialPatient($data);
         $patientId = $this->HcpModel->generatePatientId($insertId);

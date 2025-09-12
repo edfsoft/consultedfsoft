@@ -131,7 +131,7 @@
                                 style="width:80px;height:80px" alt="icon3" />
                             <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Today Appointments
+                                    Appointments Count
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     <?php echo $appointmentsTotal; ?>
@@ -148,7 +148,7 @@
                     <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-2">
-                                <i class="bi bi-calendar4 pe-3"></i> Today Appointments
+                                <i class="bi bi-calendar4 pe-3"></i> Appointments List
                             </p>
                             <div class="table-responsive">
                                 <?php if (isset($appointmentList[0]['id'])) { ?>

@@ -498,91 +498,7 @@
                     </div>
                 </section>
 
-                <!-- Symptoms / complaints  -->
-                <!-- <script>
-                    document.addEventListener("DOMContentLoaded", () => {
-                        const multiSelect = document.getElementById("multiSelectSymptoms");
-                        const selectedValuesInput = document.getElementById("patientSymptoms");
-                        const selectedValuesContainer = document.getElementById("selectedValuesContainer");
-                        const customSymptomInput = document.getElementById("customSymptomInput");
-                        const addCustomSymptomBtn = document.getElementById("addCustomSymptom");
-
-                        let selectedValues = new Set();
-
-                        const updateSelectedValues = () => {
-                            selectedValuesContainer.innerHTML = '';
-                            selectedValues.forEach(value => {
-                                const span = document.createElement('span');
-                                span.classList.add('badge', 'bg-secondary', 'me-2', 'd-inline-flex', 'align-items-center');
-                                span.textContent = value;
-                                const button = document.createElement('button');
-                                button.innerHTML = '×';
-                                button.classList.add('btn-close', 'btn-close-white', 'ms-2');
-                                button.addEventListener('click', () => {
-                                    selectedValues.delete(value);
-                                    updateSelectedValues();
-                                    Array.from(multiSelect.options).forEach(option => {
-                                        if (option.value === value) {
-                                            option.classList.remove('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
-                                            option.selected = false;
-                                            option.textContent = option.textContent.replace(' ✓', '').trim();
-                                        }
-                                    });
-                                });
-                                span.appendChild(button);
-                                selectedValuesContainer.appendChild(span);
-                            });
-
-                            selectedValuesInput.value = Array.from(selectedValues).join(", ");
-                        };
-
-                        multiSelect.addEventListener("change", () => {
-                            const selectedOptions = Array.from(multiSelect.selectedOptions);
-                            selectedOptions.forEach(option => {
-                                selectedValues.add(option.value);
-                                option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
-                                if (!option.innerHTML.includes('✓')) {
-                                    option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span>`;
-                                }
-                            });
-                            updateSelectedValues();
-                        });
-
-                        addCustomSymptomBtn.addEventListener("click", () => {
-                            const customValue = customSymptomInput.value.trim();
-                            if (customValue) {
-                                selectedValues.add(customValue);
-                                updateSelectedValues();
-                                customSymptomInput.value = ''; // Clear the input after adding
-                            }
-                        });
-
-                        customSymptomInput.addEventListener("keypress", (e) => {
-                            if (e.key === "Enter") {
-                                e.preventDefault(); // Prevent form submission if inside a form
-                                const customValue = customSymptomInput.value.trim();
-                                if (customValue) {
-                                    selectedValues.add(customValue);
-                                    updateSelectedValues();
-                                    customSymptomInput.value = ''; // Clear the input after adding
-                                }
-                            }
-                        });
-                    });
-                </script> -->
-
-                <!-- <script>
-                    function addNewMedicines() {
-                        var medicines = document.getElementById("patientMedicines").value;
-
-                        if (medicines == "addNew") {
-                            document.getElementById("addMedicine").style.display = "block";
-                        } else {
-                            document.getElementById("addMedicine").style.display = "none";
-                        }
-                    }
-                </script> -->
-
+                <!-- Validation script -->
                 <script>
                     function clearErrorPatientDetails() {
                         var name = document.getElementById("patientName").value;
@@ -659,6 +575,38 @@
                         }
 
                     }
+                </script>
+
+                <!-- Check Mobile Number already exist or not -->
+                <script>
+                    function checkDuplicateField(field, value, callback) {
+                        $.post("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
+                            field: "mobileNumber",
+                            value: value,
+                            table: "patient_details"
+                        }, function (response) {
+                            let res = JSON.parse(response);
+                            callback(res.exists);
+                        }).fail(() => {
+                            callback(false);
+                        });
+                    }
+
+                    $(document).ready(function () {
+                        $("#patientMobile").on("keyup", function () {
+                            let mobile = $(this).val();
+
+                            if (mobile.length === 10) {
+                                $("#patientMobile_err").html("");
+
+                                checkDuplicateField("mobile", mobile, function (exists) {
+                                    if (exists) {
+                                        $("#duplicateMobileModal").modal("show");
+                                    }
+                                });
+                            }
+                        });
+                    });
                 </script>
 
             <?php
@@ -1905,6 +1853,27 @@
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
+
+        <!-- Mobile number already exist message display modal -->
+        <div class="modal fade" id="duplicateMobileModal" tabindex="-1" aria-labelledby="duplicateMobileLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal- fw-medium" style="font-family: Poppins, sans-serif;"
+                            id="duplicateMobileLabel">Mobile Number Exist</h5>
+                    </div>
+                    <div class="modal-body">
+                        This mobile number is already registered with another patient.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                            data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script>

@@ -197,11 +197,11 @@
                                                 data-index="<?= $index ?>">
                                                 <div class="border border-5 mb-3 shadow-sm">
                                                     <div class="card-body">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h5 class="card-title">
+                                                        <div class="d-md-flex justify-content-between">
+                                                            <h5 class="card-title mb-0">
                                                                 <?= date('d M Y h:i A', strtotime($consultation['created_at'])) ?>
                                                             </h5>
-                                                            <div class="mt-3">
+                                                            <div class="mt-md-3 mb-4 mb-md-0">
                                                                 <button class="btn btn-secondary" disabled><i
                                                                         class="bi bi-download"></i></button>
                                                                 <button class="btn btn-secondary"
@@ -382,7 +382,7 @@
                                                     <p class="mx-2 my-2">Kg</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientHeight">Height</label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle" id="patientHeight"
@@ -404,7 +404,7 @@
                                                 </div>
                                                 <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientHeight">Blood Pressure
                                                     (Diastolic)</label>
                                                 <div class="d-flex">
@@ -427,7 +427,7 @@
                                                     <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel">Blood Sugar (Fasting, PP,
                                                     Random)</label>
                                                 <div class="d-flex justify-content-between">
@@ -459,7 +459,7 @@
                                                     <p class="mx-2 my-2">%</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                                 </label>
                                                 <div class="d-flex">
@@ -743,7 +743,7 @@
                                             <p class="mx-2 my-2">Kg</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientHeight">Height</label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientHeight"
@@ -766,7 +766,7 @@
                                         </div>
                                         <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientHeight">Blood Pressure
                                             (Diastolic)</label>
                                         <div class="d-flex">
@@ -788,7 +788,7 @@
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel">Blood Sugar (Fasting, PP,
                                             Random)</label>
                                         <div class="d-flex justify-content-between">
@@ -823,7 +823,7 @@
                                             <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                         </label>
                                         <div class="d-flex">
@@ -1052,7 +1052,7 @@
                                             <p class="mx-2 my-2">Kg</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientHeight">Height</label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientHeight"
@@ -1075,7 +1075,7 @@
                                         </div>
                                         <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientHeight">Blood Pressure
                                             (Diastolic)</label>
                                         <div class="d-flex">
@@ -1097,7 +1097,7 @@
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel">Blood Sugar (Fasting, PP,
                                             Random)</label>
                                         <div class="d-flex justify-content-between">
@@ -1132,7 +1132,7 @@
                                             <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                         </label>
                                         <div class="d-flex">
@@ -1318,8 +1318,8 @@
 
         <!-- ******************************************************************************************************************************************** -->
         <!-- Symptoms Modal -->
-        <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle"
-            aria-hidden="true">
+        <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1357,7 +1357,8 @@
         </div>
 
         <!-- Findings Modal -->
-        <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1394,7 +1395,7 @@
         </div>
 
         <!-- Diagnosis Modal -->
-        <div class="modal fade" id="diagnosisModal" tabindex="-1">
+        <div class="modal fade" id="diagnosisModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1464,7 +1465,7 @@
 
         <!-- Instruction Add New Modal -->
         <div class="modal fade" id="addInstructionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false">
+            data-bs-keyboard="false" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <form id="addInstructionForm" class="modal-content">
                     <div class="modal-header">
@@ -1488,7 +1489,8 @@
 
 
         <!-- Medicine Modal -->
-        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">

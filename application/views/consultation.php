@@ -224,9 +224,9 @@
                                                                 <li>Cholesterol:
                                                                     <?= $consultation['vitals']['cholesterol_mg_dl'] ?? 'N/A' ?> mg/dL
                                                                 </li>
-                                                                <li>Blood Sugar:
-                                                                    <?= $consultation['vitals']['blood_sugar_mg_dl'] ?? 'N/A' ?> mg/dL
-                                                                </li>
+                                                                <?= !empty($consultation['vitals']['blood_sugar_fasting']) ? '<li>Fasting Blood Sugar: ' . $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL</li>' : '' ?>
+                                                                <?= !empty($consultation['vitals']['blood_sugar_pp']) ? '<li>PP Blood Sugar: ' . $consultation['vitals']['blood_sugar_pp'] . ' mg/dL</li>' : '' ?>
+                                                                <?= !empty($consultation['vitals']['blood_sugar_random']) ? '<li>Random Blood Sugar: ' . $consultation['vitals']['blood_sugar_random'] . ' mg/dL</li>' : '' ?>
                                                                 <li>SPO2: <?= $consultation['vitals']['spo2_percent'] ?? 'N/A' ?> %</li>
                                                                 <li>Temperature:
                                                                     <?= $consultation['vitals']['temperature_f'] ?? 'N/A' ?> °F
@@ -427,14 +427,27 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label fieldLabel" for="patientBsugar">Blood Sugar
-                                                </label>
-                                                <div class="d-flex">
-                                                    <input type="number" class="form-control fieldStyle" id="patientBsugar"
-                                                        name="patientBsugar" min="0" placeholder="E.g. 200">
-                                                    <p class="mx-2 my-2">mg/dL</p>
+                                                <label class="form-label fieldLabel">Blood Sugar (Fasting, PP,
+                                                    Random)</label>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="col-3">
+                                                        <input type="number" class="form-control fieldStyle"
+                                                            id="fastingBsugar" name="fastingBsugar" min="0"
+                                                            placeholder="E.g. 75">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                            name="ppBsugar" min="0" placeholder="E.g. 100">
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <input type="number" class="form-control fieldStyle"
+                                                            id="randomBsugar" name="randomBsugar" min="0"
+                                                            placeholder="E.g. 125">
+                                                    </div>
+                                                    <p class="my-2">mg/dL</p>
                                                 </div>
                                             </div>
+
                                         </div>
                                         <div class="d-md-flex mb-3">
                                             <div class="col-md-6">
@@ -770,18 +783,32 @@
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
                                                 name="patientsCholestrol" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['blood_sugar_mg_dl']) ? $vitals['blood_sugar_mg_dl'] : '' ?>">
+                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientBsugar">Blood Sugar
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientBsugar"
-                                                name="patientBsugar" min="0" placeholder="E.g. 200"
-                                                value="<?= isset($vitals['blood_sugar_mg_dl']) ? $vitals['blood_sugar_mg_dl'] : '' ?>">
-                                            <p class="mx-2 my-2">mg/dL</p>
+                                        <label class="form-label fieldLabel">Blood Sugar (Fasting, PP,
+                                            Random)</label>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="col-3">
+                                                <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                    name="fastingBsugar" min="0"
+                                                    value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                    placeholder="E.g. 75">
+                                            </div>
+                                            <div class="col-3">
+                                                <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                    value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                    name="ppBsugar" min="0" placeholder="E.g. 100">
+                                            </div>
+                                            <div class="col-3">
+                                                <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                    name="randomBsugar" min="0"
+                                                    value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                    placeholder="E.g. 125">
+                                            </div>
+                                            <p class="my-2">mg/dL</p>
                                         </div>
                                     </div>
                                 </div>

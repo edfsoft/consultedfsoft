@@ -667,7 +667,9 @@ class HcpModel extends CI_Model
             'systolic_bp' => $post['patientSystolicBp'],
             'diastolic_bp' => $post['patientDiastolicBp'],
             'cholesterol_mg_dl' => $post['patientsCholestrol'],
-            'blood_sugar_mg_dl' => $post['patientBsugar'],
+            'blood_sugar_fasting' => $post['fastingBsugar'],
+            'blood_sugar_pp' => $post['ppBsugar'],
+            'blood_sugar_random' => $post['randomBsugar'],
             'spo2_percent' => $post['patientSpo2'],
             'temperature_f' => $post['patientTemperature'],
         );

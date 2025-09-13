@@ -106,6 +106,15 @@
                 </div>
             </a>
         </li>
+         <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/findingsList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="findings">
+                <div>
+                   <i class="bi bi-search me-2"></i>
+                    <span>Findings</span>
+                </div>
+            </a>
+        </li>
         <li class="pt-4">
             <a class="" href="<?php echo base_url() . "Edfadmin/medicinesList" ?>"
                 style="font-size: 18px; font-weight: 400;color:#8cafba;" id="medicines">

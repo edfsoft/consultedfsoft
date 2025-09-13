@@ -395,6 +395,39 @@ class Edfadmin extends CI_Controller
         redirect('Edfadmin/symptomsList');
     }
 
+    public function findingsList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "findings";
+            $list = $this->AdminModel->getFindingsList();
+            $this->data['findingsList'] = $list;
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            redirect('Edfadmin/');
+        }
+    }
+
+    public function addNewFindings()
+    {
+        if ($this->AdminModel->newFindings()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Findings added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding findings');
+        }
+        redirect('Edfadmin/findingsList');
+    }
+
+    public function deleteFindings()
+    {
+        $findingsId = $this->uri->segment(3);
+        if ($this->AdminModel->findingsDelete($findingsId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Findings deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting findings');
+        }
+        redirect('Edfadmin/findingsList');
+    }
+
     public function medicinesList()
     {
         if (isset($_SESSION['adminIdDb'])) {

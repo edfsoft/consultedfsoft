@@ -13,7 +13,8 @@
             </div>
             <div class="modal-footer d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                <a id="deleteConfirmButton" href="#" style="background-color: #2b353bf5;" class="btn text-light">Delete</a>
+                <a id="deleteConfirmButton" href="#" style="background-color: #2b353bf5;"
+                    class="btn text-light">Delete</a>
             </div>
         </div>
     </div>
@@ -46,6 +47,9 @@
                 case "symptom":
                     deleteUrl = baseUrl + "Edfadmin/deleteSymptoms/" + id;
                     break;
+                case "finding":
+                    deleteUrl = baseUrl + "Edfadmin/deleteFindings/" + id;
+                    break;
                 case "medicine":
                     deleteUrl = baseUrl + "Edfadmin/deleteMedicine/" + id;
                     break;
@@ -63,8 +67,8 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add New
-                    Specilization</h5>
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Specilization</h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -90,7 +94,8 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add New Symptom
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Symptom
                 </h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -112,13 +117,42 @@
     </div>
 </div>
 
+<!-- Popup Add new findings  -->
+<div class="modal fade" id="newFindings" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Findings
+                </h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url() . "Edfadmin/addNewFindings" ?>" name="addFindings"
+                    enctype="multipart/form-data" method="POST">
+                    <label for="findingsName" class="form-label pb-2">Finging Name <span
+                            class="text-danger">*</span></label><br>
+                    <input type="text" name="findingsName" id="findingsName" class="form-control"
+                        placeholder="E.g. Blood Sugar High" required><br><br>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Popup Add new medicine -->
 <div class="modal fade" id="newMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add New
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New
                     Medicine</h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

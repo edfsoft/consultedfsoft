@@ -189,14 +189,6 @@ class Healthcareprovider extends CI_Controller
 
     public function addPatientsForm()
     {
-        // $post = $this->input->post(null, true);
-        // $patientMobileNum = $post['patientMobile'];
-
-        // if ($this->HcpModel->checkPatientExistence($patientMobileNum)) {
-        //     $this->session->set_flashdata('errorMessage', 'Mobile number already exists. Please use a new number.');
-        //     redirect('Healthcareprovider/patientform');
-        //     exit();
-        // } else {
         $register = $this->HcpModel->insertPatients();
         $this->HcpModel->generatePatientId($register);
         if ($register) {
@@ -205,7 +197,6 @@ class Healthcareprovider extends CI_Controller
             $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
         }
         redirect('Healthcareprovider/consultation/' . $register);
-        // }
     }
 
     public function patientdetails()
@@ -215,10 +206,6 @@ class Healthcareprovider extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
-            // $consultHistory = $this->HcpModel->getConsultationDetails($patientIdDb);
-            // $this->data['consultDetails'] = $consultHistory;
-            // $Medicinesconsult = $this->HcpModel->getConsultMedicinesDetails($patientIdDb);
-            // $this->data['consultMedicines'] = $Medicinesconsult;
             $this->load->view('hcpDashboardPatients.php', $this->data);
         } else {
             redirect('Healthcareprovider/');
@@ -249,6 +236,7 @@ class Healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/consultation/' . $updatePatient);
     }
 
+    
     // public function prescriptionView()
     // {
     //     if (isset($_SESSION['hcpsName'])) {
@@ -264,36 +252,6 @@ class Healthcareprovider extends CI_Controller
     //     }
     // }
 
-
-    // This is in bottom of the file
-    // public function consultation($patientIdDb)
-    // {
-    //     if (isset($_SESSION['hcpsName'])) {
-    //         $this->data['method'] = "consultDashboard";
-    //         $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
-    //         $this->data['patientDetails'] = $patientDetails;
-    //         $symptoms = $this->HcpModel->getSymptoms();
-    //         $this->data['symptomsList'] = $symptoms;
-    //         $medicines = $this->HcpModel->getMedicines();
-    //         $this->data['medicinesList'] = $medicines;
-    //         // $this->load->view('hcpDashboardPatients.php', $this->data);
-    //         $this->load->view('consultation.php', $this->data);
-    //     } else {
-    //         redirect('Healthcareprovider/');
-    //     }
-    // }
-
-    // public function saveDirectConsultation()
-    // {
-    //     $consultIdDb = $this->HcpModel->directConsultationSave();
-    //     $this->HcpModel->consultMedicineSave($consultIdDb);
-    //     if ($consultIdDb) {
-    //         $this->session->set_flashdata('showSuccessMessage', 'Direct consultation saved successfully');
-    //     } else {
-    //         $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');
-    //     }
-    //     redirect('Healthcareprovider/patients/');
-    // }
 
     public function appointments()
     {
@@ -353,11 +311,6 @@ class Healthcareprovider extends CI_Controller
             'patientHcpDbId' => $_SESSION['hcpIdDb'],
         ];
 
-        // if ($this->HcpModel->checkPatientExistence($data['mobileNumber'])) {
-        //     echo json_encode(['success' => false, 'message' => 'Patient mobile number already exists']);
-        //     return;
-        // }
-
         $insertId = $this->HcpModel->insertPartialPatient($data);
         $patientId = $this->HcpModel->generatePatientId($insertId);
 
@@ -373,7 +326,6 @@ class Healthcareprovider extends CI_Controller
             echo json_encode(['success' => false, 'message' => 'Insert failed']);
         }
     }
-
 
     public function newAppointment()
     {
@@ -419,35 +371,6 @@ class Healthcareprovider extends CI_Controller
         }
         redirect('Healthcareprovider/appointments');
     }
-
-    public function appointmentSummary()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "appointmentSummary";
-            $patientIdDb = $this->uri->segment(3);
-            $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
-            $this->data['patientDetails'] = $patientDetails;
-            $symptoms = $this->HcpModel->getSymptoms();
-            $this->data['symptomsList'] = $symptoms;
-            $medicines = $this->HcpModel->getMedicines();
-            $this->data['medicinesList'] = $medicines;
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            redirect('Healthcareprovider/');
-        }
-    }
-
-    // public function saveOnlineConsutation()
-    // {
-    //     $consultIdDb = $this->HcpModel->onlineConsultationSave();
-    //     $this->HcpModel->consultMedicineSave($consultIdDb);
-    //     if (consultIdDb) {
-    //         $this->session->set_flashdata('showSuccessMessage', 'Online consultation saved successfully');
-    //     } else {
-    //         $this->session->set_flashdata('showErrorMessage', 'Error in submitting details');
-    //     }
-    //     redirect('Healthcareprovider/appointments');
-    // }
 
     public function appointmentReschedule()
     {
@@ -544,13 +467,6 @@ class Healthcareprovider extends CI_Controller
         }
         redirect('Healthcareprovider/myProfile');
     }
-
-    // public function getDetails()
-    // {
-    //     $patientList = $this->HcpModel->getPatientList();
-    //     $this->data['patientList'] = $patientList['response'];
-    //     $this->load->view('hcpDashboard.php',  $this->data);
-    // }
 
 
     // ***************************************************************************

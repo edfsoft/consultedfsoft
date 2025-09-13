@@ -106,14 +106,6 @@ class HcpModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    // Not in use, check and display the message
-    // public function checkPatientExistence($patientMobileNum)
-    // {
-    //     $this->db->where('mobileNumber', $patientMobileNum);
-    //     $query = $this->db->get('patient_details');
-    //     return $query->num_rows() > 0;
-    // }
-
     public function insertPatients()
     {
         $post = $this->input->post(null, true);
@@ -276,22 +268,6 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    // consultation_details table deleted
-    // public function getConsultationDetails($id)
-    // {
-    //     $details = "SELECT * FROM `consultation_details` WHERE `patientDbId` = $id  ORDER BY `createdDateTime` DESC ";
-    //     $select = $this->db->query($details);
-    //     return $select->result_array();
-    // }
-
-    // consultation_medicines table deleted
-    // public function getConsultMedicinesDetails($id)
-    // {
-    //     $details = "SELECT * FROM `consultation_medicines` WHERE `patientDbId`= $id ";
-    //     $select = $this->db->query($details);
-    //     return $select->result_array();
-    // }
-
     public function getAppointmentListDash()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
@@ -384,81 +360,7 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    // consultation_details table deleted
-    // public function directConsultationSave()
-    // {
-    //     $post = $this->input->post(null, true);
-    //     $updatePatient = array(
-    //         'lastAppDate' => date('Y-m-d'),
-    //         'nextAppDate' => $post['nextFollowUpDate'],
-    //     );
-    //     $this->db->where('id', $post['patientIdDb']);
-    //     $this->db->update('patient_details', $updatePatient);
-
-    //     $post = $this->input->post(null, true);
-    //     $hcpId = $_SESSION['hcpId'];
-    //     $hcpIdDb = $_SESSION['hcpIdDb'];
-    //     // $symptom_string = implode(',', $post['symptoms']);
-    //     $symptom_string = isset($data['symptoms']) && is_array($post['symptoms'])
-    //         ? implode(',', $post['symptoms']) : '';
-    //     $saveDirectConsult = array(
-    //         'patientId' => $post['patientId'],
-    //         'patientDbId' => $post['patientIdDb'],
-    //         'consultDoctorId' => $hcpId,
-    //         'consultDoctorDbId' => $hcpIdDb,
-    //         'date' => date('d-m-Y'),
-    //         'symptoms' => $symptom_string,
-    //         'findings' => $post['findings'],
-    //         'diagnosis' => $post['diagnosis'],
-    //         'investigations' => $post['investigations'],
-    //         'adviceGiven' => $post['advices'],
-    //         'nextFollowup' => $post['nextFollowUpDate'],
-    //         'consultMode' => '0',
-    //     );
-    //     $this->db->insert('consultation_details', $saveDirectConsult);
-    //     return $this->db->insert_id();
-    // }
-
-    // consultation_details table deleted
-    // public function onlineConsultationSave()
-    // {
-    //     $post = $this->input->post(null, true);
-    //     $updatedata = array(
-    //         'lastAppDate' => date('Y-m-d'),
-    //         'nextAppDate' => $post['nextFollowUp'],
-    //     );
-    //     $this->db->where('id', $post['patientIdDb']);
-    //     $this->db->update('patient_details', $updatedata);
-
-    //     $updateAppStatus = array(
-    //         'appStatus' => "1",
-    //     );
-    //     $this->db->where('patientDbId', $post['patientIdDb']);
-    //     $this->db->where('dateOfAppoint', date('Y-m-d'));
-    //     $this->db->update('appointment_details', $updateAppStatus);
-
-    //     $hcpId = $_SESSION['hcpId'];
-    //     $hcpIdDb = $_SESSION['hcpIdDb'];
-    //     $symptom_string = implode(', ', $post['symptoms']);
-    //     $saveOnlineConsult = array(
-    //         'patientId' => $post['patientId'],
-    //         'patientDbId' => $post['patientIdDb'],
-    //         'consultDoctorId' => $hcpId,
-    //         'consultDoctorDbId' => $hcpIdDb,
-    //         'date' => date('d-m-Y'),
-    //         'symptoms' => $symptom_string,
-    //         'findings' => $post['findings'],
-    //         'diagnosis' => $post['diagnosis'],
-    //         'investigations' => $post['investigations'],
-    //         'adviceGiven' => $post['adviceGiven'],
-    //         'nextFollowup' => $post['nextFollowUp'],
-    //         'consultMode' => '1',
-    //     );
-    //     $this->db->insert('consultation_details', $saveOnlineConsult);
-    //     return $this->db->insert_id();
-    // }
-
-    // consultation_medicines table deleted
+    // For Reference to save medicine
     // public function consultMedicineSave($consultIdDb)
     // {
     //     $medNames = $this->input->post('preMedName');

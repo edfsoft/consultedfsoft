@@ -2207,116 +2207,101 @@
                                                             class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                                                     </div>
                                                     <div class="card-body ps-3 p-sm-4">
-                                                        <div class="">
-                                                            <div class="position-relative mb-5" style="height:200px;">
-                                    <?php
-                                    foreach ($hcpDetails as $key => $value) {
-                                        ?>
-                                    <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
-                                                                        <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="180" height="180"
-                                                                            class="rounded-circle"
-                                                                            onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
-                                    <?php } else { ?>
-                                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180"
-                                                                            height="180" class="rounded-circle">
+                            <?php
+                            foreach ($hcpDetails as $key => $value) {
+                                ?>
+                                                            <div class="position-relative">
+                                                                <img id="previewImage" src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
+                                                                    ? base_url('uploads/' . $value['hcpPhoto'])
+                                                                    : base_url('assets/BlankProfileCircle.png') ?>"
+                                                                    alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
+                                                                    style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
+                                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                                                <a href="#" class="position-absolute rounded-circle px-2 py-1"
+                                                                    style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
+                                                                    role="button" data-bs-toggle="modal" data-bs-target="#updateHCPPhoto"><i
+                                                                        class="bi bi-camera"></i></a>
+                                                            </div>
 
-                                    <?php } ?>
-                                                                    <!-- <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
-                                                                                                data-bs-target="#updateHCPPhoto"><i class="bi bi-pencil-square"></i></button> -->
-                                                                    <a href="#" class="position-absolute bottom-0 rounded-circl px-2 py-1"
-                                                                        style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%; " role="button"
-                                                                        data-bs-toggle="modal" data-bs-target="#updateHCPPhoto"><i class="bi bi-camera"></i></a>
-                                                                </div>
+                                                            <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
+                                                                name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
+                                                                onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="">
 
-                                                                <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
-                                                                    name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
-                                                                    onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="col-md-6">
-
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="drName">Name <span class="text-danger">*</span></label>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                        <label class="form-label" for="drName">Full Name</label>
                                                                         <input type="text" class="form-control" id="drName" name="drName"
-                                                                            value="<?php echo $value['hcpName']; ?>" placeholder="E.g. Suresh Kumar">
-                                                                        <div id="drName_err" class="text-danger pt-1"></div>
+                                                                            value="<?php echo $value['hcpName']; ?>" placeholder="E.g. Suresh Kumar"
+                                                                            style="cursor: no-drop;" disabled readonly>
                                                                     </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="drMobile">Mobile <span
-                                                                                class="text-danger">*</span></label>
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                        <label class="form-label" for="drMobile">Mobile Number</label>
                                                                         <input type="number" class="form-control" id="drMobile" name="drMobile"
-                                                                            value="<?php echo $value['hcpMobile']; ?>" placeholder="E.g. 9632587410">
-                                                                        <div id="drMobile_err" class="text-danger pt-1"></div>
+                                                                            value="<?php echo $value['hcpMobile']; ?>" placeholder="E.g. 9632587410"
+                                                                            style="cursor: no-drop;" disabled readonly>
                                                                     </div>
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="drEmail">Email <span class="text-danger">*</span></label>
+                                                                </div>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                        <label class="form-label" for="drEmail">Email Id</label>
                                                                         <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                                            value="<?php echo $value['hcpMail']; ?>" placeholder="E.g. example@gmail.com">
-                                                                        <div id="drEmail_err" class="text-danger pt-1"></div>
+                                                                            value="<?php echo $value['hcpMail']; ?>" placeholder="E.g. example@gmail.com"
+                                                                            style="cursor: no-drop;" disabled readonly>
                                                                     </div>
-                                                                    <!-- <div class="form-group pb-3 ">
-                                                                                                    <label class="form-label" for="drPassword">Password <span
-                                                                                                            class="text-danger">*</span></label>
-                                                                                                    <div class="d-flex">
-                                                                                                        <input type="password" class="form-control" id="drPassword" name="drPassword"
-                                                                                                            value='<?php echo $value['hcpPassword']; ?>'>
-                                                                                                        <button type="button" class="btn btn-outline-secondary"
-                                                                                                            onclick="togglePasswordVisibility('drPassword', 'visibilityIcon')">
-                                                                                                            <i id="visibilityIcon" class="bi bi-eye-slash"></i>
-                                                                                                        </button>
-                                                                                                    </div>
-                                                                                                    <div id="drPassword_err" class="text-danger pt-1"></div>
-                                                                                                </div> -->
-                                                                    <div class="form-group pb-3">
-                                                                        <label class="form-label" for="specialization">Specialization <span
-                                                                                class="text-danger">*</span></label>
-                                                                        <select class="form-control" id="specialization" name="specialization">
-                                                <?php
-                                                $defaultSelectedValue = $value['hcpSpecialization'];
-                                                foreach ($specializationList as $key => $cvalue) {
-                                                    $selected = ($cvalue['specializationName'] == $defaultSelectedValue) ? 'selected' : ''; ?>
-                                                                                <option value="<?php echo $cvalue['specializationName'] ?>" <?php echo $selected ?>>
-                                                    <?php echo $cvalue['specializationName'] ?>
-                                                                                </option>
-
-                                            <?php } ?>
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                        <label class="form-label" for="specialization">Specialization</label>
+                                                                        <select class="form-control" id="specialization" name="specialization"
+                                                                            style="cursor: no-drop;" disabled readonly>
+                                                                            <option value="" selected><?php echo $value['hcpSpecialization'] ?></option>
                                                                         </select>
-                                                                        <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
                                                                     </div>
-
-                                                                    <div class="form-group pb-3">
+                                                                </div>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="yearOfExp">Years of Experience</label>
                                                                         <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
                                                                             value="<?php echo $value['hcpExperience']; ?>" placeholder="E.g. 25">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
-                                                                    <div class="form-group pb-3">
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="qualification">Qualification</label>
                                                                         <input type="text" class="form-control" id="qualification" name="qualification"
                                                                             value="<?php echo $value['hcpQualification']; ?>" placeholder="E.g. MBBS">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
-                                                                    <div class="form-group pb-3">
+                                                                </div>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="dob">Date of Birth</label>
                                                                         <input type="date" class="form-control" id="dob" name="dob"
                                                                             value="<?php echo $value['hcpDob']; ?>">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
-                                                                    <div class="form-group pb-3">
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="hospitalName">Hospital / Clinic Name</label>
                                                                         <input type="text" class="form-control" id="hospitalName" name="hospitalName"
                                                                             value="<?php echo $value['hcpHospitalName']; ?>" placeholder="E.g. MMCH">
                                                                         <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
                                                                     </div>
-                                                                    <div class="form-group pb-3">
+                                                                </div>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="location">Location</label>
                                                                         <input type="text" class="form-control" id="location" name="location"
                                                                             value="<?php echo $value['hcpLocation']; ?>" placeholder="E.g. Erode">
                                                                         <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
                                                                     </div>
-
-                                                                    <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
-                                                                    <button type="submit" class="btn float-end mt-3"
-                                                                        style="color: white;background-color: #00ad8e;">Save</button>
-                                                                </form>
-                                                            </div>
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                        <label class="form-label">Password</label><br>
+                                                                        <a href="<?php echo base_url('Healthcareprovider/changePassword'); ?>"
+                                                                            class="btn text-light" style="background-color: #00ad8e;">
+                                                                            Change Password</a>
+                                                                    </div>
+                                                                </div>
+                                                                <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
+                                                                <button type="submit" class="btn float-end mt-3"
+                                                                    style="color: white;background-color: #00ad8e;">Save</button>
+                                                            </form>
                         <?php } ?>
                                                     </div>
                                                 </div>

@@ -445,13 +445,8 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $updatedata = array(
-            // 'hcpName' => $post['drName'],
-            // 'hcpMobile' => $post['drMobile'],
-            // 'hcpMail' => $post['drEmail'],
-            // 'hcpPassword' => $post['drPassword'],
             'hcpExperience' => $post['yearOfExp'],
             'hcpQualification' => $post['qualification'],
-            'hcpSpecialization' => $post['specialization'],
             'hcpDob' => $post['dob'],
             'hcpHospitalName' => $post['hospitalName'],
             'hcpLocation' => $post['location'],

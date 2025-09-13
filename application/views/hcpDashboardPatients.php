@@ -875,7 +875,7 @@
             <div class="modal-dialog modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal- fw-medium" style="font-family: Poppins, sans-serif;"
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
                             id="duplicateMobileLabel">Mobile Number Exist</h5>
                     </div>
                     <div class="modal-body">
@@ -895,7 +895,8 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" style="font-family: Poppins, sans-serif;">Upload Profile Photo</h5>
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Upload Profile Photo
+                        </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-center">

@@ -190,7 +190,7 @@
                         const matchesSearch =
                             fullName.toLowerCase().includes(searchTerm) ||
                             patientId.toLowerCase().includes(searchTerm) ||
-                            mobileNumber.toLowerCase().includes(searchTerm);
+                            mobileNumber.includes(searchTerm);
 
                         let matchesGender = true;
                         if (genderFilter !== 'All') {

@@ -31,7 +31,7 @@
                         <li class="dropdown-header">
                             <p class="fs-6 fw-medium text-dark"> <?php echo $_SESSION['ccName']; ?> / </p>
                             <p> <?php echo $_SESSION['ccId']; ?> </p>
-                            <span>Health Care Provider</span>
+                            <span>Chief Consultant</span>
                         </li>
                         <li>
                             <hr class="dropdown-divider" />

@@ -129,7 +129,7 @@
                                 style="width:80px;height:80px" alt="icon3" />
                             <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                    Today Appointments
+                                    Appointments Count
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
                                     <?php echo $appointmentsTotal; ?>
@@ -146,7 +146,7 @@
                     <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                <i class="bi bi-calendar4 pe-3"></i> Today Appointments
+                                <i class="bi bi-calendar4 pe-3"></i> Appointments List
                             </p>
                             <div class="table-responsive">
                                 <?php if (isset($appointmentList[0]['id'])) { ?>
@@ -396,7 +396,7 @@
                                     </select>
                                     <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
                                         <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                            style="height: 50px; width: 250px" placeholder="Search (ID / NAME)">
+                                            style="height: 50px; width: 260px" placeholder="Search (ID / NAME / MOBILE)">
                                         <span id="clearSearch" class="position-absolute"
                                             style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                     </div>
@@ -503,10 +503,12 @@
                         filteredPatientDetails = patientDetails.filter((patient) => {
                             const fullName = `${patient.firstName || ''} ${patient.lastName || ''}`.trim();
                             const patientId = patient.patientId || '';
+                            const mobileNumber = patient.mobileNumber || '';
 
                             const matchesSearch =
                                 fullName.toLowerCase().includes(searchTerm) ||
-                                patientId.toLowerCase().includes(searchTerm);
+                                patientId.toLowerCase().includes(searchTerm) ||
+                                mobileNumber.includes(searchTerm);
 
                             let matchesGender = true;
                             if (genderFilter !== 'All') {

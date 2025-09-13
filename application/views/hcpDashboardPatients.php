@@ -20,7 +20,8 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+    <!-- Image Cropper -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
 
     <style>
         body {
@@ -326,6 +327,18 @@
                             <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>" name="patientDetails"
                                 id="patientDetails" enctype="multipart/form-data" method="POST"
                                 oninput="clearErrorPatientDetails()" onsubmit="return validatePatientDetails()">
+                                <div class="position-relative">
+                                    <img id="previewImage" src="<?= base_url('assets/BlankProfileCircle.png') ?>"
+                                        alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
+                                        style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
+                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                    <input type="file" id="profilePhoto" name="profilePhoto"
+                                        class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
+                                    <img src="<?= base_url('assets/nurseCameraIcon.svg') ?>" alt="Edit Image" height="40"
+                                        width="40" class="position-absolute"
+                                        style="cursor: pointer; top: 75%; left: 50%; transform: translateX(44%);"
+                                        onclick="document.getElementById('profilePhoto').click();">
+                                </div>
                                 <p class="pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
                                     <button
                                         style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
@@ -624,31 +637,32 @@
                                 <?php
                                 foreach ($patientDetails as $key => $value) {
                                     ?>
-                                        <div class="position-relative mb-5">
-                                    <?php if (isset($value['profilePhoto']) && $value['profilePhoto'] != "No data") { ?>
-                                                <img src="<?php echo base_url() . 'uploads/' . $value['profilePhoto'] ?>"
-                                                    alt="Profile Photo" width="180" height="180" class="rounded-circle"
-                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
-                                    <?php } else { ?>
-                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="180"
-                                                    height="180" class="rounded-circle">
-                                    <?php } ?>
-                                            <button class="position-absolute bottom-0 " role="button" data-bs-toggle="modal"
-                                                data-bs-target="#updatePatientProfile"
-                                                onclick="patientPhotoUpdate('<?php echo $value['id'] ?>')">
-                                                <i class="bi bi-pencil-square"></i></button>
-                                        </div>
                                         <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
                                             name="patientDetails" id="multi-step-form" enctype="multipart/form-data" method="POST"
                                             oninput="clearErrorPatientDetails()">
                                             <button type="submit" class="btn text-light float-end" style="background-color: #00ad8e;"
                                                 onclick="return validatePatientDetails()">Update</button>
+                                            <div class="position-relative">
+                                                <img id="previewImage" src="<?= isset($value['profilePhoto']) && $value['profilePhoto'] !== "No data"
+                                                    ? base_url('uploads/' . $value['profilePhoto'])
+                                                    : base_url('assets/img/BlankProfileCircle.png') ?>"
+                                                    alt="Profile Photo" width="150" height="150"
+                                                    class="rounded-circle d-block mx-auto mb-4"
+                                                    style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
+                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                                <input type="file" id="profilePhoto" name="profilePhoto"
+                                                    class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
+                                                <img src="<?= base_url('assets/nurseCameraIcon.svg') ?>" alt="Edit Image" height="40"
+                                                    width="40" class="position-absolute"
+                                                    style="cursor: pointer; top: 75%; left: 48%; transform: translateX(44%);"
+                                                    onclick="document.getElementById('profilePhoto').click();">
+                                            </div>
                                             <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
                                                 <button
                                                     style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"
                                                     class="text-light rounded-circle border-0">1</button> Basic Details
                                             </p>
-                                            <div class="d-md-flex justify-content-between pb-3">
+                                            <div class="d-md-flex justify-content-between py-3">
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
                                                     <label class="form-label" for="patientName">First Name <span
                                                             class="text-danger">*</span></label>
@@ -974,12 +988,6 @@
                             }
                         });
                     </script> -->
-
-                    <script>
-                        function patientPhotoUpdate(dbId) {
-                            document.getElementById("photoPatientIdDb").value = dbId;
-                        }
-                    </script>
 
                     <script>
                         function clearErrorPatientDetails() {
@@ -1874,6 +1882,26 @@
             </div>
         </div>
 
+        <!-- Patient Profile Photo -->
+        <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" style="font-family: Poppins, sans-serif;">Upload Profile Photo</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="cropperImage" style="max-width: 100%;" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="cropImageBtn" class="btn text-light my-3 py-auto px-4"
+                            style="background-color: #00ad8e;">Crop</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -1896,6 +1924,93 @@
         }
     </script>
 
+    <!-- Patient profile photo, move to common js file -->
+    <script>
+        let cropper;
+        let activeInput = null;
+
+        document.querySelectorAll(".image-input").forEach((input) => {
+            input.addEventListener("change", function (e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Only JPG, JPEG, PNG allowed.");
+                    input.value = "";
+                    return;
+                }
+
+                if (file.size > 1 * 1024 * 1024) {
+                    alert("Max file size is 1MB.");
+                    input.value = "";
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const image = document.getElementById("cropperImage");
+                    image.src = event.target.result;
+
+                    const modal = new bootstrap.Modal(document.getElementById("cropModal"));
+                    modal.show();
+
+                    activeInput = input;
+
+                    if (cropper) cropper.destroy();
+
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                        responsive: true,
+                        scalable: true,
+                        zoomable: true,
+                        minContainerWidth: 600,
+                        minContainerHeight: 600,
+                        ready() {
+                            cropper.setCropBoxData({
+                                width: 200,
+                                height: 200,
+                            });
+                        },
+                    });
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.getElementById("cropImageBtn").addEventListener("click", function () {
+            if (!cropper) return;
+
+            const canvas = cropper.getCroppedCanvas({
+                width: 200,
+                height: 200,
+            });
+
+            canvas.toBlob((blob) => {
+                const file = new File([blob], "cropped.jpg", { type: "image/jpeg" });
+
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                activeInput.files = dataTransfer.files;
+
+                // Show preview
+                const preview = document.getElementById("previewImage");
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                bootstrap.Modal.getInstance(document.getElementById("cropModal")).hide();
+                cropper.destroy();
+                cropper = null;
+            }, "image/jpeg");
+        });
+
+    </script>
+
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
@@ -1906,6 +2021,8 @@
     <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
     <!-- PDF Download link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <!-- Cropper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 </body>
 

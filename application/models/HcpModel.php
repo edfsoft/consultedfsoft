@@ -118,22 +118,6 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
 
-        // $config['upload_path'] = "./uploads/";
-        // // $basepath = base_url() . 'uploads/';
-        // $config['allowed_types'] = "jpg|png|jpeg|pdf";
-        // $config['max_size'] = 1024;
-
-        // $this->load->library('upload', $config);
-
-        // $photo = "No data";
-
-        // if ($this->upload->do_upload('profilePhoto')) {
-        //     $data = $this->upload->data();
-        //     $photo = $data['file_name'];
-        // } else {
-        //     $error = $this->upload->display_errors();
-        // }
-
         $insertdata = array(
             'firstName' => $post['patientName'],
             'lastName' => $post['patientLastName'],
@@ -145,7 +129,6 @@ class HcpModel extends CI_Model
             'bloodGroup' => $post['patientBlood'],
             'maritalStatus' => $post['patientMarital'],
             'marriedSince' => $post['marriedSince'],
-            // 'profilePhoto' => $photo,
             'profession' => $post['patientProfessions'],
             'doorNumber' => $post['patientDoorNo'],
             'address' => $post['patientStreet'],
@@ -159,6 +142,39 @@ class HcpModel extends CI_Model
         );
         $this->db->insert('patient_details', $insertdata);
         $registeredId = $this->db->insert_id();
+
+        $uploadPath = './uploads/';
+        $allowedTypes = ['jpg', 'jpeg', 'png'];
+        $maxSize = 1 * 1024 * 1024;
+
+        if (!empty($_FILES['profilePhoto']['name'])) {
+            $ext = pathinfo($_FILES['profilePhoto']['name'], PATHINFO_EXTENSION);
+            $ext = strtolower($ext);
+
+            if (!in_array($ext, $allowedTypes)) {
+                return ['status' => false, 'message' => 'Invalid file type'];
+            }
+
+            if ($_FILES['profilePhoto']['size'] > $maxSize) {
+                return ['status' => false, 'message' => 'File size exceeds 1MB'];
+            }
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $formattedId = str_pad($registeredId, 2, '0', STR_PAD_LEFT);
+            $fileName = 'patient_profile_' . $formattedId . '.' . $ext;
+            $targetPath = $uploadPath . $fileName;
+
+            if (!move_uploaded_file($_FILES['profilePhoto']['tmp_name'], $targetPath)) {
+                return false;
+            }
+
+            $this->db->where('id', $registeredId);
+            $this->db->update('patient_details', ['profilePhoto' => $fileName]);
+        }
+
         return $registeredId;
     }
 
@@ -187,33 +203,40 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $post['patientIdDb']);
         $this->db->update('patient_details', $updateData);
-        return $post['patientIdDb'];
-    }
 
-    public function updatePatientProfilePhoto()
-    {
-        $post = $this->input->post(null, true);
+        $uploadPath = './uploads/';
+        $allowedTypes = ['jpg', 'jpeg', 'png'];
+        $maxSize = 1 * 1024 * 1024;
 
-        $config['upload_path'] = "./uploads/";
-        // $basepath = base_url() . 'uploads/';
-        $config['allowed_types'] = "jpg|png|jpeg";
-        $config['max_size'] = 1024;
+        if (!empty($_FILES['profilePhoto']['name'])) {
+            $ext = pathinfo($_FILES['profilePhoto']['name'], PATHINFO_EXTENSION);
+            $ext = strtolower($ext);
 
-        $this->load->library('upload', $config);
+            if (!in_array($ext, $allowedTypes)) {
+                return ['status' => false, 'message' => 'Invalid file type'];
+            }
 
-        if ($this->upload->do_upload('patientProfile')) {
-            $data = $this->upload->data();
-            $photo = $data['file_name'];
-        } else {
-            $error = $this->upload->display_errors();
+            if ($_FILES['profilePhoto']['size'] > $maxSize) {
+                return ['status' => false, 'message' => 'File size exceeds 1MB'];
+            }
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $formattedId = str_pad($post['patientIdDb'], 2, '0', STR_PAD_LEFT);
+            $fileName = 'patient_profile_' . $formattedId . '.' . $ext;
+            $targetPath = $uploadPath . $fileName;
+
+            if (!move_uploaded_file($_FILES['profilePhoto']['tmp_name'], $targetPath)) {
+                return false;
+            }
+
+            $this->db->where('id', $post['patientIdDb']);
+            $this->db->update('patient_details', ['profilePhoto' => $fileName]);
         }
 
-        $updatedata = array(
-            'profilePhoto' => $photo
-        );
-        $this->db->where('id', $post['photoPatientIdDb']);
-        $this->db->update('patient_details', $updatedata);
-        return true;
+        return $post['patientIdDb'];
     }
 
     public function generatePatientId($dbid)

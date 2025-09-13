@@ -249,16 +249,6 @@ class Healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/consultation/' . $updatePatient);
     }
 
-    public function updatePatientPhoto()
-    {
-        if ($this->HcpModel->updatePatientProfilePhoto()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Patient photo updated successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in updating patient photo');
-        }
-        redirect('Healthcareprovider/updatePatientsForm');
-    }
-
     // public function prescriptionView()
     // {
     //     if (isset($_SESSION['hcpsName'])) {

@@ -1559,7 +1559,7 @@
                                                                 </div>
                                                                 <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
                                                                 <button type="submit" class="btn float-end mt-3 "
-                                                                    style="color: white;background-color: #0079AD;">Save</button>
+                                                                    style="color: white;background-color: #0079AD;">Update</button>
                                                             </form>
                         <?php } ?>
 

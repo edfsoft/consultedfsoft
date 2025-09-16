@@ -624,6 +624,10 @@ class Healthcareprovider extends CI_Controller
             $data['symptoms'] = $this->HcpModel->get_symptoms_by_consultation_id($consultation_id);
             $data['findings'] = $this->HcpModel->get_findings_by_consultation_id($consultation_id);
             $data['diagnosis'] = $this->HcpModel->get_diagnosis_by_consultation_id($consultation_id);
+            $data['investigations'] = $this->HcpModel->get_investigations_by_consultation_id($consultation_id);
+            $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
+            $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
+
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;
@@ -653,6 +657,10 @@ class Healthcareprovider extends CI_Controller
             $data['symptoms'] = $this->HcpModel->get_symptoms_by_consultation_id($consultation_id);
             $data['findings'] = $this->HcpModel->get_findings_by_consultation_id($consultation_id);
             $data['diagnosis'] = $this->HcpModel->get_diagnosis_by_consultation_id($consultation_id);
+            $data['investigations'] = $this->HcpModel->get_investigations_by_consultation_id($consultation_id);
+            $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
+            $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
+
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;

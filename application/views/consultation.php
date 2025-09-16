@@ -614,6 +614,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
@@ -915,18 +916,29 @@
                                     </div>
                                     <div class="collapse field-container mt-2">
                                         <div class="mb-3">
-                                            <?php if (!empty($investigationsList)): ?>
-                                                <?php foreach ($investigationsList as $inv): ?>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="investigations[]"
-                                                            value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                            id="inv<?php echo $inv['id']; ?>">
-                                                        <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                            <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                            <div class="input-group mb-2">
+                                                <input type="text" id="investigationSearch" class="form-control"
+                                                    placeholder="Search investigations...">
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                    id="clearSearch">✖</button>
+                                                <button class="btn btn-outline-primary d-none" type="button" id="addNew">+
+                                                    Add</button>
+                                            </div>
+                                            <div id="investigationList">
+                                                <?php if (!empty($investigationsList)): ?>
+                                                    <?php foreach ($investigationsList as $inv): ?>
+                                                        <div class="form-check investigation-item">
+                                                            <input class="form-check-input" type="checkbox" name="investigations[]"
+                                                                value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
+                                                                id="inv<?php echo (int) $inv['id']; ?>">
+                                                            <label class="form-check-label"
+                                                                for="inv<?php echo (int) $inv['id']; ?>">
+                                                                <?php echo htmlspecialchars($inv['investigationsName']); ?>
+                                                            </label>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -940,9 +952,19 @@
                                     </div>
                                     <div class="collapse field-container mt-2">
                                         <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
                                             <?php if (!empty($instructionsList)): ?>
                                                 <?php foreach ($instructionsList as $ins): ?>
-                                                    <div class="form-check">
+                                                    <div class="form-check instruction-item">
                                                         <input class="form-check-input" type="checkbox" name="instructions[]"
                                                             value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
                                                             id="ins<?php echo $ins['id']; ?>">
@@ -959,14 +981,24 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-prescription2 me-2"></i> Procedures</strong></span>
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                Procedures</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
+
                                     <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="procedureSearch"
+                                                placeholder="Search Instructions">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearProcedureSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
+                                                Add</button>
+                                        </div>
+                                        <div id="procedureList">
                                             <?php if (!empty($proceduresList)): ?>
                                                 <?php foreach ($proceduresList as $pro): ?>
-                                                    <div class="form-check">
+                                                    <div class="form-check procedure-item">
                                                         <input class="form-check-input" type="checkbox" name="procedures[]"
                                                             value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
                                                             id="pro<?php echo $pro['id']; ?>">
@@ -1215,7 +1247,7 @@
                                 </div>
                                 <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                <div class="mb-3">
+                                  <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-patch-question me-2"></i>
@@ -1224,18 +1256,29 @@
                                     </div>
                                     <div class="collapse field-container mt-2">
                                         <div class="mb-3">
-                                            <?php if (!empty($investigationsList)): ?>
-                                                <?php foreach ($investigationsList as $inv): ?>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="investigations[]"
-                                                            value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                            id="inv<?php echo $inv['id']; ?>">
-                                                        <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                            <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                            <div class="input-group mb-2">
+                                                <input type="text" id="investigationSearch" class="form-control"
+                                                    placeholder="Search investigations...">
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                    id="clearSearch">✖</button>
+                                                <button class="btn btn-outline-primary d-none" type="button" id="addNew">+
+                                                    Add</button>
+                                            </div>
+                                            <div id="investigationList">
+                                                <?php if (!empty($investigationsList)): ?>
+                                                    <?php foreach ($investigationsList as $inv): ?>
+                                                        <div class="form-check investigation-item">
+                                                            <input class="form-check-input" type="checkbox" name="investigations[]"
+                                                                value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
+                                                                id="inv<?php echo (int) $inv['id']; ?>">
+                                                            <label class="form-check-label"
+                                                                for="inv<?php echo (int) $inv['id']; ?>">
+                                                                <?php echo htmlspecialchars($inv['investigationsName']); ?>
+                                                            </label>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1249,9 +1292,19 @@
                                     </div>
                                     <div class="collapse field-container mt-2">
                                         <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
                                             <?php if (!empty($instructionsList)): ?>
                                                 <?php foreach ($instructionsList as $ins): ?>
-                                                    <div class="form-check">
+                                                    <div class="form-check instruction-item">
                                                         <input class="form-check-input" type="checkbox" name="instructions[]"
                                                             value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
                                                             id="ins<?php echo $ins['id']; ?>">
@@ -1268,14 +1321,24 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-prescription2 me-2"></i> Procedures</strong></span>
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                Procedures</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
+
                                     <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="procedureSearch"
+                                                placeholder="Search Instructions">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearProcedureSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
+                                                Add</button>
+                                        </div>
+                                        <div id="procedureList">
                                             <?php if (!empty($proceduresList)): ?>
                                                 <?php foreach ($proceduresList as $pro): ?>
-                                                    <div class="form-check">
+                                                    <div class="form-check procedure-item">
                                                         <input class="form-check-input" type="checkbox" name="procedures[]"
                                                             value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
                                                             id="pro<?php echo $pro['id']; ?>">
@@ -2101,6 +2164,9 @@
             const newInvestigationInput = document.getElementById('newInvestigationName');
             const addForm = document.getElementById('addInvestigationForm');
 
+            // ✅ Preload already selected investigations if follow-up
+            const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
+
             function norm(s) { return s.toLowerCase().trim(); }
 
             function filter() {
@@ -2150,12 +2216,12 @@
                             const wrapper = document.createElement('div');
                             wrapper.className = 'form-check investigation-item';
                             wrapper.innerHTML = `
-                    <input class="form-check-input" type="checkbox" 
-                           name="investigations[]" 
-                           value="${data.name}" 
-                           id="inv${data.id}" checked>
-                    <label class="form-check-label" for="inv${data.id}">${data.name}</label>
-                `;
+                            <input class="form-check-input" type="checkbox" 
+                                   name="investigations[]" 
+                                   value="${data.name}" 
+                                   id="inv${data.id}" checked>
+                            <label class="form-check-label" for="inv${data.id}">${data.name}</label>
+                        `;
                             list.prepend(wrapper);
 
                             if (modal) { modal.hide(); }
@@ -2167,6 +2233,17 @@
                     })
                     .catch(err => console.error(err));
             });
+
+            if (Array.isArray(preloadInvestigations)) {
+                preloadInvestigations.forEach(inv => {
+                    const checkbox = list.querySelector(
+                        `input[type="checkbox"][value="${inv.investigation_name}"]`
+                    );
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
 
             filter();
         });
@@ -2183,6 +2260,9 @@
             const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
             const newInstructionInput = document.getElementById('newInstructionName');
             const addForm = document.getElementById('addInstructionForm');
+
+            // ✅ Preload already selected instruction if follow-up
+            const preloadInstructions = <?php echo isset($instructions) ? json_encode($instructions) : '[]'; ?>;
 
             function norm(s) { return s.toLowerCase().trim(); }
 
@@ -2246,6 +2326,17 @@
                     .catch(err => console.error(err));
             });
 
+            if (Array.isArray(preloadInstructions)) {
+                preloadInstructions.forEach(ins => {
+                    const checkbox = list.querySelector(
+                        `input[type="checkbox"][value="${ins.instruction_name}"]`
+                    );
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+
             filter();
         });
     </script>
@@ -2261,6 +2352,9 @@
             const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
             const newProcedureInput = document.getElementById('newProcedureName');
             const addForm = document.getElementById('addProcedureForm');
+
+            // ✅ Preload already selected procedures if follow-up
+            const preloadProcedures = <?php echo isset($procedures) ? json_encode($procedures) : '[]'; ?>;
 
             function norm(s) { return s.toLowerCase().trim(); }
 
@@ -2324,22 +2418,22 @@
                     .catch(err => console.error(err));
             });
 
+            // ✅ Fix: Correct variable name
+            if (Array.isArray(preloadProcedures)) {
+                preloadProcedures.forEach(pro => {
+                    const checkbox = list.querySelector(
+                        `input[type="checkbox"][value="${pro.procedure_name}"]`
+                    );
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+
             filter(); // run once at load
         });
     </script>
 
-
-    <!-- Medicine Modal Script -->
-    <script>
-        document.getElementById("medicineSelect").addEventListener("change", function () {
-            let selected = this.value;
-            if (selected) {
-                document.getElementById("selectedMedicine").value = selected;
-                let modal = new bootstrap.Modal(document.getElementById("medicineModal"));
-                modal.show();
-            }
-        });
-    </script>
 
     <!-- ----------------------------------------------------------- -->
     <!-- Symptoms save script -->

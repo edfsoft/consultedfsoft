@@ -571,6 +571,7 @@ class HcpModel extends CI_Model
             'patient_id' => $post['patientIdDb'],
             'doctor_id' => $hcpIdDb,
             'advice_given' => $post['advices'],
+            'notes' => $post['notes'],
             'next_follow_up' => $post['nextFollowUpDate'],
         );
 
@@ -733,6 +734,24 @@ class HcpModel extends CI_Model
     public function get_diagnosis_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where('patient_diagnosis', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+     public function get_investigations_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_investigations', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+      public function get_instructions_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_instructions', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+      public function get_procedures_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where('patient_procedures', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 

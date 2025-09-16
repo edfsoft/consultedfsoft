@@ -190,6 +190,31 @@ class AdminModel extends CI_Model
         return true;
     }
 
+    public function newDiagnosis()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'diagnosisName' => $post['diagnosisName'],
+        );
+        $this->db->insert('diagnosis_list', $insert);
+        return true;
+    }
+
+    public function getDiagnosisList()
+    {
+        $list = "SELECT * FROM `diagnosis_list` WHERE activeStatus = '0' ORDER BY `diagnosisName`";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function diagnosisDelete($id)
+    {
+        $findingId = $id;
+        $this->db->where('id', $findingId);
+        $this->db->delete('diagnosis_list');
+        return true;
+    }
+
     public function newMedicine()
     {
         $post = $this->input->post(null, true);

@@ -2048,14 +2048,14 @@
 
 
             <?php
-        } else if ($method == "medicines") {
+        } else if ($method == "diagnosis") {
             ?>
 
                                                             <section>
                                                                 <div class="card rounded">
-                                                                    <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                        <p style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
+                                                                    <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
+                                                                        <p style="font-size: 24px; font-weight: 500">Diagnosis List</p>
+                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newDiagnosis"
                                                                             style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
                                                                             <i class="bi bi-plus-square-fill"></i> New
                                                                         </a>
@@ -2073,35 +2073,30 @@
                                                                         </div>
                                                                         <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
                                                                             <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                                                                style="height: 50px; width: 250px" placeholder="Search (MEDICINE NAME)">
+                                                                                style="height: 50px; width: 250px" placeholder="Search (DIAGNOSIS NAME)">
                                                                             <span id="clearSearch" class="position-absolute"
                                                                                 style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                                         </div>
                                                                     </div>
-
                                                                     <div class="card-body p-2 p-sm-4">
                                                                         <div class="table-responsive">
-                                                                            <table class="table table-hover text-center" id="medicinesTable">
+                                                                            <table class="table table-hover text-center" id="diagnosisTable">
                                                                                 <thead>
                                                                                     <tr>
                                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                         </th>
-                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">BRAND
-                                                                                            NAME</th>
                                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                            MEDICINE NAME</th>
-                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                            STRENGTH</th>
+                                                                                            DIAGNOSIS NAME</th>
                                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                         </th>
                                                                                     </tr>
                                                                                 </thead>
-                                                                                <tbody id="medicinesTableBody"></tbody>
+                                                                                <tbody id="diagnosisTableBody"></tbody>
                                                                             </table>
                                                                         </div>
-                                                                        <div class="d-md-flex justify-content-between ms-2">
+                                                                        <div class="d-md-flex justify-content-between">
                                                                             <div id="entriesInfo" class="mt-4"></div>
-                                                                            <div class="pagination justify-content-end mt-4" id="paginationContainerMedicines"></div>
+                                                                            <div class="pagination justify-content-end mt-4" id="paginationContainerDiagnosis"></div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -2109,94 +2104,90 @@
 
                                                             <script>
                                                                 const baseUrl = '<?php echo base_url(); ?>';
-                                                                let itemsPerPageMedicines = 10;
-                                                                const medicinesList = <?php echo json_encode($medicinesList); ?>;
-                                                                let filteredMedicinesList = [...medicinesList];
-                                                                const initialPageMedicines = parseInt(localStorage.getItem('currentPageMedicines')) || 1;
+                                                                let itemsPerPageDiagnosis = 10;
+                                                                const diagnosisList = <?php echo json_encode($diagnosisList); ?>;
+                                                                let filteredDiagnosisList = [...diagnosisList];
+                                                                const initialPageDiagnosis = parseInt(localStorage.getItem('currentPageDiagnosis')) || 1;
 
                                                                 const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                                                                 const searchBar = document.getElementById('searchBar');
                                                                 const clearSearch = document.getElementById('clearSearch');
 
-                                                                // Load saved itemsPerPage
-                                                                const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageMedicines')) || itemsPerPageMedicines;
+                                                                const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageDiagnosis')) || itemsPerPageDiagnosis;
                                                                 itemsPerPageDropdown.value = savedItemsPerPage;
-                                                                itemsPerPageMedicines = savedItemsPerPage;
+                                                                itemsPerPageDiagnosis = savedItemsPerPage;
 
-                                                                // Event Listeners
                                                                 itemsPerPageDropdown.addEventListener('change', (event) => {
-                                                                    itemsPerPageMedicines = parseInt(event.target.value);
-                                                                    localStorage.setItem('itemsPerPageMedicines', itemsPerPageMedicines);
-                                                                    applyFilters();
+                                                                    itemsPerPageDiagnosis = parseInt(event.target.value);
+                                                                    localStorage.setItem('itemsPerPageDiagnosis', itemsPerPageDiagnosis);
+                                                                    applyFiltersDiagnosis();
                                                                 });
 
                                                                 searchBar.addEventListener('input', () => {
-                                                                    toggleClearIcons();
-                                                                    applyFilters();
+                                                                    toggleClearIconsDiagnosis();
+                                                                    applyFiltersDiagnosis();
                                                                 });
 
                                                                 clearSearch.addEventListener('click', () => {
                                                                     searchBar.value = '';
-                                                                    toggleClearIcons();
-                                                                    applyFilters();
+                                                                    toggleClearIconsDiagnosis();
+                                                                    applyFiltersDiagnosis();
                                                                 });
 
-                                                                function toggleClearIcons() {
+                                                                function toggleClearIconsDiagnosis() {
                                                                     clearSearch.style.display = searchBar.value ? 'block' : 'none';
                                                                 }
 
-                                                                function applyFilters() {
+                                                                function applyFiltersDiagnosis() {
                                                                     const searchTerm = searchBar.value.toLowerCase();
 
-                                                                    filteredMedicinesList = medicinesList.filter((medicine) => {
-                                                                        const medicineName = medicine.medicineName || '';
-                                                                        return medicineName.toLowerCase().includes(searchTerm);
+                                                                    filteredDiagnosisList = diagnosisList.filter((diagnosis) => {
+                                                                        const diagnosisName = diagnosis.diagnosisName || '';
+                                                                        return diagnosisName.toLowerCase().includes(searchTerm);
                                                                     });
 
-                                                                    displayMedicinesPage(1);
+                                                                    displayDiagnosisPage(1);
                                                                 }
 
-                                                                function displayMedicinesPage(page) {
-                                                                    localStorage.setItem('currentPageMedicines', page);
-                                                                    const start = (page - 1) * itemsPerPageMedicines;
-                                                                    const end = start + itemsPerPageMedicines;
-                                                                    const itemsToShow = filteredMedicinesList.slice(start, end);
+                                                                function displayDiagnosisPage(page) {
+                                                                    localStorage.setItem('currentPageDiagnosis', page);
+                                                                    const start = (page - 1) * itemsPerPageDiagnosis;
+                                                                    const end = start + itemsPerPageDiagnosis;
+                                                                    const itemsToShow = filteredDiagnosisList.slice(start, end);
 
-                                                                    const medicinesTableBody = document.getElementById('medicinesTableBody');
-                                                                    medicinesTableBody.innerHTML = '';
+                                                                    const diagnosisTableBody = document.getElementById('diagnosisTableBody');
+                                                                    diagnosisTableBody.innerHTML = '';
 
-                                                                    updateEntriesInfo(start + 1, Math.min(end, filteredMedicinesList.length), filteredMedicinesList.length);
+                                                                    updateEntriesInfoDiagnosis(start + 1, Math.min(end, filteredDiagnosisList.length), filteredDiagnosisList.length);
 
                                                                     if (itemsToShow.length === 0) {
                                                                         const noMatchesRow = document.createElement('tr');
-                                                                        noMatchesRow.innerHTML = '<td colspan="5" class="text-center">No matches found.</td>';
-                                                                        medicinesTableBody.appendChild(noMatchesRow);
+                                                                        noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
+                                                                        diagnosisTableBody.appendChild(noMatchesRow);
                                                                     } else {
-                                                                        itemsToShow.forEach((medicine, index) => {
-                                                                            const medicineRow = document.createElement('tr');
-                                                                            medicineRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.medicineBrand}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.strength}</td>
-                <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
-                </td>`;
-                                                                            medicinesTableBody.appendChild(medicineRow);
+                                                                        itemsToShow.forEach((diagnosis, index) => {
+                                                                            const diagnosisRow = document.createElement('tr');
+                                                                            diagnosisRow.innerHTML = `
+                    <td class="pt-3">${start + index + 1}.</td>
+                    <td style="font-size: 16px" class="pt-3">${diagnosis.diagnosisName}</td>
+                    <td class="d-flex d-md-block">
+                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${diagnosis.id}" data-name="${diagnosis.diagnosisName}" data-type="diagnosis"><i class="bi bi-trash"></i></button>
+                    </td>`;
+                                                                            diagnosisTableBody.appendChild(diagnosisRow);
                                                                         });
                                                                     }
 
-                                                                    generateMedicinesPagination(filteredMedicinesList.length, page);
+                                                                    generateDiagnosisPagination(filteredDiagnosisList.length, page);
                                                                 }
 
-                                                                function updateEntriesInfo(start, end, totalEntries) {
+                                                                function updateEntriesInfoDiagnosis(start, end, totalEntries) {
                                                                     const entriesInfo = document.getElementById('entriesInfo');
                                                                     entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
                                                                 }
 
-                                                                function generateMedicinesPagination(totalItems, currentPage) {
-                                                                    const totalPages = Math.ceil(totalItems / itemsPerPageMedicines);
-                                                                    const paginationContainer = document.getElementById('paginationContainerMedicines');
+                                                                function generateDiagnosisPagination(totalItems, currentPage) {
+                                                                    const totalPages = Math.ceil(totalItems / itemsPerPageDiagnosis);
+                                                                    const paginationContainer = document.getElementById('paginationContainerDiagnosis');
                                                                     paginationContainer.innerHTML = '';
 
                                                                     const ul = document.createElement('ul');
@@ -2205,7 +2196,7 @@
                                                                     const prevLi = document.createElement('li');
                                                                     prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
                                                                     prevLi.onclick = () => {
-                                                                        if (currentPage > 1) displayMedicinesPage(currentPage - 1);
+                                                                        if (currentPage > 1) displayDiagnosisPage(currentPage - 1);
                                                                     };
                                                                     ul.appendChild(prevLi);
 
@@ -2215,25 +2206,215 @@
                                                                     for (let i = startPage; i <= endPage; i++) {
                                                                         const li = document.createElement('li');
                                                                         li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
-                                                                        li.onclick = () => displayMedicinesPage(i);
+                                                                        li.onclick = () => displayDiagnosisPage(i);
                                                                         ul.appendChild(li);
                                                                     }
 
                                                                     const nextLi = document.createElement('li');
                                                                     nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
                                                                     nextLi.onclick = () => {
-                                                                        if (currentPage < totalPages) displayMedicinesPage(currentPage + 1);
+                                                                        if (currentPage < totalPages) displayDiagnosisPage(currentPage + 1);
                                                                     };
                                                                     ul.appendChild(nextLi);
 
                                                                     paginationContainer.appendChild(ul);
                                                                 }
 
-                                                                // On load: Show all data, then render
-                                                                toggleClearIcons();
-                                                                filteredMedicinesList = [...medicinesList];
-                                                                displayMedicinesPage(initialPageMedicines);
+                                                                toggleClearIconsDiagnosis();
+                                                                filteredDiagnosisList = [...diagnosisList];
+                                                                displayDiagnosisPage(initialPageDiagnosis);
                                                             </script>
+
+
+
+
+            <?php
+        } else if ($method == "medicines") {
+            ?>
+
+                                                                <section>
+                                                                    <div class="card rounded">
+                                                                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                            <p style="font-size: 24px; font-weight: 500">Medicines List</p>
+                                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
+                                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                <i class="bi bi-plus-square-fill"></i> New
+                                                                            </a>
+                                                                        </div>
+                                                                        <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
+                                                                            <div class="ms-2">
+                                                                                <label for="itemsPerPageDropdown">Show </label>
+                                                                                <select id="itemsPerPageDropdown"
+                                                                                    class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                                                    <option value="10" selected>10</option>
+                                                                                    <option value="25">25</option>
+                                                                                    <option value="50">50</option>
+                                                                                </select>
+                                                                                <label for="itemsPerPageDropdown">Entries </label>
+                                                                            </div>
+                                                                            <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
+                                                                                <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                                                    style="height: 50px; width: 250px" placeholder="Search (MEDICINE NAME)">
+                                                                                <span id="clearSearch" class="position-absolute"
+                                                                                    style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="card-body p-2 p-sm-4">
+                                                                            <div class="table-responsive">
+                                                                                <table class="table table-hover text-center" id="medicinesTable">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                            </th>
+                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">BRAND
+                                                                                                NAME</th>
+                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                                MEDICINE NAME</th>
+                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                                STRENGTH</th>
+                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody id="medicinesTableBody"></tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="d-md-flex justify-content-between ms-2">
+                                                                                <div id="entriesInfo" class="mt-4"></div>
+                                                                                <div class="pagination justify-content-end mt-4" id="paginationContainerMedicines"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </section>
+
+                                                                <script>
+                                                                    const baseUrl = '<?php echo base_url(); ?>';
+                                                                    let itemsPerPageMedicines = 10;
+                                                                    const medicinesList = <?php echo json_encode($medicinesList); ?>;
+                                                                    let filteredMedicinesList = [...medicinesList];
+                                                                    const initialPageMedicines = parseInt(localStorage.getItem('currentPageMedicines')) || 1;
+
+                                                                    const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                                                    const searchBar = document.getElementById('searchBar');
+                                                                    const clearSearch = document.getElementById('clearSearch');
+
+                                                                    // Load saved itemsPerPage
+                                                                    const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageMedicines')) || itemsPerPageMedicines;
+                                                                    itemsPerPageDropdown.value = savedItemsPerPage;
+                                                                    itemsPerPageMedicines = savedItemsPerPage;
+
+                                                                    // Event Listeners
+                                                                    itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                                        itemsPerPageMedicines = parseInt(event.target.value);
+                                                                        localStorage.setItem('itemsPerPageMedicines', itemsPerPageMedicines);
+                                                                        applyFilters();
+                                                                    });
+
+                                                                    searchBar.addEventListener('input', () => {
+                                                                        toggleClearIcons();
+                                                                        applyFilters();
+                                                                    });
+
+                                                                    clearSearch.addEventListener('click', () => {
+                                                                        searchBar.value = '';
+                                                                        toggleClearIcons();
+                                                                        applyFilters();
+                                                                    });
+
+                                                                    function toggleClearIcons() {
+                                                                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                                                    }
+
+                                                                    function applyFilters() {
+                                                                        const searchTerm = searchBar.value.toLowerCase();
+
+                                                                        filteredMedicinesList = medicinesList.filter((medicine) => {
+                                                                            const medicineName = medicine.medicineName || '';
+                                                                            return medicineName.toLowerCase().includes(searchTerm);
+                                                                        });
+
+                                                                        displayMedicinesPage(1);
+                                                                    }
+
+                                                                    function displayMedicinesPage(page) {
+                                                                        localStorage.setItem('currentPageMedicines', page);
+                                                                        const start = (page - 1) * itemsPerPageMedicines;
+                                                                        const end = start + itemsPerPageMedicines;
+                                                                        const itemsToShow = filteredMedicinesList.slice(start, end);
+
+                                                                        const medicinesTableBody = document.getElementById('medicinesTableBody');
+                                                                        medicinesTableBody.innerHTML = '';
+
+                                                                        updateEntriesInfo(start + 1, Math.min(end, filteredMedicinesList.length), filteredMedicinesList.length);
+
+                                                                        if (itemsToShow.length === 0) {
+                                                                            const noMatchesRow = document.createElement('tr');
+                                                                            noMatchesRow.innerHTML = '<td colspan="5" class="text-center">No matches found.</td>';
+                                                                            medicinesTableBody.appendChild(noMatchesRow);
+                                                                        } else {
+                                                                            itemsToShow.forEach((medicine, index) => {
+                                                                                const medicineRow = document.createElement('tr');
+                                                                                medicineRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.medicineBrand}</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.strength}</td>
+                <td class="d-flex d-md-block">
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
+                </td>`;
+                                                                                medicinesTableBody.appendChild(medicineRow);
+                                                                            });
+                                                                        }
+
+                                                                        generateMedicinesPagination(filteredMedicinesList.length, page);
+                                                                    }
+
+                                                                    function updateEntriesInfo(start, end, totalEntries) {
+                                                                        const entriesInfo = document.getElementById('entriesInfo');
+                                                                        entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                                                    }
+
+                                                                    function generateMedicinesPagination(totalItems, currentPage) {
+                                                                        const totalPages = Math.ceil(totalItems / itemsPerPageMedicines);
+                                                                        const paginationContainer = document.getElementById('paginationContainerMedicines');
+                                                                        paginationContainer.innerHTML = '';
+
+                                                                        const ul = document.createElement('ul');
+                                                                        ul.className = 'pagination';
+
+                                                                        const prevLi = document.createElement('li');
+                                                                        prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                                        prevLi.onclick = () => {
+                                                                            if (currentPage > 1) displayMedicinesPage(currentPage - 1);
+                                                                        };
+                                                                        ul.appendChild(prevLi);
+
+                                                                        const startPage = Math.max(1, currentPage - 2);
+                                                                        const endPage = Math.min(totalPages, startPage + 4);
+
+                                                                        for (let i = startPage; i <= endPage; i++) {
+                                                                            const li = document.createElement('li');
+                                                                            li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                                            li.onclick = () => displayMedicinesPage(i);
+                                                                            ul.appendChild(li);
+                                                                        }
+
+                                                                        const nextLi = document.createElement('li');
+                                                                        nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                                        nextLi.onclick = () => {
+                                                                            if (currentPage < totalPages) displayMedicinesPage(currentPage + 1);
+                                                                        };
+                                                                        ul.appendChild(nextLi);
+
+                                                                        paginationContainer.appendChild(ul);
+                                                                    }
+
+                                                                    // On load: Show all data, then render
+                                                                    toggleClearIcons();
+                                                                    filteredMedicinesList = [...medicinesList];
+                                                                    displayMedicinesPage(initialPageMedicines);
+                                                                </script>
 
         <?php } ?>
 
@@ -2257,6 +2438,8 @@
             document.getElementById('symptoms').style.color = "white";
         <?php } elseif ($method == "findings") { ?>
             document.getElementById('findings').style.color = "white";
+        <?php } elseif ($method == "diagnosis") { ?>
+            document.getElementById('diagnosis').style.color = "white";
         <?php } elseif ($method == "medicines") { ?>
             document.getElementById('medicines').style.color = "white";
         <?php } ?>

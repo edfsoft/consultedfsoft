@@ -644,7 +644,7 @@
                                         </div>
 
                                         <!-- Medicine section -->
-                                        <div class="mb-3">
+                                        <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
                                                 data-bs-toggle="collapse" data-bs-target="#medicineField">
@@ -661,7 +661,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                     </div>
 

@@ -526,6 +526,12 @@ class HcpModel extends CI_Model
     //     return $select->result_array();
     // }
 
+    public function insertNewSymptoms($name)
+    {
+        $this->db->insert('symptoms_list', ['symptomsName' => $name]);
+        return $this->db->insert_id();
+    }
+    
     public function insertInvestigation($name)
     {
         $this->db->insert('investigations_list', ['investigationsName' => $name]);
@@ -737,19 +743,19 @@ class HcpModel extends CI_Model
         return $query->result_array();
     }
 
-     public function get_investigations_by_consultation_id($consultation_id)
+    public function get_investigations_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where('patient_investigations', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
-      public function get_instructions_by_consultation_id($consultation_id)
+    public function get_instructions_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where('patient_instructions', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
-      public function get_procedures_by_consultation_id($consultation_id)
+    public function get_procedures_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where('patient_procedures', array('consultation_id' => $consultation_id));
         return $query->result_array();

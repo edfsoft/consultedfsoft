@@ -1247,7 +1247,7 @@
                                 </div>
                                 <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                  <div class="mb-3">
+                                <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-patch-question me-2"></i>
@@ -1707,6 +1707,24 @@
 
             const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
 
+            // ✅ If new symptom not in list, save to DB
+            if (!symptomsList.includes(pendingSymptom)) {
+                fetch("<?= site_url('Healthcareprovider/addSymptom') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingSymptom)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            symptomsList.push(pendingSymptom); // add to available list
+                        } else {
+                            console.error("Error saving new symptom", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
             if (editingSymptomTag && existingIndex !== -1) {
                 // Update existing tag
                 selectedSymptoms[existingIndex] = { symptom: pendingSymptom, note, since, severity };
@@ -1727,12 +1745,12 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
-            updateSymptomTagDisplay(tag, data);
 
-            tag.onclick = () => {
-                openSymptomModal(data.symptom, data, tag);
-            };
+            // ✅ Content container
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
 
+            // ✅ Remove button (always persists)
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
             removeBtn.className = "text-light ms-2";
@@ -1749,10 +1767,20 @@
             };
 
             tag.appendChild(removeBtn);
+
+            updateSymptomTagDisplay(tag, data);
+
+            tag.onclick = () => {
+                openSymptomModal(data.symptom, data, tag);
+            };
+
             symptomsTagContainer.insertBefore(tag, symptomsInput);
         }
 
         function updateSymptomTagDisplay(tagEl, data) {
+            const textSpan = tagEl.querySelector("span"); // only update text span
+            if (!textSpan) return;
+
             const textParts = [data.symptom];
             const details = [];
 
@@ -1764,7 +1792,7 @@
                 textParts.push(`(${details.join(", ")})`);
             }
 
-            tagEl.innerHTML = textParts.join(" ");
+            textSpan.textContent = textParts.join(" ");
         }
 
         function updateHiddenInput() {

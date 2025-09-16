@@ -559,7 +559,6 @@
                                                         <button class="btn btn-outline-primary d-none" type="button"
                                                             id="addNew">+ Add</button>
                                                     </div>
-
                                                     <div id="investigationList">
                                                         <?php if (!empty($investigationsList)): ?>
                                                             <?php foreach ($investigationsList as $inv): ?>
@@ -598,8 +597,6 @@
                                                             id="addInstruction">+ Add</button>
                                                     </div>
                                                 </div>
-
-                                                <!-- Instructions List -->
                                                 <div id="instructionList">
                                                     <?php if (!empty($instructionsList)): ?>
                                                         <?php foreach ($instructionsList as $ins): ?>
@@ -617,7 +614,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
@@ -625,11 +621,20 @@
                                                         Procedures</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
+
                                             <div class="collapse field-container mt-2">
-                                                <div class="mb-3">
+                                                <div class="input-group mb-2">
+                                                    <input type="text" class="form-control" id="procedureSearch"
+                                                        placeholder="Search Instructions">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearProcedureSearch">✖</button>
+                                                    <button type="button" class="btn btn-outline-primary d-none"
+                                                        id="addProcedure">+ Add</button>
+                                                </div>
+                                                <div id="procedureList">
                                                     <?php if (!empty($proceduresList)): ?>
                                                         <?php foreach ($proceduresList as $pro): ?>
-                                                            <div class="form-check">
+                                                            <div class="form-check procedure-item">
                                                                 <input class="form-check-input" type="checkbox" name="procedures[]"
                                                                     value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
                                                                     id="pro<?php echo $pro['id']; ?>">
@@ -642,6 +647,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
 
                                         <!-- Medicine section -->
                                         <!-- <div class="mb-3">
@@ -1487,6 +1493,28 @@
             </div>
         </div>
 
+        <!-- Add Procedure Modal -->
+        <div class="modal fade" id="addProcedureModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <form id="addProcedureForm" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Add New Procedure
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="newProcedureName" class="form-control" name="name"
+                            placeholder="Procedure name" required>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Medicine Modal -->
         <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
@@ -2144,7 +2172,7 @@
         });
     </script>
 
-    <!-- Instrction Search Button -->
+    <!-- Instruction Search Button -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('instructionSearch');
@@ -2221,6 +2249,85 @@
             filter();
         });
     </script>
+
+    <!-- Procedure Search Button -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('procedureSearch');
+            const clearBtn = document.getElementById('clearProcedureSearch');
+            const addBtn = document.getElementById('addProcedure');
+            const list = document.getElementById('procedureList');
+            const modalEl = document.getElementById('addProcedureModal');
+            const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
+            const newProcedureInput = document.getElementById('newProcedureName');
+            const addForm = document.getElementById('addProcedureForm');
+
+            function norm(s) { return s.toLowerCase().trim(); }
+
+            function filter() {
+                const q = norm(searchInput.value);
+                let matches = 0;
+                list.querySelectorAll('.procedure-item').forEach(item => {
+                    const labelText = item.querySelector('label').textContent;
+                    const show = norm(labelText).includes(q) || q === '';
+                    item.classList.toggle('d-none', !show);
+                    if (show) matches++;
+                });
+                addBtn.classList.toggle('d-none', !(q && matches === 0));
+            }
+
+            searchInput.addEventListener('input', filter);
+
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                filter();
+                searchInput.focus();
+            });
+
+            addBtn.addEventListener('click', () => {
+                newProcedureInput.value = searchInput.value.trim();
+                if (modal) { modal.show(); }
+                else { modalEl.classList.add('show'); modalEl.style.display = 'block'; }
+            });
+
+            addForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = newProcedureInput.value.trim();
+                if (!name) return;
+
+                fetch("<?= site_url('Healthcareprovider/addProcedure') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(name)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'form-check procedure-item';
+                            wrapper.innerHTML = `
+                    <input class="form-check-input" type="checkbox" 
+                           name="procedures[]" 
+                           value="${data.name}" 
+                           id="pro${data.id}" checked>
+                    <label class="form-check-label" for="pro${data.id}">${data.name}</label>
+                `;
+                            list.prepend(wrapper);
+
+                            if (modal) { modal.hide(); }
+                            searchInput.value = '';
+                            filter();
+                        } else {
+                            alert(data.message || "Error saving procedure");
+                        }
+                    })
+                    .catch(err => console.error(err));
+            });
+
+            filter(); // run once at load
+        });
+    </script>
+
 
     <!-- Medicine Modal Script -->
     <script>

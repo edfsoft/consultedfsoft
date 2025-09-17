@@ -502,6 +502,18 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+      public function addDiagnosis()
+    {
+        $name = $this->input->post('name', true);
+        $id = $this->HcpModel->insertNewDiagnosis($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
+        }
+    }
+
     public function addInvestigation()
     {
         $name = $this->input->post('name', true);

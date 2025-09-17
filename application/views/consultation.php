@@ -2053,6 +2053,7 @@
         const diagnosisNote = document.getElementById("diagnosisNote");
         const diagnosisSince = document.getElementById("diagnosisSince");
         const diagnosisSeverity = document.getElementById("diagnosisSeverity");
+        const diagnosisModalTitle = document.querySelector('#diagnosisModal .modal-title');
 
         let selectedDiagnosis = [];
         let pendingDiagnosis = "";
@@ -2094,8 +2095,9 @@
             pendingDiagnosis = name;
             editingDiagnosisTag = tagEl;
 
-            document.querySelector('#diagnosisModal .modal-title').textContent =
-                existing ? `Edit Diagnosis: ${name}` : `Diagnosis Details for: ${name}`;
+            diagnosisModalTitle.textContent = existing
+                ? `Edit Diagnosis: ${name}`
+                : `Diagnosis Details for: ${name}`;
 
             diagnosisNote.value = existing?.note || "";
             diagnosisSince.value = existing?.since || "";
@@ -2109,14 +2111,35 @@
             const since = diagnosisSince.value.trim();
             const severity = diagnosisSeverity.value;
 
-            const data = { name: pendingDiagnosis, note, since, severity };
+            if (!pendingDiagnosis) return;
 
+            // ✅ Save new diagnosis to DB if not in list
+            if (!diagnosisList.includes(pendingDiagnosis)) {
+                fetch("<?= site_url('Healthcareprovider/addDiagnosis') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingDiagnosis)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            diagnosisList.push(pendingDiagnosis);
+                        } else {
+                            console.error("Error saving new diagnosis", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            const data = { name: pendingDiagnosis, note, since, severity };
             const index = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
 
             if (editingDiagnosisTag && index !== -1) {
+                // update existing
                 selectedDiagnosis[index] = data;
                 updateDiagnosisTag(editingDiagnosisTag, data);
             } else {
+                // add new
                 selectedDiagnosis.push(data);
                 addDiagnosisTag(data);
             }
@@ -2131,12 +2154,12 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
-            updateDiagnosisTag(tag, data);
 
-            tag.onclick = () => {
-                openDiagnosisModal(data.name, data, tag);
-            };
+            // ✅ text span
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
 
+            // ✅ remove button
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
             removeBtn.className = "text-light ms-2";
@@ -2153,17 +2176,33 @@
             };
 
             tag.appendChild(removeBtn);
+
+            updateDiagnosisTag(tag, data);
+
+            // click = edit
+            tag.onclick = () => {
+                openDiagnosisModal(data.name, data, tag);
+            };
+
             diagnosisTagContainer.insertBefore(tag, diagnosisInput);
         }
 
         function updateDiagnosisTag(tagEl, data) {
-            let text = data.name;
+            const textSpan = tagEl.querySelector("span");
+            if (!textSpan) return;
+
+            const textParts = [data.name];
             const details = [];
+
             if (data.note) details.push(`Note: ${data.note}`);
             if (data.since) details.push(`Since: ${data.since}`);
             if (data.severity) details.push(`Severity: ${data.severity}`);
-            if (details.length) text += ` (${details.join(", ")})`;
-            tagEl.innerHTML = text;
+
+            if (details.length > 0) {
+                textParts.push(`(${details.join(", ")})`);
+            }
+
+            textSpan.textContent = textParts.join(" ");
         }
 
         function updateDiagnosisHidden() {
@@ -2189,7 +2228,7 @@
 
         renderDiagnosisSuggestions();
 
-        // ✅ PRELOAD diagnosis for followup
+        // ✅ preload
         document.addEventListener("DOMContentLoaded", () => {
             const preloadDiagnosis = <?php echo isset($diagnosis) ? json_encode($diagnosis) : '[]'; ?>;
 
@@ -2208,6 +2247,7 @@
             }
         });
     </script>
+
 
     <!-- Investigation Search Button -->
     <script>

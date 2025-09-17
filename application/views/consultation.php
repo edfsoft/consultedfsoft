@@ -1909,6 +1909,24 @@
 
             const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
 
+            // ✅ Save new finding to DB if not already in findingsList
+            if (!findingsList.includes(pendingTag)) {
+                fetch("<?= site_url('Healthcareprovider/addFinding') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingTag)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            findingsList.push(pendingTag); // add to available list
+                        } else {
+                            console.error("Error saving new finding", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
             if (editingTagEl && existingIndex !== -1) {
                 // Update existing tag
                 selectedFindings[existingIndex] = { finding: pendingTag, note, since, severity };
@@ -1929,12 +1947,12 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
-            updateTagDisplay(tag, data);
 
-            tag.onclick = () => {
-                openModal(data.finding, data, tag);
-            };
+            // ✅ Content container
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
 
+            // ✅ Remove button (always persists)
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
             removeBtn.className = "text-light ms-2";
@@ -1951,10 +1969,21 @@
             };
 
             tag.appendChild(removeBtn);
+
+            updateTagDisplay(tag, data);
+
+            // Click to edit
+            tag.onclick = () => {
+                openModal(data.finding, data, tag);
+            };
+
             tagContainer.insertBefore(tag, findingsInput);
         }
 
         function updateTagDisplay(tagEl, data) {
+            const textSpan = tagEl.querySelector("span"); // only update text span
+            if (!textSpan) return;
+
             const textParts = [data.finding];
             const details = [];
 
@@ -1966,7 +1995,7 @@
                 textParts.push(`(${details.join(", ")})`);
             }
 
-            tagEl.innerHTML = textParts.join(" ");
+            textSpan.textContent = textParts.join(" ");
         }
 
         function updateHiddenInput() {

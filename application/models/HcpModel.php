@@ -531,6 +531,12 @@ class HcpModel extends CI_Model
         $this->db->insert('symptoms_list', ['symptomsName' => $name]);
         return $this->db->insert_id();
     }
+
+    public function insertNewFindings($name)
+    {
+        $this->db->insert('findings_list', ['findingsName' => $name]);
+        return $this->db->insert_id();
+    }
     
     public function insertInvestigation($name)
     {

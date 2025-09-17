@@ -490,7 +490,7 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-     public function addFinding()
+    public function addFinding()
     {
         $name = $this->input->post('name', true);
         $id = $this->HcpModel->insertNewFindings($name);
@@ -502,7 +502,7 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-      public function addDiagnosis()
+    public function addDiagnosis()
     {
         $name = $this->input->post('name', true);
         $id = $this->HcpModel->insertNewDiagnosis($name);

@@ -309,6 +309,14 @@
                                                             </ul>
                                                         <?php endif; ?>
 
+                                                         <!-- Notes -->
+                                                        <?php if (!empty($consultation['notes'])): ?>
+                                                            <p><strong>Notes:</strong></p>
+                                                            <ul>
+                                                                <li><?= $consultation['notes'] ?></li>
+                                                            </ul>
+                                                        <?php endif; ?>
+
                                                         <!-- Next Follow-Up -->
                                                         <?php if (!empty($consultation['next_follow_up'])): ?>
                                                             <p><strong>Next Follow-Up Date:</strong></p>
@@ -1077,6 +1085,9 @@
                                 value="<?php echo $patientDetails[0]['id'] ?>">
                             <input type="hidden" id="patientId" name="patientId"
                                 value="<?php echo $patientDetails[0]['patientId'] ?>">
+                            <input type="hidden" id="consultationDbId" name="consultationDbId"
+                                value="<?php echo $consultation['id'] ?>">
+                            <input type="hidden" id="vitalsDbId" name="vitalsDbId" value="<?php echo $vitals['id'] ?>">
                             <p class="fs-4 fw-semibold mb-3">Edit Consultation:</p>
                             <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                             <div class="p-3">
@@ -2247,7 +2258,6 @@
             }
         });
     </script>
-
 
     <!-- Investigation Search Button -->
     <script>

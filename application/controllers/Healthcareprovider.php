@@ -453,7 +453,7 @@ class Healthcareprovider extends CI_Controller
 
 
     // ***************************************************************************
-    // New 
+    // Consultation Section
 
     public function consultation($patientIdDb)
     {
@@ -533,12 +533,10 @@ class Healthcareprovider extends CI_Controller
     public function addInstruction()
     {
         $name = $this->input->post('name', true);
-
         if (!$name) {
             echo json_encode(["status" => "error", "message" => "Instruction name required"]);
             return;
         }
-
         $data = ["instructionsName" => $name];
         $this->db->insert("instructions_list", $data);
         $id = $this->db->insert_id();
@@ -570,79 +568,6 @@ class Healthcareprovider extends CI_Controller
         ]);
     }
 
-
-    public function saveConsultation()
-    {
-        $post = $this->input->post(null, true);
-        $consultationId = $this->HcpModel->save_consultation();
-        $post['consultationId'] = $consultationId;
-        // Vitals
-        $vitalsSaved = $this->HcpModel->save_vitals($post);
-
-        // Symptoms
-        $symptoms_json = $this->input->post('symptomsJson');
-        $symptoms = json_decode($symptoms_json, true);
-        if ($symptoms && is_array($symptoms)) {
-            foreach ($symptoms as $symptom) {
-                $data = array(
-                    'consultation_id' => $consultationId,
-                    'symptom_name' => $symptom['symptom'],
-                    'note' => $symptom['note'],
-                    'since' => $symptom['since'],
-                    'severity' => $symptom['severity'],
-                );
-                $symptomSaved = $this->HcpModel->save_symptom($data);
-            }
-        }
-
-        // Findings
-        $findings_json = $this->input->post('findingsJson');
-        $findings = json_decode($findings_json, true);
-
-        if ($findings && is_array($findings)) {
-            foreach ($findings as $finding) {
-                $data = array(
-                    'consultation_id' => $consultationId,
-                    'finding_name' => $finding['name'],
-                    'note' => $finding['note'],
-                    'since' => $finding['since'],
-                    'severity' => $finding['severity']
-                );
-                $findingSaved = $this->HcpModel->save_finding($data);
-            }
-        }
-
-        // Diagnosis
-        $diagnosis_json = $this->input->post('diagnosisJson');
-        $diagnoses = json_decode($diagnosis_json, true);
-        if ($diagnoses && is_array($diagnoses) && !empty($diagnoses)) {
-            foreach ($diagnoses as $diagnosis) {
-                $data = array(
-                    'consultation_id' => $consultationId,
-                    'diagnosis_name' => $diagnosis['name'],
-                    'note' => $diagnosis['note'],
-                    'since' => $diagnosis['since'],
-                    'severity' => $diagnosis['severity']
-                );
-
-                $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
-            }
-        }
-
-        $investigationSaved = $this->HcpModel->save_investigation($post);
-        $instructionSaved = $this->HcpModel->save_instruction($post);
-        $procedureSaved = $this->HcpModel->save_procedure($post);
-
-
-        if ($vitalsSaved && $findingSaved && $diagnosisSaved && $symptomSaved && $investigationSaved && $instructionSaved && $procedureSaved) {
-            $this->session->set_flashdata('showSuccessMessage', 'Consultation details saved successfully.');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Failed to save consultation details.');
-        }
-
-        redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
-    }
-
     public function followupConsultation($consultation_id)
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -664,7 +589,6 @@ class Healthcareprovider extends CI_Controller
             $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
             $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
 
-
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;
             $data['patientDetails'] = $this->HcpModel->getPatientDetails($data['patient_id']);
@@ -673,7 +597,92 @@ class Healthcareprovider extends CI_Controller
         } else {
             redirect('Healthcareprovider/');
         }
+    }
 
+    // Common save consultation for new and follow-up
+    public function saveConsultation()
+    {
+        $post = $this->input->post(null, true);
+        $consultationId = $this->HcpModel->save_consultation();
+        $post['consultationId'] = $consultationId;
+        // Vitals
+        $vitalsSaved = $this->HcpModel->save_vitals($post);
+        // Symptoms
+        $symptoms_json = $this->input->post('symptomsJson');
+        $symptoms = json_decode($symptoms_json, true);
+        if ($symptoms && is_array($symptoms)) {
+            foreach ($symptoms as $symptom) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'symptom_name' => $symptom['symptom'],
+                    'note' => $symptom['note'],
+                    'since' => $symptom['since'],
+                    'severity' => $symptom['severity'],
+                );
+                $symptomSaved = $this->HcpModel->save_symptom($data);
+            }
+        }
+        // Findings
+        $findings_json = $this->input->post('findingsJson');
+        $findings = json_decode($findings_json, true);
+
+        if ($findings && is_array($findings)) {
+            foreach ($findings as $finding) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'finding_name' => $finding['name'],
+                    'note' => $finding['note'],
+                    'since' => $finding['since'],
+                    'severity' => $finding['severity']
+                );
+                $findingSaved = $this->HcpModel->save_finding($data);
+            }
+        }
+        // Diagnosis
+        $diagnosis_json = $this->input->post('diagnosisJson');
+        $diagnoses = json_decode($diagnosis_json, true);
+        if ($diagnoses && is_array($diagnoses) && !empty($diagnoses)) {
+            foreach ($diagnoses as $diagnosis) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'diagnosis_name' => $diagnosis['name'],
+                    'note' => $diagnosis['note'],
+                    'since' => $diagnosis['since'],
+                    'severity' => $diagnosis['severity']
+                );
+
+                $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
+            }
+        }
+
+        $investigationSaved = $this->HcpModel->save_investigation($post);
+        $instructionSaved = $this->HcpModel->save_instruction($post);
+        $procedureSaved = $this->HcpModel->save_procedure($post);
+
+        $messages = [];
+
+        if ($vitalsSaved)
+            $messages[] = "Vitals";
+        if ($findingSaved)
+            $messages[] = "Findings";
+        if ($diagnosisSaved)
+            $messages[] = "Diagnosis";
+        if ($symptomSaved)
+            $messages[] = "Symptoms";
+        if ($investigationSaved)
+            $messages[] = "Investigations";
+        if ($instructionSaved)
+            $messages[] = "Instructions";
+        if ($procedureSaved)
+            $messages[] = "Procedures";
+
+        if (!empty($messages)) {
+            $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " saved successfully.");
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to save consultation details.');
+        }
+
+        redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
     }
 
     public function editConsultation($consultation_id)
@@ -697,7 +706,6 @@ class Healthcareprovider extends CI_Controller
             $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
             $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
 
-
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;
             $data['patientDetails'] = $this->HcpModel->getPatientDetails($data['patient_id']);
@@ -708,10 +716,94 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    public function saveEditConsult()
+    {
+        $post = $this->input->post(null, true);
+        $consultationId = $this->HcpModel->update_consultation();
+        $post['consultationId'] = $consultationId;
+        // Vitals
+        $vitalsSaved = $this->HcpModel->update_vitals($post);
+        // // Symptoms
+        // $symptoms_json = $this->input->post('symptomsJson');
+        // $symptoms = json_decode($symptoms_json, true);
+        // if ($symptoms && is_array($symptoms)) {
+        //     foreach ($symptoms as $symptom) {
+        //         $data = array(
+        //             'consultation_id' => $consultationId,
+        //             'symptom_name' => $symptom['symptom'],
+        //             'note' => $symptom['note'],
+        //             'since' => $symptom['since'],
+        //             'severity' => $symptom['severity'],
+        //         );
+        //         $symptomSaved = $this->HcpModel->save_symptom($data);
+        //     }
+        // }
+        // // Findings
+        // $findings_json = $this->input->post('findingsJson');
+        // $findings = json_decode($findings_json, true);
+
+        // if ($findings && is_array($findings)) {
+        //     foreach ($findings as $finding) {
+        //         $data = array(
+        //             'consultation_id' => $consultationId,
+        //             'finding_name' => $finding['name'],
+        //             'note' => $finding['note'],
+        //             'since' => $finding['since'],
+        //             'severity' => $finding['severity']
+        //         );
+        //         $findingSaved = $this->HcpModel->save_finding($data);
+        //     }
+        // }
+        // // Diagnosis
+        // $diagnosis_json = $this->input->post('diagnosisJson');
+        // $diagnoses = json_decode($diagnosis_json, true);
+        // if ($diagnoses && is_array($diagnoses) && !empty($diagnoses)) {
+        //     foreach ($diagnoses as $diagnosis) {
+        //         $data = array(
+        //             'consultation_id' => $consultationId,
+        //             'diagnosis_name' => $diagnosis['name'],
+        //             'note' => $diagnosis['note'],
+        //             'since' => $diagnosis['since'],
+        //             'severity' => $diagnosis['severity']
+        //         );
+
+        //         $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
+        //     }
+        // }
+
+        // $investigationSaved = $this->HcpModel->save_investigation($post);
+        // $instructionSaved = $this->HcpModel->save_instruction($post);
+        // $procedureSaved = $this->HcpModel->save_procedure($post);
+
+        $messages = [];
+        if ($vitalsSaved)
+            $messages[] = "Vitals";
+        // if ($findingSaved)
+        //     $messages[] = "Findings";
+        // if ($diagnosisSaved)
+        //     $messages[] = "Diagnosis";
+        // if ($symptomSaved)
+        //     $messages[] = "Symptoms";
+        // if ($investigationSaved)
+        //     $messages[] = "Investigations";
+        // if ($instructionSaved)
+        //     $messages[] = "Instructions";
+        // if ($procedureSaved)
+        //     $messages[] = "Procedures";
+
+        if (!empty($messages)) {
+            $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " updated successfully.");
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to update consultation details.');
+        }
+
+        redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
+    }
+
+
 
     public function logout()
     {
-        // $this->session->unset_userdata('LoggedInDetails');
         $this->session->unset_userdata('hcpIdDb');
         $this->session->unset_userdata('hcpId');
         $this->session->unset_userdata('hcpsName');

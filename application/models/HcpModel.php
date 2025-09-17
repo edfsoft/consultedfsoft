@@ -579,7 +579,7 @@ class HcpModel extends CI_Model
     }
 
     // *************************************************************************
-    // New
+    // Consultation Section
 
     public function save_consultation()
     {
@@ -723,8 +723,6 @@ class HcpModel extends CI_Model
         return $consultations;
     }
 
-    // --------------------------------------------------------
-
     public function get_consultation_by_id($id)
     {
         $query = $this->db->get_where('consultations', array('id' => $id));
@@ -734,7 +732,7 @@ class HcpModel extends CI_Model
     public function get_vitals_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where('patient_vitals', array('consultation_id' => $consultation_id));
-        return $query->row_array(); // Assuming one vitals record per consultation
+        return $query->row_array();
     }
 
     public function get_symptoms_by_consultation_id($consultation_id)
@@ -773,7 +771,37 @@ class HcpModel extends CI_Model
         return $query->result_array();
     }
 
-    // ----------------------------------------------------------
+    public function update_consultation()
+    {
+        $post = $this->input->post(null, true);
+        $consultData = array(
+            'advice_given' => $post['advices'],
+            'notes' => $post['notes'],
+            'next_follow_up' => $post['nextFollowUpDate'],
+        );
+        $this->db->where('id', $post['consultationDbId']);
+        $this->db->update('consultations', $consultData);
+        return $post['consultationDbId'];
+    }
+
+    public function update_vitals($post)
+    {
+        $vitalData = array(
+            'weight_kg' => $post['patientWeight'],
+            'height_cm' => $post['patientHeight'],
+            'systolic_bp' => $post['patientSystolicBp'],
+            'diastolic_bp' => $post['patientDiastolicBp'],
+            'cholesterol_mg_dl' => $post['patientsCholestrol'],
+            'blood_sugar_fasting' => $post['fastingBsugar'],
+            'blood_sugar_pp' => $post['ppBsugar'],
+            'blood_sugar_random' => $post['randomBsugar'],
+            'spo2_percent' => $post['patientSpo2'],
+            'temperature_f' => $post['patientTemperature'],
+        );
+        $this->db->where('id', $post['vitalsDbId']);
+        $this->db->update('patient_vitals', $vitalData);
+        return true;
+    }
 
 
 

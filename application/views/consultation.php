@@ -2434,10 +2434,6 @@
             const clearBtn = document.getElementById('clearSearch');
             const addBtn = document.getElementById('addNew');
             const list = document.getElementById('investigationList');
-            const modalEl = document.getElementById('addInvestigationModal');
-            const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
-            const newInvestigationInput = document.getElementById('newInvestigationName');
-            const addForm = document.getElementById('addInvestigationForm');
 
             // ✅ Preload already selected investigations if follow-up
             const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
@@ -2465,50 +2461,35 @@
             });
 
             addBtn.addEventListener('click', () => {
-                newInvestigationInput.value = searchInput.value.trim();
-                if (modal) {
-                    modal.show();
-                } else {
-                    modalEl.classList.add('show');
-                    modalEl.style.display = 'block';
-                }
-            });
-
-            addForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const name = newInvestigationInput.value.trim();
+                const name = searchInput.value.trim();
                 if (!name) return;
 
-                fetch("<?= site_url('Healthcareprovider/addInvestigation') ?>", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "name=" + encodeURIComponent(name)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            // Add to list with new DB id
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'form-check investigation-item';
-                            wrapper.innerHTML = `
-                            <input class="form-check-input" type="checkbox" 
-                                   name="investigations[]" 
-                                   value="${data.name}" 
-                                   id="inv${data.id}" checked>
-                            <label class="form-check-label" for="inv${data.id}">${data.name}</label>
-                        `;
-                            list.prepend(wrapper);
+                // Create new investigation item
+                const wrapper = document.createElement('div');
+                wrapper.className = 'form-check investigation-item';
+                wrapper.innerHTML = `
+            <input class="form-check-input" type="checkbox" 
+                   name="investigations[]" 
+                   value="${name}" 
+                   id="inv-${Date.now()}" checked>
+            <label class="form-check-label" for="inv-${Date.now()}">${name}</label>
+        `;
+                list.prepend(wrapper);
 
-                            if (modal) { modal.hide(); }
-                            searchInput.value = '';
-                            filter();
-                        } else {
-                            alert(data.message || "Error saving investigation");
-                        }
-                    })
-                    .catch(err => console.error(err));
+                // When unchecked, remove from list
+                const checkbox = wrapper.querySelector('input');
+                checkbox.addEventListener('change', () => {
+                    if (!checkbox.checked) {
+                        wrapper.remove();
+                    }
+                });
+
+                // Reset search to show full list
+                searchInput.value = '';
+                filter();
             });
 
+            // ✅ Preload already selected investigations
             if (Array.isArray(preloadInvestigations)) {
                 preloadInvestigations.forEach(inv => {
                     const checkbox = list.querySelector(
@@ -2516,6 +2497,18 @@
                     );
                     if (checkbox) {
                         checkbox.checked = true;
+                    } else {
+                        // If investigation not in list (e.g., newly added in past)
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'form-check investigation-item';
+                        wrapper.innerHTML = `
+                    <input class="form-check-input" type="checkbox" 
+                           name="investigations[]" 
+                           value="${inv.investigation_name}" 
+                           id="inv-pre-${Date.now()}" checked>
+                    <label class="form-check-label" for="inv-pre-${Date.now()}">${inv.investigation_name}</label>
+                `;
+                        list.prepend(wrapper);
                     }
                 });
             }
@@ -2764,6 +2757,7 @@
             addAdvice.classList.add('d-none');
         });
     </script>
+
 
     <!-- ----------------------------------------------------------- -->
     <!-- Symptoms save script -->

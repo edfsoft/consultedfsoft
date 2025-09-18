@@ -254,14 +254,19 @@
                                                                     <li>
                                                                         <?= $symptom['symptom_name'] ?>
                                                                         <?php
-                                                                        $extra = trim(($symptom['severity'] ?? '') . ($symptom['severity'] && $symptom['since'] ? ', ' : '') . ($symptom['since'] ?? ''));
-                                                                        if ($extra)
-                                                                            echo " ($extra)";
-                                                                        ?>
-                                                                        <?php if (!empty($symptom['note']))
-                                                                            echo " - {$symptom['note']}"; ?>
-                                                                    </li>
+                                                                        $details = [];
+                                                                        if (!empty($symptom['since']))
+                                                                            $details[] = $symptom['since'];
+                                                                        if (!empty($symptom['severity']))
+                                                                            $details[] = $symptom['severity'];
+                                                                        if (!empty($symptom['note']))
+                                                                            $details[] = $symptom['note'];
 
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
+                                                                    </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>
@@ -274,14 +279,19 @@
                                                                     <li>
                                                                         <?= $finding['finding_name'] ?>
                                                                         <?php
-                                                                        $extra = trim(($finding['severity'] ?? '') . ($finding['severity'] && $finding['since'] ? ', ' : '') . ($finding['since'] ?? ''));
-                                                                        if ($extra)
-                                                                            echo " ($extra)";
-                                                                        ?>
-                                                                        <?php if (!empty($finding['note']))
-                                                                            echo " - {$finding['note']}"; ?>
-                                                                    </li>
+                                                                        $details = [];
+                                                                        if (!empty($finding['since']))
+                                                                            $details[] = $finding['since'];
+                                                                        if (!empty($finding['severity']))
+                                                                            $details[] = $finding['severity'];
+                                                                        if (!empty($finding['note']))
+                                                                            $details[] = $finding['note'];
 
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
+                                                                    </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>
@@ -294,14 +304,19 @@
                                                                     <li>
                                                                         <?= $diagnosis['diagnosis_name'] ?>
                                                                         <?php
-                                                                        $extra = trim(($diagnosis['severity'] ?? '') . ($diagnosis['severity'] && $diagnosis['since'] ? ', ' : '') . ($diagnosis['since'] ?? ''));
-                                                                        if ($extra)
-                                                                            echo " ($extra)";
-                                                                        ?>
-                                                                        <?php if (!empty($diagnosis['note']))
-                                                                            echo " - {$diagnosis['note']}"; ?>
-                                                                    </li>
+                                                                        $details = [];
+                                                                        if (!empty($diagnosis['since']))
+                                                                            $details[] = $diagnosis['since'];
+                                                                        if (!empty($diagnosis['severity']))
+                                                                            $details[] = $diagnosis['severity'];
+                                                                        if (!empty($diagnosis['note']))
+                                                                            $details[] = $diagnosis['note'];
 
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
+                                                                    </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>

@@ -468,6 +468,7 @@ class Healthcareprovider extends CI_Controller
             $this->data['instructionsList'] = $this->HcpModel->getInstructions();
             $this->data['proceduresList'] = $this->HcpModel->getProcedures();
             // $this->data['medicinesList'] = $this->HcpModel->getMedicines();
+            $this->data['advicesList'] = $this->HcpModel->getAdvices();
 
             $this->data['consultations'] = $this->HcpModel->get_consultations_by_patient($patientIdDb);
             $this->data['patient_id'] = $patientIdDb;
@@ -579,6 +580,7 @@ class Healthcareprovider extends CI_Controller
             $data['instructionsList'] = $this->HcpModel->getInstructions();
             $data['proceduresList'] = $this->HcpModel->getProcedures();
             // $data['medicinesList'] = $this->HcpModel->getMedicines();
+            $data['advicesList'] = $this->HcpModel->getAdvices();
 
             $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
             $data['vitals'] = $this->HcpModel->get_vitals_by_consultation_id($consultation_id);
@@ -588,6 +590,7 @@ class Healthcareprovider extends CI_Controller
             $data['investigations'] = $this->HcpModel->get_investigations_by_consultation_id($consultation_id);
             $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
             $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
+             $data['advices'] = $this->HcpModel->get_advices_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;
@@ -658,6 +661,7 @@ class Healthcareprovider extends CI_Controller
         $investigationSaved = $this->HcpModel->save_investigation($post);
         $instructionSaved = $this->HcpModel->save_instruction($post);
         $procedureSaved = $this->HcpModel->save_procedure($post);
+        $adviceSaved = $this->HcpModel->save_advice($post);
 
         $messages = [];
 
@@ -675,6 +679,8 @@ class Healthcareprovider extends CI_Controller
             $messages[] = "Instructions";
         if ($procedureSaved)
             $messages[] = "Procedures";
+        if ($adviceSaved)
+            $messages[] = "Advice";
 
         if (!empty($messages)) {
             $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " saved successfully.");
@@ -696,6 +702,7 @@ class Healthcareprovider extends CI_Controller
             $data['instructionsList'] = $this->HcpModel->getInstructions();
             $data['proceduresList'] = $this->HcpModel->getProcedures();
             // $data['medicinesList'] = $this->HcpModel->getMedicines();
+            $data['advicesList'] = $this->HcpModel->getAdvices();
 
             $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
             $data['vitals'] = $this->HcpModel->get_vitals_by_consultation_id($consultation_id);
@@ -705,6 +712,7 @@ class Healthcareprovider extends CI_Controller
             $data['investigations'] = $this->HcpModel->get_investigations_by_consultation_id($consultation_id);
             $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
             $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
+            $data['advices'] = $this->HcpModel->get_advices_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;

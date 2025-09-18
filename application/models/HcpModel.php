@@ -526,6 +526,13 @@ class HcpModel extends CI_Model
     //     return $select->result_array();
     // }
 
+    public function getAdvices()
+    {
+        $details = "SELECT * FROM `advices_list` WHERE `activeStatus` = '0' ORDER BY `adviceName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
     public function insertNewSymptoms($name)
     {
         $this->db->insert('symptoms_list', ['symptomsName' => $name]);
@@ -588,7 +595,6 @@ class HcpModel extends CI_Model
         $consultData = array(
             'patient_id' => $post['patientIdDb'],
             'doctor_id' => $hcpIdDb,
-            'advice_given' => $post['advices'],
             'notes' => $post['notes'],
             'next_follow_up' => $post['nextFollowUpDate'],
         );
@@ -685,6 +691,24 @@ class HcpModel extends CI_Model
         return ($rowsInserted > 0);
     }
 
+    public function save_advice($post)
+    {
+        $advices = $this->input->post('advices');
+        $rowsInserted = 0;
+        if (!empty($advices) && is_array($advices)) {
+            foreach ($advices as $advice) {
+                $this->db->insert('patient_advices', [
+                    'consultation_id' => $post['consultationId'],
+                    'advice_name' => $advice
+                ]);
+                if ($this->db->affected_rows() > 0) {
+                    $rowsInserted++;
+                }
+            }
+        }
+        return ($rowsInserted > 0);
+    }
+
     public function get_consultations_by_patient($patient_id)
     {
         $this->db->select('*');
@@ -729,6 +753,11 @@ class HcpModel extends CI_Model
             // Procedures
             $consultation['procedures'] = $this->db
                 ->get_where('patient_procedures', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+                 // Advices
+            $consultation['advices'] = $this->db
+                ->get_where('patient_advices', ['consultation_id' => $consultation_id])
                 ->result_array();
         }
 
@@ -783,11 +812,16 @@ class HcpModel extends CI_Model
         return $query->result_array();
     }
 
+    public function get_advices_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where(' patient_advices', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
     public function update_consultation()
     {
         $post = $this->input->post(null, true);
         $consultData = array(
-            'advice_given' => $post['advices'],
             'notes' => $post['notes'],
             'next_follow_up' => $post['nextFollowUpDate'],
         );

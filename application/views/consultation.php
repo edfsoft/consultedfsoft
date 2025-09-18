@@ -351,11 +351,13 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-                                                        <!-- Advice Given -->
-                                                        <?php if (!empty($consultation['advice_given'])): ?>
-                                                            <p><strong>Advice Given:</strong></p>
+                                                        <!-- Advices -->
+                                                        <?php if (!empty($consultation['advices'])): ?>
+                                                            <p><strong>Advices:</strong></p>
                                                             <ul>
-                                                                <li><?= $consultation['advice_given'] ?></li>
+                                                                <?php foreach ($consultation['advices'] as $adv): ?>
+                                                                    <li><?= $adv['advice_name'] ?></li>
+                                                                <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>
 
@@ -728,15 +730,43 @@
                                             </div>
                                         </div> -->
 
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-bs-toggle="collapse" data-bs-target="#adviceCollapse">
+                                                <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                        Advice</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+
+                                            <div class="collapse field-container mt-2" id="adviceCollapse">
+                                                <div class="input-group mb-2">
+                                                    <input type="text" class="form-control" id="adviceSearch"
+                                                        placeholder="Search Advice">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearAdviceSearch">✖</button>
+                                                    <button type="button" class="btn btn-outline-primary d-none"
+                                                        id="addAdvice">+ Add</button>
+                                                </div>
+                                                <div id="adviceList">
+                                                    <?php if (!empty($advicesList)): ?>
+                                                        <?php foreach ($advicesList as $adv): ?>
+                                                            <div class="form-check advice-item">
+                                                                <input class="form-check-input" type="checkbox" name="advices[]"
+                                                                    value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                                    id="adv<?php echo $adv['id']; ?>">
+                                                                <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                                    <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <div class="form-group pb-3">
-                                        <label class="form-label fieldLabel" for="advices">Advice <span
-                                                class="text-danger">*</span></label>
-                                        <textarea class="form-control" name="advices" id="advices"
-                                            placeholder="Enter the advice to patient"></textarea>
-                                        <div id="advices_err" class="text-danger pt-1"></div>
-                                    </div>
                                     <div class="form-group pb-3">
                                         <label class="form-label fieldLabel" for="notes">Notes <span
                                                 class="text-danger">*</span></label>
@@ -1070,15 +1100,77 @@
                                     </div>
                                 </div>
 
+                                <!-- <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="procedureSearch"
+                                                placeholder="Search Instructions">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearProcedureSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
+                                                Add</button>
+                                        </div>
+                                        <div id="adviceList">
+                                            <?php if (!empty($advicesList)): ?>
+                                                <?php foreach ($advicesList as $adv): ?>
+                                                    <div class="form-check procedure-item">
+                                                        <input class="form-check-input" type="checkbox" name="advices[]"
+                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                            id="adv<?php echo $adv['id']; ?>">
+                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button"
+                                        data-bs-toggle="collapse" data-bs-target="#adviceCollapse">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2" id="adviceCollapse">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="adviceSearch"
+                                                placeholder="Search Advice">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearAdviceSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
+                                                Add</button>
+                                        </div>
+                                        <div id="adviceList">
+                                            <?php if (!empty($advicesList)): ?>
+                                                <?php foreach ($advicesList as $adv): ?>
+                                                    <div class="form-check advice-item">
+                                                        <input class="form-check-input" type="checkbox" name="advices[]"
+                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                            id="adv<?php echo $adv['id']; ?>">
+                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <div class="form-group pb-3">
-                                <label class="form-label fieldLabel" for="advices">Advice <span
-                                        class="text-danger">*</span></label>
-                                <textarea class="form-control" name="advices" id="advices"
-                                    placeholder="Enter the advice to patient"> <?= isset($consultation['advice_given']) ? $consultation['advice_given'] : '' ?></textarea>
-                                <div id="advices_err" class="text-danger pt-1"></div>
-                            </div>
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
@@ -1413,15 +1505,42 @@
                                     </div>
                                 </div>
 
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button"
+                                        data-bs-toggle="collapse" data-bs-target="#adviceCollapse">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2" id="adviceCollapse">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="adviceSearch"
+                                                placeholder="Search Advice">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearAdviceSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
+                                                Add</button>
+                                        </div>
+                                        <div id="adviceList">
+                                            <?php if (!empty($advicesList)): ?>
+                                                <?php foreach ($advicesList as $adv): ?>
+                                                    <div class="form-check advice-item">
+                                                        <input class="form-check-input" type="checkbox" name="advices[]"
+                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                            id="adv<?php echo $adv['id']; ?>">
+                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group pb-3">
-                                <label class="form-label fieldLabel" for="advices">Advice <span
-                                        class="text-danger">*</span></label>
-                                <textarea class="form-control" name="advices" id="advices"
-                                    placeholder="Enter the advice to patient"> <?= isset($consultation['advice_given']) ? $consultation['advice_given'] : '' ?></textarea>
-                                <div id="advices_err" class="text-danger pt-1"></div>
-                            </div>
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
@@ -2590,6 +2709,61 @@
         });
     </script>
 
+    <!-- Advice search and add script -->
+    <script>
+        const adviceSearch = document.getElementById('adviceSearch');
+        const clearAdviceSearch = document.getElementById('clearAdviceSearch');
+        const addAdvice = document.getElementById('addAdvice');
+        const adviceList = document.getElementById('adviceList');
+
+        adviceSearch.addEventListener('input', () => {
+            const query = adviceSearch.value.trim().toLowerCase();
+            if (!query) {
+                addAdvice.classList.add('d-none');
+                return;
+            }
+
+            // Check if advice already exists
+            const exists = Array.from(adviceList.querySelectorAll('input')).some(input => input.value.toLowerCase() === query);
+            if (!exists) {
+                addAdvice.classList.remove('d-none');
+            } else {
+                addAdvice.classList.add('d-none');
+            }
+        });
+
+        clearAdviceSearch.addEventListener('click', () => {
+            adviceSearch.value = '';
+            addAdvice.classList.add('d-none');
+        });
+
+        addAdvice.addEventListener('click', () => {
+            const newAdvice = adviceSearch.value.trim();
+            if (!newAdvice) return;
+
+            // Create new checkbox item
+            const id = 'adv' + Date.now(); // unique id
+            const div = document.createElement('div');
+            div.className = 'form-check advice-item';
+            div.innerHTML = `
+        <input class="form-check-input" type="checkbox" name="advices[]" value="${newAdvice}" id="${id}" checked>
+        <label class="form-check-label" for="${id}">${newAdvice}</label>
+    `;
+            adviceList.appendChild(div);
+
+            // Add event to remove if unchecked
+            const checkbox = div.querySelector('input');
+            checkbox.addEventListener('change', () => {
+                if (!checkbox.checked) {
+                    div.remove();
+                }
+            });
+
+            // Clear input and hide add button
+            adviceSearch.value = '';
+            addAdvice.classList.add('d-none');
+        });
+    </script>
 
     <!-- ----------------------------------------------------------- -->
     <!-- Symptoms save script -->

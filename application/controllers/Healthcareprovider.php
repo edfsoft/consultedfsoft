@@ -515,22 +515,6 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function addInvestigation()
-    {
-        $name = $this->input->post('name', true);
-
-        if (!empty($name)) {
-            $insertId = $this->HcpModel->insertInvestigation($name);
-            echo json_encode([
-                'status' => 'success',
-                'id' => $insertId,
-                'name' => $name
-            ]);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Name required']);
-        }
-    }
-
     public function addInstruction()
     {
         $name = $this->input->post('name', true);

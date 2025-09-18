@@ -2711,57 +2711,95 @@
 
     <!-- Advice search and add script -->
     <script>
-        const adviceSearch = document.getElementById('adviceSearch');
-        const clearAdviceSearch = document.getElementById('clearAdviceSearch');
-        const addAdvice = document.getElementById('addAdvice');
-        const adviceList = document.getElementById('adviceList');
+        document.addEventListener('DOMContentLoaded', () => {
+            const adviceSearch = document.getElementById('adviceSearch');
+            const clearAdviceSearch = document.getElementById('clearAdviceSearch');
+            const addAdvice = document.getElementById('addAdvice');
+            const adviceList = document.getElementById('adviceList');
 
-        adviceSearch.addEventListener('input', () => {
-            const query = adviceSearch.value.trim().toLowerCase();
-            if (!query) {
-                addAdvice.classList.add('d-none');
-                return;
+            // ✅ Preload already selected advices if follow-up
+            const preloadAdvices = <?php echo isset($advices) ? json_encode($advices) : '[]'; ?>;
+
+            function norm(s) { return (s || '').toLowerCase().trim(); }
+
+            function filter() {
+                const q = norm(adviceSearch.value);
+                let matches = 0;
+                adviceList.querySelectorAll('.advice-item').forEach(item => {
+                    const labelText = item.querySelector('label').textContent;
+                    const show = norm(labelText).includes(q) || q === '';
+                    item.classList.toggle('d-none', !show);
+                    if (show) matches++;
+                });
+                addAdvice.classList.toggle('d-none', !(q && matches === 0));
             }
 
-            // Check if advice already exists
-            const exists = Array.from(adviceList.querySelectorAll('input')).some(input => input.value.toLowerCase() === query);
-            if (!exists) {
-                addAdvice.classList.remove('d-none');
-            } else {
-                addAdvice.classList.add('d-none');
-            }
-        });
+            adviceSearch.addEventListener('input', filter);
 
-        clearAdviceSearch.addEventListener('click', () => {
-            adviceSearch.value = '';
-            addAdvice.classList.add('d-none');
-        });
-
-        addAdvice.addEventListener('click', () => {
-            const newAdvice = adviceSearch.value.trim();
-            if (!newAdvice) return;
-
-            // Create new checkbox item
-            const id = 'adv' + Date.now(); // unique id
-            const div = document.createElement('div');
-            div.className = 'form-check advice-item';
-            div.innerHTML = `
-        <input class="form-check-input" type="checkbox" name="advices[]" value="${newAdvice}" id="${id}" checked>
-        <label class="form-check-label" for="${id}">${newAdvice}</label>
-    `;
-            adviceList.appendChild(div);
-
-            // Add event to remove if unchecked
-            const checkbox = div.querySelector('input');
-            checkbox.addEventListener('change', () => {
-                if (!checkbox.checked) {
-                    div.remove();
-                }
+            clearAdviceSearch.addEventListener('click', () => {
+                adviceSearch.value = '';
+                filter();
+                adviceSearch.focus();
             });
 
-            // Clear input and hide add button
-            adviceSearch.value = '';
-            addAdvice.classList.add('d-none');
+            addAdvice.addEventListener('click', () => {
+                const newAdvice = adviceSearch.value.trim();
+                if (!newAdvice) return;
+
+                const id = 'adv-' + Date.now();
+                const div = document.createElement('div');
+                div.className = 'form-check advice-item';
+                div.innerHTML = `
+            <input class="form-check-input" type="checkbox" 
+                   name="advices[]" 
+                   value="${newAdvice}" 
+                   id="${id}" checked>
+            <label class="form-check-label" for="${id}">${newAdvice}</label>
+        `;
+                adviceList.prepend(div);
+
+                const checkbox = div.querySelector('input');
+                checkbox.addEventListener('change', () => {
+                    if (!checkbox.checked) {
+                        div.remove();
+                    }
+                });
+
+                adviceSearch.value = '';
+                filter();
+            });
+
+            // ✅ Preload already selected advices
+            if (Array.isArray(preloadAdvices)) {
+                preloadAdvices.forEach(adv => {
+                    const dbName = norm(adv.advice_name || adv); // support object or plain string
+                    let matched = false;
+
+                    adviceList.querySelectorAll('.advice-item input[type="checkbox"]').forEach(cb => {
+                        if (norm(cb.value) === dbName) {
+                            cb.checked = true;
+                            matched = true;
+                        }
+                    });
+
+                    // If not found in list → add dynamically
+                    if (!matched && dbName) {
+                        const id = 'adv-pre-' + Date.now();
+                        const div = document.createElement('div');
+                        div.className = 'form-check advice-item';
+                        div.innerHTML = `
+                    <input class="form-check-input" type="checkbox" 
+                           name="advices[]" 
+                           value="${adv.advice_name || adv}" 
+                           id="${id}" checked>
+                    <label class="form-check-label" for="${id}">${adv.advice_name || adv}</label>
+                `;
+                        adviceList.prepend(div);
+                    }
+                });
+            }
+
+            filter();
         });
     </script>
 

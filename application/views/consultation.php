@@ -434,97 +434,99 @@
                                     <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                                     <div class="p-3">
                                         <div class="d-md-flex mb-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                                        name="patientWeight" min="0" placeholder="E.g. 50">
-                                                    <p class="mx-2 my-2">Kg</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mt-3 mt-md-0">
+                                            <div class="col-md-4">
                                                 <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                                <div class="d-flex">
+                                                <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="patientHeight"
                                                         name="patientHeight" min="0" placeholder="E.g. 135">
                                                     <p class="mx-2 my-2">Cm</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="d-md-flex mb-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label fieldLabel" for="patientWeight">Blood Pressure
-                                                    (Systolic)
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                        name="patientWeight" step="0.1" min="0" placeholder="E.g. 50">
+                                                    <p class="mx-2 my-2">Kg</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientWeight">Systolic BP
                                                 </label>
                                                 <div class="d-flex me-4">
-                                                    <input type="text" class="form-control fieldStyle"
+                                                    <input type="number" class="form-control fieldStyle"
                                                         id="patientSystolicBp" name="patientSystolicBp"
-                                                        placeholder="E.g. 120 (Systolic)">
-                                                    <p class="mx-2 my-2">mmHg</p>
+                                                        placeholder="E.g. 120" step="0.1" min="0">
                                                 </div>
                                                 <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                             </div>
-                                            <div class="col-md-6 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientHeight">Blood Pressure
-                                                    (Diastolic)</label>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientHeight">Diastolic
+                                                    BP</label>
                                                 <div class="d-flex">
-                                                    <input type="text" class="form-control fieldStyle"
+                                                    <input type="number" class="form-control fieldStyle"
                                                         id="patientDiastolicBp" name="patientDiastolicBp"
-                                                        placeholder="E.g. 80 (Diastolic)">
+                                                        placeholder="E.g. 80" step="0.1" min="0">
                                                     <p class="mx-2 my-2">mmHg</p>
                                                 </div>
                                                 <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
                                             </div>
                                         </div>
                                         <div class="d-md-flex mb-3">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                                    (Fasting)</label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                        name="fastingBsugar" step="0.1" min="0" placeholder="E.g. 75">
+                                                    <p class="mx-2 my-2">mg/dL</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP)
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                        name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                                    <p class="mx-2 my-2">mg/dL</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar
+                                                    (Random)
+                                                </label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                        name="randomBsugar" step="0.1" min="0" placeholder="E.g. 125">
+                                                    <p class="mx-2 my-2">mg/dL</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-md-flex mb-3">
+                                            <div class="col-md-4">
                                                 <label class="form-label fieldLabel"
                                                     for="patientsCholestrol">Cholestrol</label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle"
-                                                        id="patientsCholestrol" name="patientsCholestrol" min="0"
+                                                        id="patientsCholestrol" name="patientsCholestrol" step="0.1" min="0"
                                                         placeholder="E.g. 50">
                                                     <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel">Blood Sugar (Fasting, PP,
-                                                    Random)</label>
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="col-3">
-                                                        <input type="number" class="form-control fieldStyle"
-                                                            id="fastingBsugar" name="fastingBsugar" min="0"
-                                                            placeholder="E.g. 75">
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <input type="number" class="form-control fieldStyle" id="ppBsugar"
-                                                            name="ppBsugar" min="0" placeholder="E.g. 100">
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <input type="number" class="form-control fieldStyle"
-                                                            id="randomBsugar" name="randomBsugar" min="0"
-                                                            placeholder="E.g. 125">
-                                                    </div>
-                                                    <p class="my-2">mg/dL</p>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="d-md-flex mb-3">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                        name="patientSpo2" min="0" placeholder="E.g. 98">
+                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
                                                     <p class="mx-2 my-2">%</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 mt-3 mt-md-0">
+                                            <div class="col-md-4 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                                 </label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle"
-                                                        id="patientTemperature" name="patientTemperature" min="0"
+                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
                                                         step="0.01" placeholder="E.g. 98.6">
                                                     <p class="mx-2 my-2">°F</p>
                                                 </div>
@@ -829,44 +831,39 @@
                             <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                                name="patientWeight" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
-                                            <p class="mx-2 my-2">Kg</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mt-3 mt-md-0">
+                                    <div class="col-md-4">
                                         <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                        <div class="d-flex">
+                                        <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientHeight"
                                                 name="patientHeight" min="0" placeholder="E.g. 135"
                                                 value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
                                             <p class="mx-2 my-2">Cm</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientWeight">Blood Pressure
-                                            (Systolic)
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
+                                            <p class="mx-2 my-2">Kg</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Systolic BP
                                         </label>
                                         <div class="d-flex me-4">
-                                            <input type="text" class="form-control fieldStyle" id="patientSystolicBp"
-                                                name="patientSystolicBp" placeholder="E.g. 120 (Systolic)"
+                                            <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
+                                                name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
                                                 value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
-                                            <p class="mx-2 my-2">mmHg</p>
                                         </div>
                                         <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-6 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientHeight">Blood Pressure
-                                            (Diastolic)</label>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
                                         <div class="d-flex">
-                                            <input type="text" class="form-control fieldStyle" id="patientDiastolicBp"
-                                                name="patientDiastolicBp" placeholder="E.g. 80 (Diastolic)"
+                                            <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
+                                                name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
                                                 value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
                                             <p class="mx-2 my-2">mmHg</p>
                                         </div>
@@ -874,56 +871,64 @@
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                            (Fasting)</label>
                                         <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
-                                                name="patientsCholestrol" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
+                                            <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                name="fastingBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                placeholder="E.g. 75">
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel">Blood Sugar (Fasting, PP,
-                                            Random)</label>
-                                        <div class="d-flex justify-content-between">
-                                            <div class="col-3">
-                                                <input type="number" class="form-control fieldStyle" id="fastingBsugar"
-                                                    name="fastingBsugar" min="0"
-                                                    value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
-                                                    placeholder="E.g. 75">
-                                            </div>
-                                            <div class="col-3">
-                                                <input type="number" class="form-control fieldStyle" id="ppBsugar"
-                                                    value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
-                                                    name="ppBsugar" min="0" placeholder="E.g. 100">
-                                            </div>
-                                            <div class="col-3">
-                                                <input type="number" class="form-control fieldStyle" id="randomBsugar"
-                                                    name="randomBsugar" min="0"
-                                                    value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
-                                                    placeholder="E.g. 125">
-                                            </div>
-                                            <p class="my-2">mg/dL</p>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar (Random)
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                name="randomBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                placeholder="E.g. 125">
+                                            <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
+                                                name="patientsCholestrol" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" min="0" placeholder="E.g. 98"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
                                                 value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
                                             <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mt-3 mt-md-0">
+                                    <div class="col-md-4 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                         </label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" min="0" step="0.01" placeholder="E.g. 98.6"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
                                                 value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
                                             <p class="mx-2 my-2">°F</p>
                                         </div>
@@ -1234,44 +1239,39 @@
                             <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                                name="patientWeight" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
-                                            <p class="mx-2 my-2">Kg</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mt-3 mt-md-0">
+                                    <div class="col-md-4">
                                         <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                        <div class="d-flex">
+                                        <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientHeight"
                                                 name="patientHeight" min="0" placeholder="E.g. 135"
                                                 value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
                                             <p class="mx-2 my-2">Cm</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientWeight">Blood Pressure
-                                            (Systolic)
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
+                                            <p class="mx-2 my-2">Kg</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Systolic BP
                                         </label>
                                         <div class="d-flex me-4">
-                                            <input type="text" class="form-control fieldStyle" id="patientSystolicBp"
-                                                name="patientSystolicBp" placeholder="E.g. 120 (Systolic)"
+                                            <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
+                                                name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
                                                 value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
-                                            <p class="mx-2 my-2">mmHg</p>
                                         </div>
                                         <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-6 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientHeight">Blood Pressure
-                                            (Diastolic)</label>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
                                         <div class="d-flex">
-                                            <input type="text" class="form-control fieldStyle" id="patientDiastolicBp"
-                                                name="patientDiastolicBp" placeholder="E.g. 80 (Diastolic)"
+                                            <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
+                                                name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
                                                 value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
                                             <p class="mx-2 my-2">mmHg</p>
                                         </div>
@@ -1279,56 +1279,64 @@
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                            (Fasting)</label>
                                         <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
-                                                name="patientsCholestrol" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
+                                            <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                name="fastingBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                placeholder="E.g. 75">
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel">Blood Sugar (Fasting, PP,
-                                            Random)</label>
-                                        <div class="d-flex justify-content-between">
-                                            <div class="col-3">
-                                                <input type="number" class="form-control fieldStyle" id="fastingBsugar"
-                                                    name="fastingBsugar" min="0"
-                                                    value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
-                                                    placeholder="E.g. 75">
-                                            </div>
-                                            <div class="col-3">
-                                                <input type="number" class="form-control fieldStyle" id="ppBsugar"
-                                                    value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
-                                                    name="ppBsugar" min="0" placeholder="E.g. 100">
-                                            </div>
-                                            <div class="col-3">
-                                                <input type="number" class="form-control fieldStyle" id="randomBsugar"
-                                                    name="randomBsugar" min="0"
-                                                    value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
-                                                    placeholder="E.g. 125">
-                                            </div>
-                                            <p class="my-2">mg/dL</p>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar (Random)
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                name="randomBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                placeholder="E.g. 125">
+                                            <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
+                                                name="patientsCholestrol" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" min="0" placeholder="E.g. 98"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
                                                 value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
                                             <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mt-3 mt-md-0">
+                                    <div class="col-md-4 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                         </label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" min="0" step="0.01" placeholder="E.g. 98.6"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
                                                 value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
                                             <p class="mx-2 my-2">°F</p>
                                         </div>
@@ -1887,7 +1895,6 @@
 
             const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
 
-            // ✅ If new symptom not in list, save to DB
             if (!symptomsList.includes(pendingSymptom)) {
                 fetch("<?= site_url('Healthcareprovider/addSymptom') ?>", {
                     method: "POST",
@@ -1955,7 +1962,7 @@
             symptomsTagContainer.insertBefore(tag, symptomsInput);
         }
 
-        // Need to add cancel button to cancel the selected symptom
+        //  Need to add option to cancel the selected finding
         function updateSymptomTagDisplay(tagEl, data) {
             const textParts = [data.symptom];
             const details = [];
@@ -2179,7 +2186,6 @@
             document.getElementById("findingsJson").value = JSON.stringify(selectedFindings);
         }
 
-        // Input events
         findingsInput.addEventListener("input", renderSuggestions);
         findingsInput.addEventListener("focus", renderSuggestions);
         findingsInput.addEventListener("keydown", e => {
@@ -2198,7 +2204,6 @@
 
         renderSuggestions();
 
-        // ✅ PRELOAD findings for followup
         document.addEventListener("DOMContentLoaded", () => {
             const preloadFindings = <?php echo isset($findings) ? json_encode($findings) : '[]'; ?>;
 
@@ -2290,7 +2295,6 @@
 
             if (!pendingDiagnosis) return;
 
-            // ✅ Save new diagnosis to DB if not in list
             if (!diagnosisList.includes(pendingDiagnosis)) {
                 fetch("<?= site_url('Healthcareprovider/addDiagnosis') ?>", {
                     method: "POST",
@@ -2312,11 +2316,9 @@
             const index = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
 
             if (editingDiagnosisTag && index !== -1) {
-                // update existing
                 selectedDiagnosis[index] = data;
                 updateDiagnosisTag(editingDiagnosisTag, data);
             } else {
-                // add new
                 selectedDiagnosis.push(data);
                 addDiagnosisTag(data);
             }
@@ -2332,11 +2334,9 @@
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
 
-            // ✅ text span
             const textSpan = document.createElement("span");
             tag.appendChild(textSpan);
 
-            // ✅ remove button
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
             removeBtn.className = "text-light ms-2";
@@ -2435,7 +2435,6 @@
             const addBtn = document.getElementById('addNew');
             const list = document.getElementById('investigationList');
 
-            // ✅ Preload already selected investigations if follow-up
             const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
 
             function norm(s) { return (s || '').toLowerCase().trim(); }
@@ -2464,7 +2463,6 @@
                 const name = searchInput.value.trim();
                 if (!name) return;
 
-                // Create new investigation item
                 const wrapper = document.createElement('div');
                 wrapper.className = 'form-check investigation-item';
                 const newId = `inv-${Date.now()}`;
@@ -2477,7 +2475,6 @@
         `;
                 list.prepend(wrapper);
 
-                // When unchecked, remove from list
                 const checkbox = wrapper.querySelector('input');
                 checkbox.addEventListener('change', () => {
                     if (!checkbox.checked) {
@@ -2485,12 +2482,10 @@
                     }
                 });
 
-                // Reset search to show full list
                 searchInput.value = '';
                 filter();
             });
 
-            // ✅ Preload already selected investigations
             if (Array.isArray(preloadInvestigations)) {
                 preloadInvestigations.forEach(inv => {
                     const dbName = norm(inv.investigation_name);
@@ -2503,7 +2498,6 @@
                         }
                     });
 
-                    // If not found in list → add it dynamically
                     if (!matched && dbName) {
                         const wrapper = document.createElement('div');
                         wrapper.className = 'form-check investigation-item';
@@ -2536,7 +2530,6 @@
             const newInstructionInput = document.getElementById('newInstructionName');
             const addForm = document.getElementById('addInstructionForm');
 
-            // ✅ Preload already selected instruction if follow-up
             const preloadInstructions = <?php echo isset($instructions) ? json_encode($instructions) : '[]'; ?>;
 
             function norm(s) { return s.toLowerCase().trim(); }
@@ -2628,7 +2621,6 @@
             const newProcedureInput = document.getElementById('newProcedureName');
             const addForm = document.getElementById('addProcedureForm');
 
-            // ✅ Preload already selected procedures if follow-up
             const preloadProcedures = <?php echo isset($procedures) ? json_encode($procedures) : '[]'; ?>;
 
             function norm(s) { return s.toLowerCase().trim(); }
@@ -2693,7 +2685,6 @@
                     .catch(err => console.error(err));
             });
 
-            // ✅ Fix: Correct variable name
             if (Array.isArray(preloadProcedures)) {
                 preloadProcedures.forEach(pro => {
                     const checkbox = list.querySelector(
@@ -2705,7 +2696,7 @@
                 });
             }
 
-            filter(); // run once at load
+            filter();
         });
     </script>
 
@@ -2717,7 +2708,6 @@
             const addAdvice = document.getElementById('addAdvice');
             const adviceList = document.getElementById('adviceList');
 
-            // ✅ Preload already selected advices if follow-up
             const preloadAdvices = <?php echo isset($advices) ? json_encode($advices) : '[]'; ?>;
 
             function norm(s) { return (s || '').toLowerCase().trim(); }
@@ -2769,10 +2759,9 @@
                 filter();
             });
 
-            // ✅ Preload already selected advices
             if (Array.isArray(preloadAdvices)) {
                 preloadAdvices.forEach(adv => {
-                    const dbName = norm(adv.advice_name || adv); // support object or plain string
+                    const dbName = norm(adv.advice_name || adv);
                     let matched = false;
 
                     adviceList.querySelectorAll('.advice-item input[type="checkbox"]').forEach(cb => {
@@ -2782,7 +2771,6 @@
                         }
                     });
 
-                    // If not found in list → add dynamically
                     if (!matched && dbName) {
                         const id = 'adv-pre-' + Date.now();
                         const div = document.createElement('div');
@@ -2998,13 +2986,14 @@
     <!-- ******************************************************************************************************************************************** -->
     <!-- Sidebar active color change code -->
     <script>
-        <?php if ($method == "consultDashboard" || $method == "followupConsult") { ?>
+        <?php if ($method == "consultDashboard" || $method == "followupConsult" || $method == "editConsult") { ?>
             document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
     </script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
+
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Vendor JS Files -->

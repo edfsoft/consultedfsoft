@@ -2438,7 +2438,7 @@
             // ✅ Preload already selected investigations if follow-up
             const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
 
-            function norm(s) { return s.toLowerCase().trim(); }
+            function norm(s) { return (s || '').toLowerCase().trim(); }
 
             function filter() {
                 const q = norm(searchInput.value);
@@ -2467,12 +2467,13 @@
                 // Create new investigation item
                 const wrapper = document.createElement('div');
                 wrapper.className = 'form-check investigation-item';
+                const newId = `inv-${Date.now()}`;
                 wrapper.innerHTML = `
             <input class="form-check-input" type="checkbox" 
                    name="investigations[]" 
                    value="${name}" 
-                   id="inv-${Date.now()}" checked>
-            <label class="form-check-label" for="inv-${Date.now()}">${name}</label>
+                   id="${newId}" checked>
+            <label class="form-check-label" for="${newId}">${name}</label>
         `;
                 list.prepend(wrapper);
 
@@ -2492,21 +2493,27 @@
             // ✅ Preload already selected investigations
             if (Array.isArray(preloadInvestigations)) {
                 preloadInvestigations.forEach(inv => {
-                    const checkbox = list.querySelector(
-                        `input[type="checkbox"][value="${inv.investigation_name}"]`
-                    );
-                    if (checkbox) {
-                        checkbox.checked = true;
-                    } else {
-                        // If investigation not in list (e.g., newly added in past)
+                    const dbName = norm(inv.investigation_name);
+
+                    let matched = false;
+                    list.querySelectorAll('.investigation-item input[type="checkbox"]').forEach(cb => {
+                        if (norm(cb.value) === dbName) {
+                            cb.checked = true;
+                            matched = true;
+                        }
+                    });
+
+                    // If not found in list → add it dynamically
+                    if (!matched && dbName) {
                         const wrapper = document.createElement('div');
                         wrapper.className = 'form-check investigation-item';
+                        const newId = `inv-pre-${Date.now()}`;
                         wrapper.innerHTML = `
                     <input class="form-check-input" type="checkbox" 
                            name="investigations[]" 
                            value="${inv.investigation_name}" 
-                           id="inv-pre-${Date.now()}" checked>
-                    <label class="form-check-label" for="inv-pre-${Date.now()}">${inv.investigation_name}</label>
+                           id="${newId}" checked>
+                    <label class="form-check-label" for="${newId}">${inv.investigation_name}</label>
                 `;
                         list.prepend(wrapper);
                     }
@@ -2757,7 +2764,6 @@
             addAdvice.classList.add('d-none');
         });
     </script>
-
 
     <!-- ----------------------------------------------------------- -->
     <!-- Symptoms save script -->

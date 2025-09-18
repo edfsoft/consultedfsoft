@@ -215,24 +215,35 @@
                                                         <!-- Vitals -->
                                                         <?php if (!empty($consultation['vitals'])): ?>
                                                             <p><strong>Vitals:</strong></p>
-                                                            <ul>
-                                                                <li>Weight: <?= $consultation['vitals']['weight_kg'] ?? 'N/A' ?> kg</li>
-                                                                <li>Height: <?= $consultation['vitals']['height_cm'] ?? 'N/A' ?> cm</li>
-                                                                <li>BP:
-                                                                    <?= $consultation['vitals']['systolic_bp'] ?? 'N/A' ?>/<?= $consultation['vitals']['diastolic_bp'] ?? 'N/A' ?>
-                                                                    mmHg
-                                                                </li>
-                                                                <li>Cholesterol:
-                                                                    <?= $consultation['vitals']['cholesterol_mg_dl'] ?? 'N/A' ?> mg/dL
-                                                                </li>
-                                                                <?= !empty($consultation['vitals']['blood_sugar_fasting']) ? '<li>Fasting Blood Sugar: ' . $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL</li>' : '' ?>
-                                                                <?= !empty($consultation['vitals']['blood_sugar_pp']) ? '<li>PP Blood Sugar: ' . $consultation['vitals']['blood_sugar_pp'] . ' mg/dL</li>' : '' ?>
-                                                                <?= !empty($consultation['vitals']['blood_sugar_random']) ? '<li>Random Blood Sugar: ' . $consultation['vitals']['blood_sugar_random'] . ' mg/dL</li>' : '' ?>
-                                                                <li>SPO2: <?= $consultation['vitals']['spo2_percent'] ?? 'N/A' ?> %</li>
-                                                                <li>Temperature:
-                                                                    <?= $consultation['vitals']['temperature_f'] ?? 'N/A' ?> °F
-                                                                </li>
-                                                            </ul>
+                                                            <div class="row g-2 mb-4">
+                                                                <?php
+                                                                $vitals = [
+                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
+                                                                    'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
+                                                                    'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
+                                                                    'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
+                                                                    'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
+                                                                    'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
+                                                                    'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
+                                                                    'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
+                                                                    'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
+                                                                ];
+
+                                                                foreach ($vitals as $label => $value):
+                                                                    if ($value):
+                                                                        ?>
+                                                                        <div class="col-12 col-md-6">
+                                                                            <div
+                                                                                class="d-flex justify-content-between align-items-center border p-2 rounded">
+                                                                                <span class="fw-medium"><?= $label ?>:</span>
+                                                                                <span class="text-primary"><?= $value ?></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <?php
+                                                                    endif;
+                                                                endforeach;
+                                                                ?>
+                                                            </div>
                                                         <?php endif; ?>
 
                                                         <!-- Symptoms -->
@@ -240,9 +251,17 @@
                                                             <p><strong>Symptoms:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['symptoms'] as $symptom): ?>
-                                                                    <li><?= $symptom['symptom_name'] ?> (<?= $symptom['severity'] ?>,
-                                                                        <?= $symptom['since'] ?>) - <?= $symptom['note'] ?>
+                                                                    <li>
+                                                                        <?= $symptom['symptom_name'] ?>
+                                                                        <?php
+                                                                        $extra = trim(($symptom['severity'] ?? '') . ($symptom['severity'] && $symptom['since'] ? ', ' : '') . ($symptom['since'] ?? ''));
+                                                                        if ($extra)
+                                                                            echo " ($extra)";
+                                                                        ?>
+                                                                        <?php if (!empty($symptom['note']))
+                                                                            echo " - {$symptom['note']}"; ?>
                                                                     </li>
+
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>
@@ -252,9 +271,17 @@
                                                             <p><strong>Findings:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['findings'] as $finding): ?>
-                                                                    <li><?= $finding['finding_name'] ?> (<?= $finding['severity'] ?>,
-                                                                        <?= $finding['since'] ?>) - <?= $finding['note'] ?>
+                                                                    <li>
+                                                                        <?= $finding['finding_name'] ?>
+                                                                        <?php
+                                                                        $extra = trim(($finding['severity'] ?? '') . ($finding['severity'] && $finding['since'] ? ', ' : '') . ($finding['since'] ?? ''));
+                                                                        if ($extra)
+                                                                            echo " ($extra)";
+                                                                        ?>
+                                                                        <?php if (!empty($finding['note']))
+                                                                            echo " - {$finding['note']}"; ?>
                                                                     </li>
+
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>
@@ -264,9 +291,17 @@
                                                             <p><strong>Diagnosis:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
-                                                                    <li><?= $diagnosis['diagnosis_name'] ?> (<?= $diagnosis['severity'] ?>,
-                                                                        <?= $diagnosis['since'] ?>) - <?= $diagnosis['note'] ?>
+                                                                    <li>
+                                                                        <?= $diagnosis['diagnosis_name'] ?>
+                                                                        <?php
+                                                                        $extra = trim(($diagnosis['severity'] ?? '') . ($diagnosis['severity'] && $diagnosis['since'] ? ', ' : '') . ($diagnosis['since'] ?? ''));
+                                                                        if ($extra)
+                                                                            echo " ($extra)";
+                                                                        ?>
+                                                                        <?php if (!empty($diagnosis['note']))
+                                                                            echo " - {$diagnosis['note']}"; ?>
                                                                     </li>
+
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>

@@ -634,43 +634,55 @@ class HcpModel extends CI_Model
     public function save_investigation($post)
     {
         $investigations = $this->input->post('investigations');
+        $rowsInserted = 0;
         if (!empty($investigations) && is_array($investigations)) {
             foreach ($investigations as $investigation) {
                 $this->db->insert('patient_investigations', [
                     'consultation_id' => $post['consultationId'],
                     'investigation_name' => $investigation
                 ]);
+                if ($this->db->affected_rows() > 0) {
+                    $rowsInserted++;
+                }
             }
         }
-        return true;
+        return ($rowsInserted > 0);
     }
 
     public function save_instruction($post)
     {
         $instructions = $this->input->post('instructions');
+        $rowsInserted = 0;
         if (!empty($instructions) && is_array($instructions)) {
             foreach ($instructions as $instruction) {
                 $this->db->insert('patient_instructions', [
                     'consultation_id' => $post['consultationId'],
                     'instruction_name' => $instruction
                 ]);
+                if ($this->db->affected_rows() > 0) {
+                    $rowsInserted++;
+                }
             }
         }
-        return true;
+        return ($rowsInserted > 0);
     }
 
     public function save_procedure($post)
     {
         $procedures = $this->input->post('procedures');
+        $rowsInserted = 0;
         if (!empty($procedures) && is_array($procedures)) {
             foreach ($procedures as $procedure) {
                 $this->db->insert('patient_procedures', [
                     'consultation_id' => $post['consultationId'],
                     'procedure_name' => $procedure
                 ]);
+                if ($this->db->affected_rows() > 0) {
+                    $rowsInserted++;
+                }
             }
         }
-        return true;
+        return ($rowsInserted > 0);
     }
 
     public function get_consultations_by_patient($patient_id)

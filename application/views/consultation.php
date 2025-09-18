@@ -309,7 +309,7 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-                                                         <!-- Notes -->
+                                                        <!-- Notes -->
                                                         <?php if (!empty($consultation['notes'])): ?>
                                                             <p><strong>Notes:</strong></p>
                                                             <ul>
@@ -1757,11 +1757,9 @@
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
 
-            // ✅ Content container
             const textSpan = document.createElement("span");
             tag.appendChild(textSpan);
 
-            // ✅ Remove button (always persists)
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
             removeBtn.className = "text-light ms-2";
@@ -1788,10 +1786,8 @@
             symptomsTagContainer.insertBefore(tag, symptomsInput);
         }
 
+        // Need to add cancel button to cancel the selected symptom
         function updateSymptomTagDisplay(tagEl, data) {
-            const textSpan = tagEl.querySelector("span"); // only update text span
-            if (!textSpan) return;
-
             const textParts = [data.symptom];
             const details = [];
 
@@ -1803,7 +1799,7 @@
                 textParts.push(`(${details.join(", ")})`);
             }
 
-            textSpan.textContent = textParts.join(" ");
+            tagEl.innerHTML = textParts.join(" ");
         }
 
         function updateHiddenInput() {
@@ -1829,7 +1825,6 @@
 
         renderSymptomsSuggestions();
 
-        // ✅ PRELOAD symptoms for followup
         document.addEventListener("DOMContentLoaded", () => {
             const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
 
@@ -1991,9 +1986,10 @@
             tagContainer.insertBefore(tag, findingsInput);
         }
 
+        // Need to add option to cancel the selected finding
         function updateTagDisplay(tagEl, data) {
-            const textSpan = tagEl.querySelector("span"); // only update text span
-            if (!textSpan) return;
+            // const textSpan = tagEl.querySelector("span"); // only update text span
+            // if (!textSpan) return;
 
             const textParts = [data.finding];
             const details = [];
@@ -2006,7 +2002,8 @@
                 textParts.push(`(${details.join(", ")})`);
             }
 
-            textSpan.textContent = textParts.join(" ");
+            //     textSpan.textContent = textParts.join(" ");
+            tagEl.innerHTML = textParts.join(" ");
         }
 
         function updateHiddenInput() {
@@ -2198,9 +2195,10 @@
             diagnosisTagContainer.insertBefore(tag, diagnosisInput);
         }
 
+        // Need to add option to cancel the selected finding
         function updateDiagnosisTag(tagEl, data) {
-            const textSpan = tagEl.querySelector("span");
-            if (!textSpan) return;
+            // const textSpan = tagEl.querySelector("span");
+            // if (!textSpan) return;
 
             const textParts = [data.name];
             const details = [];
@@ -2213,7 +2211,8 @@
                 textParts.push(`(${details.join(", ")})`);
             }
 
-            textSpan.textContent = textParts.join(" ");
+            // textSpan.textContent = textParts.join(" ");
+            tagEl.innerHTML = textParts.join(" ");
         }
 
         function updateDiagnosisHidden() {

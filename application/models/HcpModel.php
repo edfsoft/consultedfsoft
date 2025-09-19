@@ -666,10 +666,29 @@ class HcpModel extends CI_Model
         }
     }
 
-
     public function save_diagnosis($data)
     {
-        return $this->db->insert('patient_diagnosis', $data);
+        $this->db->insert('patient_diagnosis', $data);
+        $insertId = $this->db->insert_id();
+        return $insertId;
+    }
+
+    public function update_diagnosis($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('patient_diagnosis', $data);
+    }
+
+    public function delete_removed_diagnosis($consultationId, $keepIds)
+    {
+        if (empty($keepIds)) {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->delete('patient_diagnosis');
+        } else {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->where_not_in('id', $keepIds);
+            $this->db->delete('patient_diagnosis');
+        }
     }
 
     public function save_investigation($post)

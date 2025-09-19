@@ -772,21 +772,32 @@ class Healthcareprovider extends CI_Controller
             $findingSaved = true;
         }
         // // Diagnosis
-        // $diagnosis_json = $this->input->post('diagnosisJson');
-        // $diagnoses = json_decode($diagnosis_json, true);
-        // if ($diagnoses && is_array($diagnoses) && !empty($diagnoses)) {
-        //     foreach ($diagnoses as $diagnosis) {
-        //         $data = array(
-        //             'consultation_id' => $consultationId,
-        //             'diagnosis_name' => $diagnosis['name'],
-        //             'note' => $diagnosis['note'],
-        //             'since' => $diagnosis['since'],
-        //             'severity' => $diagnosis['severity']
-        //         );
+        $diagnosis_json = $this->input->post('diagnosisJson');
+        $diagnoses = json_decode($diagnosis_json, true);
+        if ($diagnoses && is_array($diagnoses)) {
+            $existingIds = [];
 
-        //         $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
-        //     }
-        // }
+            foreach ($diagnoses as $diagnosis) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'diagnosis_name' => $diagnosis['name'],
+                    'note' => $diagnosis['note'],
+                    'since' => $diagnosis['since'],
+                    'severity' => $diagnosis['severity'],
+                );
+
+                if (!empty($diagnosis['id'] !== 'new')) {
+                    $this->HcpModel->update_diagnosis($diagnosis['id'], $data);
+                    $existingIds[] = $diagnosis['id'];
+                } elseif ($diagnosis['id'] == 'new') {
+                    $insertId = $this->HcpModel->save_diagnosis($data);
+                    $existingIds[] = $insertId;
+                }
+            }
+
+            $this->HcpModel->delete_removed_diagnosis($consultationId, $existingIds);
+            $diagnosisSaved = true;
+        }
 
         // $investigationSaved = $this->HcpModel->save_investigation($post);
         // $instructionSaved = $this->HcpModel->save_instruction($post);
@@ -799,8 +810,8 @@ class Healthcareprovider extends CI_Controller
             $messages[] = "Symptoms";
         if ($findingSaved)
             $messages[] = "Findings";
-        // if ($diagnosisSaved)
-        //     $messages[] = "Diagnosis";
+        if ($diagnosisSaved)
+            $messages[] = "Diagnosis";
         // if ($investigationSaved)
         //     $messages[] = "Investigations";
         // if ($instructionSaved)

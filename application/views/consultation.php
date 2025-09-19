@@ -2249,7 +2249,7 @@
     </script>
 
     <!-- Diagonsis Modal Script -->
-    <!-- <script>
+    <script>
         const diagnosisList = <?php echo json_encode(array_column($diagnosisList, 'diagnosisName')); ?>;
 
         const diagnosisInput = document.getElementById("diagnosisInput");
@@ -2337,13 +2337,17 @@
                     .catch(err => console.error(err));
             }
 
-            const data = { name: pendingDiagnosis, note, since, severity };
-            const index = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
+            const existingIndex = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
 
-            if (editingDiagnosisTag && index !== -1) {
-                selectedDiagnosis[index] = data;
-                updateDiagnosisTag(editingDiagnosisTag, data);
+            if (editingDiagnosisTag && existingIndex !== -1) {
+                // Update existing diagnosis
+                let existingId = selectedDiagnosis[existingIndex].id || "new";
+                selectedDiagnosis[existingIndex] = { id: existingId, name: pendingDiagnosis, note, since, severity };
+                updateDiagnosisTag(editingDiagnosisTag, selectedDiagnosis[existingIndex]);
+                editingDiagnosisTag.setAttribute("data-id", existingId);
             } else {
+                // New diagnosis → id="new"
+                const data = { id: "new", name: pendingDiagnosis, note, since, severity };
                 selectedDiagnosis.push(data);
                 addDiagnosisTag(data);
             }
@@ -2358,6 +2362,9 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
+
+            // Attach id to tag
+            tag.setAttribute("data-id", data.id || "new");
 
             const textSpan = document.createElement("span");
             tag.appendChild(textSpan);
@@ -2389,11 +2396,7 @@
             diagnosisTagContainer.insertBefore(tag, diagnosisInput);
         }
 
-        // Need to add option to cancel the selected finding
         function updateDiagnosisTag(tagEl, data) {
-            // const textSpan = tagEl.querySelector("span");
-            // if (!textSpan) return;
-
             const textParts = [data.name];
             const details = [];
 
@@ -2405,8 +2408,22 @@
                 textParts.push(`(${details.join(", ")})`);
             }
 
-            // textSpan.textContent = textParts.join(" ");
             tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedDiagnosis = selectedDiagnosis.filter(d => d.name !== data.name);
+                updateDiagnosisHidden();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
         }
 
         function updateDiagnosisHidden() {
@@ -2432,13 +2449,14 @@
 
         renderDiagnosisSuggestions();
 
-        // ✅ preload
+        // Preload existing diagnoses in edit mode
         document.addEventListener("DOMContentLoaded", () => {
             const preloadDiagnosis = <?php echo isset($diagnosis) ? json_encode($diagnosis) : '[]'; ?>;
 
             if (preloadDiagnosis.length > 0) {
                 preloadDiagnosis.forEach(item => {
                     const data = {
+                        id: item.id || "", // Preserve diagnosis ID for edit mode
                         name: item.diagnosis_name,
                         note: item.note || "",
                         since: item.since || "",
@@ -2450,7 +2468,7 @@
                 updateDiagnosisHidden();
             }
         });
-    </script> -->
+    </script>
 
     <!-- Investigation Search Button -->
     <script>
@@ -2941,37 +2959,33 @@
     </script>
 
     <!-- Diagnosis save script -->
-    <!-- <script>
+    <script>
         $(document).ready(function () {
-            // Function to parse a tag's text back into an object
             function parseDiagnosisTagText(text) {
-                // Clean up text: remove any extra spaces or button content
-                text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
+                text = text.trim().replace(/&times;$/g, '').trim();
 
-                let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                let match = text.match(regex);
+                let name, note = '', since = '', severity = '';
+
+                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+
                 if (match) {
-                    return {
-                        name: match[1].trim(),
-                        note: match[2].trim(),
-                        since: match[3].trim(),
-                        severity: match[4].trim()
-                    };
+                    name = match[1].trim();
+
+                    if (match[2]) {
+                        const details = match[2].split(', ').map(d => d.trim());
+
+                        details.forEach(detail => {
+                            const [key, value] = detail.split(': ', 2);
+                            if (key === 'Note') note = value || '';
+                            else if (key === 'Since') since = value || '';
+                            else if (key === 'Severity') severity = value || '';
+                        });
+                    }
+                } else {
+                    name = text;
                 }
 
-                // If no details, just the diagnosis name
-                regex = /^(.+?)$/;
-                match = text.match(regex);
-                if (match) {
-                    return {
-                        name: match[1].trim(),
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
-                }
-
-                return null;
+                return { name, note, since, severity };
             }
 
             // Update hidden input by parsing displayed tags
@@ -2981,6 +2995,8 @@
                     let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
                     let diagnosis = parseDiagnosisTagText(tagText);
                     if (diagnosis) {
+                        let diagnosisId = $(this).attr('data-id') || "new"; // Read ID or mark as new
+                        diagnosis.id = diagnosisId;
                         diagnoses.push(diagnosis);
                     }
                 });
@@ -2999,7 +3015,7 @@
                 // Form will submit normally
             });
         });
-    </script> -->
+    </script>
 
     <!-- Toggle visibility and icon for all fields -->
     <script>

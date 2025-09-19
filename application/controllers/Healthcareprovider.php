@@ -574,7 +574,7 @@ class Healthcareprovider extends CI_Controller
             $data['investigations'] = $this->HcpModel->get_investigations_by_consultation_id($consultation_id);
             $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
             $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
-             $data['advices'] = $this->HcpModel->get_advices_by_consultation_id($consultation_id);
+            $data['advices'] = $this->HcpModel->get_advices_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;
@@ -716,20 +716,34 @@ class Healthcareprovider extends CI_Controller
         // Vitals
         $vitalsSaved = $this->HcpModel->update_vitals($post);
         // // Symptoms
-        // $symptoms_json = $this->input->post('symptomsJson');
-        // $symptoms = json_decode($symptoms_json, true);
-        // if ($symptoms && is_array($symptoms)) {
-        //     foreach ($symptoms as $symptom) {
-        //         $data = array(
-        //             'consultation_id' => $consultationId,
-        //             'symptom_name' => $symptom['symptom'],
-        //             'note' => $symptom['note'],
-        //             'since' => $symptom['since'],
-        //             'severity' => $symptom['severity'],
-        //         );
-        //         $symptomSaved = $this->HcpModel->save_symptom($data);
-        //     }
-        // }
+        $symptoms_json = $this->input->post('symptomsJson');
+        $symptoms = json_decode($symptoms_json, true);
+
+        if ($symptoms && is_array($symptoms)) {
+            $existingIds = [];
+
+            foreach ($symptoms as $symptom) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'symptom_name' => $symptom['symptom'],
+                    'note' => $symptom['note'],
+                    'since' => $symptom['since'],
+                    'severity' => $symptom['severity'],
+                );
+
+                if (!empty($symptom['id'] !== 'new')) {
+                    $this->HcpModel->update_symptom($symptom['id'], $data);
+                    $existingIds[] = $symptom['id'];
+                } elseif ($symptom['id'] == 'new') {
+                    $insertId = $this->HcpModel->save_symptom($data);
+                    $existingIds[] = $insertId;
+                }
+            }
+
+            $this->HcpModel->delete_removed_symptoms($consultationId, $existingIds);
+            $symptomSaved = true;
+        }
+
         // // Findings
         // $findings_json = $this->input->post('findingsJson');
         // $findings = json_decode($findings_json, true);
@@ -770,12 +784,12 @@ class Healthcareprovider extends CI_Controller
         $messages = [];
         if ($vitalsSaved)
             $messages[] = "Vitals";
+        if ($symptomSaved)
+            $messages[] = "Symptoms";
         // if ($findingSaved)
         //     $messages[] = "Findings";
         // if ($diagnosisSaved)
         //     $messages[] = "Diagnosis";
-        // if ($symptomSaved)
-        //     $messages[] = "Symptoms";
         // if ($investigationSaved)
         //     $messages[] = "Investigations";
         // if ($instructionSaved)

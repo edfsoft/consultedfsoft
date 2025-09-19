@@ -1227,7 +1227,7 @@
 
                     <div class="card-body mx-3 px-md-4">
                         <form action="<?php echo base_url() . 'Healthcareprovider/saveEditConsult' ?>" method="post"
-                            id="editConsultationForm" class="mb-5">
+                            id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
                             <input type="hidden" id="patientId" name="patientId"
@@ -1904,7 +1904,7 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
-                            symptomsList.push(pendingSymptom); // add to available list
+                            symptomsList.push(pendingSymptom);
                         } else {
                             console.error("Error saving new symptom", data);
                         }
@@ -1914,10 +1914,13 @@
 
             if (editingSymptomTag && existingIndex !== -1) {
                 // Update existing tag
-                selectedSymptoms[existingIndex] = { symptom: pendingSymptom, note, since, severity };
+                let existingId = selectedSymptoms[existingIndex].id || "new";
+                selectedSymptoms[existingIndex] = { id: existingId, symptom: pendingSymptom, note, since, severity };
                 updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
+                editingSymptomTag.setAttribute("data-id", existingId);
             } else {
-                const data = { symptom: pendingSymptom, note, since, severity };
+                // New symptom → id="new"
+                const data = { id: "new", symptom: pendingSymptom, note, since, severity };
                 selectedSymptoms.push(data);
                 addSymptomTag(data);
             }
@@ -1932,6 +1935,9 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
+
+            // attach id to tag
+            tag.setAttribute("data-id", data.id || "new");
 
             const textSpan = document.createElement("span");
             tag.appendChild(textSpan);
@@ -1962,7 +1968,6 @@
             symptomsTagContainer.insertBefore(tag, symptomsInput);
         }
 
-        //  Need to add option to cancel the selected finding
         function updateSymptomTagDisplay(tagEl, data) {
             const textParts = [data.symptom];
             const details = [];
@@ -1975,7 +1980,23 @@
                 textParts.push(`(${details.join(", ")})`);
             }
 
+            // keep the × button
             tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
+                updateHiddenInput();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
         }
 
         function updateHiddenInput() {
@@ -2001,12 +2022,32 @@
 
         renderSymptomsSuggestions();
 
+        // preload existing symptoms in edit mode
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
+
+        //     if (preloadSymptoms.length > 0) {
+        //         preloadSymptoms.forEach(item => {
+        //             const data = {
+        //                 id: item.id ? String(item.id) : "new",
+        //                 symptom: item.symptom_name,
+        //                 note: item.note || "",
+        //                 since: item.since || "",
+        //                 severity: item.severity || ""
+        //             };
+        //             selectedSymptoms.push(data);
+        //             addSymptomTag(data);
+        //         });
+        //         updateHiddenInput();
+        //     }
+        // });
         document.addEventListener("DOMContentLoaded", () => {
             const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
 
             if (preloadSymptoms.length > 0) {
                 preloadSymptoms.forEach(item => {
                     const data = {
+                        id: item.id || "",   // 👈 add the symptom id for edit mode
                         symptom: item.symptom_name,
                         note: item.note || "",
                         since: item.since || "",
@@ -2018,6 +2059,7 @@
                 updateHiddenInput();
             }
         });
+
     </script>
 
     <!-- Finding Modal Script -->
@@ -2795,26 +2837,39 @@
     <!-- Symptoms save script -->
     <script>
         $(document).ready(function () {
-            // Function to parse a tag's text back into an object
             function parseSymptomTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
-                let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                let match = text.match(regex);
+                // Extract symptom and optional details
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
                 if (match) {
-                    return {
-                        symptom: match[1].trim(),
-                        note: match[2].trim(),
-                        since: match[3].trim(),
-                        severity: match[4].trim()
-                    };
-                }
+                    let symptom = match[1].trim();
+                    let detailsStr = match[2].trim();
+                    let details = detailsStr.split(',').map(d => d.trim());
 
-                regex = /^(.+?)$/;
-                match = text.match(regex);
-                if (match) {
+                    let parsed = {
+                        symptom: symptom,
+                        note: '',
+                        since: '',
+                        severity: ''
+                    };
+
+                    details.forEach(detail => {
+                        let kv = detail.split(':').map(s => s.trim());
+                        if (kv.length === 2) {
+                            let key = kv[0].toLowerCase();
+                            let value = kv[1];
+                            if (key === 'note') parsed.note = value;
+                            else if (key === 'since') parsed.since = value;
+                            else if (key === 'severity') parsed.severity = value;
+                        }
+                    });
+
+                    return parsed;
+                } else {
+                    // No details
                     return {
-                        symptom: match[1].trim(),
+                        symptom: text,
                         note: '',
                         since: '',
                         severity: ''
@@ -2824,30 +2879,30 @@
                 return null;
             }
 
-            // Update hidden input by parsing displayed tags
             function updateSymptomsJson() {
                 let symptoms = [];
                 $('#symptomsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let symptom = parseSymptomTagText(tagText);
+
                     if (symptom) {
+                        let symptomId = $(this).attr('data-id') || "new"; // 🔹 read id or mark as new
+                        symptom.id = symptomId;
                         symptoms.push(symptom);
                     }
                 });
                 $('#symptomsJson').val(JSON.stringify(symptoms));
-                // console.log('Symptoms JSON updated:', $('#symptomsJson').val());
             }
 
-            // Use MutationObserver to detect changes in the tag container
             const observer = new MutationObserver(updateSymptomsJson);
             observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
 
-            // Also update before form submission
             $('#consultationForm').on('submit', function (e) {
                 updateSymptomsJson();
             });
         });
     </script>
+
     <!-- Findings save script -->
     <script>
         $(document).ready(function () {

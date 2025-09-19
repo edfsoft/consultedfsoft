@@ -545,7 +545,7 @@ class HcpModel extends CI_Model
         return $this->db->insert_id();
     }
 
-   public function insertNewDiagnosis($name)
+    public function insertNewDiagnosis($name)
     {
         $this->db->insert('diagnosis_list', ['diagnosisName' => $name]);
         return $this->db->insert_id();
@@ -618,7 +618,27 @@ class HcpModel extends CI_Model
 
     public function save_symptom($data)
     {
-        return $this->db->insert('patient_symptoms', $data);
+        $this->db->insert('patient_symptoms', $data);
+        $insertId = $this->db->insert_id();
+        return $insertId;
+    }
+
+    public function update_symptom($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('patient_symptoms', $data);
+    }
+
+    public function delete_removed_symptoms($consultationId, $keepIds)
+    {
+        if (empty($keepIds)) {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->delete('patient_symptoms');
+        } else {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->where_not_in('id', $keepIds);
+            $this->db->delete('patient_symptoms');
+        }
     }
 
     public function save_finding($data)
@@ -749,7 +769,7 @@ class HcpModel extends CI_Model
                 ->get_where('patient_procedures', ['consultation_id' => $consultation_id])
                 ->result_array();
 
-                 // Advices
+            // Advices
             $consultation['advices'] = $this->db
                 ->get_where('patient_advices', ['consultation_id' => $consultation_id])
                 ->result_array();

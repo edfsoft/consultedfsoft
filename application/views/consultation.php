@@ -1910,13 +1910,11 @@
             }
 
             if (editingSymptomTag && existingIndex !== -1) {
-                // Update existing tag
                 let existingId = selectedSymptoms[existingIndex].id || "new";
                 selectedSymptoms[existingIndex] = { id: existingId, symptom: pendingSymptom, note, since, severity };
                 updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
                 editingSymptomTag.setAttribute("data-id", existingId);
             } else {
-                // New symptom → id="new"
                 const data = { id: "new", symptom: pendingSymptom, note, since, severity };
                 selectedSymptoms.push(data);
                 addSymptomTag(data);
@@ -1933,7 +1931,6 @@
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
 
-            // attach id to tag
             tag.setAttribute("data-id", data.id || "new");
 
             const textSpan = document.createElement("span");
@@ -1977,7 +1974,6 @@
                 textParts.push(`(${details.join(", ")})`);
             }
 
-            // keep the × button
             tagEl.innerHTML = textParts.join(" ");
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
@@ -2000,7 +1996,6 @@
             document.getElementById("symptomsJson").value = JSON.stringify(selectedSymptoms);
         }
 
-        // Input events
         symptomsInput.addEventListener("input", renderSymptomsSuggestions);
         symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
         symptomsInput.addEventListener("keydown", e => {
@@ -2019,32 +2014,13 @@
 
         renderSymptomsSuggestions();
 
-        // preload existing symptoms in edit mode
-        // document.addEventListener("DOMContentLoaded", () => {
-        //     const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
-
-        //     if (preloadSymptoms.length > 0) {
-        //         preloadSymptoms.forEach(item => {
-        //             const data = {
-        //                 id: item.id ? String(item.id) : "new",
-        //                 symptom: item.symptom_name,
-        //                 note: item.note || "",
-        //                 since: item.since || "",
-        //                 severity: item.severity || ""
-        //             };
-        //             selectedSymptoms.push(data);
-        //             addSymptomTag(data);
-        //         });
-        //         updateHiddenInput();
-        //     }
-        // });
         document.addEventListener("DOMContentLoaded", () => {
             const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
 
             if (preloadSymptoms.length > 0) {
                 preloadSymptoms.forEach(item => {
                     const data = {
-                        id: item.id || "",   // 👈 add the symptom id for edit mode
+                        id: item.id || "",
                         symptom: item.symptom_name,
                         note: item.note || "",
                         since: item.since || "",
@@ -2060,207 +2036,6 @@
     </script>
 
     <!-- Finding Modal Script -->
-    <!-- <script>
-        const findingsList = <?php echo json_encode(array_column($findingsList, 'findingsName')); ?>;
-
-        const findingsInput = document.getElementById("searchInput");
-        const suggestionsBox = document.getElementById("suggestionsBox");
-        const tagContainer = document.getElementById("findingsInput");
-
-        const modal = new bootstrap.Modal(document.getElementById("inputModal"));
-        const modalNote = document.getElementById("modalNote");
-        const modalSince = document.getElementById("modalSince");
-        const modalSeverity = document.getElementById("modalSeverity");
-        const modalTitle = document.getElementById("modalTitle");
-
-        let selectedFindings = [];
-        let pendingTag = "";
-        let editingTagEl = null;
-
-        function renderSuggestions() {
-            const query = findingsInput.value.toLowerCase().trim();
-            suggestionsBox.innerHTML = "";
-
-            const filtered = findingsList.filter(f =>
-                f.toLowerCase().includes(query) &&
-                !selectedFindings.some(obj => obj.finding === f)
-            );
-
-            if (filtered.length === 0 && query !== "") {
-                const customOption = document.createElement("div");
-                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                customOption.onclick = () => {
-                    openModal(query);
-                    findingsInput.value = "";
-                };
-                suggestionsBox.appendChild(customOption);
-            } else {
-                filtered.forEach(item => {
-                    const div = document.createElement("div");
-                    div.textContent = item;
-                    div.onclick = () => {
-                        openModal(item);
-                        findingsInput.value = "";
-                    };
-                    suggestionsBox.appendChild(div);
-                });
-            }
-
-            suggestionsBox.style.display = "block";
-        }
-
-        function openModal(tagName, existing = null, tagEl = null) {
-            pendingTag = tagName;
-            editingTagEl = tagEl;
-
-            modalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            modalNote.value = existing?.note || "";
-            modalSince.value = existing?.since || "";
-            modalSeverity.value = existing?.severity || "";
-
-            modal.show();
-        }
-
-        function saveModal() {
-            const note = modalNote.value.trim();
-            const since = modalSince.value.trim();
-            const severity = modalSeverity.value;
-
-            if (!pendingTag) return;
-
-            const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
-
-            // ✅ Save new finding to DB if not already in findingsList
-            if (!findingsList.includes(pendingTag)) {
-                fetch("<?= site_url('Healthcareprovider/addFinding') ?>", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "name=" + encodeURIComponent(pendingTag)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            findingsList.push(pendingTag); // add to available list
-                        } else {
-                            console.error("Error saving new finding", data);
-                        }
-                    })
-                    .catch(err => console.error(err));
-            }
-
-            if (editingTagEl && existingIndex !== -1) {
-                // Update existing tag
-                selectedFindings[existingIndex] = { finding: pendingTag, note, since, severity };
-                updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
-            } else {
-                const data = { finding: pendingTag, note, since, severity };
-                selectedFindings.push(data);
-                addTag(data);
-            }
-
-            modal.hide();
-            pendingTag = "";
-            editingTagEl = null;
-            updateHiddenInput();
-        }
-
-        function addTag(data) {
-            const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-            tag.style.cursor = "pointer";
-
-            // ✅ Content container
-            const textSpan = document.createElement("span");
-            tag.appendChild(textSpan);
-
-            // ✅ Remove button (always persists)
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tag.remove();
-                selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
-                updateHiddenInput();
-            };
-
-            tag.appendChild(removeBtn);
-
-            updateTagDisplay(tag, data);
-
-            // Click to edit
-            tag.onclick = () => {
-                openModal(data.finding, data, tag);
-            };
-
-            tagContainer.insertBefore(tag, findingsInput);
-        }
-
-        // Need to add option to cancel the selected finding
-        function updateTagDisplay(tagEl, data) {
-            // const textSpan = tagEl.querySelector("span"); // only update text span
-            // if (!textSpan) return;
-
-            const textParts = [data.finding];
-            const details = [];
-
-            if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
-
-            if (details.length > 0) {
-                textParts.push(`(${details.join(", ")})`);
-            }
-
-            //     textSpan.textContent = textParts.join(" ");
-            tagEl.innerHTML = textParts.join(" ");
-        }
-
-        function updateHiddenInput() {
-            document.getElementById("findingsJson").value = JSON.stringify(selectedFindings);
-        }
-
-        findingsInput.addEventListener("input", renderSuggestions);
-        findingsInput.addEventListener("focus", renderSuggestions);
-        findingsInput.addEventListener("keydown", e => {
-            if (e.key === "Enter" && findingsInput.value.trim() !== "") {
-                e.preventDefault();
-                openModal(findingsInput.value.trim());
-                findingsInput.value = "";
-            }
-        });
-
-        document.addEventListener("click", (e) => {
-            if (!tagContainer.contains(e.target)) {
-                suggestionsBox.style.display = "none";
-            }
-        });
-
-        renderSuggestions();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const preloadFindings = <?php echo isset($findings) ? json_encode($findings) : '[]'; ?>;
-
-            if (preloadFindings.length > 0) {
-                preloadFindings.forEach(item => {
-                    const data = {
-                        finding: item.finding_name,
-                        note: item.note || "",
-                        since: item.since || "",
-                        severity: item.severity || ""
-                    };
-                    selectedFindings.push(data);
-                    addTag(data);
-                });
-                updateHiddenInput();
-            }
-        });
-    </script> -->
     <script>
         const findingsList = <?php echo json_encode(array_column($findingsList, 'findingsName')); ?>;
 
@@ -2331,7 +2106,6 @@
 
             const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
 
-            // Save new finding to DB if not already in findingsList
             if (!findingsList.includes(pendingTag)) {
                 fetch("<?= site_url('Healthcareprovider/addFinding') ?>", {
                     method: "POST",
@@ -2350,13 +2124,11 @@
             }
 
             if (editingTagEl && existingIndex !== -1) {
-                // Update existing tag
                 let existingId = selectedFindings[existingIndex].id || "new";
                 selectedFindings[existingIndex] = { id: existingId, finding: pendingTag, note, since, severity };
                 updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
                 editingTagEl.setAttribute("data-id", existingId);
             } else {
-                // New finding → id="new"
                 const data = { id: "new", finding: pendingTag, note, since, severity };
                 selectedFindings.push(data);
                 addTag(data);
@@ -2373,14 +2145,11 @@
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
 
-            // Attach id to tag
             tag.setAttribute("data-id", data.id || "new");
 
-            // Content container
             const textSpan = document.createElement("span");
             tag.appendChild(textSpan);
 
-            // Remove button (always persists)
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
             removeBtn.className = "text-light ms-2";
@@ -2400,7 +2169,6 @@
 
             updateTagDisplay(tag, data);
 
-            // Click to edit
             tag.onclick = () => {
                 openModal(data.finding, data, tag);
             };
@@ -2466,7 +2234,7 @@
             if (preloadFindings.length > 0) {
                 preloadFindings.forEach(item => {
                     const data = {
-                        id: item.id || "", // Preserve finding ID for edit mode
+                        id: item.id || "",
                         finding: item.finding_name,
                         note: item.note || "",
                         since: item.since || "",
@@ -2480,67 +2248,8 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function () {
-            // Function to parse a tag's text back into an object
-            function parseTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
-
-                let finding, note = '', since = '', severity = '';
-
-                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
-
-                if (match) {
-                    finding = match[1].trim();
-
-                    if (match[2]) {
-                        const details = match[2].split(', ').map(d => d.trim());
-
-                        details.forEach(detail => {
-                            const [key, value] = detail.split(': ', 2);
-                            if (key === 'Note') note = value || '';
-                            else if (key === 'Since') since = value || '';
-                            else if (key === 'Severity') severity = value || '';
-                        });
-                    }
-                } else {
-                    finding = text;
-                }
-
-                return { finding, note, since, severity };
-            }
-
-            // Update hidden input by parsing displayed tags
-            function updateFindingsJson() {
-                let findings = [];
-                $('#findingsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
-                    let finding = parseTagText(tagText);
-                    if (finding) {
-                        let findingId = $(this).attr('data-id') || "new"; // Read ID or mark as new
-                        finding.id = findingId;
-                        findings.push(finding);
-                    }
-                });
-                $('#findingsJson').val(JSON.stringify(findings));
-                console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
-            }
-
-            // Use MutationObserver to detect changes in the tag container
-            const observer = new MutationObserver(updateFindingsJson);
-            observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
-
-            // Also update before form submission
-            $('#consultationForm').on('submit', function (e) {
-                updateFindingsJson(); // Ensure latest data
-                console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
-                // Form will submit normally
-            });
-        });
-    </script>
-
     <!-- Diagonsis Modal Script -->
-    <script>
+    <!-- <script>
         const diagnosisList = <?php echo json_encode(array_column($diagnosisList, 'diagnosisName')); ?>;
 
         const diagnosisInput = document.getElementById("diagnosisInput");
@@ -2741,7 +2450,7 @@
                 updateDiagnosisHidden();
             }
         });
-    </script>
+    </script> -->
 
     <!-- Investigation Search Button -->
     <script>
@@ -3141,7 +2850,6 @@
 
                     return parsed;
                 } else {
-                    // No details
                     return {
                         symptom: text,
                         note: '',
@@ -3160,7 +2868,7 @@
                     let symptom = parseSymptomTagText(tagText);
 
                     if (symptom) {
-                        let symptomId = $(this).attr('data-id') || "new"; // 🔹 read id or mark as new
+                        let symptomId = $(this).attr('data-id') || "new";
                         symptom.id = symptomId;
                         symptoms.push(symptom);
                     }
@@ -3178,46 +2886,43 @@
     </script>
 
     <!-- Findings save script -->
-    <!-- <script>
+    <script>
         $(document).ready(function () {
-            // Function to parse a tag's text back into an object
             function parseTagText(text) {
-                // Clean up text: remove any extra spaces or button content
                 text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
 
-                let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                let match = text.match(regex);
+                let finding, note = '', since = '', severity = '';
+
+                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+
                 if (match) {
-                    return {
-                        name: match[1].trim(),
-                        note: match[2].trim(),
-                        since: match[3].trim(),
-                        severity: match[4].trim()
-                    };
+                    finding = match[1].trim();
+
+                    if (match[2]) {
+                        const details = match[2].split(', ').map(d => d.trim());
+
+                        details.forEach(detail => {
+                            const [key, value] = detail.split(': ', 2);
+                            if (key === 'Note') note = value || '';
+                            else if (key === 'Since') since = value || '';
+                            else if (key === 'Severity') severity = value || '';
+                        });
+                    }
+                } else {
+                    finding = text;
                 }
 
-                // If no details, just the finding name
-                regex = /^(.+?)$/;
-                match = text.match(regex);
-                if (match) {
-                    return {
-                        name: match[1].trim(),
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
-                }
-
-                return null;
+                return { finding, note, since, severity };
             }
 
-            // Update hidden input by parsing displayed tags
             function updateFindingsJson() {
                 let findings = [];
                 $('#findingsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
+                    let tagText = $(this).clone().children().remove().end().text().trim();
                     let finding = parseTagText(tagText);
                     if (finding) {
+                        let findingId = $(this).attr('data-id') || "new";
+                        finding.id = findingId;
                         findings.push(finding);
                     }
                 });
@@ -3225,20 +2930,18 @@
                 console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
             }
 
-            // Use MutationObserver to detect changes in the tag container
             const observer = new MutationObserver(updateFindingsJson);
             observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
 
-            // Also update before form submission
             $('#consultationForm').on('submit', function (e) {
                 updateFindingsJson(); // Ensure latest data
                 console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
-                // Form will submit normally
             });
         });
-    </script> -->
+    </script>
+
     <!-- Diagnosis save script -->
-    <script>
+    <!-- <script>
         $(document).ready(function () {
             // Function to parse a tag's text back into an object
             function parseDiagnosisTagText(text) {
@@ -3296,7 +2999,7 @@
                 // Form will submit normally
             });
         });
-    </script>
+    </script> -->
 
     <!-- Toggle visibility and icon for all fields -->
     <script>

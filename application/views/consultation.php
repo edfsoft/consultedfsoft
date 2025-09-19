@@ -197,14 +197,15 @@
                                                 data-index="<?= $index ?>">
                                                 <div class="border border-5 mb-3 shadow-sm">
                                                     <div class="card-body">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h5 class="card-title">
+                                                        <div class="d-md-flex justify-content-between">
+                                                            <h5 class="card-title mb-0">
                                                                 <?= date('d M Y h:i A', strtotime($consultation['created_at'])) ?>
                                                             </h5>
-                                                            <div class="mt-3">
+                                                            <div class="mt-md-3 mb-4 mb-md-0">
                                                                 <button class="btn btn-secondary" disabled><i
                                                                         class="bi bi-download"></i></button>
-                                                                <button class="btn btn-secondary" disabled><i
+                                                                <button class="btn btn-secondary"
+                                                                    onclick="window.location.href='<?php echo site_url('Healthcareprovider/editConsultation/' . $consultation['id']); ?>'"><i
                                                                         class="bi bi-pen"></i></button>
                                                                 <button class="btn text-light" style="background-color: #00ad8e;"
                                                                     onclick="window.location.href='<?php echo site_url('Healthcareprovider/followupConsultation/' . $consultation['id']); ?>'">Follow-up
@@ -214,24 +215,35 @@
                                                         <!-- Vitals -->
                                                         <?php if (!empty($consultation['vitals'])): ?>
                                                             <p><strong>Vitals:</strong></p>
-                                                            <ul>
-                                                                <li>Weight: <?= $consultation['vitals']['weight_kg'] ?? 'N/A' ?> kg</li>
-                                                                <li>Height: <?= $consultation['vitals']['height_cm'] ?? 'N/A' ?> cm</li>
-                                                                <li>BP:
-                                                                    <?= $consultation['vitals']['systolic_bp'] ?? 'N/A' ?>/<?= $consultation['vitals']['diastolic_bp'] ?? 'N/A' ?>
-                                                                    mmHg
-                                                                </li>
-                                                                <li>Cholesterol:
-                                                                    <?= $consultation['vitals']['cholesterol_mg_dl'] ?? 'N/A' ?> mg/dL
-                                                                </li>
-                                                                <li>Blood Sugar:
-                                                                    <?= $consultation['vitals']['blood_sugar_mg_dl'] ?? 'N/A' ?> mg/dL
-                                                                </li>
-                                                                <li>SPO2: <?= $consultation['vitals']['spo2_percent'] ?? 'N/A' ?> %</li>
-                                                                <li>Temperature:
-                                                                    <?= $consultation['vitals']['temperature_f'] ?? 'N/A' ?> °F
-                                                                </li>
-                                                            </ul>
+                                                            <div class="row g-2 mb-4">
+                                                                <?php
+                                                                $vitals = [
+                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
+                                                                    'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
+                                                                    'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
+                                                                    'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
+                                                                    'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
+                                                                    'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
+                                                                    'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
+                                                                    'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
+                                                                    'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
+                                                                ];
+
+                                                                foreach ($vitals as $label => $value):
+                                                                    if ($value):
+                                                                        ?>
+                                                                        <div class="col-12 col-md-6">
+                                                                            <div
+                                                                                class="d-flex justify-content-between align-items-center border p-2 rounded">
+                                                                                <span class="fw-medium"><?= $label ?>:</span>
+                                                                                <span class="text-primary"><?= $value ?></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <?php
+                                                                    endif;
+                                                                endforeach;
+                                                                ?>
+                                                            </div>
                                                         <?php endif; ?>
 
                                                         <!-- Symptoms -->
@@ -239,8 +251,21 @@
                                                             <p><strong>Symptoms:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['symptoms'] as $symptom): ?>
-                                                                    <li><?= $symptom['symptom_name'] ?> (<?= $symptom['severity'] ?>,
-                                                                        <?= $symptom['since'] ?>) - <?= $symptom['note'] ?>
+                                                                    <li>
+                                                                        <?= $symptom['symptom_name'] ?>
+                                                                        <?php
+                                                                        $details = [];
+                                                                        if (!empty($symptom['since']))
+                                                                            $details[] = $symptom['since'];
+                                                                        if (!empty($symptom['severity']))
+                                                                            $details[] = $symptom['severity'];
+                                                                        if (!empty($symptom['note']))
+                                                                            $details[] = $symptom['note'];
+
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
                                                                     </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
@@ -251,8 +276,21 @@
                                                             <p><strong>Findings:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['findings'] as $finding): ?>
-                                                                    <li><?= $finding['finding_name'] ?> (<?= $finding['severity'] ?>,
-                                                                        <?= $finding['since'] ?>) - <?= $finding['note'] ?>
+                                                                    <li>
+                                                                        <?= $finding['finding_name'] ?>
+                                                                        <?php
+                                                                        $details = [];
+                                                                        if (!empty($finding['since']))
+                                                                            $details[] = $finding['since'];
+                                                                        if (!empty($finding['severity']))
+                                                                            $details[] = $finding['severity'];
+                                                                        if (!empty($finding['note']))
+                                                                            $details[] = $finding['note'];
+
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
                                                                     </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
@@ -263,8 +301,21 @@
                                                             <p><strong>Diagnosis:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
-                                                                    <li><?= $diagnosis['diagnosis_name'] ?> (<?= $diagnosis['severity'] ?>,
-                                                                        <?= $diagnosis['since'] ?>) - <?= $diagnosis['note'] ?>
+                                                                    <li>
+                                                                        <?= $diagnosis['diagnosis_name'] ?>
+                                                                        <?php
+                                                                        $details = [];
+                                                                        if (!empty($diagnosis['since']))
+                                                                            $details[] = $diagnosis['since'];
+                                                                        if (!empty($diagnosis['severity']))
+                                                                            $details[] = $diagnosis['severity'];
+                                                                        if (!empty($diagnosis['note']))
+                                                                            $details[] = $diagnosis['note'];
+
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
                                                                     </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
@@ -300,11 +351,21 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-                                                        <!-- Advice Given -->
-                                                        <?php if (!empty($consultation['advice_given'])): ?>
-                                                            <p><strong>Advice Given:</strong></p>
+                                                        <!-- Advices -->
+                                                        <?php if (!empty($consultation['advices'])): ?>
+                                                            <p><strong>Advices:</strong></p>
                                                             <ul>
-                                                                <li><?= $consultation['advice_given'] ?></li>
+                                                                <?php foreach ($consultation['advices'] as $adv): ?>
+                                                                    <li><?= $adv['advice_name'] ?></li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
+
+                                                        <!-- Notes -->
+                                                        <?php if (!empty($consultation['notes'])): ?>
+                                                            <p><strong>Notes:</strong></p>
+                                                            <ul>
+                                                                <li><?= $consultation['notes'] ?></li>
                                                             </ul>
                                                         <?php endif; ?>
 
@@ -373,84 +434,99 @@
                                     <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                                     <div class="p-3">
                                         <div class="d-md-flex mb-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                                        name="patientWeight" min="0" placeholder="E.g. 50">
-                                                    <p class="mx-2 my-2">Kg</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                                <div class="d-flex">
+                                                <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="patientHeight"
-                                                        name="patientHeight" min="0" placeholder="E.g. 135">
+                                                        name="patientHeight" step="0.1" min="0" placeholder="E.g. 135">
                                                     <p class="mx-2 my-2">Cm</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="d-md-flex mb-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label fieldLabel" for="patientWeight">Blood Pressure
-                                                    (Systolic)
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                        name="patientWeight" step="0.1" min="0" placeholder="E.g. 50">
+                                                    <p class="mx-2 my-2">Kg</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientWeight">Systolic BP
                                                 </label>
                                                 <div class="d-flex me-4">
-                                                    <input type="text" class="form-control fieldStyle"
+                                                    <input type="number" class="form-control fieldStyle"
                                                         id="patientSystolicBp" name="patientSystolicBp"
-                                                        placeholder="E.g. 120 (Systolic)">
-                                                    <p class="mx-2 my-2">mmHg</p>
+                                                        placeholder="E.g. 120" step="0.1" min="0">
                                                 </div>
                                                 <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label fieldLabel" for="patientHeight">Blood Pressure
-                                                    (Diastolic)</label>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientHeight">Diastolic
+                                                    BP</label>
                                                 <div class="d-flex">
-                                                    <input type="text" class="form-control fieldStyle"
+                                                    <input type="number" class="form-control fieldStyle"
                                                         id="patientDiastolicBp" name="patientDiastolicBp"
-                                                        placeholder="E.g. 80 (Diastolic)">
+                                                        placeholder="E.g. 80" step="0.1" min="0">
                                                     <p class="mx-2 my-2">mmHg</p>
                                                 </div>
                                                 <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
                                             </div>
                                         </div>
                                         <div class="d-md-flex mb-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label fieldLabel"
-                                                    for="patientsCholestrol">Cholestrol</label>
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                                    (Fasting)</label>
                                                 <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientsCholestrol" name="patientsCholestrol" min="0"
-                                                        placeholder="E.g. 50">
+                                                    <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                        name="fastingBsugar" step="0.1" min="0" placeholder="E.g. 75">
                                                     <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label fieldLabel" for="patientBsugar">Blood Sugar
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP)
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                        name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                                    <p class="mx-2 my-2">mg/dL</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar
+                                                    (Random)
                                                 </label>
                                                 <div class="d-flex">
-                                                    <input type="number" class="form-control fieldStyle" id="patientBsugar"
-                                                        name="patientBsugar" min="0" placeholder="E.g. 200">
+                                                    <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                        name="randomBsugar" step="0.1" min="0" placeholder="E.g. 125">
                                                     <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="d-md-flex mb-3">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel"
+                                                    for="patientsCholestrol">Cholestrol</label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientsCholestrol" name="patientsCholestrol" step="0.1" min="0"
+                                                        placeholder="E.g. 50">
+                                                    <p class="mx-2 my-2">mg/dL</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                        name="patientSpo2" min="0" placeholder="E.g. 98">
+                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
                                                     <p class="mx-2 my-2">%</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                                 </label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle"
-                                                        id="patientTemperature" name="patientTemperature" min="0"
+                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
                                                         step="0.01" placeholder="E.g. 98.6">
                                                     <p class="mx-2 my-2">°F</p>
                                                 </div>
@@ -545,7 +621,6 @@
                                                         <button class="btn btn-outline-primary d-none" type="button"
                                                             id="addNew">+ Add</button>
                                                     </div>
-
                                                     <div id="investigationList">
                                                         <?php if (!empty($investigationsList)): ?>
                                                             <?php foreach ($investigationsList as $inv): ?>
@@ -584,8 +659,6 @@
                                                             id="addInstruction">+ Add</button>
                                                     </div>
                                                 </div>
-
-                                                <!-- Instructions List -->
                                                 <div id="instructionList">
                                                     <?php if (!empty($instructionsList)): ?>
                                                         <?php foreach ($instructionsList as $ins): ?>
@@ -611,11 +684,20 @@
                                                         Procedures</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
+
                                             <div class="collapse field-container mt-2">
-                                                <div class="mb-3">
+                                                <div class="input-group mb-2">
+                                                    <input type="text" class="form-control" id="procedureSearch"
+                                                        placeholder="Search Instructions">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearProcedureSearch">✖</button>
+                                                    <button type="button" class="btn btn-outline-primary d-none"
+                                                        id="addProcedure">+ Add</button>
+                                                </div>
+                                                <div id="procedureList">
                                                     <?php if (!empty($proceduresList)): ?>
                                                         <?php foreach ($proceduresList as $pro): ?>
-                                                            <div class="form-check">
+                                                            <div class="form-check procedure-item">
                                                                 <input class="form-check-input" type="checkbox" name="procedures[]"
                                                                     value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
                                                                     id="pro<?php echo $pro['id']; ?>">
@@ -629,8 +711,9 @@
                                             </div>
                                         </div>
 
+
                                         <!-- Medicine section -->
-                                        <div class="mb-3">
+                                        <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
                                                 data-bs-toggle="collapse" data-bs-target="#medicineField">
@@ -647,17 +730,44 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                        </div> -->
+
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                        Advice</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+
+                                            <div class="collapse field-container mt-2">
+                                                <div class="input-group mb-2">
+                                                    <input type="text" class="form-control" id="adviceSearch"
+                                                        placeholder="Search Advice">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearAdviceSearch">✖</button>
+                                                    <button type="button" class="btn btn-outline-primary d-none"
+                                                        id="addAdvice">+ Add</button>
+                                                </div>
+                                                <div id="adviceList">
+                                                    <?php if (!empty($advicesList)): ?>
+                                                        <?php foreach ($advicesList as $adv): ?>
+                                                            <div class="form-check advice-item">
+                                                                <input class="form-check-input" type="checkbox" name="advices[]"
+                                                                    value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                                    id="adv<?php echo $adv['id']; ?>">
+                                                                <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                                    <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
                                         </div>
 
                                     </div>
 
-                                    <div class="form-group pb-3">
-                                        <label class="form-label fieldLabel" for="advices">Advice <span
-                                                class="text-danger">*</span></label>
-                                        <textarea class="form-control" name="advices" id="advices"
-                                            placeholder="Enter the advice to patient"></textarea>
-                                        <div id="advices_err" class="text-danger pt-1"></div>
-                                    </div>
                                     <div class="form-group pb-3">
                                         <label class="form-label fieldLabel" for="notes">Notes <span
                                                 class="text-danger">*</span></label>
@@ -720,44 +830,39 @@
                             <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                                name="patientWeight" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
-                                            <p class="mx-2 my-2">Kg</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                        <div class="d-flex">
+                                        <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientHeight"
-                                                name="patientHeight" min="0" placeholder="E.g. 135"
+                                                name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
                                                 value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
                                             <p class="mx-2 my-2">Cm</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientWeight">Blood Pressure
-                                            (Systolic)
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
+                                            <p class="mx-2 my-2">Kg</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Systolic BP
                                         </label>
                                         <div class="d-flex me-4">
-                                            <input type="text" class="form-control fieldStyle" id="patientSystolicBp"
-                                                name="patientSystolicBp" placeholder="E.g. 120 (Systolic)"
+                                            <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
+                                                name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
                                                 value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
-                                            <p class="mx-2 my-2">mmHg</p>
                                         </div>
                                         <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientHeight">Blood Pressure
-                                            (Diastolic)</label>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
                                         <div class="d-flex">
-                                            <input type="text" class="form-control fieldStyle" id="patientDiastolicBp"
-                                                name="patientDiastolicBp" placeholder="E.g. 80 (Diastolic)"
+                                            <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
+                                                name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
                                                 value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
                                             <p class="mx-2 my-2">mmHg</p>
                                         </div>
@@ -765,42 +870,64 @@
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                            (Fasting)</label>
                                         <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
-                                                name="patientsCholestrol" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['blood_sugar_mg_dl']) ? $vitals['blood_sugar_mg_dl'] : '' ?>">
+                                            <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                name="fastingBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                placeholder="E.g. 75">
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label fieldLabel" for="patientBsugar">Blood Sugar
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar (Random)
                                         </label>
                                         <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientBsugar"
-                                                name="patientBsugar" min="0" placeholder="E.g. 200"
-                                                value="<?= isset($vitals['blood_sugar_mg_dl']) ? $vitals['blood_sugar_mg_dl'] : '' ?>">
+                                            <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                name="randomBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
+                                                name="patientsCholestrol" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" min="0" placeholder="E.g. 98"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
                                                 value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
                                             <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                         </label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" min="0" step="0.01" placeholder="E.g. 98.6"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
                                                 value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
                                             <p class="mx-2 my-2">°F</p>
                                         </div>
@@ -812,7 +939,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#symptomsCollapse">
-                                        <span><strong>Symptoms</strong></span>
+                                        <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="symptomsCollapse">
@@ -834,7 +961,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#findingsCollapse">
-                                        <span><strong>Findings</strong></span>
+                                        <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="findingsCollapse">
@@ -857,7 +984,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#diagnosisCollapse">
-                                        <span><strong>Diagnosis</strong></span>
+                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i> Diagnosis</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="diagnosisCollapse">
@@ -875,23 +1002,35 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong>Investigations</strong></span>
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
+                                                Investigations</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2">
                                         <div class="mb-3">
-                                            <?php if (!empty($symptomsList)): ?>
-                                                <?php foreach ($symptomsList as $inv): ?>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="investigations[]"
-                                                            value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
-                                                            id="inv<?php echo $inv['id']; ?>">
-                                                        <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                            <?php echo htmlspecialchars($inv['symptomsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                            <div class="input-group mb-2">
+                                                <input type="text" id="investigationSearch" class="form-control"
+                                                    placeholder="Search investigations...">
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                    id="clearSearch">✖</button>
+                                                <button class="btn btn-outline-primary d-none" type="button" id="addNew">+
+                                                    Add</button>
+                                            </div>
+                                            <div id="investigationList">
+                                                <?php if (!empty($investigationsList)): ?>
+                                                    <?php foreach ($investigationsList as $inv): ?>
+                                                        <div class="form-check investigation-item">
+                                                            <input class="form-check-input" type="checkbox" name="investigations[]"
+                                                                value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
+                                                                id="inv<?php echo (int) $inv['id']; ?>">
+                                                            <label class="form-check-label"
+                                                                for="inv<?php echo (int) $inv['id']; ?>">
+                                                                <?php echo htmlspecialchars($inv['investigationsName']); ?>
+                                                            </label>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -899,19 +1038,30 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong>Instructions</strong></span>
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2">
                                         <div class="mb-3">
-                                            <?php if (!empty($symptomsList)): ?>
-                                                <?php foreach ($symptomsList as $inv): ?>
-                                                    <div class="form-check">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
+                                            <?php if (!empty($instructionsList)): ?>
+                                                <?php foreach ($instructionsList as $ins): ?>
+                                                    <div class="form-check instruction-item">
                                                         <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                            value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
-                                                            id="inv<?php echo $inv['id']; ?>">
-                                                        <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                            <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                            id="ins<?php echo $ins['id']; ?>">
+                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
                                                         </label>
                                                     </div>
                                                 <?php endforeach; ?>
@@ -923,19 +1073,97 @@
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong>Procedures</strong></span>
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                Procedures</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
+
                                     <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <?php if (!empty($symptomsList)): ?>
-                                                <?php foreach ($symptomsList as $inv): ?>
-                                                    <div class="form-check">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="procedureSearch"
+                                                placeholder="Search Instructions">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearProcedureSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
+                                                Add</button>
+                                        </div>
+                                        <div id="procedureList">
+                                            <?php if (!empty($proceduresList)): ?>
+                                                <?php foreach ($proceduresList as $pro): ?>
+                                                    <div class="form-check procedure-item">
                                                         <input class="form-check-input" type="checkbox" name="procedures[]"
-                                                            value="<?php echo htmlspecialchars($inv['symptomsName']); ?>"
-                                                            id="inv<?php echo $inv['id']; ?>">
-                                                        <label class="form-check-label" for="inv<?php echo $inv['id']; ?>">
-                                                            <?php echo htmlspecialchars($inv['symptomsName']); ?>
+                                                            value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
+                                                            id="pro<?php echo $pro['id']; ?>">
+                                                        <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
+                                                            <?php echo htmlspecialchars($pro['proceduresName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="procedureSearch"
+                                                placeholder="Search Instructions">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearProcedureSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
+                                                Add</button>
+                                        </div>
+                                        <div id="adviceList">
+                                            <?php if (!empty($advicesList)): ?>
+                                                <?php foreach ($advicesList as $adv): ?>
+                                                    <div class="form-check procedure-item">
+                                                        <input class="form-check-input" type="checkbox" name="advices[]"
+                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                            id="adv<?php echo $adv['id']; ?>">
+                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="adviceSearch"
+                                                placeholder="Search Advice">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearAdviceSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
+                                                Add</button>
+                                        </div>
+                                        <div id="adviceList">
+                                            <?php if (!empty($advicesList)): ?>
+                                                <?php foreach ($advicesList as $adv): ?>
+                                                    <div class="form-check advice-item">
+                                                        <input class="form-check-input" type="checkbox" name="advices[]"
+                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                            id="adv<?php echo $adv['id']; ?>">
+                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
                                                         </label>
                                                     </div>
                                                 <?php endforeach; ?>
@@ -946,18 +1174,11 @@
 
                             </div>
 
-                            <div class="form-group pb-3">
-                                <label class="form-label fieldLabel" for="advices">Advice <span
-                                        class="text-danger">*</span></label>
-                                <textarea class="form-control" name="advices" id="advices"
-                                    placeholder="Enter the advice to patient"> <?= isset($consultation['advice_given']) ? $consultation['advice_given'] : '' ?></textarea>
-                                <div id="advices_err" class="text-danger pt-1"></div>
-                            </div>
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
                                 <textarea class="form-control" name="notes" id="notes"
-                                    placeholder="Enter the notes"> <?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
+                                    placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
                                 <div id="advices_err" class="text-danger pt-1"></div>
                             </div>
                             <div class="form-group pb-3">
@@ -975,12 +1196,384 @@
                     </div>
 
             </section>
+        <?php } elseif ($method == "editConsult") { ?>
+            <section>
+                <div class="card rounded pb-3">
+                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                        <div class="border border-2 rounded text-center py-2 position-relative px-5">
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                    class="position-absolute top-0 end-0 m-2">
+                                    <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
+                                </a>
+                                <p style="font-size: 16px; font-weight: 700">
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['patientId'] ?>
+                                </p>
+                                <p>
+                                    <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                        <?php echo $value['mobileNumber'] ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
+                                </p>
+                            <?php } ?>
+                        </div>
+                        <a href="<?php echo base_url() . "Healthcareprovider/consultation/" . $value['id']; ?>"
+                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                    </div>
+
+                    <div class="card-body mx-3 px-md-4">
+                        <form action="<?php echo base_url() . 'Healthcareprovider/saveEditConsult' ?>" method="post"
+                            id="consultationForm" class="mb-5">
+                            <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                value="<?php echo $patientDetails[0]['id'] ?>">
+                            <input type="hidden" id="patientId" name="patientId"
+                                value="<?php echo $patientDetails[0]['patientId'] ?>">
+                            <input type="hidden" id="consultationDbId" name="consultationDbId"
+                                value="<?php echo $consultation['id'] ?>">
+                            <input type="hidden" id="vitalsDbId" name="vitalsDbId" value="<?php echo $vitals['id'] ?>">
+                            <p class="fs-4 fw-semibold mb-3">Edit Consultation:</p>
+                            <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
+                            <div class="p-3">
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientHeight">Height</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientHeight"
+                                                name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
+                                                value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
+                                            <p class="mx-2 my-2">Cm</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
+                                            <p class="mx-2 my-2">Kg</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Systolic BP
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
+                                                name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
+                                                value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
+                                        </div>
+                                        <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
+                                                name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
+                                                value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
+                                        </div>
+                                        <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                            (Fasting)</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                name="fastingBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                placeholder="E.g. 75">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar (Random)
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                name="randomBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                placeholder="E.g. 125">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
+                                                name="patientsCholestrol" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#symptomsCollapse">
+                                        <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="symptomsCollapse">
+                                        <div id="symptomsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="symptomsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="symptomsSearchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
+                                            </div>
+                                            <div id="symptomsList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="symptomsJson" id="symptomsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#findingsCollapse">
+                                        <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="findingsCollapse">
+                                        <div id="findingsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="findingsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="searchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="suggestionsBox"></div>
+                                            </div>
+                                            <div id="findingsList" class="mt-2"></div>
+                                            <!-- Display added findings -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="findingsJson" id="findingsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#diagnosisCollapse">
+                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i> Diagnosis</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                        <div class="mb-3 position-relative">
+                                            <div class="tags-input" id="diagnosisInputBox">
+                                                <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                    id="diagnosisInput" placeholder="Search or type to add diagnosis..." />
+                                            </div>
+                                            <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="diagnosisJson" id="diagnosisJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
+                                                Investigations</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" id="investigationSearch" class="form-control"
+                                                    placeholder="Search investigations...">
+                                                <button class="btn btn-outline-secondary" type="button"
+                                                    id="clearSearch">✖</button>
+                                                <button class="btn btn-outline-primary d-none" type="button" id="addNew">+
+                                                    Add</button>
+                                            </div>
+                                            <div id="investigationList">
+                                                <?php if (!empty($investigationsList)): ?>
+                                                    <?php foreach ($investigationsList as $inv): ?>
+                                                        <div class="form-check investigation-item">
+                                                            <input class="form-check-input" type="checkbox" name="investigations[]"
+                                                                value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
+                                                                id="inv<?php echo (int) $inv['id']; ?>">
+                                                            <label class="form-check-label"
+                                                                for="inv<?php echo (int) $inv['id']; ?>">
+                                                                <?php echo htmlspecialchars($inv['investigationsName']); ?>
+                                                            </label>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
+                                            <?php if (!empty($instructionsList)): ?>
+                                                <?php foreach ($instructionsList as $ins): ?>
+                                                    <div class="form-check instruction-item">
+                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
+                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                            id="ins<?php echo $ins['id']; ?>">
+                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                Procedures</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="procedureSearch"
+                                                placeholder="Search Instructions">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearProcedureSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
+                                                Add</button>
+                                        </div>
+                                        <div id="procedureList">
+                                            <?php if (!empty($proceduresList)): ?>
+                                                <?php foreach ($proceduresList as $pro): ?>
+                                                    <div class="form-check procedure-item">
+                                                        <input class="form-check-input" type="checkbox" name="procedures[]"
+                                                            value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
+                                                            id="pro<?php echo $pro['id']; ?>">
+                                                        <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
+                                                            <?php echo htmlspecialchars($pro['proceduresName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="adviceSearch"
+                                                placeholder="Search Advice">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearAdviceSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
+                                                Add</button>
+                                        </div>
+                                        <div id="adviceList">
+                                            <?php if (!empty($advicesList)): ?>
+                                                <?php foreach ($advicesList as $adv): ?>
+                                                    <div class="form-check advice-item">
+                                                        <input class="form-check-input" type="checkbox" name="advices[]"
+                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                            id="adv<?php echo $adv['id']; ?>">
+                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="notes">Notes <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="notes" id="notes"
+                                    placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
+                                <div id="advices_err" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
+                                    value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
+                                <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
+                            </div>
+
+                            <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
+                                style="background-color: #00ad8e;">Update</button>
+                        </form>
+
+                    </div>
+
+            </section>
         <?php } ?>
 
         <!-- ******************************************************************************************************************************************** -->
         <!-- Symptoms Modal -->
-        <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle"
-            aria-hidden="true">
+        <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1018,7 +1611,8 @@
         </div>
 
         <!-- Findings Modal -->
-        <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1055,7 +1649,7 @@
         </div>
 
         <!-- Diagnosis Modal -->
-        <div class="modal fade" id="diagnosisModal" tabindex="-1">
+        <div class="modal fade" id="diagnosisModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1125,7 +1719,7 @@
 
         <!-- Instruction Add New Modal -->
         <div class="modal fade" id="addInstructionModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false">
+            data-bs-keyboard="false" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <form id="addInstructionForm" class="modal-content">
                     <div class="modal-header">
@@ -1147,9 +1741,32 @@
             </div>
         </div>
 
+        <!-- Add Procedure Modal -->
+        <div class="modal fade" id="addProcedureModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <form id="addProcedureForm" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Add New Procedure
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="newProcedureName" class="form-control" name="name"
+                            placeholder="Procedure name" required>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Medicine Modal -->
-        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1275,12 +1892,30 @@
 
             const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
 
+            if (!symptomsList.includes(pendingSymptom)) {
+                fetch("<?= site_url('Healthcareprovider/addSymptom') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingSymptom)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            symptomsList.push(pendingSymptom);
+                        } else {
+                            console.error("Error saving new symptom", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
             if (editingSymptomTag && existingIndex !== -1) {
-                // Update existing tag
-                selectedSymptoms[existingIndex] = { symptom: pendingSymptom, note, since, severity };
+                let existingId = selectedSymptoms[existingIndex].id || "new";
+                selectedSymptoms[existingIndex] = { id: existingId, symptom: pendingSymptom, note, since, severity };
                 updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
+                editingSymptomTag.setAttribute("data-id", existingId);
             } else {
-                const data = { symptom: pendingSymptom, note, since, severity };
+                const data = { id: "new", symptom: pendingSymptom, note, since, severity };
                 selectedSymptoms.push(data);
                 addSymptomTag(data);
             }
@@ -1295,11 +1930,11 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
-            updateSymptomTagDisplay(tag, data);
 
-            tag.onclick = () => {
-                openSymptomModal(data.symptom, data, tag);
-            };
+            tag.setAttribute("data-id", data.id || "new");
+
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
 
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
@@ -1317,6 +1952,13 @@
             };
 
             tag.appendChild(removeBtn);
+
+            updateSymptomTagDisplay(tag, data);
+
+            tag.onclick = () => {
+                openSymptomModal(data.symptom, data, tag);
+            };
+
             symptomsTagContainer.insertBefore(tag, symptomsInput);
         }
 
@@ -1333,13 +1975,27 @@
             }
 
             tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
+                updateHiddenInput();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
         }
 
         function updateHiddenInput() {
             document.getElementById("symptomsJson").value = JSON.stringify(selectedSymptoms);
         }
 
-        // Input events
         symptomsInput.addEventListener("input", renderSymptomsSuggestions);
         symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
         symptomsInput.addEventListener("keydown", e => {
@@ -1358,13 +2014,13 @@
 
         renderSymptomsSuggestions();
 
-        // ✅ PRELOAD symptoms for followup
         document.addEventListener("DOMContentLoaded", () => {
             const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
 
             if (preloadSymptoms.length > 0) {
                 preloadSymptoms.forEach(item => {
                     const data = {
+                        id: item.id || "",
                         symptom: item.symptom_name,
                         note: item.note || "",
                         since: item.since || "",
@@ -1376,6 +2032,7 @@
                 updateHiddenInput();
             }
         });
+
     </script>
 
     <!-- Finding Modal Script -->
@@ -1449,12 +2106,30 @@
 
             const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
 
+            if (!findingsList.includes(pendingTag)) {
+                fetch("<?= site_url('Healthcareprovider/addFinding') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingTag)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            findingsList.push(pendingTag); // add to available list
+                        } else {
+                            console.error("Error saving new finding", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
             if (editingTagEl && existingIndex !== -1) {
-                // Update existing tag
-                selectedFindings[existingIndex] = { finding: pendingTag, note, since, severity };
+                let existingId = selectedFindings[existingIndex].id || "new";
+                selectedFindings[existingIndex] = { id: existingId, finding: pendingTag, note, since, severity };
                 updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
+                editingTagEl.setAttribute("data-id", existingId);
             } else {
-                const data = { finding: pendingTag, note, since, severity };
+                const data = { id: "new", finding: pendingTag, note, since, severity };
                 selectedFindings.push(data);
                 addTag(data);
             }
@@ -1469,11 +2144,11 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
-            updateTagDisplay(tag, data);
 
-            tag.onclick = () => {
-                openModal(data.finding, data, tag);
-            };
+            tag.setAttribute("data-id", data.id || "new");
+
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
 
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
@@ -1491,6 +2166,13 @@
             };
 
             tag.appendChild(removeBtn);
+
+            updateTagDisplay(tag, data);
+
+            tag.onclick = () => {
+                openModal(data.finding, data, tag);
+            };
+
             tagContainer.insertBefore(tag, findingsInput);
         }
 
@@ -1507,13 +2189,27 @@
             }
 
             tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
+                updateHiddenInput();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
         }
 
         function updateHiddenInput() {
             document.getElementById("findingsJson").value = JSON.stringify(selectedFindings);
         }
 
-        // Input events
         findingsInput.addEventListener("input", renderSuggestions);
         findingsInput.addEventListener("focus", renderSuggestions);
         findingsInput.addEventListener("keydown", e => {
@@ -1532,13 +2228,13 @@
 
         renderSuggestions();
 
-        // ✅ PRELOAD findings for followup
         document.addEventListener("DOMContentLoaded", () => {
             const preloadFindings = <?php echo isset($findings) ? json_encode($findings) : '[]'; ?>;
 
             if (preloadFindings.length > 0) {
                 preloadFindings.forEach(item => {
                     const data = {
+                        id: item.id || "",
                         finding: item.finding_name,
                         note: item.note || "",
                         since: item.since || "",
@@ -1564,6 +2260,7 @@
         const diagnosisNote = document.getElementById("diagnosisNote");
         const diagnosisSince = document.getElementById("diagnosisSince");
         const diagnosisSeverity = document.getElementById("diagnosisSeverity");
+        const diagnosisModalTitle = document.querySelector('#diagnosisModal .modal-title');
 
         let selectedDiagnosis = [];
         let pendingDiagnosis = "";
@@ -1605,8 +2302,9 @@
             pendingDiagnosis = name;
             editingDiagnosisTag = tagEl;
 
-            document.querySelector('#diagnosisModal .modal-title').textContent =
-                existing ? `Edit Diagnosis: ${name}` : `Diagnosis Details for: ${name}`;
+            diagnosisModalTitle.textContent = existing
+                ? `Edit Diagnosis: ${name}`
+                : `Diagnosis Details for: ${name}`;
 
             diagnosisNote.value = existing?.note || "";
             diagnosisSince.value = existing?.since || "";
@@ -1620,14 +2318,36 @@
             const since = diagnosisSince.value.trim();
             const severity = diagnosisSeverity.value;
 
-            const data = { name: pendingDiagnosis, note, since, severity };
+            if (!pendingDiagnosis) return;
 
-            const index = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
+            if (!diagnosisList.includes(pendingDiagnosis)) {
+                fetch("<?= site_url('Healthcareprovider/addDiagnosis') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingDiagnosis)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            diagnosisList.push(pendingDiagnosis);
+                        } else {
+                            console.error("Error saving new diagnosis", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
 
-            if (editingDiagnosisTag && index !== -1) {
-                selectedDiagnosis[index] = data;
-                updateDiagnosisTag(editingDiagnosisTag, data);
+            const existingIndex = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
+
+            if (editingDiagnosisTag && existingIndex !== -1) {
+                // Update existing diagnosis
+                let existingId = selectedDiagnosis[existingIndex].id || "new";
+                selectedDiagnosis[existingIndex] = { id: existingId, name: pendingDiagnosis, note, since, severity };
+                updateDiagnosisTag(editingDiagnosisTag, selectedDiagnosis[existingIndex]);
+                editingDiagnosisTag.setAttribute("data-id", existingId);
             } else {
+                // New diagnosis → id="new"
+                const data = { id: "new", name: pendingDiagnosis, note, since, severity };
                 selectedDiagnosis.push(data);
                 addDiagnosisTag(data);
             }
@@ -1642,11 +2362,12 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
-            updateDiagnosisTag(tag, data);
 
-            tag.onclick = () => {
-                openDiagnosisModal(data.name, data, tag);
-            };
+            // Attach id to tag
+            tag.setAttribute("data-id", data.id || "new");
+
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
 
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
@@ -1664,17 +2385,45 @@
             };
 
             tag.appendChild(removeBtn);
+
+            updateDiagnosisTag(tag, data);
+
+            // click = edit
+            tag.onclick = () => {
+                openDiagnosisModal(data.name, data, tag);
+            };
+
             diagnosisTagContainer.insertBefore(tag, diagnosisInput);
         }
 
         function updateDiagnosisTag(tagEl, data) {
-            let text = data.name;
+            const textParts = [data.name];
             const details = [];
+
             if (data.note) details.push(`Note: ${data.note}`);
             if (data.since) details.push(`Since: ${data.since}`);
             if (data.severity) details.push(`Severity: ${data.severity}`);
-            if (details.length) text += ` (${details.join(", ")})`;
-            tagEl.innerHTML = text;
+
+            if (details.length > 0) {
+                textParts.push(`(${details.join(", ")})`);
+            }
+
+            tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedDiagnosis = selectedDiagnosis.filter(d => d.name !== data.name);
+                updateDiagnosisHidden();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
         }
 
         function updateDiagnosisHidden() {
@@ -1700,13 +2449,14 @@
 
         renderDiagnosisSuggestions();
 
-        // ✅ PRELOAD diagnosis for followup
+        // Preload existing diagnoses in edit mode
         document.addEventListener("DOMContentLoaded", () => {
             const preloadDiagnosis = <?php echo isset($diagnosis) ? json_encode($diagnosis) : '[]'; ?>;
 
             if (preloadDiagnosis.length > 0) {
                 preloadDiagnosis.forEach(item => {
                     const data = {
+                        id: item.id || "", // Preserve diagnosis ID for edit mode
                         name: item.diagnosis_name,
                         note: item.note || "",
                         since: item.since || "",
@@ -1727,12 +2477,10 @@
             const clearBtn = document.getElementById('clearSearch');
             const addBtn = document.getElementById('addNew');
             const list = document.getElementById('investigationList');
-            const modalEl = document.getElementById('addInvestigationModal');
-            const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
-            const newInvestigationInput = document.getElementById('newInvestigationName');
-            const addForm = document.getElementById('addInvestigationForm');
 
-            function norm(s) { return s.toLowerCase().trim(); }
+            const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
+
+            function norm(s) { return (s || '').toLowerCase().trim(); }
 
             function filter() {
                 const q = norm(searchInput.value);
@@ -1755,55 +2503,65 @@
             });
 
             addBtn.addEventListener('click', () => {
-                newInvestigationInput.value = searchInput.value.trim();
-                if (modal) {
-                    modal.show();
-                } else {
-                    modalEl.classList.add('show');
-                    modalEl.style.display = 'block';
-                }
-            });
-
-            addForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const name = newInvestigationInput.value.trim();
+                const name = searchInput.value.trim();
                 if (!name) return;
 
-                fetch("<?= site_url('Healthcareprovider/addInvestigation') ?>", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "name=" + encodeURIComponent(name)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            // Add to list with new DB id
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'form-check investigation-item';
-                            wrapper.innerHTML = `
+                const wrapper = document.createElement('div');
+                wrapper.className = 'form-check investigation-item';
+                const newId = `inv-${Date.now()}`;
+                wrapper.innerHTML = `
+            <input class="form-check-input" type="checkbox" 
+                   name="investigations[]" 
+                   value="${name}" 
+                   id="${newId}" checked>
+            <label class="form-check-label" for="${newId}">${name}</label>
+        `;
+                list.prepend(wrapper);
+
+                const checkbox = wrapper.querySelector('input');
+                checkbox.addEventListener('change', () => {
+                    if (!checkbox.checked) {
+                        wrapper.remove();
+                    }
+                });
+
+                searchInput.value = '';
+                filter();
+            });
+
+            if (Array.isArray(preloadInvestigations)) {
+                preloadInvestigations.forEach(inv => {
+                    const dbName = norm(inv.investigation_name);
+
+                    let matched = false;
+                    list.querySelectorAll('.investigation-item input[type="checkbox"]').forEach(cb => {
+                        if (norm(cb.value) === dbName) {
+                            cb.checked = true;
+                            matched = true;
+                        }
+                    });
+
+                    if (!matched && dbName) {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'form-check investigation-item';
+                        const newId = `inv-pre-${Date.now()}`;
+                        wrapper.innerHTML = `
                     <input class="form-check-input" type="checkbox" 
                            name="investigations[]" 
-                           value="${data.name}" 
-                           id="inv${data.id}" checked>
-                    <label class="form-check-label" for="inv${data.id}">${data.name}</label>
+                           value="${inv.investigation_name}" 
+                           id="${newId}" checked>
+                    <label class="form-check-label" for="${newId}">${inv.investigation_name}</label>
                 `;
-                            list.prepend(wrapper);
-
-                            if (modal) { modal.hide(); }
-                            searchInput.value = '';
-                            filter();
-                        } else {
-                            alert(data.message || "Error saving investigation");
-                        }
-                    })
-                    .catch(err => console.error(err));
-            });
+                        list.prepend(wrapper);
+                    }
+                });
+            }
 
             filter();
         });
     </script>
 
-    <!-- Instrction Search Button -->
+    <!-- Instruction Search Button -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('instructionSearch');
@@ -1814,6 +2572,8 @@
             const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
             const newInstructionInput = document.getElementById('newInstructionName');
             const addForm = document.getElementById('addInstructionForm');
+
+            const preloadInstructions = <?php echo isset($instructions) ? json_encode($instructions) : '[]'; ?>;
 
             function norm(s) { return s.toLowerCase().trim(); }
 
@@ -1877,19 +2637,200 @@
                     .catch(err => console.error(err));
             });
 
+            if (Array.isArray(preloadInstructions)) {
+                preloadInstructions.forEach(ins => {
+                    const checkbox = list.querySelector(
+                        `input[type="checkbox"][value="${ins.instruction_name}"]`
+                    );
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+
             filter();
         });
     </script>
 
-    <!-- Medicine Modal Script -->
+    <!-- Procedure Search Button -->
     <script>
-        document.getElementById("medicineSelect").addEventListener("change", function () {
-            let selected = this.value;
-            if (selected) {
-                document.getElementById("selectedMedicine").value = selected;
-                let modal = new bootstrap.Modal(document.getElementById("medicineModal"));
-                modal.show();
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('procedureSearch');
+            const clearBtn = document.getElementById('clearProcedureSearch');
+            const addBtn = document.getElementById('addProcedure');
+            const list = document.getElementById('procedureList');
+            const modalEl = document.getElementById('addProcedureModal');
+            const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
+            const newProcedureInput = document.getElementById('newProcedureName');
+            const addForm = document.getElementById('addProcedureForm');
+
+            const preloadProcedures = <?php echo isset($procedures) ? json_encode($procedures) : '[]'; ?>;
+
+            function norm(s) { return s.toLowerCase().trim(); }
+
+            function filter() {
+                const q = norm(searchInput.value);
+                let matches = 0;
+                list.querySelectorAll('.procedure-item').forEach(item => {
+                    const labelText = item.querySelector('label').textContent;
+                    const show = norm(labelText).includes(q) || q === '';
+                    item.classList.toggle('d-none', !show);
+                    if (show) matches++;
+                });
+                addBtn.classList.toggle('d-none', !(q && matches === 0));
             }
+
+            searchInput.addEventListener('input', filter);
+
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                filter();
+                searchInput.focus();
+            });
+
+            addBtn.addEventListener('click', () => {
+                newProcedureInput.value = searchInput.value.trim();
+                if (modal) { modal.show(); }
+                else { modalEl.classList.add('show'); modalEl.style.display = 'block'; }
+            });
+
+            addForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = newProcedureInput.value.trim();
+                if (!name) return;
+
+                fetch("<?= site_url('Healthcareprovider/addProcedure') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(name)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'form-check procedure-item';
+                            wrapper.innerHTML = `
+                    <input class="form-check-input" type="checkbox" 
+                           name="procedures[]" 
+                           value="${data.name}" 
+                           id="pro${data.id}" checked>
+                    <label class="form-check-label" for="pro${data.id}">${data.name}</label>
+                `;
+                            list.prepend(wrapper);
+
+                            if (modal) { modal.hide(); }
+                            searchInput.value = '';
+                            filter();
+                        } else {
+                            alert(data.message || "Error saving procedure");
+                        }
+                    })
+                    .catch(err => console.error(err));
+            });
+
+            if (Array.isArray(preloadProcedures)) {
+                preloadProcedures.forEach(pro => {
+                    const checkbox = list.querySelector(
+                        `input[type="checkbox"][value="${pro.procedure_name}"]`
+                    );
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+
+            filter();
+        });
+    </script>
+
+    <!-- Advice search and add script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const adviceSearch = document.getElementById('adviceSearch');
+            const clearAdviceSearch = document.getElementById('clearAdviceSearch');
+            const addAdvice = document.getElementById('addAdvice');
+            const adviceList = document.getElementById('adviceList');
+
+            const preloadAdvices = <?php echo isset($advices) ? json_encode($advices) : '[]'; ?>;
+
+            function norm(s) { return (s || '').toLowerCase().trim(); }
+
+            function filter() {
+                const q = norm(adviceSearch.value);
+                let matches = 0;
+                adviceList.querySelectorAll('.advice-item').forEach(item => {
+                    const labelText = item.querySelector('label').textContent;
+                    const show = norm(labelText).includes(q) || q === '';
+                    item.classList.toggle('d-none', !show);
+                    if (show) matches++;
+                });
+                addAdvice.classList.toggle('d-none', !(q && matches === 0));
+            }
+
+            adviceSearch.addEventListener('input', filter);
+
+            clearAdviceSearch.addEventListener('click', () => {
+                adviceSearch.value = '';
+                filter();
+                adviceSearch.focus();
+            });
+
+            addAdvice.addEventListener('click', () => {
+                const newAdvice = adviceSearch.value.trim();
+                if (!newAdvice) return;
+
+                const id = 'adv-' + Date.now();
+                const div = document.createElement('div');
+                div.className = 'form-check advice-item';
+                div.innerHTML = `
+            <input class="form-check-input" type="checkbox" 
+                   name="advices[]" 
+                   value="${newAdvice}" 
+                   id="${id}" checked>
+            <label class="form-check-label" for="${id}">${newAdvice}</label>
+        `;
+                adviceList.prepend(div);
+
+                const checkbox = div.querySelector('input');
+                checkbox.addEventListener('change', () => {
+                    if (!checkbox.checked) {
+                        div.remove();
+                    }
+                });
+
+                adviceSearch.value = '';
+                filter();
+            });
+
+            if (Array.isArray(preloadAdvices)) {
+                preloadAdvices.forEach(adv => {
+                    const dbName = norm(adv.advice_name || adv);
+                    let matched = false;
+
+                    adviceList.querySelectorAll('.advice-item input[type="checkbox"]').forEach(cb => {
+                        if (norm(cb.value) === dbName) {
+                            cb.checked = true;
+                            matched = true;
+                        }
+                    });
+
+                    if (!matched && dbName) {
+                        const id = 'adv-pre-' + Date.now();
+                        const div = document.createElement('div');
+                        div.className = 'form-check advice-item';
+                        div.innerHTML = `
+                    <input class="form-check-input" type="checkbox" 
+                           name="advices[]" 
+                           value="${adv.advice_name || adv}" 
+                           id="${id}" checked>
+                    <label class="form-check-label" for="${id}">${adv.advice_name || adv}</label>
+                `;
+                        adviceList.prepend(div);
+                    }
+                });
+            }
+
+            filter();
         });
     </script>
 
@@ -1897,26 +2838,38 @@
     <!-- Symptoms save script -->
     <script>
         $(document).ready(function () {
-            // Function to parse a tag's text back into an object
             function parseSymptomTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
-                let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                let match = text.match(regex);
+                // Extract symptom and optional details
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
                 if (match) {
-                    return {
-                        symptom: match[1].trim(),
-                        note: match[2].trim(),
-                        since: match[3].trim(),
-                        severity: match[4].trim()
-                    };
-                }
+                    let symptom = match[1].trim();
+                    let detailsStr = match[2].trim();
+                    let details = detailsStr.split(',').map(d => d.trim());
 
-                regex = /^(.+?)$/;
-                match = text.match(regex);
-                if (match) {
+                    let parsed = {
+                        symptom: symptom,
+                        note: '',
+                        since: '',
+                        severity: ''
+                    };
+
+                    details.forEach(detail => {
+                        let kv = detail.split(':').map(s => s.trim());
+                        if (kv.length === 2) {
+                            let key = kv[0].toLowerCase();
+                            let value = kv[1];
+                            if (key === 'note') parsed.note = value;
+                            else if (key === 'since') parsed.since = value;
+                            else if (key === 'severity') parsed.severity = value;
+                        }
+                    });
+
+                    return parsed;
+                } else {
                     return {
-                        symptom: match[1].trim(),
+                        symptom: text,
                         note: '',
                         since: '',
                         severity: ''
@@ -1926,71 +2879,68 @@
                 return null;
             }
 
-            // Update hidden input by parsing displayed tags
             function updateSymptomsJson() {
                 let symptoms = [];
                 $('#symptomsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let symptom = parseSymptomTagText(tagText);
+
                     if (symptom) {
+                        let symptomId = $(this).attr('data-id') || "new";
+                        symptom.id = symptomId;
                         symptoms.push(symptom);
                     }
                 });
                 $('#symptomsJson').val(JSON.stringify(symptoms));
-                // console.log('Symptoms JSON updated:', $('#symptomsJson').val());
             }
 
-            // Use MutationObserver to detect changes in the tag container
             const observer = new MutationObserver(updateSymptomsJson);
             observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
 
-            // Also update before form submission
             $('#consultationForm').on('submit', function (e) {
                 updateSymptomsJson();
             });
         });
     </script>
+
     <!-- Findings save script -->
     <script>
         $(document).ready(function () {
-            // Function to parse a tag's text back into an object
             function parseTagText(text) {
-                // Clean up text: remove any extra spaces or button content
                 text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
 
-                let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                let match = text.match(regex);
+                let finding, note = '', since = '', severity = '';
+
+                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+
                 if (match) {
-                    return {
-                        name: match[1].trim(),
-                        note: match[2].trim(),
-                        since: match[3].trim(),
-                        severity: match[4].trim()
-                    };
+                    finding = match[1].trim();
+
+                    if (match[2]) {
+                        const details = match[2].split(', ').map(d => d.trim());
+
+                        details.forEach(detail => {
+                            const [key, value] = detail.split(': ', 2);
+                            if (key === 'Note') note = value || '';
+                            else if (key === 'Since') since = value || '';
+                            else if (key === 'Severity') severity = value || '';
+                        });
+                    }
+                } else {
+                    finding = text;
                 }
 
-                // If no details, just the finding name
-                regex = /^(.+?)$/;
-                match = text.match(regex);
-                if (match) {
-                    return {
-                        name: match[1].trim(),
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
-                }
-
-                return null;
+                return { finding, note, since, severity };
             }
 
-            // Update hidden input by parsing displayed tags
             function updateFindingsJson() {
                 let findings = [];
                 $('#findingsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
+                    let tagText = $(this).clone().children().remove().end().text().trim();
                     let finding = parseTagText(tagText);
                     if (finding) {
+                        let findingId = $(this).attr('data-id') || "new";
+                        finding.id = findingId;
                         findings.push(finding);
                     }
                 });
@@ -1998,50 +2948,44 @@
                 console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
             }
 
-            // Use MutationObserver to detect changes in the tag container
             const observer = new MutationObserver(updateFindingsJson);
             observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
 
-            // Also update before form submission
             $('#consultationForm').on('submit', function (e) {
                 updateFindingsJson(); // Ensure latest data
                 console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
-                // Form will submit normally
             });
         });
     </script>
+
     <!-- Diagnosis save script -->
     <script>
         $(document).ready(function () {
-            // Function to parse a tag's text back into an object
             function parseDiagnosisTagText(text) {
-                // Clean up text: remove any extra spaces or button content
-                text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
+                text = text.trim().replace(/&times;$/g, '').trim();
 
-                let regex = /^(.+?)\s*\(Note:\s*(.+?),\s*Since:\s*(.+?),\s*Severity:\s*(.+?)\)$/;
-                let match = text.match(regex);
+                let name, note = '', since = '', severity = '';
+
+                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+
                 if (match) {
-                    return {
-                        name: match[1].trim(),
-                        note: match[2].trim(),
-                        since: match[3].trim(),
-                        severity: match[4].trim()
-                    };
+                    name = match[1].trim();
+
+                    if (match[2]) {
+                        const details = match[2].split(', ').map(d => d.trim());
+
+                        details.forEach(detail => {
+                            const [key, value] = detail.split(': ', 2);
+                            if (key === 'Note') note = value || '';
+                            else if (key === 'Since') since = value || '';
+                            else if (key === 'Severity') severity = value || '';
+                        });
+                    }
+                } else {
+                    name = text;
                 }
 
-                // If no details, just the diagnosis name
-                regex = /^(.+?)$/;
-                match = text.match(regex);
-                if (match) {
-                    return {
-                        name: match[1].trim(),
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
-                }
-
-                return null;
+                return { name, note, since, severity };
             }
 
             // Update hidden input by parsing displayed tags
@@ -2051,6 +2995,8 @@
                     let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
                     let diagnosis = parseDiagnosisTagText(tagText);
                     if (diagnosis) {
+                        let diagnosisId = $(this).attr('data-id') || "new"; // Read ID or mark as new
+                        diagnosis.id = diagnosisId;
                         diagnoses.push(diagnosis);
                     }
                 });
@@ -2088,13 +3034,14 @@
     <!-- ******************************************************************************************************************************************** -->
     <!-- Sidebar active color change code -->
     <script>
-        <?php if ($method == "consultDashboard" || $method == "followupConsult") { ?>
+        <?php if ($method == "consultDashboard" || $method == "followupConsult" || $method == "editConsult") { ?>
             document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
     </script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
+
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Vendor JS Files -->

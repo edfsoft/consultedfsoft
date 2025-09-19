@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="exampleModalLabel">Update Profile Photo</h5>
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Update Profile Photo</h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -35,7 +35,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="confirmLogoutLabel">Confirm Logout</h5>
+                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">Confirm Logout</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

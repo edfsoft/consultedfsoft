@@ -107,6 +107,43 @@
             </a>
         </li>
         <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/findingsList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="findings">
+                <div>
+                    <i class="bi bi-search me-2"></i>
+                    <span>Findings</span>
+                </div>
+            </a>
+        </li>
+        <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/diagnosisList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="diagnosis">
+                <div>
+                    <i class="bi bi-clipboard2-heart me-2"></i>
+                    <span>Diagnosis</span>
+                </div>
+            </a>
+        </li>
+        <!--  <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/instructionsList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="instructions">
+                <div>
+                    <i class="bi bi-clipboard2-pulse me-2"></i>
+                    <span>Instructions</span>
+                </div>
+            </a>
+        </li>
+        <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/proceduresList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="procedures">
+                <div>
+                    <i class="bi bi-prescription2 me-2"></i>
+                    <span>Procedures</span>
+                </div>
+            </a>
+        </li> -->
+        <!-- For temporary commented -->
+        <!-- <li class="pt-4">
             <a class="" href="<?php echo base_url() . "Edfadmin/medicinesList" ?>"
                 style="font-size: 18px; font-weight: 400;color:#8cafba;" id="medicines">
                 <div>
@@ -114,16 +151,24 @@
                     <span>Medicines</span>
                 </div>
             </a>
+        </li> -->
+        <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/investigationsList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="investigations">
+                <div>
+                    <i class="bi bi-patch-question me-2"></i>
+                    <span>Investigations</span>
+                </div>
+            </a>
         </li>
-        <!-- <li class="pt-4">
-                <a class="" href="<?php echo base_url() . "Edfadmin/logout" ?>"
-                    style="font-size: 18px; font-weight: 400;color:#8cafba;" id="logout"
-                    onclick="return confirm('Are you sure to logout?')">
-                    <div>
-                        <i class="bi bi-box-arrow-in-right pe-3"></i>
-                        <span>Log Out</span>
-                    </div>
-                </a>
-            </li> -->
+        <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/advicesList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="advices">
+                <div>
+                    <i class="bi bi-clipboard2-check me-2"></i>
+                    <span>Advices</span>
+                </div>
+            </a>
+        </li>
     </ul>
 </aside>

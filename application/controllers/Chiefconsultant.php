@@ -186,10 +186,6 @@ class Chiefconsultant extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
-            $consultHistory = $this->HcpModel->getConsultationDetails($patientIdDb);
-            $this->data['consultDetails'] = $consultHistory;
-            $Medicinesconsult = $this->HcpModel->getConsultMedicinesDetails($patientIdDb);
-            $this->data['consultMedicines'] = $Medicinesconsult;
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
@@ -197,6 +193,7 @@ class Chiefconsultant extends CI_Controller
         }
     }
 
+    // This is old code, need to update or remove this
     public function prescriptionView()
     {
         if (isset($_SESSION['ccName'])) {

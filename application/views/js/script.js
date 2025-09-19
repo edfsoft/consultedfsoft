@@ -4,7 +4,7 @@ setTimeout(() => {
 	if (displayMessage) {
 		displayMessage.style.display = "none";
 	}
-}, 3000);
+}, 8000);
 
 // Password visiblity add CC and HCP in admin
 function togglePasswordVisibility(id, icon) {

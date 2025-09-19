@@ -799,9 +799,19 @@ class Healthcareprovider extends CI_Controller
             $diagnosisSaved = true;
         }
 
-        // $investigationSaved = $this->HcpModel->save_investigation($post);
-        // $instructionSaved = $this->HcpModel->save_instruction($post);
-        // $procedureSaved = $this->HcpModel->save_procedure($post);
+        // Investigations
+        $this->HcpModel->delete_investigations($consultationId);
+        $investigationSaved = $this->HcpModel->save_investigation($post);
+        // Instructions
+        $this->HcpModel->delete_instructions($consultationId);
+        $instructionSaved = $this->HcpModel->save_instruction($post);
+        // Procedures
+        $this->HcpModel->delete_procedures($consultationId);
+        $procedureSaved = $this->HcpModel->save_procedure($post);
+        // Advices
+        $this->HcpModel->delete_advices($consultationId);
+        $adviceSaved = $this->HcpModel->save_advice($post);
+
 
         $messages = [];
         if ($vitalsSaved)
@@ -812,12 +822,14 @@ class Healthcareprovider extends CI_Controller
             $messages[] = "Findings";
         if ($diagnosisSaved)
             $messages[] = "Diagnosis";
-        // if ($investigationSaved)
-        //     $messages[] = "Investigations";
-        // if ($instructionSaved)
-        //     $messages[] = "Instructions";
-        // if ($procedureSaved)
-        //     $messages[] = "Procedures";
+        if ($investigationSaved)
+            $messages[] = "Investigations";
+        if ($instructionSaved)
+            $messages[] = "Instructions";
+        if ($procedureSaved)
+            $messages[] = "Procedures";
+        if ($adviceSaved)
+            $messages[] = "Advice";
 
         if (!empty($messages)) {
             $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " updated successfully.");

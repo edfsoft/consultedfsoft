@@ -691,6 +691,12 @@ class HcpModel extends CI_Model
         }
     }
 
+    public function delete_investigations($consultationId)
+    {
+        $this->db->where('consultation_id', $consultationId);
+        return $this->db->delete('patient_investigations');
+    }
+
     public function save_investigation($post)
     {
         $investigations = $this->input->post('investigations');
@@ -707,6 +713,12 @@ class HcpModel extends CI_Model
             }
         }
         return ($rowsInserted > 0);
+    }
+
+    public function delete_instructions($consultationId)
+    {
+        $this->db->where('consultation_id', $consultationId);
+        return $this->db->delete('patient_instructions');
     }
 
     public function save_instruction($post)
@@ -727,6 +739,12 @@ class HcpModel extends CI_Model
         return ($rowsInserted > 0);
     }
 
+    public function delete_procedures($consultationId)
+    {
+        $this->db->where('consultation_id', $consultationId);
+        return $this->db->delete('patient_procedures');
+    }
+
     public function save_procedure($post)
     {
         $procedures = $this->input->post('procedures');
@@ -743,6 +761,12 @@ class HcpModel extends CI_Model
             }
         }
         return ($rowsInserted > 0);
+    }
+
+    public function delete_advices($consultationId)
+    {
+        $this->db->where('consultation_id', $consultationId);
+        return $this->db->delete('patient_advices');
     }
 
     public function save_advice($post)

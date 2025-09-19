@@ -617,7 +617,7 @@ class Healthcareprovider extends CI_Controller
             foreach ($findings as $finding) {
                 $data = array(
                     'consultation_id' => $consultationId,
-                    'finding_name' => $finding['name'],
+                    'finding_name' => $finding['finding'],
                     'note' => $finding['note'],
                     'since' => $finding['since'],
                     'severity' => $finding['severity']
@@ -715,7 +715,7 @@ class Healthcareprovider extends CI_Controller
         $post['consultationId'] = $consultationId;
         // Vitals
         $vitalsSaved = $this->HcpModel->update_vitals($post);
-        // // Symptoms
+        // Symptoms
         $symptoms_json = $this->input->post('symptomsJson');
         $symptoms = json_decode($symptoms_json, true);
 
@@ -744,22 +744,33 @@ class Healthcareprovider extends CI_Controller
             $symptomSaved = true;
         }
 
-        // // Findings
-        // $findings_json = $this->input->post('findingsJson');
-        // $findings = json_decode($findings_json, true);
+        // Findings
+        $findings_json = $this->input->post('findingsJson');
+        $findings = json_decode($findings_json, true);
+        if ($findings && is_array($findings)) {
+            $existingIds = [];
 
-        // if ($findings && is_array($findings)) {
-        //     foreach ($findings as $finding) {
-        //         $data = array(
-        //             'consultation_id' => $consultationId,
-        //             'finding_name' => $finding['name'],
-        //             'note' => $finding['note'],
-        //             'since' => $finding['since'],
-        //             'severity' => $finding['severity']
-        //         );
-        //         $findingSaved = $this->HcpModel->save_finding($data);
-        //     }
-        // }
+            foreach ($findings as $finding) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'finding_name' => $finding['finding'],
+                    'note' => $finding['note'],
+                    'since' => $finding['since'],
+                    'severity' => $finding['severity'],
+                );
+
+                if (!empty($finding['id'] !== 'new')) {
+                    $this->HcpModel->update_finding($finding['id'], $data);
+                    $existingIds[] = $finding['id'];
+                } elseif ($finding['id'] == 'new') {
+                    $insertId = $this->HcpModel->save_finding($data);
+                    $existingIds[] = $insertId;
+                }
+            }
+
+            $this->HcpModel->delete_removed_findings($consultationId, $existingIds);
+            $findingSaved = true;
+        }
         // // Diagnosis
         // $diagnosis_json = $this->input->post('diagnosisJson');
         // $diagnoses = json_decode($diagnosis_json, true);
@@ -786,8 +797,8 @@ class Healthcareprovider extends CI_Controller
             $messages[] = "Vitals";
         if ($symptomSaved)
             $messages[] = "Symptoms";
-        // if ($findingSaved)
-        //     $messages[] = "Findings";
+        if ($findingSaved)
+            $messages[] = "Findings";
         // if ($diagnosisSaved)
         //     $messages[] = "Diagnosis";
         // if ($investigationSaved)

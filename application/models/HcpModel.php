@@ -589,7 +589,7 @@ class HcpModel extends CI_Model
         $consultData = array(
             'patient_id' => $post['patientIdDb'],
             'doctor_id' => $hcpIdDb,
-            'notes' => $post['notes'],
+            'notes' => trim($post['notes']),
             'next_follow_up' => $post['nextFollowUpDate'],
         );
 
@@ -643,8 +643,29 @@ class HcpModel extends CI_Model
 
     public function save_finding($data)
     {
-        return $this->db->insert('patient_findings', $data);
+        $this->db->insert('patient_findings', $data);
+        $insertId = $this->db->insert_id();
+        return $insertId;
     }
+
+    public function update_finding($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('patient_findings', $data);
+    }
+
+    public function delete_removed_findings($consultationId, $keepIds)
+    {
+        if (empty($keepIds)) {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->delete('patient_findings');
+        } else {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->where_not_in('id', $keepIds);
+            $this->db->delete('patient_findings');
+        }
+    }
+
 
     public function save_diagnosis($data)
     {
@@ -836,7 +857,7 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         $consultData = array(
-            'notes' => $post['notes'],
+            'notes' => trim($post['notes']),
             'next_follow_up' => $post['nextFollowUpDate'],
         );
         $this->db->where('id', $post['consultationDbId']);

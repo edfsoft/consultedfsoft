@@ -734,14 +734,13 @@
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button"
-                                                data-bs-toggle="collapse" data-bs-target="#adviceCollapse">
+                                                style="background-color: rgb(206, 206, 206);" role="button">
                                                 <span><strong><i class="bi bi-chat-square-text me-2"></i>
                                                         Advice</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
 
-                                            <div class="collapse field-container mt-2" id="adviceCollapse">
+                                            <div class="collapse field-container mt-2">
                                                 <div class="input-group mb-2">
                                                     <input type="text" class="form-control" id="adviceSearch"
                                                         placeholder="Search Advice">
@@ -1141,14 +1140,13 @@
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button"
-                                        data-bs-toggle="collapse" data-bs-target="#adviceCollapse">
+                                        style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-chat-square-text me-2"></i>
                                                 Advice</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
 
-                                    <div class="collapse field-container mt-2" id="adviceCollapse">
+                                    <div class="collapse field-container mt-2">
                                         <div class="input-group mb-2">
                                             <input type="text" class="form-control" id="adviceSearch"
                                                 placeholder="Search Advice">
@@ -1515,14 +1513,13 @@
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button"
-                                        data-bs-toggle="collapse" data-bs-target="#adviceCollapse">
+                                        style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-chat-square-text me-2"></i>
                                                 Advice</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
 
-                                    <div class="collapse field-container mt-2" id="adviceCollapse">
+                                    <div class="collapse field-container mt-2">
                                         <div class="input-group mb-2">
                                             <input type="text" class="form-control" id="adviceSearch"
                                                 placeholder="Search Advice">

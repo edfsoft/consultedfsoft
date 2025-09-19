@@ -242,6 +242,54 @@ class AdminModel extends CI_Model
         return true;
     }
 
+    public function newInvestigation()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'investigationsName' => $post['investigationName']
+        );
+        $this->db->insert('investigations_list', $insert);
+        return true;
+    }
+
+    public function getInvestigationsList()
+    {
+        $list = "SELECT * FROM `investigations_list` WHERE activeStatus = '0' ORDER BY `investigationsName`";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function investigationDelete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('investigations_list');
+        return true;
+    }
+
+    public function newAdvice()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'adviceName' => $post['adviceName'],
+        );
+        $this->db->insert('advices_list', $insert);
+        return true;
+    }
+
+    public function getAdvicesList()
+    {
+        $list = "SELECT * FROM `advices_list` WHERE activeStatus = '0' ORDER BY `adviceName`";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function adviceDelete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('advices_list');
+        return true;
+    }
+
 
 
 }

@@ -428,7 +428,7 @@ class Edfadmin extends CI_Controller
         redirect('Edfadmin/findingsList');
     }
 
-       public function diagnosisList()
+    public function diagnosisList()
     {
         if (isset($_SESSION['adminIdDb'])) {
             $this->data['method'] = "diagnosis";
@@ -492,6 +492,72 @@ class Edfadmin extends CI_Controller
             $this->session->set_flashdata('showErrorMessage', 'Error in deleting edicine');
         }
         redirect('Edfadmin/medicinesList');
+    }
+
+    public function investigationsList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "investigations";
+            $list = $this->AdminModel->getInvestigationsList();
+            $this->data['investigationsList'] = $list;
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            redirect('Edfadmin/');
+        }
+    }
+
+    public function addNewInvestigation()
+    {
+        if ($this->AdminModel->newInvestigation()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Investigation added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding investigation');
+        }
+        redirect('Edfadmin/investigationsList');
+    }
+
+    public function deleteInvestigation()
+    {
+        $investigationId = $this->uri->segment(3);
+        if ($this->AdminModel->investigationDelete($investigationId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Investigation deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting edicine');
+        }
+        redirect('Edfadmin/investigationsList');
+    }
+
+    public function advicesList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "advices";
+            $list = $this->AdminModel->getAdvicesList();
+            $this->data['advicesList'] = $list;
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            redirect('Edfadmin/');
+        }
+    }
+
+    public function addNewAdvice()
+    {
+        if ($this->AdminModel->newAdvice()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Advice added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding advice');
+        }
+        redirect('Edfadmin/advicesList');
+    }
+
+    public function deleteAdvice()
+    {
+        $adviceId = $this->uri->segment(3);
+        if ($this->AdminModel->adviceDelete($adviceId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Advice deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting Advice');
+        }
+        redirect('Edfadmin/advicesList');
     }
 
     public function logout()

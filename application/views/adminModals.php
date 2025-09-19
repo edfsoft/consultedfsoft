@@ -56,6 +56,12 @@
                 case "medicine":
                     deleteUrl = baseUrl + "Edfadmin/deleteMedicine/" + id;
                     break;
+                case "investigation":
+                    deleteUrl = baseUrl + "Edfadmin/deleteInvestigation/" + id;
+                    break;
+                case "advice":
+                    deleteUrl = baseUrl + "Edfadmin/deleteAdvice/" + id;
+                    break;
             }
 
             document.getElementById("deleteConfirmButton").setAttribute("href", deleteUrl);
@@ -183,8 +189,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
-                    New
-                    Medicine</h5>
+                    New Medicine</h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -205,6 +210,62 @@
                     <input type="text" name="maedicineStrength" id="maedicineStrength" class="form-control"
                         placeholder="E.g.  100 mg" required><br><br>
                     <button type="submit" style="background-color: #2b353bf5;" class="btn float-end"> Add </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Add new investigation  -->
+<div class="modal fade" id="newInvestigation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Investigation
+                </h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url() . "Edfadmin/addNewInvestigation" ?>" name="addFindings"
+                    enctype="multipart/form-data" method="POST">
+                    <label for="investigationName" class="form-label pb-2">Investigation Name <span
+                            class="text-danger">*</span></label><br>
+                    <input type="text" name="investigationName" id="investigationName" class="form-control"
+                        placeholder="E.g. ECG" required><br><br>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Add new advice  -->
+<div class="modal fade" id="newAdvice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Advice
+                </h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url() . "Edfadmin/addNewAdvice" ?>" name="addFindings"
+                    enctype="multipart/form-data" method="POST">
+                    <label for="adviceName" class="form-label pb-2">Advice Name <span
+                            class="text-danger">*</span></label><br>
+                    <input type="text" name="adviceName" id="adviceName" class="form-control"
+                        placeholder="E.g. Take rest" required><br><br>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
+                    </button>
                 </form>
             </div>
         </div>

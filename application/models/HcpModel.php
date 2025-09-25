@@ -787,6 +787,33 @@ class HcpModel extends CI_Model
         return ($rowsInserted > 0);
     }
 
+    public function save_attachment($consultationId, $fileName)
+    {
+        $data = [
+            'consultation_id' => $consultationId,
+            'file_name' => $fileName,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        $this->db->insert('patient_attachments', $data);
+    }
+
+    public function getLastFileCounter($consultationId)
+    {
+        $this->db->select('file_name');
+        $this->db->from('patient_attachments');
+        $this->db->where('consultation_id', $consultationId);
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $lastFile = $query->row()->file_name;
+            preg_match('/_(\d+)\./', $lastFile, $matches);
+            return isset($matches[1]) ? (int) $matches[1] : 0;
+        }
+        return 0;
+    }
+
     public function get_consultations_by_patient($patient_id)
     {
         $this->db->select('*');

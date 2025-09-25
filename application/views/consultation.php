@@ -218,8 +218,8 @@
                                                             <div class="row g-2 mb-4">
                                                                 <?php
                                                                 $vitals = [
-                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
                                                                     'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
+                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
                                                                     'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
                                                                     'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
                                                                     'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
@@ -425,7 +425,7 @@
                             <!-- New Consultation -->
                             <div class="tab-pane fade" id="new-consultation" role="tabpanel">
                                 <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>"
-                                    method="post" id="consultationForm" class="mb-5">
+                                    method="post" id="consultationForm" class="mb-5" enctype="multipart/form-data">
                                     <input type="hidden" id="patientIdDb" name="patientIdDb"
                                         value="<?php echo $patientDetails[0]['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
@@ -769,6 +769,18 @@
                                     </div>
 
                                     <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel">Attachments</label>
+                                        <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
+                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                        <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                            style="background-color: #00ad8e;">
+                                            + Add File
+                                        </button>
+                                        <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                        <div id="fileError" class="text-danger pt-1"></div>
+                                    </div>
+
+                                    <div class="form-group pb-3">
                                         <label class="form-label fieldLabel" for="notes">Notes <span
                                                 class="text-danger">*</span></label>
                                         <textarea class="form-control" name="notes" id="notes"
@@ -821,7 +833,7 @@
 
                     <div class="card-body mx-3 px-md-4">
                         <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>" method="post"
-                            id="consultationForm" class="mb-5">
+                            enctype="multipart/form-data" id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
                             <input type="hidden" id="patientId" name="patientId"
@@ -1175,6 +1187,17 @@
                             </div>
 
                             <div class="form-group pb-3">
+                                <label class="form-label fieldLabel">Attachments</label>
+                                <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
+                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                    style="background-color: #00ad8e;">
+                                    + Add File
+                                </button>
+                                <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                <div id="fileError" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
                                 <textarea class="form-control" name="notes" id="notes"
@@ -1194,8 +1217,8 @@
                         </form>
 
                     </div>
-
             </section>
+
         <?php } elseif ($method == "editConsult") { ?>
             <section>
                 <div class="card rounded pb-3">
@@ -1225,7 +1248,7 @@
 
                     <div class="card-body mx-3 px-md-4">
                         <form action="<?php echo base_url() . 'Healthcareprovider/saveEditConsult' ?>" method="post"
-                            id="consultationForm" class="mb-5">
+                            enctype="multipart/form-data" id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
                             <input type="hidden" id="patientId" name="patientId"
@@ -3028,6 +3051,85 @@
                 icon.textContent = container.classList.contains('show') ? '-' : '+';
             });
         });
+    </script>
+
+    <!-- Upload attachments -->
+    <script>
+        (function () {
+            const MAX_FILES = 10;
+            const fileInput = document.getElementById("fileInput");
+            const addBtn = document.getElementById("addFileBtn");
+            const fileList = document.getElementById("fileList");
+            const fileError = document.getElementById("fileError");
+
+            let filesArray = [];
+
+            addBtn.addEventListener("click", () => {
+                if (filesArray.length >= MAX_FILES) {
+                    fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                    return;
+                }
+                fileInput.click(); // Don’t reset value here
+            });
+
+            fileInput.addEventListener("change", (e) => {
+                fileError.textContent = "";
+                if (!fileInput.files.length) return;
+
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    if (filesArray.length >= MAX_FILES) {
+                        fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                        break;
+                    }
+                    filesArray.push(fileInput.files[i]);
+                }
+
+                renderFileList();
+            });
+
+            function renderFileList() {
+                fileList.innerHTML = "";
+                if (filesArray.length === 0) {
+                    fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+                    return;
+                }
+
+                const ul = document.createElement("ul");
+                ul.style.paddingLeft = "1.2rem";
+
+                filesArray.forEach((file, index) => {
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+
+                    const name = document.createTextNode(file.name + " ");
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+
+                    removeBtn.addEventListener("click", () => {
+                        filesArray.splice(index, 1);
+                        // Update file input (tricky due to read-only files property)
+                        renderFileList();
+                    });
+
+                    li.appendChild(name);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+
+                fileList.appendChild(ul);
+            }
+
+            // document.getElementById("consultationForm").addEventListener("submit", (e) => {
+            //     if (filesArray.length === 0) {
+            //         e.preventDefault();
+            //         fileError.textContent = "Please add at least one file.";
+            //         return;
+            //     }
+            // });
+        })();
     </script>
 
 

@@ -535,8 +535,6 @@
                                         <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
                                             name="patientDetails" id="multi-step-form" enctype="multipart/form-data" method="POST"
                                             oninput="validatePatientDetails()" onsubmit="return validatePatientDetails()">
-                                            <button type="submit" class="btn text-light float-end"
-                                                style="background-color: #00ad8e;">Update</button>
                                             <div class="position-relative">
                                                 <img id="previewImage" src="<?= isset($value['profilePhoto']) && $value['profilePhoto'] !== "No data"
                                                     ? base_url('uploads/' . $value['profilePhoto'])
@@ -549,9 +547,11 @@
                                                     class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
                                                 <img src="<?= base_url('assets/nurseCameraIcon.svg') ?>" alt="Edit Image" height="40"
                                                     width="40" class="position-absolute"
-                                                    style="cursor: pointer; top: 75%; left: 48%; transform: translateX(44%);"
+                                                    style="cursor: pointer; top: 75%; left: 50%; transform: translateX(44%);"
                                                     onclick="document.getElementById('profilePhoto').click();">
                                             </div>
+                                            <button type="submit" class="btn text-light float-end"
+                                                style="background-color: #00ad8e;">Update</button>
                                             <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#00ad8e">
                                                 <button
                                                     style=" width:30px;height:30px;background-color: #00ad8e;font-size:20px; font-weight: 500"

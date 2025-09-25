@@ -864,6 +864,11 @@ class HcpModel extends CI_Model
             $consultation['advices'] = $this->db
                 ->get_where('patient_advices', ['consultation_id' => $consultation_id])
                 ->result_array();
+
+            // Attachments
+            $consultation['attachments'] = $this->db
+                ->get_where('patient_attachments', ['consultation_id' => $consultation_id])
+                ->result_array();
         }
 
         return $consultations;

@@ -361,6 +361,35 @@
                                                             </ul>
                                                         <?php endif; ?>
 
+                                                        <!-- Attachments
+                                                        <?php if (!empty($consultation['attachments'])): ?>
+                                                            <p><strong>Attachments:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['attachments'] as $attach): ?>
+                                                                    <li><?= $attach['file_name'] ?></li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?> -->
+                                                        <!-- Attachments -->
+                                                        <?php if (!empty($consultation['attachments'])): ?>
+                                                            <p><strong>Attachments:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['attachments'] as $attach): ?>
+                                                                    <?php
+                                                                    $filePath = base_url('uploads/consultations/' . $attach['file_name']);
+                                                                    $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
+                                                                    ?>
+                                                                    <li>
+                                                                        <a href="javascript:void(0);" class="openAttachment"
+                                                                            data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
+                                                                            <?= $attach['file_name'] ?>
+                                                                        </a>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
+
+
                                                         <!-- Notes -->
                                                         <?php if (!empty($consultation['notes'])): ?>
                                                             <p><strong>Notes:</strong></p>
@@ -1828,6 +1857,36 @@
             </div>
         </div>
 
+        <!-- Attachment Display Modal -->
+        <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- Header with dynamic file name -->
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                            id="attachmentModalLabel">
+                            Attachment Preview
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Body to show image or PDF -->
+                    <div class="modal-body text-center">
+                        <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none">
+                        <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                    </div>
+
+                    <!-- Footer with close button -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ******************************************************************************************************************************************** -->
 
         <!-- All modal files -->
@@ -3053,7 +3112,7 @@
         });
     </script>
 
-    <!-- Upload attachments -->
+    <!-- Upload attachments script -->
     <script>
         (function () {
             const MAX_FILES = 10;
@@ -3130,6 +3189,45 @@
             //     }
             // });
         })();
+    </script>
+
+    <!-- Attachment display modal script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const attachmentLinks = document.querySelectorAll(".openAttachment");
+            const modal = new bootstrap.Modal(document.getElementById('attachmentModal'));
+            const attachmentImage = document.getElementById('attachmentImage');
+            const attachmentPDF = document.getElementById('attachmentPDF');
+            const modalTitle = document.getElementById('attachmentModalLabel');
+
+            attachmentLinks.forEach(link => {
+                link.addEventListener("click", function () {
+                    const file = this.getAttribute("data-file");
+                    const ext = this.getAttribute("data-ext").toLowerCase();
+                    const fileName = this.textContent;
+
+                    // Set modal title with file name
+                    modalTitle.textContent = `Attachment Preview - ${fileName}`;
+
+                    // Hide both initially
+                    attachmentImage.classList.add("d-none");
+                    attachmentPDF.classList.add("d-none");
+
+                    if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
+                        attachmentImage.src = file;
+                        attachmentImage.classList.remove("d-none");
+                    } else if (['pdf'].includes(ext)) {
+                        attachmentPDF.src = file;
+                        attachmentPDF.classList.remove("d-none");
+                    } else {
+                        alert("Preview not available for this file type.");
+                        return;
+                    }
+
+                    modal.show();
+                });
+            });
+        });
     </script>
 
 

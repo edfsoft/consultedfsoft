@@ -797,7 +797,7 @@ class HcpModel extends CI_Model
         $this->db->insert('patient_attachments', $data);
     }
 
-    public function getLastFileCounter($consultationId)
+    public function getLastAttachmentCounter($consultationId)
     {
         $this->db->select('file_name');
         $this->db->from('patient_attachments');
@@ -813,6 +813,15 @@ class HcpModel extends CI_Model
         }
         return 0;
     }
+
+    // Delete attachment record
+    public function deleteAttachment($consultationId, $fileName)
+    {
+        $this->db->where('consultation_id', $consultationId);
+        $this->db->where('file_name', $fileName);
+        $this->db->delete('patient_attachments');
+    }
+
 
     public function get_consultations_by_patient($patient_id)
     {
@@ -925,6 +934,12 @@ class HcpModel extends CI_Model
     public function get_advices_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where(' patient_advices', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+    public function get_attachments_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where(' patient_attachments', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 

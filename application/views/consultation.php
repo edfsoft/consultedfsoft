@@ -1220,11 +1220,10 @@
                                 <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
                                     accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                    style="background-color: #00ad8e;">
-                                    + Add File
-                                </button>
+                                    style="background-color: #00ad8e;"> + Add File </button>
                                 <div id="fileList" style="margin-top: 0.5rem;"></div>
                                 <div id="fileError" class="text-danger pt-1"></div>
+                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
                             </div>
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
@@ -1596,6 +1595,17 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel">Attachments</label>
+                                <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
+                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                    style="background-color: #00ad8e;"> + Add File </button>
+                                <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                <div id="fileError" class="text-danger pt-1"></div>
+                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
                             </div>
 
                             <div class="form-group pb-3">
@@ -3120,15 +3130,22 @@
             const addBtn = document.getElementById("addFileBtn");
             const fileList = document.getElementById("fileList");
             const fileError = document.getElementById("fileError");
+            const removedFilesInput = document.getElementById("removedFiles");
 
-            let filesArray = [];
+            let newFiles = [];
+            let existingFiles = [];
+            let removedFiles = [];
+
+            existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+
+            renderFileList();
 
             addBtn.addEventListener("click", () => {
-                if (filesArray.length >= MAX_FILES) {
+                if (newFiles.length + existingFiles.length >= MAX_FILES) {
                     fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
                     return;
                 }
-                fileInput.click(); // Don’t reset value here
+                fileInput.click();
             });
 
             fileInput.addEventListener("change", (e) => {
@@ -3136,11 +3153,11 @@
                 if (!fileInput.files.length) return;
 
                 for (let i = 0; i < fileInput.files.length; i++) {
-                    if (filesArray.length >= MAX_FILES) {
+                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
                         fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
                         break;
                     }
-                    filesArray.push(fileInput.files[i]);
+                    newFiles.push(fileInput.files[i]);
                 }
 
                 renderFileList();
@@ -3148,7 +3165,8 @@
 
             function renderFileList() {
                 fileList.innerHTML = "";
-                if (filesArray.length === 0) {
+
+                if (existingFiles.length + newFiles.length === 0) {
                     fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
                     return;
                 }
@@ -3156,7 +3174,30 @@
                 const ul = document.createElement("ul");
                 ul.style.paddingLeft = "1.2rem";
 
-                filesArray.forEach((file, index) => {
+                existingFiles.forEach((file, index) => {
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+
+                    const name = document.createTextNode(file.file_name + " ");
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+
+                    removeBtn.addEventListener("click", () => {
+                        removedFiles.push(file.file_name);
+                        existingFiles.splice(index, 1);
+                        removedFilesInput.value = JSON.stringify(removedFiles);
+                        renderFileList();
+                    });
+
+                    li.appendChild(name);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+
+                newFiles.forEach((file, index) => {
                     const li = document.createElement("li");
                     li.style.marginBottom = "6px";
 
@@ -3168,8 +3209,7 @@
                     removeBtn.style.marginLeft = "8px";
 
                     removeBtn.addEventListener("click", () => {
-                        filesArray.splice(index, 1);
-                        // Update file input (tricky due to read-only files property)
+                        newFiles.splice(index, 1);
                         renderFileList();
                     });
 
@@ -3181,13 +3221,14 @@
                 fileList.appendChild(ul);
             }
 
-            // document.getElementById("consultationForm").addEventListener("submit", (e) => {
-            //     if (filesArray.length === 0) {
-            //         e.preventDefault();
-            //         fileError.textContent = "Please add at least one file.";
-            //         return;
-            //     }
-            // });
+            document.getElementById("consultationForm").addEventListener("submit", (e) => {
+                const formData = new FormData(e.target);
+
+                newFiles.forEach(file => {
+                    formData.append("consultationFiles[]", file);
+                });
+
+            });
         })();
     </script>
 

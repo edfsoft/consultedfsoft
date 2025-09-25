@@ -575,7 +575,7 @@ class Healthcareprovider extends CI_Controller
             $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
             $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
             $data['advices'] = $this->HcpModel->get_advices_by_consultation_id($consultation_id);
-            $data['attachments'] = $this->HcpModel->get_attachments_by_consultation_id($consultation_id);
+            // $data['attachments'] = $this->HcpModel->get_attachments_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;

@@ -1220,10 +1220,11 @@
                                 <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
                                     accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                    style="background-color: #00ad8e;"> + Add File </button>
+                                    style="background-color: #00ad8e;">
+                                    + Add File
+                                </button>
                                 <div id="fileList" style="margin-top: 0.5rem;"></div>
                                 <div id="fileError" class="text-danger pt-1"></div>
-                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
                             </div>
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span

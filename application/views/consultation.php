@@ -1837,25 +1837,14 @@
                             Enter Investigation Details</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="investigationNote" class="form-label">Note</label>
                             <input type="text" class="form-control" id="investigationNote" placeholder="Enter note" />
                         </div>
-                        <div class="mb-3">
-                            <label for="investigationSince" class="form-label">Since</label>
-                            <input type="text" class="form-control" id="investigationSince" placeholder="Enter since" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="investigationSeverity" class="form-label">Severity</label>
-                            <select id="investigationSeverity" class="form-select">
-                                <option value="">Select severity</option>
-                                <option value="Mild">Mild</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Severe">Severe</option>
-                            </select>
-                        </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" class="btn text-light" style="background-color: #00ad8e;"
@@ -2784,8 +2773,6 @@
 
         const investigationsModal = new bootstrap.Modal(document.getElementById("investigationsModal"));
         const investigationNote = document.getElementById("investigationNote");
-        const investigationSince = document.getElementById("investigationSince");
-        const investigationSeverity = document.getElementById("investigationSeverity");
         const investigationsModalTitle = document.getElementById("investigationsModalTitle");
 
         let selectedInvestigations = [];
@@ -2830,16 +2817,12 @@
 
             investigationsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
             investigationNote.value = existing?.note || "";
-            investigationSince.value = existing?.since || "";
-            investigationSeverity.value = existing?.severity || "";
 
             investigationsModal.show();
         }
 
         function saveInvestigationModal() {
             const note = investigationNote.value.trim();
-            const since = investigationSince.value.trim();
-            const severity = investigationSeverity.value;
 
             if (!pendingInvestigation) return;
 
@@ -2864,11 +2847,11 @@
 
             if (editingInvestigationTag && existingIndex !== -1) {
                 let existingId = selectedInvestigations[existingIndex].id || "new";
-                selectedInvestigations[existingIndex] = { id: existingId, investigation: pendingInvestigation, note, since, severity };
+                selectedInvestigations[existingIndex] = { id: existingId, investigation: pendingInvestigation, note };
                 updateInvestigationTagDisplay(editingInvestigationTag, selectedInvestigations[existingIndex]);
                 editingInvestigationTag.setAttribute("data-id", existingId);
             } else {
-                const data = { id: "new", investigation: pendingInvestigation, note, since, severity };
+                const data = { id: "new", investigation: pendingInvestigation, note };
                 selectedInvestigations.push(data);
                 addInvestigationTag(data);
             }
@@ -2919,8 +2902,6 @@
             const details = [];
 
             if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
 
             if (details.length > 0) {
                 textParts.push(`(${details.join(", ")})`);
@@ -2974,9 +2955,7 @@
                     const data = {
                         id: item.id || "",
                         investigation: item.investigation_name,
-                        note: item.note || "",
-                        since: item.since || "",
-                        severity: item.severity || ""
+                        note: item.note || ""
                     };
                     selectedInvestigations.push(data);
                     addInvestigationTag(data);
@@ -2985,6 +2964,7 @@
             }
         });
     </script>
+
 
     <!-- Instruction Search Button -->
     <script>
@@ -3651,6 +3631,7 @@
         });
     </script>
 
+    <!-- Investigation save script -->
     <script>
         $(document).ready(function () {
             function parseInvestigationTagText(text) {
@@ -3678,7 +3659,7 @@
 
             function updateInvestigationsJson() {
                 let investigations = [];
-                $('#investigationsInput > span.bg-primary').each(function () {
+                $('#investigationsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let investigation = parseInvestigationTagText(tagText);
 

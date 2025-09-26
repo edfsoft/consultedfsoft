@@ -326,7 +326,12 @@
                                                             <p><strong>Investigations:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['investigations'] as $inv): ?>
-                                                                    <li><?= $inv['investigation_name'] ?></li>
+                                                                    <li>
+                                                                        <?= htmlspecialchars($inv['investigation_name']) ?>
+                                                                        <?php if (!empty($inv['note'])): ?>
+                                                                            - <?= htmlspecialchars($inv['note']) ?>
+                                                                        <?php endif; ?>
+                                                                    </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>
@@ -633,42 +638,6 @@
                                         </div>
                                         <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                        <!-- <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong><i class="bi bi-patch-question me-2"></i>
-                                                        Investigations</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-container mt-2">
-                                                <div class="mb-3">
-                                                    <div class="input-group mb-2">
-                                                        <input type="text" id="investigationSearch" class="form-control"
-                                                            placeholder="Search investigations...">
-                                                        <button class="btn btn-outline-secondary" type="button"
-                                                            id="clearSearch">✖</button>
-                                                        <button class="btn btn-outline-primary d-none" type="button"
-                                                            id="addNew">+ Add</button>
-                                                    </div>
-                                                    <div id="investigationList">
-                                                        <?php if (!empty($investigationsList)): ?>
-                                                            <?php foreach ($investigationsList as $inv): ?>
-                                                                <div class="form-check investigation-item">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        name="investigations[]"
-                                                                        value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                                        id="inv<?php echo (int) $inv['id']; ?>">
-                                                                    <label class="form-check-label"
-                                                                        for="inv<?php echo (int) $inv['id']; ?>">
-                                                                        <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                                    </label>
-                                                                </div>
-                                                            <?php endforeach; ?>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
@@ -769,24 +738,6 @@
                                         <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
-                                                data-bs-toggle="collapse" data-bs-target="#medicineField">
-                                                <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-container mt-2" id="medicineField">
-                                                <div>
-                                                    <select class="form-select" id="medicineSelect">
-                                                        <option value="">-- Select Medicine --</option>
-                                                        <option value="Paracetamol">Paracetamol</option>
-                                                        <option value="Amoxicillin">Amoxicillin</option>
-                                                        <option value="Cetirizine">Cetirizine</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div> -->
-                                        <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button"
                                                 data-toggle="collapse" data-target="#medicinesCollapse">
                                                 <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                                 <span class="toggle-icon">+</span>
@@ -806,8 +757,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="medicinesJson" id="medicinesJson">
-
+                                        <input type="hidden" name="medicinesJson" id="medicinesJson"> -->
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1088,41 +1038,6 @@
                                 </div>
                                 <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                <!-- <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-patch-question me-2"></i>
-                                                Investigations</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
-                                    <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <div class="input-group mb-2">
-                                                <input type="text" id="investigationSearch" class="form-control"
-                                                    placeholder="Search investigations...">
-                                                <button class="btn btn-outline-secondary" type="button"
-                                                    id="clearSearch">✖</button>
-                                                <button class="btn btn-outline-primary d-none" type="button" id="addNew">+
-                                                    Add</button>
-                                            </div>
-                                            <div id="investigationList">
-                                                <?php if (!empty($investigationsList)): ?>
-                                                    <?php foreach ($investigationsList as $inv): ?>
-                                                        <div class="form-check investigation-item">
-                                                            <input class="form-check-input" type="checkbox" name="investigations[]"
-                                                                value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                                id="inv<?php echo (int) $inv['id']; ?>">
-                                                            <label class="form-check-label"
-                                                                for="inv<?php echo (int) $inv['id']; ?>">
-                                                                <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                            </label>
-                                                        </div>
-                                                    <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
@@ -1216,40 +1131,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                Advice</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
-
-                                    <div class="collapse field-container mt-2">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="procedureSearch"
-                                                placeholder="Search Instructions">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearProcedureSearch">✖</button>
-                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
-                                                Add</button>
-                                        </div>
-                                        <div id="adviceList">
-                                            <?php if (!empty($advicesList)): ?>
-                                                <?php foreach ($advicesList as $adv): ?>
-                                                    <div class="form-check procedure-item">
-                                                        <input class="form-check-input" type="checkbox" name="advices[]"
-                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
-                                                            id="adv<?php echo $adv['id']; ?>">
-                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
-                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div> -->
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1530,41 +1411,6 @@
                                 </div>
                                 <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                <!-- <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-patch-question me-2"></i>
-                                                Investigations</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
-                                    <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <div class="input-group mb-2">
-                                                <input type="text" id="investigationSearch" class="form-control"
-                                                    placeholder="Search investigations...">
-                                                <button class="btn btn-outline-secondary" type="button"
-                                                    id="clearSearch">✖</button>
-                                                <button class="btn btn-outline-primary d-none" type="button" id="addNew">+
-                                                    Add</button>
-                                            </div>
-                                            <div id="investigationList">
-                                                <?php if (!empty($investigationsList)): ?>
-                                                    <?php foreach ($investigationsList as $inv): ?>
-                                                        <div class="form-check investigation-item">
-                                                            <input class="form-check-input" type="checkbox" name="investigations[]"
-                                                                value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                                id="inv<?php echo (int) $inv['id']; ?>">
-                                                            <label class="form-check-label"
-                                                                for="inv<?php echo (int) $inv['id']; ?>">
-                                                                <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                            </label>
-                                                        </div>
-                                                    <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
@@ -1846,35 +1692,7 @@
             </div>
         </div>
 
-        <!-- Investigation Add New Modal -->
-        <!-- <div class="modal fade" id="addInvestigationModal" tabindex="-1" aria-labelledby="addInvestigationLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                            id="addInvestigationLabel">Add New
-                            Investigation</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="addInvestigationForm">
-                            <div class="mb-3">
-                                <label for="newInvestigationName" class="form-label fieldLabel">Investigation Name <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control fieldStyle" id="newInvestigationName"
-                                    name="newInvestigationName" placeholder="Enter new investigation" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" form="addInvestigationForm" class="btn text-light"
-                            style="background-color: #00ad8e;">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+        <!-- Investigation Modal -->
         <div class="modal fade" id="investigationsModal" tabindex="-1" aria-labelledby="investigationsModalTitle"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
@@ -1950,45 +1768,6 @@
         </div>
 
         <!-- Medicine Modal -->
-        <!-- <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Medicine Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="medicineForm">
-                            <div class="mb-3">
-                                <label class="form-label">Medicine Name</label>
-                                <input type="text" id="selectedMedicine" class="form-control" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Dosage</label>
-                                <input type="text" class="form-control" placeholder="e.g. 500mg">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Duration</label>
-                                <input type="text" class="form-control" placeholder="e.g. 5 days">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Frequency</label>
-                                <select class="form-select">
-                                    <option>Once a day</option>
-                                    <option>Twice a day</option>
-                                    <option>Thrice a day</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn text-light" style="background-color: #00ad8e;">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
@@ -2723,95 +2502,6 @@
     </script>
 
     <!-- Investigation Search Button -->
-    <!-- <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('investigationSearch');
-            const clearBtn = document.getElementById('clearSearch');
-            const addBtn = document.getElementById('addNew');
-            const list = document.getElementById('investigationList');
-
-            const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
-
-            function norm(s) { return (s || '').toLowerCase().trim(); }
-
-            function filter() {
-                const q = norm(searchInput.value);
-                let matches = 0;
-                list.querySelectorAll('.investigation-item').forEach(item => {
-                    const labelText = item.querySelector('label').textContent;
-                    const show = norm(labelText).includes(q) || q === '';
-                    item.classList.toggle('d-none', !show);
-                    if (show) matches++;
-                });
-                addBtn.classList.toggle('d-none', !(q && matches === 0));
-            }
-
-            searchInput.addEventListener('input', filter);
-
-            clearBtn.addEventListener('click', () => {
-                searchInput.value = '';
-                filter();
-                searchInput.focus();
-            });
-
-            addBtn.addEventListener('click', () => {
-                const name = searchInput.value.trim();
-                if (!name) return;
-
-                const wrapper = document.createElement('div');
-                wrapper.className = 'form-check investigation-item';
-                const newId = `inv-${Date.now()}`;
-                wrapper.innerHTML = `
-            <input class="form-check-input" type="checkbox" 
-                   name="investigations[]" 
-                   value="${name}" 
-                   id="${newId}" checked>
-            <label class="form-check-label" for="${newId}">${name}</label>
-        `;
-                list.prepend(wrapper);
-
-                const checkbox = wrapper.querySelector('input');
-                checkbox.addEventListener('change', () => {
-                    if (!checkbox.checked) {
-                        wrapper.remove();
-                    }
-                });
-
-                searchInput.value = '';
-                filter();
-            });
-
-            if (Array.isArray(preloadInvestigations)) {
-                preloadInvestigations.forEach(inv => {
-                    const dbName = norm(inv.investigation_name);
-
-                    let matched = false;
-                    list.querySelectorAll('.investigation-item input[type="checkbox"]').forEach(cb => {
-                        if (norm(cb.value) === dbName) {
-                            cb.checked = true;
-                            matched = true;
-                        }
-                    });
-
-                    if (!matched && dbName) {
-                        const wrapper = document.createElement('div');
-                        wrapper.className = 'form-check investigation-item';
-                        const newId = `inv-pre-${Date.now()}`;
-                        wrapper.innerHTML = `
-                    <input class="form-check-input" type="checkbox" 
-                           name="investigations[]" 
-                           value="${inv.investigation_name}" 
-                           id="${newId}" checked>
-                    <label class="form-check-label" for="${newId}">${inv.investigation_name}</label>
-                `;
-                        list.prepend(wrapper);
-                    }
-                });
-            }
-
-            filter();
-        });
-    </script> -->
     <script>
         const investigationsList = <?php echo json_encode(array_column($investigationsList, 'investigationsName')); ?>;
 
@@ -3012,7 +2702,6 @@
             }
         });
     </script>
-
 
     <!-- Instruction Search Button -->
     <script>
@@ -3783,7 +3472,6 @@
             });
         });
     </script>
-
 
     <!-- Toggle visibility and icon for all fields -->
     <script>

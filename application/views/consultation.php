@@ -642,7 +642,7 @@
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
                                                 data-toggle="collapse" data-target="#investigationsCollapse">
-                                                <span><strong><i class="bi bi-clipboard-data me-2"></i>
+                                                <span><strong><i class="bi bi-patch-question me-2"></i>
                                                         Investigations</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
@@ -1042,7 +1042,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#investigationsCollapse">
-                                        <span><strong><i class="bi bi-clipboard-data me-2"></i>
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
                                                 Investigations</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
@@ -1415,7 +1415,7 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#investigationsCollapse">
-                                        <span><strong><i class="bi bi-clipboard-data me-2"></i>
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
                                                 Investigations</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>

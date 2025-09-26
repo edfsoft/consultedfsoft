@@ -633,7 +633,7 @@
                                         </div>
                                         <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                        <div class="mb-3">
+                                        <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
                                                 <span><strong><i class="bi bi-patch-question me-2"></i>
@@ -668,7 +668,65 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div> -->
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-toggle="collapse" data-target="#investigationsCollapse">
+                                                <span><strong><i class="bi bi-clipboard-data me-2"></i>
+                                                        Investigations</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                                <div id="investigationsWrapper">
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="tags-input" id="investigationsInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="investigationsSearchInput"
+                                                                placeholder="Search or type to add..." />
+                                                        </div>
+                                                        <div class="suggestions-box" id="investigationsSuggestionsBox">
+                                                        </div>
+                                                    </div>
+                                                    <div id="investigationsList" class="mt-2"></div>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <input type="hidden" name="investigationsJson" id="investigationsJson">
+
+
+
+                                        <!-- 2. Investigation Modal -->
+                                        <div class="modal fade" id="investigationsModal" tabindex="-1"
+                                            aria-labelledby="investigationsModalTitle" aria-hidden="true"
+                                            data-bs-backdrop="static" data-bs-keyboard="false">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title fw-medium" id="investigationsModalTitle"
+                                                            style="font-family: Poppins, sans-serif;">
+                                                            Enter Investigation Details</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="investigationNote" class="form-label">Note</label>
+                                                            <input type="text" class="form-control" id="investigationNote"
+                                                                placeholder="Enter note" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancel</button>
+                                                        <button class="btn text-light" style="background-color: #00ad8e;"
+                                                            onclick="saveInvestigationModal()">OK</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -760,6 +818,30 @@
                                                 </div>
                                             </div>
                                         </div> -->
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-toggle="collapse" data-target="#medicinesCollapse">
+                                                <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                                <div id="medicinesWrapper">
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="tags-input" id="medicinesInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="medicinesSearchInput"
+                                                                placeholder="Search or type to add..." />
+                                                        </div>
+                                                        <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                    </div>
+                                                    <div id="medicinesList" class="mt-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="medicinesJson" id="medicinesJson">
+
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1751,7 +1833,7 @@
         </div>
 
         <!-- Investigation Add New Modal -->
-        <div class="modal fade" id="addInvestigationModal" tabindex="-1" aria-labelledby="addInvestigationLabel"
+        <!-- <div class="modal fade" id="addInvestigationModal" tabindex="-1" aria-labelledby="addInvestigationLabel"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -1775,6 +1857,43 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" form="addInvestigationForm" class="btn text-light"
                             style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="modal fade" id="investigationsModal" tabindex="-1" aria-labelledby="investigationsModalTitle"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="investigationsModalTitle"
+                            style="font-family: Poppins, sans-serif;">
+                            Enter Investigation Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="investigationNote" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="investigationNote" placeholder="Enter note" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="investigationSince" class="form-label">Since</label>
+                            <input type="text" class="form-control" id="investigationSince" placeholder="Enter since" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="investigationSeverity" class="form-label">Severity</label>
+                            <select id="investigationSeverity" class="form-select">
+                                <option value="">Select severity</option>
+                                <option value="Mild">Mild</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Severe">Severe</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn text-light" style="background-color: #00ad8e;"
+                            onclick="saveInvestigationModal()">OK</button>
                     </div>
                 </div>
             </div>
@@ -1828,7 +1947,7 @@
         </div>
 
         <!-- Medicine Modal -->
-        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        <!-- <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
             data-bs-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -1863,6 +1982,43 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="medicinesModalTitle"
+                            style="font-family: Poppins, sans-serif;">
+                            Enter Medicine Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="medicineNote" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="medicineNote" placeholder="Enter note" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="medicineSince" class="form-label">Since</label>
+                            <input type="text" class="form-control" id="medicineSince" placeholder="Enter since" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="medicineSeverity" class="form-label">Severity</label>
+                            <select id="medicineSeverity" class="form-select">
+                                <option value="">Select severity</option>
+                                <option value="Mild">Mild</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Severe">Severe</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn text-light" style="background-color: #00ad8e;"
+                            onclick="saveMedicineModal()">OK</button>
                     </div>
                 </div>
             </div>
@@ -2564,7 +2720,7 @@
     </script>
 
     <!-- Investigation Search Button -->
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('investigationSearch');
             const clearBtn = document.getElementById('clearSearch');
@@ -2651,6 +2807,216 @@
             }
 
             filter();
+        });
+    </script> -->
+    <script>
+        const investigationsList = <?php echo json_encode(array_column($investigationsList, 'investigationsName')); ?>;
+
+        const investigationsInput = document.getElementById("investigationsSearchInput");
+        const investigationsSuggestionsBox = document.getElementById("investigationsSuggestionsBox");
+        const investigationsTagContainer = document.getElementById("investigationsInput");
+
+        const investigationsModal = new bootstrap.Modal(document.getElementById("investigationsModal"));
+        const investigationNote = document.getElementById("investigationNote");
+        const investigationSince = document.getElementById("investigationSince");
+        const investigationSeverity = document.getElementById("investigationSeverity");
+        const investigationsModalTitle = document.getElementById("investigationsModalTitle");
+
+        let selectedInvestigations = [];
+        let pendingInvestigation = "";
+        let editingInvestigationTag = null;
+
+        function renderInvestigationsSuggestions() {
+            const query = investigationsInput.value.toLowerCase().trim();
+            investigationsSuggestionsBox.innerHTML = "";
+
+            const filtered = investigationsList.filter(s =>
+                s.toLowerCase().includes(query) &&
+                !selectedInvestigations.some(obj => obj.investigation === s)
+            );
+
+            if (filtered.length === 0 && query !== "") {
+                const customOption = document.createElement("div");
+                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
+                customOption.onclick = () => {
+                    openInvestigationModal(query);
+                    investigationsInput.value = "";
+                };
+                investigationsSuggestionsBox.appendChild(customOption);
+            } else {
+                filtered.forEach(item => {
+                    const div = document.createElement("div");
+                    div.textContent = item;
+                    div.onclick = () => {
+                        openInvestigationModal(item);
+                        investigationsInput.value = "";
+                    };
+                    investigationsSuggestionsBox.appendChild(div);
+                });
+            }
+
+            investigationsSuggestionsBox.style.display = "block";
+        }
+
+        function openInvestigationModal(tagName, existing = null, tagEl = null) {
+            pendingInvestigation = tagName;
+            editingInvestigationTag = tagEl;
+
+            investigationsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+            investigationNote.value = existing?.note || "";
+            investigationSince.value = existing?.since || "";
+            investigationSeverity.value = existing?.severity || "";
+
+            investigationsModal.show();
+        }
+
+        function saveInvestigationModal() {
+            const note = investigationNote.value.trim();
+            const since = investigationSince.value.trim();
+            const severity = investigationSeverity.value;
+
+            if (!pendingInvestigation) return;
+
+            const existingIndex = selectedInvestigations.findIndex(s => s.investigation === pendingInvestigation);
+
+            if (!investigationsList.includes(pendingInvestigation)) {
+                fetch("<?= site_url('Healthcareprovider/addInvestigation') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingInvestigation)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            investigationsList.push(pendingInvestigation);
+                        } else {
+                            console.error("Error saving new investigation", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            if (editingInvestigationTag && existingIndex !== -1) {
+                let existingId = selectedInvestigations[existingIndex].id || "new";
+                selectedInvestigations[existingIndex] = { id: existingId, investigation: pendingInvestigation, note, since, severity };
+                updateInvestigationTagDisplay(editingInvestigationTag, selectedInvestigations[existingIndex]);
+                editingInvestigationTag.setAttribute("data-id", existingId);
+            } else {
+                const data = { id: "new", investigation: pendingInvestigation, note, since, severity };
+                selectedInvestigations.push(data);
+                addInvestigationTag(data);
+            }
+
+            investigationsModal.hide();
+            pendingInvestigation = "";
+            editingInvestigationTag = null;
+            updateInvestigationHiddenInput();
+        }
+
+        function addInvestigationTag(data) {
+            const tag = document.createElement("span");
+            tag.className = "bg-primary rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+            tag.style.cursor = "pointer";
+            tag.setAttribute("data-id", data.id || "new");
+
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tag.remove();
+                selectedInvestigations = selectedInvestigations.filter(s => s.investigation !== data.investigation);
+                updateInvestigationHiddenInput();
+            };
+
+            tag.appendChild(removeBtn);
+
+            updateInvestigationTagDisplay(tag, data);
+
+            tag.onclick = () => {
+                openInvestigationModal(data.investigation, data, tag);
+            };
+
+            investigationsTagContainer.insertBefore(tag, investigationsInput);
+        }
+
+        function updateInvestigationTagDisplay(tagEl, data) {
+            const textParts = [data.investigation];
+            const details = [];
+
+            if (data.note) details.push(`Note: ${data.note}`);
+            if (data.since) details.push(`Since: ${data.since}`);
+            if (data.severity) details.push(`Severity: ${data.severity}`);
+
+            if (details.length > 0) {
+                textParts.push(`(${details.join(", ")})`);
+            }
+
+            tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedInvestigations = selectedInvestigations.filter(s => s.investigation !== data.investigation);
+                updateInvestigationHiddenInput();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
+        }
+
+        function updateInvestigationHiddenInput() {
+            document.getElementById("investigationsJson").value = JSON.stringify(selectedInvestigations);
+        }
+
+        investigationsInput.addEventListener("input", renderInvestigationsSuggestions);
+        investigationsInput.addEventListener("focus", renderInvestigationsSuggestions);
+        investigationsInput.addEventListener("keydown", e => {
+            if (e.key === "Enter" && investigationsInput.value.trim() !== "") {
+                e.preventDefault();
+                openInvestigationModal(investigationsInput.value.trim());
+                investigationsInput.value = "";
+            }
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!investigationsTagContainer.contains(e.target)) {
+                investigationsSuggestionsBox.style.display = "none";
+            }
+        });
+
+        renderInvestigationsSuggestions();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
+
+            if (preloadInvestigations.length > 0) {
+                preloadInvestigations.forEach(item => {
+                    const data = {
+                        id: item.id || "",
+                        investigation: item.investigation_name,
+                        note: item.note || "",
+                        since: item.since || "",
+                        severity: item.severity || ""
+                    };
+                    selectedInvestigations.push(data);
+                    addInvestigationTag(data);
+                });
+                updateInvestigationHiddenInput();
+            }
         });
     </script>
 
@@ -2927,6 +3293,219 @@
         });
     </script>
 
+    <!-- Medicine Modal Script -->
+    <script>
+        const medicinesList = <?php echo json_encode(array_column($symptomsList, 'symptomsName')); ?>;
+
+        const medicinesInput = document.getElementById("medicinesSearchInput");
+        const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
+        const medicinesTagContainer = document.getElementById("medicinesInput");
+
+        const medicinesModal = new bootstrap.Modal(document.getElementById("medicinesModal"));
+        const medicineNote = document.getElementById("medicineNote");
+        const medicineSince = document.getElementById("medicineSince");
+        const medicineSeverity = document.getElementById("medicineSeverity");
+        const medicinesModalTitle = document.getElementById("medicinesModalTitle");
+
+        let selectedMedicines = [];
+        let pendingMedicine = "";
+        let editingMedicineTag = null;
+
+        function renderMedicinesSuggestions() {
+            const query = medicinesInput.value.toLowerCase().trim();
+            medicinesSuggestionsBox.innerHTML = "";
+
+            const filtered = medicinesList.filter(m =>
+                m.toLowerCase().includes(query) &&
+                !selectedMedicines.some(obj => obj.medicine === m)
+            );
+
+            if (filtered.length === 0 && query !== "") {
+                const customOption = document.createElement("div");
+                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
+                customOption.onclick = () => {
+                    openMedicineModal(query);
+                    medicinesInput.value = "";
+                };
+                medicinesSuggestionsBox.appendChild(customOption);
+            } else {
+                filtered.forEach(item => {
+                    const div = document.createElement("div");
+                    div.textContent = item;
+                    div.onclick = () => {
+                        openMedicineModal(item);
+                        medicinesInput.value = "";
+                    };
+                    medicinesSuggestionsBox.appendChild(div);
+                });
+            }
+
+            medicinesSuggestionsBox.style.display = "block";
+        }
+
+        function openMedicineModal(tagName, existing = null, tagEl = null) {
+            pendingMedicine = tagName;
+            editingMedicineTag = tagEl;
+
+            medicinesModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+            medicineNote.value = existing?.note || "";
+            medicineSince.value = existing?.since || "";
+            medicineSeverity.value = existing?.severity || "";
+
+            medicinesModal.show();
+        }
+
+        function saveMedicineModal() {
+            const note = medicineNote.value.trim();
+            const since = medicineSince.value.trim();
+            const severity = medicineSeverity.value;
+
+            if (!pendingMedicine) return;
+
+            const existingIndex = selectedMedicines.findIndex(m => m.medicine === pendingMedicine);
+
+            if (!medicinesList.includes(pendingMedicine)) {
+                fetch("<?= site_url('Healthcareprovider/addMedicine') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingMedicine)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            medicinesList.push(pendingMedicine);
+                        } else {
+                            console.error("Error saving new medicine", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            if (editingMedicineTag && existingIndex !== -1) {
+                let existingId = selectedMedicines[existingIndex].id || "new";
+                selectedMedicines[existingIndex] = { id: existingId, medicine: pendingMedicine, note, since, severity };
+                updateMedicineTagDisplay(editingMedicineTag, selectedMedicines[existingIndex]);
+                editingMedicineTag.setAttribute("data-id", existingId);
+            } else {
+                const data = { id: "new", medicine: pendingMedicine, note, since, severity };
+                selectedMedicines.push(data);
+                addMedicineTag(data);
+            }
+
+            medicinesModal.hide();
+            pendingMedicine = "";
+            editingMedicineTag = null;
+            updateMedicinesHiddenInput();
+        }
+
+        function addMedicineTag(data) {
+            const tag = document.createElement("span");
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+            tag.style.cursor = "pointer";
+
+            tag.setAttribute("data-id", data.id || "new");
+
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tag.remove();
+                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
+                updateMedicinesHiddenInput();
+            };
+
+            tag.appendChild(removeBtn);
+
+            updateMedicineTagDisplay(tag, data);
+
+            tag.onclick = () => {
+                openMedicineModal(data.medicine, data, tag);
+            };
+
+            medicinesTagContainer.insertBefore(tag, medicinesInput);
+        }
+
+        function updateMedicineTagDisplay(tagEl, data) {
+            const textParts = [data.medicine];
+            const details = [];
+
+            if (data.note) details.push(`Note: ${data.note}`);
+            if (data.since) details.push(`Since: ${data.since}`);
+            if (data.severity) details.push(`Severity: ${data.severity}`);
+
+            if (details.length > 0) {
+                textParts.push(`(${details.join(", ")})`);
+            }
+
+            tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
+                updateMedicinesHiddenInput();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
+        }
+
+        function updateMedicinesHiddenInput() {
+            document.getElementById("medicinesJson").value = JSON.stringify(selectedMedicines);
+        }
+
+        medicinesInput.addEventListener("input", renderMedicinesSuggestions);
+        medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
+        medicinesInput.addEventListener("keydown", e => {
+            if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
+                e.preventDefault();
+                openMedicineModal(medicinesInput.value.trim());
+                medicinesInput.value = "";
+            }
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!medicinesTagContainer.contains(e.target)) {
+                medicinesSuggestionsBox.style.display = "none";
+            }
+        });
+
+        renderMedicinesSuggestions();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloadMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
+
+            if (preloadMedicines.length > 0) {
+                preloadMedicines.forEach(item => {
+                    const data = {
+                        id: item.id || "",
+                        medicine: item.medicine_name,
+                        note: item.note || "",
+                        since: item.since || "",
+                        severity: item.severity || ""
+                    };
+                    selectedMedicines.push(data);
+                    addMedicineTag(data);
+                });
+                updateMedicinesHiddenInput();
+            }
+        });
+    </script>
+
     <!-- ----------------------------------------------------------- -->
     <!-- Symptoms save script -->
     <script>
@@ -3081,7 +3660,6 @@
                 return { name, note, since, severity };
             }
 
-            // Update hidden input by parsing displayed tags
             function updateDiagnosisJson() {
                 let diagnoses = [];
                 $('#diagnosisInputBox > span.bg-success').each(function () {
@@ -3097,18 +3675,120 @@
                 console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
             }
 
-            // Use MutationObserver to detect changes in the tag container
             const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
             diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
 
-            // Also update before form submission
             $('#consultationForm').on('submit', function (e) {
                 updateDiagnosisJson(); // Ensure latest data
                 console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
-                // Form will submit normally
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function () {
+            function parseInvestigationTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                    let investigation = match[1].trim();
+                    let detailsStr = match[2].trim();
+
+                    let parsed = {
+                        investigation: investigation,
+                        note: ''
+                    };
+
+                    if (detailsStr.toLowerCase().startsWith("note:")) {
+                        parsed.note = detailsStr.split(":")[1].trim();
+                    }
+
+                    return parsed;
+                } else {
+                    return { investigation: text, note: '' };
+                }
+            }
+
+            function updateInvestigationsJson() {
+                let investigations = [];
+                $('#investigationsInput > span.bg-primary').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let investigation = parseInvestigationTagText(tagText);
+
+                    if (investigation) {
+                        let investigationId = $(this).attr('data-id') || "new";
+                        investigation.id = investigationId;
+                        investigations.push(investigation);
+                    }
+                });
+                $('#investigationsJson').val(JSON.stringify(investigations));
+            }
+
+            const observer = new MutationObserver(updateInvestigationsJson);
+            observer.observe(document.getElementById('investigationsInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function () {
+                updateInvestigationsJson();
+            });
+        });
+    </script>
+
+    <!-- Medication save script -->
+    <script>
+        $(document).ready(function () {
+            function parseMedicineTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                    let medicine = match[1].trim();
+                    let detailsStr = match[2].trim();
+                    let details = detailsStr.split(',').map(d => d.trim());
+
+                    let parsed = { medicine: medicine, note: '', since: '', severity: '' };
+
+                    details.forEach(detail => {
+                        let kv = detail.split(':').map(s => s.trim());
+                        if (kv.length === 2) {
+                            let key = kv[0].toLowerCase();
+                            let value = kv[1];
+                            if (key === 'note') parsed.note = value;
+                            else if (key === 'since') parsed.since = value;
+                            else if (key === 'severity') parsed.severity = value;
+                        }
+                    });
+
+                    return parsed;
+                } else {
+                    return { medicine: text, note: '', since: '', severity: '' };
+                }
+            }
+
+            function updateMedicinesJson() {
+                let medicines = [];
+                $('#medicinesInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let medicine = parseMedicineTagText(tagText);
+
+                    if (medicine) {
+                        let medicineId = $(this).attr('data-id') || "new";
+                        medicine.id = medicineId;
+                        medicines.push(medicine);
+                    }
+                });
+                $('#medicinesJson').val(JSON.stringify(medicines));
+            }
+
+            const observer = new MutationObserver(updateMedicinesJson);
+            observer.observe(document.getElementById('medicinesInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function (e) {
+                updateMedicinesJson();
+            });
+        });
+    </script>
+
 
     <!-- Toggle visibility and icon for all fields -->
     <script>

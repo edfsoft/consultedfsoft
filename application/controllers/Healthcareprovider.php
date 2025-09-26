@@ -515,6 +515,18 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    public function addInvestigation()
+    {
+        $name = $this->input->post('name', true);
+        $id = $this->HcpModel->insertNewInvestigations($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
+        }
+    }
+
     public function addInstruction()
     {
         $name = $this->input->post('name', true);
@@ -575,6 +587,7 @@ class Healthcareprovider extends CI_Controller
             $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
             $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
             $data['advices'] = $this->HcpModel->get_advices_by_consultation_id($consultation_id);
+            // $data['attachments'] = $this->HcpModel->get_attachments_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;
@@ -641,11 +654,63 @@ class Healthcareprovider extends CI_Controller
                 $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
             }
         }
+        // Investigations
+        $investigations_json = $this->input->post('investigationsJson');
+        $investigations = json_decode($investigations_json, true);
+        if ($investigations && is_array($investigations)) {
+            foreach ($investigations as $investigation) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'investigation_name' => $investigation['investigation'],
+                    'note' => $investigation['note'],
+                );
+                $investigationSaved = $this->HcpModel->save_investigation($data);
+            }
+        }
 
-        $investigationSaved = $this->HcpModel->save_investigation($post);
         $instructionSaved = $this->HcpModel->save_instruction($post);
         $procedureSaved = $this->HcpModel->save_procedure($post);
         $adviceSaved = $this->HcpModel->save_advice($post);
+
+        // Attachments
+        if (!empty($_FILES['consultationFiles']['name'][0])) {
+            $uploadPath = './uploads/consultations/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $filesCount = count($_FILES['consultationFiles']['name']);
+            $uploadedFiles = [];
+            $lastCounter = $this->HcpModel->getLastAttachmentCounter($consultationId);
+
+            for ($i = 0; $i < $filesCount; $i++) {
+                if (!empty($_FILES['consultationFiles']['name'][$i])) {
+                    $ext = pathinfo($_FILES['consultationFiles']['name'][$i], PATHINFO_EXTENSION);
+                    $counter = str_pad($lastCounter + $i + 1, 2, '0', STR_PAD_LEFT);
+                    $newFileName = "Attachment_" . str_pad($consultationId, 2, '0', STR_PAD_LEFT) . "_" . $counter . "." . $ext;
+
+                    $_FILES['file']['name'] = $newFileName;
+                    $_FILES['file']['type'] = $_FILES['consultationFiles']['type'][$i];
+                    $_FILES['file']['tmp_name'] = $_FILES['consultationFiles']['tmp_name'][$i];
+                    $_FILES['file']['error'] = $_FILES['consultationFiles']['error'][$i];
+                    $_FILES['file']['size'] = $_FILES['consultationFiles']['size'][$i];
+
+                    $config['upload_path'] = $uploadPath;
+                    $config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
+                    $config['file_name'] = $newFileName;
+
+                    $this->load->library('upload', $config);
+
+                    if ($this->upload->do_upload('file')) {
+                        $uploadedFiles[] = $newFileName;
+                        $this->HcpModel->save_attachment($consultationId, $newFileName);
+                        $attachmentsSaved = true;
+                    } else {
+                        error_log("Upload error: " . $this->upload->display_errors()); // Log errors
+                    }
+                }
+            }
+        }
 
         $messages = [];
 
@@ -665,6 +730,8 @@ class Healthcareprovider extends CI_Controller
             $messages[] = "Procedures";
         if ($adviceSaved)
             $messages[] = "Advice";
+        if ($attachmentsSaved)
+            $messages[] = "Attachments";
 
         if (!empty($messages)) {
             $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " saved successfully.");
@@ -697,6 +764,7 @@ class Healthcareprovider extends CI_Controller
             $data['instructions'] = $this->HcpModel->get_instructions_by_consultation_id($consultation_id);
             $data['procedures'] = $this->HcpModel->get_procedures_by_consultation_id($consultation_id);
             $data['advices'] = $this->HcpModel->get_advices_by_consultation_id($consultation_id);
+            $data['attachments'] = $this->HcpModel->get_attachments_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
             $data['previous_consultation_id'] = $consultation_id;
@@ -771,7 +839,7 @@ class Healthcareprovider extends CI_Controller
             $this->HcpModel->delete_removed_findings($consultationId, $existingIds);
             $findingSaved = true;
         }
-        // // Diagnosis
+        // Diagnosis
         $diagnosis_json = $this->input->post('diagnosisJson');
         $diagnoses = json_decode($diagnosis_json, true);
         if ($diagnoses && is_array($diagnoses)) {
@@ -800,8 +868,32 @@ class Healthcareprovider extends CI_Controller
         }
 
         // Investigations
-        $this->HcpModel->delete_investigations($consultationId);
-        $investigationSaved = $this->HcpModel->save_investigation($post);
+        $investigations_json = $this->input->post('investigationsJson');
+        $investigations = json_decode($investigations_json, true);
+        if ($investigations && is_array($investigations)) {
+            $existingIds = [];
+
+            foreach ($investigations as $investigation) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'investigation_name' => $investigation['investigation'],
+                    'note' => $investigation['note'],
+                );
+
+                if (!empty($investigation['id'] !== 'new')) {
+                    $this->HcpModel->update_investigation($investigation['id'], $data);
+                    $existingIds[] = $investigation['id'];
+                } elseif ($investigation['id'] == 'new') {
+                    $insertId = $this->HcpModel->save_investigation($data);
+                    $existingIds[] = $insertId;
+                }
+            }
+
+            $this->HcpModel->delete_removed_investigations($consultationId, $existingIds);
+            $investigationSaved = true;
+        }
+        // $this->HcpModel->delete_investigations($consultationId);
+        // $investigationSaved = $this->HcpModel->save_investigation($post);
         // Instructions
         $this->HcpModel->delete_instructions($consultationId);
         $instructionSaved = $this->HcpModel->save_instruction($post);
@@ -812,6 +904,56 @@ class Healthcareprovider extends CI_Controller
         $this->HcpModel->delete_advices($consultationId);
         $adviceSaved = $this->HcpModel->save_advice($post);
 
+        // Attachments
+        if (!empty($_FILES['consultationFiles']['name'][0])) {
+            $uploadPath = './uploads/consultations/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0777, true);
+            }
+
+            $filesCount = count($_FILES['consultationFiles']['name']);
+            $uploadedFiles = [];
+            $lastCounter = $this->HcpModel->getLastAttachmentCounter($consultationId);
+
+            for ($i = 0; $i < $filesCount; $i++) {
+                if (!empty($_FILES['consultationFiles']['name'][$i])) {
+                    $ext = pathinfo($_FILES['consultationFiles']['name'][$i], PATHINFO_EXTENSION);
+                    $counter = str_pad($lastCounter + $i + 1, 2, '0', STR_PAD_LEFT);
+                    $newFileName = "Attachment_" . str_pad($consultationId, 2, '0', STR_PAD_LEFT) . "_" . $counter . "." . $ext;
+
+                    $_FILES['file']['name'] = $newFileName;
+                    $_FILES['file']['type'] = $_FILES['consultationFiles']['type'][$i];
+                    $_FILES['file']['tmp_name'] = $_FILES['consultationFiles']['tmp_name'][$i];
+                    $_FILES['file']['error'] = $_FILES['consultationFiles']['error'][$i];
+                    $_FILES['file']['size'] = $_FILES['consultationFiles']['size'][$i];
+
+                    $config['upload_path'] = $uploadPath;
+                    $config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
+                    $config['file_name'] = $newFileName;
+
+                    $this->load->library('upload', $config);
+
+                    if ($this->upload->do_upload('file')) {
+                        $uploadedFiles[] = $newFileName;
+                        $this->HcpModel->save_attachment($consultationId, $newFileName);
+                        $attachmentsSaved = true;
+                    } else {
+                        error_log("Upload error: " . $this->upload->display_errors()); // Log errors
+                    }
+                }
+            }
+        }
+
+        // Attachment edit consultation to remove in db and folder
+        $removedFiles = json_decode($this->input->post('removedFiles'), true);
+        if (!empty($removedFiles)) {
+            foreach ($removedFiles as $fileName) {
+                $filePath = FCPATH . 'uploads/consultations/' . $fileName;
+                if (file_exists($filePath))
+                    unlink($filePath);
+                $this->HcpModel->deleteAttachment($consultationId, $fileName);
+            }
+        }
 
         $messages = [];
         if ($vitalsSaved)
@@ -830,6 +972,8 @@ class Healthcareprovider extends CI_Controller
             $messages[] = "Procedures";
         if ($adviceSaved)
             $messages[] = "Advice";
+        if ($attachmentsSaved)
+            $messages[] = "Attachments";
 
         if (!empty($messages)) {
             $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " updated successfully.");

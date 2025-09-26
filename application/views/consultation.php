@@ -218,8 +218,8 @@
                                                             <div class="row g-2 mb-4">
                                                                 <?php
                                                                 $vitals = [
-                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
                                                                     'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
+                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
                                                                     'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
                                                                     'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
                                                                     'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
@@ -326,7 +326,12 @@
                                                             <p><strong>Investigations:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['investigations'] as $inv): ?>
-                                                                    <li><?= $inv['investigation_name'] ?></li>
+                                                                    <li>
+                                                                        <?= htmlspecialchars($inv['investigation_name']) ?>
+                                                                        <?php if (!empty($inv['note'])): ?>
+                                                                            - <?= htmlspecialchars($inv['note']) ?>
+                                                                        <?php endif; ?>
+                                                                    </li>
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>
@@ -360,6 +365,35 @@
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?>
+
+                                                        <!-- Attachments
+                                                        <?php if (!empty($consultation['attachments'])): ?>
+                                                            <p><strong>Attachments:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['attachments'] as $attach): ?>
+                                                                    <li><?= $attach['file_name'] ?></li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?> -->
+                                                        <!-- Attachments -->
+                                                        <?php if (!empty($consultation['attachments'])): ?>
+                                                            <p><strong>Attachments:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['attachments'] as $attach): ?>
+                                                                    <?php
+                                                                    $filePath = base_url('uploads/consultations/' . $attach['file_name']);
+                                                                    $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
+                                                                    ?>
+                                                                    <li>
+                                                                        <a href="javascript:void(0);" class="openAttachment"
+                                                                            data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
+                                                                            <?= $attach['file_name'] ?>
+                                                                        </a>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
+
 
                                                         <!-- Notes -->
                                                         <?php if (!empty($consultation['notes'])): ?>
@@ -425,7 +459,7 @@
                             <!-- New Consultation -->
                             <div class="tab-pane fade" id="new-consultation" role="tabpanel">
                                 <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>"
-                                    method="post" id="consultationForm" class="mb-5">
+                                    method="post" id="consultationForm" class="mb-5" enctype="multipart/form-data">
                                     <input type="hidden" id="patientIdDb" name="patientIdDb"
                                         value="<?php echo $patientDetails[0]['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
@@ -606,40 +640,29 @@
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-toggle="collapse" data-target="#investigationsCollapse">
                                                 <span><strong><i class="bi bi-patch-question me-2"></i>
                                                         Investigations</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
-                                            <div class="collapse field-container mt-2">
-                                                <div class="mb-3">
-                                                    <div class="input-group mb-2">
-                                                        <input type="text" id="investigationSearch" class="form-control"
-                                                            placeholder="Search investigations...">
-                                                        <button class="btn btn-outline-secondary" type="button"
-                                                            id="clearSearch">✖</button>
-                                                        <button class="btn btn-outline-primary d-none" type="button"
-                                                            id="addNew">+ Add</button>
+                                            <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                                <div id="investigationsWrapper">
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="tags-input" id="investigationsInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="investigationsSearchInput"
+                                                                placeholder="Search or type to add..." />
+                                                        </div>
+                                                        <div class="suggestions-box" id="investigationsSuggestionsBox">
+                                                        </div>
                                                     </div>
-                                                    <div id="investigationList">
-                                                        <?php if (!empty($investigationsList)): ?>
-                                                            <?php foreach ($investigationsList as $inv): ?>
-                                                                <div class="form-check investigation-item">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        name="investigations[]"
-                                                                        value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                                        id="inv<?php echo (int) $inv['id']; ?>">
-                                                                    <label class="form-check-label"
-                                                                        for="inv<?php echo (int) $inv['id']; ?>">
-                                                                        <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                                    </label>
-                                                                </div>
-                                                            <?php endforeach; ?>
-                                                        <?php endif; ?>
-                                                    </div>
+                                                    <div id="investigationsList" class="mt-2"></div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <input type="hidden" name="investigationsJson" id="investigationsJson">
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -711,26 +734,30 @@
                                             </div>
                                         </div>
 
-
                                         <!-- Medicine section -->
                                         <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
-                                                data-bs-toggle="collapse" data-bs-target="#medicineField">
+                                                data-toggle="collapse" data-target="#medicinesCollapse">
                                                 <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
-                                            <div class="collapse field-container mt-2" id="medicineField">
-                                                <div>
-                                                    <select class="form-select" id="medicineSelect">
-                                                        <option value="">-- Select Medicine --</option>
-                                                        <option value="Paracetamol">Paracetamol</option>
-                                                        <option value="Amoxicillin">Amoxicillin</option>
-                                                        <option value="Cetirizine">Cetirizine</option>
-                                                    </select>
+                                            <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                                <div id="medicinesWrapper">
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="tags-input" id="medicinesInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="medicinesSearchInput"
+                                                                placeholder="Search or type to add..." />
+                                                        </div>
+                                                        <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                    </div>
+                                                    <div id="medicinesList" class="mt-2"></div>
                                                 </div>
                                             </div>
-                                        </div> -->
+                                        </div>
+                                        <input type="hidden" name="medicinesJson" id="medicinesJson"> -->
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -766,6 +793,18 @@
                                             </div>
                                         </div>
 
+                                    </div>
+
+                                    <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel">Attachments</label>
+                                        <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
+                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                        <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                            style="background-color: #00ad8e;">
+                                            + Add File
+                                        </button>
+                                        <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                        <div id="fileError" class="text-danger pt-1"></div>
                                     </div>
 
                                     <div class="form-group pb-3">
@@ -821,7 +860,7 @@
 
                     <div class="card-body mx-3 px-md-4">
                         <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>" method="post"
-                            id="consultationForm" class="mb-5">
+                            enctype="multipart/form-data" id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
                             <input type="hidden" id="patientId" name="patientId"
@@ -1001,39 +1040,28 @@
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#investigationsCollapse">
                                         <span><strong><i class="bi bi-patch-question me-2"></i>
                                                 Investigations</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
-                                    <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <div class="input-group mb-2">
-                                                <input type="text" id="investigationSearch" class="form-control"
-                                                    placeholder="Search investigations...">
-                                                <button class="btn btn-outline-secondary" type="button"
-                                                    id="clearSearch">✖</button>
-                                                <button class="btn btn-outline-primary d-none" type="button" id="addNew">+
-                                                    Add</button>
+                                    <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                        <div id="investigationsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="investigationsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="investigationsSearchInput"
+                                                        placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
                                             </div>
-                                            <div id="investigationList">
-                                                <?php if (!empty($investigationsList)): ?>
-                                                    <?php foreach ($investigationsList as $inv): ?>
-                                                        <div class="form-check investigation-item">
-                                                            <input class="form-check-input" type="checkbox" name="investigations[]"
-                                                                value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                                id="inv<?php echo (int) $inv['id']; ?>">
-                                                            <label class="form-check-label"
-                                                                for="inv<?php echo (int) $inv['id']; ?>">
-                                                                <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                            </label>
-                                                        </div>
-                                                    <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
+                                            <div id="investigationsList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
+                                <input type="hidden" name="investigationsJson" id="investigationsJson">
+
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1104,40 +1132,6 @@
                                     </div>
                                 </div>
 
-                                <!-- <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                Advice</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
-
-                                    <div class="collapse field-container mt-2">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="procedureSearch"
-                                                placeholder="Search Instructions">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearProcedureSearch">✖</button>
-                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
-                                                Add</button>
-                                        </div>
-                                        <div id="adviceList">
-                                            <?php if (!empty($advicesList)): ?>
-                                                <?php foreach ($advicesList as $adv): ?>
-                                                    <div class="form-check procedure-item">
-                                                        <input class="form-check-input" type="checkbox" name="advices[]"
-                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
-                                                            id="adv<?php echo $adv['id']; ?>">
-                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
-                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div> -->
-
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -1175,6 +1169,17 @@
                             </div>
 
                             <div class="form-group pb-3">
+                                <label class="form-label fieldLabel">Attachments</label>
+                                <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
+                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                    style="background-color: #00ad8e;">
+                                    + Add File
+                                </button>
+                                <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                <div id="fileError" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
                                 <textarea class="form-control" name="notes" id="notes"
@@ -1194,8 +1199,8 @@
                         </form>
 
                     </div>
-
             </section>
+
         <?php } elseif ($method == "editConsult") { ?>
             <section>
                 <div class="card rounded pb-3">
@@ -1225,7 +1230,7 @@
 
                     <div class="card-body mx-3 px-md-4">
                         <form action="<?php echo base_url() . 'Healthcareprovider/saveEditConsult' ?>" method="post"
-                            id="consultationForm" class="mb-5">
+                            enctype="multipart/form-data" id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
                             <input type="hidden" id="patientId" name="patientId"
@@ -1408,39 +1413,28 @@
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#investigationsCollapse">
                                         <span><strong><i class="bi bi-patch-question me-2"></i>
                                                 Investigations</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
-                                    <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <div class="input-group mb-2">
-                                                <input type="text" id="investigationSearch" class="form-control"
-                                                    placeholder="Search investigations...">
-                                                <button class="btn btn-outline-secondary" type="button"
-                                                    id="clearSearch">✖</button>
-                                                <button class="btn btn-outline-primary d-none" type="button" id="addNew">+
-                                                    Add</button>
+                                    <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                        <div id="investigationsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="investigationsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="investigationsSearchInput"
+                                                        placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
                                             </div>
-                                            <div id="investigationList">
-                                                <?php if (!empty($investigationsList)): ?>
-                                                    <?php foreach ($investigationsList as $inv): ?>
-                                                        <div class="form-check investigation-item">
-                                                            <input class="form-check-input" type="checkbox" name="investigations[]"
-                                                                value="<?php echo htmlspecialchars($inv['investigationsName']); ?>"
-                                                                id="inv<?php echo (int) $inv['id']; ?>">
-                                                            <label class="form-check-label"
-                                                                for="inv<?php echo (int) $inv['id']; ?>">
-                                                                <?php echo htmlspecialchars($inv['investigationsName']); ?>
-                                                            </label>
-                                                        </div>
-                                                    <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
+                                            <div id="investigationsList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
+                                <input type="hidden" name="investigationsJson" id="investigationsJson">
+
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1544,6 +1538,17 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel">Attachments</label>
+                                <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
+                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                    style="background-color: #00ad8e;"> + Add File </button>
+                                <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                <div id="fileError" class="text-danger pt-1"></div>
+                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
                             </div>
 
                             <div class="form-group pb-3">
@@ -1687,31 +1692,29 @@
             </div>
         </div>
 
-        <!-- Investigation Add New Modal -->
-        <div class="modal fade" id="addInvestigationModal" tabindex="-1" aria-labelledby="addInvestigationLabel"
+        <!-- Investigation Modal -->
+        <div class="modal fade" id="investigationsModal" tabindex="-1" aria-labelledby="investigationsModalTitle"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                            id="addInvestigationLabel">Add New
-                            Investigation</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title fw-medium" id="investigationsModalTitle"
+                            style="font-family: Poppins, sans-serif;">
+                            Enter Investigation Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
+
                     <div class="modal-body">
-                        <form id="addInvestigationForm">
-                            <div class="mb-3">
-                                <label for="newInvestigationName" class="form-label fieldLabel">Investigation Name <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control fieldStyle" id="newInvestigationName"
-                                    name="newInvestigationName" placeholder="Enter new investigation" required>
-                            </div>
-                        </form>
+                        <div class="mb-3">
+                            <label for="investigationNote" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="investigationNote" placeholder="Enter note" />
+                        </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" form="addInvestigationForm" class="btn text-light"
-                            style="background-color: #00ad8e;">Save</button>
+                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                            onclick="saveInvestigationModal()">OK</button>
                     </div>
                 </div>
             </div>
@@ -1765,41 +1768,69 @@
         </div>
 
         <!-- Medicine Modal -->
-        <div class="modal fade" id="medicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
-            data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered">
+        <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Medicine Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title fw-medium" id="medicinesModalTitle"
+                            style="font-family: Poppins, sans-serif;">
+                            Enter Medicine Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="medicineForm">
-                            <div class="mb-3">
-                                <label class="form-label">Medicine Name</label>
-                                <input type="text" id="selectedMedicine" class="form-control" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Dosage</label>
-                                <input type="text" class="form-control" placeholder="e.g. 500mg">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Duration</label>
-                                <input type="text" class="form-control" placeholder="e.g. 5 days">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Frequency</label>
-                                <select class="form-select">
-                                    <option>Once a day</option>
-                                    <option>Twice a day</option>
-                                    <option>Thrice a day</option>
-                                </select>
-                            </div>
-                        </form>
+                        <div class="mb-3">
+                            <label for="medicineNote" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="medicineNote" placeholder="Enter note" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="medicineSince" class="form-label">Since</label>
+                            <input type="text" class="form-control" id="medicineSince" placeholder="Enter since" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="medicineSeverity" class="form-label">Severity</label>
+                            <select id="medicineSeverity" class="form-select">
+                                <option value="">Select severity</option>
+                                <option value="Mild">Mild</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="Severe">Severe</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn text-light" style="background-color: #00ad8e;"
+                            onclick="saveMedicineModal()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attachment Display Modal -->
+        <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- Header with dynamic file name -->
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                            id="attachmentModalLabel">
+                            Attachment Preview
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Body to show image or PDF -->
+                    <div class="modal-body text-center">
+                        <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none">
+                        <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                    </div>
+
+                    <!-- Footer with close button -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">
+                            Close
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2472,92 +2503,203 @@
 
     <!-- Investigation Search Button -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('investigationSearch');
-            const clearBtn = document.getElementById('clearSearch');
-            const addBtn = document.getElementById('addNew');
-            const list = document.getElementById('investigationList');
+        const investigationsList = <?php echo json_encode(array_column($investigationsList, 'investigationsName')); ?>;
 
+        const investigationsInput = document.getElementById("investigationsSearchInput");
+        const investigationsSuggestionsBox = document.getElementById("investigationsSuggestionsBox");
+        const investigationsTagContainer = document.getElementById("investigationsInput");
+
+        const investigationsModal = new bootstrap.Modal(document.getElementById("investigationsModal"));
+        const investigationNote = document.getElementById("investigationNote");
+        const investigationsModalTitle = document.getElementById("investigationsModalTitle");
+
+        let selectedInvestigations = [];
+        let pendingInvestigation = "";
+        let editingInvestigationTag = null;
+
+        function renderInvestigationsSuggestions() {
+            const query = investigationsInput.value.toLowerCase().trim();
+            investigationsSuggestionsBox.innerHTML = "";
+
+            const filtered = investigationsList.filter(s =>
+                s.toLowerCase().includes(query) &&
+                !selectedInvestigations.some(obj => obj.investigation === s)
+            );
+
+            if (filtered.length === 0 && query !== "") {
+                const customOption = document.createElement("div");
+                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
+                customOption.onclick = () => {
+                    openInvestigationModal(query);
+                    investigationsInput.value = "";
+                };
+                investigationsSuggestionsBox.appendChild(customOption);
+            } else {
+                filtered.forEach(item => {
+                    const div = document.createElement("div");
+                    div.textContent = item;
+                    div.onclick = () => {
+                        openInvestigationModal(item);
+                        investigationsInput.value = "";
+                    };
+                    investigationsSuggestionsBox.appendChild(div);
+                });
+            }
+
+            investigationsSuggestionsBox.style.display = "block";
+        }
+
+        function openInvestigationModal(tagName, existing = null, tagEl = null) {
+            pendingInvestigation = tagName;
+            editingInvestigationTag = tagEl;
+
+            investigationsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+            investigationNote.value = existing?.note || "";
+
+            investigationsModal.show();
+        }
+
+        function saveInvestigationModal() {
+            const note = investigationNote.value.trim();
+
+            if (!pendingInvestigation) return;
+
+            const existingIndex = selectedInvestigations.findIndex(s => s.investigation === pendingInvestigation);
+
+            if (!investigationsList.includes(pendingInvestigation)) {
+                fetch("<?= site_url('Healthcareprovider/addInvestigation') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingInvestigation)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            investigationsList.push(pendingInvestigation);
+                        } else {
+                            console.error("Error saving new investigation", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            if (editingInvestigationTag && existingIndex !== -1) {
+                let existingId = selectedInvestigations[existingIndex].id || "new";
+                selectedInvestigations[existingIndex] = { id: existingId, investigation: pendingInvestigation, note };
+                updateInvestigationTagDisplay(editingInvestigationTag, selectedInvestigations[existingIndex]);
+                editingInvestigationTag.setAttribute("data-id", existingId);
+            } else {
+                const data = { id: "new", investigation: pendingInvestigation, note };
+                selectedInvestigations.push(data);
+                addInvestigationTag(data);
+            }
+
+            investigationsModal.hide();
+            pendingInvestigation = "";
+            editingInvestigationTag = null;
+            updateInvestigationHiddenInput();
+        }
+
+        function addInvestigationTag(data) {
+            const tag = document.createElement("span");
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+            tag.style.cursor = "pointer";
+            tag.setAttribute("data-id", data.id || "new");
+
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tag.remove();
+                selectedInvestigations = selectedInvestigations.filter(s => s.investigation !== data.investigation);
+                updateInvestigationHiddenInput();
+            };
+
+            tag.appendChild(removeBtn);
+
+            updateInvestigationTagDisplay(tag, data);
+
+            tag.onclick = () => {
+                openInvestigationModal(data.investigation, data, tag);
+            };
+
+            investigationsTagContainer.insertBefore(tag, investigationsInput);
+        }
+
+        function updateInvestigationTagDisplay(tagEl, data) {
+            const textParts = [data.investigation];
+            const details = [];
+
+            if (data.note) details.push(`Note: ${data.note}`);
+
+            if (details.length > 0) {
+                textParts.push(`(${details.join(", ")})`);
+            }
+
+            tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedInvestigations = selectedInvestigations.filter(s => s.investigation !== data.investigation);
+                updateInvestigationHiddenInput();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
+        }
+
+        function updateInvestigationHiddenInput() {
+            document.getElementById("investigationsJson").value = JSON.stringify(selectedInvestigations);
+        }
+
+        investigationsInput.addEventListener("input", renderInvestigationsSuggestions);
+        investigationsInput.addEventListener("focus", renderInvestigationsSuggestions);
+        investigationsInput.addEventListener("keydown", e => {
+            if (e.key === "Enter" && investigationsInput.value.trim() !== "") {
+                e.preventDefault();
+                openInvestigationModal(investigationsInput.value.trim());
+                investigationsInput.value = "";
+            }
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!investigationsTagContainer.contains(e.target)) {
+                investigationsSuggestionsBox.style.display = "none";
+            }
+        });
+
+        renderInvestigationsSuggestions();
+
+        document.addEventListener("DOMContentLoaded", () => {
             const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
 
-            function norm(s) { return (s || '').toLowerCase().trim(); }
-
-            function filter() {
-                const q = norm(searchInput.value);
-                let matches = 0;
-                list.querySelectorAll('.investigation-item').forEach(item => {
-                    const labelText = item.querySelector('label').textContent;
-                    const show = norm(labelText).includes(q) || q === '';
-                    item.classList.toggle('d-none', !show);
-                    if (show) matches++;
+            if (preloadInvestigations.length > 0) {
+                preloadInvestigations.forEach(item => {
+                    const data = {
+                        id: item.id || "",
+                        investigation: item.investigation_name,
+                        note: item.note || ""
+                    };
+                    selectedInvestigations.push(data);
+                    addInvestigationTag(data);
                 });
-                addBtn.classList.toggle('d-none', !(q && matches === 0));
+                updateInvestigationHiddenInput();
             }
-
-            searchInput.addEventListener('input', filter);
-
-            clearBtn.addEventListener('click', () => {
-                searchInput.value = '';
-                filter();
-                searchInput.focus();
-            });
-
-            addBtn.addEventListener('click', () => {
-                const name = searchInput.value.trim();
-                if (!name) return;
-
-                const wrapper = document.createElement('div');
-                wrapper.className = 'form-check investigation-item';
-                const newId = `inv-${Date.now()}`;
-                wrapper.innerHTML = `
-            <input class="form-check-input" type="checkbox" 
-                   name="investigations[]" 
-                   value="${name}" 
-                   id="${newId}" checked>
-            <label class="form-check-label" for="${newId}">${name}</label>
-        `;
-                list.prepend(wrapper);
-
-                const checkbox = wrapper.querySelector('input');
-                checkbox.addEventListener('change', () => {
-                    if (!checkbox.checked) {
-                        wrapper.remove();
-                    }
-                });
-
-                searchInput.value = '';
-                filter();
-            });
-
-            if (Array.isArray(preloadInvestigations)) {
-                preloadInvestigations.forEach(inv => {
-                    const dbName = norm(inv.investigation_name);
-
-                    let matched = false;
-                    list.querySelectorAll('.investigation-item input[type="checkbox"]').forEach(cb => {
-                        if (norm(cb.value) === dbName) {
-                            cb.checked = true;
-                            matched = true;
-                        }
-                    });
-
-                    if (!matched && dbName) {
-                        const wrapper = document.createElement('div');
-                        wrapper.className = 'form-check investigation-item';
-                        const newId = `inv-pre-${Date.now()}`;
-                        wrapper.innerHTML = `
-                    <input class="form-check-input" type="checkbox" 
-                           name="investigations[]" 
-                           value="${inv.investigation_name}" 
-                           id="${newId}" checked>
-                    <label class="form-check-label" for="${newId}">${inv.investigation_name}</label>
-                `;
-                        list.prepend(wrapper);
-                    }
-                });
-            }
-
-            filter();
         });
     </script>
 
@@ -2834,6 +2976,219 @@
         });
     </script>
 
+    <!-- Medicine Modal Script -->
+    <script>
+        const medicinesList = <?php echo json_encode(array_column($symptomsList, 'symptomsName')); ?>;
+
+        const medicinesInput = document.getElementById("medicinesSearchInput");
+        const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
+        const medicinesTagContainer = document.getElementById("medicinesInput");
+
+        const medicinesModal = new bootstrap.Modal(document.getElementById("medicinesModal"));
+        const medicineNote = document.getElementById("medicineNote");
+        const medicineSince = document.getElementById("medicineSince");
+        const medicineSeverity = document.getElementById("medicineSeverity");
+        const medicinesModalTitle = document.getElementById("medicinesModalTitle");
+
+        let selectedMedicines = [];
+        let pendingMedicine = "";
+        let editingMedicineTag = null;
+
+        function renderMedicinesSuggestions() {
+            const query = medicinesInput.value.toLowerCase().trim();
+            medicinesSuggestionsBox.innerHTML = "";
+
+            const filtered = medicinesList.filter(m =>
+                m.toLowerCase().includes(query) &&
+                !selectedMedicines.some(obj => obj.medicine === m)
+            );
+
+            if (filtered.length === 0 && query !== "") {
+                const customOption = document.createElement("div");
+                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
+                customOption.onclick = () => {
+                    openMedicineModal(query);
+                    medicinesInput.value = "";
+                };
+                medicinesSuggestionsBox.appendChild(customOption);
+            } else {
+                filtered.forEach(item => {
+                    const div = document.createElement("div");
+                    div.textContent = item;
+                    div.onclick = () => {
+                        openMedicineModal(item);
+                        medicinesInput.value = "";
+                    };
+                    medicinesSuggestionsBox.appendChild(div);
+                });
+            }
+
+            medicinesSuggestionsBox.style.display = "block";
+        }
+
+        function openMedicineModal(tagName, existing = null, tagEl = null) {
+            pendingMedicine = tagName;
+            editingMedicineTag = tagEl;
+
+            medicinesModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+            medicineNote.value = existing?.note || "";
+            medicineSince.value = existing?.since || "";
+            medicineSeverity.value = existing?.severity || "";
+
+            medicinesModal.show();
+        }
+
+        function saveMedicineModal() {
+            const note = medicineNote.value.trim();
+            const since = medicineSince.value.trim();
+            const severity = medicineSeverity.value;
+
+            if (!pendingMedicine) return;
+
+            const existingIndex = selectedMedicines.findIndex(m => m.medicine === pendingMedicine);
+
+            if (!medicinesList.includes(pendingMedicine)) {
+                fetch("<?= site_url('Healthcareprovider/addMedicine') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "name=" + encodeURIComponent(pendingMedicine)
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            medicinesList.push(pendingMedicine);
+                        } else {
+                            console.error("Error saving new medicine", data);
+                        }
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            if (editingMedicineTag && existingIndex !== -1) {
+                let existingId = selectedMedicines[existingIndex].id || "new";
+                selectedMedicines[existingIndex] = { id: existingId, medicine: pendingMedicine, note, since, severity };
+                updateMedicineTagDisplay(editingMedicineTag, selectedMedicines[existingIndex]);
+                editingMedicineTag.setAttribute("data-id", existingId);
+            } else {
+                const data = { id: "new", medicine: pendingMedicine, note, since, severity };
+                selectedMedicines.push(data);
+                addMedicineTag(data);
+            }
+
+            medicinesModal.hide();
+            pendingMedicine = "";
+            editingMedicineTag = null;
+            updateMedicinesHiddenInput();
+        }
+
+        function addMedicineTag(data) {
+            const tag = document.createElement("span");
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+            tag.style.cursor = "pointer";
+
+            tag.setAttribute("data-id", data.id || "new");
+
+            const textSpan = document.createElement("span");
+            tag.appendChild(textSpan);
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tag.remove();
+                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
+                updateMedicinesHiddenInput();
+            };
+
+            tag.appendChild(removeBtn);
+
+            updateMedicineTagDisplay(tag, data);
+
+            tag.onclick = () => {
+                openMedicineModal(data.medicine, data, tag);
+            };
+
+            medicinesTagContainer.insertBefore(tag, medicinesInput);
+        }
+
+        function updateMedicineTagDisplay(tagEl, data) {
+            const textParts = [data.medicine];
+            const details = [];
+
+            if (data.note) details.push(`Note: ${data.note}`);
+            if (data.since) details.push(`Since: ${data.since}`);
+            if (data.severity) details.push(`Severity: ${data.severity}`);
+
+            if (details.length > 0) {
+                textParts.push(`(${details.join(", ")})`);
+            }
+
+            tagEl.innerHTML = textParts.join(" ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.innerHTML = "&times;";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
+                updateMedicinesHiddenInput();
+            };
+            tagEl.appendChild(removeBtn);
+            tagEl.setAttribute("data-id", data.id || "new");
+        }
+
+        function updateMedicinesHiddenInput() {
+            document.getElementById("medicinesJson").value = JSON.stringify(selectedMedicines);
+        }
+
+        medicinesInput.addEventListener("input", renderMedicinesSuggestions);
+        medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
+        medicinesInput.addEventListener("keydown", e => {
+            if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
+                e.preventDefault();
+                openMedicineModal(medicinesInput.value.trim());
+                medicinesInput.value = "";
+            }
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!medicinesTagContainer.contains(e.target)) {
+                medicinesSuggestionsBox.style.display = "none";
+            }
+        });
+
+        renderMedicinesSuggestions();
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloadMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
+
+            if (preloadMedicines.length > 0) {
+                preloadMedicines.forEach(item => {
+                    const data = {
+                        id: item.id || "",
+                        medicine: item.medicine_name,
+                        note: item.note || "",
+                        since: item.since || "",
+                        severity: item.severity || ""
+                    };
+                    selectedMedicines.push(data);
+                    addMedicineTag(data);
+                });
+                updateMedicinesHiddenInput();
+            }
+        });
+    </script>
+
     <!-- ----------------------------------------------------------- -->
     <!-- Symptoms save script -->
     <script>
@@ -2988,7 +3343,6 @@
                 return { name, note, since, severity };
             }
 
-            // Update hidden input by parsing displayed tags
             function updateDiagnosisJson() {
                 let diagnoses = [];
                 $('#diagnosisInputBox > span.bg-success').each(function () {
@@ -3004,15 +3358,117 @@
                 console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
             }
 
-            // Use MutationObserver to detect changes in the tag container
             const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
             diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
 
-            // Also update before form submission
             $('#consultationForm').on('submit', function (e) {
                 updateDiagnosisJson(); // Ensure latest data
                 console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
-                // Form will submit normally
+            });
+        });
+    </script>
+
+    <!-- Investigation save script -->
+    <script>
+        $(document).ready(function () {
+            function parseInvestigationTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                    let investigation = match[1].trim();
+                    let detailsStr = match[2].trim();
+
+                    let parsed = {
+                        investigation: investigation,
+                        note: ''
+                    };
+
+                    if (detailsStr.toLowerCase().startsWith("note:")) {
+                        parsed.note = detailsStr.split(":")[1].trim();
+                    }
+
+                    return parsed;
+                } else {
+                    return { investigation: text, note: '' };
+                }
+            }
+
+            function updateInvestigationsJson() {
+                let investigations = [];
+                $('#investigationsInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let investigation = parseInvestigationTagText(tagText);
+
+                    if (investigation) {
+                        let investigationId = $(this).attr('data-id') || "new";
+                        investigation.id = investigationId;
+                        investigations.push(investigation);
+                    }
+                });
+                $('#investigationsJson').val(JSON.stringify(investigations));
+            }
+
+            const observer = new MutationObserver(updateInvestigationsJson);
+            observer.observe(document.getElementById('investigationsInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function () {
+                updateInvestigationsJson();
+            });
+        });
+    </script>
+
+    <!-- Medication save script -->
+    <script>
+        $(document).ready(function () {
+            function parseMedicineTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                    let medicine = match[1].trim();
+                    let detailsStr = match[2].trim();
+                    let details = detailsStr.split(',').map(d => d.trim());
+
+                    let parsed = { medicine: medicine, note: '', since: '', severity: '' };
+
+                    details.forEach(detail => {
+                        let kv = detail.split(':').map(s => s.trim());
+                        if (kv.length === 2) {
+                            let key = kv[0].toLowerCase();
+                            let value = kv[1];
+                            if (key === 'note') parsed.note = value;
+                            else if (key === 'since') parsed.since = value;
+                            else if (key === 'severity') parsed.severity = value;
+                        }
+                    });
+
+                    return parsed;
+                } else {
+                    return { medicine: text, note: '', since: '', severity: '' };
+                }
+            }
+
+            function updateMedicinesJson() {
+                let medicines = [];
+                $('#medicinesInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let medicine = parseMedicineTagText(tagText);
+
+                    if (medicine) {
+                        let medicineId = $(this).attr('data-id') || "new";
+                        medicine.id = medicineId;
+                        medicines.push(medicine);
+                    }
+                });
+                $('#medicinesJson').val(JSON.stringify(medicines));
+            }
+
+            const observer = new MutationObserver(updateMedicinesJson);
+            observer.observe(document.getElementById('medicinesInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function (e) {
+                updateMedicinesJson();
             });
         });
     </script>
@@ -3026,6 +3482,155 @@
 
                 container.classList.toggle('show');
                 icon.textContent = container.classList.contains('show') ? '-' : '+';
+            });
+        });
+    </script>
+
+    <!-- Upload attachments script -->
+    <script>
+        (function () {
+            const MAX_FILES = 10;
+            const fileInput = document.getElementById("fileInput");
+            const addBtn = document.getElementById("addFileBtn");
+            const fileList = document.getElementById("fileList");
+            const fileError = document.getElementById("fileError");
+            const removedFilesInput = document.getElementById("removedFiles");
+
+            let newFiles = [];
+            let existingFiles = [];
+            let removedFiles = [];
+
+            existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+
+            renderFileList();
+
+            addBtn.addEventListener("click", () => {
+                if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                    fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                    return;
+                }
+                fileInput.click();
+            });
+
+            fileInput.addEventListener("change", (e) => {
+                fileError.textContent = "";
+                if (!fileInput.files.length) return;
+
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                        fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                        break;
+                    }
+                    newFiles.push(fileInput.files[i]);
+                }
+
+                renderFileList();
+            });
+
+            function renderFileList() {
+                fileList.innerHTML = "";
+
+                if (existingFiles.length + newFiles.length === 0) {
+                    fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+                    return;
+                }
+
+                const ul = document.createElement("ul");
+                ul.style.paddingLeft = "1.2rem";
+
+                existingFiles.forEach((file, index) => {
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+
+                    const name = document.createTextNode(file.file_name + " ");
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+
+                    removeBtn.addEventListener("click", () => {
+                        removedFiles.push(file.file_name);
+                        existingFiles.splice(index, 1);
+                        removedFilesInput.value = JSON.stringify(removedFiles);
+                        renderFileList();
+                    });
+
+                    li.appendChild(name);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+
+                newFiles.forEach((file, index) => {
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+
+                    const name = document.createTextNode(file.name + " ");
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+
+                    removeBtn.addEventListener("click", () => {
+                        newFiles.splice(index, 1);
+                        renderFileList();
+                    });
+
+                    li.appendChild(name);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+
+                fileList.appendChild(ul);
+            }
+
+            document.getElementById("consultationForm").addEventListener("submit", (e) => {
+                const formData = new FormData(e.target);
+
+                newFiles.forEach(file => {
+                    formData.append("consultationFiles[]", file);
+                });
+
+            });
+        })();
+    </script>
+
+    <!-- Attachment display modal script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const attachmentLinks = document.querySelectorAll(".openAttachment");
+            const modal = new bootstrap.Modal(document.getElementById('attachmentModal'));
+            const attachmentImage = document.getElementById('attachmentImage');
+            const attachmentPDF = document.getElementById('attachmentPDF');
+            const modalTitle = document.getElementById('attachmentModalLabel');
+
+            attachmentLinks.forEach(link => {
+                link.addEventListener("click", function () {
+                    const file = this.getAttribute("data-file");
+                    const ext = this.getAttribute("data-ext").toLowerCase();
+                    const fileName = this.textContent;
+
+                    // Set modal title with file name
+                    modalTitle.textContent = `Attachment Preview - ${fileName}`;
+
+                    // Hide both initially
+                    attachmentImage.classList.add("d-none");
+                    attachmentPDF.classList.add("d-none");
+
+                    if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
+                        attachmentImage.src = file;
+                        attachmentImage.classList.remove("d-none");
+                    } else if (['pdf'].includes(ext)) {
+                        attachmentPDF.src = file;
+                        attachmentPDF.classList.remove("d-none");
+                    } else {
+                        alert("Preview not available for this file type.");
+                        return;
+                    }
+
+                    modal.show();
+                });
             });
         });
     </script>

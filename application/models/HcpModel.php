@@ -551,6 +551,12 @@ class HcpModel extends CI_Model
         return $this->db->insert_id();
     }
 
+    public function insertNewInvestigations($name)
+    {
+        $this->db->insert('investigations_list', ['investigationsName' => $name]);
+        return $this->db->insert_id();
+    }
+
     public function getAppMorTime()
     {
         $details = "SELECT * FROM `morning_time` ";
@@ -697,22 +703,29 @@ class HcpModel extends CI_Model
         return $this->db->delete('patient_investigations');
     }
 
-    public function save_investigation($post)
+    public function save_investigation($data)
     {
-        $investigations = $this->input->post('investigations');
-        $rowsInserted = 0;
-        if (!empty($investigations) && is_array($investigations)) {
-            foreach ($investigations as $investigation) {
-                $this->db->insert('patient_investigations', [
-                    'consultation_id' => $post['consultationId'],
-                    'investigation_name' => $investigation
-                ]);
-                if ($this->db->affected_rows() > 0) {
-                    $rowsInserted++;
-                }
-            }
+        $this->db->insert('patient_investigations', $data);
+        $insertId = $this->db->insert_id();
+        return $insertId;
+    }
+
+    public function update_investigation($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('patient_investigations', $data);
+    }
+
+    public function delete_removed_investigations($consultationId, $keepIds)
+    {
+        if (empty($keepIds)) {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->delete('patient_investigations');
+        } else {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->where_not_in('id', $keepIds);
+            $this->db->delete('patient_investigations');
         }
-        return ($rowsInserted > 0);
     }
 
     public function delete_instructions($consultationId)
@@ -787,6 +800,42 @@ class HcpModel extends CI_Model
         return ($rowsInserted > 0);
     }
 
+    public function save_attachment($consultationId, $fileName)
+    {
+        $data = [
+            'consultation_id' => $consultationId,
+            'file_name' => $fileName,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        $this->db->insert('patient_attachments', $data);
+    }
+
+    public function getLastAttachmentCounter($consultationId)
+    {
+        $this->db->select('file_name');
+        $this->db->from('patient_attachments');
+        $this->db->where('consultation_id', $consultationId);
+        $this->db->order_by('id', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            $lastFile = $query->row()->file_name;
+            preg_match('/_(\d+)\./', $lastFile, $matches);
+            return isset($matches[1]) ? (int) $matches[1] : 0;
+        }
+        return 0;
+    }
+
+    // Delete attachment record
+    public function deleteAttachment($consultationId, $fileName)
+    {
+        $this->db->where('consultation_id', $consultationId);
+        $this->db->where('file_name', $fileName);
+        $this->db->delete('patient_attachments');
+    }
+
+
     public function get_consultations_by_patient($patient_id)
     {
         $this->db->select('*');
@@ -836,6 +885,11 @@ class HcpModel extends CI_Model
             // Advices
             $consultation['advices'] = $this->db
                 ->get_where('patient_advices', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Attachments
+            $consultation['attachments'] = $this->db
+                ->get_where('patient_attachments', ['consultation_id' => $consultation_id])
                 ->result_array();
         }
 
@@ -893,6 +947,12 @@ class HcpModel extends CI_Model
     public function get_advices_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where(' patient_advices', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+    public function get_attachments_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where(' patient_attachments', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 

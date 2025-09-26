@@ -697,30 +697,11 @@ class HcpModel extends CI_Model
         }
     }
 
-    // public function delete_investigations($consultationId)
-    // {
-    //     $this->db->where('consultation_id', $consultationId);
-    //     return $this->db->delete('patient_investigations');
-    // }
-
-    // public function save_investigation($post)
-    // {
-    //     $investigations = $this->input->post('investigations');
-    //     $rowsInserted = 0;
-    //     if (!empty($investigations) && is_array($investigations)) {
-    //         foreach ($investigations as $investigation) {
-    //             $this->db->insert('patient_investigations', [
-    //                 'consultation_id' => $post['consultationId'],
-    //                 'investigation_name' => $investigation
-    //             ]);
-    //             if ($this->db->affected_rows() > 0) {
-    //                 $rowsInserted++;
-    //             }
-    //         }
-    //     }
-    //     return ($rowsInserted > 0);
-    // }
-
+    public function delete_investigations($consultationId)
+    {
+        $this->db->where('consultation_id', $consultationId);
+        return $this->db->delete('patient_investigations');
+    }
 
     public function save_investigation($data)
     {
@@ -729,23 +710,23 @@ class HcpModel extends CI_Model
         return $insertId;
     }
 
-    // public function update_symptom($id, $data)
-    // {
-    //     $this->db->where('id', $id);
-    //     return $this->db->update('patient_symptoms', $data);
-    // }
+    public function update_investigation($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('patient_investigations', $data);
+    }
 
-    // public function delete_removed_symptoms($consultationId, $keepIds)
-    // {
-    //     if (empty($keepIds)) {
-    //         $this->db->where('consultation_id', $consultationId);
-    //         $this->db->delete('patient_symptoms');
-    //     } else {
-    //         $this->db->where('consultation_id', $consultationId);
-    //         $this->db->where_not_in('id', $keepIds);
-    //         $this->db->delete('patient_symptoms');
-    //     }
-    // }
+    public function delete_removed_investigations($consultationId, $keepIds)
+    {
+        if (empty($keepIds)) {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->delete('patient_investigations');
+        } else {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->where_not_in('id', $keepIds);
+            $this->db->delete('patient_investigations');
+        }
+    }
 
     public function delete_instructions($consultationId)
     {

@@ -515,7 +515,7 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-     public function addInvestigation()
+    public function addInvestigation()
     {
         $name = $this->input->post('name', true);
         $id = $this->HcpModel->insertNewInvestigations($name);
@@ -654,8 +654,8 @@ class Healthcareprovider extends CI_Controller
                 $diagnosisSaved = $this->HcpModel->save_diagnosis($data);
             }
         }
-
-         $investigations_json = $this->input->post('investigationsJson');
+        // Investigations
+        $investigations_json = $this->input->post('investigationsJson');
         $investigations = json_decode($investigations_json, true);
         if ($investigations && is_array($investigations)) {
             foreach ($investigations as $investigation) {
@@ -663,13 +663,11 @@ class Healthcareprovider extends CI_Controller
                     'consultation_id' => $consultationId,
                     'investigation_name' => $investigation['investigation'],
                     'note' => $investigation['note'],
-                    // 'since' => $symptom['since'],
-                    // 'severity' => $symptom['severity'],
                 );
                 $investigationSaved = $this->HcpModel->save_investigation($data);
             }
         }
-        // $investigationSaved = $this->HcpModel->save_investigation($post);
+
         $instructionSaved = $this->HcpModel->save_instruction($post);
         $procedureSaved = $this->HcpModel->save_procedure($post);
         $adviceSaved = $this->HcpModel->save_advice($post);
@@ -870,8 +868,32 @@ class Healthcareprovider extends CI_Controller
         }
 
         // Investigations
-        $this->HcpModel->delete_investigations($consultationId);
-        $investigationSaved = $this->HcpModel->save_investigation($post);
+        $investigations_json = $this->input->post('investigationsJson');
+        $investigations = json_decode($investigations_json, true);
+        if ($investigations && is_array($investigations)) {
+            $existingIds = [];
+
+            foreach ($investigations as $investigation) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'investigation_name' => $investigation['investigation'],
+                    'note' => $investigation['note'],
+                );
+
+                if (!empty($investigation['id'] !== 'new')) {
+                    $this->HcpModel->update_investigation($investigation['id'], $data);
+                    $existingIds[] = $investigation['id'];
+                } elseif ($investigation['id'] == 'new') {
+                    $insertId = $this->HcpModel->save_investigation($data);
+                    $existingIds[] = $insertId;
+                }
+            }
+
+            $this->HcpModel->delete_removed_investigations($consultationId, $existingIds);
+            $investigationSaved = true;
+        }
+        // $this->HcpModel->delete_investigations($consultationId);
+        // $investigationSaved = $this->HcpModel->save_investigation($post);
         // Instructions
         $this->HcpModel->delete_instructions($consultationId);
         $instructionSaved = $this->HcpModel->save_instruction($post);

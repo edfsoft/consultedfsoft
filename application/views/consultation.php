@@ -1088,7 +1088,7 @@
                                 </div>
                                 <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                <div class="mb-3">
+                                <!-- <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-patch-question me-2"></i>
@@ -1122,7 +1122,31 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div> -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#investigationsCollapse">
+                                        <span><strong><i class="bi bi-clipboard-data me-2"></i>
+                                                Investigations</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                        <div id="investigationsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="investigationsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="investigationsSearchInput"
+                                                        placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
+                                            </div>
+                                            <div id="investigationsList" class="mt-2"></div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <input type="hidden" name="investigationsJson" id="investigationsJson">
+
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1506,7 +1530,7 @@
                                 </div>
                                 <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                <div class="mb-3">
+                                <!-- <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-patch-question me-2"></i>
@@ -1540,7 +1564,31 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div> -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#investigationsCollapse">
+                                        <span><strong><i class="bi bi-clipboard-data me-2"></i>
+                                                Investigations</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                        <div id="investigationsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="investigationsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="investigationsSearchInput"
+                                                        placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
+                                            </div>
+                                            <div id="investigationsList" class="mt-2"></div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <input type="hidden" name="investigationsJson" id="investigationsJson">
+
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"

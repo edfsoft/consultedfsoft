@@ -515,6 +515,18 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+     public function addInvestigation()
+    {
+        $name = $this->input->post('name', true);
+        $id = $this->HcpModel->insertNewInvestigations($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
+        }
+    }
+
     public function addInstruction()
     {
         $name = $this->input->post('name', true);
@@ -643,7 +655,21 @@ class Healthcareprovider extends CI_Controller
             }
         }
 
-        $investigationSaved = $this->HcpModel->save_investigation($post);
+         $investigations_json = $this->input->post('investigationsJson');
+        $investigations = json_decode($investigations_json, true);
+        if ($investigations && is_array($investigations)) {
+            foreach ($investigations as $investigation) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'investigation_name' => $investigation['investigation'],
+                    'note' => $investigation['note'],
+                    // 'since' => $symptom['since'],
+                    // 'severity' => $symptom['severity'],
+                );
+                $investigationSaved = $this->HcpModel->save_investigation($data);
+            }
+        }
+        // $investigationSaved = $this->HcpModel->save_investigation($post);
         $instructionSaved = $this->HcpModel->save_instruction($post);
         $procedureSaved = $this->HcpModel->save_procedure($post);
         $adviceSaved = $this->HcpModel->save_advice($post);

@@ -695,39 +695,6 @@
                                         </div>
                                         <input type="hidden" name="investigationsJson" id="investigationsJson">
 
-
-
-                                        <!-- 2. Investigation Modal -->
-                                        <div class="modal fade" id="investigationsModal" tabindex="-1"
-                                            aria-labelledby="investigationsModalTitle" aria-hidden="true"
-                                            data-bs-backdrop="static" data-bs-keyboard="false">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title fw-medium" id="investigationsModalTitle"
-                                                            style="font-family: Poppins, sans-serif;">
-                                                            Enter Investigation Details</h5>
-                                                        <button type="button" class="btn-close"
-                                                            data-bs-dismiss="modal"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="mb-3">
-                                                            <label for="investigationNote" class="form-label">Note</label>
-                                                            <input type="text" class="form-control" id="investigationNote"
-                                                                placeholder="Enter note" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Cancel</button>
-                                                        <button class="btn text-light" style="background-color: #00ad8e;"
-                                                            onclick="saveInvestigationModal()">OK</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
@@ -797,7 +764,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
 
                                         <!-- Medicine section -->
                                         <!-- <div class="mb-3">
@@ -1891,8 +1857,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn text-light" style="background-color: #00ad8e;"
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
                             onclick="saveInvestigationModal()">OK</button>
                     </div>
                 </div>
@@ -2915,7 +2881,7 @@
 
         function addInvestigationTag(data) {
             const tag = document.createElement("span");
-            tag.className = "bg-primary rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
             tag.setAttribute("data-id", data.id || "new");
 

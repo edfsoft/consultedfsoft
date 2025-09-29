@@ -735,7 +735,7 @@
                                         </div>
 
                                         <!-- Medicine section -->
-                                       <div class="mb-3">
+                                        <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
                                                 data-toggle="collapse" data-target="#medicinesCollapse">
@@ -757,7 +757,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="medicinesJson" id="medicinesJson"> 
+                                        <input type="hidden" name="medicinesJson" id="medicinesJson">
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1871,11 +1871,12 @@
         let editingSymptomTag = null;
 
         function renderSymptomsSuggestions() {
-            const query = symptomsInput.value.toLowerCase().trim();
+            const query = symptomsInput.value.trim();
+            const queryLower = query.toLowerCase();
             symptomsSuggestionsBox.innerHTML = "";
 
             const filtered = symptomsList.filter(s =>
-                s.toLowerCase().includes(query) &&
+                s.toLowerCase().includes(queryLower) &&
                 !selectedSymptoms.some(obj => obj.symptom === s)
             );
 
@@ -2085,11 +2086,12 @@
         let editingTagEl = null;
 
         function renderSuggestions() {
-            const query = findingsInput.value.toLowerCase().trim();
+            const query = findingsInput.value.trim();
+            const queryLower = query.toLowerCase();
             suggestionsBox.innerHTML = "";
 
             const filtered = findingsList.filter(f =>
-                f.toLowerCase().includes(query) &&
+                f.toLowerCase().includes(queryLower) &&
                 !selectedFindings.some(obj => obj.finding === f)
             );
 
@@ -2298,11 +2300,13 @@
         let editingDiagnosisTag = null;
 
         function renderDiagnosisSuggestions() {
-            const query = diagnosisInput.value.toLowerCase().trim();
+            const query = diagnosisInput.value.trim();
+            const queryLower = query.toLowerCase();
+
             diagnosisSuggestionsBox.innerHTML = "";
 
             const filtered = diagnosisList.filter(d =>
-                d.toLowerCase().includes(query) &&
+                d.toLowerCase().includes(queryLower) &&
                 !selectedDiagnosis.some(obj => obj.name === d)
             );
 
@@ -2518,11 +2522,12 @@
         let editingInvestigationTag = null;
 
         function renderInvestigationsSuggestions() {
-            const query = investigationsInput.value.toLowerCase().trim();
+            const query = investigationsInput.value.trim();
+            const queryLower = query.toLowerCase();
             investigationsSuggestionsBox.innerHTML = "";
 
             const filtered = investigationsList.filter(s =>
-                s.toLowerCase().includes(query) &&
+                s.toLowerCase().includes(queryLower) &&
                 !selectedInvestigations.some(obj => obj.investigation === s)
             );
 

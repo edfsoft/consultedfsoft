@@ -124,7 +124,16 @@
                 </div>
             </a>
         </li>
-        <!--  <li class="pt-4">
+        <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/investigationsList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="investigations">
+                <div>
+                    <i class="bi bi-patch-question me-2"></i>
+                    <span>Investigations</span>
+                </div>
+            </a>
+        </li>
+        <li class="pt-4">
             <a class="" href="<?php echo base_url() . "Edfadmin/instructionsList" ?>"
                 style="font-size: 18px; font-weight: 400;color:#8cafba;" id="instructions">
                 <div>
@@ -141,25 +150,6 @@
                     <span>Procedures</span>
                 </div>
             </a>
-        </li> -->
-        <!-- For temporary commented -->
-        <!-- <li class="pt-4">
-            <a class="" href="<?php echo base_url() . "Edfadmin/medicinesList" ?>"
-                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="medicines">
-                <div>
-                    <span class="material-symbols-outlined pe-2">vaccines</span>
-                    <span>Medicines</span>
-                </div>
-            </a>
-        </li> -->
-        <li class="pt-4">
-            <a class="" href="<?php echo base_url() . "Edfadmin/investigationsList" ?>"
-                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="investigations">
-                <div>
-                    <i class="bi bi-patch-question me-2"></i>
-                    <span>Investigations</span>
-                </div>
-            </a>
         </li>
         <li class="pt-4">
             <a class="" href="<?php echo base_url() . "Edfadmin/advicesList" ?>"
@@ -170,5 +160,15 @@
                 </div>
             </a>
         </li>
+        <!-- For temporary commented -->
+        <!-- <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Edfadmin/medicinesList" ?>"
+                style="font-size: 18px; font-weight: 400;color:#8cafba;" id="medicines">
+                <div>
+                    <span class="material-symbols-outlined pe-2">vaccines</span>
+                    <span>Medicines</span>
+                </div>
+            </a>
+        </li> -->
     </ul>
 </aside>

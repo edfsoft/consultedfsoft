@@ -735,7 +735,7 @@
                                         </div>
 
                                         <!-- Medicine section -->
-                                        <!-- <div class="mb-3">
+                                       <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
                                                 data-toggle="collapse" data-target="#medicinesCollapse">
@@ -757,7 +757,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="medicinesJson" id="medicinesJson"> -->
+                                        <input type="hidden" name="medicinesJson" id="medicinesJson"> 
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"

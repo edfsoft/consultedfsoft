@@ -2229,14 +2229,14 @@
 
 
             <?php
-        } else if ($method == "medicines") {
+        } else if ($method == "investigations") {
             ?>
 
                                                                 <section>
                                                                     <div class="card rounded">
-                                                                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                            <p style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
+                                                                        <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
+                                                                            <p style="font-size: 24px; font-weight: 500">Investigation List</p>
+                                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newInvestigation"
                                                                                 style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
                                                                                 <i class="bi bi-plus-square-fill"></i> New
                                                                             </a>
@@ -2254,35 +2254,30 @@
                                                                             </div>
                                                                             <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
                                                                                 <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                                                                    style="height: 50px; width: 250px" placeholder="Search (MEDICINE NAME)">
+                                                                                    style="height: 50px; width: 280px" placeholder="Search (INVESTIGATION NAME)">
                                                                                 <span id="clearSearch" class="position-absolute"
                                                                                     style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                                             </div>
                                                                         </div>
-
                                                                         <div class="card-body p-2 p-sm-4">
                                                                             <div class="table-responsive">
-                                                                                <table class="table table-hover text-center" id="medicinesTable">
+                                                                                <table class="table table-hover text-center" id="investigationTable">
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                             </th>
-                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">BRAND
-                                                                                                NAME</th>
                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                MEDICINE NAME</th>
-                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                STRENGTH</th>
+                                                                                                INVESTIGATION NAME</th>
                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                             </th>
                                                                                         </tr>
                                                                                     </thead>
-                                                                                    <tbody id="medicinesTableBody"></tbody>
+                                                                                    <tbody id="investigationsTableBody"></tbody>
                                                                                 </table>
                                                                             </div>
-                                                                            <div class="d-md-flex justify-content-between ms-2">
+                                                                            <div class="d-md-flex justify-content-between">
                                                                                 <div id="entriesInfo" class="mt-4"></div>
-                                                                                <div class="pagination justify-content-end mt-4" id="paginationContainerMedicines"></div>
+                                                                                <div class="pagination justify-content-end mt-4" id="paginationContainerInvestigation"></div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -2290,94 +2285,90 @@
 
                                                                 <script>
                                                                     const baseUrl = '<?php echo base_url(); ?>';
-                                                                    let itemsPerPageMedicines = 10;
-                                                                    const medicinesList = <?php echo json_encode($medicinesList); ?>;
-                                                                    let filteredMedicinesList = [...medicinesList];
-                                                                    const initialPageMedicines = parseInt(localStorage.getItem('currentPageMedicines')) || 1;
+                                                                    let itemsPerPageInvestigation = 10;
+                                                                    const investigationList = <?php echo json_encode($investigationsList); ?>;
+                                                                    let filteredInvestigationList = [...investigationList];
+                                                                    const initialPageInvestigation = parseInt(localStorage.getItem('currentPageInvestigation')) || 1;
 
                                                                     const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                                                                     const searchBar = document.getElementById('searchBar');
                                                                     const clearSearch = document.getElementById('clearSearch');
 
-                                                                    // Load saved itemsPerPage
-                                                                    const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageMedicines')) || itemsPerPageMedicines;
+                                                                    const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageInvestigation')) || itemsPerPageInvestigation;
                                                                     itemsPerPageDropdown.value = savedItemsPerPage;
-                                                                    itemsPerPageMedicines = savedItemsPerPage;
+                                                                    itemsPerPageInvestigation = savedItemsPerPage;
 
-                                                                    // Event Listeners
                                                                     itemsPerPageDropdown.addEventListener('change', (event) => {
-                                                                        itemsPerPageMedicines = parseInt(event.target.value);
-                                                                        localStorage.setItem('itemsPerPageMedicines', itemsPerPageMedicines);
-                                                                        applyFilters();
+                                                                        itemsPerPageInvestigation = parseInt(event.target.value);
+                                                                        localStorage.setItem('itemsPerPageInvestigation', itemsPerPageInvestigation);
+                                                                        applyFiltersInvestigation();
                                                                     });
 
                                                                     searchBar.addEventListener('input', () => {
-                                                                        toggleClearIcons();
-                                                                        applyFilters();
+                                                                        toggleClearIconsInvestigation();
+                                                                        applyFiltersInvestigation();
                                                                     });
 
                                                                     clearSearch.addEventListener('click', () => {
                                                                         searchBar.value = '';
-                                                                        toggleClearIcons();
-                                                                        applyFilters();
+                                                                        toggleClearIconsInvestigation();
+                                                                        applyFiltersInvestigation();
                                                                     });
 
-                                                                    function toggleClearIcons() {
+                                                                    function toggleClearIconsInvestigation() {
                                                                         clearSearch.style.display = searchBar.value ? 'block' : 'none';
                                                                     }
 
-                                                                    function applyFilters() {
+                                                                    function applyFiltersInvestigation() {
                                                                         const searchTerm = searchBar.value.toLowerCase();
 
-                                                                        filteredMedicinesList = medicinesList.filter((medicine) => {
-                                                                            const medicineName = medicine.medicineName || '';
-                                                                            return medicineName.toLowerCase().includes(searchTerm);
+                                                                        filteredInvestigationList = investigationList.filter((investigation) => {
+                                                                            const investigationName = investigation.investigationsName || '';
+                                                                            return investigationName.toLowerCase().includes(searchTerm);
                                                                         });
 
-                                                                        displayMedicinesPage(1);
+                                                                        displayInvestigationPage(1);
                                                                     }
 
-                                                                    function displayMedicinesPage(page) {
-                                                                        localStorage.setItem('currentPageMedicines', page);
-                                                                        const start = (page - 1) * itemsPerPageMedicines;
-                                                                        const end = start + itemsPerPageMedicines;
-                                                                        const itemsToShow = filteredMedicinesList.slice(start, end);
+                                                                    function displayInvestigationPage(page) {
+                                                                        localStorage.setItem('currentPageInvestigation', page);
+                                                                        const start = (page - 1) * itemsPerPageInvestigation;
+                                                                        const end = start + itemsPerPageInvestigation;
+                                                                        const itemsToShow = filteredInvestigationList.slice(start, end);
 
-                                                                        const medicinesTableBody = document.getElementById('medicinesTableBody');
-                                                                        medicinesTableBody.innerHTML = '';
+                                                                        const investigationTableBody = document.getElementById('investigationsTableBody');
+                                                                        investigationTableBody.innerHTML = '';
 
-                                                                        updateEntriesInfo(start + 1, Math.min(end, filteredMedicinesList.length), filteredMedicinesList.length);
+                                                                        updateEntriesInfoInvestigation(start + 1, Math.min(end, filteredInvestigationList.length), filteredInvestigationList.length);
 
                                                                         if (itemsToShow.length === 0) {
                                                                             const noMatchesRow = document.createElement('tr');
-                                                                            noMatchesRow.innerHTML = '<td colspan="5" class="text-center">No matches found.</td>';
-                                                                            medicinesTableBody.appendChild(noMatchesRow);
+                                                                            noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
+                                                                            investigationTableBody.appendChild(noMatchesRow);
                                                                         } else {
-                                                                            itemsToShow.forEach((medicine, index) => {
-                                                                                const medicineRow = document.createElement('tr');
-                                                                                medicineRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.medicineBrand}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.strength}</td>
-                <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
-                </td>`;
-                                                                                medicinesTableBody.appendChild(medicineRow);
+                                                                            itemsToShow.forEach((investigation, index) => {
+                                                                                const investigationRow = document.createElement('tr');
+                                                                                investigationRow.innerHTML = `
+                      <td class="pt-3">${start + index + 1}.</td>
+                    <td style="font-size: 16px" class="pt-3">${investigation.investigationsName}</td>
+                    <td class="d-flex d-md-block">
+                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${investigation.id}" data-name="${investigation.investigationsName}" data-type="investigation"><i class="bi bi-trash"></i></button>
+                    </td>`;
+                                                                                investigationTableBody.appendChild(investigationRow);
                                                                             });
                                                                         }
 
-                                                                        generateMedicinesPagination(filteredMedicinesList.length, page);
+                                                                        generateInvestigationPagination(filteredInvestigationList.length, page);
                                                                     }
 
-                                                                    function updateEntriesInfo(start, end, totalEntries) {
+                                                                    function updateEntriesInfoInvestigation(start, end, totalEntries) {
                                                                         const entriesInfo = document.getElementById('entriesInfo');
                                                                         entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
                                                                     }
 
-                                                                    function generateMedicinesPagination(totalItems, currentPage) {
-                                                                        const totalPages = Math.ceil(totalItems / itemsPerPageMedicines);
-                                                                        const paginationContainer = document.getElementById('paginationContainerMedicines');
+                                                                    function generateInvestigationPagination(totalItems, currentPage) {
+                                                                        const totalPages = Math.ceil(totalItems / itemsPerPageInvestigation);
+                                                                        const paginationContainer = document.getElementById('paginationContainerInvestigation');
                                                                         paginationContainer.innerHTML = '';
 
                                                                         const ul = document.createElement('ul');
@@ -2386,7 +2377,7 @@
                                                                         const prevLi = document.createElement('li');
                                                                         prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
                                                                         prevLi.onclick = () => {
-                                                                            if (currentPage > 1) displayMedicinesPage(currentPage - 1);
+                                                                            if (currentPage > 1) displayInvestigationPage(currentPage - 1);
                                                                         };
                                                                         ul.appendChild(prevLi);
 
@@ -2396,35 +2387,35 @@
                                                                         for (let i = startPage; i <= endPage; i++) {
                                                                             const li = document.createElement('li');
                                                                             li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
-                                                                            li.onclick = () => displayMedicinesPage(i);
+                                                                            li.onclick = () => displayInvestigationPage(i);
                                                                             ul.appendChild(li);
                                                                         }
 
                                                                         const nextLi = document.createElement('li');
                                                                         nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
                                                                         nextLi.onclick = () => {
-                                                                            if (currentPage < totalPages) displayMedicinesPage(currentPage + 1);
+                                                                            if (currentPage < totalPages) displayInvestigationPage(currentPage + 1);
                                                                         };
                                                                         ul.appendChild(nextLi);
 
                                                                         paginationContainer.appendChild(ul);
                                                                     }
 
-                                                                    // On load: Show all data, then render
-                                                                    toggleClearIcons();
-                                                                    filteredMedicinesList = [...medicinesList];
-                                                                    displayMedicinesPage(initialPageMedicines);
+                                                                    toggleClearIconsInvestigation();
+                                                                    filteredInvestigationList = [...investigationList];
+                                                                    displayInvestigationPage(initialPageInvestigation);
                                                                 </script>
 
+
             <?php
-        } else if ($method == "investigations") {
+        } else if ($method == "instructions") {
             ?>
 
                                                                     <section>
                                                                         <div class="card rounded">
                                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                                <p style="font-size: 24px; font-weight: 500">Investigation List</p>
-                                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newInvestigation"
+                                                                                <p style="font-size: 24px; font-weight: 500">Instruction List</p>
+                                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newInstruction"
                                                                                     style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
                                                                                     <i class="bi bi-plus-square-fill"></i> New
                                                                                 </a>
@@ -2442,30 +2433,30 @@
                                                                                 </div>
                                                                                 <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
                                                                                     <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                                                                        style="height: 50px; width: 280px" placeholder="Search (INVESTIGATION NAME)">
+                                                                                        style="height: 50px; width: 280px" placeholder="Search (INSTRUCTION NAME)">
                                                                                     <span id="clearSearch" class="position-absolute"
                                                                                         style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="card-body p-2 p-sm-4">
                                                                                 <div class="table-responsive">
-                                                                                    <table class="table table-hover text-center" id="investigationTable">
+                                                                                    <table class="table table-hover text-center" id="instructionTable">
                                                                                         <thead>
                                                                                             <tr>
                                                                                                 <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                 </th>
                                                                                                 <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                    INVESTIGATION NAME</th>
+                                                                                                    INSTRUCTION NAME</th>
                                                                                                 <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                                 </th>
                                                                                             </tr>
                                                                                         </thead>
-                                                                                        <tbody id="investigationsTableBody"></tbody>
+                                                                                        <tbody id="instructionsTableBody"></tbody>
                                                                                     </table>
                                                                                 </div>
                                                                                 <div class="d-md-flex justify-content-between">
                                                                                     <div id="entriesInfo" class="mt-4"></div>
-                                                                                    <div class="pagination justify-content-end mt-4" id="paginationContainerInvestigation"></div>
+                                                                                    <div class="pagination justify-content-end mt-4" id="paginationContainerInstruction"></div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -2473,90 +2464,93 @@
 
                                                                     <script>
                                                                         const baseUrl = '<?php echo base_url(); ?>';
-                                                                        let itemsPerPageInvestigation = 10;
-                                                                        const investigationList = <?php echo json_encode($investigationsList); ?>;
-                                                                        let filteredInvestigationList = [...investigationList];
-                                                                        const initialPageInvestigation = parseInt(localStorage.getItem('currentPageInvestigation')) || 1;
+                                                                        let itemsPerPageInstruction = 10;
+                                                                        const instructionList = <?php echo json_encode($instructionsList); ?>;
+                                                                        let filteredInstructionList = [...instructionList];
+                                                                        const initialPageInstruction = parseInt(localStorage.getItem('currentPageInstruction')) || 1;
 
                                                                         const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                                                                         const searchBar = document.getElementById('searchBar');
                                                                         const clearSearch = document.getElementById('clearSearch');
 
-                                                                        const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageInvestigation')) || itemsPerPageInvestigation;
+                                                                        const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageInstruction')) || itemsPerPageInstruction;
                                                                         itemsPerPageDropdown.value = savedItemsPerPage;
-                                                                        itemsPerPageInvestigation = savedItemsPerPage;
+                                                                        itemsPerPageInstruction = savedItemsPerPage;
 
                                                                         itemsPerPageDropdown.addEventListener('change', (event) => {
-                                                                            itemsPerPageInvestigation = parseInt(event.target.value);
-                                                                            localStorage.setItem('itemsPerPageInvestigation', itemsPerPageInvestigation);
-                                                                            applyFiltersInvestigation();
+                                                                            itemsPerPageInstruction = parseInt(event.target.value);
+                                                                            localStorage.setItem('itemsPerPageInstruction', itemsPerPageInstruction);
+                                                                            applyFiltersInstruction();
                                                                         });
 
                                                                         searchBar.addEventListener('input', () => {
-                                                                            toggleClearIconsInvestigation();
-                                                                            applyFiltersInvestigation();
+                                                                            toggleClearIconsInstruction();
+                                                                            applyFiltersInstruction();
                                                                         });
 
                                                                         clearSearch.addEventListener('click', () => {
                                                                             searchBar.value = '';
-                                                                            toggleClearIconsInvestigation();
-                                                                            applyFiltersInvestigation();
+                                                                            toggleClearIconsInstruction();
+                                                                            applyFiltersInstruction();
                                                                         });
 
-                                                                        function toggleClearIconsInvestigation() {
+                                                                        function toggleClearIconsInstruction() {
                                                                             clearSearch.style.display = searchBar.value ? 'block' : 'none';
                                                                         }
 
-                                                                        function applyFiltersInvestigation() {
+                                                                        function applyFiltersInstruction() {
                                                                             const searchTerm = searchBar.value.toLowerCase();
 
-                                                                            filteredInvestigationList = investigationList.filter((investigation) => {
-                                                                                const investigationName = investigation.investigationsName || '';
-                                                                                return investigationName.toLowerCase().includes(searchTerm);
+                                                                            filteredInstructionList = instructionList.filter((instruction) => {
+                                                                                const instructionName = instruction.instructionsName || '';
+                                                                                return instructionName.toLowerCase().includes(searchTerm);
                                                                             });
 
-                                                                            displayInvestigationPage(1);
+                                                                            displayInstructionPage(1);
                                                                         }
 
-                                                                        function displayInvestigationPage(page) {
-                                                                            localStorage.setItem('currentPageInvestigation', page);
-                                                                            const start = (page - 1) * itemsPerPageInvestigation;
-                                                                            const end = start + itemsPerPageInvestigation;
-                                                                            const itemsToShow = filteredInvestigationList.slice(start, end);
+                                                                        function displayInstructionPage(page) {
+                                                                            localStorage.setItem('currentPageInstruction', page);
+                                                                            const start = (page - 1) * itemsPerPageInstruction;
+                                                                            const end = start + itemsPerPageInstruction;
+                                                                            const itemsToShow = filteredInstructionList.slice(start, end);
 
-                                                                            const investigationTableBody = document.getElementById('investigationsTableBody');
-                                                                            investigationTableBody.innerHTML = '';
+                                                                            const instructionTableBody = document.getElementById('instructionsTableBody');
+                                                                            instructionTableBody.innerHTML = '';
 
-                                                                            updateEntriesInfoInvestigation(start + 1, Math.min(end, filteredInvestigationList.length), filteredInvestigationList.length);
+                                                                            updateEntriesInfoInstruction(start + 1, Math.min(end, filteredInstructionList.length), filteredInstructionList.length);
 
                                                                             if (itemsToShow.length === 0) {
                                                                                 const noMatchesRow = document.createElement('tr');
                                                                                 noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
-                                                                                investigationTableBody.appendChild(noMatchesRow);
+                                                                                instructionTableBody.appendChild(noMatchesRow);
                                                                             } else {
-                                                                                itemsToShow.forEach((investigation, index) => {
-                                                                                    const investigationRow = document.createElement('tr');
-                                                                                    investigationRow.innerHTML = `
-                      <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${investigation.investigationsName}</td>
+                                                                                itemsToShow.forEach((instruction, index) => {
+                                                                                    const instructionRow = document.createElement('tr');
+                                                                                    instructionRow.innerHTML = `
+                    <td class="pt-3">${start + index + 1}.</td>
+                    <td style="font-size: 16px" class="pt-3">${instruction.instructionsName}</td>
                     <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${investigation.id}" data-name="${investigation.investigationsName}" data-type="investigation"><i class="bi bi-trash"></i></button>
+                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
+                            data-id="${instruction.id}" data-name="${instruction.instructionsName}" data-type="instruction">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </td>`;
-                                                                                    investigationTableBody.appendChild(investigationRow);
+                                                                                    instructionTableBody.appendChild(instructionRow);
                                                                                 });
                                                                             }
 
-                                                                            generateInvestigationPagination(filteredInvestigationList.length, page);
+                                                                            generateInstructionPagination(filteredInstructionList.length, page);
                                                                         }
 
-                                                                        function updateEntriesInfoInvestigation(start, end, totalEntries) {
+                                                                        function updateEntriesInfoInstruction(start, end, totalEntries) {
                                                                             const entriesInfo = document.getElementById('entriesInfo');
                                                                             entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
                                                                         }
 
-                                                                        function generateInvestigationPagination(totalItems, currentPage) {
-                                                                            const totalPages = Math.ceil(totalItems / itemsPerPageInvestigation);
-                                                                            const paginationContainer = document.getElementById('paginationContainerInvestigation');
+                                                                        function generateInstructionPagination(totalItems, currentPage) {
+                                                                            const totalPages = Math.ceil(totalItems / itemsPerPageInstruction);
+                                                                            const paginationContainer = document.getElementById('paginationContainerInstruction');
                                                                             paginationContainer.innerHTML = '';
 
                                                                             const ul = document.createElement('ul');
@@ -2565,7 +2559,7 @@
                                                                             const prevLi = document.createElement('li');
                                                                             prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
                                                                             prevLi.onclick = () => {
-                                                                                if (currentPage > 1) displayInvestigationPage(currentPage - 1);
+                                                                                if (currentPage > 1) displayInstructionPage(currentPage - 1);
                                                                             };
                                                                             ul.appendChild(prevLi);
 
@@ -2575,35 +2569,34 @@
                                                                             for (let i = startPage; i <= endPage; i++) {
                                                                                 const li = document.createElement('li');
                                                                                 li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
-                                                                                li.onclick = () => displayInvestigationPage(i);
+                                                                                li.onclick = () => displayInstructionPage(i);
                                                                                 ul.appendChild(li);
                                                                             }
 
                                                                             const nextLi = document.createElement('li');
                                                                             nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
                                                                             nextLi.onclick = () => {
-                                                                                if (currentPage < totalPages) displayInvestigationPage(currentPage + 1);
+                                                                                if (currentPage < totalPages) displayInstructionPage(currentPage + 1);
                                                                             };
                                                                             ul.appendChild(nextLi);
 
                                                                             paginationContainer.appendChild(ul);
                                                                         }
 
-                                                                        toggleClearIconsInvestigation();
-                                                                        filteredInvestigationList = [...investigationList];
-                                                                        displayInvestigationPage(initialPageInvestigation);
+                                                                        toggleClearIconsInstruction();
+                                                                        filteredInstructionList = [...instructionList];
+                                                                        displayInstructionPage(initialPageInstruction);
                                                                     </script>
 
-
             <?php
-        } else if ($method == "advices") {
+        } else if ($method == "procedures") {
             ?>
 
                                                                         <section>
                                                                             <div class="card rounded">
                                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                                    <p style="font-size: 24px; font-weight: 500">Advice List</p>
-                                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newAdvice"
+                                                                                    <p style="font-size: 24px; font-weight: 500">Procedure List</p>
+                                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newProcedure"
                                                                                         style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
                                                                                         <i class="bi bi-plus-square-fill"></i> New
                                                                                     </a>
@@ -2621,30 +2614,30 @@
                                                                                     </div>
                                                                                     <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
                                                                                         <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                                                                            style="height: 50px; width: 250px" placeholder="Search (ADVICE NAME)">
+                                                                                            style="height: 50px; width: 280px" placeholder="Search (PROCEDURE NAME)">
                                                                                         <span id="clearSearch" class="position-absolute"
                                                                                             style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="card-body p-2 p-sm-4">
                                                                                     <div class="table-responsive">
-                                                                                        <table class="table table-hover text-center" id="adviceTable">
+                                                                                        <table class="table table-hover text-center" id="procedureTable">
                                                                                             <thead>
                                                                                                 <tr>
                                                                                                     <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                     </th>
                                                                                                     <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                        ADVICE NAME</th>
+                                                                                                        PROCEDURE NAME</th>
                                                                                                     <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                                     </th>
                                                                                                 </tr>
                                                                                             </thead>
-                                                                                            <tbody id="adviceTableBody"></tbody>
+                                                                                            <tbody id="proceduresTableBody"></tbody>
                                                                                         </table>
                                                                                     </div>
                                                                                     <div class="d-md-flex justify-content-between">
                                                                                         <div id="entriesInfo" class="mt-4"></div>
-                                                                                        <div class="pagination justify-content-end mt-4" id="paginationContainerAdvice"></div>
+                                                                                        <div class="pagination justify-content-end mt-4" id="paginationContainerProcedure"></div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -2652,90 +2645,93 @@
 
                                                                         <script>
                                                                             const baseUrl = '<?php echo base_url(); ?>';
-                                                                            let itemsPerPageAdvice = 10;
-                                                                            const adviceList = <?php echo json_encode($advicesList); ?>;
-                                                                            let filteredAdviceList = [...adviceList];
-                                                                            const initialPageAdvice = parseInt(localStorage.getItem('currentPageAdvice')) || 1;
+                                                                            let itemsPerPageProcedure = 10;
+                                                                            const procedureList = <?php echo json_encode($proceduresList); ?>;
+                                                                            let filteredProcedureList = [...procedureList];
+                                                                            const initialPageProcedure = parseInt(localStorage.getItem('currentPageProcedure')) || 1;
 
                                                                             const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                                                                             const searchBar = document.getElementById('searchBar');
                                                                             const clearSearch = document.getElementById('clearSearch');
 
-                                                                            const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageAdvice')) || itemsPerPageAdvice;
+                                                                            const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageProcedure')) || itemsPerPageProcedure;
                                                                             itemsPerPageDropdown.value = savedItemsPerPage;
-                                                                            itemsPerPageAdvice = savedItemsPerPage;
+                                                                            itemsPerPageProcedure = savedItemsPerPage;
 
                                                                             itemsPerPageDropdown.addEventListener('change', (event) => {
-                                                                                itemsPerPageAdvice = parseInt(event.target.value);
-                                                                                localStorage.setItem('itemsPerPageAdvice', itemsPerPageAdvice);
-                                                                                applyFiltersAdvice();
+                                                                                itemsPerPageProcedure = parseInt(event.target.value);
+                                                                                localStorage.setItem('itemsPerPageProcedure', itemsPerPageProcedure);
+                                                                                applyFiltersProcedure();
                                                                             });
 
                                                                             searchBar.addEventListener('input', () => {
-                                                                                toggleClearIconsAdvice();
-                                                                                applyFiltersAdvice();
+                                                                                toggleClearIconsProcedure();
+                                                                                applyFiltersProcedure();
                                                                             });
 
                                                                             clearSearch.addEventListener('click', () => {
                                                                                 searchBar.value = '';
-                                                                                toggleClearIconsAdvice();
-                                                                                applyFiltersAdvice();
+                                                                                toggleClearIconsProcedure();
+                                                                                applyFiltersProcedure();
                                                                             });
 
-                                                                            function toggleClearIconsAdvice() {
+                                                                            function toggleClearIconsProcedure() {
                                                                                 clearSearch.style.display = searchBar.value ? 'block' : 'none';
                                                                             }
 
-                                                                            function applyFiltersAdvice() {
+                                                                            function applyFiltersProcedure() {
                                                                                 const searchTerm = searchBar.value.toLowerCase();
 
-                                                                                filteredAdviceList = adviceList.filter((advice) => {
-                                                                                    const adviceName = advice.adviceName || '';
-                                                                                    return adviceName.toLowerCase().includes(searchTerm);
+                                                                                filteredProcedureList = procedureList.filter((procedure) => {
+                                                                                    const procedureName = procedure.proceduresName || '';
+                                                                                    return procedureName.toLowerCase().includes(searchTerm);
                                                                                 });
 
-                                                                                displayAdvicePage(1);
+                                                                                displayProcedurePage(1);
                                                                             }
 
-                                                                            function displayAdvicePage(page) {
-                                                                                localStorage.setItem('currentPageAdvice', page);
-                                                                                const start = (page - 1) * itemsPerPageAdvice;
-                                                                                const end = start + itemsPerPageAdvice;
-                                                                                const itemsToShow = filteredAdviceList.slice(start, end);
+                                                                            function displayProcedurePage(page) {
+                                                                                localStorage.setItem('currentPageProcedure', page);
+                                                                                const start = (page - 1) * itemsPerPageProcedure;
+                                                                                const end = start + itemsPerPageProcedure;
+                                                                                const itemsToShow = filteredProcedureList.slice(start, end);
 
-                                                                                const adviceTableBody = document.getElementById('adviceTableBody');
-                                                                                adviceTableBody.innerHTML = '';
+                                                                                const procedureTableBody = document.getElementById('proceduresTableBody');
+                                                                                procedureTableBody.innerHTML = '';
 
-                                                                                updateEntriesInfoAdvice(start + 1, Math.min(end, filteredAdviceList.length), filteredAdviceList.length);
+                                                                                updateEntriesInfoProcedure(start + 1, Math.min(end, filteredProcedureList.length), filteredProcedureList.length);
 
                                                                                 if (itemsToShow.length === 0) {
                                                                                     const noMatchesRow = document.createElement('tr');
                                                                                     noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
-                                                                                    adviceTableBody.appendChild(noMatchesRow);
+                                                                                    procedureTableBody.appendChild(noMatchesRow);
                                                                                 } else {
-                                                                                    itemsToShow.forEach((advice, index) => {
-                                                                                        const adviceRow = document.createElement('tr');
-                                                                                        adviceRow.innerHTML = `
-                     <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${advice.adviceName}</td>
+                                                                                    itemsToShow.forEach((procedure, index) => {
+                                                                                        const procedureRow = document.createElement('tr');
+                                                                                        procedureRow.innerHTML = `
+                    <td class="pt-3">${start + index + 1}.</td>
+                    <td style="font-size: 16px" class="pt-3">${procedure.proceduresName}</td>
                     <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${advice.id}" data-name="${advice.adviceName}" data-type="advice"><i class="bi bi-trash"></i></button>
+                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
+                            data-id="${procedure.id}" data-name="${procedure.proceduresName}" data-type="procedure">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </td>`;
-                                                                                        adviceTableBody.appendChild(adviceRow);
+                                                                                        procedureTableBody.appendChild(procedureRow);
                                                                                     });
                                                                                 }
 
-                                                                                generateAdvicePagination(filteredAdviceList.length, page);
+                                                                                generateProcedurePagination(filteredProcedureList.length, page);
                                                                             }
 
-                                                                            function updateEntriesInfoAdvice(start, end, totalEntries) {
+                                                                            function updateEntriesInfoProcedure(start, end, totalEntries) {
                                                                                 const entriesInfo = document.getElementById('entriesInfo');
                                                                                 entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
                                                                             }
 
-                                                                            function generateAdvicePagination(totalItems, currentPage) {
-                                                                                const totalPages = Math.ceil(totalItems / itemsPerPageAdvice);
-                                                                                const paginationContainer = document.getElementById('paginationContainerAdvice');
+                                                                            function generateProcedurePagination(totalItems, currentPage) {
+                                                                                const totalPages = Math.ceil(totalItems / itemsPerPageProcedure);
+                                                                                const paginationContainer = document.getElementById('paginationContainerProcedure');
                                                                                 paginationContainer.innerHTML = '';
 
                                                                                 const ul = document.createElement('ul');
@@ -2744,7 +2740,7 @@
                                                                                 const prevLi = document.createElement('li');
                                                                                 prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
                                                                                 prevLi.onclick = () => {
-                                                                                    if (currentPage > 1) displayAdvicePage(currentPage - 1);
+                                                                                    if (currentPage > 1) displayProcedurePage(currentPage - 1);
                                                                                 };
                                                                                 ul.appendChild(prevLi);
 
@@ -2754,24 +2750,393 @@
                                                                                 for (let i = startPage; i <= endPage; i++) {
                                                                                     const li = document.createElement('li');
                                                                                     li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
-                                                                                    li.onclick = () => displayAdvicePage(i);
+                                                                                    li.onclick = () => displayProcedurePage(i);
                                                                                     ul.appendChild(li);
                                                                                 }
 
                                                                                 const nextLi = document.createElement('li');
                                                                                 nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
                                                                                 nextLi.onclick = () => {
-                                                                                    if (currentPage < totalPages) displayAdvicePage(currentPage + 1);
+                                                                                    if (currentPage < totalPages) displayProcedurePage(currentPage + 1);
                                                                                 };
                                                                                 ul.appendChild(nextLi);
 
                                                                                 paginationContainer.appendChild(ul);
                                                                             }
 
-                                                                            toggleClearIconsAdvice();
-                                                                            filteredAdviceList = [...adviceList];
-                                                                            displayAdvicePage(initialPageAdvice);
+                                                                            toggleClearIconsProcedure();
+                                                                            filteredProcedureList = [...procedureList];
+                                                                            displayProcedurePage(initialPageProcedure);
                                                                         </script>
+
+
+
+            <?php
+        } else if ($method == "advices") {
+            ?>
+
+                                                                            <section>
+                                                                                <div class="card rounded">
+                                                                                    <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
+                                                                                        <p style="font-size: 24px; font-weight: 500">Advice List</p>
+                                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newAdvice"
+                                                                                            style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                            <i class="bi bi-plus-square-fill"></i> New
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
+                                                                                        <div class="ms-2">
+                                                                                            <label for="itemsPerPageDropdown">Show </label>
+                                                                                            <select id="itemsPerPageDropdown"
+                                                                                                class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                                                                <option value="10" selected>10</option>
+                                                                                                <option value="25">25</option>
+                                                                                                <option value="50">50</option>
+                                                                                            </select>
+                                                                                            <label for="itemsPerPageDropdown">Entries </label>
+                                                                                        </div>
+                                                                                        <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
+                                                                                            <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                                                                style="height: 50px; width: 250px" placeholder="Search (ADVICE NAME)">
+                                                                                            <span id="clearSearch" class="position-absolute"
+                                                                                                style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="card-body p-2 p-sm-4">
+                                                                                        <div class="table-responsive">
+                                                                                            <table class="table table-hover text-center" id="adviceTable">
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                                        </th>
+                                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                                            ADVICE NAME</th>
+                                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                                        </th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody id="adviceTableBody"></tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                        <div class="d-md-flex justify-content-between">
+                                                                                            <div id="entriesInfo" class="mt-4"></div>
+                                                                                            <div class="pagination justify-content-end mt-4" id="paginationContainerAdvice"></div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </section>
+
+                                                                            <script>
+                                                                                const baseUrl = '<?php echo base_url(); ?>';
+                                                                                let itemsPerPageAdvice = 10;
+                                                                                const adviceList = <?php echo json_encode($advicesList); ?>;
+                                                                                let filteredAdviceList = [...adviceList];
+                                                                                const initialPageAdvice = parseInt(localStorage.getItem('currentPageAdvice')) || 1;
+
+                                                                                const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                                                                const searchBar = document.getElementById('searchBar');
+                                                                                const clearSearch = document.getElementById('clearSearch');
+
+                                                                                const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageAdvice')) || itemsPerPageAdvice;
+                                                                                itemsPerPageDropdown.value = savedItemsPerPage;
+                                                                                itemsPerPageAdvice = savedItemsPerPage;
+
+                                                                                itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                                                    itemsPerPageAdvice = parseInt(event.target.value);
+                                                                                    localStorage.setItem('itemsPerPageAdvice', itemsPerPageAdvice);
+                                                                                    applyFiltersAdvice();
+                                                                                });
+
+                                                                                searchBar.addEventListener('input', () => {
+                                                                                    toggleClearIconsAdvice();
+                                                                                    applyFiltersAdvice();
+                                                                                });
+
+                                                                                clearSearch.addEventListener('click', () => {
+                                                                                    searchBar.value = '';
+                                                                                    toggleClearIconsAdvice();
+                                                                                    applyFiltersAdvice();
+                                                                                });
+
+                                                                                function toggleClearIconsAdvice() {
+                                                                                    clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                                                                }
+
+                                                                                function applyFiltersAdvice() {
+                                                                                    const searchTerm = searchBar.value.toLowerCase();
+
+                                                                                    filteredAdviceList = adviceList.filter((advice) => {
+                                                                                        const adviceName = advice.adviceName || '';
+                                                                                        return adviceName.toLowerCase().includes(searchTerm);
+                                                                                    });
+
+                                                                                    displayAdvicePage(1);
+                                                                                }
+
+                                                                                function displayAdvicePage(page) {
+                                                                                    localStorage.setItem('currentPageAdvice', page);
+                                                                                    const start = (page - 1) * itemsPerPageAdvice;
+                                                                                    const end = start + itemsPerPageAdvice;
+                                                                                    const itemsToShow = filteredAdviceList.slice(start, end);
+
+                                                                                    const adviceTableBody = document.getElementById('adviceTableBody');
+                                                                                    adviceTableBody.innerHTML = '';
+
+                                                                                    updateEntriesInfoAdvice(start + 1, Math.min(end, filteredAdviceList.length), filteredAdviceList.length);
+
+                                                                                    if (itemsToShow.length === 0) {
+                                                                                        const noMatchesRow = document.createElement('tr');
+                                                                                        noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
+                                                                                        adviceTableBody.appendChild(noMatchesRow);
+                                                                                    } else {
+                                                                                        itemsToShow.forEach((advice, index) => {
+                                                                                            const adviceRow = document.createElement('tr');
+                                                                                            adviceRow.innerHTML = `
+                     <td class="pt-3">${start + index + 1}.</td>
+                    <td style="font-size: 16px" class="pt-3">${advice.adviceName}</td>
+                    <td class="d-flex d-md-block">
+                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${advice.id}" data-name="${advice.adviceName}" data-type="advice"><i class="bi bi-trash"></i></button>
+                    </td>`;
+                                                                                            adviceTableBody.appendChild(adviceRow);
+                                                                                        });
+                                                                                    }
+
+                                                                                    generateAdvicePagination(filteredAdviceList.length, page);
+                                                                                }
+
+                                                                                function updateEntriesInfoAdvice(start, end, totalEntries) {
+                                                                                    const entriesInfo = document.getElementById('entriesInfo');
+                                                                                    entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                                                                }
+
+                                                                                function generateAdvicePagination(totalItems, currentPage) {
+                                                                                    const totalPages = Math.ceil(totalItems / itemsPerPageAdvice);
+                                                                                    const paginationContainer = document.getElementById('paginationContainerAdvice');
+                                                                                    paginationContainer.innerHTML = '';
+
+                                                                                    const ul = document.createElement('ul');
+                                                                                    ul.className = 'pagination';
+
+                                                                                    const prevLi = document.createElement('li');
+                                                                                    prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                                                    prevLi.onclick = () => {
+                                                                                        if (currentPage > 1) displayAdvicePage(currentPage - 1);
+                                                                                    };
+                                                                                    ul.appendChild(prevLi);
+
+                                                                                    const startPage = Math.max(1, currentPage - 2);
+                                                                                    const endPage = Math.min(totalPages, startPage + 4);
+
+                                                                                    for (let i = startPage; i <= endPage; i++) {
+                                                                                        const li = document.createElement('li');
+                                                                                        li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                                                        li.onclick = () => displayAdvicePage(i);
+                                                                                        ul.appendChild(li);
+                                                                                    }
+
+                                                                                    const nextLi = document.createElement('li');
+                                                                                    nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                                                    nextLi.onclick = () => {
+                                                                                        if (currentPage < totalPages) displayAdvicePage(currentPage + 1);
+                                                                                    };
+                                                                                    ul.appendChild(nextLi);
+
+                                                                                    paginationContainer.appendChild(ul);
+                                                                                }
+
+                                                                                toggleClearIconsAdvice();
+                                                                                filteredAdviceList = [...adviceList];
+                                                                                displayAdvicePage(initialPageAdvice);
+                                                                            </script>
+
+            <?php
+        } else if ($method == "medicines") {
+            ?>
+
+                                                                                <section>
+                                                                                    <div class="card rounded">
+                                                                                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                                            <p style="font-size: 24px; font-weight: 500">Medicines List</p>
+                                                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
+                                                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                                <i class="bi bi-plus-square-fill"></i> New
+                                                                                            </a>
+                                                                                        </div>
+                                                                                        <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
+                                                                                            <div class="ms-2">
+                                                                                                <label for="itemsPerPageDropdown">Show </label>
+                                                                                                <select id="itemsPerPageDropdown"
+                                                                                                    class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                                                                                    <option value="10" selected>10</option>
+                                                                                                    <option value="25">25</option>
+                                                                                                    <option value="50">50</option>
+                                                                                                </select>
+                                                                                                <label for="itemsPerPageDropdown">Entries </label>
+                                                                                            </div>
+                                                                                            <div class="d-flex align-items-center position-relative pt-2 pt-md-0 me-2">
+                                                                                                <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
+                                                                                                    style="height: 50px; width: 250px" placeholder="Search (MEDICINE NAME)">
+                                                                                                <span id="clearSearch" class="position-absolute"
+                                                                                                    style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">×</span>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="card-body p-2 p-sm-4">
+                                                                                            <div class="table-responsive">
+                                                                                                <table class="table table-hover text-center" id="medicinesTable">
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                                            </th>
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">BRAND
+                                                                                                                NAME</th>
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                                                MEDICINE NAME</th>
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                                                STRENGTH</th>
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                                            </th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody id="medicinesTableBody"></tbody>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                            <div class="d-md-flex justify-content-between ms-2">
+                                                                                                <div id="entriesInfo" class="mt-4"></div>
+                                                                                                <div class="pagination justify-content-end mt-4" id="paginationContainerMedicines"></div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </section>
+
+                                                                                <script>
+                                                                                    const baseUrl = '<?php echo base_url(); ?>';
+                                                                                    let itemsPerPageMedicines = 10;
+                                                                                    const medicinesList = <?php echo json_encode($medicinesList); ?>;
+                                                                                    let filteredMedicinesList = [...medicinesList];
+                                                                                    const initialPageMedicines = parseInt(localStorage.getItem('currentPageMedicines')) || 1;
+
+                                                                                    const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                                                                    const searchBar = document.getElementById('searchBar');
+                                                                                    const clearSearch = document.getElementById('clearSearch');
+
+                                                                                    // Load saved itemsPerPage
+                                                                                    const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageMedicines')) || itemsPerPageMedicines;
+                                                                                    itemsPerPageDropdown.value = savedItemsPerPage;
+                                                                                    itemsPerPageMedicines = savedItemsPerPage;
+
+                                                                                    // Event Listeners
+                                                                                    itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                                                        itemsPerPageMedicines = parseInt(event.target.value);
+                                                                                        localStorage.setItem('itemsPerPageMedicines', itemsPerPageMedicines);
+                                                                                        applyFilters();
+                                                                                    });
+
+                                                                                    searchBar.addEventListener('input', () => {
+                                                                                        toggleClearIcons();
+                                                                                        applyFilters();
+                                                                                    });
+
+                                                                                    clearSearch.addEventListener('click', () => {
+                                                                                        searchBar.value = '';
+                                                                                        toggleClearIcons();
+                                                                                        applyFilters();
+                                                                                    });
+
+                                                                                    function toggleClearIcons() {
+                                                                                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                                                                    }
+
+                                                                                    function applyFilters() {
+                                                                                        const searchTerm = searchBar.value.toLowerCase();
+
+                                                                                        filteredMedicinesList = medicinesList.filter((medicine) => {
+                                                                                            const medicineName = medicine.medicineName || '';
+                                                                                            return medicineName.toLowerCase().includes(searchTerm);
+                                                                                        });
+
+                                                                                        displayMedicinesPage(1);
+                                                                                    }
+
+                                                                                    function displayMedicinesPage(page) {
+                                                                                        localStorage.setItem('currentPageMedicines', page);
+                                                                                        const start = (page - 1) * itemsPerPageMedicines;
+                                                                                        const end = start + itemsPerPageMedicines;
+                                                                                        const itemsToShow = filteredMedicinesList.slice(start, end);
+
+                                                                                        const medicinesTableBody = document.getElementById('medicinesTableBody');
+                                                                                        medicinesTableBody.innerHTML = '';
+
+                                                                                        updateEntriesInfo(start + 1, Math.min(end, filteredMedicinesList.length), filteredMedicinesList.length);
+
+                                                                                        if (itemsToShow.length === 0) {
+                                                                                            const noMatchesRow = document.createElement('tr');
+                                                                                            noMatchesRow.innerHTML = '<td colspan="5" class="text-center">No matches found.</td>';
+                                                                                            medicinesTableBody.appendChild(noMatchesRow);
+                                                                                        } else {
+                                                                                            itemsToShow.forEach((medicine, index) => {
+                                                                                                const medicineRow = document.createElement('tr');
+                                                                                                medicineRow.innerHTML = `
+                <td class="pt-3">${start + index + 1}.</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.medicineBrand}</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.strength}</td>
+                <td class="d-flex d-md-block">
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
+                </td>`;
+                                                                                                medicinesTableBody.appendChild(medicineRow);
+                                                                                            });
+                                                                                        }
+
+                                                                                        generateMedicinesPagination(filteredMedicinesList.length, page);
+                                                                                    }
+
+                                                                                    function updateEntriesInfo(start, end, totalEntries) {
+                                                                                        const entriesInfo = document.getElementById('entriesInfo');
+                                                                                        entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                                                                    }
+
+                                                                                    function generateMedicinesPagination(totalItems, currentPage) {
+                                                                                        const totalPages = Math.ceil(totalItems / itemsPerPageMedicines);
+                                                                                        const paginationContainer = document.getElementById('paginationContainerMedicines');
+                                                                                        paginationContainer.innerHTML = '';
+
+                                                                                        const ul = document.createElement('ul');
+                                                                                        ul.className = 'pagination';
+
+                                                                                        const prevLi = document.createElement('li');
+                                                                                        prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                                                        prevLi.onclick = () => {
+                                                                                            if (currentPage > 1) displayMedicinesPage(currentPage - 1);
+                                                                                        };
+                                                                                        ul.appendChild(prevLi);
+
+                                                                                        const startPage = Math.max(1, currentPage - 2);
+                                                                                        const endPage = Math.min(totalPages, startPage + 4);
+
+                                                                                        for (let i = startPage; i <= endPage; i++) {
+                                                                                            const li = document.createElement('li');
+                                                                                            li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                                                            li.onclick = () => displayMedicinesPage(i);
+                                                                                            ul.appendChild(li);
+                                                                                        }
+
+                                                                                        const nextLi = document.createElement('li');
+                                                                                        nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                                                        nextLi.onclick = () => {
+                                                                                            if (currentPage < totalPages) displayMedicinesPage(currentPage + 1);
+                                                                                        };
+                                                                                        ul.appendChild(nextLi);
+
+                                                                                        paginationContainer.appendChild(ul);
+                                                                                    }
+
+                                                                                    // On load: Show all data, then render
+                                                                                    toggleClearIcons();
+                                                                                    filteredMedicinesList = [...medicinesList];
+                                                                                    displayMedicinesPage(initialPageMedicines);
+                                                                                </script>
+
 
         <?php } ?>
 
@@ -2797,12 +3162,16 @@
             document.getElementById('findings').style.color = "white";
         <?php } elseif ($method == "diagnosis") { ?>
             document.getElementById('diagnosis').style.color = "white";
-        <?php } elseif ($method == "medicines") { ?>
-            document.getElementById('medicines').style.color = "white";
         <?php } elseif ($method == "investigations") { ?>
             document.getElementById('investigations').style.color = "white";
+        <?php } elseif ($method == "instructions") { ?>
+            document.getElementById('instructions').style.color = "white";
+        <?php } elseif ($method == "procedures") { ?>
+            document.getElementById('procedures').style.color = "white";
         <?php } elseif ($method == "advices") { ?>
             document.getElementById('advices').style.color = "white";
+        <?php } elseif ($method == "medicines") { ?>
+            document.getElementById('medicines').style.color = "white";
         <?php } ?>
     </script>
 

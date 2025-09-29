@@ -53,14 +53,20 @@
                 case "diagnosis":
                     deleteUrl = baseUrl + "Edfadmin/deleteDiagnosis/" + id;
                     break;
-                case "medicine":
-                    deleteUrl = baseUrl + "Edfadmin/deleteMedicine/" + id;
-                    break;
                 case "investigation":
                     deleteUrl = baseUrl + "Edfadmin/deleteInvestigation/" + id;
                     break;
+                case "instruction":
+                    deleteUrl = baseUrl + "Edfadmin/deleteInstruction/" + id;
+                    break;
+                case "procedure":
+                    deleteUrl = baseUrl + "Edfadmin/deleteProcedure/" + id;
+                    break;
                 case "advice":
                     deleteUrl = baseUrl + "Edfadmin/deleteAdvice/" + id;
+                    break;
+                case "medicine":
+                    deleteUrl = baseUrl + "Edfadmin/deleteMedicine/" + id;
                     break;
             }
 
@@ -182,40 +188,6 @@
     </div>
 </div>
 
-<!-- Popup Add new medicine -->
-<div class="modal fade" id="newMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
-                    New Medicine</h5>
-                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="<?php echo base_url() . "Edfadmin/addNewMedicine" ?>" name="addMedicine"
-                    enctype="multipart/form-data" method="POST">
-                    <label for="medicineNameBrand" class="form-label pb-2">Medicine Brand Name <span
-                            class="text-danger">*</span></label><br>
-                    <input type="text" name="medicineNameBrand" id="medicineNameBrand" class="form-control"
-                        placeholder="E.g. Dolo 650" required><br>
-                    <label for="medicineName" class="form-label pb-2">Medicine Name <span
-                            class="text-danger">*</span></label><br>
-                    <input type="text" name="medicineName" id="medicineName" class="form-control"
-                        placeholder="E.g.  Paracetamol" required><br>
-                    <label for="maedicineStrength" class="form-label pb-2">Medicine Strength <span
-                            class="text-danger">*</span></label><br>
-                    <input type="text" name="maedicineStrength" id="maedicineStrength" class="form-control"
-                        placeholder="E.g.  100 mg" required><br><br>
-                    <button type="submit" style="background-color: #2b353bf5;" class="btn float-end"> Add </button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Popup Add new investigation  -->
 <div class="modal fade" id="newInvestigation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -230,12 +202,68 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?php echo base_url() . "Edfadmin/addNewInvestigation" ?>" name="addFindings"
+                <form action="<?php echo base_url() . "Edfadmin/addNewInvestigation" ?>" name="addInvestigation"
                     enctype="multipart/form-data" method="POST">
                     <label for="investigationName" class="form-label pb-2">Investigation Name <span
                             class="text-danger">*</span></label><br>
                     <input type="text" name="investigationName" id="investigationName" class="form-control"
                         placeholder="E.g. ECG" required><br><br>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Add new instruction  -->
+<div class="modal fade" id="newInstruction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Instruction
+                </h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url() . "Edfadmin/addNewInstruction" ?>" name="addInstruction"
+                    enctype="multipart/form-data" method="POST">
+                    <label for="instructionName" class="form-label pb-2">Instruction Name <span
+                            class="text-danger">*</span></label><br>
+                    <input type="text" name="instructionName" id="instructionName" class="form-control"
+                        placeholder="E.g. Low fat in diet" required><br><br>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Add new procedure  -->
+<div class="modal fade" id="newProcedure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Procedure
+                </h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url() . "Edfadmin/addNewProcedure" ?>" name="addProcedure"
+                    enctype="multipart/form-data" method="POST">
+                    <label for="procedureName" class="form-label pb-2">Procedure Name <span
+                            class="text-danger">*</span></label><br>
+                    <input type="text" name="procedureName" id="procedureName" class="form-control"
+                        placeholder="E.g. Coronary angiogram" required><br><br>
                     <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
                     </button>
                 </form>
@@ -266,6 +294,40 @@
                         placeholder="E.g. Take rest" required><br><br>
                     <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end"> Add
                     </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Popup Add new medicine -->
+<div class="modal fade" id="newMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Medicine</h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?php echo base_url() . "Edfadmin/addNewMedicine" ?>" name="addMedicine"
+                    enctype="multipart/form-data" method="POST">
+                    <label for="medicineNameBrand" class="form-label pb-2">Medicine Brand Name <span
+                            class="text-danger">*</span></label><br>
+                    <input type="text" name="medicineNameBrand" id="medicineNameBrand" class="form-control"
+                        placeholder="E.g. Dolo 650" required><br>
+                    <label for="medicineName" class="form-label pb-2">Medicine Name <span
+                            class="text-danger">*</span></label><br>
+                    <input type="text" name="medicineName" id="medicineName" class="form-control"
+                        placeholder="E.g.  Paracetamol" required><br>
+                    <label for="maedicineStrength" class="form-label pb-2">Medicine Strength <span
+                            class="text-danger">*</span></label><br>
+                    <input type="text" name="maedicineStrength" id="maedicineStrength" class="form-control"
+                        placeholder="E.g.  100 mg" required><br><br>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn float-end"> Add </button>
                 </form>
             </div>
         </div>

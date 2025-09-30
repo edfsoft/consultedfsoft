@@ -593,6 +593,8 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $consultData = array(
+            'consult_date' => $post['consultDate'],
+            'consult_time' => $post['consultTime'],
             'patient_id' => $post['patientIdDb'],
             'doctor_id' => $hcpIdDb,
             'notes' => trim($post['notes']),

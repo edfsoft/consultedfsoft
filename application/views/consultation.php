@@ -199,7 +199,7 @@
                                                     <div class="card-body">
                                                         <div class="d-md-flex justify-content-between">
                                                             <h5 class="card-title mb-0">
-                                                                <?= date('d M Y h:i A', strtotime($consultation['created_at'])) ?>
+                                                                <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
                                                             </h5>
                                                             <div class="mt-md-3 mb-4 mb-md-0">
                                                                 <button class="btn btn-secondary" disabled><i
@@ -465,6 +465,11 @@
                                     <input type="hidden" id="patientId" name="patientId"
                                         value="<?php echo $patientDetails[0]['patientId'] ?>">
 
+                                    <div class="float-end">
+                                        <label for="form-label fieldLabel consultDate">Consultation Date & Time:</label>
+                                        <input type="date" id="consultDate" name="consultDate" class="">
+                                        <select id="consultTime" name="consultTime" class=""></select>
+                                    </div>
                                     <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                                     <div class="p-3">
                                         <div class="d-md-flex mb-3">
@@ -866,6 +871,11 @@
                             <input type="hidden" id="patientId" name="patientId"
                                 value="<?php echo $patientDetails[0]['patientId'] ?>">
                             <p class="fs-4 fw-semibold mb-3">Follow-up Consultation:</p>
+                            <div class="float-end">
+                                <label for="form-label fieldLabel consultDate">Consultation Date & Time:</label>
+                                <input type="date" id="consultDate" name="consultDate" class="">
+                                <select id="consultTime" name="consultTime" class=""></select>
+                            </div>
                             <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
@@ -3640,6 +3650,42 @@
         });
     </script>
 
+    <!-- Consultation date and time default -->
+    <script>
+        const timeSelect = document.getElementById("consultTime");
+
+        for (let h = 0; h < 24; h++) {
+            for (let m = 0; m < 60; m += 10) {
+                const hours12 = h % 12 === 0 ? 12 : h % 12;
+                const ampm = h < 12 ? "AM" : "PM";
+                const minutes = String(m).padStart(2, "0");
+                const value24 = `${String(h).padStart(2, "0")}:${minutes}`;
+                const label12 = `${hours12}:${minutes} ${ampm}`;
+
+                const option = document.createElement("option");
+                option.value = value24;
+                option.textContent = label12;
+                timeSelect.appendChild(option);
+            }
+        }
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        document.getElementById("consultDate").value = `${year}-${month}-${day}`;
+
+        const currentMinutes = now.getMinutes();
+        const roundedMinutes = Math.round(currentMinutes / 10) * 10;
+        const adjustedMinutes = roundedMinutes === 60 ? 0 : roundedMinutes;
+        const adjustedHours = roundedMinutes === 60 ? now.getHours() + 1 : now.getHours();
+
+        const hours = String(adjustedHours % 24).padStart(2, "0");
+        const minutes = String(adjustedMinutes).padStart(2, "0");
+        const currentValue = `${hours}:${minutes}`;
+
+        timeSelect.value = currentValue;
+    </script>
 
     <!-- ******************************************************************************************************************************************** -->
     <!-- Sidebar active color change code -->

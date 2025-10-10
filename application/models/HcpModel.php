@@ -519,12 +519,12 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    // public function getMedicines()
-    // {
-    //     $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
-    //     $select = $this->db->query($details);
-    //     return $select->result_array();
-    // }
+    public function getMedicines()
+    {
+        $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
 
     public function getAdvices()
     {

@@ -467,7 +467,7 @@ class Healthcareprovider extends CI_Controller
             $this->data['investigationsList'] = $this->HcpModel->getInvestigations();
             $this->data['instructionsList'] = $this->HcpModel->getInstructions();
             $this->data['proceduresList'] = $this->HcpModel->getProcedures();
-            // $this->data['medicinesList'] = $this->HcpModel->getMedicines();
+            $this->data['medicinesList'] = $this->HcpModel->getMedicines();
             $this->data['advicesList'] = $this->HcpModel->getAdvices();
 
             $this->data['consultations'] = $this->HcpModel->get_consultations_by_patient($patientIdDb);
@@ -575,7 +575,7 @@ class Healthcareprovider extends CI_Controller
             $data['investigationsList'] = $this->HcpModel->getInvestigations();
             $data['instructionsList'] = $this->HcpModel->getInstructions();
             $data['proceduresList'] = $this->HcpModel->getProcedures();
-            // $data['medicinesList'] = $this->HcpModel->getMedicines();
+            $data['medicinesList'] = $this->HcpModel->getMedicines();
             $data['advicesList'] = $this->HcpModel->getAdvices();
 
             $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);
@@ -752,7 +752,7 @@ class Healthcareprovider extends CI_Controller
             $data['investigationsList'] = $this->HcpModel->getInvestigations();
             $data['instructionsList'] = $this->HcpModel->getInstructions();
             $data['proceduresList'] = $this->HcpModel->getProcedures();
-            // $data['medicinesList'] = $this->HcpModel->getMedicines();
+            $data['medicinesList'] = $this->HcpModel->getMedicines();
             $data['advicesList'] = $this->HcpModel->getAdvices();
 
             $data['consultation'] = $this->HcpModel->get_consultation_by_id($consultation_id);

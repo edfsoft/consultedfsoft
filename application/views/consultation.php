@@ -740,29 +740,6 @@
                                         </div>
 
                                         <!-- Medicine section -->
-                                        <!-- <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button"
-                                                data-toggle="collapse" data-target="#medicinesCollapse">
-                                                <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-container mt-2" id="medicinesCollapse">
-                                                <div id="medicinesWrapper">
-                                                    <div class="mb-3 position-relative">
-                                                        <div class="tags-input" id="medicinesInput">
-                                                            <input type="text"
-                                                                class="form-control border-0 p-0 m-0 shadow-none"
-                                                                id="medicinesSearchInput"
-                                                                placeholder="Search or type to add..." />
-                                                        </div>
-                                                        <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                                    </div>
-                                                    <div id="medicinesList" class="mt-2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="medicinesJson" id="medicinesJson"> -->
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
@@ -1829,43 +1806,6 @@
         </div>
 
         <!-- Medicine Modal -->
-        <!-- <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="medicinesModalTitle"
-                            style="font-family: Poppins, sans-serif;">
-                            Enter Medicine Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="medicineNote" class="form-label">Note</label>
-                            <input type="text" class="form-control" id="medicineNote" placeholder="Enter note" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="medicineSince" class="form-label">Since</label>
-                            <input type="text" class="form-control" id="medicineSince" placeholder="Enter since" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="medicineSeverity" class="form-label">Severity</label>
-                            <select id="medicineSeverity" class="form-select">
-                                <option value="">Select severity</option>
-                                <option value="Mild">Mild</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Severe">Severe</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn text-light" style="background-color: #00ad8e;"
-                            onclick="saveMedicineModal()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-lg">
@@ -1890,15 +1830,8 @@
                                     <option value="drop">drop</option>
                                 </select>
                             </div>
-                            <div id="quantityButtons" class="d-flex flex-wrap gap-2">
-                                [1,2,4,5,8,10,12,15,18,20].forEach(q => {
-                                const btn = document.createElement('button');
-                                btn.className = 'btn btn-outline-secondary btn-sm';
-                                btn.textContent = q;
-                                });
-                            </div>
+                            <div id="quantityButtons" class="d-flex flex-wrap gap-2"></div>
                         </div>
-
                         <!-- Default Timing / Frequency -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Default Timing
@@ -1922,7 +1855,6 @@
                                 <button class="btn btn-outline-secondary btn-sm freq-btn" data-val="5 times">5
                                     times</button>
                             </div>
-
                             <div class="d-flex flex-wrap gap-3 mt-2">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="foodTiming" value="Before Food"
@@ -1946,7 +1878,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Duration -->
                         <div>
                             <label class="form-label fw-semibold">Duration</label>
@@ -1954,18 +1885,7 @@
                                 <input type="text" class="form-control w-25" id="medicineDuration"
                                     placeholder="Enter custom duration">
                             </div>
-                            <div id="durationButtons" class="d-flex flex-wrap gap-2">
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="1d">1d</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="2d">2d</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="3d">3d</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="4d">4d</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="5d">5d</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="1w">1w</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="10d">10d</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="2w">2w</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="15d">15d</button>
-                                <button class="btn btn-outline-secondary btn-sm dur-btn" data-val="3w">3w</button>
-                            </div>
+                            <div id="durationButtons" class="d-flex flex-wrap gap-2"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -3153,29 +3073,36 @@
     </script>
 
     <!-- Medicine Modal Script -->
-    <!-- <script>
+    <script>
         const medicinesList = <?php echo json_encode(array_column($medicinesList, 'medicineBrand')); ?>;
+        const medicineUnits = ['ml', 'mg', 'tab', 'cap', 'drop'];
 
         const medicinesInput = document.getElementById("medicinesSearchInput");
         const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
         const medicinesTagContainer = document.getElementById("medicinesInput");
-
         const medicinesModal = new bootstrap.Modal(document.getElementById("medicinesModal"));
-        const medicineNote = document.getElementById("medicineNote");
-        const medicineSince = document.getElementById("medicineSince");
-        const medicineSeverity = document.getElementById("medicineSeverity");
         const medicinesModalTitle = document.getElementById("medicinesModalTitle");
+        const medicineQuantity = document.getElementById("medicineQuantity");
+        const medicineUnit = document.getElementById("medicineUnit");
+        const medicineDuration = document.getElementById("medicineDuration");
+        const toggleTimingType = document.getElementById("toggleTimingType");
+        const timingOptions = document.getElementById("timingOptions");
+        const frequencyOptions = document.getElementById("frequencyOptions");
+        const quantityButtons = document.getElementById("quantityButtons");
+        const durationButtons = document.getElementById("durationButtons");
 
         let selectedMedicines = [];
         let pendingMedicine = "";
         let editingMedicineTag = null;
+        let isTimingMode = true;
 
         function renderMedicinesSuggestions() {
-            const query = medicinesInput.value.toLowerCase().trim();
+            const query = medicinesInput.value.trim();
+            const queryLower = query.toLowerCase();
             medicinesSuggestionsBox.innerHTML = "";
 
             const filtered = medicinesList.filter(m =>
-                m.toLowerCase().includes(query) &&
+                m.toLowerCase().includes(queryLower) &&
                 !selectedMedicines.some(obj => obj.medicine === m)
             );
 
@@ -3202,22 +3129,120 @@
             medicinesSuggestionsBox.style.display = "block";
         }
 
+        function setupQuantityButtons() {
+            const quantities = [1, 2, 4, 5, 8, 10, 12, 15, 18, 20];
+            quantities.forEach(q => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline-secondary btn-sm';
+                btn.textContent = q;
+                btn.onclick = () => {
+                    medicineQuantity.value = q;
+                    quantityButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+                quantityButtons.appendChild(btn);
+            });
+        }
+
+        function setupDurationButtons() {
+            const durations = ['1d', '2d', '3d', '4d', '5d', '1w', '10d', '2w', '15d', '3w'];
+            durations.forEach(d => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline-secondary btn-sm dur-btn';
+                btn.setAttribute('data-val', d);
+                btn.textContent = d;
+                btn.onclick = () => {
+                    medicineDuration.value = d;
+                    durationButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+                durationButtons.appendChild(btn);
+            });
+        }
+
+        function setupTimingFrequencyButtons() {
+            timingOptions.querySelectorAll('.timing-btn').forEach(btn => {
+                btn.onclick = () => {
+                    timingOptions.querySelectorAll('.timing-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+            });
+            frequencyOptions.querySelectorAll('.freq-btn').forEach(btn => {
+                btn.onclick = () => {
+                    frequencyOptions.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+            });
+        }
+
+        toggleTimingType.onclick = () => {
+            isTimingMode = !isTimingMode;
+            timingOptions.classList.toggle('d-none', !isTimingMode);
+            frequencyOptions.classList.toggle('d-none', isTimingMode);
+            toggleTimingType.textContent = isTimingMode ? 'switch to frequency' : 'switch to timing';
+        };
+
         function openMedicineModal(tagName, existing = null, tagEl = null) {
             pendingMedicine = tagName;
             editingMedicineTag = tagEl;
 
             medicinesModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            medicineNote.value = existing?.note || "";
-            medicineSince.value = existing?.since || "";
-            medicineSeverity.value = existing?.severity || "";
+            medicineQuantity.value = existing?.quantity || "";
+            medicineUnit.value = existing?.unit || "tab";
+            medicineDuration.value = existing?.duration || "";
+            const foodTimingRadios = document.getElementsByName('foodTiming');
+            foodTimingRadios.forEach(radio => radio.checked = radio.value === (existing?.foodTiming || ""));
+
+            const timingButtons = timingOptions.querySelectorAll('.timing-btn');
+            const freqButtons = frequencyOptions.querySelectorAll('.freq-btn');
+            timingButtons.forEach(b => b.classList.remove('active'));
+            freqButtons.forEach(b => b.classList.remove('active'));
+
+            if (existing?.timing) {
+                isTimingMode = true;
+                timingOptions.classList.remove('d-none');
+                frequencyOptions.classList.add('d-none');
+                toggleTimingType.textContent = 'switch to frequency';
+                timingButtons.forEach(b => {
+                    if (b.getAttribute('data-val') === existing.timing) b.classList.add('active');
+                });
+            } else if (existing?.frequency) {
+                isTimingMode = false;
+                timingOptions.classList.add('d-none');
+                frequencyOptions.classList.remove('d-none');
+                toggleTimingType.textContent = 'switch to timing';
+                freqButtons.forEach(b => {
+                    if (b.getAttribute('data-val') === existing.frequency) b.classList.add('active');
+                });
+            } else {
+                isTimingMode = true;
+                timingOptions.classList.remove('d-none');
+                frequencyOptions.classList.add('d-none');
+                toggleTimingType.textContent = 'switch to frequency';
+            }
+
+            quantityButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            if (existing?.quantity) {
+                const qtyBtn = Array.from(quantityButtons.querySelectorAll('button')).find(b => b.textContent === existing.quantity);
+                if (qtyBtn) qtyBtn.classList.add('active');
+            }
+
+            durationButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            if (existing?.duration) {
+                const durBtn = Array.from(durationButtons.querySelectorAll('button')).find(b => b.getAttribute('data-val') === existing.duration);
+                if (durBtn) durBtn.classList.add('active');
+            }
 
             medicinesModal.show();
         }
 
         function saveMedicineModal() {
-            const note = medicineNote.value.trim();
-            const since = medicineSince.value.trim();
-            const severity = medicineSeverity.value;
+            const quantity = medicineQuantity.value.trim();
+            const unit = medicineUnit.value;
+            const duration = medicineDuration.value.trim();
+            const foodTiming = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
+            const timing = isTimingMode ? timingOptions.querySelector('.timing-btn.active')?.getAttribute('data-val') || "" : "";
+            const frequency = !isTimingMode ? frequencyOptions.querySelector('.freq-btn.active')?.getAttribute('data-val') || "" : "";
 
             if (!pendingMedicine) return;
 
@@ -3240,13 +3265,22 @@
                     .catch(err => console.error(err));
             }
 
+            const data = {
+                id: existingIndex !== -1 ? selectedMedicines[existingIndex].id || "new" : "new",
+                medicine: pendingMedicine,
+                quantity,
+                unit,
+                timing,
+                frequency,
+                foodTiming,
+                duration
+            };
+
             if (editingMedicineTag && existingIndex !== -1) {
-                let existingId = selectedMedicines[existingIndex].id || "new";
-                selectedMedicines[existingIndex] = { id: existingId, medicine: pendingMedicine, note, since, severity };
-                updateMedicineTagDisplay(editingMedicineTag, selectedMedicines[existingIndex]);
-                editingMedicineTag.setAttribute("data-id", existingId);
+                selectedMedicines[existingIndex] = data;
+                updateMedicineTagDisplay(editingMedicineTag, data);
+                editingMedicineTag.setAttribute("data-id", data.id);
             } else {
-                const data = { id: "new", medicine: pendingMedicine, note, since, severity };
                 selectedMedicines.push(data);
                 addMedicineTag(data);
             }
@@ -3261,7 +3295,6 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
-
             tag.setAttribute("data-id", data.id || "new");
 
             const textSpan = document.createElement("span");
@@ -3274,7 +3307,6 @@
             removeBtn.style.fontSize = "1rem";
             removeBtn.style.border = "none";
             removeBtn.style.background = "transparent";
-
             removeBtn.onclick = (e) => {
                 e.stopPropagation();
                 tag.remove();
@@ -3283,7 +3315,6 @@
             };
 
             tag.appendChild(removeBtn);
-
             updateMedicineTagDisplay(tag, data);
 
             tag.onclick = () => {
@@ -3294,12 +3325,14 @@
         }
 
         function updateMedicineTagDisplay(tagEl, data) {
-            const textParts = [data.medicine];
+            const textParts = [`${data.medicine} (${data.unit || 'tab'})`];
             const details = [];
 
-            if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
+            if (data.quantity) details.push(`Qty: ${data.quantity}`);
+            if (data.timing) details.push(`Timing: ${data.timing}`);
+            if (data.frequency) details.push(`Freq: ${data.frequency}`);
+            if (data.foodTiming) details.push(data.foodTiming);
+            if (data.duration) details.push(`Duration: ${data.duration}`);
 
             if (details.length > 0) {
                 textParts.push(`(${details.join(", ")})`);
@@ -3343,427 +3376,23 @@
             }
         });
 
-        renderMedicinesSuggestions();
-
         document.addEventListener("DOMContentLoaded", () => {
-            const preloadMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
+            setupQuantityButtons();
+            setupDurationButtons();
+            setupTimingFrequencyButtons();
 
-            if (preloadMedicines.length > 0) {
-                preloadMedicines.forEach(item => {
-                    const data = {
-                        id: item.id || "",
-                        medicine: item.medicine_name,
-                        note: item.note || "",
-                        since: item.since || "",
-                        severity: item.severity || ""
-                    };
-                    selectedMedicines.push(data);
-                    addMedicineTag(data);
-                });
-                updateMedicinesHiddenInput();
-            }
-        });
-    </script> -->
-    <!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const medicinesModal = new bootstrap.Modal(document.getElementById("medicinesModal")); // ✅ Now after modal is in DOM
-
-            const medicinesList = <?php echo json_encode(array_column($medicinesList, 'medicineBrand')); ?>;
-            const medicineTypes = ['TAB', 'CAP', 'INJ', 'GEL', 'POW', 'SYR', 'DROPS', 'OINT', 'CREAM', 'SPRAY', 'SUSP'];
-
-            const medicinesInput = document.getElementById("medicinesSearchInput");
-            const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
-            const medicinesTagContainer = document.getElementById("medicinesInput");
-
-            const medicineNote = document.getElementById("medicineNote");
-            const medicineSince = document.getElementById("medicineSince");
-            const medicineSeverity = document.getElementById("medicineSeverity");
-            const medicineType = document.getElementById("medicineType");
-            const medicinesModalTitle = document.getElementById("medicinesModalTitle");
-
-            let selectedMedicines = [];
-            let pendingMedicine = "";
-            let editingMedicineTag = null;
-
-            function renderMedicinesSuggestions() {
-                const query = medicinesInput.value.toLowerCase().trim();
-                medicinesSuggestionsBox.innerHTML = "";
-
-                const filtered = medicinesList.filter(m =>
-                    m.toLowerCase().includes(query) &&
-                    !selectedMedicines.some(obj => obj.medicine === m)
-                );
-
-                if (filtered.length === 0 && query !== "") {
-                    const customOption = document.createElement("div");
-                    customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                    customOption.onclick = () => {
-                        openMedicineModal(query);
-                        medicinesInput.value = "";
-                    };
-                    medicinesSuggestionsBox.appendChild(customOption);
-                } else {
-                    filtered.forEach(item => {
-                        const div = document.createElement("div");
-                        div.textContent = item;
-                        div.onclick = () => {
-                            openMedicineModal(item);
-                            medicinesInput.value = "";
-                        };
-                        medicinesSuggestionsBox.appendChild(div);
-                    });
-                }
-
-                medicinesSuggestionsBox.style.display = "block";
-            }
-
-            function openMedicineModal(tagName, existing = null, tagEl = null) {
-                pendingMedicine = tagName;
-                editingMedicineTag = tagEl;
-
-                medicinesModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-                medicineNote.value = existing?.note || "";
-                medicineSince.value = existing?.since || "";
-                medicineSeverity.value = existing?.severity || "";
-                medicineType.value = existing?.type || "TAB";
-
-                medicinesModal.show(); // ✅ Now works
-            }
-
-            function saveMedicineModal() {
-                const note = medicineNote.value.trim();
-                const since = medicineSince.value.trim();
-                const severity = medicineSeverity.value;
-                const type = medicineType.value;
-
-                if (!pendingMedicine) return;
-
-                const existingIndex = selectedMedicines.findIndex(m => m.medicine === pendingMedicine);
-
-                if (!medicinesList.includes(pendingMedicine)) {
-                    fetch("<?= site_url('Healthcareprovider/addMedicine') ?>", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: "name=" + encodeURIComponent(pendingMedicine)
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === "success") {
-                                medicinesList.push(pendingMedicine);
-                            } else {
-                                console.error("Error saving new medicine", data);
-                            }
-                        })
-                        .catch(err => console.error(err));
-                }
-
-                if (editingMedicineTag && existingIndex !== -1) {
-                    let existingId = selectedMedicines[existingIndex].id || "new";
-                    selectedMedicines[existingIndex] = { id: existingId, medicine: pendingMedicine, note, since, severity, type };
-                    updateMedicineTagDisplay(editingMedicineTag, selectedMedicines[existingIndex]);
-                    editingMedicineTag.setAttribute("data-id", existingId);
-                } else {
-                    const data = { id: "new", medicine: pendingMedicine, note, since, severity, type };
-                    selectedMedicines.push(data);
-                    addMedicineTag(data);
-                }
-
-                medicinesModal.hide();
-                pendingMedicine = "";
-                editingMedicineTag = null;
-                updateMedicinesHiddenInput();
-            }
-
-            function addMedicineTag(data) {
-                const tag = document.createElement("span");
-                tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-                tag.style.cursor = "pointer";
-                tag.setAttribute("data-id", data.id || "new");
-
-                updateMedicineTagDisplay(tag, data);
-
-                tag.onclick = () => {
-                    openMedicineModal(data.medicine, data, tag);
-                };
-
-                medicinesTagContainer.insertBefore(tag, medicinesInput);
-            }
-
-            function updateMedicineTagDisplay(tagEl, data) {
-                const textParts = [`${data.medicine} (${data.type || 'TAB'})`];
-                const details = [];
-
-                if (data.note) details.push(`Note: ${data.note}`);
-                if (data.since) details.push(`Since: ${data.since}`);
-                if (data.severity) details.push(`Severity: ${data.severity}`);
-
-                if (details.length > 0) textParts.push(`(${details.join(", ")})`);
-
-                tagEl.innerHTML = textParts.join(" ");
-
-                const removeBtn = document.createElement("button");
-                removeBtn.type = "button";
-                removeBtn.className = "text-light ms-2";
-                removeBtn.innerHTML = "&times;";
-                removeBtn.style.fontSize = "1rem";
-                removeBtn.style.border = "none";
-                removeBtn.style.background = "transparent";
-
-                removeBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    tagEl.remove();
-                    selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
-                    updateMedicinesHiddenInput();
-                };
-
-                tagEl.appendChild(removeBtn);
-                tagEl.setAttribute("data-id", data.id || "new");
-            }
-
-            function updateMedicinesHiddenInput() {
-                document.getElementById("medicinesJson").value = JSON.stringify(selectedMedicines);
-            }
-
-            medicinesInput.addEventListener("input", renderMedicinesSuggestions);
-            medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
-            medicinesInput.addEventListener("keydown", e => {
-                if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
-                    e.preventDefault();
-                    openMedicineModal(medicinesInput.value.trim());
-                    medicinesInput.value = "";
-                }
-            });
-
-            document.addEventListener("click", (e) => {
-                if (!medicinesTagContainer.contains(e.target)) {
-                    medicinesSuggestionsBox.style.display = "none";
-                }
-            });
-
-            renderMedicinesSuggestions();
-
-            // ✅ Preload existing medicines if any
             const preloadMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
             if (preloadMedicines.length > 0) {
                 preloadMedicines.forEach(item => {
                     const data = {
                         id: item.id || "",
                         medicine: item.medicine_name,
-                        note: item.note || "",
-                        since: item.since || "",
-                        severity: item.severity || "",
-                        type: item.type || "TAB"
-                    };
-                    selectedMedicines.push(data);
-                    addMedicineTag(data);
-                });
-                updateMedicinesHiddenInput();
-            }
-        });
-    </script> -->
-    <script>
-        const medicinesList = <?php echo json_encode(array_column($medicinesList, 'medicineBrand')); ?>;
-        const medicineTypes = ['TAB', 'CAP', 'INJ', 'GEL', 'POW', 'SYR', 'DROPS', 'OINT', 'CREAM', 'SPRAY', 'SUSP'];
-
-        const medicinesInput = document.getElementById("medicinesSearchInput");
-        const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
-        const medicinesTagContainer = document.getElementById("medicinesInput");
-
-        const medicinesModal = new bootstrap.Modal(document.getElementById("medicinesModal"));
-        const medicineNote = document.getElementById("medicineNote");
-        const medicineSince = document.getElementById("medicineSince");
-        const medicineSeverity = document.getElementById("medicineSeverity");
-        const medicineType = document.getElementById("medicineType");
-        const medicinesModalTitle = document.getElementById("medicinesModalTitle");
-
-        let selectedMedicines = [];
-        let pendingMedicine = "";
-        let editingMedicineTag = null;
-
-        function renderMedicinesSuggestions() {
-            const query = medicinesInput.value.toLowerCase().trim();
-            medicinesSuggestionsBox.innerHTML = "";
-
-            const filtered = medicinesList.filter(m =>
-                m.toLowerCase().includes(query) &&
-                !selectedMedicines.some(obj => obj.medicine === m)
-            );
-
-            if (filtered.length === 0 && query !== "") {
-                const customOption = document.createElement("div");
-                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                customOption.onclick = () => {
-                    openMedicineModal(query);
-                    medicinesInput.value = "";
-                };
-                medicinesSuggestionsBox.appendChild(customOption);
-            } else {
-                filtered.forEach(item => {
-                    const div = document.createElement("div");
-                    div.textContent = item;
-                    div.onclick = () => {
-                        openMedicineModal(item);
-                        medicinesInput.value = "";
-                    };
-                    medicinesSuggestionsBox.appendChild(div);
-                });
-            }
-
-            medicinesSuggestionsBox.style.display = "block";
-        }
-
-        function openMedicineModal(tagName, existing = null, tagEl = null) {
-            pendingMedicine = tagName;
-            editingMedicineTag = tagEl;
-
-            medicinesModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            medicineNote.value = existing?.note || "";
-            medicineSince.value = existing?.since || "";
-            medicineSeverity.value = existing?.severity || "";
-            medicineType.value = existing?.type || "TAB";
-
-            medicinesModal.show();
-        }
-
-        function saveMedicineModal() {
-            const note = medicineNote.value.trim();
-            const since = medicineSince.value.trim();
-            const severity = medicineSeverity.value;
-            const type = medicineType.value;
-
-            if (!pendingMedicine) return;
-
-            const existingIndex = selectedMedicines.findIndex(m => m.medicine === pendingMedicine);
-
-            if (!medicinesList.includes(pendingMedicine)) {
-                fetch("<?= site_url('Healthcareprovider/addMedicine') ?>", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "name=" + encodeURIComponent(pendingMedicine)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            medicinesList.push(pendingMedicine);
-                        } else {
-                            console.error("Error saving new medicine", data);
-                        }
-                    })
-                    .catch(err => console.error(err));
-            }
-
-            if (editingMedicineTag && existingIndex !== -1) {
-                let existingId = selectedMedicines[existingIndex].id || "new";
-                selectedMedicines[existingIndex] = { id: existingId, medicine: pendingMedicine, note, since, severity, type };
-                updateMedicineTagDisplay(editingMedicineTag, selectedMedicines[existingIndex]);
-                editingMedicineTag.setAttribute("data-id", existingId);
-            } else {
-                const data = { id: "new", medicine: pendingMedicine, note, since, severity, type };
-                selectedMedicines.push(data);
-                addMedicineTag(data);
-            }
-
-            medicinesModal.hide();
-            pendingMedicine = "";
-            editingMedicineTag = null;
-            updateMedicinesHiddenInput();
-        }
-
-        function addMedicineTag(data) {
-            const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-            tag.style.cursor = "pointer";
-
-            tag.setAttribute("data-id", data.id || "new");
-
-            const textSpan = document.createElement("span");
-            tag.appendChild(textSpan);
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tag.remove();
-                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
-                updateMedicinesHiddenInput();
-            };
-
-            tag.appendChild(removeBtn);
-            updateMedicineTagDisplay(tag, data);
-
-            tag.onclick = () => {
-                openMedicineModal(data.medicine, data, tag);
-            };
-
-            medicinesTagContainer.insertBefore(tag, medicinesInput);
-        }
-
-        function updateMedicineTagDisplay(tagEl, data) {
-            const textParts = [`${data.medicine} (${data.type || 'TAB'})`];
-            const details = [];
-
-            if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
-
-            if (details.length > 0) textParts.push(`(${details.join(", ")})`);
-
-            tagEl.innerHTML = textParts.join(" ");
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tagEl.remove();
-                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
-                updateMedicinesHiddenInput();
-            };
-            tagEl.appendChild(removeBtn);
-            tagEl.setAttribute("data-id", data.id || "new");
-        }
-
-        function updateMedicinesHiddenInput() {
-            document.getElementById("medicinesJson").value = JSON.stringify(selectedMedicines);
-        }
-
-        medicinesInput.addEventListener("input", renderMedicinesSuggestions);
-        medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
-        medicinesInput.addEventListener("keydown", e => {
-            if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
-                e.preventDefault();
-                openMedicineModal(medicinesInput.value.trim());
-                medicinesInput.value = "";
-            }
-        });
-
-        document.addEventListener("click", (e) => {
-            if (!medicinesTagContainer.contains(e.target)) {
-                medicinesSuggestionsBox.style.display = "none";
-            }
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const preloadMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
-
-            if (preloadMedicines.length > 0) {
-                preloadMedicines.forEach(item => {
-                    const data = {
-                        id: item.id || "",
-                        medicine: item.medicine_name,
-                        note: item.note || "",
-                        since: item.since || "",
-                        severity: item.severity || "",
-                        type: item.type || "TAB"
+                        quantity: item.quantity || "",
+                        unit: item.unit || "tab",
+                        timing: item.timing || "",
+                        frequency: item.frequency || "",
+                        foodTiming: item.foodTiming || "",
+                        duration: item.duration || ""
                     };
                     selectedMedicines.push(data);
                     addMedicineTag(data);

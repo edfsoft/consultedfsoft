@@ -962,6 +962,8 @@ class HcpModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         $consultData = array(
+            'consult_date' => $post['consultDate'],
+            'consult_time' => $post['consultTime'],
             'notes' => trim($post['notes']),
             'next_follow_up' => $post['nextFollowUpDate'],
         );

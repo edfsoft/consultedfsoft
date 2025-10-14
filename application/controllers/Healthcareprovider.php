@@ -693,7 +693,6 @@ class Healthcareprovider extends CI_Controller
             }
         }
 
-
         // Attachments
         if (!empty($_FILES['consultationFiles']['name'][0])) {
             $uploadPath = './uploads/consultations/';
@@ -929,6 +928,37 @@ class Healthcareprovider extends CI_Controller
         $this->HcpModel->delete_advices($consultationId);
         $adviceSaved = $this->HcpModel->save_advice($post);
 
+        $medicines_json = $this->input->post('medicinesJson');
+        $medicines = json_decode($medicines_json, true);
+
+        if ($medicines && is_array($medicines)) {
+            $existingIds = [];
+
+            foreach ($medicines as $medicine) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'medicine_name' => $medicine['medicine'],
+                    'quantity' => $medicine['quantity'],
+                    'unit' => $medicine['unit'],
+                    'timing' => $medicine['timing'],
+                    'frequency' => $medicine['frequency'],
+                    'food_timing' => $medicine['foodTiming'],
+                    'duration' => $medicine['duration']
+                );
+
+                if (!empty($medicine['id']) && $medicine['id'] !== 'new') {
+                    $this->HcpModel->update_medicine($medicine['id'], $data);
+                    $existingIds[] = $medicine['id'];
+                } elseif ($medicine['id'] == 'new') {
+                    $insertId = $this->HcpModel->save_medicine($data);
+                    $existingIds[] = $insertId;
+                }
+            }
+
+            $this->HcpModel->delete_removed_medicines($consultationId, $existingIds);
+            $medicineSaved = true;
+        }
+
         // Attachments
         if (!empty($_FILES['consultationFiles']['name'][0])) {
             $uploadPath = './uploads/consultations/';
@@ -997,6 +1027,8 @@ class Healthcareprovider extends CI_Controller
             $messages[] = "Procedures";
         if ($adviceSaved)
             $messages[] = "Advice";
+        if ($medicineSaved)
+            $messages[] = "Medicines";
         if ($attachmentsSaved)
             $messages[] = "Attachments";
 

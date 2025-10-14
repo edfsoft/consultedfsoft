@@ -809,6 +809,24 @@ class HcpModel extends CI_Model
         return $insertId;
     }
 
+    public function update_medicine($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('patient_medicines', $data);
+    }
+
+    public function delete_removed_medicines($consultation_id, $existingIds)
+    {
+        if (!empty($existingIds)) {
+            $this->db->where('consultation_id', $consultation_id);
+            $this->db->where_not_in('id', $existingIds);
+            $this->db->delete('patient_medicines');
+        } else {
+            $this->db->where('consultation_id', $consultation_id);
+            $this->db->delete('patient_medicines');
+        }
+    }
+
 
     public function save_attachment($consultationId, $fileName)
     {

@@ -802,6 +802,14 @@ class HcpModel extends CI_Model
         return ($rowsInserted > 0);
     }
 
+    public function save_medicine($data)
+    {
+        $this->db->insert('patient_medicines', $data);
+        $insertId = $this->db->insert_id();
+        return $insertId;
+    }
+
+
     public function save_attachment($consultationId, $fileName)
     {
         $data = [
@@ -887,6 +895,10 @@ class HcpModel extends CI_Model
             // Advices
             $consultation['advices'] = $this->db
                 ->get_where('patient_advices', ['consultation_id' => $consultation_id])
+                ->result_array();
+                // Advices
+            $consultation['medicines'] = $this->db
+                ->get_where('patient_medicines', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Attachments

@@ -672,6 +672,27 @@ class Healthcareprovider extends CI_Controller
         $procedureSaved = $this->HcpModel->save_procedure($post);
         $adviceSaved = $this->HcpModel->save_advice($post);
 
+        $medicines_json = $this->input->post('medicinesJson');
+        $medicines = json_decode($medicines_json, true);
+
+        if ($medicines && is_array($medicines)) {
+            foreach ($medicines as $medicine) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'medicine_name' => $medicine['medicine'],
+                    'quantity' => $medicine['quantity'],
+                    'unit' => $medicine['unit'],
+                    'timing' => $medicine['timing'],
+                    'frequency' => $medicine['frequency'],
+                    'food_timing' => $medicine['foodTiming'],
+                    'duration' => $medicine['duration']
+                );
+
+                $medicineSaved = $this->HcpModel->save_medicine($data);
+            }
+        }
+
+
         // Attachments
         if (!empty($_FILES['consultationFiles']['name'][0])) {
             $uploadPath = './uploads/consultations/';
@@ -730,6 +751,8 @@ class Healthcareprovider extends CI_Controller
             $messages[] = "Procedures";
         if ($adviceSaved)
             $messages[] = "Advice";
+        if ($medicineSaved)
+            $messages[] = "Medicines";
         if ($attachmentsSaved)
             $messages[] = "Attachments";
 

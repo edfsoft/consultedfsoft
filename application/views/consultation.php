@@ -366,6 +366,37 @@
                                                             </ul>
                                                         <?php endif; ?>
 
+                                                        <!-- Medicines -->
+                                                        <?php if (!empty($consultation['medicines'])): ?>
+                                                            <p><strong>Medicines:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['medicines'] as $medicine): ?>
+                                                                    <li>
+                                                                        <?= $medicine['medicine_name'] ?>
+                                                                        <?php
+                                                                        $details = [];
+                                                                        if (!empty($medicine['quantity']))
+                                                                            $details[] = $medicine['quantity'];
+                                                                        if (!empty($medicine['unit']))
+                                                                            $details[] = $medicine['unit'];
+                                                                        if (!empty($medicine['timing']))
+                                                                            $details[] = $medicine['timing'];
+                                                                          if (!empty($medicine['frequency']))
+                                                                            $details[] = $medicine['frequency'];
+                                                                          if (!empty($medicine['food_timing']))
+                                                                            $details[] = $medicine['food_timing'];
+                                                                          if (!empty($medicine['duration']))
+                                                                            $details[] = $medicine['duration'];
+
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
+
                                                         <!-- Attachments
                                                         <?php if (!empty($consultation['attachments'])): ?>
                                                             <p><strong>Attachments:</strong></p>

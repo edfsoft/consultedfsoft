@@ -896,7 +896,8 @@ class HcpModel extends CI_Model
             $consultation['advices'] = $this->db
                 ->get_where('patient_advices', ['consultation_id' => $consultation_id])
                 ->result_array();
-                // Advices
+
+            // Medicines
             $consultation['medicines'] = $this->db
                 ->get_where('patient_medicines', ['consultation_id' => $consultation_id])
                 ->result_array();
@@ -961,6 +962,12 @@ class HcpModel extends CI_Model
     public function get_advices_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where(' patient_advices', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    }
+
+    public function get_medicines_by_consultation_id($consultation_id)
+    {
+        $query = $this->db->get_where(' patient_medicines', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 

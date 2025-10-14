@@ -381,11 +381,11 @@
                                                                             $details[] = $medicine['unit'];
                                                                         if (!empty($medicine['timing']))
                                                                             $details[] = $medicine['timing'];
-                                                                          if (!empty($medicine['frequency']))
+                                                                        if (!empty($medicine['frequency']))
                                                                             $details[] = $medicine['frequency'];
-                                                                          if (!empty($medicine['food_timing']))
+                                                                        if (!empty($medicine['food_timing']))
                                                                             $details[] = $medicine['food_timing'];
-                                                                          if (!empty($medicine['duration']))
+                                                                        if (!empty($medicine['duration']))
                                                                             $details[] = $medicine['duration'];
 
                                                                         if (!empty($details)) {
@@ -3468,7 +3468,7 @@
                         unit: item.unit || "tab",
                         timing: item.timing || "",
                         frequency: item.frequency || "",
-                        foodTiming: item.foodTiming || "",
+                        foodTiming: item.food_timing || "",
                         duration: item.duration || ""
                     };
                     selectedMedicines.push(data);

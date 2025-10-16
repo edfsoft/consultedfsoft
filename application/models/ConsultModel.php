@@ -141,7 +141,7 @@ class ConsultModel extends CI_Model
             'spo2_percent' => $post['patientSpo2'],
             'temperature_f' => $post['patientTemperature'],
         );
-        return $this->db->insert('patient_vitals', $vitalData);
+        return $this->db->insert('consult_vitals', $vitalData);
     }
 
     public function update_vitals($post)
@@ -159,13 +159,13 @@ class ConsultModel extends CI_Model
             'temperature_f' => $post['patientTemperature'],
         );
         $this->db->where('id', $post['vitalsDbId']);
-        $this->db->update('patient_vitals', $vitalData);
+        $this->db->update('consult_vitals', $vitalData);
         return true;
     }
 
     public function save_symptom($data)
     {
-        $this->db->insert('patient_symptoms', $data);
+        $this->db->insert('consult_symptoms', $data);
         $insertId = $this->db->insert_id();
         return $insertId;
     }
@@ -173,24 +173,24 @@ class ConsultModel extends CI_Model
     public function update_symptom($id, $data)
     {
         $this->db->where('id', $id);
-        return $this->db->update('patient_symptoms', $data);
+        return $this->db->update('consult_symptoms', $data);
     }
 
     public function delete_removed_symptoms($consultationId, $keepIds)
     {
         if (empty($keepIds)) {
             $this->db->where('consultation_id', $consultationId);
-            $this->db->delete('patient_symptoms');
+            $this->db->delete('consult_symptoms');
         } else {
             $this->db->where('consultation_id', $consultationId);
             $this->db->where_not_in('id', $keepIds);
-            $this->db->delete('patient_symptoms');
+            $this->db->delete('consult_symptoms');
         }
     }
 
     public function save_finding($data)
     {
-        $this->db->insert('patient_findings', $data);
+        $this->db->insert('consult_findings', $data);
         $insertId = $this->db->insert_id();
         return $insertId;
     }
@@ -198,24 +198,24 @@ class ConsultModel extends CI_Model
     public function update_finding($id, $data)
     {
         $this->db->where('id', $id);
-        return $this->db->update('patient_findings', $data);
+        return $this->db->update('consult_findings', $data);
     }
 
     public function delete_removed_findings($consultationId, $keepIds)
     {
         if (empty($keepIds)) {
             $this->db->where('consultation_id', $consultationId);
-            $this->db->delete('patient_findings');
+            $this->db->delete('consult_findings');
         } else {
             $this->db->where('consultation_id', $consultationId);
             $this->db->where_not_in('id', $keepIds);
-            $this->db->delete('patient_findings');
+            $this->db->delete('consult_findings');
         }
     }
 
     public function save_diagnosis($data)
     {
-        $this->db->insert('patient_diagnosis', $data);
+        $this->db->insert('consult_diagnosis', $data);
         $insertId = $this->db->insert_id();
         return $insertId;
     }
@@ -223,30 +223,30 @@ class ConsultModel extends CI_Model
     public function update_diagnosis($id, $data)
     {
         $this->db->where('id', $id);
-        return $this->db->update('patient_diagnosis', $data);
+        return $this->db->update('consult_diagnosis', $data);
     }
 
     public function delete_removed_diagnosis($consultationId, $keepIds)
     {
         if (empty($keepIds)) {
             $this->db->where('consultation_id', $consultationId);
-            $this->db->delete('patient_diagnosis');
+            $this->db->delete('consult_diagnosis');
         } else {
             $this->db->where('consultation_id', $consultationId);
             $this->db->where_not_in('id', $keepIds);
-            $this->db->delete('patient_diagnosis');
+            $this->db->delete('consult_diagnosis');
         }
     }
 
     public function delete_investigations($consultationId)
     {
         $this->db->where('consultation_id', $consultationId);
-        return $this->db->delete('patient_investigations');
+        return $this->db->delete('consult_investigations');
     }
 
     public function save_investigation($data)
     {
-        $this->db->insert('patient_investigations', $data);
+        $this->db->insert('consult_investigations', $data);
         $insertId = $this->db->insert_id();
         return $insertId;
     }
@@ -254,25 +254,25 @@ class ConsultModel extends CI_Model
     public function update_investigation($id, $data)
     {
         $this->db->where('id', $id);
-        return $this->db->update('patient_investigations', $data);
+        return $this->db->update('consult_investigations', $data);
     }
 
     public function delete_removed_investigations($consultationId, $keepIds)
     {
         if (empty($keepIds)) {
             $this->db->where('consultation_id', $consultationId);
-            $this->db->delete('patient_investigations');
+            $this->db->delete('consult_investigations');
         } else {
             $this->db->where('consultation_id', $consultationId);
             $this->db->where_not_in('id', $keepIds);
-            $this->db->delete('patient_investigations');
+            $this->db->delete('consult_investigations');
         }
     }
 
     public function delete_instructions($consultationId)
     {
         $this->db->where('consultation_id', $consultationId);
-        return $this->db->delete('patient_instructions');
+        return $this->db->delete('consult_instructions');
     }
 
     public function save_instruction($post)
@@ -281,7 +281,7 @@ class ConsultModel extends CI_Model
         $rowsInserted = 0;
         if (!empty($instructions) && is_array($instructions)) {
             foreach ($instructions as $instruction) {
-                $this->db->insert('patient_instructions', [
+                $this->db->insert('consult_instructions', [
                     'consultation_id' => $post['consultationId'],
                     'instruction_name' => $instruction
                 ]);
@@ -296,7 +296,7 @@ class ConsultModel extends CI_Model
     public function delete_procedures($consultationId)
     {
         $this->db->where('consultation_id', $consultationId);
-        return $this->db->delete('patient_procedures');
+        return $this->db->delete('consult_procedures');
     }
 
     public function save_procedure($post)
@@ -305,7 +305,7 @@ class ConsultModel extends CI_Model
         $rowsInserted = 0;
         if (!empty($procedures) && is_array($procedures)) {
             foreach ($procedures as $procedure) {
-                $this->db->insert('patient_procedures', [
+                $this->db->insert('consult_procedures', [
                     'consultation_id' => $post['consultationId'],
                     'procedure_name' => $procedure
                 ]);
@@ -320,7 +320,7 @@ class ConsultModel extends CI_Model
     public function delete_advices($consultationId)
     {
         $this->db->where('consultation_id', $consultationId);
-        return $this->db->delete('patient_advices');
+        return $this->db->delete('consult_advices');
     }
 
     public function save_advice($post)
@@ -329,7 +329,7 @@ class ConsultModel extends CI_Model
         $rowsInserted = 0;
         if (!empty($advices) && is_array($advices)) {
             foreach ($advices as $advice) {
-                $this->db->insert('patient_advices', [
+                $this->db->insert('consult_advices', [
                     'consultation_id' => $post['consultationId'],
                     'advice_name' => $advice
                 ]);
@@ -343,7 +343,7 @@ class ConsultModel extends CI_Model
 
     public function save_medicine($data)
     {
-        $this->db->insert('patient_medicines', $data);
+        $this->db->insert('consult_medicines', $data);
         $insertId = $this->db->insert_id();
         return $insertId;
     }
@@ -351,7 +351,7 @@ class ConsultModel extends CI_Model
     public function update_medicine($id, $data)
     {
         $this->db->where('id', $id);
-        return $this->db->update('patient_medicines', $data);
+        return $this->db->update('consult_medicines', $data);
     }
 
     public function delete_removed_medicines($consultation_id, $existingIds)
@@ -359,10 +359,10 @@ class ConsultModel extends CI_Model
         if (!empty($existingIds)) {
             $this->db->where('consultation_id', $consultation_id);
             $this->db->where_not_in('id', $existingIds);
-            $this->db->delete('patient_medicines');
+            $this->db->delete('consult_medicines');
         } else {
             $this->db->where('consultation_id', $consultation_id);
-            $this->db->delete('patient_medicines');
+            $this->db->delete('consult_medicines');
         }
     }
 
@@ -373,13 +373,13 @@ class ConsultModel extends CI_Model
             'file_name' => $fileName,
             'created_at' => date('Y-m-d H:i:s')
         ];
-        $this->db->insert('patient_attachments', $data);
+        $this->db->insert('consult_attachments', $data);
     }
 
     public function getLastAttachmentCounter($consultationId)
     {
         $this->db->select('file_name');
-        $this->db->from('patient_attachments');
+        $this->db->from('consult_attachments');
         $this->db->where('consultation_id', $consultationId);
         $this->db->order_by('id', 'DESC');
         $this->db->limit(1);
@@ -397,7 +397,7 @@ class ConsultModel extends CI_Model
     {
         $this->db->where('consultation_id', $consultationId);
         $this->db->where('file_name', $fileName);
-        $this->db->delete('patient_attachments');
+        $this->db->delete('consult_attachments');
     }
 
     // All consultation details by patient id
@@ -414,52 +414,52 @@ class ConsultModel extends CI_Model
 
             // Vitals
             $consultation['vitals'] = $this->db
-                ->get_where('patient_vitals', ['consultation_id' => $consultation_id])
+                ->get_where('consult_vitals', ['consultation_id' => $consultation_id])
                 ->row_array();
 
             // Symptoms
             $consultation['symptoms'] = $this->db
-                ->get_where('patient_symptoms', ['consultation_id' => $consultation_id])
+                ->get_where('consult_symptoms', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Findings
             $consultation['findings'] = $this->db
-                ->get_where('patient_findings', ['consultation_id' => $consultation_id])
+                ->get_where('consult_findings', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Diagnosis
             $consultation['diagnosis'] = $this->db
-                ->get_where('patient_diagnosis', ['consultation_id' => $consultation_id])
+                ->get_where('consult_diagnosis', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Investigations
             $consultation['investigations'] = $this->db
-                ->get_where('patient_investigations', ['consultation_id' => $consultation_id])
+                ->get_where('consult_investigations', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Instructions
             $consultation['instructions'] = $this->db
-                ->get_where('patient_instructions', ['consultation_id' => $consultation_id])
+                ->get_where('consult_instructions', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Procedures
             $consultation['procedures'] = $this->db
-                ->get_where('patient_procedures', ['consultation_id' => $consultation_id])
+                ->get_where('consult_procedures', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Advices
             $consultation['advices'] = $this->db
-                ->get_where('patient_advices', ['consultation_id' => $consultation_id])
+                ->get_where('consult_advices', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Medicines
             $consultation['medicines'] = $this->db
-                ->get_where('patient_medicines', ['consultation_id' => $consultation_id])
+                ->get_where('consult_medicines', ['consultation_id' => $consultation_id])
                 ->result_array();
 
             // Attachments
             $consultation['attachments'] = $this->db
-                ->get_where('patient_attachments', ['consultation_id' => $consultation_id])
+                ->get_where('consult_attachments', ['consultation_id' => $consultation_id])
                 ->result_array();
         }
 
@@ -474,61 +474,61 @@ class ConsultModel extends CI_Model
 
     public function get_vitals_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where('patient_vitals', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where('consult_vitals', array('consultation_id' => $consultation_id));
         return $query->row_array();
     }
 
     public function get_symptoms_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where('patient_symptoms', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where('consult_symptoms', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
     public function get_findings_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where('patient_findings', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where('consult_findings', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
     public function get_diagnosis_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where('patient_diagnosis', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where('consult_diagnosis', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
     public function get_investigations_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where('patient_investigations', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where('consult_investigations', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
     public function get_instructions_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where('patient_instructions', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where('consult_instructions', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
     public function get_procedures_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where('patient_procedures', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where('consult_procedures', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
     public function get_advices_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where(' patient_advices', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where(' consult_advices', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
     public function get_medicines_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where(' patient_medicines', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where(' consult_medicines', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
     public function get_attachments_by_consultation_id($consultation_id)
     {
-        $query = $this->db->get_where(' patient_attachments', array('consultation_id' => $consultation_id));
+        $query = $this->db->get_where(' consult_attachments', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 
@@ -538,37 +538,37 @@ class ConsultModel extends CI_Model
         $this->db->trans_start();
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_vitals');
+        $this->db->delete('consult_vitals');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_symptoms');
+        $this->db->delete('consult_symptoms');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_findings');
+        $this->db->delete('consult_findings');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_diagnosis');
+        $this->db->delete('consult_diagnosis');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_investigations');
+        $this->db->delete('consult_investigations');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_instructions');
+        $this->db->delete('consult_instructions');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_procedures');
+        $this->db->delete('consult_procedures');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_advices');
+        $this->db->delete('consult_advices');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_medicines');
+        $this->db->delete('consult_medicines');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_medicines');
+        $this->db->delete('consult_medicines');
 
         $this->db->where('consultation_id', $consultation_id);
-        $this->db->delete('patient_attachments');
+        $this->db->delete('consult_attachments');
 
         $this->db->where('id', $consultation_id);
         $this->db->delete('consultations');

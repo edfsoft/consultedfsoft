@@ -12,7 +12,7 @@ class Consultation extends CI_Controller
         $this->load->library('email');
     }
 
-   public function consultation($patientIdDb)
+    public function consultation($patientIdDb)
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "consultDashboard";
@@ -122,7 +122,7 @@ class Consultation extends CI_Controller
         ]);
     }
 
-     // Follow up Consultation view page
+    // Follow up Consultation view page
     public function followupConsultation($consultation_id)
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -262,6 +262,8 @@ class Consultation extends CI_Controller
             $uploadedFiles = [];
             $lastCounter = $this->ConsultModel->getLastAttachmentCounter($consultationId);
 
+            $this->load->library('upload');
+
             for ($i = 0; $i < $filesCount; $i++) {
                 if (!empty($_FILES['consultationFiles']['name'][$i])) {
                     $ext = pathinfo($_FILES['consultationFiles']['name'][$i], PATHINFO_EXTENSION);
@@ -274,18 +276,21 @@ class Consultation extends CI_Controller
                     $_FILES['file']['error'] = $_FILES['consultationFiles']['error'][$i];
                     $_FILES['file']['size'] = $_FILES['consultationFiles']['size'][$i];
 
-                    $config['upload_path'] = $uploadPath;
-                    $config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
-                    $config['file_name'] = $newFileName;
+                    $config = [
+                        'upload_path' => $uploadPath,
+                        'allowed_types' => 'jpg|jpeg|png|pdf|doc|docx',
+                        'file_name' => $newFileName,
+                        'overwrite' => false
+                    ];
 
-                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
 
                     if ($this->upload->do_upload('file')) {
                         $uploadedFiles[] = $newFileName;
                         $this->ConsultModel->save_attachment($consultationId, $newFileName);
                         $attachmentsSaved = true;
                     } else {
-                        error_log("Upload error: " . $this->upload->display_errors()); // Log errors
+                        error_log("Upload error for file {$newFileName}: " . $this->upload->display_errors());
                     }
                 }
             }
@@ -519,6 +524,44 @@ class Consultation extends CI_Controller
         }
 
         // Attachments
+        // if (!empty($_FILES['consultationFiles']['name'][0])) {
+        //     $uploadPath = './uploads/consultations/';
+        //     if (!is_dir($uploadPath)) {
+        //         mkdir($uploadPath, 0777, true);
+        //     }
+
+        //     $filesCount = count($_FILES['consultationFiles']['name']);
+        //     $uploadedFiles = [];
+        //     $lastCounter = $this->ConsultModel->getLastAttachmentCounter($consultationId);
+
+        //     for ($i = 0; $i < $filesCount; $i++) {
+        //         if (!empty($_FILES['consultationFiles']['name'][$i])) {
+        //             $ext = pathinfo($_FILES['consultationFiles']['name'][$i], PATHINFO_EXTENSION);
+        //             $counter = str_pad($lastCounter + $i + 1, 2, '0', STR_PAD_LEFT);
+        //             $newFileName = "Attachment_" . str_pad($consultationId, 2, '0', STR_PAD_LEFT) . "_" . $counter . "." . $ext;
+
+        //             $_FILES['file']['name'] = $newFileName;
+        //             $_FILES['file']['type'] = $_FILES['consultationFiles']['type'][$i];
+        //             $_FILES['file']['tmp_name'] = $_FILES['consultationFiles']['tmp_name'][$i];
+        //             $_FILES['file']['error'] = $_FILES['consultationFiles']['error'][$i];
+        //             $_FILES['file']['size'] = $_FILES['consultationFiles']['size'][$i];
+
+        //             $config['upload_path'] = $uploadPath;
+        //             $config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
+        //             $config['file_name'] = $newFileName;
+
+        //             $this->load->library('upload', $config);
+
+        //             if ($this->upload->do_upload('file')) {
+        //                 $uploadedFiles[] = $newFileName;
+        //                 $this->ConsultModel->save_attachment($consultationId, $newFileName);
+        //                 $attachmentsSaved = true;
+        //             } else {
+        //                 error_log("Upload error: " . $this->upload->display_errors()); // Log errors
+        //             }
+        //         }
+        //     }
+        // }
         if (!empty($_FILES['consultationFiles']['name'][0])) {
             $uploadPath = './uploads/consultations/';
             if (!is_dir($uploadPath)) {
@@ -528,6 +571,8 @@ class Consultation extends CI_Controller
             $filesCount = count($_FILES['consultationFiles']['name']);
             $uploadedFiles = [];
             $lastCounter = $this->ConsultModel->getLastAttachmentCounter($consultationId);
+
+            $this->load->library('upload');
 
             for ($i = 0; $i < $filesCount; $i++) {
                 if (!empty($_FILES['consultationFiles']['name'][$i])) {
@@ -541,18 +586,21 @@ class Consultation extends CI_Controller
                     $_FILES['file']['error'] = $_FILES['consultationFiles']['error'][$i];
                     $_FILES['file']['size'] = $_FILES['consultationFiles']['size'][$i];
 
-                    $config['upload_path'] = $uploadPath;
-                    $config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
-                    $config['file_name'] = $newFileName;
+                    $config = [
+                        'upload_path' => $uploadPath,
+                        'allowed_types' => 'jpg|jpeg|png|pdf|doc|docx',
+                        'file_name' => $newFileName,
+                        'overwrite' => false 
+                    ];
 
-                    $this->load->library('upload', $config);
+                    $this->upload->initialize($config);
 
                     if ($this->upload->do_upload('file')) {
                         $uploadedFiles[] = $newFileName;
                         $this->ConsultModel->save_attachment($consultationId, $newFileName);
                         $attachmentsSaved = true;
                     } else {
-                        error_log("Upload error: " . $this->upload->display_errors()); // Log errors
+                        error_log("Upload error for file {$newFileName}: " . $this->upload->display_errors());
                     }
                 }
             }

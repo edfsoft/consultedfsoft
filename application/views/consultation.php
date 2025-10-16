@@ -19,6 +19,8 @@
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -843,7 +845,7 @@
 
                                     </div>
 
-                                    <div class="form-group pb-3">
+                                    <!-- <div class="form-group pb-3">
                                         <label class="form-label fieldLabel">Attachments</label>
                                         <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
                                             accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
@@ -852,7 +854,25 @@
                                             + Add File
                                         </button>
                                         <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                        <div id="fileError" class="text-danger pt-1"></div> 
+                                    </div> --><!-- This code is common for all 3 new, edi and followup -->
+                                    <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel">Attachments</label>
+                                        <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                            style="background-color: #00ad8e;"> + Add File </button>
+                                        <div class="mb-3"></div>
+                                        <div id="dropZone"
+                                            style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                            <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                            </p>
+                                        </div>
+                                        <input type="file" id="fileInput" class="d-none"
+                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                        <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none"
+                                            multiple>
+                                        <div id="fileList" style="margin-top: 0.5rem;"></div>
                                         <div id="fileError" class="text-danger pt-1"></div>
+                                        <input type="hidden" id="removedFiles" name="removedFiles" value="">
                                     </div>
 
                                     <div class="form-group pb-3">
@@ -1255,15 +1275,22 @@
 
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel">Attachments</label>
-                                <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
-                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                    style="background-color: #00ad8e;">
-                                    + Add File
-                                </button>
+                                    style="background-color: #00ad8e;"> + Add File </button>
+                                <div class="mb-3"></div>
+                                <div id="dropZone"
+                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                    </p>
+                                </div>
+                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                    multiple>
+                                <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
                                 <div id="fileList" style="margin-top: 0.5rem;"></div>
                                 <div id="fileError" class="text-danger pt-1"></div>
+                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
                             </div>
+
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
@@ -1659,10 +1686,17 @@
 
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel">Attachments</label>
-                                <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
-                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
                                     style="background-color: #00ad8e;"> + Add File </button>
+                                <div class="mb-3"></div>
+                                <div id="dropZone"
+                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                    </p>
+                                </div>
+                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                    multiple>
+                                <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
                                 <div id="fileList" style="margin-top: 0.5rem;"></div>
                                 <div id="fileError" class="text-danger pt-1"></div>
                                 <input type="hidden" id="removedFiles" name="removedFiles" value="">
@@ -3757,7 +3791,7 @@
     </script>
 
     <!-- Upload attachments script -->
-    <script>
+    <!-- <script>
         (function () {
             const MAX_FILES = 10;
             const fileInput = document.getElementById("fileInput");
@@ -3864,7 +3898,176 @@
 
             });
         })();
-    </script>
+    </script> -->
+    <script>
+        (function () {
+            const MAX_FILES = 10;
+            const fileInput = document.getElementById("fileInput");
+            const submitFileInput = document.getElementById("submitFileInput");
+            const addBtn = document.getElementById("addFileBtn");
+            const fileList = document.getElementById("fileList");
+            const fileError = document.getElementById("fileError");
+            const removedFilesInput = document.getElementById("removedFiles");
+            const dropZone = document.getElementById("dropZone");
+
+            let newFiles = [];
+            let existingFiles = [];
+            let removedFiles = [];
+
+            existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+
+            renderFileList();
+
+            // --- DRAG AND DROP HANDLERS ---
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+
+            dropZone.addEventListener('drop', handleDrop, false);
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight() {
+                dropZone.style.borderColor = '#00ad8e';
+                dropZone.style.backgroundColor = '#f7f7f7';
+            }
+
+            function unhighlight() {
+                dropZone.style.borderColor = '#ccc';
+                dropZone.style.backgroundColor = 'transparent';
+            }
+
+            function handleDrop(e) {
+                unhighlight();
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                processNewFiles(files);
+            }
+
+            function processNewFiles(files) {
+                fileError.textContent = "";
+                if (!files.length) return;
+
+                const allowedTypes = fileInput.getAttribute('accept').split(',').map(t => t.trim());
+                for (let i = 0; i < files.length; i++) {
+                    // Check file type
+                    if (files[i].type && !allowedTypes.includes(files[i].type) && !allowedTypes.some(t => files[i].name.endsWith(t))) {
+                        fileError.textContent = `File type not allowed for: ${files[i].name}`;
+                        continue;
+                    }
+
+                    // Check max files limit
+                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                        fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                        break;
+                    }
+
+                    // Avoid duplicate files by checking file name and size
+                    if (!newFiles.some(f => f.name === files[i].name && f.size === files[i].size)) {
+                        newFiles.push(files[i]);
+                    }
+                }
+
+                renderFileList();
+                updateSubmitFileInput();
+            }
+
+            function updateSubmitFileInput() {
+                const dataTransfer = new DataTransfer();
+                newFiles.forEach(file => dataTransfer.items.add(file));
+                submitFileInput.files = dataTransfer.files;
+            }
+
+            // --- BUTTON AND FILE INPUT HANDLERS ---
+            addBtn.addEventListener("click", () => {
+                if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                    fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                    return;
+                }
+                fileInput.click();
+            });
+
+            fileInput.addEventListener("change", () => {
+                if (fileInput.files.length > 0) {
+                    processNewFiles(fileInput.files);
+                    fileInput.value = ""; // Clear fileInput to allow new selections
+                }
+            });
+
+            // --- RENDER FILE LIST FUNCTION ---
+            function renderFileList() {
+                fileList.innerHTML = "";
+
+                if (existingFiles.length + newFiles.length === 0) {
+                    fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+                    return;
+                }
+
+                const ul = document.createElement("ul");
+                ul.style.paddingLeft = "1.2rem";
+
+                existingFiles.forEach((file, index) => {
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+
+                    const name = document.createTextNode(file.file_name + " ");
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+
+                    removeBtn.addEventListener("click", () => {
+                        removedFiles.push(file.file_name);
+                        existingFiles.splice(index, 1);
+                        removedFilesInput.value = JSON.stringify(removedFiles);
+                        renderFileList();
+                    });
+
+                    li.appendChild(name);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+
+                newFiles.forEach((file, index) => {
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+
+                    const name = document.createTextNode(file.name + " ");
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+
+                    removeBtn.addEventListener("click", () => {
+                        newFiles.splice(index, 1);
+                        renderFileList();
+                        updateSubmitFileInput();
+                    });
+
+                    li.appendChild(name);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+
+                fileList.appendChild(ul);
+            }
+        })();</script>
+
 
     <!-- Attachment display modal script -->
     <script>
@@ -3962,6 +4165,7 @@
     <!-- PDF Download link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
 </body>
 

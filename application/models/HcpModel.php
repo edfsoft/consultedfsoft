@@ -1028,6 +1028,52 @@ class HcpModel extends CI_Model
         return true;
     }
 
+    public function delete_consultation($consultation_id)
+    {
+        $this->db->trans_start();
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_vitals');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_symptoms');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_findings');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_diagnosis');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_investigations');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_instructions');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_procedures');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_advices');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_medicines');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_medicines');
+
+        $this->db->where('consultation_id', $consultation_id);
+        $this->db->delete('patient_attachments');
+
+        $this->db->where('id', $consultation_id);
+        $this->db->delete('consultations');
+
+        $this->db->trans_complete();
+
+        return $this->db->trans_status();
+    }
+
+
 
 
 }

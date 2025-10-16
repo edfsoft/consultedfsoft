@@ -204,6 +204,10 @@
                                                             <div class="mt-md-3 mb-4 mb-md-0">
                                                                 <button class="btn btn-secondary" disabled><i
                                                                         class="bi bi-download"></i></button>
+                                                                <button type="button" class="btn btn-danger"
+                                                                    onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
                                                                 <button class="btn btn-secondary"
                                                                     onclick="window.location.href='<?php echo site_url('Healthcareprovider/editConsultation/' . $consultation['id']); ?>'"><i
                                                                         class="bi bi-pen"></i></button>
@@ -3968,6 +3972,30 @@
                 if (Array.from(timeSelect.options).some(opt => opt.value === currentValue)) {
                     timeSelect.value = currentValue;
                 }
+            }
+        });
+    </script>
+
+    <!-- Delete Consultation Script -->
+    <script>
+        let deleteConsultationId = null;
+        let deletePatientId = null;
+
+        function confirmDeleteConsult(patientId, consultationId, consultationDate, consultationTime) {
+            deleteConsultationId = consultationId;
+            deletePatientId = patientId;
+
+            document.getElementById('deleteModalBody').innerHTML =
+                `Are you sure you want to delete this consultation done on <strong>${consultationDate} - ${consultationTime}</strong>?`;
+
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            if (deleteConsultationId && deletePatientId) {
+                window.location.href = "<?php echo site_url('Healthcareprovider/deleteConsultation/'); ?>"
+                    + deletePatientId + "/" + deleteConsultationId;
             }
         });
     </script>

@@ -1041,6 +1041,19 @@ class Healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/consultation/' . $post['patientIdDb']);
     }
 
+    public function deleteConsultation($patientId, $consultationId)
+    {
+        $deleted = $this->HcpModel->delete_consultation($consultationId);
+
+        if ($deleted) {
+            $this->session->set_flashdata('showSuccessMessage', 'Consultation deleted successfully.');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to delete consultation.');
+        }
+
+        redirect('Healthcareprovider/consultation/' . $patientId);
+    }
+
 
 
     public function logout()
@@ -1052,4 +1065,5 @@ class Healthcareprovider extends CI_Controller
         $this->session->unset_userdata('hcpsMobileNum');
         redirect('Healthcareprovider/');
     }
+
 }

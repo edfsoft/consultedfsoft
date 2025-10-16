@@ -135,7 +135,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -209,10 +209,10 @@
                                                                     <i class="bi bi-trash"></i>
                                                                 </button>
                                                                 <button class="btn btn-secondary"
-                                                                    onclick="window.location.href='<?php echo site_url('Healthcareprovider/editConsultation/' . $consultation['id']); ?>'"><i
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'"><i
                                                                         class="bi bi-pen"></i></button>
                                                                 <button class="btn text-light" style="background-color: #00ad8e;"
-                                                                    onclick="window.location.href='<?php echo site_url('Healthcareprovider/followupConsultation/' . $consultation['id']); ?>'">Follow-up
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">Follow-up
                                                                     / Repeat</button>
                                                             </div>
                                                         </div>
@@ -493,8 +493,8 @@
 
                             <!-- New Consultation -->
                             <div class="tab-pane fade" id="new-consultation" role="tabpanel">
-                                <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>"
-                                    method="post" id="consultationForm" class="mb-5" enctype="multipart/form-data">
+                                <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
+                                    id="consultationForm" class="mb-5" enctype="multipart/form-data">
                                     <input type="hidden" id="patientIdDb" name="patientIdDb"
                                         value="<?php echo $patientDetails[0]['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
@@ -887,7 +887,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -902,12 +902,12 @@
                                 </p>
                             <?php } ?>
                         </div>
-                        <a href="<?php echo base_url() . "Healthcareprovider/consultation/" . $value['id']; ?>"
+                        <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
                             class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                     </div>
 
                     <div class="card-body mx-3 px-md-4">
-                        <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>" method="post"
+                        <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
                             enctype="multipart/form-data" id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
@@ -1294,7 +1294,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -1309,12 +1309,12 @@
                                 </p>
                             <?php } ?>
                         </div>
-                        <a href="<?php echo base_url() . "Healthcareprovider/consultation/" . $value['id']; ?>"
+                        <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
                             class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                     </div>
 
                     <div class="card-body mx-3 px-md-4">
-                        <form action="<?php echo base_url() . 'Healthcareprovider/saveEditConsult' ?>" method="post"
+                        <form action="<?php echo base_url() . 'Consultation/saveEditConsult' ?>" method="post"
                             enctype="multipart/form-data" id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
@@ -2008,8 +2008,6 @@
             </div>
         </div>
 
-        <!-- ******************************************************************************************************************************************** -->
-
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
 
@@ -2018,7 +2016,54 @@
     <!-- ******************************************************************************************************************************************** -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Next follow update date field disable -->
+    <!-- Consultation date and time default -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const timeSelect = document.getElementById("consultTime");
+            const dateInput = document.getElementById("consultDate");
+
+            const phpDate = "<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>";
+            const phpTime = "<?= isset($consultation['consult_time']) ? $consultation['consult_time'] : '' ?>";
+
+            for (let h = 0; h < 24; h++) {
+                for (let m = 0; m < 60; m += 10) {
+                    const hours12 = h % 12 === 0 ? 12 : h % 12;
+                    const ampm = h < 12 ? "AM" : "PM";
+                    const minutes = String(m).padStart(2, "0");
+                    const value24 = `${String(h).padStart(2, "0")}:${minutes}`;
+                    const label12 = `${hours12}:${minutes} ${ampm}`;
+
+                    const option = document.createElement("option");
+                    option.value = value24;
+                    option.textContent = label12;
+                    timeSelect.appendChild(option);
+                }
+            }
+
+            const now = new Date();
+            const today = now.toISOString().split("T")[0];
+            dateInput.value = phpDate || today;
+
+            if (phpTime) {
+                timeSelect.value = phpTime;
+            } else {
+                const currentMinutes = now.getMinutes();
+                const roundedMinutes = Math.round(currentMinutes / 10) * 10;
+                const adjustedMinutes = roundedMinutes === 60 ? 0 : roundedMinutes;
+                const adjustedHours = roundedMinutes === 60 ? now.getHours() + 1 : now.getHours();
+
+                const hours = String(adjustedHours % 24).padStart(2, "0");
+                const minutes = String(adjustedMinutes).padStart(2, "0");
+                const currentValue = `${hours}:${minutes}`;
+
+                if (Array.from(timeSelect.options).some(opt => opt.value === currentValue)) {
+                    timeSelect.value = currentValue;
+                }
+            }
+        });
+    </script>
+
+    <!-- Next follow up update date field disable -->
     <script>
         const today = new Date().toISOString().split("T")[0];
         document.getElementById("nextFollowUpDate").setAttribute("min", today);
@@ -2097,7 +2142,7 @@
             const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
 
             if (!symptomsList.includes(pendingSymptom)) {
-                fetch("<?= site_url('Healthcareprovider/addSymptom') ?>", {
+                fetch("<?= site_url('Consultation/addSymptom') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingSymptom)
@@ -2239,6 +2284,74 @@
 
     </script>
 
+    <!-- Symptoms save script -->
+    <script>
+        $(document).ready(function () {
+            function parseSymptomTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                // Extract symptom and optional details
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                    let symptom = match[1].trim();
+                    let detailsStr = match[2].trim();
+                    let details = detailsStr.split(',').map(d => d.trim());
+
+                    let parsed = {
+                        symptom: symptom,
+                        note: '',
+                        since: '',
+                        severity: ''
+                    };
+
+                    details.forEach(detail => {
+                        let kv = detail.split(':').map(s => s.trim());
+                        if (kv.length === 2) {
+                            let key = kv[0].toLowerCase();
+                            let value = kv[1];
+                            if (key === 'note') parsed.note = value;
+                            else if (key === 'since') parsed.since = value;
+                            else if (key === 'severity') parsed.severity = value;
+                        }
+                    });
+
+                    return parsed;
+                } else {
+                    return {
+                        symptom: text,
+                        note: '',
+                        since: '',
+                        severity: ''
+                    };
+                }
+
+                return null;
+            }
+
+            function updateSymptomsJson() {
+                let symptoms = [];
+                $('#symptomsInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let symptom = parseSymptomTagText(tagText);
+
+                    if (symptom) {
+                        let symptomId = $(this).attr('data-id') || "new";
+                        symptom.id = symptomId;
+                        symptoms.push(symptom);
+                    }
+                });
+                $('#symptomsJson').val(JSON.stringify(symptoms));
+            }
+
+            const observer = new MutationObserver(updateSymptomsJson);
+            observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function (e) {
+                updateSymptomsJson();
+            });
+        });
+    </script>
+
     <!-- Finding Modal Script -->
     <script>
         const findingsList = <?php echo json_encode(array_column($findingsList, 'findingsName')); ?>;
@@ -2312,7 +2425,7 @@
             const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
 
             if (!findingsList.includes(pendingTag)) {
-                fetch("<?= site_url('Healthcareprovider/addFinding') ?>", {
+                fetch("<?= site_url('Consultation/addFinding') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingTag)
@@ -2453,6 +2566,61 @@
         });
     </script>
 
+    <!-- Findings save script -->
+    <script>
+        $(document).ready(function () {
+            function parseTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
+
+                let finding, note = '', since = '', severity = '';
+
+                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+
+                if (match) {
+                    finding = match[1].trim();
+
+                    if (match[2]) {
+                        const details = match[2].split(', ').map(d => d.trim());
+
+                        details.forEach(detail => {
+                            const [key, value] = detail.split(': ', 2);
+                            if (key === 'Note') note = value || '';
+                            else if (key === 'Since') since = value || '';
+                            else if (key === 'Severity') severity = value || '';
+                        });
+                    }
+                } else {
+                    finding = text;
+                }
+
+                return { finding, note, since, severity };
+            }
+
+            function updateFindingsJson() {
+                let findings = [];
+                $('#findingsInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let finding = parseTagText(tagText);
+                    if (finding) {
+                        let findingId = $(this).attr('data-id') || "new";
+                        finding.id = findingId;
+                        findings.push(finding);
+                    }
+                });
+                $('#findingsJson').val(JSON.stringify(findings));
+                console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
+            }
+
+            const observer = new MutationObserver(updateFindingsJson);
+            observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function (e) {
+                updateFindingsJson(); // Ensure latest data
+                console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
+            });
+        });
+    </script>
+
     <!-- Diagonsis Modal Script -->
     <script>
         const diagnosisList = <?php echo json_encode(array_column($diagnosisList, 'diagnosisName')); ?>;
@@ -2528,7 +2696,7 @@
             if (!pendingDiagnosis) return;
 
             if (!diagnosisList.includes(pendingDiagnosis)) {
-                fetch("<?= site_url('Healthcareprovider/addDiagnosis') ?>", {
+                fetch("<?= site_url('Consultation/addDiagnosis') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingDiagnosis)
@@ -2677,6 +2845,61 @@
         });
     </script>
 
+    <!-- Diagnosis save script -->
+    <script>
+        $(document).ready(function () {
+            function parseDiagnosisTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                let name, note = '', since = '', severity = '';
+
+                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+
+                if (match) {
+                    name = match[1].trim();
+
+                    if (match[2]) {
+                        const details = match[2].split(', ').map(d => d.trim());
+
+                        details.forEach(detail => {
+                            const [key, value] = detail.split(': ', 2);
+                            if (key === 'Note') note = value || '';
+                            else if (key === 'Since') since = value || '';
+                            else if (key === 'Severity') severity = value || '';
+                        });
+                    }
+                } else {
+                    name = text;
+                }
+
+                return { name, note, since, severity };
+            }
+
+            function updateDiagnosisJson() {
+                let diagnoses = [];
+                $('#diagnosisInputBox > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
+                    let diagnosis = parseDiagnosisTagText(tagText);
+                    if (diagnosis) {
+                        let diagnosisId = $(this).attr('data-id') || "new"; // Read ID or mark as new
+                        diagnosis.id = diagnosisId;
+                        diagnoses.push(diagnosis);
+                    }
+                });
+                $('#diagnosisJson').val(JSON.stringify(diagnoses));
+                console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
+            }
+
+            const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
+            diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function (e) {
+                updateDiagnosisJson(); // Ensure latest data
+                console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
+            });
+        });
+    </script>
+
     <!-- Investigation Search Button -->
     <script>
         const investigationsList = <?php echo json_encode(array_column($investigationsList, 'investigationsName')); ?>;
@@ -2744,7 +2967,7 @@
             const existingIndex = selectedInvestigations.findIndex(s => s.investigation === pendingInvestigation);
 
             if (!investigationsList.includes(pendingInvestigation)) {
-                fetch("<?= site_url('Healthcareprovider/addInvestigation') ?>", {
+                fetch("<?= site_url('Consultation/addInvestigation') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingInvestigation)
@@ -2880,6 +3103,56 @@
         });
     </script>
 
+    <!-- Investigation save script -->
+    <script>
+        $(document).ready(function () {
+            function parseInvestigationTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                    let investigation = match[1].trim();
+                    let detailsStr = match[2].trim();
+
+                    let parsed = {
+                        investigation: investigation,
+                        note: ''
+                    };
+
+                    if (detailsStr.toLowerCase().startsWith("note:")) {
+                        parsed.note = detailsStr.split(":")[1].trim();
+                    }
+
+                    return parsed;
+                } else {
+                    return { investigation: text, note: '' };
+                }
+            }
+
+            function updateInvestigationsJson() {
+                let investigations = [];
+                $('#investigationsInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let investigation = parseInvestigationTagText(tagText);
+
+                    if (investigation) {
+                        let investigationId = $(this).attr('data-id') || "new";
+                        investigation.id = investigationId;
+                        investigations.push(investigation);
+                    }
+                });
+                $('#investigationsJson').val(JSON.stringify(investigations));
+            }
+
+            const observer = new MutationObserver(updateInvestigationsJson);
+            observer.observe(document.getElementById('investigationsInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function () {
+                updateInvestigationsJson();
+            });
+        });
+    </script>
+
     <!-- Instruction Search Button -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -2927,7 +3200,7 @@
                 const name = newInstructionInput.value.trim();
                 if (!name) return;
 
-                fetch("<?= site_url('Healthcareprovider/addInstruction') ?>", {
+                fetch("<?= site_url('Consultation/addInstruction') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(name)
@@ -3018,7 +3291,7 @@
                 const name = newProcedureInput.value.trim();
                 if (!name) return;
 
-                fetch("<?= site_url('Healthcareprovider/addProcedure') ?>", {
+                fetch("<?= site_url('Consultation/addProcedure') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(name)
@@ -3330,7 +3603,7 @@
             const existingIndex = selectedMedicines.findIndex(m => m.medicine === pendingMedicine);
 
             if (!medicinesList.includes(pendingMedicine)) {
-                fetch("<?= site_url('Healthcareprovider/addMedicine') ?>", {
+                fetch("<?= site_url('Consultation/addMedicine') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingMedicine)
@@ -3483,303 +3756,6 @@
         });
     </script>
 
-    <!-- ----------------------------------------------------------- -->
-    <!-- Symptoms save script -->
-    <script>
-        $(document).ready(function () {
-            function parseSymptomTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
-
-                // Extract symptom and optional details
-                let match = text.match(/^(.+?)\s*\((.+)\)$/);
-                if (match) {
-                    let symptom = match[1].trim();
-                    let detailsStr = match[2].trim();
-                    let details = detailsStr.split(',').map(d => d.trim());
-
-                    let parsed = {
-                        symptom: symptom,
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
-
-                    details.forEach(detail => {
-                        let kv = detail.split(':').map(s => s.trim());
-                        if (kv.length === 2) {
-                            let key = kv[0].toLowerCase();
-                            let value = kv[1];
-                            if (key === 'note') parsed.note = value;
-                            else if (key === 'since') parsed.since = value;
-                            else if (key === 'severity') parsed.severity = value;
-                        }
-                    });
-
-                    return parsed;
-                } else {
-                    return {
-                        symptom: text,
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
-                }
-
-                return null;
-            }
-
-            function updateSymptomsJson() {
-                let symptoms = [];
-                $('#symptomsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let symptom = parseSymptomTagText(tagText);
-
-                    if (symptom) {
-                        let symptomId = $(this).attr('data-id') || "new";
-                        symptom.id = symptomId;
-                        symptoms.push(symptom);
-                    }
-                });
-                $('#symptomsJson').val(JSON.stringify(symptoms));
-            }
-
-            const observer = new MutationObserver(updateSymptomsJson);
-            observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateSymptomsJson();
-            });
-        });
-    </script>
-
-    <!-- Findings save script -->
-    <script>
-        $(document).ready(function () {
-            function parseTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
-
-                let finding, note = '', since = '', severity = '';
-
-                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
-
-                if (match) {
-                    finding = match[1].trim();
-
-                    if (match[2]) {
-                        const details = match[2].split(', ').map(d => d.trim());
-
-                        details.forEach(detail => {
-                            const [key, value] = detail.split(': ', 2);
-                            if (key === 'Note') note = value || '';
-                            else if (key === 'Since') since = value || '';
-                            else if (key === 'Severity') severity = value || '';
-                        });
-                    }
-                } else {
-                    finding = text;
-                }
-
-                return { finding, note, since, severity };
-            }
-
-            function updateFindingsJson() {
-                let findings = [];
-                $('#findingsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let finding = parseTagText(tagText);
-                    if (finding) {
-                        let findingId = $(this).attr('data-id') || "new";
-                        finding.id = findingId;
-                        findings.push(finding);
-                    }
-                });
-                $('#findingsJson').val(JSON.stringify(findings));
-                console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
-            }
-
-            const observer = new MutationObserver(updateFindingsJson);
-            observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateFindingsJson(); // Ensure latest data
-                console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
-            });
-        });
-    </script>
-
-    <!-- Diagnosis save script -->
-    <script>
-        $(document).ready(function () {
-            function parseDiagnosisTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
-
-                let name, note = '', since = '', severity = '';
-
-                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
-
-                if (match) {
-                    name = match[1].trim();
-
-                    if (match[2]) {
-                        const details = match[2].split(', ').map(d => d.trim());
-
-                        details.forEach(detail => {
-                            const [key, value] = detail.split(': ', 2);
-                            if (key === 'Note') note = value || '';
-                            else if (key === 'Since') since = value || '';
-                            else if (key === 'Severity') severity = value || '';
-                        });
-                    }
-                } else {
-                    name = text;
-                }
-
-                return { name, note, since, severity };
-            }
-
-            function updateDiagnosisJson() {
-                let diagnoses = [];
-                $('#diagnosisInputBox > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
-                    let diagnosis = parseDiagnosisTagText(tagText);
-                    if (diagnosis) {
-                        let diagnosisId = $(this).attr('data-id') || "new"; // Read ID or mark as new
-                        diagnosis.id = diagnosisId;
-                        diagnoses.push(diagnosis);
-                    }
-                });
-                $('#diagnosisJson').val(JSON.stringify(diagnoses));
-                console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
-            }
-
-            const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
-            diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateDiagnosisJson(); // Ensure latest data
-                console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
-            });
-        });
-    </script>
-
-    <!-- Investigation save script -->
-    <script>
-        $(document).ready(function () {
-            function parseInvestigationTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
-
-                let match = text.match(/^(.+?)\s*\((.+)\)$/);
-                if (match) {
-                    let investigation = match[1].trim();
-                    let detailsStr = match[2].trim();
-
-                    let parsed = {
-                        investigation: investigation,
-                        note: ''
-                    };
-
-                    if (detailsStr.toLowerCase().startsWith("note:")) {
-                        parsed.note = detailsStr.split(":")[1].trim();
-                    }
-
-                    return parsed;
-                } else {
-                    return { investigation: text, note: '' };
-                }
-            }
-
-            function updateInvestigationsJson() {
-                let investigations = [];
-                $('#investigationsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let investigation = parseInvestigationTagText(tagText);
-
-                    if (investigation) {
-                        let investigationId = $(this).attr('data-id') || "new";
-                        investigation.id = investigationId;
-                        investigations.push(investigation);
-                    }
-                });
-                $('#investigationsJson').val(JSON.stringify(investigations));
-            }
-
-            const observer = new MutationObserver(updateInvestigationsJson);
-            observer.observe(document.getElementById('investigationsInput'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function () {
-                updateInvestigationsJson();
-            });
-        });
-    </script>
-
-    <!-- Medication save script -->
-    <!-- <script>
-        $(document).ready(function () {
-            function parseMedicineTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
-
-                let match = text.match(/^(.+?)\s*\((.+)\)$/);
-                if (match) {
-                    let medicine = match[1].trim();
-                    let detailsStr = match[2].trim();
-                    let details = detailsStr.split(',').map(d => d.trim());
-
-                    let parsed = { medicine: medicine, note: '', since: '', severity: '' };
-
-                    details.forEach(detail => {
-                        let kv = detail.split(':').map(s => s.trim());
-                        if (kv.length === 2) {
-                            let key = kv[0].toLowerCase();
-                            let value = kv[1];
-                            if (key === 'note') parsed.note = value;
-                            else if (key === 'since') parsed.since = value;
-                            else if (key === 'severity') parsed.severity = value;
-                        }
-                    });
-
-                    return parsed;
-                } else {
-                    return { medicine: text, note: '', since: '', severity: '' };
-                }
-            }
-
-            function updateMedicinesJson() {
-                let medicines = [];
-                $('#medicinesInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let medicine = parseMedicineTagText(tagText);
-
-                    if (medicine) {
-                        let medicineId = $(this).attr('data-id') || "new";
-                        medicine.id = medicineId;
-                        medicines.push(medicine);
-                    }
-                });
-                $('#medicinesJson').val(JSON.stringify(medicines));
-            }
-
-            const observer = new MutationObserver(updateMedicinesJson);
-            observer.observe(document.getElementById('medicinesInput'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateMedicinesJson();
-            });
-        });
-    </script> -->
-
-    <!-- Toggle visibility and icon for all fields -->
-    <script>
-        document.querySelectorAll('.toggle-label').forEach(label => {
-            label.addEventListener('click', () => {
-                const container = label.nextElementSibling;
-                const icon = label.querySelector('.toggle-icon');
-
-                container.classList.toggle('show');
-                icon.textContent = container.classList.contains('show') ? '-' : '+';
-            });
-        });
-    </script>
-
     <!-- Upload attachments script -->
     <script>
         (function () {
@@ -3929,53 +3905,6 @@
         });
     </script>
 
-    <!-- Consultation date and time default -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const timeSelect = document.getElementById("consultTime");
-            const dateInput = document.getElementById("consultDate");
-
-            const phpDate = "<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>";
-            const phpTime = "<?= isset($consultation['consult_time']) ? $consultation['consult_time'] : '' ?>";
-
-            for (let h = 0; h < 24; h++) {
-                for (let m = 0; m < 60; m += 10) {
-                    const hours12 = h % 12 === 0 ? 12 : h % 12;
-                    const ampm = h < 12 ? "AM" : "PM";
-                    const minutes = String(m).padStart(2, "0");
-                    const value24 = `${String(h).padStart(2, "0")}:${minutes}`;
-                    const label12 = `${hours12}:${minutes} ${ampm}`;
-
-                    const option = document.createElement("option");
-                    option.value = value24;
-                    option.textContent = label12;
-                    timeSelect.appendChild(option);
-                }
-            }
-
-            const now = new Date();
-            const today = now.toISOString().split("T")[0];
-            dateInput.value = phpDate || today;
-
-            if (phpTime) {
-                timeSelect.value = phpTime;
-            } else {
-                const currentMinutes = now.getMinutes();
-                const roundedMinutes = Math.round(currentMinutes / 10) * 10;
-                const adjustedMinutes = roundedMinutes === 60 ? 0 : roundedMinutes;
-                const adjustedHours = roundedMinutes === 60 ? now.getHours() + 1 : now.getHours();
-
-                const hours = String(adjustedHours % 24).padStart(2, "0");
-                const minutes = String(adjustedMinutes).padStart(2, "0");
-                const currentValue = `${hours}:${minutes}`;
-
-                if (Array.from(timeSelect.options).some(opt => opt.value === currentValue)) {
-                    timeSelect.value = currentValue;
-                }
-            }
-        });
-    </script>
-
     <!-- Delete Consultation Script -->
     <script>
         let deleteConsultationId = null;
@@ -3994,19 +3923,30 @@
 
         document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
             if (deleteConsultationId && deletePatientId) {
-                window.location.href = "<?php echo site_url('Healthcareprovider/deleteConsultation/'); ?>"
+                window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>"
                     + deletePatientId + "/" + deleteConsultationId;
             }
         });
     </script>
 
-
-    <!-- ******************************************************************************************************************************************** -->
     <!-- Sidebar active color change code -->
     <script>
         <?php if ($method == "consultDashboard" || $method == "followupConsult" || $method == "editConsult") { ?>
             document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
+    </script>
+
+    <!-- Toggle visibility and icon for all fields in consultation page -->
+    <script>
+        document.querySelectorAll('.toggle-label').forEach(label => {
+            label.addEventListener('click', () => {
+                const container = label.nextElementSibling;
+                const icon = label.querySelector('.toggle-icon');
+
+                container.classList.toggle('show');
+                icon.textContent = container.classList.contains('show') ? '-' : '+';
+            });
+        });
     </script>
 
     <!-- Common Script -->

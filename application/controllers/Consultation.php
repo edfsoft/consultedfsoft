@@ -30,7 +30,7 @@ class Consultation extends CI_Controller
             $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
             $this->data['patient_id'] = $patientIdDb;
 
-            $this->load->view('consultation.php', $this->data);
+            $this->load->view('consultationView.php', $this->data);
         } else {
             redirect('Consultation/');
         }
@@ -152,7 +152,7 @@ class Consultation extends CI_Controller
             $data['previous_consultation_id'] = $consultation_id;
             $data['patientDetails'] = $this->ConsultModel->getPatientDetails($data['patient_id']);
 
-            $this->load->view('consultation.php', $data);
+            $this->load->view('consultationView.php', $data);
         } else {
             redirect('Consultation/');
         }
@@ -358,7 +358,7 @@ class Consultation extends CI_Controller
             $data['previous_consultation_id'] = $consultation_id;
             $data['patientDetails'] = $this->ConsultModel->getPatientDetails($data['patient_id']);
 
-            $this->load->view('consultation.php', $data);
+            $this->load->view('consultationView.php', $data);
         } else {
             redirect('Consultation/');
         }

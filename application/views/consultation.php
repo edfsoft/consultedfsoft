@@ -393,7 +393,7 @@
                                                                             $details[] = $medicine['duration'];
 
                                                                         if (!empty($details)) {
-                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                            echo ' (' . implode('- ', $details) . ')';
                                                                         }
                                                                         ?>
                                                                     </li>

@@ -215,33 +215,6 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newMedicine()
-    {
-        $post = $this->input->post(null, true);
-        $insert = array(
-            'medicineBrand' => $post['medicineNameBrand'],
-            'medicineName' => $post['medicineName'],
-            'strength' => $post['maedicineStrength']
-        );
-        $this->db->insert('medicines_list', $insert);
-        return true;
-    }
-
-    public function getMedicinesList()
-    {
-        $list = "SELECT * FROM `medicines_list` WHERE activeStatus = '0' ORDER BY `medicineName`";
-        $select = $this->db->query($list);
-        return $select->result_array();
-    }
-
-    public function medicineDelete($id)
-    {
-        $medicineId = $id;
-        $this->db->where('id', $medicineId);
-        $this->db->delete('medicines_list');
-        return true;
-    }
-
     public function newInvestigation()
     {
         $post = $this->input->post(null, true);
@@ -266,6 +239,54 @@ class AdminModel extends CI_Model
         return true;
     }
 
+    public function newInstruction()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'instructionsName' => $post['instructionName'],
+        );
+        $this->db->insert('instructions_list', $insert);
+        return true;
+    }
+
+    public function getInstructionsList()
+    {
+        $list = "SELECT * FROM `instructions_list` WHERE activeStatus = '0' ORDER BY `instructionsName`";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function instructionDelete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('instructions_list');
+        return true;
+    }
+
+    public function newProcedure()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'proceduresName' => $post['procedureName'],
+        );
+        $this->db->insert('procedures_list', $insert);
+        return true;
+    }
+
+    public function getProceduresList()
+    {
+        $list = "SELECT * FROM `procedures_list` WHERE activeStatus = '0' ORDER BY `proceduresName`";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function procedureDelete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('procedures_list');
+        return true;
+    }
+
     public function newAdvice()
     {
         $post = $this->input->post(null, true);
@@ -287,6 +308,33 @@ class AdminModel extends CI_Model
     {
         $this->db->where('id', $id);
         $this->db->delete('advices_list');
+        return true;
+    }
+
+    public function newMedicine()
+    {
+        $post = $this->input->post(null, true);
+        $insert = array(
+            'medicineBrand' => $post['medicineNameBrand'],
+            'medicineName' => $post['medicineName'],
+            'strength' => $post['maedicineStrength']
+        );
+        $this->db->insert('medicines_list', $insert);
+        return true;
+    }
+
+    public function getMedicinesList()
+    {
+        $list = "SELECT * FROM `medicines_list` WHERE activeStatus = '0' ORDER BY `medicineName`";
+        $select = $this->db->query($list);
+        return $select->result_array();
+    }
+
+    public function medicineDelete($id)
+    {
+        $medicineId = $id;
+        $this->db->where('id', $medicineId);
+        $this->db->delete('medicines_list');
         return true;
     }
 

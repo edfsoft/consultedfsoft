@@ -19,6 +19,8 @@
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -135,7 +137,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -199,16 +201,20 @@
                                                     <div class="card-body">
                                                         <div class="d-md-flex justify-content-between">
                                                             <h5 class="card-title mb-0">
-                                                                <?= date('d M Y h:i A', strtotime($consultation['created_at'])) ?>
+                                                                <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
                                                             </h5>
                                                             <div class="mt-md-3 mb-4 mb-md-0">
                                                                 <button class="btn btn-secondary" disabled><i
                                                                         class="bi bi-download"></i></button>
+                                                                <button type="button" class="btn btn-danger"
+                                                                    onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
                                                                 <button class="btn btn-secondary"
-                                                                    onclick="window.location.href='<?php echo site_url('Healthcareprovider/editConsultation/' . $consultation['id']); ?>'"><i
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'"><i
                                                                         class="bi bi-pen"></i></button>
                                                                 <button class="btn text-light" style="background-color: #00ad8e;"
-                                                                    onclick="window.location.href='<?php echo site_url('Healthcareprovider/followupConsultation/' . $consultation['id']); ?>'">Follow-up
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">Follow-up
                                                                     / Repeat</button>
                                                             </div>
                                                         </div>
@@ -366,6 +372,37 @@
                                                             </ul>
                                                         <?php endif; ?>
 
+                                                        <!-- Medicines -->
+                                                        <?php if (!empty($consultation['medicines'])): ?>
+                                                            <p><strong>Medicines:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['medicines'] as $medicine): ?>
+                                                                    <li>
+                                                                        <?= $medicine['medicine_name'] ?>
+                                                                        <?php
+                                                                        $details = [];
+                                                                        if (!empty($medicine['quantity']))
+                                                                            $details[] = $medicine['quantity'];
+                                                                        if (!empty($medicine['unit']))
+                                                                            $details[] = $medicine['unit'];
+                                                                        if (!empty($medicine['timing']))
+                                                                            $details[] = $medicine['timing'];
+                                                                        if (!empty($medicine['frequency']))
+                                                                            $details[] = $medicine['frequency'];
+                                                                        if (!empty($medicine['food_timing']))
+                                                                            $details[] = $medicine['food_timing'];
+                                                                        if (!empty($medicine['duration']))
+                                                                            $details[] = $medicine['duration'];
+
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode('- ', $details) . ')';
+                                                                        }
+                                                                        ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
+
                                                         <!-- Attachments
                                                         <?php if (!empty($consultation['attachments'])): ?>
                                                             <p><strong>Attachments:</strong></p>
@@ -458,14 +495,28 @@
 
                             <!-- New Consultation -->
                             <div class="tab-pane fade" id="new-consultation" role="tabpanel">
-                                <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>"
-                                    method="post" id="consultationForm" class="mb-5" enctype="multipart/form-data">
+                                <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
+                                    id="consultationForm" class="mb-5" enctype="multipart/form-data">
                                     <input type="hidden" id="patientIdDb" name="patientIdDb"
                                         value="<?php echo $patientDetails[0]['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
                                         value="<?php echo $patientDetails[0]['patientId'] ?>">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
 
-                                    <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
+                                        <div>
+                                            <label for="consultDate" class="form-label fieldLabel">Consultation Date &
+                                                Time:</label>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <input type="date" id="consultDate" name="consultDate" class="form-control"
+                                                    style="width: 180px;">
+                                                <select id="consultTime" name="consultTime" class="form-select"
+                                                    style="width: 150px;">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="p-3">
                                         <div class="d-md-flex mb-3">
                                             <div class="col-md-4">
@@ -734,11 +785,10 @@
                                             </div>
                                         </div>
 
-                                        <!-- Medicine section -->
-                                        <!-- <div class="mb-3">
+                                        <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
-                                                data-toggle="collapse" data-target="#medicinesCollapse">
+                                                data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
                                                 <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
@@ -757,7 +807,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <input type="hidden" name="medicinesJson" id="medicinesJson"> -->
+                                        <input type="hidden" name="medicinesJson" id="medicinesJson">
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -795,7 +845,7 @@
 
                                     </div>
 
-                                    <div class="form-group pb-3">
+                                    <!-- <div class="form-group pb-3">
                                         <label class="form-label fieldLabel">Attachments</label>
                                         <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
                                             accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
@@ -804,7 +854,25 @@
                                             + Add File
                                         </button>
                                         <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                        <div id="fileError" class="text-danger pt-1"></div> 
+                                    </div> --><!-- This code is common for all 3 new, edi and followup -->
+                                    <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel">Attachments</label>
+                                        <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                            style="background-color: #00ad8e;"> + Add File </button>
+                                        <div class="mb-3"></div>
+                                        <div id="dropZone"
+                                            style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                            <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                            </p>
+                                        </div>
+                                        <input type="file" id="fileInput" class="d-none"
+                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                        <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none"
+                                            multiple>
+                                        <div id="fileList" style="margin-top: 0.5rem;"></div>
                                         <div id="fileError" class="text-danger pt-1"></div>
+                                        <input type="hidden" id="removedFiles" name="removedFiles" value="">
                                     </div>
 
                                     <div class="form-group pb-3">
@@ -839,7 +907,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -854,19 +922,33 @@
                                 </p>
                             <?php } ?>
                         </div>
-                        <a href="<?php echo base_url() . "Healthcareprovider/consultation/" . $value['id']; ?>"
+                        <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
                             class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                     </div>
 
                     <div class="card-body mx-3 px-md-4">
-                        <form action="<?php echo base_url() . 'Healthcareprovider/saveConsultation' ?>" method="post"
+                        <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
                             enctype="multipart/form-data" id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
                             <input type="hidden" id="patientId" name="patientId"
                                 value="<?php echo $patientDetails[0]['patientId'] ?>">
                             <p class="fs-4 fw-semibold mb-3">Follow-up Consultation:</p>
-                            <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
+                                <div>
+                                    <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input type="date" id="consultDate" name="consultDate" class="form-control"
+                                            style="width: 180px;">
+                                        <select id="consultTime" name="consultTime" class="form-select"
+                                            style="width: 150px;">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
@@ -1023,7 +1105,8 @@
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
                                         data-target="#diagnosisCollapse">
-                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i> Diagnosis</strong></span>
+                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i>
+                                                Diagnosis</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="diagnosisCollapse">
@@ -1134,6 +1217,28 @@
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button"
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                        <div id="medicinesWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="medicinesInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="medicinesSearchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                            </div>
+                                            <div id="medicinesList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="medicinesJson" id="medicinesJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
                                         <span><strong><i class="bi bi-chat-square-text me-2"></i>
                                                 Advice</strong></span>
@@ -1170,15 +1275,22 @@
 
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel">Attachments</label>
-                                <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
-                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                    style="background-color: #00ad8e;">
-                                    + Add File
-                                </button>
+                                    style="background-color: #00ad8e;"> + Add File </button>
+                                <div class="mb-3"></div>
+                                <div id="dropZone"
+                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                    </p>
+                                </div>
+                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                    multiple>
+                                <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
                                 <div id="fileList" style="margin-top: 0.5rem;"></div>
                                 <div id="fileError" class="text-danger pt-1"></div>
+                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
                             </div>
+
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
                                         class="text-danger">*</span></label>
@@ -1209,7 +1321,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -1224,12 +1336,12 @@
                                 </p>
                             <?php } ?>
                         </div>
-                        <a href="<?php echo base_url() . "Healthcareprovider/consultation/" . $value['id']; ?>"
+                        <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
                             class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                     </div>
 
                     <div class="card-body mx-3 px-md-4">
-                        <form action="<?php echo base_url() . 'Healthcareprovider/saveEditConsult' ?>" method="post"
+                        <form action="<?php echo base_url() . 'Consultation/saveEditConsult' ?>" method="post"
                             enctype="multipart/form-data" id="consultationForm" class="mb-5">
                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                 value="<?php echo $patientDetails[0]['id'] ?>">
@@ -1238,6 +1350,15 @@
                             <input type="hidden" id="consultationDbId" name="consultationDbId"
                                 value="<?php echo $consultation['id'] ?>">
                             <input type="hidden" id="vitalsDbId" name="vitalsDbId" value="<?php echo $vitals['id'] ?>">
+                            <div class="float-end">
+                                <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="date" id="consultDate" name="consultDate" class="form-control"
+                                        value="<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>">
+                                    <select id="consultTime" name="consultTime" class="form-select" style="width:150px;">
+                                    </select>
+                                </div>
+                            </div>
                             <p class="fs-4 fw-semibold mb-3">Edit Consultation:</p>
                             <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                             <div class="p-3">
@@ -1505,6 +1626,29 @@
                                     </div>
                                 </div>
 
+                                <!-- Medicine section -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button"
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                        <div id="medicinesWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="medicinesInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="medicinesSearchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                            </div>
+                                            <div id="medicinesList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="medicinesJson" id="medicinesJson">
+
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -1542,10 +1686,17 @@
 
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel">Attachments</label>
-                                <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
-                                    accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
                                     style="background-color: #00ad8e;"> + Add File </button>
+                                <div class="mb-3"></div>
+                                <div id="dropZone"
+                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                    </p>
+                                </div>
+                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                    multiple>
+                                <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
                                 <div id="fileList" style="margin-top: 0.5rem;"></div>
                                 <div id="fileError" class="text-danger pt-1"></div>
                                 <input type="hidden" id="removedFiles" name="removedFiles" value="">
@@ -1755,6 +1906,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
+                        <label for="newProcedureName" class="form-label fieldLabel">Procedure Name <span
+                                class="text-danger">*</span></label>
                         <input type="text" id="newProcedureName" class="form-control" name="name"
                             placeholder="Procedure name" required>
                     </div>
@@ -1770,31 +1923,84 @@
         <!-- Medicine Modal -->
         <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title fw-medium" id="medicinesModalTitle"
-                            style="font-family: Poppins, sans-serif;">
-                            Enter Medicine Details</h5>
+                            style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="medicineNote" class="form-label">Note</label>
-                            <input type="text" class="form-control" id="medicineNote" placeholder="Enter note" />
+                    <div class="modal-body" style="font-family: Poppins, sans-serif;">
+                        <!-- Quantity -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Quantity</label>
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <input type="number" id="medicineQuantity" class="form-control w-25"
+                                    placeholder="Enter quantity">
+                                <select id="medicineUnit" class="form-select w-25">
+                                    <option value="ml">ml</option>
+                                    <option value="mg">mg</option>
+                                    <option value="tab">tab</option>
+                                    <option value="cap">cap</option>
+                                    <option value="drop">drop</option>
+                                </select>
+                            </div>
+                            <div id="quantityButtons" class="d-flex flex-wrap gap-2"></div>
                         </div>
-                        <div class="mb-3">
-                            <label for="medicineSince" class="form-label">Since</label>
-                            <input type="text" class="form-control" id="medicineSince" placeholder="Enter since" />
+                        <!-- Default Timing / Frequency -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Default Timing
+                                <span class="text-primary" role="button" id="toggleTimingType">switch</span>
+                            </label>
+                            <div id="timingOptions" class="d-flex flex-wrap gap-2 mb-2">
+                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="4h">4h</button>
+                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="6h">6h</button>
+                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="8h">8h</button>
+                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="12h">12h</button>
+                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="48h">48h</button>
+                            </div>
+                            <div id="frequencyOptions" class="d-none d-flex flex-wrap gap-2 mb-2">
+                                <button class="btn btn-outline-secondary btn-sm freq-btn" data-val="Once">Once</button>
+                                <button class="btn btn-outline-secondary btn-sm freq-btn"
+                                    data-val="Twice">Twice</button>
+                                <button class="btn btn-outline-secondary btn-sm freq-btn"
+                                    data-val="Thrice">Thrice</button>
+                                <button class="btn btn-outline-secondary btn-sm freq-btn" data-val="4 times">4
+                                    times</button>
+                                <button class="btn btn-outline-secondary btn-sm freq-btn" data-val="5 times">5
+                                    times</button>
+                            </div>
+                            <div class="d-flex flex-wrap gap-3 mt-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="foodTiming" value="Before Food"
+                                        id="beforeFood">
+                                    <label class="form-check-label" for="beforeFood">Before Food</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="foodTiming" value="After Food"
+                                        id="afterFood">
+                                    <label class="form-check-label" for="afterFood">After Food</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="foodTiming" value="Empty Stomach"
+                                        id="emptyStomach">
+                                    <label class="form-check-label" for="emptyStomach">Empty Stomach</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="foodTiming" value="Bedtime"
+                                        id="bedtime">
+                                    <label class="form-check-label" for="bedtime">Bedtime</label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="medicineSeverity" class="form-label">Severity</label>
-                            <select id="medicineSeverity" class="form-select">
-                                <option value="">Select severity</option>
-                                <option value="Mild">Mild</option>
-                                <option value="Moderate">Moderate</option>
-                                <option value="Severe">Severe</option>
-                            </select>
+                        <!-- Duration -->
+                        <div>
+                            <label class="form-label fw-semibold">Duration</label>
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <input type="text" class="form-control w-25" id="medicineDuration"
+                                    placeholder="Enter custom duration">
+                            </div>
+                            <div id="durationButtons" class="d-flex flex-wrap gap-2"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -1836,8 +2042,6 @@
             </div>
         </div>
 
-        <!-- ******************************************************************************************************************************************** -->
-
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
 
@@ -1846,7 +2050,54 @@
     <!-- ******************************************************************************************************************************************** -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Next follow update date field disable -->
+    <!-- Consultation date and time default -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const timeSelect = document.getElementById("consultTime");
+            const dateInput = document.getElementById("consultDate");
+
+            const phpDate = "<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>";
+            const phpTime = "<?= isset($consultation['consult_time']) ? $consultation['consult_time'] : '' ?>";
+
+            for (let h = 0; h < 24; h++) {
+                for (let m = 0; m < 60; m += 10) {
+                    const hours12 = h % 12 === 0 ? 12 : h % 12;
+                    const ampm = h < 12 ? "AM" : "PM";
+                    const minutes = String(m).padStart(2, "0");
+                    const value24 = `${String(h).padStart(2, "0")}:${minutes}`;
+                    const label12 = `${hours12}:${minutes} ${ampm}`;
+
+                    const option = document.createElement("option");
+                    option.value = value24;
+                    option.textContent = label12;
+                    timeSelect.appendChild(option);
+                }
+            }
+
+            const now = new Date();
+            const today = now.toISOString().split("T")[0];
+            dateInput.value = phpDate || today;
+
+            if (phpTime) {
+                timeSelect.value = phpTime;
+            } else {
+                const currentMinutes = now.getMinutes();
+                const roundedMinutes = Math.round(currentMinutes / 10) * 10;
+                const adjustedMinutes = roundedMinutes === 60 ? 0 : roundedMinutes;
+                const adjustedHours = roundedMinutes === 60 ? now.getHours() + 1 : now.getHours();
+
+                const hours = String(adjustedHours % 24).padStart(2, "0");
+                const minutes = String(adjustedMinutes).padStart(2, "0");
+                const currentValue = `${hours}:${minutes}`;
+
+                if (Array.from(timeSelect.options).some(opt => opt.value === currentValue)) {
+                    timeSelect.value = currentValue;
+                }
+            }
+        });
+    </script>
+
+    <!-- Next follow up update date field disable -->
     <script>
         const today = new Date().toISOString().split("T")[0];
         document.getElementById("nextFollowUpDate").setAttribute("min", today);
@@ -1871,11 +2122,12 @@
         let editingSymptomTag = null;
 
         function renderSymptomsSuggestions() {
-            const query = symptomsInput.value.toLowerCase().trim();
+            const query = symptomsInput.value.trim();
+            const queryLower = query.toLowerCase();
             symptomsSuggestionsBox.innerHTML = "";
 
             const filtered = symptomsList.filter(s =>
-                s.toLowerCase().includes(query) &&
+                s.toLowerCase().includes(queryLower) &&
                 !selectedSymptoms.some(obj => obj.symptom === s)
             );
 
@@ -1924,7 +2176,7 @@
             const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
 
             if (!symptomsList.includes(pendingSymptom)) {
-                fetch("<?= site_url('Healthcareprovider/addSymptom') ?>", {
+                fetch("<?= site_url('Consultation/addSymptom') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingSymptom)
@@ -2066,6 +2318,74 @@
 
     </script>
 
+    <!-- Symptoms save script -->
+    <script>
+        $(document).ready(function () {
+            function parseSymptomTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                // Extract symptom and optional details
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                    let symptom = match[1].trim();
+                    let detailsStr = match[2].trim();
+                    let details = detailsStr.split(',').map(d => d.trim());
+
+                    let parsed = {
+                        symptom: symptom,
+                        note: '',
+                        since: '',
+                        severity: ''
+                    };
+
+                    details.forEach(detail => {
+                        let kv = detail.split(':').map(s => s.trim());
+                        if (kv.length === 2) {
+                            let key = kv[0].toLowerCase();
+                            let value = kv[1];
+                            if (key === 'note') parsed.note = value;
+                            else if (key === 'since') parsed.since = value;
+                            else if (key === 'severity') parsed.severity = value;
+                        }
+                    });
+
+                    return parsed;
+                } else {
+                    return {
+                        symptom: text,
+                        note: '',
+                        since: '',
+                        severity: ''
+                    };
+                }
+
+                return null;
+            }
+
+            function updateSymptomsJson() {
+                let symptoms = [];
+                $('#symptomsInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let symptom = parseSymptomTagText(tagText);
+
+                    if (symptom) {
+                        let symptomId = $(this).attr('data-id') || "new";
+                        symptom.id = symptomId;
+                        symptoms.push(symptom);
+                    }
+                });
+                $('#symptomsJson').val(JSON.stringify(symptoms));
+            }
+
+            const observer = new MutationObserver(updateSymptomsJson);
+            observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function (e) {
+                updateSymptomsJson();
+            });
+        });
+    </script>
+
     <!-- Finding Modal Script -->
     <script>
         const findingsList = <?php echo json_encode(array_column($findingsList, 'findingsName')); ?>;
@@ -2085,11 +2405,12 @@
         let editingTagEl = null;
 
         function renderSuggestions() {
-            const query = findingsInput.value.toLowerCase().trim();
+            const query = findingsInput.value.trim();
+            const queryLower = query.toLowerCase();
             suggestionsBox.innerHTML = "";
 
             const filtered = findingsList.filter(f =>
-                f.toLowerCase().includes(query) &&
+                f.toLowerCase().includes(queryLower) &&
                 !selectedFindings.some(obj => obj.finding === f)
             );
 
@@ -2138,7 +2459,7 @@
             const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
 
             if (!findingsList.includes(pendingTag)) {
-                fetch("<?= site_url('Healthcareprovider/addFinding') ?>", {
+                fetch("<?= site_url('Consultation/addFinding') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingTag)
@@ -2279,6 +2600,61 @@
         });
     </script>
 
+    <!-- Findings save script -->
+    <script>
+        $(document).ready(function () {
+            function parseTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
+
+                let finding, note = '', since = '', severity = '';
+
+                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+
+                if (match) {
+                    finding = match[1].trim();
+
+                    if (match[2]) {
+                        const details = match[2].split(', ').map(d => d.trim());
+
+                        details.forEach(detail => {
+                            const [key, value] = detail.split(': ', 2);
+                            if (key === 'Note') note = value || '';
+                            else if (key === 'Since') since = value || '';
+                            else if (key === 'Severity') severity = value || '';
+                        });
+                    }
+                } else {
+                    finding = text;
+                }
+
+                return { finding, note, since, severity };
+            }
+
+            function updateFindingsJson() {
+                let findings = [];
+                $('#findingsInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let finding = parseTagText(tagText);
+                    if (finding) {
+                        let findingId = $(this).attr('data-id') || "new";
+                        finding.id = findingId;
+                        findings.push(finding);
+                    }
+                });
+                $('#findingsJson').val(JSON.stringify(findings));
+                console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
+            }
+
+            const observer = new MutationObserver(updateFindingsJson);
+            observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function (e) {
+                updateFindingsJson(); // Ensure latest data
+                console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
+            });
+        });
+    </script>
+
     <!-- Diagonsis Modal Script -->
     <script>
         const diagnosisList = <?php echo json_encode(array_column($diagnosisList, 'diagnosisName')); ?>;
@@ -2298,11 +2674,13 @@
         let editingDiagnosisTag = null;
 
         function renderDiagnosisSuggestions() {
-            const query = diagnosisInput.value.toLowerCase().trim();
+            const query = diagnosisInput.value.trim();
+            const queryLower = query.toLowerCase();
+
             diagnosisSuggestionsBox.innerHTML = "";
 
             const filtered = diagnosisList.filter(d =>
-                d.toLowerCase().includes(query) &&
+                d.toLowerCase().includes(queryLower) &&
                 !selectedDiagnosis.some(obj => obj.name === d)
             );
 
@@ -2352,7 +2730,7 @@
             if (!pendingDiagnosis) return;
 
             if (!diagnosisList.includes(pendingDiagnosis)) {
-                fetch("<?= site_url('Healthcareprovider/addDiagnosis') ?>", {
+                fetch("<?= site_url('Consultation/addDiagnosis') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingDiagnosis)
@@ -2501,6 +2879,61 @@
         });
     </script>
 
+    <!-- Diagnosis save script -->
+    <script>
+        $(document).ready(function () {
+            function parseDiagnosisTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                let name, note = '', since = '', severity = '';
+
+                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+
+                if (match) {
+                    name = match[1].trim();
+
+                    if (match[2]) {
+                        const details = match[2].split(', ').map(d => d.trim());
+
+                        details.forEach(detail => {
+                            const [key, value] = detail.split(': ', 2);
+                            if (key === 'Note') note = value || '';
+                            else if (key === 'Since') since = value || '';
+                            else if (key === 'Severity') severity = value || '';
+                        });
+                    }
+                } else {
+                    name = text;
+                }
+
+                return { name, note, since, severity };
+            }
+
+            function updateDiagnosisJson() {
+                let diagnoses = [];
+                $('#diagnosisInputBox > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
+                    let diagnosis = parseDiagnosisTagText(tagText);
+                    if (diagnosis) {
+                        let diagnosisId = $(this).attr('data-id') || "new"; // Read ID or mark as new
+                        diagnosis.id = diagnosisId;
+                        diagnoses.push(diagnosis);
+                    }
+                });
+                $('#diagnosisJson').val(JSON.stringify(diagnoses));
+                console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
+            }
+
+            const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
+            diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function (e) {
+                updateDiagnosisJson(); // Ensure latest data
+                console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
+            });
+        });
+    </script>
+
     <!-- Investigation Search Button -->
     <script>
         const investigationsList = <?php echo json_encode(array_column($investigationsList, 'investigationsName')); ?>;
@@ -2518,11 +2951,12 @@
         let editingInvestigationTag = null;
 
         function renderInvestigationsSuggestions() {
-            const query = investigationsInput.value.toLowerCase().trim();
+            const query = investigationsInput.value.trim();
+            const queryLower = query.toLowerCase();
             investigationsSuggestionsBox.innerHTML = "";
 
             const filtered = investigationsList.filter(s =>
-                s.toLowerCase().includes(query) &&
+                s.toLowerCase().includes(queryLower) &&
                 !selectedInvestigations.some(obj => obj.investigation === s)
             );
 
@@ -2567,7 +3001,7 @@
             const existingIndex = selectedInvestigations.findIndex(s => s.investigation === pendingInvestigation);
 
             if (!investigationsList.includes(pendingInvestigation)) {
-                fetch("<?= site_url('Healthcareprovider/addInvestigation') ?>", {
+                fetch("<?= site_url('Consultation/addInvestigation') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingInvestigation)
@@ -2703,6 +3137,56 @@
         });
     </script>
 
+    <!-- Investigation save script -->
+    <script>
+        $(document).ready(function () {
+            function parseInvestigationTagText(text) {
+                text = text.trim().replace(/&times;$/g, '').trim();
+
+                let match = text.match(/^(.+?)\s*\((.+)\)$/);
+                if (match) {
+                    let investigation = match[1].trim();
+                    let detailsStr = match[2].trim();
+
+                    let parsed = {
+                        investigation: investigation,
+                        note: ''
+                    };
+
+                    if (detailsStr.toLowerCase().startsWith("note:")) {
+                        parsed.note = detailsStr.split(":")[1].trim();
+                    }
+
+                    return parsed;
+                } else {
+                    return { investigation: text, note: '' };
+                }
+            }
+
+            function updateInvestigationsJson() {
+                let investigations = [];
+                $('#investigationsInput > span.bg-success').each(function () {
+                    let tagText = $(this).clone().children().remove().end().text().trim();
+                    let investigation = parseInvestigationTagText(tagText);
+
+                    if (investigation) {
+                        let investigationId = $(this).attr('data-id') || "new";
+                        investigation.id = investigationId;
+                        investigations.push(investigation);
+                    }
+                });
+                $('#investigationsJson').val(JSON.stringify(investigations));
+            }
+
+            const observer = new MutationObserver(updateInvestigationsJson);
+            observer.observe(document.getElementById('investigationsInput'), { childList: true, subtree: true });
+
+            $('#consultationForm').on('submit', function () {
+                updateInvestigationsJson();
+            });
+        });
+    </script>
+
     <!-- Instruction Search Button -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -2750,7 +3234,7 @@
                 const name = newInstructionInput.value.trim();
                 if (!name) return;
 
-                fetch("<?= site_url('Healthcareprovider/addInstruction') ?>", {
+                fetch("<?= site_url('Consultation/addInstruction') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(name)
@@ -2841,7 +3325,7 @@
                 const name = newProcedureInput.value.trim();
                 if (!name) return;
 
-                fetch("<?= site_url('Healthcareprovider/addProcedure') ?>", {
+                fetch("<?= site_url('Consultation/addProcedure') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(name)
@@ -2978,28 +3462,35 @@
 
     <!-- Medicine Modal Script -->
     <script>
-        const medicinesList = <?php echo json_encode(array_column($symptomsList, 'symptomsName')); ?>;
+        const medicinesList = <?php echo json_encode(array_column($medicinesList, 'medicineBrand')); ?>;
+        const medicineUnits = ['ml', 'mg', 'tab', 'cap', 'drop'];
 
         const medicinesInput = document.getElementById("medicinesSearchInput");
         const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
         const medicinesTagContainer = document.getElementById("medicinesInput");
-
         const medicinesModal = new bootstrap.Modal(document.getElementById("medicinesModal"));
-        const medicineNote = document.getElementById("medicineNote");
-        const medicineSince = document.getElementById("medicineSince");
-        const medicineSeverity = document.getElementById("medicineSeverity");
         const medicinesModalTitle = document.getElementById("medicinesModalTitle");
+        const medicineQuantity = document.getElementById("medicineQuantity");
+        const medicineUnit = document.getElementById("medicineUnit");
+        const medicineDuration = document.getElementById("medicineDuration");
+        const toggleTimingType = document.getElementById("toggleTimingType");
+        const timingOptions = document.getElementById("timingOptions");
+        const frequencyOptions = document.getElementById("frequencyOptions");
+        const quantityButtons = document.getElementById("quantityButtons");
+        const durationButtons = document.getElementById("durationButtons");
 
         let selectedMedicines = [];
         let pendingMedicine = "";
         let editingMedicineTag = null;
+        let isTimingMode = true;
 
         function renderMedicinesSuggestions() {
-            const query = medicinesInput.value.toLowerCase().trim();
+            const query = medicinesInput.value.trim();
+            const queryLower = query.toLowerCase();
             medicinesSuggestionsBox.innerHTML = "";
 
             const filtered = medicinesList.filter(m =>
-                m.toLowerCase().includes(query) &&
+                m.toLowerCase().includes(queryLower) &&
                 !selectedMedicines.some(obj => obj.medicine === m)
             );
 
@@ -3026,29 +3517,127 @@
             medicinesSuggestionsBox.style.display = "block";
         }
 
+        function setupQuantityButtons() {
+            const quantities = [1, 2, 4, 5, 8, 10, 12, 15, 18, 20];
+            quantities.forEach(q => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline-secondary btn-sm';
+                btn.textContent = q;
+                btn.onclick = () => {
+                    medicineQuantity.value = q;
+                    quantityButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+                quantityButtons.appendChild(btn);
+            });
+        }
+
+        function setupDurationButtons() {
+            const durations = ['1d', '2d', '3d', '4d', '5d', '1w', '10d', '2w', '15d', '3w'];
+            durations.forEach(d => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline-secondary btn-sm dur-btn';
+                btn.setAttribute('data-val', d);
+                btn.textContent = d;
+                btn.onclick = () => {
+                    medicineDuration.value = d;
+                    durationButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+                durationButtons.appendChild(btn);
+            });
+        }
+
+        function setupTimingFrequencyButtons() {
+            timingOptions.querySelectorAll('.timing-btn').forEach(btn => {
+                btn.onclick = () => {
+                    timingOptions.querySelectorAll('.timing-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+            });
+            frequencyOptions.querySelectorAll('.freq-btn').forEach(btn => {
+                btn.onclick = () => {
+                    frequencyOptions.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+            });
+        }
+
+        toggleTimingType.onclick = () => {
+            isTimingMode = !isTimingMode;
+            timingOptions.classList.toggle('d-none', !isTimingMode);
+            frequencyOptions.classList.toggle('d-none', isTimingMode);
+            toggleTimingType.textContent = isTimingMode ? 'switch to frequency' : 'switch to timing';
+        };
+
         function openMedicineModal(tagName, existing = null, tagEl = null) {
             pendingMedicine = tagName;
             editingMedicineTag = tagEl;
 
             medicinesModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            medicineNote.value = existing?.note || "";
-            medicineSince.value = existing?.since || "";
-            medicineSeverity.value = existing?.severity || "";
+            medicineQuantity.value = existing?.quantity || "";
+            medicineUnit.value = existing?.unit || "tab";
+            medicineDuration.value = existing?.duration || "";
+            const foodTimingRadios = document.getElementsByName('foodTiming');
+            foodTimingRadios.forEach(radio => radio.checked = radio.value === (existing?.foodTiming || ""));
+
+            const timingButtons = timingOptions.querySelectorAll('.timing-btn');
+            const freqButtons = frequencyOptions.querySelectorAll('.freq-btn');
+            timingButtons.forEach(b => b.classList.remove('active'));
+            freqButtons.forEach(b => b.classList.remove('active'));
+
+            if (existing?.timing) {
+                isTimingMode = true;
+                timingOptions.classList.remove('d-none');
+                frequencyOptions.classList.add('d-none');
+                toggleTimingType.textContent = 'switch to frequency';
+                timingButtons.forEach(b => {
+                    if (b.getAttribute('data-val') === existing.timing) b.classList.add('active');
+                });
+            } else if (existing?.frequency) {
+                isTimingMode = false;
+                timingOptions.classList.add('d-none');
+                frequencyOptions.classList.remove('d-none');
+                toggleTimingType.textContent = 'switch to timing';
+                freqButtons.forEach(b => {
+                    if (b.getAttribute('data-val') === existing.frequency) b.classList.add('active');
+                });
+            } else {
+                isTimingMode = true;
+                timingOptions.classList.remove('d-none');
+                frequencyOptions.classList.add('d-none');
+                toggleTimingType.textContent = 'switch to frequency';
+            }
+
+            quantityButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            if (existing?.quantity) {
+                const qtyBtn = Array.from(quantityButtons.querySelectorAll('button')).find(b => b.textContent === existing.quantity);
+                if (qtyBtn) qtyBtn.classList.add('active');
+            }
+
+            durationButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            if (existing?.duration) {
+                const durBtn = Array.from(durationButtons.querySelectorAll('button')).find(b => b.getAttribute('data-val') === existing.duration);
+                if (durBtn) durBtn.classList.add('active');
+            }
 
             medicinesModal.show();
         }
 
         function saveMedicineModal() {
-            const note = medicineNote.value.trim();
-            const since = medicineSince.value.trim();
-            const severity = medicineSeverity.value;
+            const quantity = medicineQuantity.value.trim();
+            const unit = medicineUnit.value;
+            const duration = medicineDuration.value.trim();
+            const foodTiming = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
+            const timing = isTimingMode ? timingOptions.querySelector('.timing-btn.active')?.getAttribute('data-val') || "" : "";
+            const frequency = !isTimingMode ? frequencyOptions.querySelector('.freq-btn.active')?.getAttribute('data-val') || "" : "";
 
             if (!pendingMedicine) return;
 
             const existingIndex = selectedMedicines.findIndex(m => m.medicine === pendingMedicine);
 
             if (!medicinesList.includes(pendingMedicine)) {
-                fetch("<?= site_url('Healthcareprovider/addMedicine') ?>", {
+                fetch("<?= site_url('Consultation/addMedicine') ?>", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded" },
                     body: "name=" + encodeURIComponent(pendingMedicine)
@@ -3064,13 +3653,22 @@
                     .catch(err => console.error(err));
             }
 
+            const data = {
+                id: existingIndex !== -1 ? selectedMedicines[existingIndex].id || "new" : "new",
+                medicine: pendingMedicine,
+                quantity,
+                unit,
+                timing,
+                frequency,
+                foodTiming,
+                duration
+            };
+
             if (editingMedicineTag && existingIndex !== -1) {
-                let existingId = selectedMedicines[existingIndex].id || "new";
-                selectedMedicines[existingIndex] = { id: existingId, medicine: pendingMedicine, note, since, severity };
-                updateMedicineTagDisplay(editingMedicineTag, selectedMedicines[existingIndex]);
-                editingMedicineTag.setAttribute("data-id", existingId);
+                selectedMedicines[existingIndex] = data;
+                updateMedicineTagDisplay(editingMedicineTag, data);
+                editingMedicineTag.setAttribute("data-id", data.id);
             } else {
-                const data = { id: "new", medicine: pendingMedicine, note, since, severity };
                 selectedMedicines.push(data);
                 addMedicineTag(data);
             }
@@ -3085,7 +3683,6 @@
             const tag = document.createElement("span");
             tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
             tag.style.cursor = "pointer";
-
             tag.setAttribute("data-id", data.id || "new");
 
             const textSpan = document.createElement("span");
@@ -3098,7 +3695,6 @@
             removeBtn.style.fontSize = "1rem";
             removeBtn.style.border = "none";
             removeBtn.style.background = "transparent";
-
             removeBtn.onclick = (e) => {
                 e.stopPropagation();
                 tag.remove();
@@ -3107,7 +3703,6 @@
             };
 
             tag.appendChild(removeBtn);
-
             updateMedicineTagDisplay(tag, data);
 
             tag.onclick = () => {
@@ -3118,12 +3713,14 @@
         }
 
         function updateMedicineTagDisplay(tagEl, data) {
-            const textParts = [data.medicine];
+            const textParts = [`${data.medicine} (${data.unit || 'tab'})`];
             const details = [];
 
-            if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
+            if (data.quantity) details.push(`Qty: ${data.quantity}`);
+            if (data.timing) details.push(`Timing: ${data.timing}`);
+            if (data.frequency) details.push(`Freq: ${data.frequency}`);
+            if (data.foodTiming) details.push(data.foodTiming);
+            if (data.duration) details.push(`Duration: ${data.duration}`);
 
             if (details.length > 0) {
                 textParts.push(`(${details.join(", ")})`);
@@ -3167,19 +3764,23 @@
             }
         });
 
-        renderMedicinesSuggestions();
-
         document.addEventListener("DOMContentLoaded", () => {
-            const preloadMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
+            setupQuantityButtons();
+            setupDurationButtons();
+            setupTimingFrequencyButtons();
 
+            const preloadMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
             if (preloadMedicines.length > 0) {
                 preloadMedicines.forEach(item => {
                     const data = {
                         id: item.id || "",
                         medicine: item.medicine_name,
-                        note: item.note || "",
-                        since: item.since || "",
-                        severity: item.severity || ""
+                        quantity: item.quantity || "",
+                        unit: item.unit || "tab",
+                        timing: item.timing || "",
+                        frequency: item.frequency || "",
+                        foodTiming: item.food_timing || "",
+                        duration: item.duration || ""
                     };
                     selectedMedicines.push(data);
                     addMedicineTag(data);
@@ -3189,305 +3790,8 @@
         });
     </script>
 
-    <!-- ----------------------------------------------------------- -->
-    <!-- Symptoms save script -->
-    <script>
-        $(document).ready(function () {
-            function parseSymptomTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
-
-                // Extract symptom and optional details
-                let match = text.match(/^(.+?)\s*\((.+)\)$/);
-                if (match) {
-                    let symptom = match[1].trim();
-                    let detailsStr = match[2].trim();
-                    let details = detailsStr.split(',').map(d => d.trim());
-
-                    let parsed = {
-                        symptom: symptom,
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
-
-                    details.forEach(detail => {
-                        let kv = detail.split(':').map(s => s.trim());
-                        if (kv.length === 2) {
-                            let key = kv[0].toLowerCase();
-                            let value = kv[1];
-                            if (key === 'note') parsed.note = value;
-                            else if (key === 'since') parsed.since = value;
-                            else if (key === 'severity') parsed.severity = value;
-                        }
-                    });
-
-                    return parsed;
-                } else {
-                    return {
-                        symptom: text,
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
-                }
-
-                return null;
-            }
-
-            function updateSymptomsJson() {
-                let symptoms = [];
-                $('#symptomsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let symptom = parseSymptomTagText(tagText);
-
-                    if (symptom) {
-                        let symptomId = $(this).attr('data-id') || "new";
-                        symptom.id = symptomId;
-                        symptoms.push(symptom);
-                    }
-                });
-                $('#symptomsJson').val(JSON.stringify(symptoms));
-            }
-
-            const observer = new MutationObserver(updateSymptomsJson);
-            observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateSymptomsJson();
-            });
-        });
-    </script>
-
-    <!-- Findings save script -->
-    <script>
-        $(document).ready(function () {
-            function parseTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
-
-                let finding, note = '', since = '', severity = '';
-
-                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
-
-                if (match) {
-                    finding = match[1].trim();
-
-                    if (match[2]) {
-                        const details = match[2].split(', ').map(d => d.trim());
-
-                        details.forEach(detail => {
-                            const [key, value] = detail.split(': ', 2);
-                            if (key === 'Note') note = value || '';
-                            else if (key === 'Since') since = value || '';
-                            else if (key === 'Severity') severity = value || '';
-                        });
-                    }
-                } else {
-                    finding = text;
-                }
-
-                return { finding, note, since, severity };
-            }
-
-            function updateFindingsJson() {
-                let findings = [];
-                $('#findingsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let finding = parseTagText(tagText);
-                    if (finding) {
-                        let findingId = $(this).attr('data-id') || "new";
-                        finding.id = findingId;
-                        findings.push(finding);
-                    }
-                });
-                $('#findingsJson').val(JSON.stringify(findings));
-                console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
-            }
-
-            const observer = new MutationObserver(updateFindingsJson);
-            observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateFindingsJson(); // Ensure latest data
-                console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
-            });
-        });
-    </script>
-
-    <!-- Diagnosis save script -->
-    <script>
-        $(document).ready(function () {
-            function parseDiagnosisTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
-
-                let name, note = '', since = '', severity = '';
-
-                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
-
-                if (match) {
-                    name = match[1].trim();
-
-                    if (match[2]) {
-                        const details = match[2].split(', ').map(d => d.trim());
-
-                        details.forEach(detail => {
-                            const [key, value] = detail.split(': ', 2);
-                            if (key === 'Note') note = value || '';
-                            else if (key === 'Since') since = value || '';
-                            else if (key === 'Severity') severity = value || '';
-                        });
-                    }
-                } else {
-                    name = text;
-                }
-
-                return { name, note, since, severity };
-            }
-
-            function updateDiagnosisJson() {
-                let diagnoses = [];
-                $('#diagnosisInputBox > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
-                    let diagnosis = parseDiagnosisTagText(tagText);
-                    if (diagnosis) {
-                        let diagnosisId = $(this).attr('data-id') || "new"; // Read ID or mark as new
-                        diagnosis.id = diagnosisId;
-                        diagnoses.push(diagnosis);
-                    }
-                });
-                $('#diagnosisJson').val(JSON.stringify(diagnoses));
-                console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
-            }
-
-            const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
-            diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateDiagnosisJson(); // Ensure latest data
-                console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
-            });
-        });
-    </script>
-
-    <!-- Investigation save script -->
-    <script>
-        $(document).ready(function () {
-            function parseInvestigationTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
-
-                let match = text.match(/^(.+?)\s*\((.+)\)$/);
-                if (match) {
-                    let investigation = match[1].trim();
-                    let detailsStr = match[2].trim();
-
-                    let parsed = {
-                        investigation: investigation,
-                        note: ''
-                    };
-
-                    if (detailsStr.toLowerCase().startsWith("note:")) {
-                        parsed.note = detailsStr.split(":")[1].trim();
-                    }
-
-                    return parsed;
-                } else {
-                    return { investigation: text, note: '' };
-                }
-            }
-
-            function updateInvestigationsJson() {
-                let investigations = [];
-                $('#investigationsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let investigation = parseInvestigationTagText(tagText);
-
-                    if (investigation) {
-                        let investigationId = $(this).attr('data-id') || "new";
-                        investigation.id = investigationId;
-                        investigations.push(investigation);
-                    }
-                });
-                $('#investigationsJson').val(JSON.stringify(investigations));
-            }
-
-            const observer = new MutationObserver(updateInvestigationsJson);
-            observer.observe(document.getElementById('investigationsInput'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function () {
-                updateInvestigationsJson();
-            });
-        });
-    </script>
-
-    <!-- Medication save script -->
-    <script>
-        $(document).ready(function () {
-            function parseMedicineTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
-
-                let match = text.match(/^(.+?)\s*\((.+)\)$/);
-                if (match) {
-                    let medicine = match[1].trim();
-                    let detailsStr = match[2].trim();
-                    let details = detailsStr.split(',').map(d => d.trim());
-
-                    let parsed = { medicine: medicine, note: '', since: '', severity: '' };
-
-                    details.forEach(detail => {
-                        let kv = detail.split(':').map(s => s.trim());
-                        if (kv.length === 2) {
-                            let key = kv[0].toLowerCase();
-                            let value = kv[1];
-                            if (key === 'note') parsed.note = value;
-                            else if (key === 'since') parsed.since = value;
-                            else if (key === 'severity') parsed.severity = value;
-                        }
-                    });
-
-                    return parsed;
-                } else {
-                    return { medicine: text, note: '', since: '', severity: '' };
-                }
-            }
-
-            function updateMedicinesJson() {
-                let medicines = [];
-                $('#medicinesInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let medicine = parseMedicineTagText(tagText);
-
-                    if (medicine) {
-                        let medicineId = $(this).attr('data-id') || "new";
-                        medicine.id = medicineId;
-                        medicines.push(medicine);
-                    }
-                });
-                $('#medicinesJson').val(JSON.stringify(medicines));
-            }
-
-            const observer = new MutationObserver(updateMedicinesJson);
-            observer.observe(document.getElementById('medicinesInput'), { childList: true, subtree: true });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateMedicinesJson();
-            });
-        });
-    </script>
-
-    <!-- Toggle visibility and icon for all fields -->
-    <script>
-        document.querySelectorAll('.toggle-label').forEach(label => {
-            label.addEventListener('click', () => {
-                const container = label.nextElementSibling;
-                const icon = label.querySelector('.toggle-icon');
-
-                container.classList.toggle('show');
-                icon.textContent = container.classList.contains('show') ? '-' : '+';
-            });
-        });
-    </script>
-
     <!-- Upload attachments script -->
-    <script>
+    <!-- <script>
         (function () {
             const MAX_FILES = 10;
             const fileInput = document.getElementById("fileInput");
@@ -3594,7 +3898,176 @@
 
             });
         })();
-    </script>
+    </script> -->
+    <script>
+        (function () {
+            const MAX_FILES = 10;
+            const fileInput = document.getElementById("fileInput");
+            const submitFileInput = document.getElementById("submitFileInput");
+            const addBtn = document.getElementById("addFileBtn");
+            const fileList = document.getElementById("fileList");
+            const fileError = document.getElementById("fileError");
+            const removedFilesInput = document.getElementById("removedFiles");
+            const dropZone = document.getElementById("dropZone");
+
+            let newFiles = [];
+            let existingFiles = [];
+            let removedFiles = [];
+
+            existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+
+            renderFileList();
+
+            // --- DRAG AND DROP HANDLERS ---
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+
+            dropZone.addEventListener('drop', handleDrop, false);
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight() {
+                dropZone.style.borderColor = '#00ad8e';
+                dropZone.style.backgroundColor = '#f7f7f7';
+            }
+
+            function unhighlight() {
+                dropZone.style.borderColor = '#ccc';
+                dropZone.style.backgroundColor = 'transparent';
+            }
+
+            function handleDrop(e) {
+                unhighlight();
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                processNewFiles(files);
+            }
+
+            function processNewFiles(files) {
+                fileError.textContent = "";
+                if (!files.length) return;
+
+                const allowedTypes = fileInput.getAttribute('accept').split(',').map(t => t.trim());
+                for (let i = 0; i < files.length; i++) {
+                    // Check file type
+                    if (files[i].type && !allowedTypes.includes(files[i].type) && !allowedTypes.some(t => files[i].name.endsWith(t))) {
+                        fileError.textContent = `File type not allowed for: ${files[i].name}`;
+                        continue;
+                    }
+
+                    // Check max files limit
+                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                        fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                        break;
+                    }
+
+                    // Avoid duplicate files by checking file name and size
+                    if (!newFiles.some(f => f.name === files[i].name && f.size === files[i].size)) {
+                        newFiles.push(files[i]);
+                    }
+                }
+
+                renderFileList();
+                updateSubmitFileInput();
+            }
+
+            function updateSubmitFileInput() {
+                const dataTransfer = new DataTransfer();
+                newFiles.forEach(file => dataTransfer.items.add(file));
+                submitFileInput.files = dataTransfer.files;
+            }
+
+            // --- BUTTON AND FILE INPUT HANDLERS ---
+            addBtn.addEventListener("click", () => {
+                if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                    fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                    return;
+                }
+                fileInput.click();
+            });
+
+            fileInput.addEventListener("change", () => {
+                if (fileInput.files.length > 0) {
+                    processNewFiles(fileInput.files);
+                    fileInput.value = ""; // Clear fileInput to allow new selections
+                }
+            });
+
+            // --- RENDER FILE LIST FUNCTION ---
+            function renderFileList() {
+                fileList.innerHTML = "";
+
+                if (existingFiles.length + newFiles.length === 0) {
+                    fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+                    return;
+                }
+
+                const ul = document.createElement("ul");
+                ul.style.paddingLeft = "1.2rem";
+
+                existingFiles.forEach((file, index) => {
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+
+                    const name = document.createTextNode(file.file_name + " ");
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+
+                    removeBtn.addEventListener("click", () => {
+                        removedFiles.push(file.file_name);
+                        existingFiles.splice(index, 1);
+                        removedFilesInput.value = JSON.stringify(removedFiles);
+                        renderFileList();
+                    });
+
+                    li.appendChild(name);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+
+                newFiles.forEach((file, index) => {
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+
+                    const name = document.createTextNode(file.name + " ");
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+
+                    removeBtn.addEventListener("click", () => {
+                        newFiles.splice(index, 1);
+                        renderFileList();
+                        updateSubmitFileInput();
+                    });
+
+                    li.appendChild(name);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+
+                fileList.appendChild(ul);
+            }
+        })();</script>
+
 
     <!-- Attachment display modal script -->
     <script>
@@ -3635,8 +4108,30 @@
         });
     </script>
 
+    <!-- Delete Consultation Script -->
+    <script>
+        let deleteConsultationId = null;
+        let deletePatientId = null;
 
-    <!-- ******************************************************************************************************************************************** -->
+        function confirmDeleteConsult(patientId, consultationId, consultationDate, consultationTime) {
+            deleteConsultationId = consultationId;
+            deletePatientId = patientId;
+
+            document.getElementById('deleteModalBody').innerHTML =
+                `Are you sure you want to delete this consultation done on <strong>${consultationDate} - ${consultationTime}</strong>?`;
+
+            const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+            modal.show();
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            if (deleteConsultationId && deletePatientId) {
+                window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>"
+                    + deletePatientId + "/" + deleteConsultationId;
+            }
+        });
+    </script>
+
     <!-- Sidebar active color change code -->
     <script>
         <?php if ($method == "consultDashboard" || $method == "followupConsult" || $method == "editConsult") { ?>
@@ -3644,19 +4139,33 @@
         <?php } ?>
     </script>
 
+    <!-- Toggle visibility and icon for all fields in consultation page -->
+    <script>
+        document.querySelectorAll('.toggle-label').forEach(label => {
+            label.addEventListener('click', () => {
+                const container = label.nextElementSibling;
+                const icon = label.querySelector('.toggle-icon');
+
+                container.classList.toggle('show');
+                icon.textContent = container.classList.contains('show') ? '-' : '+';
+            });
+        });
+    </script>
+
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <!-- Vendor JS Files -->
-    <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Vendor JS Files --> <!-- Latest version on middle of page -->
+    <!-- <script src="<?php echo base_url(); ?>assets/vendor/apexcharts/apexcharts.min.js"></script> -->
+    <!-- <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
     <!-- Template Main JS File -->
     <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
     <!-- PDF Download link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
 </body>
 

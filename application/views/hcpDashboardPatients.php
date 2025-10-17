@@ -226,19 +226,19 @@
                 <td class="px-2">
                     <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile" width="40" height="40" class="rounded-circle"  onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg') ?>';">
                 </td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
                  class="fieldLink text-dark"> ${value.patientId}</a></td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
                  class="fieldLink text-dark"> ${value.firstName} ${value.lastName}</a></td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
                  class="fieldLink text-dark"> ${value.mobileNumber}</a></td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
                  class="fieldLink text-dark"> ${value.gender}</a></td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Healthcareprovider/consultation/'); ?>${value.id}"
+                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
                  class="fieldLink text-dark"> ${value.age}</a></td>
                 <td class="pt-2" style="font-size: 16px;">
                     <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>
-                    <a href="<?php echo base_url(); ?>Healthcareprovider/consultation/${value.id}" class=""><button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button></a>
+                    <a href="<?php echo base_url(); ?>Consultation/consultation/${value.id}" class=""><button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button></a>
                 </td>`;
                             patientContainer.appendChild(patientRow);
                         });
@@ -797,7 +797,7 @@
                                                     <i class="bi bi-pen"></i> Edit
                                                 </button>
                                             </a>
-                                            <a href="<?php echo base_url() . "Healthcareprovider/consultation/" . $value['id']; ?>">
+                                            <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>">
                                                 <button class="btn btn-secondary btn-sm">
                                                     <i class="bi bi-calendar-check"></i> Consult
                                                 </button>

@@ -560,6 +560,72 @@ class Edfadmin extends CI_Controller
         redirect('Edfadmin/advicesList');
     }
 
+    public function instructionsList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "instructions";
+            $list = $this->AdminModel->getInstructionsList();
+            $this->data['instructionsList'] = $list;
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            redirect('Edfadmin/');
+        }
+    }
+
+    public function addNewInstruction()
+    {
+        if ($this->AdminModel->newInstruction()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Instruction added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding instruction');
+        }
+        redirect('Edfadmin/instructionsList');
+    }
+
+    public function deleteInstruction()
+    {
+        $adviceId = $this->uri->segment(3);
+        if ($this->AdminModel->instructionDelete($adviceId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Instruction deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting instruction');
+        }
+        redirect('Edfadmin/instructionsList');
+    }
+
+    public function proceduresList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "procedures";
+            $list = $this->AdminModel->getProceduresList();
+            $this->data['proceduresList'] = $list;
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            redirect('Edfadmin/');
+        }
+    }
+
+    public function addNewProcedure()
+    {
+        if ($this->AdminModel->newProcedure()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Procedure added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding procedure');
+        }
+        redirect('Edfadmin/proceduresList');
+    }
+
+    public function deleteProcedure()
+    {
+        $adviceId = $this->uri->segment(3);
+        if ($this->AdminModel->procedureDelete($adviceId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Procedure deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting procedure');
+        }
+        redirect('Edfadmin/proceduresList');
+    }
+
     public function logout()
     {
         $this->session->unset_userdata('adminIdDb');

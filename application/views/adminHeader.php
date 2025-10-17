@@ -160,8 +160,7 @@
                 </div>
             </a>
         </li>
-        <!-- For temporary commented -->
-        <!-- <li class="pt-4">
+        <li class="pt-4">
             <a class="" href="<?php echo base_url() . "Edfadmin/medicinesList" ?>"
                 style="font-size: 18px; font-weight: 400;color:#8cafba;" id="medicines">
                 <div>
@@ -169,6 +168,6 @@
                     <span>Medicines</span>
                 </div>
             </a>
-        </li> -->
+        </li>
     </ul>
 </aside>

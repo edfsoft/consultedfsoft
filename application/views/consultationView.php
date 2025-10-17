@@ -137,7 +137,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -907,7 +907,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -1321,7 +1321,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>

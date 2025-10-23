@@ -1402,7 +1402,40 @@
                             <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                 style="background-color: #00ad8e;">Save as new</button>
                         </form>
-
+                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
+                                <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" 
+                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- Custom Toolbar -->
+                                            <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>
+                                                <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
+                                            </div>
+                                            <h5 class=" fw-medium" id="imageEditModalLabel" style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            
+                                            <!-- Bootstrap container for image -->
+                                            <div class="container">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12" style="position: relative; width: 600px; height: 600px;">
+                                                        <img id="editor-image" class="img-fluid" style=" object-fit: contain; display: none; ">
+                                                        <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="background-color: white;">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn text-light" style="background-color: #00ad8e;" id="saveEditedImage">OK</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                     <!-----------------------------end ------------------>
                     </div>
             </section>
 

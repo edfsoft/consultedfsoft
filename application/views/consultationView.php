@@ -21,6 +21,9 @@
 
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
+    <!-- cropper CND -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -110,6 +113,62 @@
         .consultation-item.active {
             display: block;
         }
+       /*  Attachment display */
+       #attachmentImage {
+        width: 600px;
+        height: 600px;
+        object-fit: contain;
+        }
+        /*-----------------------Edit-Page------------------*/
+
+        #imageEditModal .modal-xl {
+            max-width: 1200px; /* Wide modal for larger images */
+        }
+        #imageEditModal .modal-content {
+            overflow: hidden; /* Prevent overflow */
+        }
+        
+        #imageEditModal .modal-body {
+            padding: 20px; /* Add padding for better spacing */
+            max-height: 80vh; /* Limit body height to prevent overflow */
+            overflow: auto;
+        }
+
+        #imageEditModal .editor-container {
+            width: 100%;
+            min-width: 600px;
+            min-height: 600px;
+            max-width: 90vw;
+            max-height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa; /* Light background for better visibility */
+            border: 1px solid #dee2e6; /* Subtle border */
+            border-radius: 4px;
+        }
+
+        #imageEditModal #editor-image,
+        #imageEditModal #editor-canvas {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        }
+
+        .modal-footer {
+        position: relative;
+        z-index: 1000;
+        padding: 15px;
+        }
+
+        .modal-footer .btn {
+        position: relative;
+        z-index: 1001;
+        width: 100px;
+        text-align: center;
+        }
+
+
     </style>
 </head>
 
@@ -171,7 +230,7 @@
                                 </button>
                             </li>
                         </ul>
-
+                        
                         <div class="tab-content border p-4 rounded shadow-sm" id="consultationTabsContent">
                             <!-- Consultation Dashboard -->
                             <div class="tab-pane fade active show" id="consultation-dashboard" role="tabpanel">
@@ -893,7 +952,41 @@
                                     <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                         style="background-color: #00ad8e;">Save</button>
                                 </form>
+                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
+                                <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" 
+                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- Custom Toolbar -->
+                                            <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>
+                                                <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
+                                            </div>
+                                            <h5 class=" fw-medium" id="imageEditModalLabel" style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            
+                                            <!-- Bootstrap container for image -->
+                                            <div class="container">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12" style="position: relative; width: 600px; height: 600px;">
+                                                        <img id="editor-image" class="img-fluid" style=" object-fit: contain; display: none; ">
+                                                        <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="background-color: white;">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn text-light" style="background-color: #00ad8e;" id="saveEditedImage">OK</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                                     <!-----------------------------end ------------------>
+                         </div>
                         </div>
                     </div>
                 </div>
@@ -2013,7 +2106,7 @@
         </div>
 
         <!-- Attachment Display Modal -->
-        <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
+       <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
@@ -2040,7 +2133,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -3900,174 +3993,380 @@
         })();
     </script> -->
     <script>
-        (function () {
-            const MAX_FILES = 10;
-            const fileInput = document.getElementById("fileInput");
-            const submitFileInput = document.getElementById("submitFileInput");
-            const addBtn = document.getElementById("addFileBtn");
-            const fileList = document.getElementById("fileList");
-            const fileError = document.getElementById("fileError");
-            const removedFilesInput = document.getElementById("removedFiles");
-            const dropZone = document.getElementById("dropZone");
 
-            let newFiles = [];
-            let existingFiles = [];
-            let removedFiles = [];
+ /* Edit-Image With Drag and Drop */
+(function () {
+    const MAX_FILES = 10;
+    const fileInput = document.getElementById("fileInput");
+    const submitFileInput = document.getElementById("submitFileInput");
+    const addBtn = document.getElementById("addFileBtn");
+    const fileList = document.getElementById("fileList");
+    const fileError = document.getElementById("fileError");
+    const removedFilesInput = document.getElementById("removedFiles");
+    const dropZone = document.getElementById("dropZone");
+    const imageEditModal = new bootstrap.Modal(document.getElementById('imageEditModal'));
 
-            existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+    let cropper;
+    let newFiles = [];
+    let existingFiles = [];
+    let removedFiles = [];
 
-            renderFileList();
+    let currentRotationAngle = 0;
+    let originalDataURL = null;   
+    let currentImageBlob = null;
 
-            // --- DRAG AND DROP HANDLERS ---
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-                document.body.addEventListener(eventName, preventDefaults, false);
-            });
+    existingFiles = <?php echo json_encode($attachments ?? []); ?>;
 
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, highlight, false);
-            });
+    renderFileList();
 
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, unhighlight, false);
-            });
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
 
-            dropZone.addEventListener('drop', handleDrop, false);
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, highlight, false);
+    });
 
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, unhighlight, false);
+    });
+
+    dropZone.addEventListener('drop', async (e) => {
+        unhighlight();
+        const dt = e.dataTransfer;
+        const files = Array.from(dt.files);
+        await processNewFiles(files);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function highlight() {
+        dropZone.style.borderColor = '#00ad8e';
+        dropZone.style.backgroundColor = '#f2ebebff';
+    }
+
+    function unhighlight() {
+        dropZone.style.borderColor = '#ccc';
+        dropZone.style.backgroundColor = 'transparent';
+    }
+
+    async function processNewFiles(files) {
+        fileError.textContent = "";
+        if (!files.length) return;
+
+        const allowedTypes = fileInput.getAttribute('accept').split(',').map(t => t.trim());
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            if (file.type && !allowedTypes.includes(file.type) && !allowedTypes.some(t => file.name.endsWith(t))) {
+                fileError.textContent = `File type not allowed for: ${file.name}`;
+                continue;
             }
 
-            function highlight() {
-                dropZone.style.borderColor = '#00ad8e';
-                dropZone.style.backgroundColor = '#f7f7f7';
+            if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                break;
             }
 
-            function unhighlight() {
-                dropZone.style.borderColor = '#ccc';
-                dropZone.style.backgroundColor = 'transparent';
+            // Removed duplicate check from here to allow files to reach editImage
+            if (['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+                const editedFile = await editImage(file);
+                if (editedFile) {
+                    newFiles.push(editedFile);
+                    //console.log('Added edited file:', editedFile.name, newFiles);
+                }
+            } else {
+                newFiles.push(file);
+                //console.log('Added non-image file:', file.name, newFiles);
             }
+        }
 
-            function handleDrop(e) {
-                unhighlight();
-                const dt = e.dataTransfer;
-                const files = dt.files;
+        renderFileList();
+        updateSubmitFileInput();
+    }
 
-                processNewFiles(files);
-            }
+    function editImage(file) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const dataURL = e.target.result;
+                const img = document.getElementById('editor-image');
+                const canvasElement = document.getElementById('editor-canvas');
 
-            function processNewFiles(files) {
-                fileError.textContent = "";
-                if (!files.length) return;
+                if (cropper) { cropper.destroy(); cropper = null; }
+                currentRotationAngle = 0;
+                originalDataURL = dataURL;
+                currentImageBlob = file;  
 
-                const allowedTypes = fileInput.getAttribute('accept').split(',').map(t => t.trim());
-                for (let i = 0; i < files.length; i++) {
-                    // Check file type
-                    if (files[i].type && !allowedTypes.includes(files[i].type) && !allowedTypes.some(t => files[i].name.endsWith(t))) {
-                        fileError.textContent = `File type not allowed for: ${files[i].name}`;
-                        continue;
+                img.src = originalDataURL;
+                img.style.cssText = 'max-width: 100%; height: auto; display: block;';
+                canvasElement.style.display = 'none';
+
+                imageEditModal.show();
+
+                cropper = new Cropper(img, {
+                    aspectRatio: NaN,
+                    viewMode: 1,
+                    autoCropArea: 1,
+                    responsive: true,
+                    scalable: true,
+                    zoomable: true,
+                    minContainerWidth: 600,
+                    minContainerHeight: 600,
+                });
+
+                const escapeHandler = (e) => {
+                    if (e.key === 'Escape') {
+                        imageEditModal.hide();
                     }
+                };
+                document.addEventListener('keydown', escapeHandler);
 
-                    // Check max files limit
-                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                        fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
-                        break;
-                    }
+                imageEditModal._element.addEventListener('hidden.bs.modal', () => {
+                    document.removeEventListener('keydown', escapeHandler);
+                }, { once: true });
 
-                    // Avoid duplicate files by checking file name and size
-                    if (!newFiles.some(f => f.name === files[i].name && f.size === files[i].size)) {
-                        newFiles.push(files[i]);
+                const cropBtn = document.getElementById('crop-btn');
+                const rotateBtn = document.getElementById('rotate-btn');
+
+                cropBtn.onclick = () => {
+                    img.style.display = 'block';
+                    canvasElement.style.display = 'none';
+                    if (!cropper) {
+                        cropper = new Cropper(img, {
+                            viewMode: 1,
+                            dragMode: 'crop',
+                            autoCrop: false,
+                            movable: false,
+                            zoomable: false,
+                            scalable: false,
+                            background: false
+                        });
                     }
+                    cropper.setDragMode('crop');
+                };
+
+                rotateBtn.onclick = () => {
+                    if (!originalDataURL) return;
+
+                    currentRotationAngle = (currentRotationAngle + 90) % 360; 
+
+                    const imgObj = new Image();
+                    imgObj.src = originalDataURL; 
+
+                    imgObj.onload = () => {
+                        const tempCanvas = document.createElement('canvas');
+                        const ctx = tempCanvas.getContext('2d');
+                        
+                        const angleRad = currentRotationAngle * Math.PI / 180;
+                        
+                        const oldWidth = imgObj.naturalWidth;
+                        const oldHeight = imgObj.naturalHeight;
+                        
+                        const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
+
+                        let canvasW = isSwapped ? oldHeight * 0.5 : oldWidth * 0.5;
+                        let canvasH = isSwapped ? oldWidth * 0.5 : oldHeight * 0.5;
+
+                        tempCanvas.width = canvasW;
+                        tempCanvas.height = canvasH;
+
+                        ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+                        ctx.translate(canvasW / 2, canvasH / 2); 
+                        ctx.rotate(angleRad);
+
+                        let drawW = oldWidth * 0.5;
+                        let drawH = oldHeight * 0.5;
+                        
+                        ctx.drawImage(imgObj, -drawW / 2, -drawH / 2, drawW, drawH); 
+
+                        tempCanvas.toBlob((blob) => {
+                            currentImageBlob = new File([blob], file.name, { type: file.type });
+                            const rotatedDataURL = URL.createObjectURL(currentImageBlob);
+
+                            img.src = rotatedDataURL;
+                            
+                            if (cropper) cropper.destroy();
+                            cropper = new Cropper(img, {
+                                aspectRatio: NaN,
+                                viewMode: 1,
+                                autoCropArea: 1,
+                                responsive: true,
+                                scalable: true,
+                                zoomable: true,
+                                minContainerWidth: 600,
+                                minContainerHeight: 600,
+                            });
+                        }, file.type, 1);
+                    };
+                };
+
+                const saveBtn = document.getElementById('saveEditedImage');
+                const saveHandler = () => {
+                    //console.log('OK button clicked, saving edited image');
+                    
+                    if (cropper) {
+                        cropper.getCroppedCanvas({
+                            fillColor: file.type.includes('png') ? 'transparent' : '#ffffff'
+                        }).toBlob((blob) => {
+                            const editedFile = new File([blob], file.name, { type: file.type });
+                            // Check for duplicates in newFiles and existingFiles
+                            if (newFiles.some(f => f.name === editedFile.name && f.size === editedFile.size) ||
+                                existingFiles.some(f => f.file_name === editedFile.name && f.size === editedFile.size)) {
+                                fileError.textContent = `File "${editedFile.name}" has already been uploaded.`;
+                                resolve(null);
+                                cleanup();
+                            } else {
+                                resolve(editedFile);
+                                cleanup();
+                            }
+                        }, file.type, 1); 
+                    } else if (currentImageBlob) {
+                        const editedFile = new File([currentImageBlob], file.name, { type: file.type });
+                        // Check for duplicates in newFiles and existingFiles
+                        if (newFiles.some(f => f.name === editedFile.name && f.size === editedFile.size) ||
+                            existingFiles.some(f => f.file_name === editedFile.name && f.size === editedFile.size)) {
+                            fileError.textContent = `File "${editedFile.name}" has already been uploaded.`;
+                            resolve(null);
+                            cleanup();
+                        } else {
+                            resolve(editedFile);
+                            cleanup();
+                        }
+                    } else {
+                        // Check for duplicates even for unedited file
+                        if (newFiles.some(f => f.name === file.name && f.size === file.size) ||
+                            existingFiles.some(f => f.file_name === file.name && f.size === file.size)) {
+                            fileError.textContent = `File "${file.name}" has already been uploaded.`;
+                            resolve(null);
+                            cleanup();
+                        } else {
+                            resolve(file);
+                            cleanup();
+                        }
+                    }
+                };
+                saveBtn.addEventListener('click', saveHandler);
+
+                function cleanup() {
+                    console.log('Cleaning up editor');
+                    imageEditModal.hide();
+                    if (cropper) cropper.destroy();
+
+                    const img = document.getElementById('editor-image');
+                    const canvasElement = document.getElementById('editor-canvas');
+
+                    img.src = '';
+                    img.style.display = 'none';
+                    canvasElement.style.display = 'none';
+                    
+                    cropper = null;
+                    currentRotationAngle = 0;
+                    originalDataURL = null;
+                    currentImageBlob = null; 
+
+                    const newSaveBtn = saveBtn.cloneNode(true);
+                    saveBtn.parentNode.replaceChild(newSaveBtn, saveBtn);
                 }
 
+                imageEditModal._element.addEventListener('hidden.bs.modal', () => {
+                    console.log('Modal closed, no file saved');
+                    resolve(null);
+                    cleanup();
+                }, { once: true });
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    addBtn.addEventListener("click", () => {
+        if (newFiles.length + existingFiles.length >= MAX_FILES) {
+            fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+            return;
+        }
+        fileInput.click();
+    });
+
+    fileInput.addEventListener("change", async () => {
+        if (fileInput.files.length > 0) {
+            const files = Array.from(fileInput.files);
+            await processNewFiles(files);
+            fileInput.value = "";
+        }
+    });
+
+    function renderFileList() {
+        fileList.innerHTML = "";
+
+        if (existingFiles.length + newFiles.length === 0) {
+            fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+            return;
+        }
+
+        const ul = document.createElement("ul");
+        ul.style.paddingLeft = "1.2rem";
+
+        existingFiles.forEach((file, index) => {
+            const li = document.createElement("li");
+            li.style.marginBottom = "6px";
+
+            const name = document.createTextNode(file.file_name + " ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.textContent = "✕";
+            removeBtn.className = "btn btn-sm btn-danger";
+            removeBtn.style.marginLeft = "8px";
+
+            removeBtn.addEventListener("click", () => {
+                removedFiles.push(file.file_name);
+                existingFiles.splice(index, 1);
+                removedFilesInput.value = JSON.stringify(removedFiles);
+                renderFileList();
+            });
+
+            li.appendChild(name);
+            li.appendChild(removeBtn);
+            ul.appendChild(li);
+        });
+
+        newFiles.forEach((file, index) => {
+            const li = document.createElement("li");
+            li.style.marginBottom = "6px";
+
+            const name = document.createTextNode(file.name + " ");
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.textContent = "✕";
+            removeBtn.className = "btn btn-sm btn-danger";
+            removeBtn.style.marginLeft = "8px";
+
+            removeBtn.addEventListener("click", () => {
+                newFiles.splice(index, 1);
                 renderFileList();
                 updateSubmitFileInput();
-            }
-
-            function updateSubmitFileInput() {
-                const dataTransfer = new DataTransfer();
-                newFiles.forEach(file => dataTransfer.items.add(file));
-                submitFileInput.files = dataTransfer.files;
-            }
-
-            // --- BUTTON AND FILE INPUT HANDLERS ---
-            addBtn.addEventListener("click", () => {
-                if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                    fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
-                    return;
-                }
-                fileInput.click();
             });
 
-            fileInput.addEventListener("change", () => {
-                if (fileInput.files.length > 0) {
-                    processNewFiles(fileInput.files);
-                    fileInput.value = ""; // Clear fileInput to allow new selections
-                }
-            });
+            li.appendChild(name);
+            li.appendChild(removeBtn);
+            ul.appendChild(li);
+        });
 
-            // --- RENDER FILE LIST FUNCTION ---
-            function renderFileList() {
-                fileList.innerHTML = "";
+        fileList.appendChild(ul);
+    }
 
-                if (existingFiles.length + newFiles.length === 0) {
-                    fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
-                    return;
-                }
+    function updateSubmitFileInput() {
+        const dataTransfer = new DataTransfer();
+        newFiles.forEach(file => dataTransfer.items.add(file));
+        submitFileInput.files = dataTransfer.files;
+        //console.log('Updated submitFileInput.files:', submitFileInput.files);
+    }
+})();
 
-                const ul = document.createElement("ul");
-                ul.style.paddingLeft = "1.2rem";
-
-                existingFiles.forEach((file, index) => {
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
-
-                    const name = document.createTextNode(file.file_name + " ");
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
-
-                    removeBtn.addEventListener("click", () => {
-                        removedFiles.push(file.file_name);
-                        existingFiles.splice(index, 1);
-                        removedFilesInput.value = JSON.stringify(removedFiles);
-                        renderFileList();
-                    });
-
-                    li.appendChild(name);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
-                });
-
-                newFiles.forEach((file, index) => {
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
-
-                    const name = document.createTextNode(file.name + " ");
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
-
-                    removeBtn.addEventListener("click", () => {
-                        newFiles.splice(index, 1);
-                        renderFileList();
-                        updateSubmitFileInput();
-                    });
-
-                    li.appendChild(name);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
-                });
-
-                fileList.appendChild(ul);
-            }
-        })();</script>
-
+    </script>
+<!------------ End ------->
 
     <!-- Attachment display modal script -->
     <script>
@@ -4104,7 +4403,9 @@
 
                     modal.show();
                 });
+                
             });
+            
         });
     </script>
 
@@ -4167,6 +4468,9 @@
 
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
+    <!-- Fabric.js and Cropper.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 </body>
 
 </html>

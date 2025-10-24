@@ -220,6 +220,21 @@
                         patientContainer.appendChild(noMatchesRow);
                     } else {
                         itemsToShow.forEach((value, index) => {
+                            let currentAge = value.age;
+
+                            if (value.created_at) {
+                                const createdDate = new Date(value.created_at);
+                                const today = new Date();
+                                let yearsDiff = today.getFullYear() - createdDate.getFullYear();
+
+                                const hasBirthdayPassed =
+                                    today.getMonth() > createdDate.getMonth() ||
+                                    (today.getMonth() === createdDate.getMonth() && today.getDate() >= createdDate.getDate());
+                                if (!hasBirthdayPassed) yearsDiff -= 1;
+
+                                currentAge = parseInt(value.age) + yearsDiff;
+                            }
+
                             const patientRow = document.createElement('tr');
                             patientRow.innerHTML = `
                 <td class="pt-3">${start + index + 1}.</td>
@@ -235,7 +250,7 @@
                 <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
                  class="fieldLink text-dark"> ${value.gender}</a></td>
                 <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
-                 class="fieldLink text-dark"> ${value.age}</a></td>
+                 class="fieldLink text-dark"> ${currentAge}</a></td>
                 <td class="pt-2" style="font-size: 16px;">
                     <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>
                     <a href="<?php echo base_url(); ?>Consultation/consultation/${value.id}" class=""><button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button></a>
@@ -613,14 +628,22 @@
                                                 </div>
                                             </div>
                                             <div class="d-md-flex justify-content-between pb-3">
+                                            <?php
+                                            $createdDate = new DateTime($value['created_at']);
+                                            $today = new DateTime();
+                                            $diff = $today->diff($createdDate);
+                                            $currentAge = $value['age'] + $diff->y;
+                                            ?>
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                                    <label class="form-label" for="patientAge">Age <span
-                                                            class="text-danger">*</span></label>
+                                                    <label class="form-label" for="patientAge">Age
+                                                        <span class="text-danger">*</span>
+                                                    </label>
                                                     <input type="number" class="form-control" id="patientAge" name="patientAge" min="0"
-                                                        max="120" maxlength="3" value="<?php echo $value['age'] ?>"
+                                                        max="120" maxlength="3" value="<?php echo $currentAge; ?>"
                                                         placeholder="E.g. 41">
                                                     <small id="patientAge_err" class="text-danger pt-1"></small>
                                                 </div>
+
                                                 <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
                                                     <label class="form-label" for="patientBlood">Blood Group</label>
                                                     <select class="form-select" id="patientBlood" name="patientBlood">
@@ -788,7 +811,13 @@
                                             <p class="fs-4 fw-bolder"> <?php echo $value['firstName'] ?>
                                         <?php echo $value['lastName'] ?>
                                             </p>
-                                            <p> <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)</p>
+                                        <?php
+                                        $createdDate = new DateTime($value['created_at']);
+                                        $today = new DateTime();
+                                        $diff = $today->diff($createdDate);
+                                        $currentAge = $value['age'] + $diff->y;
+                                        ?>
+                                            <p> <?php echo $value['gender'] ?> | <?php echo $currentAge; ?> Year(s)</p>
                                         </div>
                                         <div class="position-absolute top-0 end-0 m-2 d-flex flex-column gap-2 align-items-end">
                                             <a
@@ -829,7 +858,8 @@
                                     </div>
                                     <div class="d-md-flex">
                                         <p class="col-sm-6"><span class="text-secondary ">Age </span> :
-                                    <?php echo $value['age']; ?>
+                                            <!-- <?php echo $value['age']; ?> -->
+                                    <?php echo $currentAge; ?>
                                         </p>
                                         <p><span class="text-secondary ">Married status</span> :
                                     <?php echo $value['maritalStatus'] ? $value['maritalStatus'] . " " . $value['marriedSince'] : "Not provided"; ?>

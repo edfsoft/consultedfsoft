@@ -99,7 +99,7 @@
         }
 
         /* Consultation arrows container style */
-        .consultation-container {
+        /* .consultation-container {
             position: relative;
             width: 100%;
             overflow: hidden;
@@ -112,10 +112,10 @@
 
         .consultation-item.active {
             display: block;
-        }
+        } */
 
        /* Attachment display */
-        #attachmentImage {
+        #attachmentImage, {
             width: 600px;
             height: 600px;
             object-fit: contain;
@@ -125,14 +125,7 @@
             border-radius: 5;
             margin: 10px;
         }
-        #prevAttachment:disabled, #nextAttachment:disabled,
-        #prevAttachment.disabled, #nextAttachment.disabled {
-            cursor: not-allowed !important;
-        }
-        #prevAttachment:hover:disabled, #nextAttachment:hover:disabled,
-        #prevAttachment.disabled:hover, #nextAttachment.disabled:hover {
-            cursor: not-allowed !important;
-        }
+    
         #prevAttachment {
             left: 10px;
         }
@@ -492,23 +485,26 @@
                                                             </ul>
                                                         <?php endif; ?> -->
                                                         <!-- Attachments -->
-                                                        <?php if (!empty($consultation['attachments'])): ?>
-                                                            <p><strong>Attachments:</strong></p>
-                                                            <ul>
-                                                                <?php foreach ($consultation['attachments'] as $attach): ?>
-                                                                    <?php
-                                                                    $filePath = base_url('uploads/consultations/' . $attach['file_name']);
-                                                                    $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
-                                                                    ?>
-                                                                    <li>
-                                                                        <a href="javascript:void(0);" class="openAttachment"
-                                                                            data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
-                                                                            <?= $attach['file_name'] ?>
-                                                                        </a>
-                                                                    </li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
-                                                        <?php endif; ?>
+                                                       <?php if (!empty($consultation['attachments'])): ?>
+    <p><strong>Attachments:</strong></p>
+    <ul>
+        <?php foreach ($consultation['attachments'] as $attach): ?>
+            <?php
+            $filePath = base_url('uploads/consultations/' . $attach['file_name']);
+            $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
+            ?>
+            <li>
+                <a href="javascript:void(0);" 
+                   class="openAttachment"
+                   data-file="<?= $filePath ?>" 
+                   data-ext="<?= $ext ?>"
+                   data-context="dashboard">
+                   <?= htmlspecialchars($attach['file_name']) ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
 
 
                                                         <!-- Notes -->
@@ -935,24 +931,19 @@
                                         <div id="fileList" style="margin-top: 0.5rem;"></div>
                                         <div id="fileError" class="text-danger pt-1"></div> 
                                     </div> --><!-- This code is common for all 3 new, edi and followup -->
-                                    <div class="form-group pb-3">
-                                        <label class="form-label fieldLabel">Attachments</label>
-                                        <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                            style="background-color: #00ad8e;"> + Add File </button>
-                                        <div class="mb-3"></div>
-                                        <div id="dropZone"
-                                            style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                            <p class="text-muted mb-0">Drag and drop files here, or click the button below.
-                                            </p>
-                                        </div>
-                                        <input type="file" id="fileInput" class="d-none"
-                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
-                                        <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none"
-                                            multiple>
-                                        <div id="fileList" style="margin-top: 0.5rem;"></div>
-                                        <div id="fileError" class="text-danger pt-1"></div>
-                                        <input type="hidden" id="removedFiles" name="removedFiles" value="">
+                                  <div class="form-group pb-3" data-page="new">
+                                    <label class="form-label fieldLabel">Attachments</label>
+                                    <button type="button" class="addFileBtn btn text-light float-end mb-2" style="background-color: #00ad8e;"> + Add File </button>
+                                    <div class="mb-3"></div>
+                                    <div class="dropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                        <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
                                     </div>
+                                    <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                    <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
+                                    <div class="fileList" style="margin-top: 0.5rem;"></div>
+                                    <div class="fileError text-danger pt-1"></div>
+                                    <input type="hidden" class="removedFiles" name="removedFiles" value="">
+                                </div>
 
                                     <div class="form-group pb-3">
                                         <label class="form-label fieldLabel" for="notes">Notes <span
@@ -1007,38 +998,34 @@
                             </div>
                                      <!-----------------------------end ------------------>
 
-                                                        <!-- Attachment Display Dashboard Modal --> 
-                            <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
+                            <div class="modal fade" id="newConsultationPreviewModal" tabindex="-1" aria-labelledby="newConsultationPreviewModalLabel"
                                 aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
                                 <div class="modal-dialog modal-lg modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                                                id="attachmentModalLabel">
-                                                Attachment Preview in Dashboard
+                                            <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="newConsultationPreviewModalLabel">
+                                                New Consultation Attachment Preview
                                             </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-
-                                        
                                         <div class="modal-body text-center position-relative">
-                                            <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
-                                                <b><</b>
+                                            <button id="prevNewConsultation" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                                <b>&lt;</b>
                                             </button>
-                                            <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none">
-                                            <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
-                                            <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
-                                                <b>></b>
+                                            <img id="newConsultationImage" src="" alt="Attachment" class="img-fluid d-none">
+                                            <iframe id="newConsultationPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                                            <button id="nextNewConsultation" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                                <b>&gt;</b>
                                             </button>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">
-                                                Close
-                                            </button>
+                                            <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
+
+
                          </div>
                         </div>
                     </div>
@@ -1419,19 +1406,19 @@
 
                             </div>
 
-                            <div class="form-group pb-3">
-    <label class="form-label fieldLabel">Attachments</label>
-    <button type="button" id="addFileBtn" class="btn text-light float-end mb-2" style="background-color: #00ad8e;"> + Add File </button>
-    <div class="mb-3"></div>
-    <div id="dropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-        <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
-    </div>
-    <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
-    <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
-    <div id="fileList" style="margin-top: 0.5rem;"></div>
-    <div id="fileError" class="text-danger pt-1"></div>
-    <input type="hidden" id="removedFiles" name="removedFiles" value="">
-</div>
+                                <div class="form-group pb-3" data-page="followup">
+                                    <label class="form-label fieldLabel">Attachments</label>
+                                    <button type="button" class="addFileBtn btn text-light float-end mb-2" style="background-color: #00ad8e;"> + Add File </button>
+                                    <div class="mb-3"></div>
+                                    <div class="dropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                        <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
+                                    </div>
+                                    <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                    <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
+                                    <div class="fileList" style="margin-top: 0.5rem;"></div>
+                                    <div class="fileError text-danger pt-1"></div>
+                                    <input type="hidden" class="removedFiles" name="removedFiles" value="">
+                                </div>
 
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
@@ -1485,6 +1472,34 @@
                                 </div>
                             </div>
                                      <!-----------------------------end ------------------>
+
+                                                    <!-- Preview display Followup Model -->
+                         <div class="modal fade" id="followupPreviewModal" tabindex="-1" aria-labelledby="followupPreviewModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="followupPreviewModalLabel">
+                                            Follow-up Attachment Preview
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+                                        <button id="prevFollowup" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
+                                        <iframe id="followupPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                                        <button id="nextFollowup" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>   
                     </div>
             </section>
 <!-------------------------- Edit Consultant -->
@@ -1859,7 +1874,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group pb-3">
+                            <div class="form-group pb-3 "data-page="edit" id="editFileSection">
                                 <label class="form-label fieldLabel">Attachments</label>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
                                     style="background-color: #00ad8e;"> + Add File </button>
@@ -1931,11 +1946,12 @@
                             <!-----------------------------end ------------------>
 
                             <!-- File Preview  in Edit Modal -->
-                        <div class="modal fade" id="filePreviewModal" tabindex="-1" aria-labelledby="filePreviewModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                        <div class="modal fade" id="editPreviewModal" tabindex="-1" aria-labelledby="editPreviewModalLabel" 
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="filePreviewModalLabel">Attachment Preview</h5>
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="editPreviewModalLabel">Attachment Preview</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body text-center position-relative">
@@ -2274,38 +2290,33 @@
         </div> --> 
 
         <!-- Attachment Display Dashboard Modal --> 
-        <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                            id="attachmentModalLabel">
-                            Attachment Preview in Dashboard
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    
-                    <div class="modal-body text-center position-relative">
-                        <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
-                            <b><</b>
-                        </button>
-                        <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none">
-                        <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
-                        <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
-                            <b>></b>
-                        </button>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                    </div>
-                </div>
+         <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="dashboardPreviewModalLabel">
+                    Attachment Preview in Dashboard
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>   
-
+            <div class="modal-body text-center position-relative">
+                <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                    <b>&lt;</b>
+                </button>
+                <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none">
+                <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                    <b>&gt;</b>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>    
+ 
 
      <!-- All modal files -->
     <?php include 'hcpModals.php'; ?>
@@ -4166,22 +4177,28 @@
     </script> -->
     <script>
 
- /* Edit-Image With Drag and Drop */
+/* Edit-Image With Drag and Drop */
 document.addEventListener('DOMContentLoaded', function () {
-    // Determine page context
     const isEditPage = !!document.getElementById('fileList');
-    console.log('Page context:', isEditPage ? 'edit_consultation.php' : 'dashboard.php');
+    const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
+    const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
+    const isFollowup = !!document.getElementById('followupPreviewModal');
 
-    // Remove attachmentModal from edit page to prevent conflicts
+    console.log('Page context:', { isEditPage, isDashboardPage, isNewConsultation, isFollowup });
+
+
+    const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
+    const followupContainer = isFollowup ? document.querySelector('[data-page="followup"]') : null;
+
+    // === Remove conflicting modals (Unchanged Logic) ===
     if (isEditPage) {
-        const attachmentModal = document.getElementById('attachmentModal');
-        if (attachmentModal) {
-            console.warn('Removing attachmentModal from edit page to prevent conflicts');
-            attachmentModal.remove();
-        }
+        ['attachmentModal', 'newConsultationPreviewModal', 'followupPreviewModal', 'dashboardPreviewModal'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        });
     }
 
-    // Initialize DOM elements for edit section
+    // === DOM Elements Initialization ===
     const editElements = {
         fileInput: document.getElementById("fileInput"),
         submitFileInput: document.getElementById("submitFileInput"),
@@ -4190,50 +4207,54 @@ document.addEventListener('DOMContentLoaded', function () {
         fileError: document.getElementById("fileError"),
         removedFilesInput: document.getElementById("removedFiles"),
         dropZone: document.getElementById("dropZone"),
-        imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), { backdrop: 'static', keyboard: true }) : null,
-        filePreviewModal: document.getElementById('filePreviewModal') ? new bootstrap.Modal(document.getElementById('filePreviewModal'), { backdrop: 'static', keyboard: true }) : null,
+        imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), { backdrop: 'static', keyboard: false }) : null,
+        editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), { backdrop: 'static', keyboard: true }) : null,
         previewContent: document.getElementById('filePreviewContent'),
-        modalTitle: document.getElementById('filePreviewModalLabel'),
+        modalTitle: document.getElementById('editPreviewModalLabel'),
         prevBtn: document.getElementById('prevFile'),
         nextBtn: document.getElementById('nextFile')
     };
 
-    // Initialize dashboard elements only if not edit page
-    const dashboardElements = isEditPage ? {} : {
-        attachmentModal: document.getElementById('attachmentModal') ? new bootstrap.Modal(document.getElementById('attachmentModal'), { backdrop: 'static', keyboard: true }) : null,
-        attachmentImage: document.getElementById('attachmentImage'),
-        attachmentPDF: document.getElementById('attachmentPDF'),
-        attachmentModalTitle: document.getElementById('attachmentModalLabel'),
-        prevAttachmentBtn: document.getElementById('prevAttachment'),
-        nextAttachmentBtn: document.getElementById('nextAttachment')
-    };
+    const newConsultationElements = isNewConsultation && newConsultationContainer ? {
+        previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), { backdrop: 'static', keyboard: true }),
+        image: document.getElementById('newConsultationImage'),
+        pdf: document.getElementById('newConsultationPDF'),
+        modalTitle: document.getElementById('newConsultationPreviewModalLabel'),
+        prevBtn: document.getElementById('prevNewConsultation'),
+        nextBtn: document.getElementById('nextNewConsultation'),
+        fileInput: newConsultationContainer.querySelector(".fileInput"),
+        submitFileInput: newConsultationContainer.querySelector(".submitFileInput"),
+        addBtn: newConsultationContainer.querySelector(".addFileBtn"),
+        fileList: newConsultationContainer.querySelector(".fileList"),
+        fileError: newConsultationContainer.querySelector(".fileError"),
+        dropZone: newConsultationContainer.querySelector(".dropZone"),
+    } : {};
 
-    // Prevent dashboard elements in edit page
-    if (isEditPage && Object.keys(dashboardElements).length > 0) {
-        console.error('Dashboard elements initialized in edit page, resetting to prevent conflicts');
-        Object.keys(dashboardElements).forEach(key => delete dashboardElements[key]);
-    }
+    const followupElements = isFollowup && followupContainer ? {
+        previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), { backdrop: 'static', keyboard: true }),
+        image: document.getElementById('followupImage'),
+        pdf: document.getElementById('followupPDF'),
+        modalTitle: document.getElementById('followupPreviewModalLabel'),
+        prevBtn: document.getElementById('prevFollowup'),
+        nextBtn: document.getElementById('nextFollowup'),
+        fileInput: followupContainer.querySelector(".fileInput"),
+        submitFileInput: followupContainer.querySelector(".submitFileInput"),
+        addBtn: followupContainer.querySelector(".addFileBtn"),
+        fileList: followupContainer.querySelector(".fileList"),
+        fileError: followupContainer.querySelector(".fileError"),
+        dropZone: followupContainer.querySelector(".dropZone"),
+    } : {};
 
-    // Log initialized elements
-    console.log('Edit modal available:', !!editElements.filePreviewModal);
-    console.log('Dashboard modal available:', !!dashboardElements.attachmentModal);
-    console.log('Edit elements:', Object.keys(editElements).filter(k => editElements[k]).map(k => `#${k}`));
-    console.log('Missing edit elements:', Object.keys(editElements).filter(k => !editElements[k]).map(k => `#${k}`));
-    if (!isEditPage) {
-        console.log('Dashboard elements:', Object.keys(dashboardElements).filter(k => dashboardElements[k]).map(k => `#${k}`));
-        console.log('Missing dashboard elements:', Object.keys(dashboardElements).filter(k => !dashboardElements[k]).map(k => `#${k}`));
-    }
+    const dashboardElements = isDashboardPage ? {
+        previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), { backdrop: 'static', keyboard: true }),
+        image: document.getElementById('attachmentImage'),
+        pdf: document.getElementById('attachmentPDF'),
+        modalTitle: document.getElementById('dashboardPreviewModalLabel'),
+        prevBtn: document.getElementById('prevAttachment'),
+        nextBtn: document.getElementById('nextAttachment')
+    } : {};
 
-    // Check core edit elements
-    if (isEditPage && (!editElements.addBtn || !editElements.fileInput || !editElements.fileList)) {
-        console.error('Core edit elements missing:', {
-            addFileBtn: !!editElements.addBtn,
-            fileInput: !!editElements.fileInput,
-            fileList: !!editElements.fileList
-        });
-        return;
-    }
-
+    // === Core Variables ===
     const MAX_FILES = 10;
     let cropper;
     let newFiles = [];
@@ -4247,11 +4268,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const BASE_FILE_URL = '<?php echo base_url('Uploads/consultations/'); ?>';
 
-    // Initialize existingFiles
-    if (editElements.fileList) {
+    // === Context Helper Function ===
+    function getCurrentElements() {
+        if (isNewConsultation) return newConsultationElements;
+        if (isFollowup) return followupElements;
+        return editElements;
+    }
+
+    // === Initialize Existing Files (Edit Page Only) ===
+    if (isEditPage && editElements.fileList) {
         try {
             existingFiles = <?php echo json_encode($attachments ?? []); ?>;
-            console.log('Raw existingFiles:', existingFiles);
         } catch (e) {
             console.error('Error parsing existingFiles:', e);
             existingFiles = [];
@@ -4262,815 +4289,375 @@ document.addEventListener('DOMContentLoaded', function () {
             const extension = fileName.split('.').pop().toLowerCase();
             const mimeType = file.mime_type || getMimeType(extension);
             const url = file.url || (file.file_path ? BASE_FILE_URL + encodeURIComponent(file.file_path) : BASE_FILE_URL + encodeURIComponent(fileName));
-            return {
-                file_name: fileName,
-                ext: extension,
-                mime_type: mimeType,
-                url: url,
-                size: file.size || 0
-            };
+            return { file_name: fileName, ext: extension, mime_type: mimeType, url, size: file.size || 0 };
         });
-        console.log('Normalized existingFiles:', existingFiles);
 
         renderFileList();
     }
-
-    function getMimeType(extension) {
-        const mimeTypes = {
-            'jpg': 'image/jpeg',
-            'jpeg': 'image/jpeg',
-            'png': 'image/png',
-            'pdf': 'application/pdf',
-            'doc': 'application/msword',
-            'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        };
-        return mimeTypes[extension.toLowerCase()] || 'application/octet-stream';
+    if (isNewConsultation || isFollowup) {
+        renderFileList();
     }
 
-    // Drag-and-drop handlers
-    if (editElements.dropZone) {
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            editElements.dropZone.addEventListener(eventName, preventDefaults, false);
-            document.body.addEventListener(eventName, preventDefaults, false);
-        });
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            editElements.dropZone.addEventListener(eventName, highlight, false);
-        });
+    function getMimeType(ext) {
+        const map = { 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'pdf': 'application/pdf', 'doc': 'application/msword', 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
+        return map[ext] || 'application/octet-stream';
+    }
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            editElements.dropZone.addEventListener(eventName, unhighlight, false);
-        });
+    // === Drag & Drop ===
+    const currentElements = getCurrentElements();
+    const dropZone = currentElements.dropZone;
 
-        editElements.dropZone.addEventListener('drop', async (e) => {
-            unhighlight();
-            const files = Array.from(e.dataTransfer.files);
-            console.log('Dropped files:', files.map(f => ({ name: f.name, type: f.type, size: f.size })));
-            await processNewFiles(files);
+    if (dropZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+            dropZone.addEventListener(ev, preventDefaults, false);
+            document.body.addEventListener(ev, preventDefaults, false);
+        });
+        ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => highlight(dropZone), false));
+        ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => unhighlight(dropZone), false));
+        dropZone.addEventListener('drop', async e => {
+            unhighlight(dropZone);
+            await processNewFiles(Array.from(e.dataTransfer.files));
         });
     }
 
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
+    function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+    function highlight(el) { el.style.borderColor = '#00ad8e'; el.style.backgroundColor = '#f2ebebff'; }
+    function unhighlight(el) { el.style.borderColor = '#ccc'; el.style.backgroundColor = 'transparent'; }
 
-    function highlight() {
-        editElements.dropZone.style.borderColor = '#00ad8e';
-        editElements.dropZone.style.backgroundColor = '#f2ebebff';
-    }
-
-    function unhighlight() {
-        editElements.dropZone.style.borderColor = '#ccc';
-        editElements.dropZone.style.backgroundColor = 'transparent';
-    }
-
+    // === File Processing ===
     async function processNewFiles(files) {
-        if (!editElements.fileError) {
-            console.warn('fileError element missing');
-        } else {
-            editElements.fileError.textContent = "";
-        }
-        if (!files.length) {
-            console.log('No files to process');
-            return;
-        }
+        const currentElements = getCurrentElements();
+        if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
+        currentElements.fileError.textContent = "";
+        if (!files.length) return;
 
-        const allowedTypes = (editElements.fileInput.getAttribute('accept') || '').split(',').map(t => t.trim()).filter(t => t);
-
+        const allowedTypes = (currentElements.fileInput?.getAttribute('accept') || '').split(',').map(t => t.trim()).filter(t => t);
         for (let file of files) {
-            const fileExt = file.name.split('.').pop().toLowerCase();
-            const fileType = file.type || getMimeType(fileExt);
-            console.log('Processing file:', { name: file.name, type: fileType, ext: fileExt });
+            const ext = file.name.split('.').pop().toLowerCase();
+            const type = file.type || getMimeType(ext);
 
-            if (allowedTypes.length && !allowedTypes.includes(fileType) && !allowedTypes.some(t => file.name.endsWith(t.replace('.', '')))) {
-                if (editElements.fileError) {
-                    editElements.fileError.textContent = `File type not allowed: ${file.name}`;
-                }
+            if (allowedTypes.length && !allowedTypes.includes(type) && !allowedTypes.some(t => file.name.endsWith(t.replace('.', '')))) {
+                currentElements.fileError.textContent = `File type not allowed: ${file.name}`;
                 continue;
             }
-
             if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                if (editElements.fileError) {
-                    editElements.fileError.textContent = `Max ${MAX_FILES} files allowed.`;
-                }
+                currentElements.fileError.textContent = `Max ${MAX_FILES} files allowed.`;
                 break;
             }
-
-            if (newFiles.some(f => f.name === file.name && f.size === file.size) ||
-                existingFiles.some(f => f.file_name === file.name && f.size === file.size)) {
-                if (editElements.fileError) {
-                    editElements.fileError.textContent = `File "${file.name}" already uploaded.`;
-                }
+            if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === file.name && f.size === file.size)) {
+                currentElements.fileError.textContent = `File "${file.name}" already uploaded.`;
                 continue;
             }
 
-            if (['image/jpeg', 'image/jpg', 'image/png'].includes(fileType) && editElements.imageEditModal) {
-                const editedFile = await editImage(file);
-                if (editedFile) {
-                    newFiles.push({
-                        name: editedFile.name,
-                        file: editedFile,
-                        type: editedFile.type,
-                        ext: fileExt,
-                        url: null,
-                        size: editedFile.size
-                    });
-                    console.log('Added edited file:', editedFile.name);
-                }
+            if (['image/jpeg', 'image/jpg', 'image/png'].includes(type) && editElements.imageEditModal) {
+                const edited = await editImage(file);
+                if (edited) newFiles.push({ name: edited.name, file: edited, type: edited.type, ext, url: null, size: edited.size });
             } else {
-                newFiles.push({
-                    name: file.name,
-                    file: file,
-                    type: fileType,
-                    ext: fileExt,
-                    url: null,
-                    size: file.size
-                });
-                console.log('Added file:', file.name);
+                newFiles.push({ name: file.name, file, type, ext, url: null, size: file.size });
             }
         }
-
         renderFileList();
         updateSubmitFileInput();
     }
 
+    // === Image Editor (Unchanged Logic) ===
     function editImage(file) {
-        if (!editElements.imageEditModal) {
-            console.log('No imageEditModal, skipping edit');
-            return Promise.resolve(file);
-        }
-
-        return new Promise((resolve) => {
-            console.log('Editing image:', file.name);
+        return new Promise(resolve => {
             const reader = new FileReader();
-            reader.onload = (e) => {
+            reader.onload = e => {
                 const dataURL = e.target.result;
                 const img = document.getElementById('editor-image');
-                const canvasElement = document.getElementById('editor-canvas');
+                const canvas = document.getElementById('editor-canvas');
+                if (cropper) cropper.destroy();
+                currentRotationAngle = 0; originalDataURL = dataURL; currentImageBlob = file;
+                img.src = dataURL; img.style.display = 'block'; canvas.style.display = 'none';
+                editElements.imageEditModal.show();
+                cropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1, autoCropArea: 1, responsive: true, scalable: true, zoomable: true, minContainerWidth: 600, minContainerHeight: 600 });
 
-                if (cropper) {
-                    cropper.destroy();
-                    cropper = null;
-                }
-                currentRotationAngle = 0;
-                originalDataURL = dataURL;
-                currentImageBlob = file;
-
-                img.src = originalDataURL;
-                img.style.cssText = 'max-width: 100%; height: auto; display: block;';
-                canvasElement.style.display = 'none';
-
-                try {
-                    editElements.imageEditModal.show();
-                } catch (e) {
-                    console.error('Error opening imageEditModal:', e);
-                    resolve(null);
-                    cleanup();
-                    return;
-                }
-
-                try {
-                    cropper = new Cropper(img, {
-                        aspectRatio: NaN,
-                        viewMode: 1,
-                        autoCropArea: 1,
-                        responsive: true,
-                        scalable: true,
-                        zoomable: true,
-                        minContainerWidth: 600,
-                        minContainerHeight: 600,
-                    });
-                } catch (e) {
-                    console.error('Error initializing Cropper:', e);
-                    resolve(null);
-                    cleanup();
-                    return;
-                }
-
-                const escapeHandler = (e) => {
-                    if (e.key === 'Escape') {
-                        editElements.imageEditModal.hide();
-                    }
-                };
+                const escapeHandler = ev => ev.key === 'Escape' && editElements.imageEditModal.hide();
                 document.addEventListener('keydown', escapeHandler);
-
                 editElements.imageEditModal._element.addEventListener('hidden.bs.modal', () => {
                     document.removeEventListener('keydown', escapeHandler);
-                    resolve(null);
-                    cleanup();
+                    resolve(null); cleanup();
                 }, { once: true });
 
-                const cropBtn = document.getElementById('crop-btn');
-                const rotateBtn = document.getElementById('rotate-btn');
-
-                cropBtn.onclick = () => {
-                    console.log('Crop button clicked');
-                    img.style.display = 'block';
-                    canvasElement.style.display = 'none';
-                    if (!cropper) {
-                        cropper = new Cropper(img, {
-                            viewMode: 1,
-                            dragMode: 'crop',
-                            autoCrop: false,
-                            movable: false,
-                            zoomable: false,
-                            scalable: false,
-                            background: false
-                        });
-                    }
+                document.getElementById('crop-btn').onclick = () => {
+                    img.style.display = 'block'; canvas.style.display = 'none';
+                    if (!cropper) cropper = new Cropper(img, { viewMode: 1, dragMode: 'crop', autoCrop: false, movable: false, zoomable: false, scalable: false });
                     cropper.setDragMode('crop');
                 };
 
-                rotateBtn.onclick = () => {
-                    console.log('Rotate button clicked');
+                document.getElementById('rotate-btn').onclick = () => {
                     if (!originalDataURL) return;
-
                     currentRotationAngle = (currentRotationAngle + 90) % 360;
-
-                    const imgObj = new Image();
-                    imgObj.src = originalDataURL;
-
+                    const imgObj = new Image(); imgObj.src = originalDataURL;
                     imgObj.onload = () => {
-                        const tempCanvas = document.createElement('canvas');
-                        const ctx = tempCanvas.getContext('2d');
-                        
+                        const tempCanvas = document.createElement('canvas'), ctx = tempCanvas.getContext('2d');
                         const angleRad = currentRotationAngle * Math.PI / 180;
-                        const oldWidth = imgObj.naturalWidth;
-                        const oldHeight = imgObj.naturalHeight;
                         const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
-
-                        let canvasW = isSwapped ? oldHeight * 0.5 : oldWidth * 0.5;
-                        let canvasH = isSwapped ? oldWidth * 0.5 : oldHeight * 0.5;
-
-                        tempCanvas.width = canvasW;
-                        tempCanvas.height = canvasH;
-
-                        ctx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-                        ctx.translate(canvasW / 2, canvasH / 2);
-                        ctx.rotate(angleRad);
-
-                        let drawW = oldWidth * 0.5;
-                        let drawH = oldHeight * 0.5;
-                        
-                        ctx.drawImage(imgObj, -drawW / 2, -drawH / 2, drawW, drawH);
-
-                        tempCanvas.toBlob((blob) => {
+                        const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
+                        tempCanvas.width = w; tempCanvas.height = h;
+                        ctx.translate(w / 2, h / 2); ctx.rotate(angleRad);
+                        ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
+                        tempCanvas.toBlob(blob => {
                             currentImageBlob = new File([blob], file.name, { type: file.type });
-                            const rotatedDataURL = URL.createObjectURL(currentImageBlob);
-                            img.src = rotatedDataURL;
-                            if (cropper) cropper.destroy();
-                            cropper = new Cropper(img, {
-                                aspectRatio: NaN,
-                                viewMode: 1,
-                                autoCropArea: 1,
-                                responsive: true,
-                                scalable: true,
-                                zoomable: true,
-                                minContainerWidth: 600,
-                                minContainerHeight: 600,
-                            });
+                            const url = URL.createObjectURL(currentImageBlob);
+                            img.src = url; if (cropper) cropper.destroy();
+                            cropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1, autoCropArea: 1, responsive: true, scalable: true, zoomable: true, minContainerWidth: 600, minContainerHeight: 600 });
                         }, file.type, 1);
                     };
                 };
 
                 const saveBtn = document.getElementById('saveEditedImage');
                 const saveHandler = () => {
-                    console.log('Saving edited image');
                     if (cropper) {
-                        cropper.getCroppedCanvas({
-                            fillColor: file.type.includes('png') ? 'transparent' : '#ffffff'
-                        }).toBlob((blob) => {
-                            const editedFile = new File([blob], file.name, { type: file.type });
-                            if (newFiles.some(f => f.name === editedFile.name && f.size === editedFile.size) ||
-                                existingFiles.some(f => f.file_name === editedFile.name && f.size === editedFile.size)) {
-                                editElements.fileError.textContent = `File "${editedFile.name}" already uploaded.`;
-                                resolve(null);
-                                cleanup();
-                            } else {
-                                resolve(editedFile);
-                                cleanup();
-                            }
+                        cropper.getCroppedCanvas({ fillColor: file.type.includes('png') ? 'transparent' : '#ffffff' }).toBlob(blob => {
+                            const edited = new File([blob], file.name, { type: file.type });
+                            const errorElement = getCurrentElements().fileError; // Use context-aware error element
+                            if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
+                                errorElement.textContent = `File "${edited.name}" already uploaded.`; resolve(null); cleanup();
+                            } else { resolve(edited); cleanup(); }
                         }, file.type, 1);
-                    } else if (currentImageBlob) {
-                        const editedFile = new File([currentImageBlob], file.name, { type: file.type });
-                        if (newFiles.some(f => f.name === editedFile.name && f.size === editedFile.size) ||
-                            existingFiles.some(f => f.file_name === editedFile.name && f.size === editedFile.size)) {
-                            editElements.fileError.textContent = `File "${editedFile.name}" already uploaded.`;
-                            resolve(null);
-                            cleanup();
-                        } else {
-                            resolve(editedFile);
-                            cleanup();
-                        }
                     } else {
-                        if (newFiles.some(f => f.name === file.name && f.size === file.size) ||
-                            existingFiles.some(f => f.file_name === file.name && f.size === file.size)) {
-                            editElements.fileError.textContent = `File "${file.name}" already uploaded.`;
-                            resolve(null);
-                            cleanup();
-                        } else {
-                            resolve(file);
-                            cleanup();
-                        }
+                        const edited = currentImageBlob ? new File([currentImageBlob], file.name, { type: file.type }) : file;
+                        const errorElement = getCurrentElements().fileError; // Use context-aware error element
+                        if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
+                            errorElement.textContent = `File "${edited.name}" already uploaded.`; resolve(null); cleanup();
+                        } else { resolve(edited); cleanup(); }
                     }
                 };
                 saveBtn.addEventListener('click', saveHandler, { once: true });
 
                 function cleanup() {
-                    console.log('Cleaning up editor');
                     editElements.imageEditModal.hide();
-                    if (cropper) {
-                        cropper.destroy();
-                        cropper = null;
-                    }
-                    const img = document.getElementById('editor-image');
-                    const canvasElement = document.getElementById('editor-canvas');
-                    img.src = '';
-                    img.style.display = 'none';
-                    canvasElement.style.display = 'none';
-                    currentRotationAngle = 0;
-                    originalDataURL = null;
-                    currentImageBlob = null;
-                    const newSaveBtn = saveBtn.cloneNode(true);
-                    saveBtn.parentNode.replaceChild(newSaveBtn, saveBtn);
+                    if (cropper) { cropper.destroy(); cropper = null; }
+                    img.src = ''; img.style.display = 'none'; canvas.style.display = 'none';
+                    currentRotationAngle = 0; originalDataURL = null; currentImageBlob = null;
+                    const newBtn = saveBtn.cloneNode(true); saveBtn.parentNode.replaceChild(newBtn, saveBtn);
                 }
             };
             reader.readAsDataURL(file);
         });
     }
 
-    // Add File Button Handler
-    if (editElements.addBtn) {
-        console.log('Attaching click listener to #addFileBtn');
-        editElements.addBtn.addEventListener("click", () => {
-            console.log('Add button clicked, file count:', { newFiles: newFiles.length, existingFiles: existingFiles.length, max: MAX_FILES });
-            if (!editElements.fileInput) {
-                console.error('fileInput element missing');
-                if (editElements.fileError) {
-                    editElements.fileError.textContent = 'Error: File input not found.';
+    // === Add File Button & Input Listeners ===
+    if (isEditPage || isNewConsultation || isFollowup) {
+        const elements = getCurrentElements();
+
+        if (elements.addBtn) {
+            elements.addBtn.addEventListener("click", () => {
+                if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                    elements.fileError.textContent = `Maximum ${MAX_FILES} files allowed.`;
+                    return;
                 }
-                return;
-            }
-            if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                console.log('Max file limit reached');
-                if (editElements.fileError) {
-                    editElements.fileError.textContent = `Maximum ${MAX_FILES} files allowed.`;
+                elements.fileInput.click();
+            });
+        }
+        if (elements.fileInput) {
+            elements.fileInput.addEventListener("change", async () => {
+                if (elements.fileInput.files.length) {
+                    await processNewFiles(Array.from(elements.fileInput.files));
+                    elements.fileInput.value = "";
                 }
-                return;
-            }
-            try {
-                editElements.fileInput.click();
-                console.log('Triggered fileInput.click()');
-            } catch (e) {
-                console.error('Error triggering fileInput.click:', e);
-                if (editElements.fileError) {
-                    editElements.fileError.textContent = 'Error opening file picker.';
-                }
-            }
-        });
-    } else {
-        console.error('addFileBtn element missing');
-        if (editElements.fileError) {
-            editElements.fileError.textContent = 'Error: Add File button not found.';
+            });
         }
     }
 
-    if (editElements.fileInput) {
-        console.log('Attaching change listener to #fileInput');
-        editElements.fileInput.addEventListener("change", async () => {
-            console.log('fileInput change event triggered');
-            if (editElements.fileInput.files.length > 0) {
-                const files = Array.from(editElements.fileInput.files);
-                console.log('Selected files:', files.map(f => ({ name: f.name, type: f.type, size: f.size })));
-                await processNewFiles(files);
-                editElements.fileInput.value = "";
-            } else {
-                console.log('No files selected');
-            }
-        });
-    } else {
-        console.error('fileInput element missing');
-        if (editElements.fileError) {
-            editElements.fileError.textContent = 'Error: File input not found.';
-        }
-    }
 
+    // === Render File List ===
     function renderFileList() {
-        if (!editElements.fileList) return;
-        console.log('Rendering file list:', { existingFiles, newFiles });
-        editElements.fileList.innerHTML = "";
+        const currentElements = getCurrentElements();
+        if (!currentElements.fileList) return;
+        currentElements.fileList.innerHTML = "";
+        const context = isEditPage ? "edit" : isNewConsultation ? "new" : "followup";
 
-        if (existingFiles.length + newFiles.length === 0) {
-            editElements.fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+        if (!existingFiles.length && !newFiles.length) {
+            currentElements.fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
             return;
         }
 
-        const ul = document.createElement("ul");
-        ul.style.paddingLeft = "1.2rem";
+        const ul = document.createElement("ul"); ul.style.paddingLeft = "1.2rem";
+        [...existingFiles, ...newFiles].forEach((file, i) => {
+            const isExisting = isEditPage && i < existingFiles.length;
+            const fileIndexInArray = isExisting ? i : i - existingFiles.length;
 
-        existingFiles.forEach((file, index) => {
-            const li = document.createElement("li");
-            li.style.marginBottom = "6px";
+            const li = document.createElement("li"); li.style.marginBottom = "6px";
+            const link = document.createElement("a"); link.href = "javascript:void(0);"; link.textContent = isExisting ? file.file_name : file.name;
+            link.className = "openAttachment"; link.style.color = "#007bff"; link.style.textDecoration = "underline"; link.style.cursor = "pointer";
+            link.setAttribute("data-file", isExisting ? file.url : (file.file ? file.name : ''));
+            link.setAttribute("data-ext", isExisting ? file.ext : file.ext);
+            link.setAttribute("data-context", context);
+            link.setAttribute("data-is-existing", isExisting.toString());
+            link.setAttribute("data-file-index", fileIndexInArray.toString());
 
-            const nameLink = document.createElement("a");
-            nameLink.href = "javascript:void(0);";
-            nameLink.textContent = file.file_name;
-            nameLink.className = "openAttachment";
-            nameLink.setAttribute("data-file", file.url);
-            nameLink.setAttribute("data-ext", file.ext);
-            nameLink.setAttribute("data-context", "edit");
-            nameLink.style.cursor = "pointer";
-            nameLink.style.color = "#007bff";
-            nameLink.style.textDecoration = "underline";
-
-            console.log('Existing file link:', { file_name: file.file_name, url: file.url, context: nameLink.getAttribute('data-context') });
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.textContent = "✕";
-            removeBtn.className = "btn btn-sm btn-danger";
-            removeBtn.style.marginLeft = "8px";
-
-            removeBtn.addEventListener("click", () => {
-                console.log('Removing existing file:', file.file_name);
-                removedFiles.push(file.file_name);
-                existingFiles.splice(index, 1);
-                if (editElements.removedFilesInput) {
-                    editElements.removedFilesInput.value = JSON.stringify(removedFiles);
-                }
-                renderFileList();
-            });
-
-            li.appendChild(nameLink);
-            li.appendChild(removeBtn);
-            ul.appendChild(li);
+            const removeBtn = document.createElement("button"); removeBtn.type = "button"; removeBtn.textContent = "✕";
+            removeBtn.className = "btn btn-sm btn-danger"; removeBtn.style.marginLeft = "8px";
+            removeBtn.onclick = () => {
+                if (isExisting) { removedFiles.push(file.file_name); existingFiles.splice(fileIndexInArray, 1); if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles); }
+                else newFiles.splice(fileIndexInArray, 1);
+                renderFileList(); updateSubmitFileInput();
+            };
+            li.appendChild(link); li.appendChild(removeBtn); ul.appendChild(li);
         });
-
-        newFiles.forEach((file, index) => {
-            const li = document.createElement("li");
-            li.style.marginBottom = "6px";
-
-            const nameLink = document.createElement("a");
-            nameLink.href = "javascript:void(0);";
-            nameLink.textContent = file.name;
-            nameLink.className = "openAttachment";
-            nameLink.setAttribute("data-file", file.name);
-            nameLink.setAttribute("data-ext", file.ext);
-            nameLink.setAttribute("data-context", "edit");
-            nameLink.style.cursor = "pointer";
-            nameLink.style.color = "#007bff";
-            nameLink.style.textDecoration = "underline";
-
-            console.log('New file link:', { name: file.name, context: nameLink.getAttribute('data-context') });
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.textContent = "✕";
-            removeBtn.className = "btn btn-sm btn-danger";
-            removeBtn.style.marginLeft = "8px";
-
-            removeBtn.addEventListener("click", () => {
-                console.log('Removing new file:', file.name);
-                newFiles.splice(index, 1);
-                renderFileList();
-                updateSubmitFileInput();
-            });
-
-            li.appendChild(nameLink);
-            li.appendChild(removeBtn);
-            ul.appendChild(li);
-        });
-
-        editElements.fileList.appendChild(ul);
-        console.log('File list rendered, ul children:', ul.children.length);
+        currentElements.fileList.appendChild(ul);
     }
 
+    // === Update Submit File Input ===
     function updateSubmitFileInput() {
-        if (!editElements.submitFileInput) return;
-        const dataTransfer = new DataTransfer();
-        newFiles.forEach(file => dataTransfer.items.add(file.file));
-        editElements.submitFileInput.files = dataTransfer.files;
-        console.log('Updated submitFileInput:', newFiles.map(f => ({ name: f.name, size: f.size })));
+        const currentElements = getCurrentElements();
+        if (!currentElements.submitFileInput) return;
+        const dt = new DataTransfer();
+        newFiles.forEach(f => dt.items.add(f.file));
+        currentElements.submitFileInput.files = dt.files;
     }
 
-    function showFilePreview(file, isExisting, index) {
-        if (!editElements.filePreviewModal) {
-            console.warn('filePreviewModal not available');
-            return;
-        }
-        currentIndex = index;
+    // === Preview Functions ===
+    function showPreview(file, isExisting, index, context) {
         const fileName = isExisting ? file.file_name : file.name;
         const fileType = isExisting ? (file.mime_type || getMimeType(file.ext)) : file.type;
+        const url = isExisting ? file.url : URL.createObjectURL(file.file);
 
-        console.log('Attempting to show modal:', { modal: 'filePreviewModal', fileName, fileType, isExisting });
+        let elements, showModal, updateNav;
+        if (context === 'edit' && editElements.editPreviewModal) {
+            elements = editElements; showModal = () => editElements.editPreviewModal.show(); updateNav = updateEditNavigation;
+            elements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
+            elements.previewContent.innerHTML = '';
+        } else if (context === 'new' && newConsultationElements.previewModal) {
+            elements = newConsultationElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+            elements.modalTitle.textContent = `New Consultation Attachment Preview - ${fileName}`;
+            elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+        } else if (context === 'followup' && followupElements.previewModal) {
+            elements = followupElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+            elements.modalTitle.textContent = `Follow-up Attachment Preview - ${fileName}`;
+            elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+        } else if (context === 'dashboard' && dashboardElements.previewModal) {
+            elements = dashboardElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+            elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
+            elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+        } else return;
 
-        try {
-            editElements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
-            editElements.previewContent.innerHTML = '';
+        currentIndex = index; 
 
-            if (['image/jpeg', 'image/jpg', 'image/png'].includes(fileType)) {
-                const img = document.createElement('img');
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '70vh';
-                img.style.margin = 'auto';
-                img.style.display = 'block';
-
-                if (isExisting) {
-                    fetch(file.url, { method: 'HEAD' })
-                        .then(response => {
-                            if (!response.ok) {
-                                console.error(`File URL inaccessible: ${file.url}`);
-                                editElements.previewContent.innerHTML = `<p style="text-align: center;">Cannot preview ${fileName}.</p>`;
-                                editElements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
-                                updateEditNavigation(index);
-                                editElements.filePreviewModal.show();
-                                return;
-                            }
-                            img.src = file.url;
-                            editElements.previewContent.appendChild(img);
-                            updateEditNavigation(index);
-                            editElements.filePreviewModal.show();
-                        })
-                        .catch(error => {
-                            console.error(`Error fetching ${file.url}:`, error);
-                            editElements.previewContent.innerHTML = `<p style="text-align: center;">Error accessing ${fileName}.</p>`;
-                            editElements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
-                            updateEditNavigation(index);
-                            editElements.filePreviewModal.show();
-                        });
-                } else {
-                    const previewUrl = URL.createObjectURL(file.file);
-                    img.src = previewUrl;
-                    editElements.previewContent.appendChild(img);
-                    updateEditNavigation(index);
-                    editElements.filePreviewModal.show();
-                }
-            } else if (fileType === 'application/pdf' || fileType.endsWith('.pdf')) {
-                const embed = document.createElement('embed');
-                embed.style.width = '100%';
-                embed.style.height = '70vh';
-                embed.type = 'application/pdf';
-                if (isExisting) {
-                    fetch(file.url, { method: 'HEAD' })
-                        .then(response => {
-                            if (!response.ok) {
-                                console.error(`File URL inaccessible: ${file.url}`);
-                                editElements.previewContent.innerHTML = `<p style="text-align: center;">Cannot preview ${fileName}.</p>`;
-                                editElements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
-                                updateEditNavigation(index);
-                                editElements.filePreviewModal.show();
-                                return;
-                            }
-                            embed.src = file.url;
-                            editElements.previewContent.appendChild(embed);
-                            updateEditNavigation(index);
-                            editElements.filePreviewModal.show();
-                        })
-                        .catch(error => {
-                            console.error(`Error fetching ${file.url}:`, error);
-                            editElements.previewContent.innerHTML = `<p style="text-align: center;">Error accessing ${fileName}.</p>`;
-                            editElements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
-                            updateEditNavigation(index);
-                            editElements.filePreviewModal.show();
-                        });
-                } else {
-                    const previewUrl = URL.createObjectURL(file.file);
-                    embed.src = previewUrl;
-                    editElements.previewContent.appendChild(embed);
-                    updateEditNavigation(index);
-                    editElements.filePreviewModal.show();
-                }
-            } else if (['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(fileType) ||
-                       fileType.endsWith('.doc') || fileType.endsWith('.docx')) {
-                const text = document.createElement('p');
-                text.textContent = `Preview not available for ${fileName}.`;
-                text.style.textAlign = 'center';
-                editElements.previewContent.appendChild(text);
-                updateEditNavigation(index);
-                editElements.filePreviewModal.show();
+        const display = () => {
+            if (fileType.includes('image')) {
+                if (context === 'edit') { const img = document.createElement('img'); img.src = url; img.style.maxWidth = '100%'; img.style.maxHeight = '70vh'; elements.previewContent.appendChild(img); }
+                else { elements.image.src = url; elements.image.classList.remove('d-none'); }
+            } else if (fileType === 'application/pdf') {
+                if (context === 'edit') { const embed = document.createElement('embed'); embed.src = url; embed.style.width = '100%'; embed.style.height = '70vh'; elements.previewContent.appendChild(embed); }
+                else { elements.pdf.src = url; elements.pdf.classList.remove('d-none'); }
             } else {
-                const text = document.createElement('p');
-                text.textContent = `Unsupported file type: ${fileName}`;
-                text.style.textAlign = 'center';
-                editElements.previewContent.appendChild(text);
-                updateEditNavigation(index);
-                editElements.filePreviewModal.show();
+                const p = document.createElement('p'); p.textContent = `Preview not available for ${fileName}.`; p.style.textAlign = 'center';
+                context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
             }
-        } catch (error) {
-            console.error('Error in showFilePreview:', error);
-            editElements.previewContent.innerHTML = `<p style="text-align: center;">Error displaying ${fileName}.</p>`;
-            editElements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
-            updateEditNavigation(index);
-            editElements.filePreviewModal.show();
+            updateNav(index); showModal();
+        };
+
+        if (isExisting && context !== 'edit') {
+            fetch(url, { method: 'HEAD' }).then(r => r.ok ? display() : fail()).catch(fail);
+        } else display();
+
+        function fail() {
+            const p = document.createElement('p'); p.textContent = `Cannot access ${fileName}.`; p.style.textAlign = 'center';
+            context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
+            updateNav(index); showModal();
         }
 
-        editElements.filePreviewModal._element.addEventListener('hidden.bs.modal', () => {
-            if (!isExisting && editElements.previewContent.firstChild && editElements.previewContent.firstChild.src) {
-                URL.revokeObjectURL(editElements.previewContent.firstChild.src);
-            }
-            editElements.previewContent.innerHTML = '';
-            currentIndex = -1;
-            currentFiles = [];
+        elements.previewModal._element.addEventListener('hidden.bs.modal', () => {
+            if (!isExisting && url.startsWith('blob:')) URL.revokeObjectURL(url);
+            if (context === 'edit') elements.previewContent.innerHTML = '';
+            else { elements.image.src = ''; elements.pdf.src = ''; elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none'); }
+            currentIndex = -1; currentFiles = [];
         }, { once: true });
     }
 
     function updateEditNavigation(index) {
-        editElements.prevBtn.disabled = (index === 0);
-        editElements.prevBtn.classList.toggle('disabled', index === 0);
-        editElements.nextBtn.disabled = (index === currentFiles.length - 1);
-        editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
-        console.log('Edit navigation:', { prevDisabled: editElements.prevBtn.disabled, nextDisabled: editElements.nextBtn.disabled, currentIndex: index, totalFiles: currentFiles.length });
+        editElements.prevBtn.disabled = index === 0; editElements.nextBtn.disabled = index === currentFiles.length - 1;
+        editElements.prevBtn.classList.toggle('disabled', index === 0); editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
     }
 
-    function showDashboardPreview(fileUrl, fileExt, fileName, index) {
-        if (!dashboardElements.attachmentModal) {
-            console.warn('attachmentModal not available');
-            return;
-        }
-        currentIndex = index;
-        const fileType = getMimeType(fileExt);
-
-        console.log('Attempting to show modal:', { modal: 'attachmentModal', fileName, fileType, fileUrl });
-
-        try {
-            dashboardElements.attachmentModalTitle.textContent = `Attachment Preview - ${fileName}`;
-            dashboardElements.attachmentImage.classList.add('d-none');
-            dashboardElements.attachmentPDF.classList.add('d-none');
-
-            if (['image/jpeg', 'image/jpg', 'image/png'].includes(fileType)) {
-                dashboardElements.attachmentImage.src = fileUrl;
-                dashboardElements.attachmentImage.classList.remove('d-none');
-                updateDashboardNavigation(index);
-                dashboardElements.attachmentModal.show();
-            } else if (fileType === 'application/pdf' || fileExt === 'pdf') {
-                dashboardElements.attachmentPDF.src = fileUrl;
-                dashboardElements.attachmentPDF.classList.remove('d-none');
-                updateDashboardNavigation(index);
-                dashboardElements.attachmentModal.show();
-            } else {
-                dashboardElements.attachmentImage.src = '';
-                dashboardElements.attachmentPDF.src = '';
-                dashboardElements.attachmentImage.classList.remove('d-none');
-                dashboardElements.attachmentImage.alt = `Preview not available for ${fileName}`;
-                updateDashboardNavigation(index);
-                dashboardElements.attachmentModal.show();
-            }
-        } catch (error) {
-            console.error('Error in showDashboardPreview:', error);
-            dashboardElements.attachmentImage.src = '';
-            dashboardElements.attachmentPDF.src = '';
-            dashboardElements.attachmentImage.classList.remove('d-none');
-            dashboardElements.attachmentImage.alt = `Error displaying ${fileName}`;
-            updateDashboardNavigation(index);
-            dashboardElements.attachmentModal.show();
-        }
-
-        dashboardElements.attachmentModal._element.addEventListener('hidden.bs.modal', () => {
-            dashboardElements.attachmentImage.src = '';
-            dashboardElements.attachmentPDF.src = '';
-            dashboardElements.attachmentImage.classList.add('d-none');
-            dashboardElements.attachmentPDF.classList.add('d-none');
-            currentIndex = -1;
-            currentFiles = [];
-        }, { once: true });
+    function updateNavButtons(el, index) {
+        el.prevBtn.disabled = index === 0; 
+        el.nextBtn.disabled = index === currentFiles.length - 1;
+        el.prevBtn.classList.toggle('disabled', index === 0); 
+        el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
     }
 
-    function updateDashboardNavigation(index) {
-        dashboardElements.prevAttachmentBtn.disabled = (index === 0);
-        dashboardElements.prevAttachmentBtn.classList.toggle('disabled', index === 0);
-        dashboardElements.nextAttachmentBtn.disabled = (index === currentFiles.length - 1);
-        dashboardElements.nextAttachmentBtn.classList.toggle('disabled', index === currentFiles.length - 1);
-        console.log('Dashboard navigation:', { prevDisabled: dashboardElements.prevAttachmentBtn.disabled, nextDisabled: dashboardElements.nextAttachmentBtn.disabled, currentIndex: index, totalFiles: currentFiles.length });
-    }
-
-    // Remove any existing listeners
+    // === Click Handler for All .openAttachment ===
     document.removeEventListener('click', handleAttachmentClick);
-
-    // Named handler for better control
     function handleAttachmentClick(e) {
         const link = e.target.closest('.openAttachment');
         if (!link) return;
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
+        e.preventDefault(); e.stopPropagation();
 
-        const fileName = link.textContent.trim();
-        const fileExt = link.getAttribute('data-ext');
         const context = link.getAttribute('data-context');
-        const fileUrl = link.getAttribute('data-file');
+        const fileName = link.textContent.trim();
 
-        console.log('OpenAttachment clicked:', { fileName, fileExt, context, fileUrl });
+        let allRelevantLinks = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
+        currentFiles = allRelevantLinks; 
 
-        if (!context || !['edit', 'dashboard'].includes(context)) {
-            console.error('Invalid or missing data-context:', context);
-            return;
-        }
+        if (context === 'dashboard') {
+            // **CORRECTED LOGIC:** Look for the consultation ID (digits) flanked by underscores.
+            // This is the common part: attachment_43_01.png -> extract '43'
+            const match = fileName.match(/_(\d+)_/); 
+            const consultationId = match ? match[1] : null;
 
-        currentFiles = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
-        const localIndex = currentFiles.findIndex(l => l.textContent.trim() === fileName);
-
-        if (localIndex === -1) {
-            console.error('File not found in currentFiles:', fileName);
-            return;
-        }
-
-        if (context === 'edit' && isEditPage) {
-            const isExisting = existingFiles.some(f => f.file_name === fileName);
-            const file = isExisting ? existingFiles.find(f => f.file_name === fileName) : newFiles.find(f => f.name === fileName);
-            if (file && editElements.filePreviewModal) {
-                console.log('Triggering edit modal:', { fileName, isExisting });
-                showFilePreview(file, isExisting, localIndex);
+            if (consultationId) {
+                // Filter all dashboard links to keep only those that contain the pattern "_ID_"
+                const filterPattern = new RegExp(`_${consultationId}_`);
+                currentFiles = allRelevantLinks.filter(fileLink =>
+                    filterPattern.test(fileLink.textContent.trim())
+                );
             } else {
-                console.error('File or filePreviewModal not found:', { fileName, filePreviewModal: !!editElements.filePreviewModal });
+                // If ID is missing, only show the current file (length 1, buttons disabled)
+                currentFiles = [link];
             }
-        } else if (context === 'dashboard' && !isEditPage) {
-            if (fileUrl && fileUrl.startsWith('http') && dashboardElements.attachmentModal) {
-                console.log('Triggering dashboard modal:', fileName);
-                showDashboardPreview(fileUrl, fileExt, fileName, localIndex);
+        }
+        
+        const index = currentFiles.indexOf(link);
+        if (index === -1) return;
+
+        if (['new', 'edit', 'followup'].includes(context)) {
+            const isExisting = link.getAttribute('data-is-existing') === "true";
+            const fileIndexInArray = parseInt(link.getAttribute('data-file-index'), 10);
+
+            let file = null;
+            if (isExisting) {
+                file = existingFiles[fileIndexInArray];
             } else {
-                console.warn('Invalid file URL or attachmentModal unavailable:', { fileUrl, attachmentModal: !!dashboardElements.attachmentModal });
+                file = newFiles[fileIndexInArray];
             }
-        } else {
-            console.warn('Context mismatch:', { context, isEditPage });
+
+            if (file) showPreview(file, isExisting, index, context);
+            else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
+
+        } else if (context === 'dashboard') {
+            // The index here is the correct position within the filtered `currentFiles` array.
+            showPreview({ url: link.getAttribute('data-file'), ext: link.getAttribute('data-ext'), file_name: fileName }, true, index, 'dashboard');
         }
     }
-
     document.addEventListener('click', handleAttachmentClick);
 
-    // Navigation for edit modal
-    if (editElements.prevBtn && editElements.nextBtn) {
-        editElements.prevBtn.addEventListener("click", () => {
-            if (!editElements.prevBtn.disabled && currentIndex > 0) {
-                console.log('Navigating to previous file in edit:', currentIndex);
-                const nextFileName = currentFiles[currentIndex - 1].textContent.trim();
-                const isExisting = existingFiles.some(f => f.file_name === nextFileName);
-                const file = isExisting ? existingFiles.find(f => f.file_name === nextFileName) : newFiles.find(f => f.name === nextFileName);
-                if (file) {
-                    showFilePreview(file, isExisting, currentIndex - 1);
-                }
-            }
-        });
-
-        editElements.nextBtn.addEventListener("click", () => {
-            if (!editElements.nextBtn.disabled && currentIndex < currentFiles.length - 1) {
-                console.log('Navigating to next file in edit:', currentIndex);
-                const nextFileName = currentFiles[currentIndex + 1].textContent.trim();
-                const isExisting = existingFiles.some(f => f.file_name === nextFileName);
-                const file = isExisting ? existingFiles.find(f => f.file_name === nextFileName) : newFiles.find(f => f.name === nextFileName);
-                if (file) {
-                    showFilePreview(file, isExisting, currentIndex + 1);
-                }
-            }
-        });
-
-        [editElements.prevBtn, editElements.nextBtn].forEach(btn => {
-            btn.addEventListener("mouseenter", () => {
-                btn.style.cursor = btn.disabled || btn.classList.contains('disabled') ? 'not-allowed' : 'pointer';
-            });
-            btn.addEventListener("mouseleave", () => {
-                btn.style.cursor = '';
-            });
+    // === Navigation Buttons ===
+    function setupNav(prevBtn, nextBtn, context) {
+        if (!prevBtn || !nextBtn) return;
+        prevBtn.onclick = () => { if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context); };
+        nextBtn.onclick = () => { if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context); };
+        [prevBtn, nextBtn].forEach(btn => {
+            btn.addEventListener("mouseenter", () => btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer');
+            btn.addEventListener("mouseleave", () => btn.style.cursor = '');
         });
     }
 
-    // Navigation for dashboard modal
-    if (dashboardElements.prevAttachmentBtn && dashboardElements.nextAttachmentBtn) {
-        dashboardElements.prevAttachmentBtn.addEventListener("click", () => {
-            if (!dashboardElements.prevAttachmentBtn.disabled && currentIndex > 0) {
-                console.log('Navigating to previous file in dashboard:', currentIndex);
-                const nextFileName = currentFiles[currentIndex - 1].textContent.trim();
-                const link = currentFiles[currentIndex - 1];
-                const fileUrl = link.getAttribute('data-file');
-                const fileExt = link.getAttribute('data-ext');
-                if (fileUrl && fileExt) {
-                    showDashboardPreview(fileUrl, fileExt, nextFileName, currentIndex - 1);
-                }
-            }
-        });
-
-        dashboardElements.nextAttachmentBtn.addEventListener("click", () => {
-            if (!dashboardElements.nextAttachmentBtn.disabled && currentIndex < currentFiles.length - 1) {
-                console.log('Navigating to next file in dashboard:', currentIndex);
-                const nextFileName = currentFiles[currentIndex + 1].textContent.trim();
-                const link = currentFiles[currentIndex + 1];
-                const fileUrl = link.getAttribute('data-file');
-                const fileExt = link.getAttribute('data-ext');
-                if (fileUrl && fileExt) {
-                    showDashboardPreview(fileUrl, fileExt, nextFileName, currentIndex + 1);
-                }
-            }
-        });
-
-        [dashboardElements.prevAttachmentBtn, dashboardElements.nextAttachmentBtn].forEach(btn => {
-            btn.addEventListener("mouseenter", () => {
-                btn.style.cursor = btn.disabled || btn.classList.contains('disabled') ? 'not-allowed' : 'pointer';
-            });
-            btn.addEventListener("mouseleave", () => {
-                btn.style.cursor = '';
-            });
-        });
+    function navigate(index, context) {
+        const link = currentFiles[index];
+        link.click();
     }
+
+    setupNav(editElements.prevBtn, editElements.nextBtn, 'edit');
+    if (newConsultationElements.prevBtn) setupNav(newConsultationElements.prevBtn, newConsultationElements.nextBtn, 'new');
+    if (followupElements.prevBtn) setupNav(followupElements.prevBtn, followupElements.nextBtn, 'followup');
+    if (dashboardElements.prevBtn) setupNav(dashboardElements.prevBtn, dashboardElements.nextBtn, 'dashboard');
 });
 
     </script>
@@ -5117,131 +4704,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     </script>
  -->
-
-
- <!-- added Arrow Attachment Display -->
-  <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const requiredElements = ['attachmentModal', 'attachmentImage', 'attachmentPDF', 'attachmentModalLabel', 'prevAttachment', 'nextAttachment'];
-    for (const id of requiredElements) {
-        if (!document.getElementById(id)) {
-            console.error(`Missing required element: #${id}`);
-            return;
-        }
-    }
-
-    const attachmentLinks = Array.from(document.querySelectorAll(".openAttachment"));
-    const modal = new bootstrap.Modal(document.getElementById('attachmentModal'));
-    const attachmentImage = document.getElementById('attachmentImage');
-    const attachmentPDF = document.getElementById('attachmentPDF');
-    const modalTitle = document.getElementById('attachmentModalLabel');
-    const prevBtn = document.getElementById('prevAttachment');
-    const nextBtn = document.getElementById('nextAttachment');
-
-    let currentIndex = -1;
-    let currentConsultantAttachments = [];
-
-    function getConsultantId(fileName) {
-        const match = fileName.match(/Attachment_(\d+)_\d+\.\w+/);
-        return match ? match[1] : null;
-    }
-
-    function filterAttachmentsByConsultant(consultantId) {
-        return attachmentLinks.filter(link => {
-            const fileName = link.textContent.trim();
-            const linkConsultantId = getConsultantId(fileName);
-            return linkConsultantId === consultantId;
-        });
-    }
-
-    function showAttachment(index, consultantId) {
-        if (index < 0 || index >= currentConsultantAttachments.length) return;
-
-        currentIndex = index;
-        const link = currentConsultantAttachments[index];
-        const file = link.getAttribute("data-file");
-        const ext = link.getAttribute("data-ext").toLowerCase();
-        const fileName = link.textContent.trim();
-
-        // Set modal title with file name
-        modalTitle.textContent = `Attachment Preview - ${fileName}`;
-
-        // Hide both initially
-        attachmentImage.classList.add("d-none");
-        attachmentPDF.classList.add("d-none");
-
-        if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
-            attachmentImage.src = file;
-            attachmentImage.classList.remove("d-none");
-        } else if (['pdf'].includes(ext)) {
-            attachmentPDF.src = file;
-            attachmentPDF.classList.remove("d-none");
-        } else {
-            alert("Preview not available for this file type.");
-            return;
-        }
-
-        // Update button states with disabled class
-        if (index === 0) {
-            prevBtn.disabled = true;
-            prevBtn.classList.add('disabled');
-        } else {
-            prevBtn.disabled = false;
-            prevBtn.classList.remove('disabled');
-        }
-        if (index === currentConsultantAttachments.length - 1) {
-            nextBtn.disabled = true;
-            nextBtn.classList.add('disabled');
-        } else {
-            nextBtn.disabled = false;
-            nextBtn.classList.remove('disabled');
-        }
-
-        modal.show();
-    }
-
-    attachmentLinks.forEach((link, index) => {
-        link.addEventListener("click", function () {
-            const fileName = this.textContent.trim();
-            const consultantId = getConsultantId(fileName);
-            if (consultantId) {
-                currentConsultantAttachments = filterAttachmentsByConsultant(consultantId);
-                const localIndex = currentConsultantAttachments.indexOf(this);
-                showAttachment(localIndex, consultantId);
-            } else {
-                alert("Invalid file name format.");
-            }
-        });
-    });
-
-    prevBtn.addEventListener("click", () => {
-        if (!prevBtn.disabled && currentIndex > 0) {
-            showAttachment(currentIndex - 1, getConsultantId(currentConsultantAttachments[currentIndex].textContent.trim()));
-        }
-    });
-
-    nextBtn.addEventListener("click", () => {
-        if (!nextBtn.disabled && currentIndex < currentConsultantAttachments.length - 1) {
-            showAttachment(currentIndex + 1, getConsultantId(currentConsultantAttachments[currentIndex].textContent.trim()));
-        }
-    });
-
-    // Ensure cursor on hover for disabled buttons
-    [prevBtn, nextBtn].forEach(btn => {
-        btn.addEventListener("mouseenter", () => {
-            if (btn.disabled || btn.classList.contains('disabled')) {
-                btn.style.cursor = 'not-allowed';
-            } else {
-                btn.style.cursor = 'pointer';
-            }
-        });
-        btn.addEventListener("mouseleave", () => {
-            btn.style.cursor = '';
-        });
-    });
-});
-    </script>
-
     
     <!-- Delete Consultation Script -->
     <script>

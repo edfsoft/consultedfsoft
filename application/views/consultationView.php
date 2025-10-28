@@ -99,7 +99,7 @@
         }
 
         /* Consultation arrows container style */
-        /* .consultation-container {
+        .consultation-container {
             position: relative;
             width: 100%;
             overflow: hidden;
@@ -112,10 +112,10 @@
 
         .consultation-item.active {
             display: block;
-        } */
+        }
 
        /* Attachment display */
-        #attachmentImage, {
+        #attachmentImage {
             width: 600px;
             height: 600px;
             object-fit: contain;
@@ -125,7 +125,14 @@
             border-radius: 5;
             margin: 10px;
         }
-    
+        #prevAttachment:disabled, #nextAttachment:disabled,
+        #prevAttachment.disabled, #nextAttachment.disabled {
+            cursor: not-allowed !important;
+        }
+        #prevAttachment:hover:disabled, #nextAttachment:hover:disabled,
+        #prevAttachment.disabled:hover, #nextAttachment.disabled:hover {
+            cursor: not-allowed !important;
+        }
         #prevAttachment {
             left: 10px;
         }
@@ -917,7 +924,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <!-- <div class="form-group pb-3">
@@ -931,6 +937,7 @@
                                         <div id="fileList" style="margin-top: 0.5rem;"></div>
                                         <div id="fileError" class="text-danger pt-1"></div> 
                                     </div> --><!-- This code is common for all 3 new, edi and followup -->
+
                                   <div class="form-group pb-3" data-page="new">
                                     <label class="form-label fieldLabel">Attachments</label>
                                     <button type="button" class="addFileBtn btn text-light float-end mb-2" style="background-color: #00ad8e;"> + Add File </button>
@@ -996,7 +1003,7 @@
                                     </div>
                                 </div>
                             </div>
-                                     <!-----------------------------end ------------------>
+                                     <!-----------------------------end edit image------------------>
 
                             <div class="modal fade" id="newConsultationPreviewModal" tabindex="-1" aria-labelledby="newConsultationPreviewModalLabel"
                                 aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
@@ -1024,8 +1031,7 @@
                                     </div>
                                 </div>
                             </div>
-
-
+                                            <!------- end attachment display -->
                          </div>
                         </div>
                     </div>
@@ -1406,19 +1412,19 @@
 
                             </div>
 
-                                <div class="form-group pb-3" data-page="followup">
-                                    <label class="form-label fieldLabel">Attachments</label>
-                                    <button type="button" class="addFileBtn btn text-light float-end mb-2" style="background-color: #00ad8e;"> + Add File </button>
-                                    <div class="mb-3"></div>
-                                    <div class="dropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                        <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
-                                    </div>
-                                    <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
-                                    <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
-                                    <div class="fileList" style="margin-top: 0.5rem;"></div>
-                                    <div class="fileError text-danger pt-1"></div>
-                                    <input type="hidden" class="removedFiles" name="removedFiles" value="">
-                                </div>
+   <div class="form-group pb-3" data-page="followup">
+    <label class="form-label fieldLabel">Attachments</label>
+    <button type="button" class="addFileBtn btn text-light float-end mb-2" style="background-color: #00ad8e;"> + Add File </button>
+    <div class="mb-3"></div>
+    <div class="dropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+        <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
+    </div>
+    <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+    <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
+    <div class="fileList" style="margin-top: 0.5rem;"></div>
+    <div class="fileError text-danger pt-1"></div>
+    <input type="hidden" class="removedFiles" name="removedFiles" value="">
+</div>
 
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
@@ -1474,7 +1480,7 @@
                                      <!-----------------------------end ------------------>
 
                                                     <!-- Preview display Followup Model -->
-                         <div class="modal fade" id="followupPreviewModal" tabindex="-1" aria-labelledby="followupPreviewModalLabel"
+                        <div class="modal fade" id="followupPreviewModal" tabindex="-1" aria-labelledby="followupPreviewModalLabel"
                             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
                             <div class="modal-dialog modal-lg modal-dialog-centered">
                                 <div class="modal-content">
@@ -1499,7 +1505,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>   
+                         </div>   
                     </div>
             </section>
 <!-------------------------- Edit Consultant -->
@@ -4177,8 +4183,9 @@
     </script> -->
     <script>
 
-/* Edit-Image With Drag and Drop */
+/* Edit-Image With Drag and Drop display attachment in new, edit, followup and dashboard */
 document.addEventListener('DOMContentLoaded', function () {
+    // === Page Context Detection ===
     const isEditPage = !!document.getElementById('fileList');
     const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
     const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
@@ -4186,7 +4193,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log('Page context:', { isEditPage, isDashboardPage, isNewConsultation, isFollowup });
 
-
+    // === Find Containers for Class-based Elements ===
     const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
     const followupContainer = isFollowup ? document.querySelector('[data-page="followup"]') : null;
 
@@ -4704,6 +4711,129 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     </script>
  -->
+
+
+ <!-- added Arrow Attachment Display -->
+  <script>
+// === Preview Handler (FIXED FOR DASHBOARD) ===
+/* document.addEventListener('click', e => {
+    const link = e.target.closest('.openAttachment');
+    if (!link) return;
+    e.preventDefault();
+
+    const context = link.dataset.context;
+    if (!context) return;
+
+    const fileName = link.textContent.trim();
+    const fileUrl = link.dataset.file;
+    const fileExt = link.dataset.ext?.toLowerCase();
+    const fileType = {
+        'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png',
+        'pdf': 'application/pdf'
+    }[fileExt] || 'application/octet-stream';
+
+    // Get all files in same context
+    currentFiles = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
+    currentIndex = currentFiles.indexOf(link);
+    if (currentIndex === -1) return;
+
+    // Select correct modal
+    let modal, titleEl, bodyEl, imgEl, pdfEl;
+    if (context === 'dashboard' && modals.dashboardPreview) {
+        modal = modals.dashboardPreview;
+        titleEl = document.getElementById('dashboardPreviewModalLabel');
+        imgEl = document.getElementById('attachmentImage');
+        pdfEl = document.getElementById('attachmentPDF');
+        imgEl.classList.add('d-none');
+        pdfEl.classList.add('d-none');
+    } else if (context === 'edit' && modals.editPreview) {
+        modal = modals.editPreview;
+        titleEl = document.getElementById('editPreviewModalLabel');
+        bodyEl = modal._element.querySelector('.modal-body');
+        bodyEl.innerHTML = '';
+    } else if (context === 'new' && modals.newPreview) {
+        modal = modals.newPreview;
+        titleEl = document.getElementById('newConsultationPreviewModalLabel');
+        imgEl = document.getElementById('newConsultationImage');
+        pdfEl = document.getElementById('newConsultationPDF');
+        imgEl.classList.add('d-none');
+        pdfEl.classList.add('d-none');
+    } else if (context === 'followup' && modals.followupPreview) {
+        modal = modals.followupPreview;
+        titleEl = document.getElementById('followupPreviewModalLabel');
+        imgEl = document.getElementById('followupImage');
+        pdfEl = document.getElementById('followupPDF');
+        imgEl.classList.add('d-none');
+        pdfEl.classList.add('d-none');
+    } else {
+        return;
+    }
+
+    titleEl.textContent = `Attachment Preview - ${fileName}`;
+
+    const show = () => {
+        if (context === 'dashboard') {
+            if (['jpg', 'jpeg', 'png'].includes(fileExt)) {
+                imgEl.src = fileUrl;
+                imgEl.classList.remove('d-none');
+            } else if (fileExt === 'pdf') {
+                pdfEl.src = fileUrl;
+                pdfEl.classList.remove('d-none');
+            } else {
+                imgEl.src = '';
+                imgEl.alt = 'Preview not available';
+                imgEl.classList.remove('d-none');
+            }
+        } else {
+            // For edit/new/followup (existing or blob)
+            const isImage = fileType.includes('image');
+            const isPDF = fileType.includes('pdf');
+            if (isImage || isPDF) {
+                const el = isImage ? document.createElement('img') : document.createElement('embed');
+                el.src = fileUrl;
+                el.style.maxWidth = '100%';
+                el.style.maxHeight = '70vh';
+                if (isPDF) el.style.height = '70vh';
+                bodyEl.appendChild(el);
+            } else {
+                bodyEl.innerHTML = `<p class="text-center">Preview not available.</p>`;
+            }
+        }
+        updateNav(modal, currentIndex);
+        modal.show();
+    };
+
+    // Check if file exists
+    fetch(fileUrl, { method: 'HEAD' })
+        .then(r => r.ok ? show() : fail())
+        .catch(() => fail());
+
+    function fail() {
+        if (context === 'dashboard') {
+            imgEl.src = '';
+            imgEl.alt = 'File not accessible';
+            imgEl.classList.remove('d-none');
+        } else {
+            bodyEl.innerHTML = `<p class="text-center text-danger">File not accessible.</p>`;
+        }
+        updateNav(modal, currentIndex);
+        modal.show();
+    }
+
+    modal._element.addEventListener('hidden.bs.modal', () => {
+        if (context === 'dashboard') {
+            imgEl.src = '';
+            pdfEl.src = '';
+            imgEl.classList.add('d-none');
+            pdfEl.classList.add('d-none');
+        } else if (bodyEl) {
+            bodyEl.innerHTML = '';
+        }
+        currentIndex = -1;
+        currentFiles = [];
+    }, { once: true });
+}); */
+
     
     <!-- Delete Consultation Script -->
     <script>

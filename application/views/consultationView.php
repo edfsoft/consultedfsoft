@@ -117,7 +117,7 @@
        /* Attachment display */
         #attachmentImage {
             width: 600px;
-            height: 600px;
+            height: 500px;
             object-fit: contain;
         }
         #prevAttachment, #nextAttachment {
@@ -125,16 +125,9 @@
             border-radius: 5;
             margin: 10px;
         }
-        #prevAttachment:disabled, #nextAttachment:disabled,
-        #prevAttachment.disabled, #nextAttachment.disabled {
-            cursor: not-allowed !important;
-        }
-        #prevAttachment:hover:disabled, #nextAttachment:hover:disabled,
-        #prevAttachment.disabled:hover, #nextAttachment.disabled:hover {
-            cursor: not-allowed !important;
-        }
         #prevAttachment {
             left: 10px;
+            z-index: 1055;
         }
         #nextAttachment {
             right: 10px;
@@ -142,15 +135,15 @@
  /*-----------------------Edit-Page------------------*/
 
         #imageEditModal .modal-xl {
-            max-width: 1200px; /* Wide modal for larger images */
+            max-width: 1200px; 
         }
         #imageEditModal .modal-content {
-            overflow: hidden; /* Prevent overflow */
+            overflow: hidden; 
         }
         
         #imageEditModal .modal-body {
-            padding: 20px; /* Add padding for better spacing */
-            max-height: 80vh; /* Limit body height to prevent overflow */
+            padding: 20px;
+            max-height: 80vh;
             overflow: auto;
         }
 
@@ -2296,7 +2289,7 @@
         </div> --> 
 
         <!-- Attachment Display Dashboard Modal --> 
-         <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
      aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -2307,11 +2300,30 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center position-relative">
+                
+                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0" 
+                     style="height: 43px; width: 100%; background-color: #cccecfff; border-radius: 5px; display: none;">
+                    
+                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled>
+                        <b style="font-size: 1.2rem;">-</b>
+                    </button>
+                    
+                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled>
+                        <b style="font-size: 1.2rem;">+</b>
+                    </button>
+                    
+                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
+                       class="bi bi-download"></i></button>
+                </div>
                 <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
                     <b>&lt;</b>
                 </button>
-                <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none">
-                <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                
+                <div id="attachment-content-wrapper" class="w-100" style="max-height: calc(70vh - 100px); overflow: auto; min-height: 400px;">
+                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none" style="transform-origin: top left; transition: transform 0.2s ease-out;">
+                    <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                </div>
+
                 <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
                     <b>&gt;</b>
                 </button>
@@ -2321,7 +2333,7 @@
             </div>
         </div>
     </div>
-</div>    
+</div> 
  
 
      <!-- All modal files -->
@@ -4184,6 +4196,7 @@
     <script>
 
 /* Edit-Image With Drag and Drop display attachment in new, edit, followup and dashboard */
+/* Edit-Image With Drag and Drop */
 document.addEventListener('DOMContentLoaded', function () {
     // === Page Context Detection ===
     const isEditPage = !!document.getElementById('fileList');
@@ -4272,6 +4285,13 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentImageBlob = null;
     let currentIndex = -1;
     let currentFiles = [];
+    
+    // Dashboard Zoom Variables
+    let currentZoom = 1.0;
+    const ZOOM_STEP = 0.2;
+    // New: Image Dragging Variables
+    let isDragging = false;
+    let startX, startY, scrollLeft, scrollTop;
 
     const BASE_FILE_URL = '<?php echo base_url('Uploads/consultations/'); ?>';
 
@@ -4307,11 +4327,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function getMimeType(ext) {
-        const map = { 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'pdf': 'application/pdf', 'doc': 'application/msword', 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
+        const map = { 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'pdf': 'application/pdf', 'doc': 'application/msword', 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingprocessingml.document' };
         return map[ext] || 'application/octet-stream';
     }
 
-    // === Drag & Drop ===
+    // === Drag & Drop (Unchanged Logic) ===
     const currentElements = getCurrentElements();
     const dropZone = currentElements.dropZone;
 
@@ -4332,7 +4352,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function highlight(el) { el.style.borderColor = '#00ad8e'; el.style.backgroundColor = '#f2ebebff'; }
     function unhighlight(el) { el.style.borderColor = '#ccc'; el.style.backgroundColor = 'transparent'; }
 
-    // === File Processing ===
+    // === File Processing (Unchanged Logic) ===
     async function processNewFiles(files) {
         const currentElements = getCurrentElements();
         if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
@@ -4448,7 +4468,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // === Add File Button & Input Listeners ===
+    // === Add File Button & Input Listeners (Unchanged Logic) ===
     if (isEditPage || isNewConsultation || isFollowup) {
         const elements = getCurrentElements();
 
@@ -4472,7 +4492,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // === Render File List ===
+    // === Render File List (Unchanged Logic) ===
     function renderFileList() {
         const currentElements = getCurrentElements();
         if (!currentElements.fileList) return;
@@ -4510,7 +4530,7 @@ document.addEventListener('DOMContentLoaded', function () {
         currentElements.fileList.appendChild(ul);
     }
 
-    // === Update Submit File Input ===
+    // === Update Submit File Input (Unchanged Logic) ===
     function updateSubmitFileInput() {
         const currentElements = getCurrentElements();
         if (!currentElements.submitFileInput) return;
@@ -4542,20 +4562,74 @@ document.addEventListener('DOMContentLoaded', function () {
             elements = dashboardElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
             elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
             elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+
+            // NEW: Clear any previous 'No Preview' message before setting new content
+            document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+
+            // Dashboard Toolbar Logic (Start)
+            const toolbar = document.getElementById('attachment-toolbar');
+            const downloadBtn = document.getElementById('downloadAttachmentBtn');
+            const attachmentImage = document.getElementById('attachmentImage');
+
+            // Always start by hiding the toolbar as the default state for non-images (like PDFs).
+            toolbar.style.display = 'none';
+
+            // Reset Zoom
+            currentZoom = 1.0;
+            attachmentImage.style.transform = `scale(${currentZoom})`;
+            
+            // Set Download URL (Unchanged Logic)
+            downloadBtn.onclick = () => {
+                const tempLink = document.createElement('a');
+                tempLink.href = url;
+                tempLink.download = fileName;
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+            };
+
+            // Toggle toolbar visibility: ONLY SHOW FOR IMAGES
+            if (fileType.includes('image')) {
+                toolbar.style.display = 'flex'; // Show toolbar for images
+                document.getElementById('zoomOutBtn').disabled = true; // Start at 1.0
+                document.getElementById('zoomInBtn').disabled = false;
+                attachmentImage.style.cursor = 'grab'; // Enable dragging cursor
+            } else {
+                // Ensure image dragging cursor is default for non-images (like PDFs)
+                attachmentImage.style.cursor = 'default'; 
+            }
+            // Dashboard Toolbar Logic (End)
+
         } else return;
 
         currentIndex = index; 
 
         const display = () => {
             if (fileType.includes('image')) {
-                if (context === 'edit') { const img = document.createElement('img'); img.src = url; img.style.maxWidth = '100%'; img.style.maxHeight = '70vh'; elements.previewContent.appendChild(img); }
+                if (context === 'edit') { const img = document.createElement('img'); img.src = url; img.style.maxWidth = '100%'; img.maxHeight = '70vh'; elements.previewContent.appendChild(img); }
                 else { elements.image.src = url; elements.image.classList.remove('d-none'); }
             } else if (fileType === 'application/pdf') {
                 if (context === 'edit') { const embed = document.createElement('embed'); embed.src = url; embed.style.width = '100%'; embed.style.height = '70vh'; elements.previewContent.appendChild(embed); }
                 else { elements.pdf.src = url; elements.pdf.classList.remove('d-none'); }
             } else {
                 const p = document.createElement('p'); p.textContent = `Preview not available for ${fileName}.`; p.style.textAlign = 'center';
-                context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
+                
+                // FIX START: Logic to handle unsupported file types
+                if (context === 'dashboard') {
+                    // Dashboard Context: Ensure image and PDF are hidden and inject the message
+                    elements.image.classList.add('d-none'); // Hide image
+                    elements.pdf.classList.add('d-none');  // Hide PDF
+                    p.id = 'no-preview-message'; // Add ID for cleanup
+                    document.getElementById('attachment-content-wrapper').appendChild(p);
+                } else if (context === 'edit') {
+                    // Edit Context uses the separate content preview div
+                    elements.previewContent.appendChild(p);
+                } else {
+                    // New/Followup contexts - Retain original logic as requested (no change in unrelated code)
+                    elements.image.classList.remove('d-none');
+                    elements.image.alt = p.textContent;
+                }
+                // FIX END
             }
             updateNav(index); showModal();
         };
@@ -4575,9 +4649,18 @@ document.addEventListener('DOMContentLoaded', function () {
             if (context === 'edit') elements.previewContent.innerHTML = '';
             else { elements.image.src = ''; elements.pdf.src = ''; elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none'); }
             currentIndex = -1; currentFiles = [];
+            
+            // Dashboard Cleanup: Reset Image Pan/Drag styles (Required for correct state)
+            if(context === 'dashboard') {
+                document.getElementById('attachmentImage').style.cursor = 'default';
+                document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
+                // NEW: Ensure 'No Preview' message is cleared on modal close
+                document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+            }
         }, { once: true });
     }
 
+    // === Navigation Functions (Unchanged Logic) ===
     function updateEditNavigation(index) {
         editElements.prevBtn.disabled = index === 0; editElements.nextBtn.disabled = index === currentFiles.length - 1;
         editElements.prevBtn.classList.toggle('disabled', index === 0); editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
@@ -4590,7 +4673,7 @@ document.addEventListener('DOMContentLoaded', function () {
         el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
     }
 
-    // === Click Handler for All .openAttachment ===
+    // === Click Handler for All .openAttachment (Unchanged Logic) ===
     document.removeEventListener('click', handleAttachmentClick);
     function handleAttachmentClick(e) {
         const link = e.target.closest('.openAttachment');
@@ -4604,8 +4687,8 @@ document.addEventListener('DOMContentLoaded', function () {
         currentFiles = allRelevantLinks; 
 
         if (context === 'dashboard') {
-            // **CORRECTED LOGIC:** Look for the consultation ID (digits) flanked by underscores.
-            // This is the common part: attachment_43_01.png -> extract '43'
+            // FIX/Refinement for Navigation: Filter by Consultation ID to enable next/prev
+            // Pattern: attachment_ID_NUMBER.EXT -> extract ID (e.g., '43' from 'attachment_43_01.png')
             const match = fileName.match(/_(\d+)_/); 
             const consultationId = match ? match[1] : null;
 
@@ -4639,13 +4722,12 @@ document.addEventListener('DOMContentLoaded', function () {
             else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
 
         } else if (context === 'dashboard') {
-            // The index here is the correct position within the filtered `currentFiles` array.
             showPreview({ url: link.getAttribute('data-file'), ext: link.getAttribute('data-ext'), file_name: fileName }, true, index, 'dashboard');
         }
     }
     document.addEventListener('click', handleAttachmentClick);
 
-    // === Navigation Buttons ===
+    // === Navigation Buttons Setup (Unchanged Logic) ===
     function setupNav(prevBtn, nextBtn, context) {
         if (!prevBtn || !nextBtn) return;
         prevBtn.onclick = () => { if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context); };
@@ -4665,7 +4747,135 @@ document.addEventListener('DOMContentLoaded', function () {
     if (newConsultationElements.prevBtn) setupNav(newConsultationElements.prevBtn, newConsultationElements.nextBtn, 'new');
     if (followupElements.prevBtn) setupNav(followupElements.prevBtn, followupElements.nextBtn, 'followup');
     if (dashboardElements.prevBtn) setupNav(dashboardElements.prevBtn, dashboardElements.nextBtn, 'dashboard');
+
+   // === Dashboard Zoom & Pan (double-tap + hold ONLY) ===
+const zoomInBtn   = document.getElementById('zoomInBtn');
+const zoomOutBtn  = document.getElementById('zoomOutBtn');
+const attachmentImage = document.getElementById('attachmentImage');
+const contentWrapper   = document.getElementById('attachment-content-wrapper');
+
+if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
+
+    /* --------------------------------------------------------------
+       1. ZOOM (buttons)
+       -------------------------------------------------------------- */
+    zoomInBtn.addEventListener('click', () => {
+        if (attachmentImage.classList.contains('d-none')) return;
+        currentZoom = Math.min(currentZoom + ZOOM_STEP, 3.0);
+        attachmentImage.style.transform = `scale(${currentZoom})`;
+        zoomOutBtn.disabled = false;
+        if (currentZoom >= 3.0) zoomInBtn.disabled = true;
+        if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+    });
+
+    zoomOutBtn.addEventListener('click', () => {
+        if (attachmentImage.classList.contains('d-none')) return;
+        currentZoom = Math.max(currentZoom - ZOOM_STEP, 1.0);
+        attachmentImage.style.transform = `scale(${currentZoom})`;
+        zoomInBtn.disabled = false;
+        if (currentZoom <= 1.0) {
+            zoomOutBtn.disabled = true;
+            contentWrapper.scrollTo(0, 0);
+            attachmentImage.style.cursor = 'default';
+        } else {
+            attachmentImage.style.cursor = 'grab';
+        }
+    });
+
+    /* --------------------------------------------------------------
+       2. PREVENT NATIVE DRAG-AND-DROP (ghost image / file drop)
+       -------------------------------------------------------------- */
+    attachmentImage.setAttribute('draggable', 'false');
+    attachmentImage.addEventListener('dragstart', e => e.preventDefault());
+
+    // CSS – allow only panning, block everything else
+    attachmentImage.style.touchAction = 'pan-x pan-y';
+    attachmentImage.style.userSelect = 'none';
+
+    /* --------------------------------------------------------------
+       3. PANNING STATE
+       -------------------------------------------------------------- */
+    let isDragging = false;
+    let startX, startY, scrollLeft, scrollTop;
+
+    const startDrag = (clientX, clientY) => {
+        if (attachmentImage.classList.contains('d-none') || currentZoom <= 1.0) return;
+
+        isDragging = true;
+        attachmentImage.style.cursor = 'grabbing';
+
+        startX = clientX - contentWrapper.offsetLeft;
+        startY = clientY - contentWrapper.offsetTop;
+        scrollLeft = contentWrapper.scrollLeft;
+        scrollTop  = contentWrapper.scrollTop;
+
+        contentWrapper.style.userSelect = 'none';
+    };
+
+    const moveDrag = (clientX, clientY) => {
+        if (!isDragging) return;
+        const x = clientX - contentWrapper.offsetLeft;
+        const y = clientY - contentWrapper.offsetTop;
+        const walkX = x - startX;
+        const walkY = y - startY;
+
+        contentWrapper.scrollLeft = scrollLeft - walkX;
+        contentWrapper.scrollTop  = scrollTop  - walkY;
+    };
+
+    const stopDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+        contentWrapper.style.userSelect = '';
+    };
+
+    /* --------------------------------------------------------------
+       4. MOUSE (desktop) – single click + drag
+       -------------------------------------------------------------- */
+    contentWrapper.addEventListener('mousedown', e => startDrag(e.pageX, e.pageY));
+    contentWrapper.addEventListener('mousemove', e => moveDrag(e.pageX, e.pageY));
+    document.addEventListener('mouseup', stopDrag);
+    contentWrapper.addEventListener('mouseleave', stopDrag);
+
+  
+    let lastTap = 0;
+    let tapTimeout = null;
+
+    contentWrapper.addEventListener('touchstart', e => {
+        const now = Date.now();
+        const TAP_DELAY = 300;
+        const DOUBLE_TAP_THRESHOLD = 500;
+
+        if (now - lastTap < TAP_DELAY) {
+            // ---- DOUBLE TAP DETECTED ----
+            clearTimeout(tapTimeout);
+            e.preventDefault();
+
+            tapTimeout = setTimeout(() => {
+                if (e.touches.length === 1) {
+                    const touch = e.touches[0];
+                    startDrag(touch.pageX, touch.pageY);
+                }
+            }, 150);
+        } else {
+            lastTap = now;
+            tapTimeout = setTimeout(() => {}, DOUBLE_TAP_THRESHOLD);
+        }
+    });
+
+    contentWrapper.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        e.preventDefault(); 
+        const touch = e.touches[0];
+        moveDrag(touch.pageX, touch.pageY);
+    });
+
+    contentWrapper.addEventListener('touchend', stopDrag);
+    contentWrapper.addEventListener('touchcancel', stopDrag);
+}
 });
+
 
     </script>
 <!------------ End ------->

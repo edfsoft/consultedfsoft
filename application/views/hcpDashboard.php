@@ -638,7 +638,8 @@
                                             name="patientDetails" onsubmit="return validateAppointment()"
                                             oninput="clearErrorAppointment()">
                                             <div>
-                                                <div class="form-group pb-2">
+                                                <!-- Old Id select -->
+                                                <!-- <div class="form-group pb-2">
                                                     <label class="form-label" for="patientId">Patient Id <span
                                                             class="text-danger">*</span></label>
                                                     <select class="form-select" name="patientId" id="patientId">
@@ -649,12 +650,41 @@
                                                             <option value="<?php echo $value['patientId'] . '|' . $value['id'] ?>">
                                                         <?php echo $value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName'] ?>
                                                             </option>
-                                                <?php } ?>
+                                                    <?php } ?>
                                                         <option value="new">+ Add New Patient</option>
                                                     </select>
                                                     <div id="patientId_err" class="text-danger pt-1"></div>
-                                                </div>
-                                                <!-- Add New patient -->
+                                                </div> -->
+                                                        <!-- Old Id select End -->
+                                                <div class="form-group pb-2">
+                                                    <label class="form-label" for="patientId">
+                                                        Patient Id <span class="text-danger">*</span>
+                                                    </label>
+
+                                                    <!-- Search + Add button on the SAME line -->
+                                                    <div class="input-group mb-1">
+                                                        <input type="text" class="form-control" placeholder="Search patient Id / Name"
+                                                            id="patientSearch" autocomplete="off">
+                                                        <span class="input-group-text bg-white border-start-0">
+                                                            <i class="bi bi-search"></i>
+                                                        </span>
+                                                        <button class="btn btn-outline-primary d-flex align-items-center"
+                                                                type="button" id="addPatientBtn" title="Add New Patient">
+                                                            <i class="bi bi-plus-lg me-1"></i> Add Patient
+                                                        </button>
+                                                    </div>
+                                                        <!-- SELECT – we give it a data-attribute so JS can find the original options -->
+                                                        <select class="form-select" name="patientId" id="patientId">
+                                                            <?php foreach ($patientsId as $value): ?>
+                                                                <option value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
+                                                                    <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
+                                                                </option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    <div id="patientId_err" class="text-danger pt-1"></div>
+                                                 </div>                                                
+                                                    
+                                                    <!-- Add New patient -->
                                                 <!-- <div id="newPatientFields" class="border p-3 mt-2 rounded d-none bg-light">
                                                     <h6>Add New Patient</h6>
                                                     <div class="form-group pb-2">
@@ -812,6 +842,7 @@
                     <!-- Modal for add new patient -->
                     <div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel"
                         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <input type="hidden" id="newPatientResult" value="">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -866,7 +897,7 @@
                     </div>
 
                     <!-- Open Modal and Close Modal -->
-                    <script>
+                   <!--  <script>
                         let patientDropdown = document.getElementById('patientId');
 
                         patientDropdown.addEventListener('change', function () {
@@ -883,103 +914,210 @@
                         document.getElementById('newPatientModal').addEventListener('hidden.bs.modal', function () {
                             document.getElementById('patientId').value = '';
                         });
-                    </script>
+                    </script> -->
 
-                    <!-- Add to db and validation -->
                     <script>
-                        function saveNewPatient() {
-                            document.getElementById("newFirstName_err").innerHTML = "";
-                            document.getElementById("newLastName_err").innerHTML = "";
-                            document.getElementById("newMobile_err").innerHTML = "";
-                            document.getElementById("newEmail_err").innerHTML = "";
-                            document.getElementById("newGender_err").innerHTML = "";
-                            document.getElementById("newAge_err").innerHTML = "";
-                            document.getElementById("newPatientStatus").innerHTML = "";
+                document.addEventListener('DOMContentLoaded', function () {
+                        const select      = document.getElementById('patientId');
+                        const searchInput = document.getElementById('patientSearch');
+                        const addBtn      = document.getElementById('addPatientBtn');
+                        let originalOptions = Array.from(select.options);
 
-                            const firstName = document.getElementById("newFirstName").value.trim();
-                            const lastName = document.getElementById("newLastName").value.trim();
-                            const mobile = document.getElementById("newMobile").value.trim();
-                            const email = document.getElementById("newEmail").value.trim();
-                            const gender = document.getElementById("newGender").value;
-                            const age = document.getElementById("newAge").value.trim();
+                    select.value = "";
+                // 1. Live search filter
+                    searchInput.addEventListener('input', function () {
+                        const term = this.value.toLowerCase().trim();
+                        
+                        if (term.length > 0) {
+                            select.size = 6; 
+                        } else {
+                            select.size = 1; 
+                        }
 
-                            let isValid = true;
-
-                            if (firstName === "") {
-                                document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
-                                isValid = false;
-                            } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
-                                document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
-                                isValid = false;
+                    select.innerHTML = '<option value="">Select Patient Id</option>';
+                    let matches = 0;
+                        originalOptions.forEach(opt => {
+                        if (opt.value === '') return;
+                        if (opt.textContent.toLowerCase().includes(term)) {
+                                select.appendChild(opt.cloneNode(true));
+                                matches++;
                             }
+                        });
+                        if (matches === 0 && term !== '') {
+                            const no = document.createElement('option');
+                            no.disabled = true;
+                            no.textContent = '— No patient found —';
+                            select.appendChild(no);
+                        }
+                        });
 
-                            if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
-                                document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
-                                isValid = false;
+                // 4. When user picks a patient → clear search box
+                     select.addEventListener('change', function () {
+                        if (this.value) {
+                        searchInput.value = ''; 
+                        }
+                        select.size = 1;
+                     });
+
+                        // 4. +Add button → open modal
+                        addBtn.addEventListener('click', function () {
+                            showNewPatientModal();
+                            searchInput.value = '';
+                            select.value = '';
+                        });
+
+                        // 5. FIXED: When modal closes → Add & Select new patient
+                        document.getElementById('newPatientModal').addEventListener('hidden.bs.modal', function () {
+                            const resultInput = document.getElementById('newPatientResult');
+                            if (resultInput && resultInput.value) {
+                                const patient = JSON.parse(resultInput.value);
+                                addPatientToSelectAndSelect(patient);
+                                resultInput.value = ''; // clear for next time
                             }
+                            document.getElementById('patientSearch').value = '';
+                        });
+                    });
 
-                            if (mobile === "") {
-                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
-                                isValid = false;
-                            } else if (!/^\d{10}$/.test(mobile)) {
-                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
-                                isValid = false;
-                            }
+                    // Open modal
+                    function showNewPatientModal() {
+                        const modal = new bootstrap.Modal(document.getElementById('newPatientModal'));
+                        modal.show();
+                    }
 
-                            if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                                document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
-                                isValid = false;
-                            }
+                    // Add new patient to dropdown and SELECT it
+                    function addPatientToSelectAndSelect(patient) {
+                        const select = document.getElementById('patientId');
+                        const value = patient.patientId + '|' + patient.id;
+                        const text  = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
 
-                            if (gender === "") {
-                                document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
-                                isValid = false;
-                            }
-
-                            if (age === "") {
-                                document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
-                                isValid = false;
-                            } else if (isNaN(age) || age < 2 || age > 120) {
-                                document.getElementById("newAge_err").innerHTML = "Age must be a number between 2 and 120.";
-                                isValid = false;
-                            }
-
-                            if (isValid) {
-                                fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ firstName, lastName, mobile, email, gender, age })
-                                })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.success) {
-                                            document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
-                                            const patientId = data.patientId + '|' + data.id;
-                                            const patientName = data.patientId + ' / ' + data.firstName;
-
-                                            const select = document.getElementById('patientId');
-                                            const newOption = new Option(patientName, patientId, true, true);
-                                            select.add(newOption);
-
-                                            document.getElementById("newFirstName").value = "";
-                                            document.getElementById("newLastName").value = "";
-                                            document.getElementById("newMobile").value = "";
-                                            document.getElementById("newEmail").value = "";
-                                            document.getElementById("newGender").value = "";
-                                            document.getElementById("newAge").value = "";
-
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
-                                            modal.hide();
-                                        } else {
-                                            document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                        document.getElementById("newPatientStatus").innerHTML = "An error occurred while saving the patient.";
-                                    });
+                        // Avoid duplicate
+                        let exists = false;
+                        for (let opt of select.options) {
+                            if (opt.value === value) {
+                                exists = true;
+                                break;
                             }
                         }
+
+                        if (!exists) {
+                            const option = new Option(text, value, true, true); 
+                            select.add(option);
+                            originalOptions = Array.from(select.options);
+                        } else {
+                            select.value = value;
+                        }
+
+                        select.dispatchEvent(new Event('change'));
+                    }
+
+                </script>
+
+                 <!-- Add to db and validation -->
+                <script>
+                    function saveNewPatient() {
+                        // Clear all errors and status
+                        document.getElementById("newFirstName_err").innerHTML = "";
+                        document.getElementById("newLastName_err").innerHTML = "";
+                        document.getElementById("newMobile_err").innerHTML = "";
+                        document.getElementById("newEmail_err").innerHTML = "";
+                        document.getElementById("newGender_err").innerHTML = "";
+                        document.getElementById("newAge_err").innerHTML = "";
+                        document.getElementById("newPatientStatus").innerHTML = "";
+
+                        const firstName = document.getElementById("newFirstName").value.trim();
+                        const lastName  = document.getElementById("newLastName").value.trim();
+                        const mobile    = document.getElementById("newMobile").value.trim();
+                        const email     = document.getElementById("newEmail").value.trim();
+                        const gender    = document.getElementById("newGender").value;
+                        const age       = document.getElementById("newAge").value.trim();
+
+                        let isValid = true;
+
+                        // Validation
+                        if (firstName === "") {
+                            document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
+                            isValid = false;
+                        } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+                            document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
+                            isValid = false;
+                        }
+
+                        if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
+                            document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
+                            isValid = false;
+                        }
+
+                        if (mobile === "") {
+                            document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
+                            isValid = false;
+                        } else if (!/^\d{10}$/.test(mobile)) {
+                            document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
+                            isValid = false;
+                        }
+
+                        if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                            document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
+                            isValid = false;
+                        }
+
+                        if (gender === "") {
+                            document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
+                            isValid = false;
+                        }
+
+                        if (age === "") {
+                            document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
+                            isValid = false;
+                        } else if (isNaN(age) || age < 2 || age > 120) {
+                            document.getElementById("newAge_err").innerHTML = "Age must be a number between 2 and 120.";
+                            isValid = false;
+                        }
+
+                        if (isValid) {
+                            fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ firstName, lastName, mobile, email, gender, age })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Success message
+                                    document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
+                                    document.getElementById("newPatientStatus").className = "text-success mt-2";
+
+                                    // Store patient data in hidden field for modal close handler
+                                    const patientData = {
+                                        patientId: data.patientId,
+                                        id: data.id,
+                                        firstName: data.firstName,
+                                        lastName: data.lastName || ''
+                                    };
+                                    document.getElementById("newPatientResult").value = JSON.stringify(patientData);
+
+                                    // Clear form
+                                    document.getElementById("newFirstName").value = "";
+                                    document.getElementById("newLastName").value = "";
+                                    document.getElementById("newMobile").value = "";
+                                    document.getElementById("newEmail").value = "";
+                                    document.getElementById("newGender").value = "";
+                                    document.getElementById("newAge").value = "";
+
+                                    // Close modal
+                                    const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
+                                    modal.hide();
+                                } else {
+                                    document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
+                                    document.getElementById("newPatientStatus").className = "text-danger mt-2";
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                document.getElementById("newPatientStatus").innerHTML = "An error occurred while saving the patient.";
+                                document.getElementById("newPatientStatus").className = "text-danger mt-2";
+                            });
+                        }
+                    }
                     </script>
 
                     <!-- Appointment booking -->

@@ -2114,9 +2114,23 @@
 
     <!-- Next follow up update date field disable -->
     <script>
-        const today = new Date().toISOString().split("T")[0];
-        document.getElementById("nextFollowUpDate").setAttribute("min", today);
+        document.addEventListener("DOMContentLoaded", () => {
+            const followUpDate = document.getElementById("nextFollowUpDate");
+            const consultDate = document.getElementById("consultDate");
+
+            function updateFollowUpMinDate() {
+                const selectedDate = consultDate.value;
+                if (selectedDate) {
+                    followUpDate.setAttribute("min", selectedDate);
+                }
+            }
+
+            updateFollowUpMinDate();
+
+            consultDate.addEventListener("change", updateFollowUpMinDate);
+        });
     </script>
+
 
     <!-- Symptoms Modal Script -->
     <script>

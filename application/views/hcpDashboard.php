@@ -607,7 +607,7 @@
                                                     <td style="font-size: 16px" class="">
                                                         <a href="<?php echo base_url() . "Healthcareprovider/appointmentReschedule/" . $value['id'] ?>"
                                                             class="btn btn-secondary mx-1">Reschedule</a>
-                                                        <a href="#" class="btn btn-danger" disabled>Refund</a>
+                                                        <!-- <a href="#" class="btn btn-danger" disabled>Refund</a> -->
                                                     </td>
 
                                                 </tr>

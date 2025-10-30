@@ -9,6 +9,7 @@ class Chiefconsultant extends CI_Controller
         parent::__construct();
         $this->load->model('CcModel');
         $this->load->model('HcpModel');
+        $this->load->model('ConsultModel');
         $this->load->library('session');
         $this->load->library('email');
     }
@@ -186,6 +187,7 @@ class Chiefconsultant extends CI_Controller
             $patientIdDb = $this->uri->segment(3);
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {

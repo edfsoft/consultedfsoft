@@ -41,6 +41,7 @@
             margin: 0;
         }
 
+        /* Consultation previous and next arrows */
         .consultation-item {
             display: none;
         }

@@ -2131,7 +2131,6 @@
         });
     </script>
 
-
     <!-- Symptoms Modal Script -->
     <script>
         const symptomsList = <?php echo json_encode(array_column($symptomsList, 'symptomsName')); ?>;

@@ -1968,6 +1968,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
             </section>
         <?php } ?>
@@ -4196,7 +4197,6 @@
     <script>
 
 /* Edit-Image With Drag and Drop display attachment in new, edit, followup and dashboard */
-/* Edit-Image With Drag and Drop */
 document.addEventListener('DOMContentLoaded', function () {
     // === Page Context Detection ===
     const isEditPage = !!document.getElementById('fileList');
@@ -4285,24 +4285,19 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentImageBlob = null;
     let currentIndex = -1;
     let currentFiles = [];
-    
-    // Dashboard Zoom Variables
     let currentZoom = 1.0;
     const ZOOM_STEP = 0.2;
-    // New: Image Dragging Variables
     let isDragging = false;
     let startX, startY, scrollLeft, scrollTop;
 
     const BASE_FILE_URL = '<?php echo base_url('Uploads/consultations/'); ?>';
 
-    // === Context Helper Function ===
     function getCurrentElements() {
         if (isNewConsultation) return newConsultationElements;
         if (isFollowup) return followupElements;
         return editElements;
     }
 
-    // === Initialize Existing Files (Edit Page Only) ===
     if (isEditPage && editElements.fileList) {
         try {
             existingFiles = <?php echo json_encode($attachments ?? []); ?>;
@@ -4331,7 +4326,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return map[ext] || 'application/octet-stream';
     }
 
-    // === Drag & Drop (Unchanged Logic) ===
+
     const currentElements = getCurrentElements();
     const dropZone = currentElements.dropZone;
 
@@ -4352,7 +4347,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function highlight(el) { el.style.borderColor = '#00ad8e'; el.style.backgroundColor = '#f2ebebff'; }
     function unhighlight(el) { el.style.borderColor = '#ccc'; el.style.backgroundColor = 'transparent'; }
 
-    // === File Processing (Unchanged Logic) ===
     async function processNewFiles(files) {
         const currentElements = getCurrentElements();
         if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
@@ -4388,7 +4382,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSubmitFileInput();
     }
 
-    // === Image Editor (Unchanged Logic) ===
     function editImage(file) {
         return new Promise(resolve => {
             const reader = new FileReader();
@@ -4530,7 +4523,6 @@ document.addEventListener('DOMContentLoaded', function () {
         currentElements.fileList.appendChild(ul);
     }
 
-    // === Update Submit File Input (Unchanged Logic) ===
     function updateSubmitFileInput() {
         const currentElements = getCurrentElements();
         if (!currentElements.submitFileInput) return;
@@ -4578,7 +4570,7 @@ document.addEventListener('DOMContentLoaded', function () {
             currentZoom = 1.0;
             attachmentImage.style.transform = `scale(${currentZoom})`;
             
-            // Set Download URL (Unchanged Logic)
+            // Set Download URL
             downloadBtn.onclick = () => {
                 const tempLink = document.createElement('a');
                 tempLink.href = url;
@@ -4588,17 +4580,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.body.removeChild(tempLink);
             };
 
-            // Toggle toolbar visibility: ONLY SHOW FOR IMAGES
             if (fileType.includes('image')) {
-                toolbar.style.display = 'flex'; // Show toolbar for images
-                document.getElementById('zoomOutBtn').disabled = true; // Start at 1.0
+                toolbar.style.display = 'flex';
+                document.getElementById('zoomOutBtn').disabled = true;
                 document.getElementById('zoomInBtn').disabled = false;
-                attachmentImage.style.cursor = 'grab'; // Enable dragging cursor
+                attachmentImage.style.cursor = 'grab';
             } else {
-                // Ensure image dragging cursor is default for non-images (like PDFs)
                 attachmentImage.style.cursor = 'default'; 
             }
-            // Dashboard Toolbar Logic (End)
 
         } else return;
 
@@ -4616,20 +4605,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 // FIX START: Logic to handle unsupported file types
                 if (context === 'dashboard') {
-                    // Dashboard Context: Ensure image and PDF are hidden and inject the message
-                    elements.image.classList.add('d-none'); // Hide image
-                    elements.pdf.classList.add('d-none');  // Hide PDF
-                    p.id = 'no-preview-message'; // Add ID for cleanup
+                    elements.image.classList.add('d-none');
+                    elements.pdf.classList.add('d-none');  
+                    p.id = 'no-preview-message';
                     document.getElementById('attachment-content-wrapper').appendChild(p);
                 } else if (context === 'edit') {
-                    // Edit Context uses the separate content preview div
                     elements.previewContent.appendChild(p);
                 } else {
-                    // New/Followup contexts - Retain original logic as requested (no change in unrelated code)
                     elements.image.classList.remove('d-none');
                     elements.image.alt = p.textContent;
                 }
-                // FIX END
             }
             updateNav(index); showModal();
         };
@@ -4654,13 +4639,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if(context === 'dashboard') {
                 document.getElementById('attachmentImage').style.cursor = 'default';
                 document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
-                // NEW: Ensure 'No Preview' message is cleared on modal close
                 document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
             }
         }, { once: true });
     }
 
-    // === Navigation Functions (Unchanged Logic) ===
+    //  Navigation Functions
     function updateEditNavigation(index) {
         editElements.prevBtn.disabled = index === 0; editElements.nextBtn.disabled = index === currentFiles.length - 1;
         editElements.prevBtn.classList.toggle('disabled', index === 0); editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
@@ -4673,7 +4657,7 @@ document.addEventListener('DOMContentLoaded', function () {
         el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
     }
 
-    // === Click Handler for All .openAttachment (Unchanged Logic) ===
+    // === Click Handler for All .openAttachment ===
     document.removeEventListener('click', handleAttachmentClick);
     function handleAttachmentClick(e) {
         const link = e.target.closest('.openAttachment');
@@ -4687,8 +4671,6 @@ document.addEventListener('DOMContentLoaded', function () {
         currentFiles = allRelevantLinks; 
 
         if (context === 'dashboard') {
-            // FIX/Refinement for Navigation: Filter by Consultation ID to enable next/prev
-            // Pattern: attachment_ID_NUMBER.EXT -> extract ID (e.g., '43' from 'attachment_43_01.png')
             const match = fileName.match(/_(\d+)_/); 
             const consultationId = match ? match[1] : null;
 
@@ -4727,7 +4709,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     document.addEventListener('click', handleAttachmentClick);
 
-    // === Navigation Buttons Setup (Unchanged Logic) ===
+    // === Navigation Buttons Setup ===
     function setupNav(prevBtn, nextBtn, context) {
         if (!prevBtn || !nextBtn) return;
         prevBtn.onclick = () => { if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context); };
@@ -4756,9 +4738,6 @@ const contentWrapper   = document.getElementById('attachment-content-wrapper');
 
 if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
 
-    /* --------------------------------------------------------------
-       1. ZOOM (buttons)
-       -------------------------------------------------------------- */
     zoomInBtn.addEventListener('click', () => {
         if (attachmentImage.classList.contains('d-none')) return;
         currentZoom = Math.min(currentZoom + ZOOM_STEP, 3.0);
@@ -4782,9 +4761,6 @@ if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
         }
     });
 
-    /* --------------------------------------------------------------
-       2. PREVENT NATIVE DRAG-AND-DROP (ghost image / file drop)
-       -------------------------------------------------------------- */
     attachmentImage.setAttribute('draggable', 'false');
     attachmentImage.addEventListener('dragstart', e => e.preventDefault());
 
@@ -4792,9 +4768,6 @@ if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
     attachmentImage.style.touchAction = 'pan-x pan-y';
     attachmentImage.style.userSelect = 'none';
 
-    /* --------------------------------------------------------------
-       3. PANNING STATE
-       -------------------------------------------------------------- */
     let isDragging = false;
     let startX, startY, scrollLeft, scrollTop;
 
@@ -4830,9 +4803,6 @@ if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
         contentWrapper.style.userSelect = '';
     };
 
-    /* --------------------------------------------------------------
-       4. MOUSE (desktop) – single click + drag
-       -------------------------------------------------------------- */
     contentWrapper.addEventListener('mousedown', e => startDrag(e.pageX, e.pageY));
     contentWrapper.addEventListener('mousemove', e => moveDrag(e.pageX, e.pageY));
     document.addEventListener('mouseup', stopDrag);
@@ -4925,126 +4895,6 @@ if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
 
  <!-- added Arrow Attachment Display -->
   <script>
-// === Preview Handler (FIXED FOR DASHBOARD) ===
-/* document.addEventListener('click', e => {
-    const link = e.target.closest('.openAttachment');
-    if (!link) return;
-    e.preventDefault();
-
-    const context = link.dataset.context;
-    if (!context) return;
-
-    const fileName = link.textContent.trim();
-    const fileUrl = link.dataset.file;
-    const fileExt = link.dataset.ext?.toLowerCase();
-    const fileType = {
-        'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png',
-        'pdf': 'application/pdf'
-    }[fileExt] || 'application/octet-stream';
-
-    // Get all files in same context
-    currentFiles = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
-    currentIndex = currentFiles.indexOf(link);
-    if (currentIndex === -1) return;
-
-    // Select correct modal
-    let modal, titleEl, bodyEl, imgEl, pdfEl;
-    if (context === 'dashboard' && modals.dashboardPreview) {
-        modal = modals.dashboardPreview;
-        titleEl = document.getElementById('dashboardPreviewModalLabel');
-        imgEl = document.getElementById('attachmentImage');
-        pdfEl = document.getElementById('attachmentPDF');
-        imgEl.classList.add('d-none');
-        pdfEl.classList.add('d-none');
-    } else if (context === 'edit' && modals.editPreview) {
-        modal = modals.editPreview;
-        titleEl = document.getElementById('editPreviewModalLabel');
-        bodyEl = modal._element.querySelector('.modal-body');
-        bodyEl.innerHTML = '';
-    } else if (context === 'new' && modals.newPreview) {
-        modal = modals.newPreview;
-        titleEl = document.getElementById('newConsultationPreviewModalLabel');
-        imgEl = document.getElementById('newConsultationImage');
-        pdfEl = document.getElementById('newConsultationPDF');
-        imgEl.classList.add('d-none');
-        pdfEl.classList.add('d-none');
-    } else if (context === 'followup' && modals.followupPreview) {
-        modal = modals.followupPreview;
-        titleEl = document.getElementById('followupPreviewModalLabel');
-        imgEl = document.getElementById('followupImage');
-        pdfEl = document.getElementById('followupPDF');
-        imgEl.classList.add('d-none');
-        pdfEl.classList.add('d-none');
-    } else {
-        return;
-    }
-
-    titleEl.textContent = `Attachment Preview - ${fileName}`;
-
-    const show = () => {
-        if (context === 'dashboard') {
-            if (['jpg', 'jpeg', 'png'].includes(fileExt)) {
-                imgEl.src = fileUrl;
-                imgEl.classList.remove('d-none');
-            } else if (fileExt === 'pdf') {
-                pdfEl.src = fileUrl;
-                pdfEl.classList.remove('d-none');
-            } else {
-                imgEl.src = '';
-                imgEl.alt = 'Preview not available';
-                imgEl.classList.remove('d-none');
-            }
-        } else {
-            // For edit/new/followup (existing or blob)
-            const isImage = fileType.includes('image');
-            const isPDF = fileType.includes('pdf');
-            if (isImage || isPDF) {
-                const el = isImage ? document.createElement('img') : document.createElement('embed');
-                el.src = fileUrl;
-                el.style.maxWidth = '100%';
-                el.style.maxHeight = '70vh';
-                if (isPDF) el.style.height = '70vh';
-                bodyEl.appendChild(el);
-            } else {
-                bodyEl.innerHTML = `<p class="text-center">Preview not available.</p>`;
-            }
-        }
-        updateNav(modal, currentIndex);
-        modal.show();
-    };
-
-    // Check if file exists
-    fetch(fileUrl, { method: 'HEAD' })
-        .then(r => r.ok ? show() : fail())
-        .catch(() => fail());
-
-    function fail() {
-        if (context === 'dashboard') {
-            imgEl.src = '';
-            imgEl.alt = 'File not accessible';
-            imgEl.classList.remove('d-none');
-        } else {
-            bodyEl.innerHTML = `<p class="text-center text-danger">File not accessible.</p>`;
-        }
-        updateNav(modal, currentIndex);
-        modal.show();
-    }
-
-    modal._element.addEventListener('hidden.bs.modal', () => {
-        if (context === 'dashboard') {
-            imgEl.src = '';
-            pdfEl.src = '';
-            imgEl.classList.add('d-none');
-            pdfEl.classList.add('d-none');
-        } else if (bodyEl) {
-            bodyEl.innerHTML = '';
-        }
-        currentIndex = -1;
-        currentFiles = [];
-    }, { once: true });
-}); */
-
-    
     <!-- Delete Consultation Script -->
     <script>
         let deleteConsultationId = null;

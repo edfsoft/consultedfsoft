@@ -196,7 +196,7 @@ class Healthcareprovider extends CI_Controller
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
         }
-        redirect('Healthcareprovider/consultation/' . $register);
+        redirect('Consultation/consultation/' . $register);
     }
 
     public function patientdetails()
@@ -233,7 +233,7 @@ class Healthcareprovider extends CI_Controller
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in updating patient details');
         }
-        redirect('Healthcareprovider/consultation/' . $updatePatient);
+        redirect('Consultation/consultation/' . $updatePatient);
     }
 
     public function appointments()

@@ -209,7 +209,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -270,26 +270,34 @@
                                             <div class="consultation-item <?= $index === 0 ? 'active' : '' ?>"
                                                 data-index="<?= $index ?>">
                                                 <div class="border border-5 mb-3 shadow-sm">
-                                                    <div class="card-body">
+                                                    <div class="card-body" id="consultation-content-<?= $consultation['id'] ?>">
                                                         <div class="d-md-flex justify-content-between">
                                                             <h5 class="card-title mb-0">
                                                                 <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
                                                             </h5>
                                                             <div class="mt-md-3 mb-4 mb-md-0">
-                                                                <button class="btn btn-secondary" disabled><i
-                                                                        class="bi bi-download"></i></button>
+                                                                <button class="btn btn-secondary"
+                                                                    onclick="downloadConsultationPDF(<?= $consultation['id'] ?>)">
+                                                                    <i class="bi bi-download"></i>
+                                                                </button>
+
                                                                 <button type="button" class="btn btn-danger"
                                                                     onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
                                                                     <i class="bi bi-trash"></i>
                                                                 </button>
+
                                                                 <button class="btn btn-secondary"
-                                                                    onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'"><i
-                                                                        class="bi bi-pen"></i></button>
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'">
+                                                                    <i class="bi bi-pen"></i>
+                                                                </button>
+
                                                                 <button class="btn text-light" style="background-color: #00ad8e;"
-                                                                    onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">Follow-up
-                                                                    / Repeat</button>
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">
+                                                                    Follow-up / Repeat
+                                                                </button>
                                                             </div>
                                                         </div>
+
                                                         <!-- Vitals -->
                                                         <?php if (!empty($consultation['vitals'])): ?>
                                                             <p><strong>Vitals:</strong></p>
@@ -339,7 +347,6 @@
                                                                             $details[] = $symptom['severity'];
                                                                         if (!empty($symptom['note']))
                                                                             $details[] = $symptom['note'];
-
                                                                         if (!empty($details)) {
                                                                             echo ' (' . implode(', ', $details) . ')';
                                                                         }
@@ -364,7 +371,6 @@
                                                                             $details[] = $finding['severity'];
                                                                         if (!empty($finding['note']))
                                                                             $details[] = $finding['note'];
-
                                                                         if (!empty($details)) {
                                                                             echo ' (' . implode(', ', $details) . ')';
                                                                         }
@@ -389,7 +395,6 @@
                                                                             $details[] = $diagnosis['severity'];
                                                                         if (!empty($diagnosis['note']))
                                                                             $details[] = $diagnosis['note'];
-
                                                                         if (!empty($details)) {
                                                                             echo ' (' . implode(', ', $details) . ')';
                                                                         }
@@ -424,27 +429,7 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-                                                        <!-- Procedures -->
-                                                        <?php if (!empty($consultation['procedures'])): ?>
-                                                            <p><strong>Procedures:</strong></p>
-                                                            <ul>
-                                                                <?php foreach ($consultation['procedures'] as $proc): ?>
-                                                                    <li><?= $proc['procedure_name'] ?></li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
-                                                        <?php endif; ?>
-
-                                                        <!-- Advices -->
-                                                        <?php if (!empty($consultation['advices'])): ?>
-                                                            <p><strong>Advices:</strong></p>
-                                                            <ul>
-                                                                <?php foreach ($consultation['advices'] as $adv): ?>
-                                                                    <li><?= $adv['advice_name'] ?></li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
-                                                        <?php endif; ?>
-
-                                                        <!-- Medicines -->
+                                                        <!-- ====== Medicines ====== -->
                                                         <?php if (!empty($consultation['medicines'])): ?>
                                                             <p><strong>Medicines:</strong></p>
                                                             <ul>
@@ -465,10 +450,8 @@
                                                                             $details[] = $medicine['food_timing'];
                                                                         if (!empty($medicine['duration']))
                                                                             $details[] = $medicine['duration'];
-
-                                                                        if (!empty($details)) {
-                                                                            echo ' (' . implode('- ', $details) . ')';
-                                                                        }
+                                                                        if (!empty($details))
+                                                                            echo ' (' . implode(' - ', $details) . ')';
                                                                         ?>
                                                                     </li>
                                                                 <?php endforeach; ?>
@@ -562,6 +545,48 @@
                                         });
 
                                         updateCounterAndButtons();
+                                    </script>
+                                    <!-- ✅ Add jsPDF and html2canvas -->
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                                    <script
+                                        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+                                    <script>
+                                        async function downloadConsultationPDF(consultationId) {
+                                            const element = document.getElementById('consultation-content-' + consultationId);
+                                            if (!element) {
+                                                alert("Consultation content not found!");
+                                                return;
+                                            }
+
+                                            const { jsPDF } = window.jspdf;
+                                            const pdf = new jsPDF('p', 'mm', 'a4');
+
+                                            // Capture element as canvas
+                                            await html2canvas(element, {
+                                                scale: 2,
+                                                useCORS: true,
+                                            }).then(canvas => {
+                                                const imgData = canvas.toDataURL('image/png');
+                                                const imgWidth = 190; // width of A4 minus margins
+                                                const pageHeight = 295; // height of A4
+                                                const imgHeight = canvas.height * imgWidth / canvas.width;
+                                                let heightLeft = imgHeight;
+                                                let position = 10;
+
+                                                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                                                heightLeft -= pageHeight;
+
+                                                while (heightLeft > 0) {
+                                                    position = heightLeft - imgHeight;
+                                                    pdf.addPage();
+                                                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                                                    heightLeft -= pageHeight;
+                                                }
+
+                                                pdf.save('consultation_' + consultationId + '.pdf');
+                                            });
+                                        }
                                     </script>
                                 <?php else: ?>
                                     <p>No Previous Consultation.</p>
@@ -1039,7 +1064,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -1510,7 +1535,7 @@
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
-                                <a href="<?php echo base_url() . "Consultation/patientformUpdate/" . $value['id']; ?>"
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
@@ -2394,8 +2419,21 @@
 
     <!-- Next follow up update date field disable -->
     <script>
-        const today = new Date().toISOString().split("T")[0];
-        document.getElementById("nextFollowUpDate").setAttribute("min", today);
+        document.addEventListener("DOMContentLoaded", () => {
+            const followUpDate = document.getElementById("nextFollowUpDate");
+            const consultDate = document.getElementById("consultDate");
+
+            function updateFollowUpMinDate() {
+                const selectedDate = consultDate.value;
+                if (selectedDate) {
+                    followUpDate.setAttribute("min", selectedDate);
+                }
+            }
+
+            updateFollowUpMinDate();
+
+            consultDate.addEventListener("change", updateFollowUpMinDate);
+        });
     </script>
 
     <!-- Symptoms Modal Script -->

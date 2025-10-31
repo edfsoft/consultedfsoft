@@ -10,6 +10,7 @@ class Edfadmin extends CI_Controller
         $this->load->model('CcModel');
         $this->load->model('HcpModel');
         $this->load->model('AdminModel');
+        $this->load->model('ConsultModel');
         $this->load->library('session');
         $this->load->library('email');
     }
@@ -308,6 +309,7 @@ class Edfadmin extends CI_Controller
             $this->data['method'] = "patientDetails";
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
             $this->load->view('adminDashboard.php', $this->data);
         } else {
             redirect('Edfadmin/');

@@ -313,11 +313,12 @@
                                                                     'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
                                                                     'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
                                                                     'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
-                                                                    'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
+                                                                    'HbA1c' => !empty($consultation['vitals']['HbA1c_percent']) ? $consultation['vitals']['HbA1c_percent'] . ' %' : null,
                                                                     'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
                                                                     'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
                                                                     'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
                                                                     'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
+                                                                    'Pulse Rate' => !empty($consultation['vitals']['pulse_rate']) ? $consultation['vitals']['pulse_rate'] . ' /min' : null,
                                                                     'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
                                                                 ];
 
@@ -663,7 +664,46 @@
                                         </div>
                                         <div class="d-md-flex mb-3">
                                             <div class="col-md-4">
-                                                <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                                <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                        name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5">
+                                                    <p class="mx-2 my-2">%</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
+                                                    <p class="mx-2 my-2">%</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientPulseRate" name="patientPulseRate" placeholder="E.g. 75"
+                                                        step="1" min="0">
+                                                    <p class="mx-2 my-2">/min</p>
+                                                </div>
+                                                <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                                </label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
+                                                        step="0.01" placeholder="E.g. 98.6">
+                                                    <p class="mx-2 my-2">°F</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-md-flex mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                                     (Fasting)</label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="fastingBsugar"
@@ -681,43 +721,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar
+                                                <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar
                                                     (Random)
                                                 </label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle" id="randomBsugar"
                                                         name="randomBsugar" step="0.1" min="0" placeholder="E.g. 125">
                                                     <p class="mx-2 my-2">mg/dL</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-md-flex mb-3">
-                                            <div class="col-md-4">
-                                                <label class="form-label fieldLabel"
-                                                    for="patientsCholestrol">Cholestrol</label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientsCholestrol" name="patientsCholestrol" step="0.1" min="0"
-                                                        placeholder="E.g. 50">
-                                                    <p class="mx-2 my-2">mg/dL</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
-                                                    <p class="mx-2 my-2">%</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                                </label>
-                                                <div class="d-flex">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
-                                                        step="0.01" placeholder="E.g. 98.6">
-                                                    <p class="mx-2 my-2">°F</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -822,42 +832,6 @@
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                        Instructions</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-container mt-2">
-                                                <div class="mb-3">
-                                                    <div class="input-group mb-2">
-                                                        <input type="text" class="form-control" id="instructionSearch"
-                                                            placeholder="Search Instructions">
-                                                        <button type="button" class="btn btn-outline-secondary"
-                                                            id="clearInstructionSearch">✖</button>
-                                                        <button type="button" class="btn btn-outline-primary d-none"
-                                                            id="addInstruction">+ Add</button>
-                                                    </div>
-                                                </div>
-                                                <div id="instructionList">
-                                                    <?php if (!empty($instructionsList)): ?>
-                                                        <?php foreach ($instructionsList as $ins): ?>
-                                                            <div class="form-check instruction-item">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="instructions[]"
-                                                                    value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                                    id="ins<?php echo $ins['id']; ?>">
-                                                                <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                                    <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                                </label>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button">
                                                 <span><strong><i class="bi bi-prescription2 me-2"></i>
                                                         Procedures</strong></span>
                                                 <span class="toggle-icon">+</span>
@@ -939,6 +913,42 @@
                                                                     id="adv<?php echo $adv['id']; ?>">
                                                                 <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
                                                                     <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                        Instructions</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2">
+                                                <div class="mb-3">
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" class="form-control" id="instructionSearch"
+                                                            placeholder="Search Instructions">
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearInstructionSearch">✖</button>
+                                                        <button type="button" class="btn btn-outline-primary d-none"
+                                                            id="addInstruction">+ Add</button>
+                                                    </div>
+                                                </div>
+                                                <div id="instructionList">
+                                                    <?php if (!empty($instructionsList)): ?>
+                                                        <?php foreach ($instructionsList as $ins): ?>
+                                                            <div class="form-check instruction-item">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="instructions[]"
+                                                                    value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                                    id="ins<?php echo $ins['id']; ?>">
+                                                                <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                                    <?php echo htmlspecialchars($ins['instructionsName']); ?>
                                                                 </label>
                                                             </div>
                                                         <?php endforeach; ?>
@@ -1177,7 +1187,49 @@
                                 </div>
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="fastingBsugar"
@@ -1197,7 +1249,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar (Random)
+                                        <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
                                         </label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="randomBsugar"
@@ -1205,37 +1257,6 @@
                                                 value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
-                                                name="patientsCholestrol" step="0.1" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
-                                            <p class="mx-2 my-2">mg/dL</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                placeholder="E.g. 98.6"
-                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                            <p class="mx-2 my-2">°F</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1330,42 +1351,6 @@
                                 </div>
                                 <input type="hidden" name="investigationsJson" id="investigationsJson">
 
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                Instructions</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
-                                    <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="instructionSearch"
-                                                    placeholder="Search Instructions">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearInstructionSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none"
-                                                    id="addInstruction">+ Add</button>
-                                            </div>
-                                        </div>
-                                        <div id="instructionList">
-                                            <?php if (!empty($instructionsList)): ?>
-                                                <?php foreach ($instructionsList as $ins): ?>
-                                                    <div class="form-check instruction-item">
-                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                            id="ins<?php echo $ins['id']; ?>">
-                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -1448,6 +1433,41 @@
                                                             id="adv<?php echo $adv['id']; ?>">
                                                         <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
                                                             <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
+                                            <?php if (!empty($instructionsList)): ?>
+                                                <?php foreach ($instructionsList as $ins): ?>
+                                                    <div class="form-check instruction-item">
+                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
+                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                            id="ins<?php echo $ins['id']; ?>">
+                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
                                                         </label>
                                                     </div>
                                                 <?php endforeach; ?>
@@ -1666,7 +1686,49 @@
                                 </div>
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="fastingBsugar"
@@ -1686,7 +1748,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar (Random)
+                                        <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
                                         </label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="randomBsugar"
@@ -1694,37 +1756,6 @@
                                                 value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
-                                                name="patientsCholestrol" step="0.1" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
-                                            <p class="mx-2 my-2">mg/dL</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                placeholder="E.g. 98.6"
-                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                            <p class="mx-2 my-2">°F</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1818,42 +1849,6 @@
                                 </div>
                                 <input type="hidden" name="investigationsJson" id="investigationsJson">
 
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                Instructions</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
-                                    <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="instructionSearch"
-                                                    placeholder="Search Instructions">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearInstructionSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none"
-                                                    id="addInstruction">+ Add</button>
-                                            </div>
-                                        </div>
-                                        <div id="instructionList">
-                                            <?php if (!empty($instructionsList)): ?>
-                                                <?php foreach ($instructionsList as $ins): ?>
-                                                    <div class="form-check instruction-item">
-                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                            id="ins<?php echo $ins['id']; ?>">
-                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -1937,6 +1932,41 @@
                                                             id="adv<?php echo $adv['id']; ?>">
                                                         <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
                                                             <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
+                                            <?php if (!empty($instructionsList)): ?>
+                                                <?php foreach ($instructionsList as $ins): ?>
+                                                    <div class="form-check instruction-item">
+                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
+                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                            id="ins<?php echo $ins['id']; ?>">
+                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
                                                         </label>
                                                     </div>
                                                 <?php endforeach; ?>

@@ -134,11 +134,12 @@ class ConsultModel extends CI_Model
             'height_cm' => $post['patientHeight'],
             'systolic_bp' => $post['patientSystolicBp'],
             'diastolic_bp' => $post['patientDiastolicBp'],
-            'cholesterol_mg_dl' => $post['patientsCholestrol'],
+            'HbA1c_percent' => $post['patientsHbA1c'],
             'blood_sugar_fasting' => $post['fastingBsugar'],
             'blood_sugar_pp' => $post['ppBsugar'],
             'blood_sugar_random' => $post['randomBsugar'],
             'spo2_percent' => $post['patientSpo2'],
+            'pulse_rate' => $post['patientPulseRate'],
             'temperature_f' => $post['patientTemperature'],
         );
         return $this->db->insert('consult_vitals', $vitalData);
@@ -151,11 +152,12 @@ class ConsultModel extends CI_Model
             'height_cm' => $post['patientHeight'],
             'systolic_bp' => $post['patientSystolicBp'],
             'diastolic_bp' => $post['patientDiastolicBp'],
-            'cholesterol_mg_dl' => $post['patientsCholestrol'],
+            'HbA1c_percent' => $post['patientsHbA1c'],
             'blood_sugar_fasting' => $post['fastingBsugar'],
             'blood_sugar_pp' => $post['ppBsugar'],
             'blood_sugar_random' => $post['randomBsugar'],
             'spo2_percent' => $post['patientSpo2'],
+            'pulse_rate' => $post['patientPulseRate'],
             'temperature_f' => $post['patientTemperature'],
         );
         $this->db->where('id', $post['vitalsDbId']);

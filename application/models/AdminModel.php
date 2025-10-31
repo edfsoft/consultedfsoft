@@ -315,9 +315,9 @@ class AdminModel extends CI_Model
     {
         $post = $this->input->post(null, true);
         $insert = array(
-            'medicineBrand' => $post['medicineNameBrand'],
             'medicineName' => $post['medicineName'],
-            'strength' => $post['maedicineStrength']
+            'compositionName' => $post['medicineComposition'],
+            'category' => $post['medicineCategory']
         );
         $this->db->insert('medicines_list', $insert);
         return true;

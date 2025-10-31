@@ -1516,241 +1516,240 @@
                                                             </div>
                         <?php } ?>
 
-                                                            <p class="fs-5 fw-semibold mt-3">All Consultations</p>
-                            <?php if (!empty($consultations)): ?>
-                                                                <div class="consultation-container">
-                                                                    <div class="d-flex justify-content-end mb-2">
-                                                                        <div class="consultation-nav">
-                                                                            <button id="nav-left" class="btn btn-outline-secondary me-2"
-                                                                                onclick="navigateConsultations(-1)">&#9664;</button>
-                                                                            <span id="consultation-counter">
-                                                                                < 1 of <?= count($consultations) ?> >
-                                                                            </span>
-                                                                            <button id="nav-right" class="btn btn-outline-secondary ms-2"
-                                                                                onclick="navigateConsultations(1)">&#9654;</button>
-                                                                        </div>
+                                                        <p class="fs-5 fw-semibold mt-3">All Consultations</p>
+                        <?php if (!empty($consultations)): ?>
+                                                            <div class="consultation-container">
+                                                                <div class="d-flex justify-content-end mb-2">
+                                                                    <div class="consultation-nav">
+                                                                        <button id="nav-left" class="btn btn-outline-secondary me-2"
+                                                                            onclick="navigateConsultations(-1)">&#9664;</button>
+                                                                        <span id="consultation-counter">
+                                                                            < 1 of <?= count($consultations) ?> >
+                                                                        </span>
+                                                                        <button id="nav-right" class="btn btn-outline-secondary ms-2"
+                                                                            onclick="navigateConsultations(1)">&#9654;</button>
                                                                     </div>
-                                        <?php
-                                        usort($consultations, function ($a, $b) {
-                                            return strtotime($b['created_at']) - strtotime($a['created_at']);
-                                        });
-                                        ?>
-                                    <?php foreach ($consultations as $index => $consultation): ?>
-                                                                        <div class="consultation-item <?= $index === 0 ? 'active' : '' ?>"
-                                                                            data-index="<?= $index ?>">
-                                                                            <div class="border border-5 mb-3 shadow-sm">
-                                                                                <div class="card-body" id="consultation-content-<?= $consultation['id'] ?>">
-                                                                                    <div class="d-md-flex justify-content-between">
-                                                                                        <h5 class="card-title mb-0">
-                                                            <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
-                                                                                        </h5>
-                                                                                    </div>
-
-                                                                                    <!-- Vitals -->
-                                                    <?php if (!empty($consultation['vitals'])): ?>
-                                                                                        <p><strong>Vitals:</strong></p>
-                                                                                        <div class="row g-2 mb-4">
-                                                                <?php
-                                                                $vitals = [
-                                                                    'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
-                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
-                                                                    'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
-                                                                    'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
-                                                                    'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
-                                                                    'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
-                                                                    'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
-                                                                    'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
-                                                                    'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
-                                                                ];
-
-                                                                foreach ($vitals as $label => $value):
-                                                                    if ($value):
-                                                                        ?>
-                                                                                                    <div class="col-12 col-md-6">
-                                                                                                        <div
-                                                                                                            class="d-flex justify-content-between align-items-center border p-2 rounded">
-                                                                                                            <span class="fw-medium"><?= $label ?>:</span>
-                                                                                                            <span class="text-primary"><?= $value ?></span>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                    <?php
-                                                                    endif;
-                                                                endforeach;
-                                                                ?>
-                                                                                        </div>
-                                                    <?php endif; ?>
-
-                                                                                    <!-- Symptoms -->
-                                                    <?php if (!empty($consultation['symptoms'])): ?>
-                                                                                        <p><strong>Symptoms:</strong></p>
-                                                                                        <ul>
-                                                            <?php foreach ($consultation['symptoms'] as $symptom): ?>
-                                                                                                <li>
-                                                                    <?= $symptom['symptom_name'] ?>
-                                                                        <?php
-                                                                        $details = [];
-                                                                        if (!empty($symptom['since']))
-                                                                            $details[] = $symptom['since'];
-                                                                        if (!empty($symptom['severity']))
-                                                                            $details[] = $symptom['severity'];
-                                                                        if (!empty($symptom['note']))
-                                                                            $details[] = $symptom['note'];
-                                                                        if (!empty($details)) {
-                                                                            echo ' (' . implode(', ', $details) . ')';
-                                                                        }
-                                                                        ?>
-                                                                                                </li>
-                                                            <?php endforeach; ?>
-                                                                                        </ul>
-                                                    <?php endif; ?>
-
-                                                                                    <!-- Findings -->
-                                                    <?php if (!empty($consultation['findings'])): ?>
-                                                                                        <p><strong>Findings:</strong></p>
-                                                                                        <ul>
-                                                            <?php foreach ($consultation['findings'] as $finding): ?>
-                                                                                                <li>
-                                                                    <?= $finding['finding_name'] ?>
-                                                                        <?php
-                                                                        $details = [];
-                                                                        if (!empty($finding['since']))
-                                                                            $details[] = $finding['since'];
-                                                                        if (!empty($finding['severity']))
-                                                                            $details[] = $finding['severity'];
-                                                                        if (!empty($finding['note']))
-                                                                            $details[] = $finding['note'];
-                                                                        if (!empty($details)) {
-                                                                            echo ' (' . implode(', ', $details) . ')';
-                                                                        }
-                                                                        ?>
-                                                                                                </li>
-                                                            <?php endforeach; ?>
-                                                                                        </ul>
-                                                    <?php endif; ?>
-
-                                                                                    <!-- Diagnosis -->
-                                                    <?php if (!empty($consultation['diagnosis'])): ?>
-                                                                                        <p><strong>Diagnosis:</strong></p>
-                                                                                        <ul>
-                                                            <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
-                                                                                                <li>
-                                                                    <?= $diagnosis['diagnosis_name'] ?>
-                                                                        <?php
-                                                                        $details = [];
-                                                                        if (!empty($diagnosis['since']))
-                                                                            $details[] = $diagnosis['since'];
-                                                                        if (!empty($diagnosis['severity']))
-                                                                            $details[] = $diagnosis['severity'];
-                                                                        if (!empty($diagnosis['note']))
-                                                                            $details[] = $diagnosis['note'];
-                                                                        if (!empty($details)) {
-                                                                            echo ' (' . implode(', ', $details) . ')';
-                                                                        }
-                                                                        ?>
-                                                                                                </li>
-                                                            <?php endforeach; ?>
-                                                                                        </ul>
-                                                    <?php endif; ?>
-
-                                                                                    <!-- Investigations -->
-                                                    <?php if (!empty($consultation['investigations'])): ?>
-                                                                                        <p><strong>Investigations:</strong></p>
-                                                                                        <ul>
-                                                            <?php foreach ($consultation['investigations'] as $inv): ?>
-                                                                                                <li>
-                                                                    <?= htmlspecialchars($inv['investigation_name']) ?>
-                                                                    <?php if (!empty($inv['note'])): ?>
-                                                                                                        - <?= htmlspecialchars($inv['note']) ?>
-                                                                    <?php endif; ?>
-                                                                                                </li>
-                                                            <?php endforeach; ?>
-                                                                                        </ul>
-                                                    <?php endif; ?>
-
-                                                                                    <!-- Instructions -->
-                                                    <?php if (!empty($consultation['instructions'])): ?>
-                                                                                        <p><strong>Instructions:</strong></p>
-                                                                                        <ul>
-                                                            <?php foreach ($consultation['instructions'] as $ins): ?>
-                                                                                                <li><?= $ins['instruction_name'] ?></li>
-                                                            <?php endforeach; ?>
-                                                                                        </ul>
-                                                    <?php endif; ?>
-
-                                                                                    <!-- ====== Medicines ====== -->
-                                                    <?php if (!empty($consultation['medicines'])): ?>
-                                                                                        <p><strong>Medicines:</strong></p>
-                                                                                        <ul>
-                                                            <?php foreach ($consultation['medicines'] as $medicine): ?>
-                                                                                                <li>
-                                                                    <?= $medicine['medicine_name'] ?>
-                                                                        <?php
-                                                                        $details = [];
-                                                                        if (!empty($medicine['quantity']))
-                                                                            $details[] = $medicine['quantity'];
-                                                                        if (!empty($medicine['unit']))
-                                                                            $details[] = $medicine['unit'];
-                                                                        if (!empty($medicine['timing']))
-                                                                            $details[] = $medicine['timing'];
-                                                                        if (!empty($medicine['frequency']))
-                                                                            $details[] = $medicine['frequency'];
-                                                                        if (!empty($medicine['food_timing']))
-                                                                            $details[] = $medicine['food_timing'];
-                                                                        if (!empty($medicine['duration']))
-                                                                            $details[] = $medicine['duration'];
-                                                                        if (!empty($details))
-                                                                            echo ' (' . implode(' - ', $details) . ')';
-                                                                        ?>
-                                                                                                </li>
-                                                            <?php endforeach; ?>
-                                                                                        </ul>
-                                                    <?php endif; ?>
-
-                                                    <?php if (!empty($consultation['attachments'])): ?>
-                                                                                        <p><strong>Attachments:</strong></p>
-                                                                                        <ul>
-                                                            <?php foreach ($consultation['attachments'] as $attach): ?>
-                                                                    <?php
-                                                                    $filePath = base_url('uploads/consultations/' . $attach['file_name']);
-                                                                    $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
-                                                                    ?>
-                                                                                                <li>
-                                                                                                    <a href="javascript:void(0);" class="openAttachment"
-                                                                                                        data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
-                                                                        <?= $attach['file_name'] ?>
-                                                                                                    </a>
-                                                                                                </li>
-                                                            <?php endforeach; ?>
-                                                                                        </ul>
-                                                    <?php endif; ?>
-
-
-                                                                                    <!-- Notes -->
-                                                    <?php if (!empty($consultation['notes'])): ?>
-                                                                                        <p><strong>Notes:</strong></p>
-                                                                                        <ul>
-                                                                                            <li><?= $consultation['notes'] ?></li>
-                                                                                        </ul>
-                                                    <?php endif; ?>
-
-                                                                                    <!-- Next Follow-Up -->
-                                                    <?php if (!empty($consultation['next_follow_up'])): ?>
-                                                                                        <p><strong>Next Follow-Up Date:</strong></p>
-                                                                                        <ul>
-                                                                                            <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
-                                                                                            </li>
-                                                                                        </ul>
-                                                    <?php endif; ?>
+                                                                </div>
+                                    <?php
+                                    usort($consultations, function ($a, $b) {
+                                        return strtotime($b['created_at']) - strtotime($a['created_at']);
+                                    });
+                                    ?>
+                                <?php foreach ($consultations as $index => $consultation): ?>
+                                                                    <div class="consultation-item <?= $index === 0 ? 'active' : '' ?>" data-index="<?= $index ?>">
+                                                                        <div class="border border-5 mb-3 shadow-sm">
+                                                                            <div class="card-body" id="consultation-content-<?= $consultation['id'] ?>">
+                                                                                <div class="d-md-flex justify-content-between">
+                                                                                    <h5 class="card-title mb-0">
+                                                        <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
+                                                                                    </h5>
                                                                                 </div>
+
+                                                                                <!-- Vitals -->
+                                                <?php if (!empty($consultation['vitals'])): ?>
+                                                                                    <p><strong>Vitals:</strong></p>
+                                                                                    <div class="row g-2 mb-4">
+                                                            <?php
+                                                            $vitals = [
+                                                                'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
+                                                                'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
+                                                                'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
+                                                                'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
+                                                                'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
+                                                                'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
+                                                                'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
+                                                                'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
+                                                                'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
+                                                            ];
+
+                                                            foreach ($vitals as $label => $value):
+                                                                if ($value):
+                                                                    ?>
+                                                                                                <div class="col-12 col-md-6">
+                                                                                                    <div
+                                                                                                        class="d-flex justify-content-between align-items-center border p-2 rounded">
+                                                                                                        <span class="fw-medium"><?= $label ?>:</span>
+                                                                                                        <span class="text-primary"><?= $value ?></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                <?php
+                                                                endif;
+                                                            endforeach;
+                                                            ?>
+                                                                                    </div>
+                                                <?php endif; ?>
+
+                                                                                <!-- Symptoms -->
+                                                <?php if (!empty($consultation['symptoms'])): ?>
+                                                                                    <p><strong>Symptoms:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['symptoms'] as $symptom): ?>
+                                                                                            <li>
+                                                                <?= $symptom['symptom_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($symptom['since']))
+                                                                        $details[] = $symptom['since'];
+                                                                    if (!empty($symptom['severity']))
+                                                                        $details[] = $symptom['severity'];
+                                                                    if (!empty($symptom['note']))
+                                                                        $details[] = $symptom['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Findings -->
+                                                <?php if (!empty($consultation['findings'])): ?>
+                                                                                    <p><strong>Findings:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['findings'] as $finding): ?>
+                                                                                            <li>
+                                                                <?= $finding['finding_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($finding['since']))
+                                                                        $details[] = $finding['since'];
+                                                                    if (!empty($finding['severity']))
+                                                                        $details[] = $finding['severity'];
+                                                                    if (!empty($finding['note']))
+                                                                        $details[] = $finding['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Diagnosis -->
+                                                <?php if (!empty($consultation['diagnosis'])): ?>
+                                                                                    <p><strong>Diagnosis:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
+                                                                                            <li>
+                                                                <?= $diagnosis['diagnosis_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($diagnosis['since']))
+                                                                        $details[] = $diagnosis['since'];
+                                                                    if (!empty($diagnosis['severity']))
+                                                                        $details[] = $diagnosis['severity'];
+                                                                    if (!empty($diagnosis['note']))
+                                                                        $details[] = $diagnosis['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Investigations -->
+                                                <?php if (!empty($consultation['investigations'])): ?>
+                                                                                    <p><strong>Investigations:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['investigations'] as $inv): ?>
+                                                                                            <li>
+                                                                <?= htmlspecialchars($inv['investigation_name']) ?>
+                                                                <?php if (!empty($inv['note'])): ?>
+                                                                                                    - <?= htmlspecialchars($inv['note']) ?>
+                                                                <?php endif; ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Instructions -->
+                                                <?php if (!empty($consultation['instructions'])): ?>
+                                                                                    <p><strong>Instructions:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['instructions'] as $ins): ?>
+                                                                                            <li><?= $ins['instruction_name'] ?></li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- ====== Medicines ====== -->
+                                                <?php if (!empty($consultation['medicines'])): ?>
+                                                                                    <p><strong>Medicines:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['medicines'] as $medicine): ?>
+                                                                                            <li>
+                                                                <?= $medicine['medicine_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($medicine['quantity']))
+                                                                        $details[] = $medicine['quantity'];
+                                                                    if (!empty($medicine['unit']))
+                                                                        $details[] = $medicine['unit'];
+                                                                    if (!empty($medicine['timing']))
+                                                                        $details[] = $medicine['timing'];
+                                                                    if (!empty($medicine['frequency']))
+                                                                        $details[] = $medicine['frequency'];
+                                                                    if (!empty($medicine['food_timing']))
+                                                                        $details[] = $medicine['food_timing'];
+                                                                    if (!empty($medicine['duration']))
+                                                                        $details[] = $medicine['duration'];
+                                                                    if (!empty($details))
+                                                                        echo ' (' . implode(' - ', $details) . ')';
+                                                                    ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                <?php if (!empty($consultation['attachments'])): ?>
+                                                                                    <p><strong>Attachments:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['attachments'] as $attach): ?>
+                                                                <?php
+                                                                $filePath = base_url('uploads/consultations/' . $attach['file_name']);
+                                                                $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
+                                                                ?>
+                                                                                            <li>
+                                                                                                <a href="javascript:void(0);" class="openAttachment"
+                                                                                                    data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
+                                                                    <?= $attach['file_name'] ?>
+                                                                                                </a>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+
+                                                                                <!-- Notes -->
+                                                <?php if (!empty($consultation['notes'])): ?>
+                                                                                    <p><strong>Notes:</strong></p>
+                                                                                    <ul>
+                                                                                        <li><?= $consultation['notes'] ?></li>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Next Follow-Up -->
+                                                <?php if (!empty($consultation['next_follow_up'])): ?>
+                                                                                    <p><strong>Next Follow-Up Date:</strong></p>
+                                                                                    <ul>
+                                                                                        <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
+                                                                                        </li>
+                                                                                    </ul>
+                                                <?php endif; ?>
                                                                             </div>
                                                                         </div>
-                                    <?php endforeach; ?>
-                                                                </div>
-                            <?php else: ?>
-                                                                <p>No Previous Consultation.</p>
-                            <?php endif; ?>
-                                                        </div>
+                                                                    </div>
+                                <?php endforeach; ?>
+                                                            </div>
+                        <?php else: ?>
+                                                            <p>No Previous Consultation.</p>
+                        <?php endif; ?>
                                                     </div>
+                                                </div>
                                             </section>
 
                                             <!-- Previous and Next arrows script -->
@@ -3267,12 +3266,12 @@
                                                                                                         <tr>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                             </th>
-                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">BRAND
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">MEDICINE
                                                                                                                 NAME</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                                MEDICINE NAME</th>
+                                                                                                                COMPOSITION</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                                STRENGTH</th>
+                                                                                                                CATEGORY</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                                             </th>
                                                                                                         </tr>
@@ -3357,10 +3356,11 @@
                                                                                                 const medicineRow = document.createElement('tr');
                                                                                                 medicineRow.innerHTML = `
                 <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.medicineBrand}</td>
                 <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.strength}</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.compositionName}</td>
+                <td style="font-size: 16px" class="pt-3">${medicine.category}</td>
                 <td class="d-flex d-md-block">
+                    <button class="btn btn-secondary delete-btn" data-bs-toggle="modal" data-bs-target="#edit-------------" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-pen"></i></button>
                     <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
                 </td>`;
                                                                                                 medicinesTableBody.appendChild(medicineRow);

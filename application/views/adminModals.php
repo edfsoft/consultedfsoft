@@ -315,19 +315,32 @@
             <div class="modal-body">
                 <form action="<?php echo base_url() . "Edfadmin/addNewMedicine" ?>" name="addMedicine"
                     enctype="multipart/form-data" method="POST">
-                    <label for="medicineNameBrand" class="form-label pb-2">Medicine Brand Name <span
-                            class="text-danger">*</span></label><br>
-                    <input type="text" name="medicineNameBrand" id="medicineNameBrand" class="form-control"
-                        placeholder="E.g. Dolo 650" required><br>
                     <label for="medicineName" class="form-label pb-2">Medicine Name <span
                             class="text-danger">*</span></label><br>
                     <input type="text" name="medicineName" id="medicineName" class="form-control"
-                        placeholder="E.g.  Paracetamol" required><br>
-                    <label for="maedicineStrength" class="form-label pb-2">Medicine Strength <span
+                        placeholder="E.g. Dolo 650" required><br>
+                    <label for="medicineComposition" class="form-label pb-2">Composition <span
                             class="text-danger">*</span></label><br>
-                    <input type="text" name="maedicineStrength" id="maedicineStrength" class="form-control"
-                        placeholder="E.g.  100 mg" required><br><br>
-                    <button type="submit" style="background-color: #2b353bf5;" class="btn float-end"> Add </button>
+                    <input type="text" name="medicineComposition" id="medicineComposition" class="form-control"
+                        placeholder="E.g.  Paracetamol" required><br>
+                    <label for="medicineCategory" class="form-label pb-2">Category <span
+                            class="text-danger">*</span></label><br>
+                    <select name="medicineCategory" id="medicineCategory" class="form-select" required>
+                        <option value="">Select Category</option>
+                        <option value="TAB">Tablet</option>
+                        <option value="CAP">Capsule</option>
+                        <option value="SYR">Syrup</option>
+                        <option value="INJ">Injection</option>
+                        <option value="DROPS">Drops</option>
+                        <option value="OINT">Ointment</option>
+                        <option value="CREAM">Cream</option>
+                        <option value="GEL">Gel</option>
+                        <option value="SPRAY">Spray</option>
+                        <option value="POW">Powder</option>
+                        <option value="SUSP">Suppository</option>
+                    </select>
+                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end mt-3">
+                        Add </button>
                 </form>
             </div>
         </div>

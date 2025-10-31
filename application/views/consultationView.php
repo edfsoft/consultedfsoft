@@ -21,6 +21,9 @@
 
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
+    <!-- cropper CND -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -110,6 +113,75 @@
         .consultation-item.active {
             display: block;
         }
+
+       /* Attachment display */
+        #attachmentImage {
+            width: 600px;
+            height: 500px;
+            object-fit: contain;
+        }
+        #prevAttachment, #nextAttachment {
+            padding: 10px 15px;
+            border-radius: 5;
+            margin: 10px;
+        }
+        #prevAttachment {
+            left: 10px;
+            z-index: 1055;
+        }
+        #nextAttachment {
+            right: 10px;
+        }       
+ /*-----------------------Edit-Page------------------*/
+
+        #imageEditModal .modal-xl {
+            max-width: 1200px; 
+        }
+        #imageEditModal .modal-content {
+            overflow: hidden; 
+        }
+        
+        #imageEditModal .modal-body {
+            padding: 20px;
+            max-height: 80vh;
+            overflow: auto;
+        }
+
+        #imageEditModal .editor-container {
+            width: 100%;
+            min-width: 600px;
+            min-height: 600px;
+            max-width: 90vw;
+            max-height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa; /* Light background for better visibility */
+            border: 1px solid #dee2e6; /* Subtle border */
+            border-radius: 4px;
+        }
+
+        #imageEditModal #editor-image,
+        #imageEditModal #editor-canvas {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        }
+
+        .modal-footer {
+        position: relative;
+        z-index: 1000;
+        padding: 15px;
+        }
+
+        .modal-footer .btn {
+        position: relative;
+        z-index: 1001;
+        width: 100px;
+        text-align: center;
+        }
+
+
     </style>
 </head>
 
@@ -171,7 +243,7 @@
                                 </button>
                             </li>
                         </ul>
-
+                        
                         <div class="tab-content border p-4 rounded shadow-sm" id="consultationTabsContent">
                             <!-- Consultation Dashboard -->
                             <div class="tab-pane fade active show" id="consultation-dashboard" role="tabpanel">
@@ -386,23 +458,36 @@
                                                             </ul>
                                                         <?php endif; ?>
 
+                                                        <!-- Attachments
                                                         <?php if (!empty($consultation['attachments'])): ?>
                                                             <p><strong>Attachments:</strong></p>
                                                             <ul>
                                                                 <?php foreach ($consultation['attachments'] as $attach): ?>
-                                                                    <?php
-                                                                    $filePath = base_url('uploads/consultations/' . $attach['file_name']);
-                                                                    $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
-                                                                    ?>
-                                                                    <li>
-                                                                        <a href="javascript:void(0);" class="openAttachment"
-                                                                            data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
-                                                                            <?= $attach['file_name'] ?>
-                                                                        </a>
-                                                                    </li>
+                                                                    <li><?= $attach['file_name'] ?></li>
                                                                 <?php endforeach; ?>
                                                             </ul>
-                                                        <?php endif; ?>
+                                                        <?php endif; ?> -->
+                                                        <!-- Attachments -->
+                                                       <?php if (!empty($consultation['attachments'])): ?>
+    <p><strong>Attachments:</strong></p>
+    <ul>
+        <?php foreach ($consultation['attachments'] as $attach): ?>
+            <?php
+            $filePath = base_url('uploads/consultations/' . $attach['file_name']);
+            $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
+            ?>
+            <li>
+                <a href="javascript:void(0);" 
+                   class="openAttachment"
+                   data-file="<?= $filePath ?>" 
+                   data-ext="<?= $ext ?>"
+                   data-context="dashboard">
+                   <?= htmlspecialchars($attach['file_name']) ?>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
 
 
                                                         <!-- Notes -->
@@ -857,7 +942,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <!-- <div class="form-group pb-3">
@@ -871,24 +955,20 @@
                                         <div id="fileList" style="margin-top: 0.5rem;"></div>
                                         <div id="fileError" class="text-danger pt-1"></div> 
                                     </div> --><!-- This code is common for all 3 new, edi and followup -->
-                                    <div class="form-group pb-3">
-                                        <label class="form-label fieldLabel">Attachments</label>
-                                        <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                            style="background-color: #00ad8e;"> + Add File </button>
-                                        <div class="mb-3"></div>
-                                        <div id="dropZone"
-                                            style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                            <p class="text-muted mb-0">Drag and drop files here, or click the button below.
-                                            </p>
-                                        </div>
-                                        <input type="file" id="fileInput" class="d-none"
-                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
-                                        <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none"
-                                            multiple>
-                                        <div id="fileList" style="margin-top: 0.5rem;"></div>
-                                        <div id="fileError" class="text-danger pt-1"></div>
-                                        <input type="hidden" id="removedFiles" name="removedFiles" value="">
+
+                                  <div class="form-group pb-3" data-page="new">
+                                    <label class="form-label fieldLabel">Attachments</label>
+                                    <button type="button" class="addFileBtn btn text-light float-end mb-2" style="background-color: #00ad8e;"> + Add File </button>
+                                    <div class="mb-3"></div>
+                                    <div class="dropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                        <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
                                     </div>
+                                    <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+                                    <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
+                                    <div class="fileList" style="margin-top: 0.5rem;"></div>
+                                    <div class="fileError text-danger pt-1"></div>
+                                    <input type="hidden" class="removedFiles" name="removedFiles" value="">
+                                </div>
 
                                     <div class="form-group pb-3">
                                         <label class="form-label fieldLabel" for="notes">Notes <span
@@ -908,7 +988,69 @@
                                     <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                         style="background-color: #00ad8e;">Save</button>
                                 </form>
+                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
+                                <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" 
+                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- Custom Toolbar -->
+                                            <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>
+                                                <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
+                                            </div>
+                                            <h5 class=" fw-medium" id="imageEditModalLabel" style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            
+                                            <!-- Bootstrap container for image -->
+                                            <div class="container">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12" style="position: relative; width: 600px; height: 600px;">
+                                                        <img id="editor-image" class="img-fluid" style=" object-fit: contain; display: none; ">
+                                                        <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="background-color: white;">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn text-light" style="background-color: #00ad8e;" id="saveEditedImage">OK</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                                     <!-----------------------------end edit image------------------>
+
+                            <div class="modal fade" id="newConsultationPreviewModal" tabindex="-1" aria-labelledby="newConsultationPreviewModalLabel"
+                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="newConsultationPreviewModalLabel">
+                                                New Consultation Attachment Preview
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center position-relative">
+                                            <button id="prevNewConsultation" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                                <b>&lt;</b>
+                                            </button>
+                                            <img id="newConsultationImage" src="" alt="Attachment" class="img-fluid d-none">
+                                            <iframe id="newConsultationPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                                            <button id="nextNewConsultation" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                                <b>&gt;</b>
+                                            </button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                            <!------- end attachment display -->
+                         </div>
                         </div>
                     </div>
                 </div>
@@ -1288,23 +1430,19 @@
 
                             </div>
 
-                            <div class="form-group pb-3">
-                                <label class="form-label fieldLabel">Attachments</label>
-                                <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                    style="background-color: #00ad8e;"> + Add File </button>
-                                <div class="mb-3"></div>
-                                <div id="dropZone"
-                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
-                                    </p>
-                                </div>
-                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                    multiple>
-                                <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
-                                <div id="fileList" style="margin-top: 0.5rem;"></div>
-                                <div id="fileError" class="text-danger pt-1"></div>
-                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
-                            </div>
+   <div class="form-group pb-3" data-page="followup">
+    <label class="form-label fieldLabel">Attachments</label>
+    <button type="button" class="addFileBtn btn text-light float-end mb-2" style="background-color: #00ad8e;"> + Add File </button>
+    <div class="mb-3"></div>
+    <div class="dropZone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+        <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
+    </div>
+    <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
+    <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
+    <div class="fileList" style="margin-top: 0.5rem;"></div>
+    <div class="fileError text-danger pt-1"></div>
+    <input type="hidden" class="removedFiles" name="removedFiles" value="">
+</div>
 
                             <div class="form-group pb-3">
                                 <label class="form-label fieldLabel" for="notes">Notes <span
@@ -1324,10 +1462,71 @@
                             <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                 style="background-color: #00ad8e;">Save as new</button>
                         </form>
+                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
+                                <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" 
+                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- Custom Toolbar -->
+                                            <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>
+                                                <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
+                                            </div>
+                                            <h5 class=" fw-medium" id="imageEditModalLabel" style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            
+                                            <!-- Bootstrap container for image -->
+                                            <div class="container">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12" style="position: relative; width: 600px; height: 600px;">
+                                                        <img id="editor-image" class="img-fluid" style=" object-fit: contain; display: none; ">
+                                                        <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="background-color: white;">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn text-light" style="background-color: #00ad8e;" id="saveEditedImage">OK</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                     <!-----------------------------end ------------------>
 
+                                                    <!-- Preview display Followup Model -->
+                        <div class="modal fade" id="followupPreviewModal" tabindex="-1" aria-labelledby="followupPreviewModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="followupPreviewModalLabel">
+                                            Follow-up Attachment Preview
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+                                        <button id="prevFollowup" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
+                                        <iframe id="followupPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                                        <button id="nextFollowup" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>   
                     </div>
             </section>
-
+<!-------------------------- Edit Consultant -->
         <?php } elseif ($method == "editConsult") { ?>
             <section>
                 <div class="card rounded pb-3">
@@ -1699,7 +1898,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group pb-3">
+                            <div class="form-group pb-3 "data-page="edit" id="editFileSection">
                                 <label class="form-label fieldLabel">Attachments</label>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
                                     style="background-color: #00ad8e;"> + Add File </button>
@@ -1735,9 +1934,67 @@
                             <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                 style="background-color: #00ad8e;">Update</button>
                         </form>
+                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
+                                <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel" 
+                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                                <div class="modal-dialog modal-lg modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <!-- Custom Toolbar -->
+                                            <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark" title="Crop">✂️ Crop</button>
+                                                <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
+                                            </div>
+                                            <h5 class=" fw-medium" id="imageEditModalLabel" style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            
+                                            <!-- Bootstrap container for image -->
+                                            <div class="container">
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12" style="position: relative; width: 600px; height: 600px;">
+                                                        <img id="editor-image" class="img-fluid" style=" object-fit: contain; display: none; ">
+                                                        <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="background-color: white;">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn text-light" style="background-color: #00ad8e;" id="saveEditedImage">OK</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-----------------------------end ------------------>
 
+                            <!-- File Preview  in Edit Modal -->
+                        <div class="modal fade" id="editPreviewModal" tabindex="-1" aria-labelledby="editPreviewModalLabel" 
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="editPreviewModalLabel">Attachment Preview</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+                                        <button id="prevFile" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <div id="filePreviewContent"></div>
+                                        <button id="nextFile" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
-
             </section>
         <?php } ?>
 
@@ -2028,11 +2285,11 @@
         </div>
 
         <!-- Attachment Display Modal -->
-        <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
+       <!-- <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <!-- Header with dynamic file name -->
+                    
                     <div class="modal-header">
                         <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
                             id="attachmentModalLabel">
@@ -2041,13 +2298,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <!-- Body to show image or PDF -->
+                    
                     <div class="modal-body text-center">
                         <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none">
                         <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
                     </div>
 
-                    <!-- Footer with close button -->
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">
                             Close
@@ -2055,10 +2312,58 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --> 
 
-        <!-- All modal files -->
-        <?php include 'hcpModals.php'; ?>
+        <!-- Attachment Display Dashboard Modal --> 
+<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="dashboardPreviewModalLabel">
+                    Attachment Preview in Dashboard
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center position-relative">
+                
+                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0" 
+                     style="height: 43px; width: 100%; background-color: #cccecfff; border-radius: 5px; display: none;">
+                    
+                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled>
+                        <b style="font-size: 1.2rem;">-</b>
+                    </button>
+                    
+                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled>
+                        <b style="font-size: 1.2rem;">+</b>
+                    </button>
+                    
+                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
+                       class="bi bi-download"></i></button>
+                </div>
+                <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                    <b>&lt;</b>
+                </button>
+                
+                <div id="attachment-content-wrapper" class="w-100" style="max-height: calc(70vh - 100px); overflow: auto; min-height: 400px;">
+                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none" style="transform-origin: top left; transition: transform 0.2s ease-out;">
+                    <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                </div>
+
+                <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" style="font-size: 1.5rem;" disabled>
+                    <b>&gt;</b>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> 
+ 
+
+     <!-- All modal files -->
+    <?php include 'hcpModals.php'; ?>
 
     </main>
 
@@ -3928,177 +4233,663 @@
         })();
     </script> -->
     <script>
-        (function () {
-            const MAX_FILES = 10;
-            const fileInput = document.getElementById("fileInput");
-            const submitFileInput = document.getElementById("submitFileInput");
-            const addBtn = document.getElementById("addFileBtn");
-            const fileList = document.getElementById("fileList");
-            const fileError = document.getElementById("fileError");
-            const removedFilesInput = document.getElementById("removedFiles");
-            const dropZone = document.getElementById("dropZone");
 
-            let newFiles = [];
-            let existingFiles = [];
-            let removedFiles = [];
+/* Edit-Image With Drag and Drop display attachment in new, edit, followup and dashboard */
+document.addEventListener('DOMContentLoaded', function () {
+    // === Page Context Detection ===
+    const isEditPage = !!document.getElementById('fileList');
+    const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
+    const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
+    const isFollowup = !!document.getElementById('followupPreviewModal');
 
+    console.log('Page context:', { isEditPage, isDashboardPage, isNewConsultation, isFollowup });
+
+    // === Find Containers for Class-based Elements ===
+    const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
+    const followupContainer = isFollowup ? document.querySelector('[data-page="followup"]') : null;
+
+    // === Remove conflicting modals (Unchanged Logic) ===
+    if (isEditPage) {
+        ['attachmentModal', 'newConsultationPreviewModal', 'followupPreviewModal', 'dashboardPreviewModal'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        });
+    }
+
+    // === DOM Elements Initialization ===
+    const editElements = {
+        fileInput: document.getElementById("fileInput"),
+        submitFileInput: document.getElementById("submitFileInput"),
+        addBtn: document.getElementById("addFileBtn"),
+        fileList: document.getElementById("fileList"),
+        fileError: document.getElementById("fileError"),
+        removedFilesInput: document.getElementById("removedFiles"),
+        dropZone: document.getElementById("dropZone"),
+        imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), { backdrop: 'static', keyboard: false }) : null,
+        editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), { backdrop: 'static', keyboard: true }) : null,
+        previewContent: document.getElementById('filePreviewContent'),
+        modalTitle: document.getElementById('editPreviewModalLabel'),
+        prevBtn: document.getElementById('prevFile'),
+        nextBtn: document.getElementById('nextFile')
+    };
+
+    const newConsultationElements = isNewConsultation && newConsultationContainer ? {
+        previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), { backdrop: 'static', keyboard: true }),
+        image: document.getElementById('newConsultationImage'),
+        pdf: document.getElementById('newConsultationPDF'),
+        modalTitle: document.getElementById('newConsultationPreviewModalLabel'),
+        prevBtn: document.getElementById('prevNewConsultation'),
+        nextBtn: document.getElementById('nextNewConsultation'),
+        fileInput: newConsultationContainer.querySelector(".fileInput"),
+        submitFileInput: newConsultationContainer.querySelector(".submitFileInput"),
+        addBtn: newConsultationContainer.querySelector(".addFileBtn"),
+        fileList: newConsultationContainer.querySelector(".fileList"),
+        fileError: newConsultationContainer.querySelector(".fileError"),
+        dropZone: newConsultationContainer.querySelector(".dropZone"),
+    } : {};
+
+    const followupElements = isFollowup && followupContainer ? {
+        previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), { backdrop: 'static', keyboard: true }),
+        image: document.getElementById('followupImage'),
+        pdf: document.getElementById('followupPDF'),
+        modalTitle: document.getElementById('followupPreviewModalLabel'),
+        prevBtn: document.getElementById('prevFollowup'),
+        nextBtn: document.getElementById('nextFollowup'),
+        fileInput: followupContainer.querySelector(".fileInput"),
+        submitFileInput: followupContainer.querySelector(".submitFileInput"),
+        addBtn: followupContainer.querySelector(".addFileBtn"),
+        fileList: followupContainer.querySelector(".fileList"),
+        fileError: followupContainer.querySelector(".fileError"),
+        dropZone: followupContainer.querySelector(".dropZone"),
+    } : {};
+
+    const dashboardElements = isDashboardPage ? {
+        previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), { backdrop: 'static', keyboard: true }),
+        image: document.getElementById('attachmentImage'),
+        pdf: document.getElementById('attachmentPDF'),
+        modalTitle: document.getElementById('dashboardPreviewModalLabel'),
+        prevBtn: document.getElementById('prevAttachment'),
+        nextBtn: document.getElementById('nextAttachment')
+    } : {};
+
+    // === Core Variables ===
+    const MAX_FILES = 10;
+    let cropper;
+    let newFiles = [];
+    let existingFiles = [];
+    let removedFiles = [];
+    let currentRotationAngle = 0;
+    let originalDataURL = null;
+    let currentImageBlob = null;
+    let currentIndex = -1;
+    let currentFiles = [];
+    let currentZoom = 1.0;
+    const ZOOM_STEP = 0.2;
+    let isDragging = false;
+    let startX, startY, scrollLeft, scrollTop;
+
+    const BASE_FILE_URL = '<?php echo base_url('Uploads/consultations/'); ?>';
+
+    function getCurrentElements() {
+        if (isNewConsultation) return newConsultationElements;
+        if (isFollowup) return followupElements;
+        return editElements;
+    }
+
+    if (isEditPage && editElements.fileList) {
+        try {
             existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+        } catch (e) {
+            console.error('Error parsing existingFiles:', e);
+            existingFiles = [];
+        }
 
-            renderFileList();
+        existingFiles = existingFiles.map(file => {
+            const fileName = file.file_name || file.name || 'Unknown';
+            const extension = fileName.split('.').pop().toLowerCase();
+            const mimeType = file.mime_type || getMimeType(extension);
+            const url = file.url || (file.file_path ? BASE_FILE_URL + encodeURIComponent(file.file_path) : BASE_FILE_URL + encodeURIComponent(fileName));
+            return { file_name: fileName, ext: extension, mime_type: mimeType, url, size: file.size || 0 };
+        });
 
-            // --- DRAG AND DROP HANDLERS ---
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-                document.body.addEventListener(eventName, preventDefaults, false);
-            });
+        renderFileList();
+    }
+    if (isNewConsultation || isFollowup) {
+        renderFileList();
+    }
 
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, highlight, false);
-            });
 
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, unhighlight, false);
-            });
+    function getMimeType(ext) {
+        const map = { 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'pdf': 'application/pdf', 'doc': 'application/msword', 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingprocessingml.document' };
+        return map[ext] || 'application/octet-stream';
+    }
 
-            dropZone.addEventListener('drop', handleDrop, false);
 
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
+    const currentElements = getCurrentElements();
+    const dropZone = currentElements.dropZone;
+
+    if (dropZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+            dropZone.addEventListener(ev, preventDefaults, false);
+            document.body.addEventListener(ev, preventDefaults, false);
+        });
+        ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => highlight(dropZone), false));
+        ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => unhighlight(dropZone), false));
+        dropZone.addEventListener('drop', async e => {
+            unhighlight(dropZone);
+            await processNewFiles(Array.from(e.dataTransfer.files));
+        });
+    }
+
+    function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+    function highlight(el) { el.style.borderColor = '#00ad8e'; el.style.backgroundColor = '#f2ebebff'; }
+    function unhighlight(el) { el.style.borderColor = '#ccc'; el.style.backgroundColor = 'transparent'; }
+
+    async function processNewFiles(files) {
+        const currentElements = getCurrentElements();
+        if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
+        currentElements.fileError.textContent = "";
+        if (!files.length) return;
+
+        const allowedTypes = (currentElements.fileInput?.getAttribute('accept') || '').split(',').map(t => t.trim()).filter(t => t);
+        for (let file of files) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            const type = file.type || getMimeType(ext);
+
+            if (allowedTypes.length && !allowedTypes.includes(type) && !allowedTypes.some(t => file.name.endsWith(t.replace('.', '')))) {
+                currentElements.fileError.textContent = `File type not allowed: ${file.name}`;
+                continue;
+            }
+            if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                currentElements.fileError.textContent = `Max ${MAX_FILES} files allowed.`;
+                break;
+            }
+            if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === file.name && f.size === file.size)) {
+                currentElements.fileError.textContent = `File "${file.name}" already uploaded.`;
+                continue;
             }
 
-            function highlight() {
-                dropZone.style.borderColor = '#00ad8e';
-                dropZone.style.backgroundColor = '#f7f7f7';
+            if (['image/jpeg', 'image/jpg', 'image/png'].includes(type) && editElements.imageEditModal) {
+                const edited = await editImage(file);
+                if (edited) newFiles.push({ name: edited.name, file: edited, type: edited.type, ext, url: null, size: edited.size });
+            } else {
+                newFiles.push({ name: file.name, file, type, ext, url: null, size: file.size });
             }
+        }
+        renderFileList();
+        updateSubmitFileInput();
+    }
 
-            function unhighlight() {
-                dropZone.style.borderColor = '#ccc';
-                dropZone.style.backgroundColor = 'transparent';
-            }
+    function editImage(file) {
+        return new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const dataURL = e.target.result;
+                const img = document.getElementById('editor-image');
+                const canvas = document.getElementById('editor-canvas');
+                if (cropper) cropper.destroy();
+                currentRotationAngle = 0; originalDataURL = dataURL; currentImageBlob = file;
+                img.src = dataURL; img.style.display = 'block'; canvas.style.display = 'none';
+                editElements.imageEditModal.show();
+                cropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1, autoCropArea: 1, responsive: true, scalable: true, zoomable: true, minContainerWidth: 600, minContainerHeight: 600 });
 
-            function handleDrop(e) {
-                unhighlight();
-                const dt = e.dataTransfer;
-                const files = dt.files;
+                const escapeHandler = ev => ev.key === 'Escape' && editElements.imageEditModal.hide();
+                document.addEventListener('keydown', escapeHandler);
+                editElements.imageEditModal._element.addEventListener('hidden.bs.modal', () => {
+                    document.removeEventListener('keydown', escapeHandler);
+                    resolve(null); cleanup();
+                }, { once: true });
 
-                processNewFiles(files);
-            }
+                document.getElementById('crop-btn').onclick = () => {
+                    img.style.display = 'block'; canvas.style.display = 'none';
+                    if (!cropper) cropper = new Cropper(img, { viewMode: 1, dragMode: 'crop', autoCrop: false, movable: false, zoomable: false, scalable: false });
+                    cropper.setDragMode('crop');
+                };
 
-            function processNewFiles(files) {
-                fileError.textContent = "";
-                if (!files.length) return;
+                document.getElementById('rotate-btn').onclick = () => {
+                    if (!originalDataURL) return;
+                    currentRotationAngle = (currentRotationAngle + 90) % 360;
+                    const imgObj = new Image(); imgObj.src = originalDataURL;
+                    imgObj.onload = () => {
+                        const tempCanvas = document.createElement('canvas'), ctx = tempCanvas.getContext('2d');
+                        const angleRad = currentRotationAngle * Math.PI / 180;
+                        const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
+                        const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
+                        tempCanvas.width = w; tempCanvas.height = h;
+                        ctx.translate(w / 2, h / 2); ctx.rotate(angleRad);
+                        ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
+                        tempCanvas.toBlob(blob => {
+                            currentImageBlob = new File([blob], file.name, { type: file.type });
+                            const url = URL.createObjectURL(currentImageBlob);
+                            img.src = url; if (cropper) cropper.destroy();
+                            cropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1, autoCropArea: 1, responsive: true, scalable: true, zoomable: true, minContainerWidth: 600, minContainerHeight: 600 });
+                        }, file.type, 1);
+                    };
+                };
 
-                const allowedTypes = fileInput.getAttribute('accept').split(',').map(t => t.trim());
-                for (let i = 0; i < files.length; i++) {
-                    // Check file type
-                    if (files[i].type && !allowedTypes.includes(files[i].type) && !allowedTypes.some(t => files[i].name.endsWith(t))) {
-                        fileError.textContent = `File type not allowed for: ${files[i].name}`;
-                        continue;
+                const saveBtn = document.getElementById('saveEditedImage');
+                const saveHandler = () => {
+                    if (cropper) {
+                        cropper.getCroppedCanvas({ fillColor: file.type.includes('png') ? 'transparent' : '#ffffff' }).toBlob(blob => {
+                            const edited = new File([blob], file.name, { type: file.type });
+                            const errorElement = getCurrentElements().fileError; // Use context-aware error element
+                            if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
+                                errorElement.textContent = `File "${edited.name}" already uploaded.`; resolve(null); cleanup();
+                            } else { resolve(edited); cleanup(); }
+                        }, file.type, 1);
+                    } else {
+                        const edited = currentImageBlob ? new File([currentImageBlob], file.name, { type: file.type }) : file;
+                        const errorElement = getCurrentElements().fileError; // Use context-aware error element
+                        if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
+                            errorElement.textContent = `File "${edited.name}" already uploaded.`; resolve(null); cleanup();
+                        } else { resolve(edited); cleanup(); }
                     }
+                };
+                saveBtn.addEventListener('click', saveHandler, { once: true });
 
-                    // Check max files limit
-                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                        fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
-                        break;
-                    }
-
-                    // Avoid duplicate files by checking file name and size
-                    if (!newFiles.some(f => f.name === files[i].name && f.size === files[i].size)) {
-                        newFiles.push(files[i]);
-                    }
+                function cleanup() {
+                    editElements.imageEditModal.hide();
+                    if (cropper) { cropper.destroy(); cropper = null; }
+                    img.src = ''; img.style.display = 'none'; canvas.style.display = 'none';
+                    currentRotationAngle = 0; originalDataURL = null; currentImageBlob = null;
+                    const newBtn = saveBtn.cloneNode(true); saveBtn.parentNode.replaceChild(newBtn, saveBtn);
                 }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 
-                renderFileList();
-                updateSubmitFileInput();
-            }
+    // === Add File Button & Input Listeners (Unchanged Logic) ===
+    if (isEditPage || isNewConsultation || isFollowup) {
+        const elements = getCurrentElements();
 
-            function updateSubmitFileInput() {
-                const dataTransfer = new DataTransfer();
-                newFiles.forEach(file => dataTransfer.items.add(file));
-                submitFileInput.files = dataTransfer.files;
-            }
-
-            // --- BUTTON AND FILE INPUT HANDLERS ---
-            addBtn.addEventListener("click", () => {
+        if (elements.addBtn) {
+            elements.addBtn.addEventListener("click", () => {
                 if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                    fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
+                    elements.fileError.textContent = `Maximum ${MAX_FILES} files allowed.`;
                     return;
                 }
-                fileInput.click();
+                elements.fileInput.click();
             });
-
-            fileInput.addEventListener("change", () => {
-                if (fileInput.files.length > 0) {
-                    processNewFiles(fileInput.files);
-                    fileInput.value = ""; // Clear fileInput to allow new selections
+        }
+        if (elements.fileInput) {
+            elements.fileInput.addEventListener("change", async () => {
+                if (elements.fileInput.files.length) {
+                    await processNewFiles(Array.from(elements.fileInput.files));
+                    elements.fileInput.value = "";
                 }
             });
+        }
+    }
 
-            // --- RENDER FILE LIST FUNCTION ---
-            function renderFileList() {
-                fileList.innerHTML = "";
 
-                if (existingFiles.length + newFiles.length === 0) {
-                    fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
-                    return;
-                }
+    // === Render File List (Unchanged Logic) ===
+    function renderFileList() {
+        const currentElements = getCurrentElements();
+        if (!currentElements.fileList) return;
+        currentElements.fileList.innerHTML = "";
+        const context = isEditPage ? "edit" : isNewConsultation ? "new" : "followup";
 
-                const ul = document.createElement("ul");
-                ul.style.paddingLeft = "1.2rem";
+        if (!existingFiles.length && !newFiles.length) {
+            currentElements.fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+            return;
+        }
 
-                existingFiles.forEach((file, index) => {
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
+        const ul = document.createElement("ul"); ul.style.paddingLeft = "1.2rem";
+        [...existingFiles, ...newFiles].forEach((file, i) => {
+            const isExisting = isEditPage && i < existingFiles.length;
+            const fileIndexInArray = isExisting ? i : i - existingFiles.length;
 
-                    const name = document.createTextNode(file.file_name + " ");
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
+            const li = document.createElement("li"); li.style.marginBottom = "6px";
+            const link = document.createElement("a"); link.href = "javascript:void(0);"; link.textContent = isExisting ? file.file_name : file.name;
+            link.className = "openAttachment"; link.style.color = "#007bff"; link.style.textDecoration = "underline"; link.style.cursor = "pointer";
+            link.setAttribute("data-file", isExisting ? file.url : (file.file ? file.name : ''));
+            link.setAttribute("data-ext", isExisting ? file.ext : file.ext);
+            link.setAttribute("data-context", context);
+            link.setAttribute("data-is-existing", isExisting.toString());
+            link.setAttribute("data-file-index", fileIndexInArray.toString());
 
-                    removeBtn.addEventListener("click", () => {
-                        removedFiles.push(file.file_name);
-                        existingFiles.splice(index, 1);
-                        removedFilesInput.value = JSON.stringify(removedFiles);
-                        renderFileList();
-                    });
+            const removeBtn = document.createElement("button"); removeBtn.type = "button"; removeBtn.textContent = "✕";
+            removeBtn.className = "btn btn-sm btn-danger"; removeBtn.style.marginLeft = "8px";
+            removeBtn.onclick = () => {
+                if (isExisting) { removedFiles.push(file.file_name); existingFiles.splice(fileIndexInArray, 1); if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles); }
+                else newFiles.splice(fileIndexInArray, 1);
+                renderFileList(); updateSubmitFileInput();
+            };
+            li.appendChild(link); li.appendChild(removeBtn); ul.appendChild(li);
+        });
+        currentElements.fileList.appendChild(ul);
+    }
 
-                    li.appendChild(name);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
-                });
+    function updateSubmitFileInput() {
+        const currentElements = getCurrentElements();
+        if (!currentElements.submitFileInput) return;
+        const dt = new DataTransfer();
+        newFiles.forEach(f => dt.items.add(f.file));
+        currentElements.submitFileInput.files = dt.files;
+    }
 
-                newFiles.forEach((file, index) => {
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
+    // === Preview Functions ===
+    function showPreview(file, isExisting, index, context) {
+        const fileName = isExisting ? file.file_name : file.name;
+        const fileType = isExisting ? (file.mime_type || getMimeType(file.ext)) : file.type;
+        const url = isExisting ? file.url : URL.createObjectURL(file.file);
 
-                    const name = document.createTextNode(file.name + " ");
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
+        let elements, showModal, updateNav;
+        if (context === 'edit' && editElements.editPreviewModal) {
+            elements = editElements; showModal = () => editElements.editPreviewModal.show(); updateNav = updateEditNavigation;
+            elements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
+            elements.previewContent.innerHTML = '';
+        } else if (context === 'new' && newConsultationElements.previewModal) {
+            elements = newConsultationElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+            elements.modalTitle.textContent = `New Consultation Attachment Preview - ${fileName}`;
+            elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+        } else if (context === 'followup' && followupElements.previewModal) {
+            elements = followupElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+            elements.modalTitle.textContent = `Follow-up Attachment Preview - ${fileName}`;
+            elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+        } else if (context === 'dashboard' && dashboardElements.previewModal) {
+            elements = dashboardElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+            elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
+            elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
 
-                    removeBtn.addEventListener("click", () => {
-                        newFiles.splice(index, 1);
-                        renderFileList();
-                        updateSubmitFileInput();
-                    });
+            // NEW: Clear any previous 'No Preview' message before setting new content
+            document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
 
-                    li.appendChild(name);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
-                });
+            // Dashboard Toolbar Logic (Start)
+            const toolbar = document.getElementById('attachment-toolbar');
+            const downloadBtn = document.getElementById('downloadAttachmentBtn');
+            const attachmentImage = document.getElementById('attachmentImage');
 
-                fileList.appendChild(ul);
+            // Always start by hiding the toolbar as the default state for non-images (like PDFs).
+            toolbar.style.display = 'none';
+
+            // Reset Zoom
+            currentZoom = 1.0;
+            attachmentImage.style.transform = `scale(${currentZoom})`;
+            
+            // Set Download URL
+            downloadBtn.onclick = () => {
+                const tempLink = document.createElement('a');
+                tempLink.href = url;
+                tempLink.download = fileName;
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+            };
+
+            if (fileType.includes('image')) {
+                toolbar.style.display = 'flex';
+                document.getElementById('zoomOutBtn').disabled = true;
+                document.getElementById('zoomInBtn').disabled = false;
+                attachmentImage.style.cursor = 'grab';
+            } else {
+                attachmentImage.style.cursor = 'default'; 
             }
-        })();</script>
 
+        } else return;
+
+        currentIndex = index; 
+
+        const display = () => {
+            if (fileType.includes('image')) {
+                if (context === 'edit') { const img = document.createElement('img'); img.src = url; img.style.maxWidth = '100%'; img.maxHeight = '70vh'; elements.previewContent.appendChild(img); }
+                else { elements.image.src = url; elements.image.classList.remove('d-none'); }
+            } else if (fileType === 'application/pdf') {
+                if (context === 'edit') { const embed = document.createElement('embed'); embed.src = url; embed.style.width = '100%'; embed.style.height = '70vh'; elements.previewContent.appendChild(embed); }
+                else { elements.pdf.src = url; elements.pdf.classList.remove('d-none'); }
+            } else {
+                const p = document.createElement('p'); p.textContent = `Preview not available for ${fileName}.`; p.style.textAlign = 'center';
+                
+                // FIX START: Logic to handle unsupported file types
+                if (context === 'dashboard') {
+                    elements.image.classList.add('d-none');
+                    elements.pdf.classList.add('d-none');  
+                    p.id = 'no-preview-message';
+                    document.getElementById('attachment-content-wrapper').appendChild(p);
+                } else if (context === 'edit') {
+                    elements.previewContent.appendChild(p);
+                } else {
+                    elements.image.classList.remove('d-none');
+                    elements.image.alt = p.textContent;
+                }
+            }
+            updateNav(index); showModal();
+        };
+
+        if (isExisting && context !== 'edit') {
+            fetch(url, { method: 'HEAD' }).then(r => r.ok ? display() : fail()).catch(fail);
+        } else display();
+
+        function fail() {
+            const p = document.createElement('p'); p.textContent = `Cannot access ${fileName}.`; p.style.textAlign = 'center';
+            context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
+            updateNav(index); showModal();
+        }
+
+        elements.previewModal._element.addEventListener('hidden.bs.modal', () => {
+            if (!isExisting && url.startsWith('blob:')) URL.revokeObjectURL(url);
+            if (context === 'edit') elements.previewContent.innerHTML = '';
+            else { elements.image.src = ''; elements.pdf.src = ''; elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none'); }
+            currentIndex = -1; currentFiles = [];
+            
+            // Dashboard Cleanup: Reset Image Pan/Drag styles (Required for correct state)
+            if(context === 'dashboard') {
+                document.getElementById('attachmentImage').style.cursor = 'default';
+                document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
+                document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+            }
+        }, { once: true });
+    }
+
+    //  Navigation Functions
+    function updateEditNavigation(index) {
+        editElements.prevBtn.disabled = index === 0; editElements.nextBtn.disabled = index === currentFiles.length - 1;
+        editElements.prevBtn.classList.toggle('disabled', index === 0); editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+    }
+
+    function updateNavButtons(el, index) {
+        el.prevBtn.disabled = index === 0; 
+        el.nextBtn.disabled = index === currentFiles.length - 1;
+        el.prevBtn.classList.toggle('disabled', index === 0); 
+        el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+    }
+
+    // === Click Handler for All .openAttachment ===
+    document.removeEventListener('click', handleAttachmentClick);
+    function handleAttachmentClick(e) {
+        const link = e.target.closest('.openAttachment');
+        if (!link) return;
+        e.preventDefault(); e.stopPropagation();
+
+        const context = link.getAttribute('data-context');
+        const fileName = link.textContent.trim();
+
+        let allRelevantLinks = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
+        currentFiles = allRelevantLinks; 
+
+        if (context === 'dashboard') {
+            const match = fileName.match(/_(\d+)_/); 
+            const consultationId = match ? match[1] : null;
+
+            if (consultationId) {
+                // Filter all dashboard links to keep only those that contain the pattern "_ID_"
+                const filterPattern = new RegExp(`_${consultationId}_`);
+                currentFiles = allRelevantLinks.filter(fileLink =>
+                    filterPattern.test(fileLink.textContent.trim())
+                );
+            } else {
+                // If ID is missing, only show the current file (length 1, buttons disabled)
+                currentFiles = [link];
+            }
+        }
+        
+        const index = currentFiles.indexOf(link);
+        if (index === -1) return;
+
+        if (['new', 'edit', 'followup'].includes(context)) {
+            const isExisting = link.getAttribute('data-is-existing') === "true";
+            const fileIndexInArray = parseInt(link.getAttribute('data-file-index'), 10);
+
+            let file = null;
+            if (isExisting) {
+                file = existingFiles[fileIndexInArray];
+            } else {
+                file = newFiles[fileIndexInArray];
+            }
+
+            if (file) showPreview(file, isExisting, index, context);
+            else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
+
+        } else if (context === 'dashboard') {
+            showPreview({ url: link.getAttribute('data-file'), ext: link.getAttribute('data-ext'), file_name: fileName }, true, index, 'dashboard');
+        }
+    }
+    document.addEventListener('click', handleAttachmentClick);
+
+    // === Navigation Buttons Setup ===
+    function setupNav(prevBtn, nextBtn, context) {
+        if (!prevBtn || !nextBtn) return;
+        prevBtn.onclick = () => { if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context); };
+        nextBtn.onclick = () => { if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context); };
+        [prevBtn, nextBtn].forEach(btn => {
+            btn.addEventListener("mouseenter", () => btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer');
+            btn.addEventListener("mouseleave", () => btn.style.cursor = '');
+        });
+    }
+
+    function navigate(index, context) {
+        const link = currentFiles[index];
+        link.click();
+    }
+
+    setupNav(editElements.prevBtn, editElements.nextBtn, 'edit');
+    if (newConsultationElements.prevBtn) setupNav(newConsultationElements.prevBtn, newConsultationElements.nextBtn, 'new');
+    if (followupElements.prevBtn) setupNav(followupElements.prevBtn, followupElements.nextBtn, 'followup');
+    if (dashboardElements.prevBtn) setupNav(dashboardElements.prevBtn, dashboardElements.nextBtn, 'dashboard');
+
+   // === Dashboard Zoom & Pan (double-tap + hold ONLY) ===
+const zoomInBtn   = document.getElementById('zoomInBtn');
+const zoomOutBtn  = document.getElementById('zoomOutBtn');
+const attachmentImage = document.getElementById('attachmentImage');
+const contentWrapper   = document.getElementById('attachment-content-wrapper');
+
+if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
+
+    zoomInBtn.addEventListener('click', () => {
+        if (attachmentImage.classList.contains('d-none')) return;
+        currentZoom = Math.min(currentZoom + ZOOM_STEP, 3.0);
+        attachmentImage.style.transform = `scale(${currentZoom})`;
+        zoomOutBtn.disabled = false;
+        if (currentZoom >= 3.0) zoomInBtn.disabled = true;
+        if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+    });
+
+    zoomOutBtn.addEventListener('click', () => {
+        if (attachmentImage.classList.contains('d-none')) return;
+        currentZoom = Math.max(currentZoom - ZOOM_STEP, 1.0);
+        attachmentImage.style.transform = `scale(${currentZoom})`;
+        zoomInBtn.disabled = false;
+        if (currentZoom <= 1.0) {
+            zoomOutBtn.disabled = true;
+            contentWrapper.scrollTo(0, 0);
+            attachmentImage.style.cursor = 'default';
+        } else {
+            attachmentImage.style.cursor = 'grab';
+        }
+    });
+
+    attachmentImage.setAttribute('draggable', 'false');
+    attachmentImage.addEventListener('dragstart', e => e.preventDefault());
+
+    // CSS – allow only panning, block everything else
+    attachmentImage.style.touchAction = 'pan-x pan-y';
+    attachmentImage.style.userSelect = 'none';
+
+    let isDragging = false;
+    let startX, startY, scrollLeft, scrollTop;
+
+    const startDrag = (clientX, clientY) => {
+        if (attachmentImage.classList.contains('d-none') || currentZoom <= 1.0) return;
+
+        isDragging = true;
+        attachmentImage.style.cursor = 'grabbing';
+
+        startX = clientX - contentWrapper.offsetLeft;
+        startY = clientY - contentWrapper.offsetTop;
+        scrollLeft = contentWrapper.scrollLeft;
+        scrollTop  = contentWrapper.scrollTop;
+
+        contentWrapper.style.userSelect = 'none';
+    };
+
+    const moveDrag = (clientX, clientY) => {
+        if (!isDragging) return;
+        const x = clientX - contentWrapper.offsetLeft;
+        const y = clientY - contentWrapper.offsetTop;
+        const walkX = x - startX;
+        const walkY = y - startY;
+
+        contentWrapper.scrollLeft = scrollLeft - walkX;
+        contentWrapper.scrollTop  = scrollTop  - walkY;
+    };
+
+    const stopDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+        contentWrapper.style.userSelect = '';
+    };
+
+    contentWrapper.addEventListener('mousedown', e => startDrag(e.pageX, e.pageY));
+    contentWrapper.addEventListener('mousemove', e => moveDrag(e.pageX, e.pageY));
+    document.addEventListener('mouseup', stopDrag);
+    contentWrapper.addEventListener('mouseleave', stopDrag);
+
+  
+    let lastTap = 0;
+    let tapTimeout = null;
+
+    contentWrapper.addEventListener('touchstart', e => {
+        const now = Date.now();
+        const TAP_DELAY = 300;
+        const DOUBLE_TAP_THRESHOLD = 500;
+
+        if (now - lastTap < TAP_DELAY) {
+            // ---- DOUBLE TAP DETECTED ----
+            clearTimeout(tapTimeout);
+            e.preventDefault();
+
+            tapTimeout = setTimeout(() => {
+                if (e.touches.length === 1) {
+                    const touch = e.touches[0];
+                    startDrag(touch.pageX, touch.pageY);
+                }
+            }, 150);
+        } else {
+            lastTap = now;
+            tapTimeout = setTimeout(() => {}, DOUBLE_TAP_THRESHOLD);
+        }
+    });
+
+    contentWrapper.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        e.preventDefault(); 
+        const touch = e.touches[0];
+        moveDrag(touch.pageX, touch.pageY);
+    });
+
+    contentWrapper.addEventListener('touchend', stopDrag);
+    contentWrapper.addEventListener('touchcancel', stopDrag);
+}
+});
+
+
+    </script>
+<!------------ End ------->
 
     <!-- Attachment display modal script -->
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             const attachmentLinks = document.querySelectorAll(".openAttachment");
             const modal = new bootstrap.Modal(document.getElementById('attachmentModal'));
@@ -4132,10 +4923,16 @@
 
                     modal.show();
                 });
+                
             });
+            
         });
     </script>
+ -->
 
+
+ <!-- added Arrow Attachment Display -->
+  <script>
     <!-- Delete Consultation Script -->
     <script>
         let deleteConsultationId = null;
@@ -4195,6 +4992,9 @@
 
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
+    <!-- Fabric.js and Cropper.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 </body>
 
 </html>

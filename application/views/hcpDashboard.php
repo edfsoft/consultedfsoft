@@ -703,6 +703,11 @@
                                                 <div class="form-group pb-3">
                                                     <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                             class="text-danger">*</span></label>
+                                                             <input type="text" 
+                                                                class="form-control mb-1" 
+                                                                id="referralDoctorSearch" 
+                                                                placeholder="Search Chief Consultant Id / Name"
+                                                                autocomplete="off">
                                                     <select class="form-select" name="referalDoctor" id="referalDoctor"
                                                         oninput="adjustTimeOptions()">
                                                         <option value="">Select Chief Consultant Id</option>
@@ -916,15 +921,15 @@
                         });
                     </script> -->
 
-                    <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
                         const select      = document.getElementById('patientId');
                         const searchInput = document.getElementById('patientSearch');
                         const addBtn      = document.getElementById('addPatientBtn');
                         let originalOptions = Array.from(select.options);
 
                     select.value = "";
-                // 1. Live search filter
+                    // 1. Live search filter
                     searchInput.addEventListener('input', function () {
                         const term = this.value.toLowerCase().trim();
                         
@@ -972,7 +977,7 @@
                             if (resultInput && resultInput.value) {
                                 const patient = JSON.parse(resultInput.value);
                                 addPatientToSelectAndSelect(patient);
-                                resultInput.value = ''; // clear for next time
+                                resultInput.value = '';
                             }
                             document.getElementById('patientSearch').value = '';
                         });
@@ -1010,7 +1015,184 @@
                         select.dispatchEvent(new Event('change'));
                     }
 
+            </script>
+
+                   <!--  Referal Id Search Area -->
+                <script>
+                let newPatientModalInstance;
+                function setupSearchDropdown(selectElementId, searchInputId, placeholderText, noResultText) {
+                    const selectElement = document.getElementById(selectElementId);
+                    const searchInputElement = document.getElementById(searchInputId);
+
+                    if (!selectElement || !searchInputElement) {
+                        console.error(`Missing required elements for search: #${selectElementId} or #${searchInputId}`);
+                        return;
+                    }
+
+                    let originalOptions = Array.from(selectElement.options);
+                    const MAX_DISPLAY_COUNT = 5;
+
+                    // Ensure the placeholder is selected on form initialization
+                    selectElement.value = ""; 
+                    searchInputElement.addEventListener('input', function () {
+                        const term = this.value.toLowerCase().trim();
+                        
+                        // Open/Close the dropdown based on search term length
+                        if (term.length > 0) {
+                            selectElement.size = 6; 
+                        } else {
+                            selectElement.size = 1; 
+                        }
+
+                        // Reset the dropdown content with the placeholder
+                        selectElement.innerHTML = `<option value="">${placeholderText}</option>`;
+                        let matches = 0;
+                        let count = 0;
+
+                        originalOptions.forEach(opt => {
+                            if (opt.value === '') return;
+                            
+                            // Stop adding options once the limit is reached
+                            if (count >= MAX_DISPLAY_COUNT) return;
+
+                            if (opt.textContent.toLowerCase().includes(term)) {
+                                selectElement.appendChild(opt.cloneNode(true));
+                                matches++;
+                                count++;
+                            }
+                        });
+
+                        if (term.length > 0) {
+                            selectElement.size = Math.min(matches + 1, MAX_DISPLAY_COUNT + 1); 
+                        }
+                        
+                        // Show "No result" message
+                        if (matches === 0 && term !== '') {
+                            const no = document.createElement('option');
+                            no.disabled = true;
+                            no.textContent = noResultText;
+                            selectElement.appendChild(no);
+                            selectElement.size = 2;
+                        }
+                    });
+
+                    // 2. Click search → open dropdown
+                    searchInputElement.addEventListener('click', function () {
+                        selectElement.size = 6;
+                        this.focus(); 
+                        this._ignoreBlur = true;
+                    });
+
+                    // 3. Click away → close dropdown
+                    searchInputElement.addEventListener('blur', function () {
+                        if (this._ignoreBlur) {
+                            this._ignoreBlur = false;
+                            return;
+                        }
+                        setTimeout(() => selectElement.size = 1, 100); 
+                    });
+
+                    // 4. When user picks an item → clear search box
+                    selectElement.addEventListener('change', function () {
+                        if (this.value) {
+                            searchInputElement.value = ''; 
+                        }
+                        selectElement.size = 1; 
+                    });
+                    
+                    return { originalOptions: originalOptions, selectElement: selectElement };
+                }
+
+                // Open modal (Assumes bootstrap is loaded)
+                function showNewPatientModal() {
+                    if (newPatientModalInstance) {
+                        newPatientModalInstance.show();
+                    } else {
+                        console.error('New Patient Modal instance not initialized.');
+                    }
+                }
+                // Add new patient to dropdown and SELECT it
+                function addPatientToSelectAndSelect(patient, selectElement, originalOptionsRef) {
+                    const value = patient.patientId + '|' + patient.id;
+                    const text  = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
+
+                    // Avoid duplicate
+                    let exists = false;
+                    for (let opt of selectElement.options) {
+                        if (opt.value === value) {
+                            exists = true;
+                            break;
+                        }
+                    }
+
+                    if (!exists) {
+                        const option = new Option(text, value, true, true); // selected
+                        selectElement.add(option);
+                        if (originalOptionsRef) {
+                            originalOptionsRef.splice(0, originalOptionsRef.length, ...Array.from(selectElement.options));
+                        }
+                    } else {
+                        selectElement.value = value;
+                    }
+
+                    selectElement.dispatchEvent(new Event('change'));
+                }
+
+                // Main DOMContentLoaded logic
+                document.addEventListener('DOMContentLoaded', function () {
+                    const patientElements = setupSearchDropdown(
+                        'patientId', 
+                        'patientSearch', 
+                        'Select Patient Id', 
+                        '— No patient found —'
+                    );
+                    let originalOptions = patientElements.originalOptions;
+                    const select = patientElements.selectElement; 
+                    
+                    // Set up Referral Doctor Search
+                    setupSearchDropdown(
+                        'referalDoctor', 
+                        'referralDoctorSearch', 
+                        'Select Chief Consultant Id', 
+                        '— No doctor found —'
+                    );
+                    const newPatientModalElement = document.getElementById('newPatientModal');
+                    if (newPatientModalElement) {
+                        newPatientModalInstance = new bootstrap.Modal(newPatientModalElement);
+                    }
+
+                    const searchInput = document.getElementById('patientSearch');
+                    const addBtn = document.getElementById('addPatientBtn');
+
+                    // 5. +Add button → open modal
+                    if (addBtn) {
+                        addBtn.addEventListener('click', function () {
+                            showNewPatientModal();
+                            if (searchInput) searchInput.value = '';
+                            if (select) select.value = '';
+                        });
+                    }
+
+                    // 6. FIXED: When modal closes → Add & Select new patient
+                    if (newPatientModalElement) {
+                        newPatientModalElement.addEventListener('hidden.bs.modal', function () {
+                            const resultInput = document.getElementById('newPatientResult');
+                            if (resultInput && resultInput.value) {
+                                try {
+                                    const patient = JSON.parse(resultInput.value);
+                                    addPatientToSelectAndSelect(patient, select, originalOptions); 
+                                    resultInput.value = '';
+                                } catch (e) {
+                                    console.error("Error parsing new patient result:", e);
+                                }
+                            }
+                            if (searchInput) document.getElementById('patientSearch').value = '';
+                        });
+                    }
+
+                });
                 </script>
+
 
                  <!-- Add to db and validation -->
                 <script>

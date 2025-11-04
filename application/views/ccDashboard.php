@@ -60,6 +60,24 @@
         .consultation-item.active {
             display: block;
         }
+
+       /*  Display Preview */
+       .preview-area {
+        position: relative;
+        margin: 0 50px;               /* Space for side borders */
+        height: calc(70vh - 100px);
+        min-height: 400px;
+        overflow: auto;
+        background: #fff;
+    }
+    .preview-area::before,
+    .preview-area::after {
+        content: ''; position: absolute; top: 0; bottom: 0; width: 50px;
+        background: #fff; z-index: 1; pointer-events: none;
+    }
+    .preview-area::before { left: -50px; }
+    .preview-area::after  { right: -50px; }
+    #prevAttachment, #nextAttachment { z-index: 10; }
     </style>
 </head>
 
@@ -2237,6 +2255,208 @@
             }
         }
     </script>
+
+      <!-- Attachment Display Dashboard Modal --> 
+<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="dashboardPreviewModalLabel">
+                    Attachment Preview in Dashboard
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body text-center position-relative p-0">
+
+                <!-- Toolbar -->
+                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0" 
+                     style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
+                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled><b style="font-size:1.2rem;">-</b></button>
+                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled><b style="font-size:1.2rem;">+</b></button>
+                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i class="bi bi-download"></i></button>
+                </div>
+
+                <!-- Prev / Next Buttons (on top) -->
+                <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" 
+                        style="font-size:1.5rem;" disabled><b>&lt;</b></button>
+                <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" 
+                        style="font-size:1.5rem;" disabled><b>&gt;</b></button>
+
+                <!-- PREVIEW AREA WITH 50px WHITE BORDERS -->
+                <div class="preview-area">
+                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none" 
+                         style="transform-origin:top left;transition:transform .2s ease-out;">
+                    <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;" frameborder="0"></iframe>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- script to display dasboard Preview -->
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modalEl     = document.getElementById('dashboardPreviewModal');
+    const modal       = new bootstrap.Modal(modalEl);
+    const toolbarEl   = document.getElementById('attachment-toolbar');
+    const zoomInBtn   = document.getElementById('zoomInBtn');
+    const zoomOutBtn  = document.getElementById('zoomOutBtn');
+    const downloadBtn = document.getElementById('downloadAttachmentBtn');
+    const prevBtn     = document.getElementById('prevAttachment');
+    const nextBtn     = document.getElementById('nextAttachment');
+
+    const imgEl       = document.getElementById('attachmentImage');
+    const pdfEl       = document.getElementById('attachmentPDF');
+    const previewArea = document.querySelector('.preview-area');
+
+    let messageEl = null;
+    let currentAttachments = [];
+    let currentIdx = -1;
+
+    // CLICK ON ANY FILE → BUILD ATTACHMENTS FROM ITS GROUP
+    document.querySelectorAll('.openAttachment').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const consultationContainer = this.closest('[data-consultation-id]') || 
+                                         this.closest('.consultation') || 
+                                         this.closest('div');
+
+            if (!consultationContainer) return;
+            // === 2. Build attachments ONLY from this container ===
+            const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
+            currentAttachments = [];
+            linksInGroup.forEach((l, idx) => {
+                const url = l.dataset.file;
+                const ext = l.dataset.ext.toLowerCase();
+                const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
+                currentAttachments.push({url, ext, fileName, link: l, index: idx});
+            });
+            // === 3. Find current file index ===
+            const clickedUrl = this.dataset.file;
+            currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
+            if (currentIdx === -1) return;
+            // === 4. Show file and open modal ===
+            showFile(currentAttachments[currentIdx]);
+            modal.show();
+        });
+    });
+
+    // UPDATED showFile() — HIDE ZOOM FOR PDF & .docx
+    function showFile(fileObj) {
+        imgEl.classList.add('d-none');
+        pdfEl.classList.add('d-none');
+        if (messageEl) messageEl.remove();
+        imgEl.src = '';
+        pdfEl.src = '';
+        toolbarEl.style.display = 'none';
+        zoomInBtn.disabled = false;
+        zoomOutBtn.disabled = false;
+
+        // === IMAGE: SHOW ZOOM BUTTONS ===
+        if (['jpg','jpeg','png','gif','bmp','webp','svg'].includes(fileObj.ext)) {
+            imgEl.src = fileObj.url;
+            imgEl.classList.remove('d-none');
+            toolbarEl.style.display = 'flex';
+            enableImageZoom();
+
+            zoomInBtn.style.display = 'inline-block';
+            zoomOutBtn.style.display = 'inline-block';
+        }
+        // === PDF: HIDE ZOOM BUTTONS ===
+        else if (fileObj.ext === 'pdf') {
+            pdfEl.src = fileObj.url + '#toolbar=0';
+            pdfEl.classList.remove('d-none');
+            toolbarEl.style.display = 'flex';
+
+            zoomInBtn.style.display = 'none';
+            zoomOutBtn.style.display = 'none';
+        }
+        // === UNSUPPORTED (.docx, .xls, etc.): HIDE ZOOM BUTTONS ===
+        else {
+            messageEl = document.createElement('div');
+            messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
+            messageEl.style.zIndex = '5';
+            messageEl.innerHTML = `
+                <p class="mb-0 fs-5">
+                    Preview not available for <strong>${fileObj.fileName}</strong>
+                </p>
+            `;
+            previewArea.appendChild(messageEl);
+            toolbarEl.style.display = 'flex';
+
+            zoomInBtn.style.display = 'none';
+            zoomOutBtn.style.display = 'none';
+        }
+
+        // Navigation (only within current group)
+        prevBtn.disabled = (currentIdx === 0);
+        nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
+
+        prevBtn.onclick = () => {
+            if (currentIdx > 0) showFile(currentAttachments[--currentIdx]);
+        };
+        nextBtn.onclick = () => {
+            if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
+        };
+
+        // Download
+        downloadBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const a = document.createElement('a');
+            a.href = fileObj.url;
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+    }
+
+    // ZOOM FUNCTIONS
+    let imgScale = 1;
+    const SCALE_STEP = 0.2;
+    const MIN_SCALE = 0.4;
+    const MAX_SCALE = 3;
+
+    function enableImageZoom() {
+        zoomInBtn.onclick  = () => { imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
+        zoomOutBtn.onclick = () => { imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
+    }
+
+    function enablePdfZoom() {
+        let pdfZoom = 100;
+        const ZOOM_STEP = 20;
+        const MIN_ZOOM = 50;
+        const MAX_ZOOM = 200;
+
+        const setPdfZoom = () => {
+            pdfEl.src = `${currentAttachments[currentIdx].url}#zoom=${pdfZoom}&toolbar=0`;
+        };
+
+        zoomInBtn.onclick  = () => { pdfZoom = Math.min(pdfZoom + ZOOM_STEP, MAX_ZOOM); setPdfZoom(); };
+        zoomOutBtn.onclick = () => { pdfZoom = Math.max(pdfZoom - ZOOM_STEP, MIN_ZOOM); setPdfZoom(); };
+    }
+
+    // CLEANUP
+    modalEl.addEventListener('hidden.bs.modal', function () {
+        imgEl.src = '';
+        pdfEl.src = '';
+        imgEl.classList.add('d-none');
+        pdfEl.classList.add('d-none');
+        if (messageEl) messageEl.remove();
+        imgScale = 1;
+        toolbarEl.style.display = 'none';
+        currentAttachments = [];
+        currentIdx = -1;
+    });
+});
+</script>
 
     <!-- Cropper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>

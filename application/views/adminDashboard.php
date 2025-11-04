@@ -52,7 +52,7 @@
         /*  Display Preview */
        .preview-area {
         position: relative;
-        margin: 0 45px;               /* Space for side borders */
+        margin: 0 50px;               /* Space for side borders */
         height: calc(70vh - 100px);
         min-height: 400px;
         overflow: auto;
@@ -1815,10 +1815,12 @@
                                                     <div class="card rounded">
                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                             <p style="font-size: 24px; font-weight: 500">Specialization List</p>
-                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSpecilization"
-                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                            <button type="button"
+                                                                onclick="openAddModal('specialization')"
+                                                                style="background-color: #2b353bf5;"
+                                                                class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                 <i class="bi bi-plus-square-fill"></i> New
-                                                            </a>
+                                                            </button>
                                                         </div>
                                                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                             <div class="ms-2">
@@ -1929,12 +1931,26 @@
                                                         } else {
                                                             itemsToShow.forEach((specialization, index) => {
                                                                 const specializationRow = document.createElement('tr');
-                                                                specializationRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
-                <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${specialization.id}" data-name="${specialization.specializationName}" data-type="specialization"><i class="bi bi-trash"></i></button>
-                </td>`;
+                                                               specializationRow.innerHTML = `
+    <td class="pt-3">${start + index + 1}.</td>
+    <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
+    <td class="d-flex d-md-block">
+        <button class="btn btn-secondary me-2 edit-btn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#editSpecializationModal"
+                data-id="${specialization.id}"
+                data-name="${specialization.specializationName}">
+            <i class="bi bi-pen"></i>
+        </button>
+        <button class="btn btn-danger delete-btn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#confirmDelete" 
+                data-id="${specialization.id}"
+                data-name="${specialization.specializationName}" 
+                data-type="specialization">
+            <i class="bi bi-trash"></i>
+        </button>
+    </td>`;
                                                                 specializationTableBody.appendChild(specializationRow);
                                                             });
                                                         }
@@ -1995,10 +2011,12 @@
                                                         <div class="card rounded">
                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                 <p style="font-size: 24px; font-weight: 500">Symptoms List</p>
-                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSymptoms"
-                                                                    style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                <button type="button"
+                                                                    onclick="openAddModal('symptoms')"
+                                                                    style="background-color: #2b353bf5;"
+                                                                    class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                     <i class="bi bi-plus-square-fill"></i> New
-                                                                </a>
+                                                                </button>
                                                             </div>
                                                             <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                 <div class="ms-2">
@@ -2173,10 +2191,12 @@
                                                             <div class="card rounded">
                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                     <p style="font-size: 24px; font-weight: 500">Findings List</p>
-                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newFindings"
-                                                                        style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                    <button type="button"
+                                                                        onclick="openAddModal('findings')"
+                                                                        style="background-color: #2b353bf5;"
+                                                                        class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                         <i class="bi bi-plus-square-fill"></i> New
-                                                                    </a>
+                                                                    </button>
                                                                 </div>
                                                                 <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                     <div class="ms-2">
@@ -2352,10 +2372,12 @@
                                                                 <div class="card rounded">
                                                                     <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                         <p style="font-size: 24px; font-weight: 500">Diagnosis List</p>
-                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newDiagnosis"
-                                                                            style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                        <button type="button"
+                                                                            onclick="openAddModal('diagnosis')"
+                                                                            style="background-color: #2b353bf5;"
+                                                                            class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                             <i class="bi bi-plus-square-fill"></i> New
-                                                                        </a>
+                                                                        </button>
                                                                     </div>
                                                                     <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                         <div class="ms-2">
@@ -2533,10 +2555,13 @@
                                                                     <div class="card rounded">
                                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                             <p style="font-size: 24px; font-weight: 500">Investigation List</p>
-                                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newInvestigation"
-                                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                            <button type="button"
+                                                                                onclick="openAddModal('investigation')"
+                                                                                style="background-color: #2b353bf5;"
+                                                                                class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                 <i class="bi bi-plus-square-fill"></i> New
-                                                                            </a>
+                                                                            </button>
+
                                                                         </div>
                                                                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                             <div class="ms-2">
@@ -2712,10 +2737,13 @@
                                                                         <div class="card rounded">
                                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                 <p style="font-size: 24px; font-weight: 500">Instruction List</p>
-                                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newInstruction"
-                                                                                    style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                <button type="button"
+                                                                                    onclick="openAddModal('instruction')"
+                                                                                    style="background-color: #2b353bf5;"
+                                                                                    class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                     <i class="bi bi-plus-square-fill"></i> New
-                                                                                </a>
+                                                                                </button>
+
                                                                             </div>
                                                                             <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                 <div class="ms-2">
@@ -2893,10 +2921,13 @@
                                                                             <div class="card rounded">
                                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                     <p style="font-size: 24px; font-weight: 500">Procedure List</p>
-                                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newProcedure"
-                                                                                        style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                    <button type="button"
+                                                                                        onclick="openAddModal('procedure')"
+                                                                                        style="background-color: #2b353bf5;"
+                                                                                        class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                         <i class="bi bi-plus-square-fill"></i> New
-                                                                                    </a>
+                                                                                    </button>
+
                                                                                 </div>
                                                                                 <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                     <div class="ms-2">
@@ -3076,10 +3107,13 @@
                                                                                 <div class="card rounded">
                                                                                     <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                         <p style="font-size: 24px; font-weight: 500">Advice List</p>
-                                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newAdvice"
-                                                                                            style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                       <button type="button"
+                                                                                            onclick="openAddModal('advice')"
+                                                                                            style="background-color: #2b353bf5;"
+                                                                                            class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                             <i class="bi bi-plus-square-fill"></i> New
-                                                                                        </a>
+                                                                                        </button>
+
                                                                                     </div>
                                                                                     <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                         <div class="ms-2">
@@ -3562,74 +3596,62 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     function showFile(fileObj) {
-    // Clear
-    imgEl.classList.add('d-none');
-    pdfEl.classList.add('d-none');
-    if (messageEl) messageEl.remove();
-    imgEl.src = '';
-    pdfEl.src = '';
+        imgEl.classList.add('d-none');
+        pdfEl.classList.add('d-none');
+        if (messageEl) messageEl.remove();
+        imgEl.src = '';
+        pdfEl.src = '';
+        toolbarEl.style.display = 'none';
+        zoomInBtn.disabled = false;
+        zoomOutBtn.disabled = false;
+        if (['jpg','jpeg','png','gif','bmp','webp','svg'].includes(fileObj.ext)) {
+            imgEl.src = fileObj.url;
+            imgEl.classList.remove('d-none');
+            toolbarEl.style.display = 'flex';
+            enableImageZoom();
+        }
+        else if (fileObj.ext === 'pdf') {
+            pdfEl.src = fileObj.url + '#toolbar=0';
+            pdfEl.classList.remove('d-none');
+            toolbarEl.style.display = 'flex';
+            enablePdfZoom();
+        }
+        else {
+            messageEl = document.createElement('div');
+            messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
+            messageEl.style.zIndex = '5';
+            messageEl.innerHTML = `
+                <p class="mb-0 fs-5">
+                    Preview not available for <strong>${fileObj.fileName}</strong>
+                </p>
+            `;
+            previewArea.appendChild(messageEl);
+            toolbarEl.style.display = 'flex';
+        }
 
-    toolbarEl.style.display = 'none';
-    zoomInBtn.disabled = false;
-    zoomOutBtn.disabled = false;
+        // Navigation (only within current group)
+        prevBtn.disabled = (currentIdx === 0);
+        nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
 
-    // === IMAGE ONLY: Show Zoom Buttons ===
-    if (['jpg','jpeg','png','gif','bmp','webp','svg'].includes(fileObj.ext)) {
-        imgEl.src = fileObj.url;
-        imgEl.classList.remove('d-none');
-        toolbarEl.style.display = 'flex';
-        enableImageZoom();
+        prevBtn.onclick = () => {
+            if (currentIdx > 0) showFile(currentAttachments[--currentIdx]);
+        };
+        nextBtn.onclick = () => {
+            if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
+        };
 
-        // SHOW ZOOM BUTTONS
-        zoomInBtn.style.display = 'inline-block';
-        zoomOutBtn.style.display = 'inline-block';
+        // Download
+        downloadBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const a = document.createElement('a');
+            a.href = fileObj.url;
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
     }
-    // === PDF: Hide Zoom Buttons ===
-    else if (fileObj.ext === 'pdf') {
-        pdfEl.src = fileObj.url + '#toolbar=0';
-        pdfEl.classList.remove('d-none');
-        toolbarEl.style.display = 'flex';
-
-        // HIDE ZOOM BUTTONS
-        zoomInBtn.style.display = 'none';
-        zoomOutBtn.style.display = 'none';
-    }
-    // === UNSUPPORTED (.docx, .xls, etc.): Hide Zoom Buttons ===
-    else {
-        messageEl = document.createElement('div');
-        messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100';
-        messageEl.style.zIndex = '5';
-        messageEl.innerHTML = `
-            <p class="mb-0 fs-5">
-                Preview not available for <strong>${fileObj.fileName}</strong>
-            </p>
-        `;
-        previewArea.appendChild(messageEl);
-        toolbarEl.style.display = 'flex';
-
-        // HIDE ZOOM BUTTONS
-        zoomInBtn.style.display = 'none';
-        zoomOutBtn.style.display = 'none';
-    }
-
-    // Navigation
-    prevBtn.disabled = (currentIdx === 0);
-    nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
-    prevBtn.onclick = () => { if (currentIdx > 0) showFile(currentAttachments[--currentIdx]); };
-    nextBtn.onclick = () => { if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]); };
-
-    // Download
-    downloadBtn.onclick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const a = document.createElement('a');
-        a.href = fileObj.url;
-        a.download = '';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    };
-}
     // ZOOM FUNCTIONS
     let imgScale = 1;
     const SCALE_STEP = 0.2;

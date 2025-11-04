@@ -77,7 +77,7 @@
 </script>
 
 <!-- Popup Add new specilization -->
-<div class="modal fade" id="newSpecilization" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="newSpecilization" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -101,10 +101,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- Popup Add new symptom -->
-<div class="modal fade" id="newSymptoms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="newSymptoms" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -131,9 +131,9 @@
         </div>
     </div>
 </div>
-
+ -->
 <!-- Popup Add new findings  -->
-<div class="modal fade" id="newFindings" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="newFindings" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -159,9 +159,9 @@
         </div>
     </div>
 </div>
-
+ -->
 <!-- Popup Add new diagnosis  -->
-<div class="modal fade" id="newDiagnosis" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="newDiagnosis" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -186,10 +186,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- Popup Add new investigation  -->
-<div class="modal fade" id="newInvestigation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="newInvestigation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -215,9 +215,9 @@
         </div>
     </div>
 </div>
-
+ -->
 <!-- Popup Add new instruction  -->
-<div class="modal fade" id="newInstruction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="newInstruction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -243,9 +243,9 @@
         </div>
     </div>
 </div>
-
+ -->
 <!-- Popup Add new procedure  -->
-<div class="modal fade" id="newProcedure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="newProcedure" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -271,9 +271,9 @@
         </div>
     </div>
 </div>
-
+ -->
 <!-- Popup Add new advice  -->
-<div class="modal fade" id="newAdvice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!-- <div class="modal fade" id="newAdvice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -299,7 +299,7 @@
         </div>
     </div>
 </div>
-
+ -->
 <!-- Popup Add new medicine -->
 <div class="modal fade" id="newMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -400,3 +400,124 @@
             }
         });
     </script> -->
+
+    <!-- Universal Add Modal -->
+<div class="modal fade" id="universalAddModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title fw-medium" id="universalModalTitle" style="font-family: Poppins, sans-serif;">Add New</h5>
+        <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="universalAddForm" method="POST" enctype="multipart/form-data">
+          <label id="universalLabel" class="form-label pb-2"></label><br>
+          <input type="text" name="dynamicName" id="universalInput" class="form-control" placeholder="" required>
+          <br><br>
+          <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end">Add</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-sm btn-primary" onclick="openAddModal('specialization')">Add Specialization</button>
+<button class="btn btn-sm btn-primary" onclick="openAddModal('symptoms')">Add Symptom</button>
+<button class="btn btn-sm btn-primary" onclick="openAddModal('findings')">Add Finding</button>
+<button class="btn btn-sm btn-primary" onclick="openAddModal('investigation')">Add Investigation</button>
+<button class="btn btn-sm btn-primary" onclick="openAddModal('instruction')">Add Instruction</button>
+<button class="btn btn-sm btn-primary" onclick="openAddModal('procedure')">Add Procedure</button>
+<button class="btn btn-sm btn-primary" onclick="openAddModal('advice')">Add Advice</button>
+<button class="btn btn-sm btn-primary" onclick="openAddModal('diagnosis')">Add Diagnosis</button>
+
+
+<script>
+  function openAddModal(type) {
+    const modalTitle = document.getElementById("universalModalTitle");
+    const label = document.getElementById("universalLabel");
+    const input = document.getElementById("universalInput");
+    const form = document.getElementById("universalAddForm");
+
+    // Config object for all modal types
+    const config = {
+      specialization: {
+        title: "Add New Specialization",
+        label: "Specialization Name",
+        placeholder: "E.g. Diabetologist",
+        name: "specializationName",
+        action: "<?php echo base_url() . 'Edfadmin/addNewSpecilization'; ?>"
+      },
+      symptoms: {
+        title: "Add New Symptom",
+        label: "Symptom / Complaint Name",
+        placeholder: "E.g. Head ache",
+        name: "symptomsName",
+        action: "<?php echo base_url() . 'Edfadmin/addNewSymptoms'; ?>"
+      },
+      findings: {
+        title: "Add New Finding",
+        label: "Finding Name",
+        placeholder: "E.g. Blood Sugar High",
+        name: "findingsName",
+        action: "<?php echo base_url() . 'Edfadmin/addNewFindings'; ?>"
+      },
+      investigation: {
+        title: "Add New Investigation",
+        label: "Investigation Name",
+        placeholder: "E.g. ECG",
+        name: "investigationName",
+        action: "<?php echo base_url() . 'Edfadmin/addNewInvestigation'; ?>"
+      },
+      instruction: {
+        title: "Add New Instruction",
+        label: "Instruction Name",
+        placeholder: "E.g. Low fat in diet",
+        name: "instructionName",
+        action: "<?php echo base_url() . 'Edfadmin/addNewInstruction'; ?>"
+      },
+      procedure: {
+        title: "Add New Procedure",
+        label: "Procedure Name",
+        placeholder: "E.g. Coronary angiogram",
+        name: "procedureName",
+        action: "<?php echo base_url() . 'Edfadmin/addNewProcedure'; ?>"
+      },
+      advice: {
+        title: "Add New Advice",
+        label: "Advice Name",
+        placeholder: "E.g. Take rest",
+        name: "adviceName",
+        action: "<?php echo base_url() . 'Edfadmin/addNewAdvice'; ?>"
+      },
+      diagnosis: {
+        title: "Add New Diagnosis",
+        label: "Diagnosis Name",
+        placeholder: "E.g. Diabetes",
+        name: "diagnosisName",
+        action: "<?php echo base_url() . 'Edfadmin/addNewDiagnosis'; ?>"
+      }
+    };
+
+    const selected = config[type];
+    if (!selected) return;
+
+    // Update modal details
+    modalTitle.textContent = selected.title;
+    label.textContent = selected.label + " *";
+    input.placeholder = selected.placeholder;
+    input.name = selected.name;
+    form.action = selected.action;
+
+    // Reset form
+    form.reset();
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById("universalAddModal"));
+    modal.show();
+  }
+</script>

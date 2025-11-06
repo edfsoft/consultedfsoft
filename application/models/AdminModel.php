@@ -184,6 +184,14 @@ class AdminModel extends CI_Model
         }
     }
 
+    public function medicineDelete($id)
+    {
+        $medicineId = $id;
+        $this->db->where('id', $medicineId);
+        $this->db->delete('medicines_list');
+        return true;
+    }
+
     public function getMedicinesList()
     {
         $list = "SELECT * FROM `medicines_list` WHERE activeStatus = '0' ORDER BY `medicineName`";

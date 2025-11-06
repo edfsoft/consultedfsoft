@@ -402,6 +402,17 @@ class Edfadmin extends CI_Controller
         redirect('Edfadmin/medicinesList');
     }
 
+    public function deleteMedicine()
+    {
+        $medicineId = $this->uri->segment(3);
+        if ($this->AdminModel->medicineDelete($medicineId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Medicine deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting edicine');
+        }
+        redirect('Edfadmin/medicinesList');
+    }
+
     public function investigationsList()
     {
         if (isset($_SESSION['adminIdDb'])) {

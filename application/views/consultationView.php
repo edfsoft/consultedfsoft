@@ -188,7 +188,6 @@
             width: 100px;
             text-align: center;
         }
-<<<<<<< HEAD
 
         /* DashboardPreview */
         /* 50px WHITE SIDE BORDERS — OVERLAY METHOD (SAFE) */
@@ -203,15 +202,20 @@
             z-index: 1;
             pointer-events: none;
         }
-        .modal-body::before { left: 0; }
-        .modal-body::after  { right: 0; }
+
+        .modal-body::before {
+            left: 0;
+        }
+
+        .modal-body::after {
+            right: 0;
+        }
 
         /* Ensure buttons are above borders */
-        #prevAttachment, #nextAttachment {
+        #prevAttachment,
+        #nextAttachment {
             z-index: 10;
         }
-=======
->>>>>>> 0f22e84039912f44816d77124a4e59b044e38a85
     </style>
 </head>
 
@@ -2402,7 +2406,7 @@
         </div>
 
         <!-- Attachment Display Dashboard Modal -->
-        <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+        <!-- <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
@@ -2456,62 +2460,60 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-        </div> --> 
+        </div> -->
 
-        <!-- Attachment Display Dashboard Modal --> 
-<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
-     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="dashboardPreviewModalLabel">
-                    Attachment Preview in Dashboard
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        <!-- Attachment Display Dashboard Modal -->
+        <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                            id="dashboardPreviewModalLabel">
+                            Attachment Preview
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
 
-            <!-- ONLY CHANGE: p-0 to remove padding -->
-            <div class="modal-body text-center position-relative p-0">
+                    <div class="modal-body text-center position-relative p-0">
 
-                <!-- Toolbar (unchanged) -->
-                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0" 
-                     style="height: 43px; width: 100%; background-color: #cccecfff; border-radius: 5px; display: none;">
-                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled>
-                        <b style="font-size: 1.2rem;">-</b>
-                    </button>
-                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled>
-                        <b style="font-size: 1.2rem;">+</b>
-                    </button>
-                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i class="bi bi-download"></i></button>
+                        <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
+                            style="height: 43px; width: 100%; background-color: #cccecfff; border-radius: 5px; display: none;">
+                            <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out"
+                                disabled>
+                                <b style="font-size: 1.2rem;">-</b>
+                            </button>
+                            <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled>
+                                <b style="font-size: 1.2rem;">+</b>
+                            </button>
+                            <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
+                                    class="bi bi-download"></i></button>
+                        </div>
+
+                        <button id="prevAttachment"
+                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                            style="font-size: 1.5rem;" disabled><b>&lt;</b></button>
+
+                        <div id="attachment-content-wrapper" class="w-100"
+                            style="max-height: calc(70vh - 100px); overflow: auto; min-height: 400px;">
+                            <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
+                                style="transform-origin: top left; transition: transform 0.2s ease-out;">
+                            <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;"
+                                frameborder="0"></iframe>
+                        </div>
+
+                        <button id="nextAttachment"
+                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                            style="font-size: 1.5rem;" disabled><b>&gt;</b></button>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary text-light"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
-
-                <!-- Prev / Next (unchanged) -->
-                <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" 
-                        style="font-size: 1.5rem;" disabled><b>&lt;</b></button>
-
-                <!-- Content Wrapper (unchanged) -->
-                <div id="attachment-content-wrapper" class="w-100" 
-                     style="max-height: calc(70vh - 100px); overflow: auto; min-height: 400px;">
-                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none" 
-                         style="transform-origin: top left; transition: transform 0.2s ease-out;">
-                    <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
-                </div>
-
-                <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" 
-                        style="font-size: 1.5rem;" disabled><b>&gt;</b></button>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
-    </div>
-</div>
- 
-=======
-        </div>
->>>>>>> 0f22e84039912f44816d77124a4e59b044e38a85
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>

@@ -3773,7 +3773,7 @@
         <?php } ?>
     </script>
 
-    <!-- Patient Attachments Preview -->
+    <!-- Script to display patient attachments in modal -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const modalEl = document.getElementById('dashboardPreviewModal');

@@ -305,7 +305,7 @@
     }, 50);
 </script>
 
-<!-- Patient Attachment Display Dashboard Modal -->
+<!-- Patient Attachment Display Modal -->
 <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -313,7 +313,7 @@
             <div class="modal-header">
                 <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
                     id="dashboardPreviewModalLabel">
-                    Attachment Preview in Dashboard
+                    Attachment Preview
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

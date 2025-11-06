@@ -475,23 +475,14 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function addNewMedicine()
+    public function saveMedicine()
     {
-        if ($this->AdminModel->newMedicine()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Medicine added successfully');
+        if ($this->AdminModel->saveMedicine()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Medicine saved successfully');
         } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding medicine');
+            $this->session->set_flashdata('showErrorMessage', 'Error in saving medicine');
         }
-        redirect('Edfadmin/medicinesList');
-    }
 
-    public function updateMedicine()
-    {
-        if ($this->AdminModel->updateMedicine()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Medicine added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding medicine');
-        }
         redirect('Edfadmin/medicinesList');
     }
 

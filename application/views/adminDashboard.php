@@ -3417,7 +3417,7 @@
                                                                                 <script>
                                                                                     function openAddMedicineModal() {
                                                                                         document.getElementById('medicineModalLabel').innerText = "Add New Medicine";
-                                                                                        document.getElementById('medicineForm').action = "<?php echo base_url('Edfadmin/addNewMedicine'); ?>";
+                                                                                        document.getElementById('medicineForm').action = "<?php echo base_url('Edfadmin/saveMedicine'); ?>";
                                                                                         document.getElementById('medicineSubmit').innerText = "Add";
 
                                                                                         document.getElementById('medicineId').value = '';
@@ -3431,7 +3431,7 @@
 
                                                                                     function openEditMedicineModal(medicine) {
                                                                                         document.getElementById('medicineModalLabel').innerText = "Edit Medicine";
-                                                                                        document.getElementById('medicineForm').action = "<?php echo base_url('Edfadmin/updateMedicine'); ?>";
+                                                                                        document.getElementById('medicineForm').action = "<?php echo base_url('Edfadmin/saveMedicine'); ?>";
                                                                                         document.getElementById('medicineSubmit').innerText = "Update";
 
                                                                                         document.getElementById('medicineId').value = medicine.id;

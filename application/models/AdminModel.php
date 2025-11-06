@@ -311,17 +311,24 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newMedicine()
+    public function saveMedicine()
     {
         $post = $this->input->post(null, true);
-        $insert = array(
-            'medicineBrand' => $post['medicineNameBrand'],
+
+        $data = [
             'medicineName' => $post['medicineName'],
-            'strength' => $post['maedicineStrength']
-        );
-        $this->db->insert('medicines_list', $insert);
-        return true;
+            'compositionName' => $post['medicineComposition'],
+            'category' => $post['medicineCategory']
+        ];
+
+        if (!empty($post['medicineId'])) {
+            $this->db->where('id', $post['medicineId']);
+            return $this->db->update('medicines_list', $data);
+        } else {
+            return $this->db->insert('medicines_list', $data);
+        }
     }
+
 
     public function getMedicinesList()
     {

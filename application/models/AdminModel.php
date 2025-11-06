@@ -229,70 +229,18 @@ class AdminModel extends CI_Model
         return $this->db->update($table, [$field => $name]);
     }
 
-
-    // -------------------------------------------------------------------------------------------------------
-    public function specilizationDelete($id)
-    {
-        $specilizationId = $id;
-        $this->db->where('id', $specilizationId);
-        $this->db->delete('specialization_list');
-        return true;
+// universal Model Delete
+public function deleteItem($table, $id)
+{
+    if (empty($table) || empty($id)) {
+        return false;
     }
 
-    public function symptomsDelete($id)
-    {
-        $symptomsId = $id;
-        $this->db->where('id', $symptomsId);
-        $this->db->delete('symptoms_list');
-        return true;
-    }
+    $this->db->where('id', $id);
+    $this->db->delete($table);
 
-    public function findingsDelete($id)
-    {
-        $findingId = $id;
-        $this->db->where('id', $findingId);
-        $this->db->delete('findings_list');
-        return true;
-    }
-
-    public function diagnosisDelete($id)
-    {
-        $findingId = $id;
-        $this->db->where('id', $findingId);
-        $this->db->delete('diagnosis_list');
-        return true;
-    }
-
-    public function investigationDelete($id)
-    {
-        $this->db->where('id', $id);
-        $this->db->delete('investigations_list');
-        return true;
-    }
-
-    public function instructionDelete($id)
-    {
-        $this->db->where('id', $id);
-        $this->db->delete('instructions_list');
-        return true;
-    }
-
-    public function procedureDelete($id)
-    {
-        $this->db->where('id', $id);
-        $this->db->delete('procedures_list');
-        return true;
-    }
-
-    public function adviceDelete($id)
-    {
-        $this->db->where('id', $id);
-        $this->db->delete('advices_list');
-        return true;
-    }
-    // -------------------------------------------------------------------------------------------------------
-
-
+    return $this->db->affected_rows() > 0;
+}
 
 
 }

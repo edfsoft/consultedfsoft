@@ -709,7 +709,6 @@
             <?php
         } else if ($method == "healthCareProvider") {
             ?>
-
                             <section>
                                 <div class="card rounded">
                                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -3235,10 +3234,9 @@
                                                                                     <div class="card rounded">
                                                                                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                                                                                             <p style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
-                                                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
-                                                                                                <i class="bi bi-plus-square-fill"></i> New
-                                                                                            </a>
+                                                                                            <a href="#" role="butto" onclick="openAddMedicineModal()" style="background-color: #2b353bf5;"
+                                                                                                class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                                <i class="bi bi-plus-square-fill"></i> New</a>
                                                                                         </div>
                                                                                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                             <div class="ms-2">
@@ -3355,14 +3353,15 @@
                                                                                             itemsToShow.forEach((medicine, index) => {
                                                                                                 const medicineRow = document.createElement('tr');
                                                                                                 medicineRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.compositionName}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.category}</td>
-                <td class="d-flex d-md-block">
-                    <button class="btn btn-secondary delete-btn" data-bs-toggle="modal" data-bs-target="#edit-------------" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-pen"></i></button>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
-                </td>`;
+                        <td class="pt-3">${start + index + 1}.</td>
+                        <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
+                        <td style="font-size: 16px" class="pt-3">${medicine.compositionName}</td>
+                        <td style="font-size: 16px" class="pt-3">${medicine.category}</td>
+                        <td class="d-flex d-md-block">
+                               <button class="btn btn-secondary edit-btn" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-composition="${medicine.compositionName}"
+            data-category="${medicine.category}"><i class="bi bi-pen"></i></button>
+                            <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
+                        </td>`;
                                                                                                 medicinesTableBody.appendChild(medicineRow);
                                                                                             });
                                                                                         }
@@ -3410,10 +3409,54 @@
                                                                                         paginationContainer.appendChild(ul);
                                                                                     }
 
-                                                                                    // On load: Show all data, then render
                                                                                     toggleClearIcons();
                                                                                     filteredMedicinesList = [...medicinesList];
                                                                                     displayMedicinesPage(initialPageMedicines);
+                                                                                </script>
+
+                                                                                <script>
+                                                                                    function openAddMedicineModal() {
+                                                                                        document.getElementById('medicineModalLabel').innerText = "Add New Medicine";
+                                                                                        document.getElementById('medicineForm').action = "<?php echo base_url('Edfadmin/addNewMedicine'); ?>";
+                                                                                        document.getElementById('medicineSubmit').innerText = "Add";
+
+                                                                                        document.getElementById('medicineId').value = '';
+                                                                                        document.getElementById('medicineName').value = '';
+                                                                                        document.getElementById('medicineComposition').value = '';
+                                                                                        document.getElementById('medicineCategory').value = '';
+
+                                                                                        var myModal = new bootstrap.Modal(document.getElementById('medicineModal'));
+                                                                                        myModal.show();
+                                                                                    }
+
+                                                                                    function openEditMedicineModal(medicine) {
+                                                                                        document.getElementById('medicineModalLabel').innerText = "Edit Medicine";
+                                                                                        document.getElementById('medicineForm').action = "<?php echo base_url('Edfadmin/updateMedicine'); ?>";
+                                                                                        document.getElementById('medicineSubmit').innerText = "Update";
+
+                                                                                        document.getElementById('medicineId').value = medicine.id;
+                                                                                        document.getElementById('medicineName').value = medicine.name;
+                                                                                        document.getElementById('medicineComposition').value = medicine.composition;
+                                                                                        document.getElementById('medicineCategory').value = medicine.category;
+
+
+                                                                                        var myModal = new bootstrap.Modal(document.getElementById('medicineModal'));
+                                                                                        myModal.show();
+                                                                                    }
+
+                                                                                    document.addEventListener('click', function (e) {
+                                                                                        const editButton = e.target.closest('.edit-btn');
+                                                                                        if (editButton) {
+                                                                                            const medicine = {
+                                                                                                id: editButton.dataset.id,
+                                                                                                name: editButton.dataset.name,
+                                                                                                composition: editButton.dataset.composition,
+                                                                                                category: editButton.dataset.category
+                                                                                            };
+                                                                                            openEditMedicineModal(medicine);
+                                                                                        }
+                                                                                    });
+
                                                                                 </script>
 
 

@@ -301,30 +301,33 @@
 </div>
 
 <!-- Popup Add new medicine -->
-<div class="modal fade" id="newMedicine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="medicineModal" tabindex="-1" role="dialog" aria-labelledby="medicineModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="exampleModalLabel" style="font-family: Poppins, sans-serif;">Add
+                <h5 class="modal-title fw-medium" id="medicineModalLabel" style="font-family: Poppins, sans-serif;">Add
                     New Medicine</h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?php echo base_url() . "Edfadmin/addNewMedicine" ?>" name="addMedicine"
-                    enctype="multipart/form-data" method="POST">
+                <form id="medicineForm" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="medicineId" id="medicineId" value="">
+
                     <label for="medicineName" class="form-label pb-2">Medicine Name <span
-                            class="text-danger">*</span></label><br>
+                            class="text-danger">*</span></label>
                     <input type="text" name="medicineName" id="medicineName" class="form-control"
-                        placeholder="E.g. Dolo 650" required><br>
-                    <label for="medicineComposition" class="form-label pb-2">Composition <span
-                            class="text-danger">*</span></label><br>
+                        placeholder="E.g. Dolo 650" required>
+
+                    <label for="medicineComposition" class="form-label pb-2 mt-2">Composition <span
+                            class="text-danger">*</span></label>
                     <input type="text" name="medicineComposition" id="medicineComposition" class="form-control"
-                        placeholder="E.g.  Paracetamol" required><br>
-                    <label for="medicineCategory" class="form-label pb-2">Category <span
-                            class="text-danger">*</span></label><br>
+                        placeholder="E.g. Paracetamol" required>
+
+                    <label for="medicineCategory" class="form-label pb-2 mt-2">Category <span
+                            class="text-danger">*</span></label>
                     <select name="medicineCategory" id="medicineCategory" class="form-select" required>
                         <option value="">Select Category</option>
                         <option value="TAB">Tablet</option>
@@ -339,8 +342,9 @@
                         <option value="POW">Powder</option>
                         <option value="SUSP">Suppository</option>
                     </select>
-                    <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end mt-3">
-                        Add </button>
+
+                    <button type="submit" id="medicineSubmit" class="btn text-light float-end mt-3"
+                        style="background-color: #2b353bf5;">Add</button>
                 </form>
             </div>
         </div>

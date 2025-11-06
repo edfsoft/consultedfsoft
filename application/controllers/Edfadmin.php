@@ -485,6 +485,16 @@ class Edfadmin extends CI_Controller
         redirect('Edfadmin/medicinesList');
     }
 
+    public function updateMedicine()
+    {
+        if ($this->AdminModel->updateMedicine()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Medicine added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding medicine');
+        }
+        redirect('Edfadmin/medicinesList');
+    }
+
     public function deleteMedicine()
     {
         $medicineId = $this->uri->segment(3);

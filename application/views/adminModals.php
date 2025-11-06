@@ -76,7 +76,7 @@
     });
 </script>
 
-<!-- Popup Add and Edit medicine -->
+<!-- Add and Edit medicine modal -->
 <div class="modal fade" id="medicineModal" tabindex="-1" role="dialog" aria-labelledby="medicineModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -143,7 +143,7 @@
 
             <div class="modal-body">
                 <form id="universalAddForm" method="POST" enctype="multipart/form-data">
-                    <label id="universalLabel" class="form-label pb-2"></label><br>
+                    <label id="universalLabel" class="form-label pb-2"></label><span class="text-danger"> *</span><br>
                     <input type="text" name="" id="universalInput" class="form-control" placeholder="" required>
                     <br><br>
                     <button type="submit" style="background-color: #2b353bf5;"
@@ -209,7 +209,7 @@
         if (!selected) return;
 
         modalTitle.textContent = selected.title;
-        label.textContent = selected.label + " *";
+        label.textContent = selected.label;
         input.placeholder = selected.placeholder;
         input.name = selected.name;
         form.action = selected.action;
@@ -234,7 +234,7 @@
                     <input type="hidden" name="id" id="editCommonId">
 
                     <div class="mb-3">
-                        <label id="editCommonLabel" class="form-label"></label>
+                        <label id="editCommonLabel" class="form-label"></label><span class="text-danger"> *</span>
                         <input type="text" class="form-control" id="editCommonName" name="name" required>
                     </div>
                 </div>
@@ -288,7 +288,7 @@
                     .textContent = `Edit ${cap}`;
 
                 document.getElementById('editCommonLabel')
-                    .textContent = `${fieldLabels[type] || cap + ' Name'} *`;
+                    .textContent = `${fieldLabels[type] || cap + ' Name'} `;
 
                 document.getElementById('editCommonId').value = id;
 

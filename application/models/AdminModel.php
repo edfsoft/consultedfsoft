@@ -117,7 +117,7 @@ class AdminModel extends CI_Model
         return $select->result_array();
     }
 
-    public function newSpecilization()
+/*     public function newSpecilization()
     {
         $post = $this->input->post(null, true);
         $insert = array(
@@ -125,7 +125,7 @@ class AdminModel extends CI_Model
         );
         $this->db->insert('specialization_list', $insert);
         return true;
-    }
+    } */
 
     public function specilizationDelete($id)
     {
@@ -140,7 +140,7 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newSymptoms()
+/*     public function newSymptoms()
     {
         $post = $this->input->post(null, true);
         $insert = array(
@@ -148,7 +148,7 @@ class AdminModel extends CI_Model
         );
         $this->db->insert('symptoms_list', $insert);
         return true;
-    }
+    } */
 
     public function getsymptomsList()
     {
@@ -165,7 +165,7 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newFindings()
+/*     public function newFindings()
     {
         $post = $this->input->post(null, true);
         $insert = array(
@@ -173,7 +173,7 @@ class AdminModel extends CI_Model
         );
         $this->db->insert('findings_list', $insert);
         return true;
-    }
+    } */
 
     public function getFindingsList()
     {
@@ -190,7 +190,7 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newDiagnosis()
+/*     public function newDiagnosis()
     {
         $post = $this->input->post(null, true);
         $insert = array(
@@ -198,7 +198,7 @@ class AdminModel extends CI_Model
         );
         $this->db->insert('diagnosis_list', $insert);
         return true;
-    }
+    } */
 
     public function getDiagnosisList()
     {
@@ -215,7 +215,7 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newInvestigation()
+/*     public function newInvestigation()
     {
         $post = $this->input->post(null, true);
         $insert = array(
@@ -223,7 +223,7 @@ class AdminModel extends CI_Model
         );
         $this->db->insert('investigations_list', $insert);
         return true;
-    }
+    } */
 
     public function getInvestigationsList()
     {
@@ -239,7 +239,7 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newInstruction()
+/*     public function newInstruction()
     {
         $post = $this->input->post(null, true);
         $insert = array(
@@ -247,7 +247,7 @@ class AdminModel extends CI_Model
         );
         $this->db->insert('instructions_list', $insert);
         return true;
-    }
+    } */
 
     public function getInstructionsList()
     {
@@ -263,7 +263,7 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newProcedure()
+/*     public function newProcedure()
     {
         $post = $this->input->post(null, true);
         $insert = array(
@@ -271,7 +271,7 @@ class AdminModel extends CI_Model
         );
         $this->db->insert('procedures_list', $insert);
         return true;
-    }
+    } */
 
     public function getProceduresList()
     {
@@ -287,7 +287,7 @@ class AdminModel extends CI_Model
         return true;
     }
 
-    public function newAdvice()
+/*     public function newAdvice()
     {
         $post = $this->input->post(null, true);
         $insert = array(
@@ -295,7 +295,7 @@ class AdminModel extends CI_Model
         );
         $this->db->insert('advices_list', $insert);
         return true;
-    }
+    } */
 
     public function getAdvicesList()
     {
@@ -338,7 +338,51 @@ class AdminModel extends CI_Model
         return true;
     }
 
+    //Universal Model add
+    public function addItem($type, $name)
+{
+    // Map type to table and field
+    $config = [
+        'specialization' => ['table' => 'specialization_list', 'field' => 'specializationName'],
+        'symptoms' => ['table' => 'symptoms_list', 'field' => 'symptomsName'],
+        'findings' => ['table' => 'findings_list', 'field' => 'findingsName'],
+        'diagnosis' => ['table' => 'diagnosis_list', 'field' => 'diagnosisName'],
+        'investigations' => ['table' => 'investigations_list', 'field' => 'investigationsName'],
+        'instructions' => ['table' => 'instructions_list', 'field' => 'instructionsName'],
+        'procedures' => ['table' => 'procedures_list', 'field' => 'proceduresName'],
+        'advices' => ['table' => 'advices_list', 'field' => 'adviceName']
+    ];
 
+    if (!isset($config[$type])) {
+        return false;
+    }
+
+    $insert = [$config[$type]['field'] => $name];
+
+    return $this->db->insert($config[$type]['table'], $insert);
+}
+
+
+    /* Update Specialization Model */
+   /*  public function updateSpecializationDb($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('specialization_list', ['specializationName' => $name]);
+    } */
+
+    /* Update Specialization Model */
+    /* public function updateSymptomsDb($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('symptoms_list', ['symptomsName' => $name]);
+    } */
+
+ // Universal Update Model
+    public function updateGeneric($table, $id, $field, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update($table, [$field => $name]);
+    }
 
 }
 ?>

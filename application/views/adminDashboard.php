@@ -1864,7 +1864,7 @@
                                                         </div>
                                                 </section>
 
-                                                <script>
+                                               <!--  <script>
                                                     const baseUrl = '<?php echo base_url(); ?>';
                                                     let itemsPerPageSpecialization = 10;
                                                     const specializationList = <?php echo json_encode($specilalizationList); ?>;
@@ -2002,7 +2002,159 @@
                                                     toggleClearIcons();
                                                     filteredSpecializationList = [...specializationList];
                                                     displaySpecializationPage(initialPageSpecialization);
-                                                </script>
+                                                </script> -->
+
+                                               <!--  Altered Specialization -->
+<script>
+  const baseUrl = '<?php echo base_url(); ?>';
+  let itemsPerPageSpecialization = 10;
+  const specializationList = <?php echo json_encode($specilalizationList); ?>;
+  let filteredSpecializationList = [...specializationList];
+  const initialPageSpecialization = parseInt(localStorage.getItem('currentPageSpecialization')) || 1;
+
+  const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+  const searchBar = document.getElementById('searchBar');
+  const clearSearch = document.getElementById('clearSearch');
+
+  // Load saved itemsPerPage
+  const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageSpecialization')) || itemsPerPageSpecialization;
+  itemsPerPageDropdown.value = savedItemsPerPage;
+  itemsPerPageSpecialization = savedItemsPerPage;
+
+  // Event Listeners
+  itemsPerPageDropdown.addEventListener('change', (event) => {
+      itemsPerPageSpecialization = parseInt(event.target.value);
+      localStorage.setItem('itemsPerPageSpecialization', itemsPerPageSpecialization);
+      applyFilters();
+  });
+
+  searchBar.addEventListener('input', () => {
+      toggleClearIcons();
+      applyFilters();
+  });
+
+  clearSearch.addEventListener('click', () => {
+      searchBar.value = '';
+      toggleClearIcons();
+      applyFilters();
+  });
+
+  function toggleClearIcons() {
+      clearSearch.style.display = searchBar.value ? 'block' : 'none';
+  }
+
+  function applyFilters() {
+      const searchTerm = searchBar.value.toLowerCase();
+      filteredSpecializationList = specializationList.filter((specialization) => {
+          const specializationName = specialization.specializationName || '';
+          return specializationName.toLowerCase().includes(searchTerm);
+      });
+      displaySpecializationPage(1);
+  }
+
+  function displaySpecializationPage(page) {
+      localStorage.setItem('currentPageSpecialization', page);
+      const start = (page - 1) * itemsPerPageSpecialization;
+      const end = start + itemsPerPageSpecialization;
+      const itemsToShow = filteredSpecializationList.slice(start, end);
+
+      const specializationTableBody = document.getElementById('specializationTableBody');
+      specializationTableBody.innerHTML = '';
+
+      updateEntriesInfo(start + 1, Math.min(end, filteredSpecializationList.length), filteredSpecializationList.length);
+
+      if (itemsToShow.length === 0) {
+          const noMatchesRow = document.createElement('tr');
+          noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
+          specializationTableBody.appendChild(noMatchesRow);
+      } else {
+          itemsToShow.forEach((specialization, index) => {
+              const specializationRow = document.createElement('tr');
+              specializationRow.innerHTML = `
+                  <td class="pt-3">${start + index + 1}.</td>
+                  <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
+                  <td class="d-flex d-md-block">
+                      <button class="btn btn-secondary me-2 edit-btn" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editCommonModal"
+                        data-type="specialization"
+                        data-id="${specialization.id}"
+                        data-name="${specialization.specializationName}">
+                    <i class="bi bi-pen"></i>
+                </button>
+                      <button class="btn btn-danger delete-btn" 
+                              data-bs-toggle="modal" 
+                              data-bs-target="#confirmDelete" 
+                              data-id="${specialization.id}"
+                              data-name="${specialization.specializationName}" 
+                              data-type="specialization">
+                          <i class="bi bi-trash"></i>
+                      </button>
+                  </td>`;
+              specializationTableBody.appendChild(specializationRow);
+          });
+      }
+
+      generateSpecializationPagination(filteredSpecializationList.length, page);
+  }
+
+  function updateEntriesInfo(start, end, totalEntries) {
+      const entriesInfo = document.getElementById('entriesInfo');
+      entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+  }
+
+  function generateSpecializationPagination(totalItems, currentPage) {
+      const totalPages = Math.ceil(totalItems / itemsPerPageSpecialization);
+      const paginationContainer = document.getElementById('paginationContainerSpecialization');
+      paginationContainer.innerHTML = '';
+
+      const ul = document.createElement('ul');
+      ul.className = 'pagination';
+
+      const prevLi = document.createElement('li');
+      prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+      prevLi.onclick = () => { if (currentPage > 1) displaySpecializationPage(currentPage - 1); };
+      ul.appendChild(prevLi);
+
+      const startPage = Math.max(1, currentPage - 2);
+      const endPage = Math.min(totalPages, startPage + 4);
+
+      for (let i = startPage; i <= endPage; i++) {
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+          li.onclick = () => displaySpecializationPage(i);
+          ul.appendChild(li);
+      }
+
+      const nextLi = document.createElement('li');
+      nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+      nextLi.onclick = () => { if (currentPage < totalPages) displaySpecializationPage(currentPage + 1); };
+      ul.appendChild(nextLi);
+
+      paginationContainer.appendChild(ul);
+  }
+
+  // On load
+  toggleClearIcons();
+  filteredSpecializationList = [...specializationList];
+  displaySpecializationPage(initialPageSpecialization);
+</script>
+
+<!-- ADD THIS BELOW -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.addEventListener('click', function (e) {
+      const btn = e.target.closest('.edit-btn');
+      if (!btn) return;
+
+      document.getElementById('editSpecId').value = btn.dataset.id;
+      document.getElementById('editSpecName').value = btn.dataset.name;
+      document.getElementById('editSpecializationForm').action = 
+        `${baseUrl}Edfadmin/updateSpecialization/${btn.dataset.id}`;
+    });
+  });
+</script>
+                                
             <?php
         } else if ($method == "symptoms") {
             ?>
@@ -2129,7 +2281,18 @@
                 <td class="pt-3">${start + index + 1}.</td>
                 <td style="font-size: 16px" class="pt-3">${symptom.symptomsName}</td>
                 <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${symptom.id}" data-name="${symptom.symptomsName}" data-type="symptom"><i class="bi bi-trash"></i></button>
+                        <button class="btn btn-secondary me-2 edit-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#editCommonModal"
+                        data-type="symptoms"
+                        data-id="${symptom.id}"
+                        data-name="${symptom.symptomsName}">
+                    <i class="bi bi-pen"></i>
+                </button>
+                    <button class="btn btn-danger delete-btn"
+                     data-bs-toggle="modal" data-bs-target="#confirmDelete"
+                      data-id="${symptom.id}" data-name="${symptom.symptomsName}" 
+                      data-type="symptom"><i class="bi bi-trash"></i></button>
                 </td>`;
                                                                     symptomsTableBody.appendChild(symptomRow);
                                                                 });
@@ -2306,11 +2469,23 @@
                                                                     itemsToShow.forEach((finding, index) => {
                                                                         const findingRow = document.createElement('tr');
                                                                         findingRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${finding.findingsName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${finding.id}" data-name="${finding.findingsName}" data-type="finding"><i class="bi bi-trash"></i></button>
-                    </td>`;
+                                                                <td class="pt-3">${start + index + 1}.</td>
+                                                                <td style="font-size: 16px" class="pt-3">${finding.findingsName}</td>
+                                                                <td class="d-flex d-md-block">
+                                                                <button class="btn btn-secondary me-2 edit-btn"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#editCommonModal"
+                                                                    data-type="findings"
+                                                                    data-id="${finding.id}"
+                                                                    data-name="${finding.findingsName}">
+                                                                <i class="bi bi-pen"></i>
+                                                            </button>
+                                                                    <button class="btn btn-danger delete-btn"
+                                                                    data-bs-toggle="modal" data-bs-target="#confirmDelete" 
+                                                                    data-id="${finding.id}" 
+                                                                    data-name="${finding.findingsName}" 
+                                                                    data-type="finding"><i class="bi bi-trash"></i></button>
+                                                                </td>`;
                                                                         findingsTableBody.appendChild(findingRow);
                                                                     });
                                                                 }
@@ -2487,12 +2662,23 @@
                                                                         itemsToShow.forEach((diagnosis, index) => {
                                                                             const diagnosisRow = document.createElement('tr');
                                                                             diagnosisRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${diagnosis.diagnosisName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${diagnosis.id}" data-name="${diagnosis.diagnosisName}" data-type="diagnosis"><i class="bi bi-trash"></i></button>
-                    </td>`;
-                                                                            diagnosisTableBody.appendChild(diagnosisRow);
+                                                                            <td class="pt-3">${start + index + 1}.</td>
+                                                                            <td style="font-size: 16px" class="pt-3">${diagnosis.diagnosisName}</td>
+                                                                            <td class="d-flex d-md-block">
+                                                                            <button class="btn btn-secondary me-2 edit-btn"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#editCommonModal"
+                                                                                    data-type="diagnosis"
+                                                                                    data-id="${diagnosis.id}"
+                                                                                    data-name="${diagnosis.diagnosisName}">
+                                                                                <i class="bi bi-pen"></i>
+                                                                            </button>
+                                                                                <button class="btn btn-danger delete-btn"
+                                                                                data-bs-toggle="modal" data-bs-target="#confirmDelete"
+                                                                                data-id="${diagnosis.id}" data-name="${diagnosis.diagnosisName}" 
+                                                                                data-type="diagnosis"><i class="bi bi-trash"></i></button>
+                                                                            </td>`;
+                                                                                                                                    diagnosisTableBody.appendChild(diagnosisRow);
                                                                         });
                                                                     }
 
@@ -2671,11 +2857,19 @@
                                                                             itemsToShow.forEach((investigation, index) => {
                                                                                 const investigationRow = document.createElement('tr');
                                                                                 investigationRow.innerHTML = `
-                      <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${investigation.investigationsName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${investigation.id}" data-name="${investigation.investigationsName}" data-type="investigation"><i class="bi bi-trash"></i></button>
-                    </td>`;
+                                                                                    <td class="pt-3">${start + index + 1}.</td>
+                                                                                    <td style="font-size: 16px" class="pt-3">${investigation.investigationsName}</td>
+                                                                                    <td class="d-flex d-md-block">
+                                                                                    <button class="btn btn-secondary me-2 edit-btn"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#editCommonModal"
+                                                                                            data-type="investigation"
+                                                                                            data-id="${investigation.id}"
+                                                                                            data-name="${investigation.investigationsName}">
+                                                                                        <i class="bi bi-pen"></i>
+                                                                                    </button>
+                                                                                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${investigation.id}" data-name="${investigation.investigationsName}" data-type="investigation"><i class="bi bi-trash"></i></button>
+                                                                                    </td>`;
                                                                                 investigationTableBody.appendChild(investigationRow);
                                                                             });
                                                                         }
@@ -2853,14 +3047,22 @@
                                                                                 itemsToShow.forEach((instruction, index) => {
                                                                                     const instructionRow = document.createElement('tr');
                                                                                     instructionRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${instruction.instructionsName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
-                            data-id="${instruction.id}" data-name="${instruction.instructionsName}" data-type="instruction">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>`;
+                                                                                        <td class="pt-3">${start + index + 1}.</td>
+                                                                                        <td style="font-size: 16px" class="pt-3">${instruction.instructionsName}</td>
+                                                                                        <td class="d-flex d-md-block">
+                                                                                        <button class="btn btn-secondary me-2 edit-btn"
+                                                                                                data-bs-toggle="modal"
+                                                                                                data-bs-target="#editCommonModal"
+                                                                                                data-type="instruction"
+                                                                                                data-id="${instruction.id}"
+                                                                                                data-name="${instruction.instructionsName}">
+                                                                                            <i class="bi bi-pen"></i>
+                                                                                        </button>
+                                                                                            <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
+                                                                                                data-id="${instruction.id}" data-name="${instruction.instructionsName}" data-type="instruction">
+                                                                                                <i class="bi bi-trash"></i>
+                                                                                            </button>
+                                                                                        </td>`;
                                                                                     instructionTableBody.appendChild(instructionRow);
                                                                                 });
                                                                             }
@@ -3037,14 +3239,22 @@
                                                                                     itemsToShow.forEach((procedure, index) => {
                                                                                         const procedureRow = document.createElement('tr');
                                                                                         procedureRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${procedure.proceduresName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
-                            data-id="${procedure.id}" data-name="${procedure.proceduresName}" data-type="procedure">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>`;
+                                                                                            <td class="pt-3">${start + index + 1}.</td>
+                                                                                            <td style="font-size: 16px" class="pt-3">${procedure.proceduresName}</td>
+                                                                                            <td class="d-flex d-md-block">
+                                                                                            <button class="btn btn-secondary me-2 edit-btn"
+                                                                                                    data-bs-toggle="modal"
+                                                                                                    data-bs-target="#editCommonModal"
+                                                                                                    data-type="procedure"
+                                                                                                    data-id="${procedure.id}"
+                                                                                                    data-name="${procedure.proceduresName}">
+                                                                                                <i class="bi bi-pen"></i>
+                                                                                            </button>
+                                                                                                <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
+                                                                                                    data-id="${procedure.id}" data-name="${procedure.proceduresName}" data-type="procedure">
+                                                                                                    <i class="bi bi-trash"></i>
+                                                                                                </button>
+                                                                                            </td>`;
                                                                                         procedureTableBody.appendChild(procedureRow);
                                                                                     });
                                                                                 }
@@ -3223,11 +3433,22 @@
                                                                                         itemsToShow.forEach((advice, index) => {
                                                                                             const adviceRow = document.createElement('tr');
                                                                                             adviceRow.innerHTML = `
-                     <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${advice.adviceName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${advice.id}" data-name="${advice.adviceName}" data-type="advice"><i class="bi bi-trash"></i></button>
-                    </td>`;
+                                                                                            <td class="pt-3">${start + index + 1}.</td>
+                                                                                            <td style="font-size: 16px" class="pt-3">${advice.adviceName}</td>
+                                                                                            <td class="d-flex d-md-block">
+                                                                                            <button class="btn btn-secondary me-2 edit-btn"
+                                                                                                    data-bs-toggle="modal"
+                                                                                                    data-bs-target="#editCommonModal"
+                                                                                                    data-type="advice"
+                                                                                                    data-id="${advice.id}"
+                                                                                                    data-name="${advice.adviceName}">
+                                                                                                <i class="bi bi-pen"></i>
+                                                                                            </button>
+                                                                                                <button class="btn btn-danger delete-btn" 
+                                                                                                data-bs-toggle="modal" data-bs-target="#confirmDelete"
+                                                                                                data-id="${advice.id}" data-name="${advice.adviceName}" 
+                                                                                                data-type="advice"><i class="bi bi-trash"></i></button>
+                                                                                            </td>`;
                                                                                             adviceTableBody.appendChild(adviceRow);
                                                                                         });
                                                                                     }

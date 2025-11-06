@@ -416,7 +416,7 @@
       <div class="modal-body">
         <form id="universalAddForm" method="POST" enctype="multipart/form-data">
           <label id="universalLabel" class="form-label pb-2"></label><br>
-          <input type="text" name="dynamicName" id="universalInput" class="form-control" placeholder="" required>
+          <input type="text" name="" id="universalInput" class="form-control" placeholder="" required>
           <br><br>
           <button type="submit" style="background-color: #2b353bf5;" class="btn text-light float-end">Add</button>
         </form>
@@ -445,63 +445,47 @@
 
     // Config object for all modal types
     const config = {
-      specialization: {
-        title: "Add New Specialization",
-        label: "Specialization Name",
-        placeholder: "E.g. Diabetologist",
-        name: "specializationName",
-        action: "<?php echo base_url() . 'Edfadmin/addNewSpecilization'; ?>"
-      },
-      symptoms: {
-        title: "Add New Symptom",
-        label: "Symptom / Complaint Name",
-        placeholder: "E.g. Head ache",
-        name: "symptomsName",
-        action: "<?php echo base_url() . 'Edfadmin/addNewSymptoms'; ?>"
-      },
-      findings: {
-        title: "Add New Finding",
-        label: "Finding Name",
-        placeholder: "E.g. Blood Sugar High",
-        name: "findingsName",
-        action: "<?php echo base_url() . 'Edfadmin/addNewFindings'; ?>"
-      },
-      investigation: {
-        title: "Add New Investigation",
-        label: "Investigation Name",
-        placeholder: "E.g. ECG",
-        name: "investigationName",
-        action: "<?php echo base_url() . 'Edfadmin/addNewInvestigation'; ?>"
-      },
-      instruction: {
-        title: "Add New Instruction",
-        label: "Instruction Name",
-        placeholder: "E.g. Low fat in diet",
-        name: "instructionName",
-        action: "<?php echo base_url() . 'Edfadmin/addNewInstruction'; ?>"
-      },
-      procedure: {
-        title: "Add New Procedure",
-        label: "Procedure Name",
-        placeholder: "E.g. Coronary angiogram",
-        name: "procedureName",
-        action: "<?php echo base_url() . 'Edfadmin/addNewProcedure'; ?>"
-      },
-      advice: {
-        title: "Add New Advice",
-        label: "Advice Name",
-        placeholder: "E.g. Take rest",
-        name: "adviceName",
-        action: "<?php echo base_url() . 'Edfadmin/addNewAdvice'; ?>"
-      },
-      diagnosis: {
-        title: "Add New Diagnosis",
-        label: "Diagnosis Name",
-        placeholder: "E.g. Diabetes",
-        name: "diagnosisName",
-        action: "<?php echo base_url() . 'Edfadmin/addNewDiagnosis'; ?>"
-      }
-    };
+  specialization: {
+    title: "Add New Specialization", label: "Specialization Name", 
+    placeholder: "E.g. Diabetologist", name: "specializationName",
+    action: "<?php echo base_url() . 'Edfadmin/addItem/specialization'; ?>"
+  },
+  symptoms: {
+    title: "Add New Symptom", label: "Symptom / Complaint Name", 
+    placeholder: "E.g. Head ache", name: "symptomName",
+    action: "<?php echo base_url() . 'Edfadmin/addItem/symptoms'; ?>"
+  },
+  findings: {
+    title: "Add New Finding", label: "Finding Name", 
+    placeholder: "E.g. Blood Sugar High", name: "findingName",
+    action: "<?php echo base_url() . 'Edfadmin/addItem/findings'; ?>"
+  },
+  diagnosis: {
+    title: "Add New Diagnosis", label: "Diagnosis Name", 
+    placeholder: "E.g. Diabetes", name: "diagnosisName",
+    action: "<?php echo base_url() . 'Edfadmin/addItem/diagnosis'; ?>"
+  },
+  investigation: {
+    title: "Add New Investigation", label: "Investigation Name", 
+    placeholder: "E.g. ECG", name: "investigationsName",
+    action: "<?php echo base_url() . 'Edfadmin/addItem/investigations'; ?>"
+  },
+  instruction: {
+    title: "Add New Instruction", label: "Instruction Name", 
+    placeholder: "E.g. Low fat in diet", name: "instructionsName",
+    action: "<?php echo base_url() . 'Edfadmin/addItem/instructions'; ?>"
+  },
+  procedure: {
+    title: "Add New Procedure", label: "Procedure Name", 
+    placeholder: "E.g. Coronary angiogram", name: "proceduresName",
+    action: "<?php echo base_url() . 'Edfadmin/addItem/procedures'; ?>"
+  },
+  advice: {
+    title: "Add New Advice", label: "Advice Name", 
+    placeholder: "E.g. Take rest", name: "advicesName",
+    action: "<?php echo base_url() . 'Edfadmin/addItem/advices'; ?>"
+  }
+};
 
     const selected = config[type];
     if (!selected) return;
@@ -520,4 +504,97 @@
     const modal = new bootstrap.Modal(document.getElementById("universalAddModal"));
     modal.show();
   }
+</script>
+
+<!-- adminModels.php -->
+<!-- UNIVERSAL EDIT MODAL -->
+<div class="modal fade" id="editCommonModal" tabindex="-1" aria-labelledby="editCommonModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCommonModalLabel">Edit Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="editCommonForm" method="POST" action="">
+        <div class="modal-body">
+          <input type="hidden" name="id" id="editCommonId">
+
+          <div class="mb-3">
+            <label id="editCommonLabel" class="form-label"></label>
+            <input type="text" class="form-control" id="editCommonName" name="name" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn text-light" style="background-color: #2b353bf5;">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- WAIT FOR MODAL → THEN ATTACH CLICK HANDLER -->
+<script>
+  const waitForModal = setInterval(() => {
+    const modal = document.getElementById('editCommonModal');
+    if (modal) {
+      clearInterval(waitForModal);
+
+      // 1. Mapping: type (as used in the button) → plural controller name
+      const typeToController = {
+        specialization: 'specialization',
+        symptoms:       'symptoms',
+        findings:       'findings',
+        diagnosis:      'diagnosis',
+        investigation:  'investigations',
+        instruction:    'instructions',
+        procedure:      'procedures',
+        advice:         'advices'
+      };
+
+      const fieldLabels = {
+        specialization: 'Specialization Name',
+        symptoms:       'Symptom / Complaint Name',
+        findings:       'Finding Name',
+        diagnosis:      'Diagnosis Name',
+        investigation:  'Investigation Name',
+        instruction:    'Instruction Name',
+        procedure:      'Procedure Name',
+        advice:         'Advice Name'
+      };
+
+      document.body.addEventListener('click', function (e) {
+        const btn = e.target.closest('.edit-btn');
+        if (!btn) return;
+
+        const type   = btn.dataset.type;          // singular (as on the button)
+        const id     = btn.dataset.id;
+        const name   = btn.dataset.name;
+        const cap    = type.charAt(0).toUpperCase() + type.slice(1);
+
+        // ---- Title
+        document.getElementById('editCommonModalLabel')
+                .textContent = `Edit ${cap}`;
+
+        // ---- Label
+        document.getElementById('editCommonLabel')
+                .textContent = `${fieldLabels[type] || cap + ' Name'} *`;
+
+        // ---- Hidden id
+        document.getElementById('editCommonId').value = id;
+
+        // ---- Current value
+        document.getElementById('editCommonName').value = name;
+
+        // ---- Form action
+        const baseUrl = '<?php echo base_url(); ?>';
+        const ctrl    = typeToController[type] || type;   // fallback
+        document.getElementById('editCommonForm')
+                .action = `${baseUrl}Edfadmin/updateItem/${ctrl}/${id}`;
+      });
+
+      console.log('Universal Edit Modal: Ready');
+    }
+  }, 50);
 </script>

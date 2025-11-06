@@ -49,24 +49,42 @@
         .consultation-item.active {
             display: block;
         }
+
         /*  Display Preview */
-       .preview-area {
-        position: relative;
-        margin: 0 50px;               /* Space for side borders */
-        height: calc(70vh - 100px);
-        min-height: 400px;
-        overflow: auto;
-        background: #fff;
-    }
-    .preview-area::before,
-    .preview-area::after {
-        content: ''; position: absolute; top: 0; bottom: 0; width: 50px;
-        background: #fff; z-index: 1; pointer-events: none;
-    }
-    .preview-area::before { left: -50px; }
-    .preview-area::after  { right: -50px; }
-    #prevAttachment, #nextAttachment { z-index: 10; 
-    }
+        .preview-area {
+            position: relative;
+            margin: 0 50px;
+            /* Space for side borders */
+            height: calc(70vh - 100px);
+            min-height: 400px;
+            overflow: auto;
+            background: #fff;
+        }
+
+        .preview-area::before,
+        .preview-area::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background: #fff;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .preview-area::before {
+            left: -50px;
+        }
+
+        .preview-area::after {
+            right: -50px;
+        }
+
+        #prevAttachment,
+        #nextAttachment {
+            z-index: 10;
+        }
     </style>
 </head>
 
@@ -1813,9 +1831,7 @@
                                                     <div class="card rounded">
                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                             <p style="font-size: 24px; font-weight: 500">Specialization List</p>
-                                                            <button type="button"
-                                                                onclick="openAddModal('specialization')"
-                                                                style="background-color: #2b353bf5;"
+                                                            <button type="button" onclick="openAddModal('specialization')" style="background-color: #2b353bf5;"
                                                                 class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                 <i class="bi bi-plus-square-fill"></i> New
                                                             </button>
@@ -1862,7 +1878,7 @@
                                                         </div>
                                                 </section>
 
-                                               <!--  <script>
+                                                <!--  <script>
                                                     const baseUrl = '<?php echo base_url(); ?>';
                                                     let itemsPerPageSpecialization = 10;
                                                     const specializationList = <?php echo json_encode($specilalizationList); ?>;
@@ -2002,73 +2018,73 @@
                                                     displaySpecializationPage(initialPageSpecialization);
                                                 </script> -->
 
-                                               <!--  Altered Specialization -->
-<script>
-  const baseUrl = '<?php echo base_url(); ?>';
-  let itemsPerPageSpecialization = 10;
-  const specializationList = <?php echo json_encode($specilalizationList); ?>;
-  let filteredSpecializationList = [...specializationList];
-  const initialPageSpecialization = parseInt(localStorage.getItem('currentPageSpecialization')) || 1;
+                                                <!--  Altered Specialization -->
+                                                <script>
+                                                    const baseUrl = '<?php echo base_url(); ?>';
+                                                    let itemsPerPageSpecialization = 10;
+                                                    const specializationList = <?php echo json_encode($specilalizationList); ?>;
+                                                    let filteredSpecializationList = [...specializationList];
+                                                    const initialPageSpecialization = parseInt(localStorage.getItem('currentPageSpecialization')) || 1;
 
-  const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
-  const searchBar = document.getElementById('searchBar');
-  const clearSearch = document.getElementById('clearSearch');
+                                                    const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                                    const searchBar = document.getElementById('searchBar');
+                                                    const clearSearch = document.getElementById('clearSearch');
 
-  // Load saved itemsPerPage
-  const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageSpecialization')) || itemsPerPageSpecialization;
-  itemsPerPageDropdown.value = savedItemsPerPage;
-  itemsPerPageSpecialization = savedItemsPerPage;
+                                                    // Load saved itemsPerPage
+                                                    const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageSpecialization')) || itemsPerPageSpecialization;
+                                                    itemsPerPageDropdown.value = savedItemsPerPage;
+                                                    itemsPerPageSpecialization = savedItemsPerPage;
 
-  // Event Listeners
-  itemsPerPageDropdown.addEventListener('change', (event) => {
-      itemsPerPageSpecialization = parseInt(event.target.value);
-      localStorage.setItem('itemsPerPageSpecialization', itemsPerPageSpecialization);
-      applyFilters();
-  });
+                                                    // Event Listeners
+                                                    itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                        itemsPerPageSpecialization = parseInt(event.target.value);
+                                                        localStorage.setItem('itemsPerPageSpecialization', itemsPerPageSpecialization);
+                                                        applyFilters();
+                                                    });
 
-  searchBar.addEventListener('input', () => {
-      toggleClearIcons();
-      applyFilters();
-  });
+                                                    searchBar.addEventListener('input', () => {
+                                                        toggleClearIcons();
+                                                        applyFilters();
+                                                    });
 
-  clearSearch.addEventListener('click', () => {
-      searchBar.value = '';
-      toggleClearIcons();
-      applyFilters();
-  });
+                                                    clearSearch.addEventListener('click', () => {
+                                                        searchBar.value = '';
+                                                        toggleClearIcons();
+                                                        applyFilters();
+                                                    });
 
-  function toggleClearIcons() {
-      clearSearch.style.display = searchBar.value ? 'block' : 'none';
-  }
+                                                    function toggleClearIcons() {
+                                                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                                    }
 
-  function applyFilters() {
-      const searchTerm = searchBar.value.toLowerCase();
-      filteredSpecializationList = specializationList.filter((specialization) => {
-          const specializationName = specialization.specializationName || '';
-          return specializationName.toLowerCase().includes(searchTerm);
-      });
-      displaySpecializationPage(1);
-  }
+                                                    function applyFilters() {
+                                                        const searchTerm = searchBar.value.toLowerCase();
+                                                        filteredSpecializationList = specializationList.filter((specialization) => {
+                                                            const specializationName = specialization.specializationName || '';
+                                                            return specializationName.toLowerCase().includes(searchTerm);
+                                                        });
+                                                        displaySpecializationPage(1);
+                                                    }
 
-  function displaySpecializationPage(page) {
-      localStorage.setItem('currentPageSpecialization', page);
-      const start = (page - 1) * itemsPerPageSpecialization;
-      const end = start + itemsPerPageSpecialization;
-      const itemsToShow = filteredSpecializationList.slice(start, end);
+                                                    function displaySpecializationPage(page) {
+                                                        localStorage.setItem('currentPageSpecialization', page);
+                                                        const start = (page - 1) * itemsPerPageSpecialization;
+                                                        const end = start + itemsPerPageSpecialization;
+                                                        const itemsToShow = filteredSpecializationList.slice(start, end);
 
-      const specializationTableBody = document.getElementById('specializationTableBody');
-      specializationTableBody.innerHTML = '';
+                                                        const specializationTableBody = document.getElementById('specializationTableBody');
+                                                        specializationTableBody.innerHTML = '';
 
-      updateEntriesInfo(start + 1, Math.min(end, filteredSpecializationList.length), filteredSpecializationList.length);
+                                                        updateEntriesInfo(start + 1, Math.min(end, filteredSpecializationList.length), filteredSpecializationList.length);
 
-      if (itemsToShow.length === 0) {
-          const noMatchesRow = document.createElement('tr');
-          noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
-          specializationTableBody.appendChild(noMatchesRow);
-      } else {
-          itemsToShow.forEach((specialization, index) => {
-              const specializationRow = document.createElement('tr');
-              specializationRow.innerHTML = `
+                                                        if (itemsToShow.length === 0) {
+                                                            const noMatchesRow = document.createElement('tr');
+                                                            noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
+                                                            specializationTableBody.appendChild(noMatchesRow);
+                                                        } else {
+                                                            itemsToShow.forEach((specialization, index) => {
+                                                                const specializationRow = document.createElement('tr');
+                                                                specializationRow.innerHTML = `
                   <td class="pt-3">${start + index + 1}.</td>
                   <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
                   <td class="d-flex d-md-block">
@@ -2089,70 +2105,70 @@
                           <i class="bi bi-trash"></i>
                       </button>
                   </td>`;
-              specializationTableBody.appendChild(specializationRow);
-          });
-      }
+                                                                specializationTableBody.appendChild(specializationRow);
+                                                            });
+                                                        }
 
-      generateSpecializationPagination(filteredSpecializationList.length, page);
-  }
+                                                        generateSpecializationPagination(filteredSpecializationList.length, page);
+                                                    }
 
-  function updateEntriesInfo(start, end, totalEntries) {
-      const entriesInfo = document.getElementById('entriesInfo');
-      entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
-  }
+                                                    function updateEntriesInfo(start, end, totalEntries) {
+                                                        const entriesInfo = document.getElementById('entriesInfo');
+                                                        entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                                    }
 
-  function generateSpecializationPagination(totalItems, currentPage) {
-      const totalPages = Math.ceil(totalItems / itemsPerPageSpecialization);
-      const paginationContainer = document.getElementById('paginationContainerSpecialization');
-      paginationContainer.innerHTML = '';
+                                                    function generateSpecializationPagination(totalItems, currentPage) {
+                                                        const totalPages = Math.ceil(totalItems / itemsPerPageSpecialization);
+                                                        const paginationContainer = document.getElementById('paginationContainerSpecialization');
+                                                        paginationContainer.innerHTML = '';
 
-      const ul = document.createElement('ul');
-      ul.className = 'pagination';
+                                                        const ul = document.createElement('ul');
+                                                        ul.className = 'pagination';
 
-      const prevLi = document.createElement('li');
-      prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
-      prevLi.onclick = () => { if (currentPage > 1) displaySpecializationPage(currentPage - 1); };
-      ul.appendChild(prevLi);
+                                                        const prevLi = document.createElement('li');
+                                                        prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                        prevLi.onclick = () => { if (currentPage > 1) displaySpecializationPage(currentPage - 1); };
+                                                        ul.appendChild(prevLi);
 
-      const startPage = Math.max(1, currentPage - 2);
-      const endPage = Math.min(totalPages, startPage + 4);
+                                                        const startPage = Math.max(1, currentPage - 2);
+                                                        const endPage = Math.min(totalPages, startPage + 4);
 
-      for (let i = startPage; i <= endPage; i++) {
-          const li = document.createElement('li');
-          li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
-          li.onclick = () => displaySpecializationPage(i);
-          ul.appendChild(li);
-      }
+                                                        for (let i = startPage; i <= endPage; i++) {
+                                                            const li = document.createElement('li');
+                                                            li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                            li.onclick = () => displaySpecializationPage(i);
+                                                            ul.appendChild(li);
+                                                        }
 
-      const nextLi = document.createElement('li');
-      nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
-      nextLi.onclick = () => { if (currentPage < totalPages) displaySpecializationPage(currentPage + 1); };
-      ul.appendChild(nextLi);
+                                                        const nextLi = document.createElement('li');
+                                                        nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                        nextLi.onclick = () => { if (currentPage < totalPages) displaySpecializationPage(currentPage + 1); };
+                                                        ul.appendChild(nextLi);
 
-      paginationContainer.appendChild(ul);
-  }
+                                                        paginationContainer.appendChild(ul);
+                                                    }
 
-  // On load
-  toggleClearIcons();
-  filteredSpecializationList = [...specializationList];
-  displaySpecializationPage(initialPageSpecialization);
-</script>
+                                                    // On load
+                                                    toggleClearIcons();
+                                                    filteredSpecializationList = [...specializationList];
+                                                    displaySpecializationPage(initialPageSpecialization);
+                                                </script>
 
-<!-- ADD THIS BELOW -->
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    document.body.addEventListener('click', function (e) {
-      const btn = e.target.closest('.edit-btn');
-      if (!btn) return;
+                                                <!-- ADD THIS BELOW -->
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                        document.body.addEventListener('click', function (e) {
+                                                            const btn = e.target.closest('.edit-btn');
+                                                            if (!btn) return;
 
-      document.getElementById('editSpecId').value = btn.dataset.id;
-      document.getElementById('editSpecName').value = btn.dataset.name;
-      document.getElementById('editSpecializationForm').action = 
-        `${baseUrl}Edfadmin/updateSpecialization/${btn.dataset.id}`;
-    });
-  });
-</script>
-                                
+                                                            document.getElementById('editSpecId').value = btn.dataset.id;
+                                                            document.getElementById('editSpecName').value = btn.dataset.name;
+                                                            document.getElementById('editSpecializationForm').action =
+                                                                `${baseUrl}Edfadmin/updateSpecialization/${btn.dataset.id}`;
+                                                        });
+                                                    });
+                                                </script>
+
             <?php
         } else if ($method == "symptoms") {
             ?>
@@ -2161,9 +2177,7 @@
                                                         <div class="card rounded">
                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                 <p style="font-size: 24px; font-weight: 500">Symptoms List</p>
-                                                                <button type="button"
-                                                                    onclick="openAddModal('symptoms')"
-                                                                    style="background-color: #2b353bf5;"
+                                                                <button type="button" onclick="openAddModal('symptoms')" style="background-color: #2b353bf5;"
                                                                     class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                     <i class="bi bi-plus-square-fill"></i> New
                                                                 </button>
@@ -2352,9 +2366,7 @@
                                                             <div class="card rounded">
                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                     <p style="font-size: 24px; font-weight: 500">Findings List</p>
-                                                                    <button type="button"
-                                                                        onclick="openAddModal('findings')"
-                                                                        style="background-color: #2b353bf5;"
+                                                                    <button type="button" onclick="openAddModal('findings')" style="background-color: #2b353bf5;"
                                                                         class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                         <i class="bi bi-plus-square-fill"></i> New
                                                                     </button>
@@ -2545,9 +2557,7 @@
                                                                 <div class="card rounded">
                                                                     <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                         <p style="font-size: 24px; font-weight: 500">Diagnosis List</p>
-                                                                        <button type="button"
-                                                                            onclick="openAddModal('diagnosis')"
-                                                                            style="background-color: #2b353bf5;"
+                                                                        <button type="button" onclick="openAddModal('diagnosis')" style="background-color: #2b353bf5;"
                                                                             class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                             <i class="bi bi-plus-square-fill"></i> New
                                                                         </button>
@@ -2676,7 +2686,7 @@
                                                                                 data-id="${diagnosis.id}" data-name="${diagnosis.diagnosisName}" 
                                                                                 data-type="diagnosis"><i class="bi bi-trash"></i></button>
                                                                             </td>`;
-                                                                                                                                    diagnosisTableBody.appendChild(diagnosisRow);
+                                                                            diagnosisTableBody.appendChild(diagnosisRow);
                                                                         });
                                                                     }
 
@@ -2739,9 +2749,7 @@
                                                                     <div class="card rounded">
                                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                             <p style="font-size: 24px; font-weight: 500">Investigation List</p>
-                                                                            <button type="button"
-                                                                                onclick="openAddModal('investigation')"
-                                                                                style="background-color: #2b353bf5;"
+                                                                            <button type="button" onclick="openAddModal('investigation')" style="background-color: #2b353bf5;"
                                                                                 class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                 <i class="bi bi-plus-square-fill"></i> New
                                                                             </button>
@@ -2929,9 +2937,7 @@
                                                                         <div class="card rounded">
                                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                 <p style="font-size: 24px; font-weight: 500">Instruction List</p>
-                                                                                <button type="button"
-                                                                                    onclick="openAddModal('instruction')"
-                                                                                    style="background-color: #2b353bf5;"
+                                                                                <button type="button" onclick="openAddModal('instruction')" style="background-color: #2b353bf5;"
                                                                                     class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                     <i class="bi bi-plus-square-fill"></i> New
                                                                                 </button>
@@ -3121,9 +3127,7 @@
                                                                             <div class="card rounded">
                                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                     <p style="font-size: 24px; font-weight: 500">Procedure List</p>
-                                                                                    <button type="button"
-                                                                                        onclick="openAddModal('procedure')"
-                                                                                        style="background-color: #2b353bf5;"
+                                                                                    <button type="button" onclick="openAddModal('procedure')" style="background-color: #2b353bf5;"
                                                                                         class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                         <i class="bi bi-plus-square-fill"></i> New
                                                                                     </button>
@@ -3315,9 +3319,7 @@
                                                                                 <div class="card rounded">
                                                                                     <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                         <p style="font-size: 24px; font-weight: 500">Advice List</p>
-                                                                                       <button type="button"
-                                                                                            onclick="openAddModal('advice')"
-                                                                                            style="background-color: #2b353bf5;"
+                                                                                        <button type="button" onclick="openAddModal('advice')" style="background-color: #2b353bf5;"
                                                                                             class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                             <i class="bi bi-plus-square-fill"></i> New
                                                                                         </button>
@@ -3740,6 +3742,7 @@
 
     </main>
 
+    <!-- Sidebar active code -->
     <script>
         <?php if ($method == "dashboard") { ?>
             document.getElementById('dashboard').style.color = "white";
@@ -3769,191 +3772,149 @@
             document.getElementById('medicines').style.color = "white";
         <?php } ?>
     </script>
-<!-- Attachment Display Dashboard Modal --> 
-<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
-     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="dashboardPreviewModalLabel">
-                    Attachment Preview in Dashboard
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
 
-            <div class="modal-body text-center position-relative p-0">
-
-                <!-- Toolbar -->
-                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0" 
-                     style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
-                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled><b style="font-size:1.2rem;">-</b></button>
-                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled><b style="font-size:1.2rem;">+</b></button>
-                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i class="bi bi-download"></i></button>
-                </div>
-
-                <!-- Prev / Next Buttons (on top) -->
-                <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" 
-                        style="font-size:1.5rem;" disabled><b>&lt;</b></button>
-                <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" 
-                        style="font-size:1.5rem;" disabled><b>&gt;</b></button>
-
-                <!-- PREVIEW AREA WITH 50px WHITE BORDERS -->
-                <div class="preview-area">
-                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none" 
-                         style="transform-origin:top left;transition:transform .2s ease-out;">
-                    <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;" frameborder="0"></iframe>
-                </div>
-
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- script to display dasboard Preview -->
+    <!-- Patient Attachments Preview -->
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const modalEl     = document.getElementById('dashboardPreviewModal');
-    const modal       = new bootstrap.Modal(modalEl);
-    const toolbarEl   = document.getElementById('attachment-toolbar');
-    const zoomInBtn   = document.getElementById('zoomInBtn');
-    const zoomOutBtn  = document.getElementById('zoomOutBtn');
-    const downloadBtn = document.getElementById('downloadAttachmentBtn');
-    const prevBtn     = document.getElementById('prevAttachment');
-    const nextBtn     = document.getElementById('nextAttachment');
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalEl = document.getElementById('dashboardPreviewModal');
+            const modal = new bootstrap.Modal(modalEl);
+            const toolbarEl = document.getElementById('attachment-toolbar');
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const downloadBtn = document.getElementById('downloadAttachmentBtn');
+            const prevBtn = document.getElementById('prevAttachment');
+            const nextBtn = document.getElementById('nextAttachment');
 
-    const imgEl       = document.getElementById('attachmentImage');
-    const pdfEl       = document.getElementById('attachmentPDF');
-    const previewArea = document.querySelector('.preview-area');
+            const imgEl = document.getElementById('attachmentImage');
+            const pdfEl = document.getElementById('attachmentPDF');
+            const previewArea = document.querySelector('.preview-area');
 
-    let messageEl = null;
-    let currentAttachments = [];
-    let currentIdx = -1;
+            let messageEl = null;
+            let currentAttachments = [];
+            let currentIdx = -1;
 
-    // CLICK ON ANY FILE → BUILD ATTACHMENTS FROM ITS GROUP
-    document.querySelectorAll('.openAttachment').forEach(link => {
-        link.addEventListener('click', function (e) {
-            e.preventDefault();
-            const consultationContainer = this.closest('[data-consultation-id]') || 
-                                         this.closest('.consultation') || 
-                                         this.closest('div');
+            // CLICK ON ANY FILE → BUILD ATTACHMENTS FROM ITS GROUP
+            document.querySelectorAll('.openAttachment').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const consultationContainer = this.closest('[data-consultation-id]') ||
+                        this.closest('.consultation') ||
+                        this.closest('div');
 
-            if (!consultationContainer) return;
-            // === 2. Build attachments ONLY from this container ===
-            const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
-            currentAttachments = [];
-            linksInGroup.forEach((l, idx) => {
-                const url = l.dataset.file;
-                const ext = l.dataset.ext.toLowerCase();
-                const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
-                currentAttachments.push({url, ext, fileName, link: l, index: idx});
+                    if (!consultationContainer) return;
+                    // === 2. Build attachments ONLY from this container ===
+                    const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
+                    currentAttachments = [];
+                    linksInGroup.forEach((l, idx) => {
+                        const url = l.dataset.file;
+                        const ext = l.dataset.ext.toLowerCase();
+                        const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
+                        currentAttachments.push({ url, ext, fileName, link: l, index: idx });
+                    });
+                    // === 3. Find current file index ===
+                    const clickedUrl = this.dataset.file;
+                    currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
+                    if (currentIdx === -1) return;
+                    // === 4. Show file and open modal ===
+                    showFile(currentAttachments[currentIdx]);
+                    modal.show();
+                });
             });
-            // === 3. Find current file index ===
-            const clickedUrl = this.dataset.file;
-            currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
-            if (currentIdx === -1) return;
-            // === 4. Show file and open modal ===
-            showFile(currentAttachments[currentIdx]);
-            modal.show();
-        });
-    });
-    function showFile(fileObj) {
-        imgEl.classList.add('d-none');
-        pdfEl.classList.add('d-none');
-        if (messageEl) messageEl.remove();
-        imgEl.src = '';
-        pdfEl.src = '';
-        toolbarEl.style.display = 'none';
-        zoomInBtn.disabled = false;
-        zoomOutBtn.disabled = false;
-        if (['jpg','jpeg','png','gif','bmp','webp','svg'].includes(fileObj.ext)) {
-            imgEl.src = fileObj.url;
-            imgEl.classList.remove('d-none');
-            toolbarEl.style.display = 'flex';
-            enableImageZoom();
-        }
-        else if (fileObj.ext === 'pdf') {
-            pdfEl.src = fileObj.url + '#toolbar=0';
-            pdfEl.classList.remove('d-none');
-            toolbarEl.style.display = 'flex';
-            enablePdfZoom();
-        }
-        else {
-            messageEl = document.createElement('div');
-            messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
-            messageEl.style.zIndex = '5';
-            messageEl.innerHTML = `
+            function showFile(fileObj) {
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgEl.src = '';
+                pdfEl.src = '';
+                toolbarEl.style.display = 'none';
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
+                if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(fileObj.ext)) {
+                    imgEl.src = fileObj.url;
+                    imgEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+                    enableImageZoom();
+                }
+                else if (fileObj.ext === 'pdf') {
+                    pdfEl.src = fileObj.url + '#toolbar=0';
+                    pdfEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+                    enablePdfZoom();
+                }
+                else {
+                    messageEl = document.createElement('div');
+                    messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
+                    messageEl.style.zIndex = '5';
+                    messageEl.innerHTML = `
                 <p class="mb-0 fs-5">
                     Preview not available for <strong>${fileObj.fileName}</strong>
                 </p>
             `;
-            previewArea.appendChild(messageEl);
-            toolbarEl.style.display = 'flex';
-        }
+                    previewArea.appendChild(messageEl);
+                    toolbarEl.style.display = 'flex';
+                }
 
-        // Navigation (only within current group)
-        prevBtn.disabled = (currentIdx === 0);
-        nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
+                // Navigation (only within current group)
+                prevBtn.disabled = (currentIdx === 0);
+                nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
 
-        prevBtn.onclick = () => {
-            if (currentIdx > 0) showFile(currentAttachments[--currentIdx]);
-        };
-        nextBtn.onclick = () => {
-            if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
-        };
+                prevBtn.onclick = () => {
+                    if (currentIdx > 0) showFile(currentAttachments[--currentIdx]);
+                };
+                nextBtn.onclick = () => {
+                    if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
+                };
 
-        // Download
-        downloadBtn.onclick = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const a = document.createElement('a');
-            a.href = fileObj.url;
-            a.download = '';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        };
-    }
-    // ZOOM FUNCTIONS
-    let imgScale = 1;
-    const SCALE_STEP = 0.2;
-    const MIN_SCALE = 0.4;
-    const MAX_SCALE = 3;
+                // Download
+                downloadBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const a = document.createElement('a');
+                    a.href = fileObj.url;
+                    a.download = '';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+            }
+            // ZOOM FUNCTIONS
+            let imgScale = 1;
+            const SCALE_STEP = 0.2;
+            const MIN_SCALE = 0.4;
+            const MAX_SCALE = 3;
 
-    function enableImageZoom() {
-        zoomInBtn.onclick  = () => { imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
-        zoomOutBtn.onclick = () => { imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
-    }
-    function enablePdfZoom() {
-        let pdfZoom = 100;
-        const ZOOM_STEP = 20;
-        const MIN_ZOOM = 50;
-        const MAX_ZOOM = 200;
+            function enableImageZoom() {
+                zoomInBtn.onclick = () => { imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
+                zoomOutBtn.onclick = () => { imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
+            }
+            function enablePdfZoom() {
+                let pdfZoom = 100;
+                const ZOOM_STEP = 20;
+                const MIN_ZOOM = 50;
+                const MAX_ZOOM = 200;
 
-        const setPdfZoom = () => {
-            pdfEl.src = `${currentAttachments[currentIdx].url}#zoom=${pdfZoom}&toolbar=0`;
-        };
+                const setPdfZoom = () => {
+                    pdfEl.src = `${currentAttachments[currentIdx].url}#zoom=${pdfZoom}&toolbar=0`;
+                };
 
-        zoomInBtn.onclick  = () => { pdfZoom = Math.min(pdfZoom + ZOOM_STEP, MAX_ZOOM); setPdfZoom(); };
-        zoomOutBtn.onclick = () => { pdfZoom = Math.max(pdfZoom - ZOOM_STEP, MIN_ZOOM); setPdfZoom(); };
-    }
+                zoomInBtn.onclick = () => { pdfZoom = Math.min(pdfZoom + ZOOM_STEP, MAX_ZOOM); setPdfZoom(); };
+                zoomOutBtn.onclick = () => { pdfZoom = Math.max(pdfZoom - ZOOM_STEP, MIN_ZOOM); setPdfZoom(); };
+            }
 
-    // CLEANUP
-    modalEl.addEventListener('hidden.bs.modal', function () {
-        imgEl.src = '';
-        pdfEl.src = '';
-        imgEl.classList.add('d-none');
-        pdfEl.classList.add('d-none');
-        if (messageEl) messageEl.remove();
-        imgScale = 1;
-        toolbarEl.style.display = 'none';
-        currentAttachments = [];
-        currentIdx = -1;
-    });
-});
-</script>
+            // CLEANUP
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                imgEl.src = '';
+                pdfEl.src = '';
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgScale = 1;
+                toolbarEl.style.display = 'none';
+                currentAttachments = [];
+                currentIdx = -1;
+            });
+        });
+    </script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

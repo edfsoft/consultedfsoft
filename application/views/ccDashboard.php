@@ -226,7 +226,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[0]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[0]['patientComplaint'] != '' ? $appointmentList[0]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[0]['timeOfAppoint'])); ?>
@@ -249,7 +249,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[1]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[1]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[1]['patientComplaint'] != '' ? $appointmentList[1]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[1]['timeOfAppoint'])); ?>
@@ -272,7 +272,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[2]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[2]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[2]['patientComplaint'] != '' ? $appointmentList[2]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[2]['timeOfAppoint'])); ?>
@@ -366,7 +366,7 @@
                                             <tr>
                                                 <td>
                                                     <span
-                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint'] != '' ? $appointmentList[0]['patientComplaint'] : "-"; ?></span>
                                                 </td>
                                                 <td>
                                                     <span
@@ -1261,7 +1261,7 @@
                                                         echo date("d-m-Y", strtotime($value['dateOfAppoint']));
                                                     } ?>
                                                                 </td>
-                                                                <td class="" style="font-size: 16px" class="pt-3">
+                                                                <td style="font-size: 16px" class="pt-3">
                                                     <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                                 </td>
                                                                 <td style="font-size: 16px" class="pt-3"><a
@@ -1269,7 +1269,8 @@
                                                                         class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                         onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
                                                                 </td>
-                                                                <td style="font-size: 16px" class="pt-3"><?php echo $value['patientComplaint'] ?>
+                                                                <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
                                                                 </td>
                                                                 <td style="font-size: 16px" class="d-flex d-lg-block">
                                                         <?php

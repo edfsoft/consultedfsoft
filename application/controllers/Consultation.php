@@ -242,9 +242,9 @@ class Consultation extends CI_Controller
                     'quantity' => $medicine['quantity'],
                     'unit' => $medicine['unit'],
                     'timing' => $medicine['timingString'],
-                    'frequency' => $medicine['frequency'],
                     'food_timing' => $medicine['foodTiming'],
-                    'duration' => $medicine['duration']
+                    'duration' => $medicine['duration'],
+                     'notes' => $medicine['notes'],
                 );
 
                 $medicineSaved = $this->ConsultModel->save_medicine($data);

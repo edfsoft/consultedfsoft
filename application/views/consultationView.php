@@ -3798,7 +3798,7 @@
     </script>
 
     <!-- Medicine Modal Script -->
-    <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle" aria-hidden="true"
+    <!-- <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -4064,6 +4064,326 @@
             removeBtn.style.fontSize = "1rem";
             removeBtn.style.border = "none";
             removeBtn.style.background = "transparent";
+            removeBtn.onclick = (e) => {
+                e.stopPropagation();
+                tagEl.remove();
+                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
+                updateMedicinesHiddenInput();
+            };
+            tagEl.appendChild(removeBtn);
+        }
+
+        function updateMedicinesHiddenInput() {
+            document.getElementById("medicinesJson").value = JSON.stringify(selectedMedicines);
+        }
+
+        medicinesInput.addEventListener("input", renderMedicinesSuggestions);
+        medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
+
+        document.addEventListener("click", (e) => {
+            if (!medicinesTagContainer.contains(e.target)) {
+                medicinesSuggestionsBox.style.display = "none";
+            }
+        });
+    </script> -->
+    <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle" aria-hidden="true"
+        data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="modal-title fw-medium" id="medicinesModalTitle"
+                            style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
+                        <small id="medicineCompositionText" class="text-muted d-block"></small>
+                    </div>
+                    <div>
+                        <span id="medicineCategoryText" class="text-dark me-3"></span>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                </div>
+                <div class="modal-body" style="font-family: Poppins, sans-serif;">
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Quantity</label>
+                        <div class="d-flex align-items-center gap-2">
+                            <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
+                                placeholder="Enter qty">
+
+                            <select id="medicineUnit" class="form-select w-25">
+                                <option value="mg">mg</option>
+                                <option value="ml">ml</option>
+                                <option value="units">units</option>
+                                <option value="drops">drops</option>
+                                <option value="tab">tab</option>
+                                <option value="cap">cap</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Timing</label>
+                        <div id="timingOptions" class="d-flex flex-wrap gap-4">
+                            <div class="form-check d-flex align-items-center gap-2">
+                                <input type="checkbox" id="morningCheck">
+                                <label for="morningCheck" class="mb-0">Morning</label>
+                                <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
+                                    placeholder="Qty">
+                            </div>
+                            <div class="form-check d-flex align-items-center gap-2">
+                                <input type="checkbox" id="afternoonCheck">
+                                <label for="afternoonCheck" class="mb-0">Afternoon</label>
+                                <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
+                                    placeholder="Qty">
+                            </div>
+                            <div class="form-check d-flex align-items-center gap-2">
+                                <input type="checkbox" id="eveningCheck">
+                                <label for="eveningCheck" class="mb-0">Evening</label>
+                                <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
+                                    placeholder="Qty">
+                            </div>
+                            <div class="form-check d-flex align-items-center gap-2">
+                                <input type="checkbox" id="nightCheck">
+                                <label for="nightCheck" class="mb-0">Night</label>
+                                <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5"
+                                    placeholder="Qty">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Food Timing</label>
+                        <div class="d-flex flex-wrap gap-3 mt-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="foodTiming" value="Before Food"
+                                    id="beforeFood">
+                                <label class="form-check-label" for="beforeFood">Before Food</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="foodTiming" value="After Food"
+                                    id="afterFood">
+                                <label class="form-check-label" for="afterFood">After Food</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="foodTiming" value="Empty Stomach"
+                                    id="emptyStomach">
+                                <label class="form-check-label" for="emptyStomach">Empty Stomach</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="foodTiming" value="Bedtime"
+                                    id="bedtime">
+                                <label class="form-check-label" for="bedtime">Bedtime</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Duration</label>
+                        <input type="number" id="medicineDuration" min="0" class="form-control w-50"
+                            placeholder="Enter duration (days)">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Notes</label>
+                        <textarea id="medicineNotes" class="form-control" rows="3"
+                            placeholder="Enter any additional notes..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn text-light" style="background-color: #00ad8e;"
+                        onclick="saveMedicineModal()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const medicinesData = <?php echo json_encode($medicinesList); ?>;
+        const medicinesList = medicinesData.map(m => m.medicineName);
+
+        const medicinesInput = document.getElementById("medicinesSearchInput");
+        const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
+        const medicinesTagContainer = document.getElementById("medicinesInput");
+        const medicinesModal = new bootstrap.Modal(document.getElementById("medicinesModal"));
+        const medicinesModalTitle = document.getElementById("medicinesModalTitle");
+        const medicineCompositionText = document.getElementById("medicineCompositionText");
+        const medicineCategoryText = document.getElementById("medicineCategoryText");
+        const medicineQuantity = document.getElementById("medicineQuantity");
+        const medicineUnit = document.getElementById("medicineUnit");
+        const medicineDuration = document.getElementById("medicineDuration");
+        const medicineNotes = document.getElementById("medicineNotes");
+
+        let selectedMedicines = [];
+        let pendingMedicine = "";
+        let editingMedicineTag = null;
+
+        // ✅ ADDING units options dynamically
+        medicineQuantity.insertAdjacentHTML(
+            "afterend",
+            `<select id="medicineUnit" class="form-select w-25 ms-2">
+        <option value="mg">mg</option>
+        <option value="ml">ml</option>
+        <option value="units">units</option>
+        <option value="drops">drops</option>
+        <option value="tab">tab</option>
+        <option value="cap">cap</option>
+    </select>`
+        );
+
+        // ✅ Automatically set timing qty = 1 when checkbox is selected
+        ["morning", "afternoon", "evening", "night"].forEach(slot => {
+            const check = document.getElementById(`${slot}Check`);
+            const qty = document.getElementById(`${slot}Qty`);
+
+            check.addEventListener("change", () => {
+                if (check.checked) {
+                    qty.value = qty.value || 1; // default 1
+                } else {
+                    qty.value = "";
+                }
+            });
+        });
+
+        function renderMedicinesSuggestions() {
+            const query = medicinesInput.value.trim().toLowerCase();
+            medicinesSuggestionsBox.innerHTML = "";
+
+            const filtered = medicinesList.filter(m =>
+                m.toLowerCase().includes(query) &&
+                !selectedMedicines.some(obj => obj.medicine === m)
+            );
+
+            if (filtered.length === 0 && query !== "") {
+                const div = document.createElement("div");
+                div.innerHTML = `Add "<strong>${medicinesInput.value}</strong>"`;
+                div.onclick = () => { openMedicineModal(medicinesInput.value); medicinesInput.value = ""; };
+                medicinesSuggestionsBox.appendChild(div);
+            } else {
+                filtered.forEach(item => {
+                    const div = document.createElement("div");
+                    div.textContent = item;
+                    div.onclick = () => { openMedicineModal(item); medicinesInput.value = ""; };
+                    medicinesSuggestionsBox.appendChild(div);
+                });
+            }
+
+            medicinesSuggestionsBox.style.display = "block";
+        }
+
+        function openMedicineModal(tagName, existing = null, tagEl = null) {
+            pendingMedicine = tagName;
+            editingMedicineTag = tagEl;
+
+            const medData = medicinesData.find(m => m.medicineName === tagName);
+
+            medicinesModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+            medicineCompositionText.textContent = medData ? medData.compositionName : "(No composition available)";
+            medicineCategoryText.textContent = medData ? `Category: ${medData.category}` : "(No category)";
+
+            medicineQuantity.value = existing?.quantity || "";
+            medicineUnit.value = existing?.unit || "mg";
+            medicineDuration.value = existing?.duration || "";
+            medicineNotes.value = existing?.notes || "";
+
+            // Reset timing slots
+            ["morning", "afternoon", "evening", "night"].forEach(slot => {
+                document.getElementById(`${slot}Check`).checked = false;
+                document.getElementById(`${slot}Qty`).value = "";
+            });
+
+            // Prefill timing if editing
+            if (existing?.timingSlots) {
+                Object.entries(existing.timingSlots).forEach(([slot, val]) => {
+                    if (val) {
+                        document.getElementById(`${slot}Check`).checked = true;
+                        document.getElementById(`${slot}Qty`).value = val;
+                    }
+                });
+            }
+
+            // Food timing
+            document.querySelectorAll('input[name="foodTiming"]').forEach(radio => {
+                radio.checked = radio.value === (existing?.foodTiming || "");
+            });
+
+            medicinesModal.show();
+        }
+
+        function saveMedicineModal() {
+            const quantity = medicineQuantity.value.trim();
+            const unit = document.getElementById("medicineUnit").value;
+            const duration = medicineDuration.value.trim();
+            const notes = medicineNotes.value.trim();
+
+            const timingSlots = {};
+            let timeStringValues = [];
+
+            ["morning", "afternoon", "evening", "night"].forEach(slot => {
+                const check = document.getElementById(`${slot}Check`);
+                const qty = document.getElementById(`${slot}Qty`).value;
+
+                if (check.checked && qty) {
+                    timingSlots[slot] = qty;
+                    timeStringValues.push(qty);
+                } else {
+                    timeStringValues.push("0");
+                }
+            });
+
+            // ✅ final required string format
+            const timingString = timeStringValues.join("-");
+
+            const foodTiming = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
+
+            const data = {
+                id: "new",
+                medicine: pendingMedicine,
+                quantity,
+                unit,
+                timingSlots,
+                timingString,
+                foodTiming,
+                duration,
+                notes
+            };
+
+            const existingIndex = selectedMedicines.findIndex(m => m.medicine === pendingMedicine);
+
+            if (editingMedicineTag && existingIndex !== -1) {
+                selectedMedicines[existingIndex] = data;
+                updateMedicineTagDisplay(editingMedicineTag, data);
+            } else {
+                selectedMedicines.push(data);
+                addMedicineTag(data);
+            }
+
+            medicinesModal.hide();
+            pendingMedicine = "";
+            editingMedicineTag = null;
+            updateMedicinesHiddenInput();
+        }
+
+        function addMedicineTag(data) {
+            const tag = document.createElement("span");
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+            tag.style.cursor = "pointer";
+
+            updateMedicineTagDisplay(tag, data);
+
+            tag.onclick = () => openMedicineModal(data.medicine, data, tag);
+            medicinesTagContainer.insertBefore(tag, medicinesInput);
+        }
+
+        function updateMedicineTagDisplay(tagEl, data) {
+            tagEl.innerHTML = `${data.medicine} (Qty: ${data.quantity} ${data.unit}, ${data.timingString})`;
+
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "text-light ms-2";
+            removeBtn.style.border = "none";
+            removeBtn.style.background = "transparent";
+            removeBtn.style.fontSize = "1rem";
+            removeBtn.innerHTML = "&times;";
             removeBtn.onclick = (e) => {
                 e.stopPropagation();
                 tagEl.remove();

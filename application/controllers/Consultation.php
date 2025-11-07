@@ -241,7 +241,7 @@ class Consultation extends CI_Controller
                     'medicine_name' => $medicine['medicine'],
                     'quantity' => $medicine['quantity'],
                     'unit' => $medicine['unit'],
-                    'timing' => $medicine['timing'],
+                    'timing' => $medicine['timingString'],
                     'frequency' => $medicine['frequency'],
                     'food_timing' => $medicine['foodTiming'],
                     'duration' => $medicine['duration']
@@ -590,7 +590,7 @@ class Consultation extends CI_Controller
                         'upload_path' => $uploadPath,
                         'allowed_types' => 'jpg|jpeg|png|pdf|doc|docx',
                         'file_name' => $newFileName,
-                        'overwrite' => false 
+                        'overwrite' => false
                     ];
 
                     $this->upload->initialize($config);

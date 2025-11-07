@@ -4375,7 +4375,7 @@
         }
 
         function updateMedicineTagDisplay(tagEl, data) {
-            tagEl.innerHTML = `${data.medicine} (Qty: ${data.quantity} ${data.unit}, ${data.timingString})`;
+            tagEl.innerHTML = `${data.medicine} (Qty: ${data.quantity} ${data.unit}, Timing: ${data.timingString}, Duration: ${data.duration})`;
 
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";

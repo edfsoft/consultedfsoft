@@ -238,13 +238,13 @@ class Consultation extends CI_Controller
             foreach ($medicines as $medicine) {
                 $data = array(
                     'consultation_id' => $consultationId,
-                    'medicine_name' => $medicine['medicine'],
+                    'medicine_name' => $medicine['medicine_name'],
                     'quantity' => $medicine['quantity'],
                     'unit' => $medicine['unit'],
-                    'timing' => $medicine['timingString'],
-                    'food_timing' => $medicine['foodTiming'],
+                    'timing' => $medicine['timing'],
+                    'food_timing' => $medicine['food_timing'],
                     'duration' => $medicine['duration'],
-                     'notes' => $medicine['notes'],
+                    'notes' => $medicine['notes'],
                 );
 
                 $medicineSaved = $this->ConsultModel->save_medicine($data);
@@ -501,13 +501,13 @@ class Consultation extends CI_Controller
             foreach ($medicines as $medicine) {
                 $data = array(
                     'consultation_id' => $consultationId,
-                    'medicine_name' => $medicine['medicine'],
+                    'medicine_name' => $medicine['medicine_name'],
                     'quantity' => $medicine['quantity'],
                     'unit' => $medicine['unit'],
                     'timing' => $medicine['timing'],
-                    'frequency' => $medicine['frequency'],
-                    'food_timing' => $medicine['foodTiming'],
-                    'duration' => $medicine['duration']
+                    'food_timing' => $medicine['food_timing'],
+                    'duration' => $medicine['duration'],
+                    'notes' => $medicine['notes'],
                 );
 
                 if (!empty($medicine['id']) && $medicine['id'] !== 'new') {

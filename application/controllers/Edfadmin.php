@@ -540,98 +540,52 @@ class Edfadmin extends CI_Controller
         redirect("Edfadmin/{$type}List");
     }
 
-    // -------------------------------------------------------------------------------------------------------
-    public function deleteSpecilization()
-    {
-        $specilizationId = $this->uri->segment(3);
-        if ($this->AdminModel->specilizationDelete($specilizationId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Specilization deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting specilization');
-        }
-        redirect('Edfadmin/specializationList');
+
+ // Universal Model Delete
+public function deleteItem()
+{
+    $type = $this->uri->segment(3);   // e.g., specialization, symptoms
+    $id   = $this->uri->segment(4);   // the record ID
+
+    // Map URL segment → table name
+    $typeMap = [
+        'specialization' => 'specialization_list',
+        'symptoms'       => 'symptoms_list',
+        'findings'       => 'findings_list',
+        'diagnosis'      => 'diagnosis_list',
+        'investigation'  => 'investigations_list',
+        'instruction'    => 'instructions_list',
+        'procedure'      => 'procedures_list',
+        'advice'         => 'advices_list'
+    ];
+
+    $pluralMap = [
+        'specialization' => 'specialization',
+        'symptoms'       => 'symptoms',
+        'findings'       => 'findings',
+        'diagnosis'      => 'diagnosis',
+        'investigation'  => 'investigations',
+        'instruction'    => 'instructions',
+        'procedure'      => 'procedures',
+        'advice'         => 'advices'
+    ];
+
+    if (!isset($typeMap[$type]) || !$id) {
+        $this->session->set_flashdata('showErrorMessage', 'Invalid request.');
+        redirect('Edfadmin/dashboard');
     }
 
-    public function deleteSymptoms()
-    {
-        $symptomsId = $this->uri->segment(3);
-        if ($this->AdminModel->symptomsDelete($symptomsId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Symptoms deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting symptoms');
-        }
-        redirect('Edfadmin/symptomsList');
+    $table = $typeMap[$type];
+    $listUrl = $pluralMap[$type] . 'List';
+
+    if ($this->AdminModel->deleteItem($table, $id)) {
+        $this->session->set_flashdata('showSuccessMessage', ucfirst($type) . ' deleted successfully');
+    } else {
+        $this->session->set_flashdata('showErrorMessage', 'Error deleting ' . $type);
     }
 
-    public function deleteFindings()
-    {
-        $findingsId = $this->uri->segment(3);
-        if ($this->AdminModel->findingsDelete($findingsId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Findings deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting findings');
-        }
-        redirect('Edfadmin/findingsList');
-    }
-
-    public function deleteDiagnosis()
-    {
-        $diagnosisId = $this->uri->segment(3);
-        if ($this->AdminModel->diagnosisDelete($diagnosisId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Diagnosis deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting diagnosis');
-        }
-        redirect('Edfadmin/diagnosisList');
-    }
-
-    public function deleteInvestigation()
-    {
-        $investigationId = $this->uri->segment(3);
-        if ($this->AdminModel->investigationDelete($investigationId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Investigation deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting edicine');
-        }
-        redirect('Edfadmin/investigationsList');
-    }
-
-    public function deleteAdvice()
-    {
-        $adviceId = $this->uri->segment(3);
-        if ($this->AdminModel->adviceDelete($adviceId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Advice deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting Advice');
-        }
-        redirect('Edfadmin/advicesList');
-    }
-
-    public function deleteProcedure()
-    {
-        $adviceId = $this->uri->segment(3);
-        if ($this->AdminModel->procedureDelete($adviceId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Procedure deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting procedure');
-        }
-        redirect('Edfadmin/proceduresList');
-    }
-
-    public function deleteInstruction()
-    {
-        $adviceId = $this->uri->segment(3);
-        if ($this->AdminModel->instructionDelete($adviceId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Instruction deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting instruction');
-        }
-        redirect('Edfadmin/instructionsList');
-    }
-
-    // -------------------------------------------------------------------------------------------------------
-
-
+    redirect('Edfadmin/' . $listUrl);
+}
 
     public function logout()
     {
@@ -641,9 +595,6 @@ class Edfadmin extends CI_Controller
         $this->session->unset_userdata('adminMobileNum');
         redirect('Edfadmin/');
     }
-
-
-
 
 
 }

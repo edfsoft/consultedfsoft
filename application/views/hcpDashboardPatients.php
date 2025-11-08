@@ -43,6 +43,8 @@
         .fieldLink:hover {
             text-decoration: underline;
         }
+
+ 
     </style>
 </head>
 
@@ -367,14 +369,14 @@
                                             Number</label>
                                         <input type="text" class="form-control" id="patientAltMobile" name="patientAltMobile"
                                             maxlength="10" placeholder="E.g. 9876543210">
-                                        <small id="patientMobile_err" class="text-danger pt-1"></small>
+                                        <small id="patientAltMobile_err" class="text-danger pt-1"></small>
                                     </div>
                                 </div>
                                 <div class="d-md-flex justify-content-between pb-3">
                                     <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
                                         <label class="form-label" for="patientEmail">Email Id</label>
                                         <input type="email" class="form-control" id="patientEmail" name="patientEmail"
-                                            placeholder="E.g. example@gmail.com">
+                                            placeholder="E.g. example@gmail.com" maxlength="50">
                                         <small id="patientEmail_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
@@ -389,11 +391,10 @@
                                     </div>
                                 </div>
                                 <div class="d-md-flex justify-content-between pb-3">
-                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                        <label class="form-label" for="patientAge">Age <span
-                                                class="text-danger">*</span></label>
-                                        <input type="number" class="form-control" id="patientAge" name="patientAge" max="120"
-                                            min="2" maxlength="3" placeholder="E.g. 41">
+                                                              <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="patientAge">Age <span class="text-danger">*</span></label>
+                                       <input type="number" class="form-control" id="patientAge" name="patientAge" min="0"
+                                                        max="121" maxlength="3" placeholder="Eg:96">
                                         <small id="patientAge_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
@@ -472,10 +473,10 @@
                                     </div>
                                 </div>
                                 <div class="d-md-flex justify-content-between pb-3">
-                                    <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                        <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
-                                        <input type="number" class="form-control" id="partnerMobile" name="partnerMobile"
-                                            maxlength="10" placeholder="E.g. 9874563210">
+                                   <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                        <label class="form-label" for="partnerMobile">Guardian's Mobile</label>
+                                    <input type="text" class="form-control" id="partnerMobile" name="partnerMobile"
+                                        minlength="10" maxlength="10"  placeholder="E.g. 9874563210">
                                         <small id="partnerMobile_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
@@ -611,7 +612,7 @@
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
                                                     <label class="form-label" for="patientEmail">Email</label>
                                                     <input type="email" class="form-control" id="patientEmail" name="patientEmail"
-                                                        value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com">
+                                                        value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com" maxlength="50">
                                                     <small id="patientEmail_err" class="text-danger pt-1"></small>
                                                 </div>
                                                 <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
@@ -639,7 +640,7 @@
                                                         <span class="text-danger">*</span>
                                                     </label>
                                                     <input type="number" class="form-control" id="patientAge" name="patientAge" min="0"
-                                                        max="120" maxlength="3" value="<?php echo $currentAge; ?>"
+                                                        max="121" maxlength="3" value="<?php echo $currentAge; ?>"
                                                         placeholder="E.g. 41">
                                                     <small id="patientAge_err" class="text-danger pt-1"></small>
                                                 </div>
@@ -739,7 +740,7 @@
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
                                                     <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
                                                     <input type="text" class="form-control" id="partnerMobile" name="partnerMobile"
-                                                        value="<?php echo $value['partnerMobile'] ?>" maxlength="30"
+                                                        value="<?php echo $value['partnerMobile'] ?>" maxlength="10"
                                                         placeholder="E.g. 9874563210">
                                                     <small id="partnerMobile_err" class="text-danger pt-1"></small>
                                                 </div>
@@ -950,49 +951,114 @@
 
     <!-- Patient add and edit validation script -->
     <script>
-        function validatePatientDetails() {
-            let isValid = true;
-            var name = document.getElementById("patientName").value;
-            var mobile = document.getElementById("patientMobile").value;
-            var gender = document.getElementById("patientGender").value;
-            var age = document.getElementById("patientAge").value;
+        // Move event listeners OUTSIDE the validation function (run once on page load)
+document.addEventListener('DOMContentLoaded', function () {
+    // Restrict Patient Mobile to 10 digits (numbers only)
+    document.getElementById('patientMobile').addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+    });
 
-            if (name == "") {
-                document.getElementById("patientName_err").innerHTML = "Please enter a first name";
-                isValid = false;
-            } else {
-                document.getElementById("patientName_err").innerHTML = "";
-            }
+    // Restrict Partner Mobile to 10 digits
+    document.getElementById('partnerMobile').addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+    });
 
-            if (mobile == "") {
-                document.getElementById("patientMobile_err").innerHTML = "Please enter a mobile number";
-                isValid = false;
-            } else if (!/^(\+\d{1, 3}[- ]?)?\d{10}$/.test(mobile)) {
-                document.getElementById("patientMobile_err").innerHTML = "Please enter a valid 10-digit mobile number";
-                isValid = false;
-            } else {
-                document.getElementById("patientMobile_err").innerHTML = "";
-            }
+    // Restrict Age to 3 digits max
+    document.getElementById('patientAge').addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3);
+    });
+});
 
-            if (gender == "") {
-                document.getElementById("patientGender_err").innerHTML = "Please select a gender";
-                isValid = false;
-            } else {
-                document.getElementById("patientGender_err").innerHTML = "";
-            }
+function validatePatientDetails() {
+    let isValid = true;
 
-            if (age == "") {
-                document.getElementById("patientAge_err").innerHTML = "Please enter an age";
-                isValid = false;
-            } else if (age >= 120) {
-                document.getElementById("patientAge_err").innerHTML = "Please enter a valid age.";
-                isValid = false;
-            } else {
-                document.getElementById("patientAge_err").innerHTML = "";
-            }
+    // Get values
+    var name = document.getElementById("patientName").value.trim();
+    var mobile = document.getElementById("patientMobile").value;
+    var gender = document.getElementById("patientGender").value;
+    var age = document.getElementById("patientAge").value;
+    var gdMob = document.getElementById("partnerMobile").value;
+    var AltMob = document.getElementById("patientAltMobile").value;
+    var email = document.getElementById("patientEmail").value.trim();
+    var emailErr = document.getElementById("patientEmail_err");
 
-            return isValid;
+    // === EMAIL VALIDATION ===
+    if (email === "") {
+        emailErr.innerHTML = "Please enter an email address";
+        isValid = false;
+    } else if (email.length > 50) {
+        emailErr.innerHTML = "Email must be 50 characters or less";
+        isValid = false;
+    } else if (!email.includes("@")) {
+        emailErr.innerHTML = "Email must contain '@'";
+        isValid = false;
+    } else {
+        var domain = email.split("@").pop().toLowerCase();
+        var allowedDomains = ["gmail.com", "yahoo.com", "outlook.com"];
+        if (!allowedDomains.includes(domain)) {
+            emailErr.innerHTML = "Only gmail.com, yahoo.com, or outlook.com are allowed";
+            isValid = false;
+        } else {
+            emailErr.innerHTML = "";
         }
+    }
+
+    // === NAME ===
+    if (name === "") {
+        document.getElementById("patientName_err").innerHTML = "Please enter a first name";
+        isValid = false;
+    } else {
+        document.getElementById("patientName_err").innerHTML = "";
+    }
+
+    // === MOBILE NUMBER (Patient) - MUST BE EXACTLY 10 DIGITS ===
+    if (mobile === "") {
+        document.getElementById("patientMobile_err").innerHTML = "Please enter a mobile number";
+        isValid = false;
+    } else if (mobile.length !== 10 || !/^\d{10}$/.test(mobile)) {
+        document.getElementById("patientMobile_err").innerHTML = "Please enter a valid 10-digit mobile number";
+        isValid = false;
+    } else {
+        document.getElementById("patientMobile_err").innerHTML = "";
+    }
+
+    // === GENDER ===
+    if (gender === "") {
+        document.getElementById("patientGender_err").innerHTML = "Please select a gender";
+        isValid = false;
+    } else {
+        document.getElementById("patientGender_err").innerHTML = "";
+    }
+
+    // === AGE ===
+    if (age === "") {
+        document.getElementById("patientAge_err").innerHTML = "Please enter an age";
+        isValid = false;
+    } else if (parseInt(age) > 120 || parseInt(age) < 1) {
+        document.getElementById("patientAge_err").innerHTML = "Please enter a valid age (1-120)";
+        isValid = false;
+    } else {
+        document.getElementById("patientAge_err").innerHTML = "";
+    }
+
+    // === PARTNER MOBILE (Optional but must be 10 digits if provided) ===
+    if (gdMob !== "" && gdMob.length !== 10) {
+        document.getElementById("partnerMobile_err").innerHTML = "Please enter a valid 10-digit mobile number";
+        isValid = false;
+    } else {
+        document.getElementById("partnerMobile_err").innerHTML = "";
+    }
+
+    // === ALTERNATE MOBILE (Optional but must be 10 digits if provided) ===
+    if (AltMob !== "" && AltMob.length !== 10) {
+        document.getElementById("patientAltMobile_err").innerHTML = "Please enter a valid 10-digit mobile number";
+        isValid = false;
+    } else {
+        document.getElementById("patientAltMobile_err").innerHTML = "";
+    }
+
+    return isValid;
+}
     </script>
 
     <!-- Patient profile photo add and edit page -->

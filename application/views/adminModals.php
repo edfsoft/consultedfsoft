@@ -19,61 +19,25 @@
         </div>
     </div>
 </div>
+
 <!-- Universal Delete confirmation Script  -->
 <script>
-    document.addEventListener("click", (event) => {
-        let deleteButton = event.target.closest(".delete-btn");
-        if (deleteButton) {
-            let id = deleteButton.getAttribute("data-id");
-            let type = deleteButton.getAttribute("data-type");
-            let name = deleteButton.getAttribute("data-name");
+document.addEventListener("click", (event) => {
+    const deleteButton = event.target.closest(".delete-btn");
+    if (!deleteButton) return;
 
-            let baseUrl = "<?php echo base_url(); ?>";
-            let deleteUrl = "";
+    const id   = deleteButton.dataset.id;
+    const type = deleteButton.dataset.type;   // e.g., "specialization"
+    const name = deleteButton.dataset.name;
 
-            switch (type) {
-                case "cc":
-                    deleteUrl = baseUrl + "Edfadmin/deleteCc/" + id;
-                    break;
-                case "hcp":
-                    deleteUrl = baseUrl + "Edfadmin/deleteHcp/" + id;
-                    break;
-                case "patient":
-                    deleteUrl = baseUrl + "Edfadmin/deletePatient/" + id;
-                    break;
-                case "specialization":
-                    deleteUrl = baseUrl + "Edfadmin/deleteSpecilization/" + id;
-                    break;
-                case "symptom":
-                    deleteUrl = baseUrl + "Edfadmin/deleteSymptoms/" + id;
-                    break;
-                case "finding":
-                    deleteUrl = baseUrl + "Edfadmin/deleteFindings/" + id;
-                    break;
-                case "diagnosis":
-                    deleteUrl = baseUrl + "Edfadmin/deleteDiagnosis/" + id;
-                    break;
-                case "investigation":
-                    deleteUrl = baseUrl + "Edfadmin/deleteInvestigation/" + id;
-                    break;
-                case "instruction":
-                    deleteUrl = baseUrl + "Edfadmin/deleteInstruction/" + id;
-                    break;
-                case "procedure":
-                    deleteUrl = baseUrl + "Edfadmin/deleteProcedure/" + id;
-                    break;
-                case "advice":
-                    deleteUrl = baseUrl + "Edfadmin/deleteAdvice/" + id;
-                    break;
-                case "medicine":
-                    deleteUrl = baseUrl + "Edfadmin/deleteMedicine/" + id;
-                    break;
-            }
+    // --- Build universal URL ---
+    const baseUrl = "<?= base_url(); ?>";
+    const deleteUrl = `${baseUrl}Edfadmin/deleteItem/${type}/${id}`;
 
-            document.getElementById("deleteConfirmButton").setAttribute("href", deleteUrl);
-            document.getElementById("deleteItemName").textContent = name || '';
-        }
-    });
+    // --- Update modal ---
+    document.getElementById("deleteItemName").textContent = name;
+    document.getElementById("deleteConfirmButton").href = deleteUrl;
+});
 </script>
 
 <!-- Add and Edit medicine modal -->

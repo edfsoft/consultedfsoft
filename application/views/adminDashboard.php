@@ -50,41 +50,51 @@
             display: block;
         }
 
-        /*  Display Preview */
-        .preview-area {
-            position: relative;
-            margin: 0 50px;
-            /* Space for side borders */
-            height: calc(70vh - 100px);
-            min-height: 400px;
-            overflow: auto;
-            background: #fff;
-        }
-
-        .preview-area::before,
-        .preview-area::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 50px;
-            background: #fff;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .preview-area::before {
-            left: -50px;
-        }
-
-        .preview-area::after {
-            right: -50px;
-        }
-
-        #prevAttachment,
-        #nextAttachment {
-            z-index: 10;
-        }
+/* 1.Attachment Preview  */
+#dashboardPreviewModal .modal-body {
+    padding: 0; 
+}
+#dashboardPreviewModal .modal-body::before,
+#dashboardPreviewModal .modal-body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50px; 
+    background: #fff;
+    z-index: 5;
+    pointer-events: none; 
+}
+#dashboardPreviewModal .modal-body::before {
+    left: 0;
+}
+#dashboardPreviewModal .modal-body::after {
+    right: 0;
+}
+#dashboardPreviewModal .preview-area {
+    margin-left: 50px;
+    margin-right: 50px;
+    max-height: calc(80vh - 160px);
+    min-height: 400px;
+    overflow: auto;
+    background: #fff; 
+}
+#dashboardPreviewModal #prevAttachment,
+#dashboardPreviewModal #nextAttachment {
+    z-index: 10;
+}
+#dashboardPreviewModal .preview-area img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+#dashboardPreviewModal .preview-area iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    border: none;
+}
     </style>
 </head>
 
@@ -2085,26 +2095,26 @@
                                                             itemsToShow.forEach((specialization, index) => {
                                                                 const specializationRow = document.createElement('tr');
                                                                 specializationRow.innerHTML = `
-                  <td class="pt-3">${start + index + 1}.</td>
-                  <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
-                  <td class="d-flex d-md-block">
-                      <button class="btn btn-secondary me-2 edit-btn" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#editCommonModal"
-                        data-type="specialization"
-                        data-id="${specialization.id}"
-                        data-name="${specialization.specializationName}">
-                    <i class="bi bi-pen"></i>
-                </button>
-                      <button class="btn btn-danger delete-btn" 
-                              data-bs-toggle="modal" 
-                              data-bs-target="#confirmDelete" 
-                              data-id="${specialization.id}"
-                              data-name="${specialization.specializationName}" 
-                              data-type="specialization">
-                          <i class="bi bi-trash"></i>
-                      </button>
-                  </td>`;
+                                                <td class="pt-3">${start + index + 1}.</td>
+                                                <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
+                                                <td class="d-flex d-md-block">
+                                                    <button class="btn btn-secondary me-2 edit-btn" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#editCommonModal"
+                                                        data-type="specialization"
+                                                        data-id="${specialization.id}"
+                                                        data-name="${specialization.specializationName}">
+                                                    <i class="bi bi-pen"></i>
+                                                </button>
+                                                <button class="btn btn-danger delete-btn" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#confirmDelete" 
+                                                        data-id="${specialization.id}"
+                                                        data-name="${specialization.specializationName}" 
+                                                        data-type="specialization">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                </td>`;
                                                                 specializationTableBody.appendChild(specializationRow);
                                                             });
                                                         }
@@ -2290,22 +2300,26 @@
                                                                 itemsToShow.forEach((symptom, index) => {
                                                                     const symptomRow = document.createElement('tr');
                                                                     symptomRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${symptom.symptomsName}</td>
-                <td class="d-flex d-md-block">
-                        <button class="btn btn-secondary me-2 edit-btn"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editCommonModal"
-                        data-type="symptoms"
-                        data-id="${symptom.id}"
-                        data-name="${symptom.symptomsName}">
-                    <i class="bi bi-pen"></i>
-                </button>
-                    <button class="btn btn-danger delete-btn"
-                     data-bs-toggle="modal" data-bs-target="#confirmDelete"
-                      data-id="${symptom.id}" data-name="${symptom.symptomsName}" 
-                      data-type="symptom"><i class="bi bi-trash"></i></button>
-                </td>`;
+                                                                    <td class="pt-3">${start + index + 1}.</td>
+                                                                    <td style="font-size: 16px" class="pt-3">${symptom.symptomsName}</td>
+                                                                    <td class="d-flex d-md-block">
+                                                                            <button class="btn btn-secondary me-2 edit-btn"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#editCommonModal"
+                                                                            data-type="symptoms"
+                                                                            data-id="${symptom.id}"
+                                                                            data-name="${symptom.symptomsName}">
+                                                                        <i class="bi bi-pen"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-danger delete-btn" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#confirmDelete" 
+                                                                            data-id="${symptom.id}"
+                                                                            data-name="${symptom.symptomName}" 
+                                                                            data-type="symptoms">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                    </td>`;
                                                                     symptomsTableBody.appendChild(symptomRow);
                                                                 });
                                                             }
@@ -2490,11 +2504,14 @@
                                                                     data-name="${finding.findingsName}">
                                                                 <i class="bi bi-pen"></i>
                                                             </button>
-                                                                    <button class="btn btn-danger delete-btn"
-                                                                    data-bs-toggle="modal" data-bs-target="#confirmDelete" 
-                                                                    data-id="${finding.id}" 
-                                                                    data-name="${finding.findingsName}" 
-                                                                    data-type="finding"><i class="bi bi-trash"></i></button>
+                                                                   <button class="btn btn-danger delete-btn" 
+                                                                        data-bs-toggle="modal" 
+                                                                        data-bs-target="#confirmDelete" 
+                                                                        data-id="${finding.id}"
+                                                                        data-name="${finding.findingName}" 
+                                                                        data-type="findings">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
                                                                 </td>`;
                                                                         findingsTableBody.appendChild(findingRow);
                                                                     });
@@ -2681,10 +2698,14 @@
                                                                                     data-name="${diagnosis.diagnosisName}">
                                                                                 <i class="bi bi-pen"></i>
                                                                             </button>
-                                                                                <button class="btn btn-danger delete-btn"
-                                                                                data-bs-toggle="modal" data-bs-target="#confirmDelete"
-                                                                                data-id="${diagnosis.id}" data-name="${diagnosis.diagnosisName}" 
-                                                                                data-type="diagnosis"><i class="bi bi-trash"></i></button>
+                                                                             <button class="btn btn-danger delete-btn" 
+                                                                                    data-bs-toggle="modal" 
+                                                                                    data-bs-target="#confirmDelete" 
+                                                                                    data-id="${diagnosis.id}"
+                                                                                    data-name="${diagnosis.diagnosisName}" 
+                                                                                    data-type="diagnosis">
+                                                                                    <i class="bi bi-trash"></i>
+                                                                            </button>
                                                                             </td>`;
                                                                             diagnosisTableBody.appendChild(diagnosisRow);
                                                                         });
@@ -2874,8 +2895,14 @@
                                                                                             data-name="${investigation.investigationsName}">
                                                                                         <i class="bi bi-pen"></i>
                                                                                     </button>
-                                                                                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${investigation.id}" data-name="${investigation.investigationsName}" data-type="investigation"><i class="bi bi-trash"></i></button>
-                                                                                    </td>`;
+                                                                                    <button class="btn btn-danger delete-btn" 
+                                                                                            data-bs-toggle="modal" 
+                                                                                            data-bs-target="#confirmDelete" 
+                                                                                            data-id="${investigation.id}"
+                                                                                            data-name="${investigation.investigationName}" 
+                                                                                            data-type="investigation">
+                                                                                            <i class="bi bi-trash"></i>
+                                                                                    </button>  </td>`;
                                                                                 investigationTableBody.appendChild(investigationRow);
                                                                             });
                                                                         }
@@ -3062,10 +3089,14 @@
                                                                                                 data-name="${instruction.instructionsName}">
                                                                                             <i class="bi bi-pen"></i>
                                                                                         </button>
-                                                                                            <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
-                                                                                                data-id="${instruction.id}" data-name="${instruction.instructionsName}" data-type="instruction">
+                                                                                        <button class="btn btn-danger delete-btn" 
+                                                                                                data-bs-toggle="modal" 
+                                                                                                data-bs-target="#confirmDelete" 
+                                                                                                data-id="${instruction.id}"
+                                                                                                data-name="${instruction.instructionName}" 
+                                                                                                data-type="instruction">
                                                                                                 <i class="bi bi-trash"></i>
-                                                                                            </button>
+                                                                                        </button>
                                                                                         </td>`;
                                                                                     instructionTableBody.appendChild(instructionRow);
                                                                                 });
@@ -3252,10 +3283,14 @@
                                                                                                     data-name="${procedure.proceduresName}">
                                                                                                 <i class="bi bi-pen"></i>
                                                                                             </button>
-                                                                                                <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
-                                                                                                    data-id="${procedure.id}" data-name="${procedure.proceduresName}" data-type="procedure">
+                                                                                             <button class="btn btn-danger delete-btn" 
+                                                                                                    data-bs-toggle="modal" 
+                                                                                                    data-bs-target="#confirmDelete" 
+                                                                                                    data-id="${procedure.id}"
+                                                                                                    data-name="${procedure.procedureName}" 
+                                                                                                    data-type="procedure">
                                                                                                     <i class="bi bi-trash"></i>
-                                                                                                </button>
+                                                                                            </button>
                                                                                             </td>`;
                                                                                         procedureTableBody.appendChild(procedureRow);
                                                                                     });
@@ -3444,10 +3479,14 @@
                                                                                                     data-name="${advice.adviceName}">
                                                                                                 <i class="bi bi-pen"></i>
                                                                                             </button>
-                                                                                                <button class="btn btn-danger delete-btn" 
-                                                                                                data-bs-toggle="modal" data-bs-target="#confirmDelete"
-                                                                                                data-id="${advice.id}" data-name="${advice.adviceName}" 
-                                                                                                data-type="advice"><i class="bi bi-trash"></i></button>
+                                                                                             <button class="btn btn-danger delete-btn" 
+                                                                                                    data-bs-toggle="modal" 
+                                                                                                    data-bs-target="#confirmDelete" 
+                                                                                                    data-id="${advice.id}"
+                                                                                                    data-name="${advice.adviceName}" 
+                                                                                                    data-type="advice">
+                                                                                                    <i class="bi bi-trash"></i>
+                                                                                            </button>
                                                                                             </td>`;
                                                                                             adviceTableBody.appendChild(adviceRow);
                                                                                         });
@@ -3633,9 +3672,13 @@
                         <td style="font-size: 16px" class="pt-3">${medicine.compositionName}</td>
                         <td style="font-size: 16px" class="pt-3">${medicine.category}</td>
                         <td class="d-flex d-md-block">
-                               <button class="btn btn-secondary edit-btn" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-composition="${medicine.compositionName}"
-            data-category="${medicine.category}"><i class="bi bi-pen"></i></button>
-                            <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-secondary edit-btn" data-id="${medicine.id}"
+                                data-name="${medicine.medicineName}" data-composition="${medicine.compositionName}"
+                                 data-category="${medicine.category}"><i class="bi bi-pen"></i></button>
+                            <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete"
+                                data-id="${medicine.id}" data-name="${medicine.medicineName}" 
+                                 data-type="medicine"><i class="bi bi-trash"></i>
+                             </button>
                         </td>`;
                                                                                                 medicinesTableBody.appendChild(medicineRow);
                                                                                             });
@@ -3916,6 +3959,52 @@
         });
     </script>
 
+
+<!-- Patient Attachment Display Dashboard Modal -->
+<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                    id="dashboardPreviewModalLabel">
+                    Attachment Preview in Dashboard
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body text-center position-relative p-0">
+                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
+                    style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
+                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled><b
+                            style="font-size:1.2rem;">-</b></button>
+                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled><b
+                            style="font-size:1.2rem;">+</b></button>
+                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
+                            class="bi bi-download"></i></button>
+                </div>
+
+                <button id="prevAttachment"
+                    class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                    style="font-size:1.5rem;" disabled><b>&lt;</b></button>
+                <button id="nextAttachment"
+                    class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                    style="font-size:1.5rem;" disabled><b>&gt;</b></button>
+
+                <div class="preview-area">
+                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
+                        style="transform-origin:top left;transition:transform .2s ease-out;">
+                    <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;"
+                        frameborder="0"></iframe>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 

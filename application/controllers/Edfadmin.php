@@ -10,6 +10,7 @@ class Edfadmin extends CI_Controller
         $this->load->model('CcModel');
         $this->load->model('HcpModel');
         $this->load->model('AdminModel');
+        $this->load->model('ConsultModel');
         $this->load->library('session');
         $this->load->library('email');
     }
@@ -308,6 +309,7 @@ class Edfadmin extends CI_Controller
             $this->data['method'] = "patientDetails";
             $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
             $this->data['patientDetails'] = $patientDetails;
+            $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
             $this->load->view('adminDashboard.php', $this->data);
         } else {
             redirect('Edfadmin/');
@@ -341,27 +343,6 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function addNewSpecilization()
-    {
-        if ($this->AdminModel->newSpecilization()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Specilization added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding specilization');
-        }
-        redirect('Edfadmin/specializationList');
-    }
-
-    public function deleteSpecilization()
-    {
-        $specilizationId = $this->uri->segment(3);
-        if ($this->AdminModel->specilizationDelete($specilizationId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Specilization deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting specilization');
-        }
-        redirect('Edfadmin/specializationList');
-    }
-
     public function symptomsList()
     {
         if (isset($_SESSION['adminIdDb'])) {
@@ -372,27 +353,6 @@ class Edfadmin extends CI_Controller
         } else {
             redirect('Edfadmin/');
         }
-    }
-
-    public function addNewSymptoms()
-    {
-        if ($this->AdminModel->newSymptoms()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Symptoms added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding symptoms');
-        }
-        redirect('Edfadmin/symptomsList');
-    }
-
-    public function deleteSymptoms()
-    {
-        $symptomsId = $this->uri->segment(3);
-        if ($this->AdminModel->symptomsDelete($symptomsId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Symptoms deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting symptoms');
-        }
-        redirect('Edfadmin/symptomsList');
     }
 
     public function findingsList()
@@ -407,27 +367,6 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function addNewFindings()
-    {
-        if ($this->AdminModel->newFindings()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Findings added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding findings');
-        }
-        redirect('Edfadmin/findingsList');
-    }
-
-    public function deleteFindings()
-    {
-        $findingsId = $this->uri->segment(3);
-        if ($this->AdminModel->findingsDelete($findingsId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Findings deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting findings');
-        }
-        redirect('Edfadmin/findingsList');
-    }
-
     public function diagnosisList()
     {
         if (isset($_SESSION['adminIdDb'])) {
@@ -438,27 +377,6 @@ class Edfadmin extends CI_Controller
         } else {
             redirect('Edfadmin/');
         }
-    }
-
-    public function addNewDiagnosis()
-    {
-        if ($this->AdminModel->newDiagnosis()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Diagnosis added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding diagnosis');
-        }
-        redirect('Edfadmin/diagnosisList');
-    }
-
-    public function deleteDiagnosis()
-    {
-        $diagnosisId = $this->uri->segment(3);
-        if ($this->AdminModel->diagnosisDelete($diagnosisId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Diagnosis deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting diagnosis');
-        }
-        redirect('Edfadmin/diagnosisList');
     }
 
     public function medicinesList()
@@ -473,13 +391,14 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function addNewMedicine()
+    public function saveMedicine()
     {
-        if ($this->AdminModel->newMedicine()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Medicine added successfully');
+        if ($this->AdminModel->saveMedicine()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Medicine saved successfully');
         } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding medicine');
+            $this->session->set_flashdata('showErrorMessage', 'Error in saving medicine');
         }
+
         redirect('Edfadmin/medicinesList');
     }
 
@@ -506,27 +425,6 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function addNewInvestigation()
-    {
-        if ($this->AdminModel->newInvestigation()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Investigation added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding investigation');
-        }
-        redirect('Edfadmin/investigationsList');
-    }
-
-    public function deleteInvestigation()
-    {
-        $investigationId = $this->uri->segment(3);
-        if ($this->AdminModel->investigationDelete($investigationId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Investigation deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting edicine');
-        }
-        redirect('Edfadmin/investigationsList');
-    }
-
     public function advicesList()
     {
         if (isset($_SESSION['adminIdDb'])) {
@@ -537,27 +435,6 @@ class Edfadmin extends CI_Controller
         } else {
             redirect('Edfadmin/');
         }
-    }
-
-    public function addNewAdvice()
-    {
-        if ($this->AdminModel->newAdvice()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Advice added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding advice');
-        }
-        redirect('Edfadmin/advicesList');
-    }
-
-    public function deleteAdvice()
-    {
-        $adviceId = $this->uri->segment(3);
-        if ($this->AdminModel->adviceDelete($adviceId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Advice deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting Advice');
-        }
-        redirect('Edfadmin/advicesList');
     }
 
     public function instructionsList()
@@ -572,27 +449,6 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function addNewInstruction()
-    {
-        if ($this->AdminModel->newInstruction()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Instruction added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding instruction');
-        }
-        redirect('Edfadmin/instructionsList');
-    }
-
-    public function deleteInstruction()
-    {
-        $adviceId = $this->uri->segment(3);
-        if ($this->AdminModel->instructionDelete($adviceId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Instruction deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting instruction');
-        }
-        redirect('Edfadmin/instructionsList');
-    }
-
     public function proceduresList()
     {
         if (isset($_SESSION['adminIdDb'])) {
@@ -605,25 +461,129 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function addNewProcedure()
+    //Universal Add
+    public function addListItem($type)
     {
-        if ($this->AdminModel->newProcedure()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Procedure added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding procedure');
+        if (!$this->session->userdata('adminIdDb')) {
+            redirect('Edfadmin/');
         }
-        redirect('Edfadmin/proceduresList');
+
+        $fieldMap = [
+            'specialization' => 'specializationName',
+            'symptoms' => 'symptomName',
+            'findings' => 'findingName',
+            'diagnosis' => 'diagnosisName',
+            'investigations' => 'investigationsName',
+            'instructions' => 'instructionsName',
+            'procedures' => 'proceduresName',
+            'advices' => 'advicesName',
+        ];
+
+        $fieldName = $fieldMap[$type] ?? 'name';
+        $name = trim($this->input->post($fieldName));
+
+        if (empty($name)) {
+            $this->session->set_flashdata('showErrorMessage', 'Name cannot be empty');
+            redirect("Edfadmin/{$type}List");
+        }
+
+        if ($this->AdminModel->addListData($type, $name)) {
+            $this->session->set_flashdata('showSuccessMessage', ucfirst($type) . ' added successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error adding ' . ucfirst($type));
+        }
+
+        redirect("Edfadmin/{$type}List");
     }
 
-    public function deleteProcedure()
+    //Universal Edit
+    public function updateListItem($type)
     {
-        $adviceId = $this->uri->segment(3);
-        if ($this->AdminModel->procedureDelete($adviceId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Procedure deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting procedure');
+        if (!$this->session->userdata('adminIdDb')) {
+            redirect('Edfadmin/');
         }
-        redirect('Edfadmin/proceduresList');
+
+        $id = $this->uri->segment(4);
+        $name = trim($this->input->post('name'));
+
+        $map = [
+            'specialization' => ['table' => 'specialization_list', 'field' => 'specializationName'],
+            'symptoms' => ['table' => 'symptoms_list', 'field' => 'symptomsName'],
+            'findings' => ['table' => 'findings_list', 'field' => 'findingsName'],
+            'diagnosis' => ['table' => 'diagnosis_list', 'field' => 'diagnosisName'],
+            'investigations' => ['table' => 'investigations_list', 'field' => 'investigationsName'],
+            'instructions' => ['table' => 'instructions_list', 'field' => 'instructionsName'],
+            'procedures' => ['table' => 'procedures_list', 'field' => 'proceduresName'],
+            'advices' => ['table' => 'advices_list', 'field' => 'adviceName']
+        ];
+
+        if (!isset($map[$type])) {
+            $this->session->set_flashdata('showErrorMessage', 'Invalid type');
+            redirect('Edfadmin/');
+        }
+
+        $tbl = $map[$type]['table'];
+        $field = $map[$type]['field'];
+
+        if ($this->AdminModel->updateListData($tbl, $id, $field, $name)) {
+            $this->session->set_flashdata(
+                'showSuccessMessage',
+                ucfirst(rtrim($type, 's')) . ' updated successfully'
+            );
+        } else {
+            $this->session->set_flashdata(
+                'showErrorMessage',
+                'Failed to update ' . rtrim($type, 's')
+            );
+        }
+
+        redirect("Edfadmin/{$type}List");
+    }
+
+
+    // Universal Model Delete
+    public function deleteItem()
+    {
+        $type = $this->uri->segment(3);
+        $id = $this->uri->segment(4);
+
+        $typeMap = [
+            'specialization' => 'specialization_list',
+            'symptoms' => 'symptoms_list',
+            'findings' => 'findings_list',
+            'diagnosis' => 'diagnosis_list',
+            'investigation' => 'investigations_list',
+            'instruction' => 'instructions_list',
+            'procedure' => 'procedures_list',
+            'advice' => 'advices_list'
+        ];
+
+        $pluralMap = [
+            'specialization' => 'specialization',
+            'symptoms' => 'symptoms',
+            'findings' => 'findings',
+            'diagnosis' => 'diagnosis',
+            'investigation' => 'investigations',
+            'instruction' => 'instructions',
+            'procedure' => 'procedures',
+            'advice' => 'advices'
+        ];
+
+        if (!isset($typeMap[$type]) || !$id) {
+            $this->session->set_flashdata('showErrorMessage', 'Invalid request.');
+            redirect('Edfadmin/dashboard');
+        }
+
+        $table = $typeMap[$type];
+        $listUrl = $pluralMap[$type] . 'List';
+
+        if ($this->AdminModel->deleteItem($table, $id)) {
+            $this->session->set_flashdata('showSuccessMessage', ucfirst($type) . ' deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error deleting ' . $type);
+        }
+
+        redirect('Edfadmin/' . $listUrl);
     }
 
     public function logout()
@@ -634,7 +594,6 @@ class Edfadmin extends CI_Controller
         $this->session->unset_userdata('adminMobileNum');
         redirect('Edfadmin/');
     }
-
 
 
 }

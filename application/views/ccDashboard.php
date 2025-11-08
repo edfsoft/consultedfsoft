@@ -51,6 +51,49 @@
             size: A4;
             margin: 20mm;
         }
+
+        /* Consultation previous and next arrows */
+        .consultation-item {
+            display: none;
+        }
+
+        .consultation-item.active {
+            display: block;
+        }
+
+        /* Attachment Display Preview */
+        #dashboardPreviewModal #prevAttachment,
+        #dashboardPreviewModal #nextAttachment {
+            z-index: 10;
+        }
+
+        #dashboardPreviewModal .modal-body::before,
+        #dashboardPreviewModal .modal-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background: #fff;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        #dashboardPreviewModal .modal-body::before {
+            left: 0;
+        }
+
+        #dashboardPreviewModal .modal-body::after {
+            right: 0;
+        }
+
+        #dashboardPreviewModal .preview-area {
+            margin: 0 50px;
+            height: calc(70vh - 100px);
+            min-height: 400px;
+            overflow: auto;
+            background: #fff;
+        }
     </style>
 </head>
 
@@ -182,7 +225,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[0]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[0]['patientComplaint'] != '' ? $appointmentList[0]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[0]['timeOfAppoint'])); ?>
@@ -205,7 +248,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[1]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[1]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[1]['patientComplaint'] != '' ? $appointmentList[1]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[1]['timeOfAppoint'])); ?>
@@ -228,7 +271,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[2]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[2]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[2]['patientComplaint'] != '' ? $appointmentList[2]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[2]['timeOfAppoint'])); ?>
@@ -322,7 +365,7 @@
                                             <tr>
                                                 <td>
                                                     <span
-                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint'] != '' ? $appointmentList[0]['patientComplaint'] : "-"; ?></span>
                                                 </td>
                                                 <td>
                                                     <span
@@ -702,9 +745,277 @@
                                         </p>
                                     </div>
                         <?php } ?>
+                                <p class="fs-5 fw-semibold mt-3">All Consultations</p>
+                        <?php if (!empty($consultations)): ?>
+                                    <div class="consultation-container">
+                                        <div class="d-flex justify-content-end mb-2">
+                                            <div class="consultation-nav">
+                                                <button id="nav-left" class="btn btn-outline-secondary me-2"
+                                                    onclick="navigateConsultations(-1)">&#9664;</button>
+                                                <span id="consultation-counter">
+                                                    < 1 of <?= count($consultations) ?> >
+                                                </span>
+                                                <button id="nav-right" class="btn btn-outline-secondary ms-2"
+                                                    onclick="navigateConsultations(1)">&#9654;</button>
+                                            </div>
+                                        </div>
+                                    <?php
+                                    usort($consultations, function ($a, $b) {
+                                        return strtotime($b['created_at']) - strtotime($a['created_at']);
+                                    });
+                                    ?>
+                                <?php foreach ($consultations as $index => $consultation): ?>
+                                            <div class="consultation-item <?= $index === 0 ? 'active' : '' ?>" data-index="<?= $index ?>">
+                                                <div class="border border-5 mb-3 shadow-sm">
+                                                    <div class="card-body" id="consultation-content-<?= $consultation['id'] ?>">
+                                                        <div class="d-md-flex justify-content-between">
+                                                            <h5 class="card-title mb-0">
+                                                        <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
+                                                            </h5>
+                                                        </div>
+
+                                                        <!-- Vitals -->
+                                                <?php if (!empty($consultation['vitals'])): ?>
+                                                            <p><strong>Vitals:</strong></p>
+                                                            <div class="row g-2 mb-4">
+                                                            <?php
+                                                            $vitals = [
+                                                                'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
+                                                                'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
+                                                                'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
+                                                                'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
+                                                                'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
+                                                                'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
+                                                                'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
+                                                                'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
+                                                                'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
+                                                            ];
+
+                                                            foreach ($vitals as $label => $value):
+                                                                if ($value):
+                                                                    ?>
+                                                                        <div class="col-12 col-md-6">
+                                                                            <div
+                                                                                class="d-flex justify-content-between align-items-center border p-2 rounded">
+                                                                                <span class="fw-medium"><?= $label ?>:</span>
+                                                                                <span class="text-primary"><?= $value ?></span>
+                                                                            </div>
+                                                                        </div>
+                                                                <?php
+                                                                endif;
+                                                            endforeach;
+                                                            ?>
+                                                            </div>
+                                                <?php endif; ?>
+
+                                                        <!-- Symptoms -->
+                                                <?php if (!empty($consultation['symptoms'])): ?>
+                                                            <p><strong>Symptoms:</strong></p>
+                                                            <ul>
+                                                        <?php foreach ($consultation['symptoms'] as $symptom): ?>
+                                                                    <li>
+                                                                <?= $symptom['symptom_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($symptom['since']))
+                                                                        $details[] = $symptom['since'];
+                                                                    if (!empty($symptom['severity']))
+                                                                        $details[] = $symptom['severity'];
+                                                                    if (!empty($symptom['note']))
+                                                                        $details[] = $symptom['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                    </li>
+                                                        <?php endforeach; ?>
+                                                            </ul>
+                                                <?php endif; ?>
+
+                                                        <!-- Findings -->
+                                                <?php if (!empty($consultation['findings'])): ?>
+                                                            <p><strong>Findings:</strong></p>
+                                                            <ul>
+                                                        <?php foreach ($consultation['findings'] as $finding): ?>
+                                                                    <li>
+                                                                <?= $finding['finding_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($finding['since']))
+                                                                        $details[] = $finding['since'];
+                                                                    if (!empty($finding['severity']))
+                                                                        $details[] = $finding['severity'];
+                                                                    if (!empty($finding['note']))
+                                                                        $details[] = $finding['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                    </li>
+                                                        <?php endforeach; ?>
+                                                            </ul>
+                                                <?php endif; ?>
+
+                                                        <!-- Diagnosis -->
+                                                <?php if (!empty($consultation['diagnosis'])): ?>
+                                                            <p><strong>Diagnosis:</strong></p>
+                                                            <ul>
+                                                        <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
+                                                                    <li>
+                                                                <?= $diagnosis['diagnosis_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($diagnosis['since']))
+                                                                        $details[] = $diagnosis['since'];
+                                                                    if (!empty($diagnosis['severity']))
+                                                                        $details[] = $diagnosis['severity'];
+                                                                    if (!empty($diagnosis['note']))
+                                                                        $details[] = $diagnosis['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                    </li>
+                                                        <?php endforeach; ?>
+                                                            </ul>
+                                                <?php endif; ?>
+
+                                                        <!-- Investigations -->
+                                                <?php if (!empty($consultation['investigations'])): ?>
+                                                            <p><strong>Investigations:</strong></p>
+                                                            <ul>
+                                                        <?php foreach ($consultation['investigations'] as $inv): ?>
+                                                                    <li>
+                                                                <?= htmlspecialchars($inv['investigation_name']) ?>
+                                                                <?php if (!empty($inv['note'])): ?>
+                                                                            - <?= htmlspecialchars($inv['note']) ?>
+                                                                <?php endif; ?>
+                                                                    </li>
+                                                        <?php endforeach; ?>
+                                                            </ul>
+                                                <?php endif; ?>
+
+                                                        <!-- Instructions -->
+                                                <?php if (!empty($consultation['instructions'])): ?>
+                                                            <p><strong>Instructions:</strong></p>
+                                                            <ul>
+                                                        <?php foreach ($consultation['instructions'] as $ins): ?>
+                                                                    <li><?= $ins['instruction_name'] ?></li>
+                                                        <?php endforeach; ?>
+                                                            </ul>
+                                                <?php endif; ?>
+
+                                                        <!-- ====== Medicines ====== -->
+                                                <?php if (!empty($consultation['medicines'])): ?>
+                                                            <p><strong>Medicines:</strong></p>
+                                                            <ul>
+                                                        <?php foreach ($consultation['medicines'] as $medicine): ?>
+                                                                    <li>
+                                                                <?= $medicine['medicine_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($medicine['quantity']))
+                                                                        $details[] = $medicine['quantity'];
+                                                                    if (!empty($medicine['unit']))
+                                                                        $details[] = $medicine['unit'];
+                                                                    if (!empty($medicine['timing']))
+                                                                        $details[] = $medicine['timing'];
+                                                                    if (!empty($medicine['frequency']))
+                                                                        $details[] = $medicine['frequency'];
+                                                                    if (!empty($medicine['food_timing']))
+                                                                        $details[] = $medicine['food_timing'];
+                                                                    if (!empty($medicine['duration']))
+                                                                        $details[] = $medicine['duration'];
+                                                                    if (!empty($details))
+                                                                        echo ' (' . implode(' - ', $details) . ')';
+                                                                    ?>
+                                                                    </li>
+                                                        <?php endforeach; ?>
+                                                            </ul>
+                                                <?php endif; ?>
+
+                                                <?php if (!empty($consultation['attachments'])): ?>
+                                                            <p><strong>Attachments:</strong></p>
+                                                            <ul>
+                                                        <?php foreach ($consultation['attachments'] as $attach): ?>
+                                                                <?php
+                                                                $filePath = base_url('uploads/consultations/' . $attach['file_name']);
+                                                                $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
+                                                                ?>
+                                                                    <li>
+                                                                        <a href="javascript:void(0);" class="openAttachment"
+                                                                            data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
+                                                                    <?= $attach['file_name'] ?>
+                                                                        </a>
+                                                                    </li>
+                                                        <?php endforeach; ?>
+                                                            </ul>
+                                                <?php endif; ?>
+
+
+                                                        <!-- Notes -->
+                                                <?php if (!empty($consultation['notes'])): ?>
+                                                            <p><strong>Notes:</strong></p>
+                                                            <ul>
+                                                                <li><?= $consultation['notes'] ?></li>
+                                                            </ul>
+                                                <?php endif; ?>
+
+                                                        <!-- Next Follow-Up -->
+                                                <?php if (!empty($consultation['next_follow_up'])): ?>
+                                                            <p><strong>Next Follow-Up Date:</strong></p>
+                                                            <ul>
+                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
+                                                                </li>
+                                                            </ul>
+                                                <?php endif; ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                <?php endforeach; ?>
+                                    </div>
+                        <?php else: ?>
+                                    <p>No Previous Consultation.</p>
+                        <?php endif; ?>
                             </div>
                         </div>
                     </section>
+
+                    <!-- Previous and Next arrows script -->
+                    <script>
+                        let currentIndex = 0;
+                        const consultationItems = document.querySelectorAll('.consultation-item');
+                        const totalItems = consultationItems.length;
+                        const counterDisplay = document.getElementById('consultation-counter');
+                        const navLeft = document.getElementById('nav-left');
+                        const navRight = document.getElementById('nav-right');
+
+                        function updateCounterAndButtons() {
+                            counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
+                            navLeft.disabled = currentIndex === 0;
+                            navRight.disabled = currentIndex === totalItems - 1;
+                        }
+
+                        function navigateConsultations(direction) {
+                            if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
+                                return;
+                            }
+                            consultationItems[currentIndex].classList.remove('active');
+                            currentIndex = (currentIndex + direction + totalItems) % totalItems;
+                            consultationItems[currentIndex].classList.add('active');
+                            updateCounterAndButtons();
+                        }
+
+                        document.addEventListener('keydown', function (event) {
+                            if (event.key === 'ArrowLeft' && currentIndex > 0) {
+                                navigateConsultations(-1);
+                            } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
+                                navigateConsultations(1);
+                            }
+                        });
+
+                        updateCounterAndButtons();
+                    </script>
 
             <?php
         } else if ($method == "prescription") {
@@ -949,7 +1260,7 @@
                                                         echo date("d-m-Y", strtotime($value['dateOfAppoint']));
                                                     } ?>
                                                                 </td>
-                                                                <td class="" style="font-size: 16px" class="pt-3">
+                                                                <td style="font-size: 16px" class="pt-3">
                                                     <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                                 </td>
                                                                 <td style="font-size: 16px" class="pt-3"><a
@@ -957,7 +1268,8 @@
                                                                         class="text-dark" onmouseover="style='text-decoration:underline'"
                                                                         onmouseout="style='text-decoration:none'"><?php echo $value['patientHcp'] ?></a>
                                                                 </td>
-                                                                <td style="font-size: 16px" class="pt-3"><?php echo $value['patientComplaint'] ?>
+                                                                <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
                                                                 </td>
                                                                 <td style="font-size: 16px" class="d-flex d-lg-block">
                                                         <?php
@@ -1959,6 +2271,165 @@
                 btn.innerHTML = 'Show Less <i class="bi bi-chevron-up"></i>';
             }
         }
+    </script>
+
+    <!-- Script to display patient attachments in modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalEl = document.getElementById('dashboardPreviewModal');
+            const modal = new bootstrap.Modal(modalEl);
+            const toolbarEl = document.getElementById('attachment-toolbar');
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const downloadBtn = document.getElementById('downloadAttachmentBtn');
+            const prevBtn = document.getElementById('prevAttachment');
+            const nextBtn = document.getElementById('nextAttachment');
+
+            const imgEl = document.getElementById('attachmentImage');
+            const pdfEl = document.getElementById('attachmentPDF');
+            const previewArea = document.querySelector('.preview-area');
+
+            let messageEl = null;
+            let currentAttachments = [];
+            let currentIdx = -1;
+
+            // CLICK ON ANY FILE → BUILD ATTACHMENTS FROM ITS GROUP
+            document.querySelectorAll('.openAttachment').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const consultationContainer = this.closest('[data-consultation-id]') ||
+                        this.closest('.consultation') ||
+                        this.closest('div');
+
+                    if (!consultationContainer) return;
+                    // === 2. Build attachments ONLY from this container ===
+                    const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
+                    currentAttachments = [];
+                    linksInGroup.forEach((l, idx) => {
+                        const url = l.dataset.file;
+                        const ext = l.dataset.ext.toLowerCase();
+                        const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
+                        currentAttachments.push({ url, ext, fileName, link: l, index: idx });
+                    });
+                    // === 3. Find current file index ===
+                    const clickedUrl = this.dataset.file;
+                    currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
+                    if (currentIdx === -1) return;
+                    // === 4. Show file and open modal ===
+                    showFile(currentAttachments[currentIdx]);
+                    modal.show();
+                });
+            });
+
+            // UPDATED showFile() — HIDE ZOOM FOR PDF & .docx
+            function showFile(fileObj) {
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgEl.src = '';
+                pdfEl.src = '';
+                toolbarEl.style.display = 'none';
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
+
+                // === IMAGE: SHOW ZOOM BUTTONS ===
+                if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(fileObj.ext)) {
+                    imgEl.src = fileObj.url;
+                    imgEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+                    enableImageZoom();
+
+                    zoomInBtn.style.display = 'inline-block';
+                    zoomOutBtn.style.display = 'inline-block';
+                }
+                // === PDF: HIDE ZOOM BUTTONS ===
+                else if (fileObj.ext === 'pdf') {
+                    pdfEl.src = fileObj.url + '#toolbar=0';
+                    pdfEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+
+                    zoomInBtn.style.display = 'none';
+                    zoomOutBtn.style.display = 'none';
+                }
+                // === UNSUPPORTED (.docx, .xls, etc.): HIDE ZOOM BUTTONS ===
+                else {
+                    messageEl = document.createElement('div');
+                    messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
+                    messageEl.style.zIndex = '5';
+                    messageEl.innerHTML = `
+                <p class="mb-0 fs-5">
+                    Preview not available for <strong>${fileObj.fileName}</strong>
+                </p>
+            `;
+                    previewArea.appendChild(messageEl);
+                    toolbarEl.style.display = 'flex';
+
+                    zoomInBtn.style.display = 'none';
+                    zoomOutBtn.style.display = 'none';
+                }
+
+                // Navigation (only within current group)
+                prevBtn.disabled = (currentIdx === 0);
+                nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
+
+                prevBtn.onclick = () => {
+                    if (currentIdx > 0) showFile(currentAttachments[--currentIdx]);
+                };
+                nextBtn.onclick = () => {
+                    if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
+                };
+
+                // Download
+                downloadBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const a = document.createElement('a');
+                    a.href = fileObj.url;
+                    a.download = '';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+            }
+
+            // ZOOM FUNCTIONS
+            let imgScale = 1;
+            const SCALE_STEP = 0.2;
+            const MIN_SCALE = 0.4;
+            const MAX_SCALE = 3;
+
+            function enableImageZoom() {
+                zoomInBtn.onclick = () => { imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
+                zoomOutBtn.onclick = () => { imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
+            }
+
+            function enablePdfZoom() {
+                let pdfZoom = 100;
+                const ZOOM_STEP = 20;
+                const MIN_ZOOM = 50;
+                const MAX_ZOOM = 200;
+
+                const setPdfZoom = () => {
+                    pdfEl.src = `${currentAttachments[currentIdx].url}#zoom=${pdfZoom}&toolbar=0`;
+                };
+
+                zoomInBtn.onclick = () => { pdfZoom = Math.min(pdfZoom + ZOOM_STEP, MAX_ZOOM); setPdfZoom(); };
+                zoomOutBtn.onclick = () => { pdfZoom = Math.max(pdfZoom - ZOOM_STEP, MIN_ZOOM); setPdfZoom(); };
+            }
+
+            // CLEANUP
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                imgEl.src = '';
+                pdfEl.src = '';
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgScale = 1;
+                toolbarEl.style.display = 'none';
+                currentAttachments = [];
+                currentIdx = -1;
+            });
+        });
     </script>
 
     <!-- Cropper JS -->

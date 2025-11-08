@@ -21,6 +21,9 @@
 
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
+    <!-- cropper CND -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+
     <style>
         body {
             font-family: "Poppins", sans-serif;
@@ -110,6 +113,142 @@
         .consultation-item.active {
             display: block;
         }
+
+        /* Attachment display */
+        #attachmentImage {
+            width: 600px;
+            height: 500px;
+            object-fit: contain;
+        }
+
+        #prevAttachment,
+        #nextAttachment {
+            padding: 10px 15px;
+            border-radius: 5;
+            margin: 10px;
+        }
+
+        #prevAttachment {
+            left: 10px;
+            z-index: 1055;
+        }
+
+        #nextAttachment {
+            right: 10px;
+        }
+
+        /*-----------------------Edit-Page------------------*/
+        #imageEditModal .modal-xl {
+            max-width: 1200px;
+        }
+
+        #imageEditModal .modal-content {
+            overflow: hidden;
+        }
+
+        #imageEditModal .modal-body {
+            padding: 20px;
+            max-height: 80vh;
+            overflow: auto;
+        }
+
+        #imageEditModal .editor-container {
+            width: 100%;
+            min-width: 600px;
+            min-height: 600px;
+            max-width: 90vw;
+            max-height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+            /* Light background for better visibility */
+            border: 1px solid #dee2e6;
+            /* Subtle border */
+            border-radius: 4px;
+        }
+
+        #imageEditModal #editor-image,
+        #imageEditModal #editor-canvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .modal-footer {
+            position: relative;
+            z-index: 1000;
+            padding: 15px;
+        }
+
+        .modal-footer .btn {
+            position: relative;
+            z-index: 1001;
+            width: 100px;
+            text-align: center;
+        }
+
+        /* Make Models draggable for all specified modals */
+        #symptomsModal .modal-header,
+        #inputModal .modal-header,
+        #diagnosisModal .modal-header,
+        #investigationsModal .modal-header {
+            cursor: move;
+            user-select: none;
+            /* Prevents text selection on double-click */
+        }
+
+        /* Dashboard Attachment Preview */
+        #dashboardPreviewModal .modal-body::before,
+        #dashboardPreviewModal .modal-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 60px;
+            height: 100%;
+            background: #fff;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #dashboardPreviewModal .modal-body::before {
+            left: 0;
+        }
+
+        #dashboardPreviewModal .modal-body::after {
+            right: 0;
+        }
+
+        #dashboardPreviewModal #prevAttachment,
+        #dashboardPreviewModal #nextAttachment {
+            z-index: 10;
+        }
+
+        /*Attachment Preview for Edit, followUp and New Consultant Page */
+        #editPreviewModal #filePreviewContent,
+        #followupPreviewModal #followup-content-wrapper,
+        #newConsultationPreviewModal #newconsultation-content-wrapper {
+            max-height: calc(75vh - 120px);
+            min-height: 400px;
+            overflow: auto;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+
+        #editPreviewModal #filePreviewContent img,
+        #followupPreviewModal #followup-content-wrapper img,
+        #newConsultationPreviewModal #newconsultation-content-wrapper img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #editPreviewModal #filePreviewContent iframe {
+            width: 100%;
+            height: 70vh;
+            border: none;
+        }
     </style>
 </head>
 
@@ -198,26 +337,34 @@
                                             <div class="consultation-item <?= $index === 0 ? 'active' : '' ?>"
                                                 data-index="<?= $index ?>">
                                                 <div class="border border-5 mb-3 shadow-sm">
-                                                    <div class="card-body">
+                                                    <div class="card-body" id="consultation-content-<?= $consultation['id'] ?>">
                                                         <div class="d-md-flex justify-content-between">
                                                             <h5 class="card-title mb-0">
                                                                 <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
                                                             </h5>
                                                             <div class="mt-md-3 mb-4 mb-md-0">
-                                                                <button class="btn btn-secondary" disabled><i
-                                                                        class="bi bi-download"></i></button>
+                                                                <button class="btn btn-secondary"
+                                                                    onclick="downloadConsultationPDF(<?= $consultation['id'] ?>)">
+                                                                    <i class="bi bi-download"></i>
+                                                                </button>
+
                                                                 <button type="button" class="btn btn-danger"
                                                                     onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
                                                                     <i class="bi bi-trash"></i>
                                                                 </button>
+
                                                                 <button class="btn btn-secondary"
-                                                                    onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'"><i
-                                                                        class="bi bi-pen"></i></button>
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'">
+                                                                    <i class="bi bi-pen"></i>
+                                                                </button>
+
                                                                 <button class="btn text-light" style="background-color: #00ad8e;"
-                                                                    onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">Follow-up
-                                                                    / Repeat</button>
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">
+                                                                    Follow-up / Repeat
+                                                                </button>
                                                             </div>
                                                         </div>
+
                                                         <!-- Vitals -->
                                                         <?php if (!empty($consultation['vitals'])): ?>
                                                             <p><strong>Vitals:</strong></p>
@@ -227,11 +374,12 @@
                                                                     'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
                                                                     'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
                                                                     'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
-                                                                    'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
+                                                                    'HbA1c' => !empty($consultation['vitals']['HbA1c_percent']) ? $consultation['vitals']['HbA1c_percent'] . ' %' : null,
                                                                     'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
                                                                     'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
                                                                     'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
                                                                     'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
+                                                                    'Pulse Rate' => !empty($consultation['vitals']['pulse_rate']) ? $consultation['vitals']['pulse_rate'] . ' /min' : null,
                                                                     'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
                                                                 ];
 
@@ -267,7 +415,6 @@
                                                                             $details[] = $symptom['severity'];
                                                                         if (!empty($symptom['note']))
                                                                             $details[] = $symptom['note'];
-
                                                                         if (!empty($details)) {
                                                                             echo ' (' . implode(', ', $details) . ')';
                                                                         }
@@ -292,7 +439,6 @@
                                                                             $details[] = $finding['severity'];
                                                                         if (!empty($finding['note']))
                                                                             $details[] = $finding['note'];
-
                                                                         if (!empty($details)) {
                                                                             echo ' (' . implode(', ', $details) . ')';
                                                                         }
@@ -317,7 +463,6 @@
                                                                             $details[] = $diagnosis['severity'];
                                                                         if (!empty($diagnosis['note']))
                                                                             $details[] = $diagnosis['note'];
-
                                                                         if (!empty($details)) {
                                                                             echo ' (' . implode(', ', $details) . ')';
                                                                         }
@@ -352,56 +497,67 @@
                                                             </ul>
                                                         <?php endif; ?>
 
-                                                        <!-- Procedures -->
-                                                        <?php if (!empty($consultation['procedures'])): ?>
-                                                            <p><strong>Procedures:</strong></p>
-                                                            <ul>
-                                                                <?php foreach ($consultation['procedures'] as $proc): ?>
-                                                                    <li><?= $proc['procedure_name'] ?></li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
-                                                        <?php endif; ?>
-
-                                                        <!-- Advices -->
-                                                        <?php if (!empty($consultation['advices'])): ?>
-                                                            <p><strong>Advices:</strong></p>
-                                                            <ul>
-                                                                <?php foreach ($consultation['advices'] as $adv): ?>
-                                                                    <li><?= $adv['advice_name'] ?></li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
-                                                        <?php endif; ?>
-
-                                                        <!-- Medicines -->
+                                                        <!-- ====== Medicines ====== -->
                                                         <?php if (!empty($consultation['medicines'])): ?>
                                                             <p><strong>Medicines:</strong></p>
-                                                            <ul>
-                                                                <?php foreach ($consultation['medicines'] as $medicine): ?>
-                                                                    <li>
-                                                                        <?= $medicine['medicine_name'] ?>
-                                                                        <?php
-                                                                        $details = [];
-                                                                        if (!empty($medicine['quantity']))
-                                                                            $details[] = $medicine['quantity'];
-                                                                        if (!empty($medicine['unit']))
-                                                                            $details[] = $medicine['unit'];
-                                                                        if (!empty($medicine['timing']))
-                                                                            $details[] = $medicine['timing'];
-                                                                        if (!empty($medicine['frequency']))
-                                                                            $details[] = $medicine['frequency'];
-                                                                        if (!empty($medicine['food_timing']))
-                                                                            $details[] = $medicine['food_timing'];
-                                                                        if (!empty($medicine['duration']))
-                                                                            $details[] = $medicine['duration'];
-
-                                                                        if (!empty($details)) {
-                                                                            echo ' (' . implode('- ', $details) . ')';
-                                                                        }
-                                                                        ?>
-                                                                    </li>
-                                                                <?php endforeach; ?>
-                                                            </ul>
+                                                            <table
+                                                                style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
+                                                                class="mb-3">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            S.No</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Name</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Frequency</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Duration</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Notes</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                        <tr>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= $index + 1 . ' .' ?>
+                                                                            </td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                <?php if (!empty($medicine['quantity']) || !empty($medicine['unit'])): ?>
+                                                                                    <small>
+                                                                                        (<?= htmlspecialchars($medicine['quantity'] ?? '') . ' ' . htmlspecialchars($medicine['unit'] ?? '') ?>)
+                                                                                    </small>
+                                                                                <?php endif; ?>
+                                                                            </td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= htmlspecialchars($medicine['timing'] ?? '-') ?>
+                                                                            </td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= htmlspecialchars($medicine['duration'] ?? '-') ?>
+                                                                            </td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?php
+                                                                                $notes = [];
+                                                                                if (!empty($medicine['food_timing']))
+                                                                                    $notes[] = $medicine['food_timing'];
+                                                                                if (!empty($medicine['notes']))
+                                                                                    $notes[] = $medicine['notes'];
+                                                                                echo !empty($notes) ? htmlspecialchars(implode(' - ', $notes)) : '-';
+                                                                                ?>
+                                                                            </td>
+                                                                        </tr>
+                                                                    <?php endforeach; ?>
+                                                                </tbody>
+                                                            </table>
                                                         <?php endif; ?>
+
 
                                                         <!-- Attachments
                                                         <?php if (!empty($consultation['attachments'])): ?>
@@ -423,8 +579,9 @@
                                                                     ?>
                                                                     <li>
                                                                         <a href="javascript:void(0);" class="openAttachment"
-                                                                            data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
-                                                                            <?= $attach['file_name'] ?>
+                                                                            data-file="<?= $filePath ?>" data-ext="<?= $ext ?>"
+                                                                            data-context="dashboard">
+                                                                            <?= htmlspecialchars($attach['file_name']) ?>
                                                                         </a>
                                                                     </li>
                                                                 <?php endforeach; ?>
@@ -487,6 +644,48 @@
                                         });
 
                                         updateCounterAndButtons();
+                                    </script>
+                                    <!-- ✅ Add jsPDF and html2canvas -->
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                                    <script
+                                        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+                                    <script>
+                                        async function downloadConsultationPDF(consultationId) {
+                                            const element = document.getElementById('consultation-content-' + consultationId);
+                                            if (!element) {
+                                                alert("Consultation content not found!");
+                                                return;
+                                            }
+
+                                            const { jsPDF } = window.jspdf;
+                                            const pdf = new jsPDF('p', 'mm', 'a4');
+
+                                            // Capture element as canvas
+                                            await html2canvas(element, {
+                                                scale: 2,
+                                                useCORS: true,
+                                            }).then(canvas => {
+                                                const imgData = canvas.toDataURL('image/png');
+                                                const imgWidth = 190; // width of A4 minus margins
+                                                const pageHeight = 295; // height of A4
+                                                const imgHeight = canvas.height * imgWidth / canvas.width;
+                                                let heightLeft = imgHeight;
+                                                let position = 10;
+
+                                                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                                                heightLeft -= pageHeight;
+
+                                                while (heightLeft > 0) {
+                                                    position = heightLeft - imgHeight;
+                                                    pdf.addPage();
+                                                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                                                    heightLeft -= pageHeight;
+                                                }
+
+                                                pdf.save('consultation_' + consultationId + '.pdf');
+                                            });
+                                        }
                                     </script>
                                 <?php else: ?>
                                     <p>No Previous Consultation.</p>
@@ -559,7 +758,46 @@
                                         </div>
                                         <div class="d-md-flex mb-3">
                                             <div class="col-md-4">
-                                                <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                                <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                        name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5">
+                                                    <p class="mx-2 my-2">%</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
+                                                    <p class="mx-2 my-2">%</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientPulseRate" name="patientPulseRate" placeholder="E.g. 75"
+                                                        step="1" min="0">
+                                                    <p class="mx-2 my-2">/min</p>
+                                                </div>
+                                                <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                                </label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
+                                                        step="0.01" placeholder="E.g. 98.6">
+                                                    <p class="mx-2 my-2">°F</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-md-flex mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                                     (Fasting)</label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="fastingBsugar"
@@ -577,43 +815,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar
+                                                <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar
                                                     (Random)
                                                 </label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle" id="randomBsugar"
                                                         name="randomBsugar" step="0.1" min="0" placeholder="E.g. 125">
                                                     <p class="mx-2 my-2">mg/dL</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-md-flex mb-3">
-                                            <div class="col-md-4">
-                                                <label class="form-label fieldLabel"
-                                                    for="patientsCholestrol">Cholestrol</label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientsCholestrol" name="patientsCholestrol" step="0.1" min="0"
-                                                        placeholder="E.g. 50">
-                                                    <p class="mx-2 my-2">mg/dL</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
-                                                    <p class="mx-2 my-2">%</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                                </label>
-                                                <div class="d-flex">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
-                                                        step="0.01" placeholder="E.g. 98.6">
-                                                    <p class="mx-2 my-2">°F</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -718,42 +926,6 @@
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
-                                                <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                        Instructions</strong></span>
-                                                <span class="toggle-icon">+</span>
-                                            </div>
-                                            <div class="collapse field-container mt-2">
-                                                <div class="mb-3">
-                                                    <div class="input-group mb-2">
-                                                        <input type="text" class="form-control" id="instructionSearch"
-                                                            placeholder="Search Instructions">
-                                                        <button type="button" class="btn btn-outline-secondary"
-                                                            id="clearInstructionSearch">✖</button>
-                                                        <button type="button" class="btn btn-outline-primary d-none"
-                                                            id="addInstruction">+ Add</button>
-                                                    </div>
-                                                </div>
-                                                <div id="instructionList">
-                                                    <?php if (!empty($instructionsList)): ?>
-                                                        <?php foreach ($instructionsList as $ins): ?>
-                                                            <div class="form-check instruction-item">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="instructions[]"
-                                                                    value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                                    id="ins<?php echo $ins['id']; ?>">
-                                                                <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                                    <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                                </label>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    <?php endif; ?>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                style="background-color: rgb(206, 206, 206);" role="button">
                                                 <span><strong><i class="bi bi-prescription2 me-2"></i>
                                                         Procedures</strong></span>
                                                 <span class="toggle-icon">+</span>
@@ -843,6 +1015,41 @@
                                             </div>
                                         </div>
 
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                        Instructions</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2">
+                                                <div class="mb-3">
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" class="form-control" id="instructionSearch"
+                                                            placeholder="Search Instructions">
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearInstructionSearch">✖</button>
+                                                        <button type="button" class="btn btn-outline-primary d-none"
+                                                            id="addInstruction">+ Add</button>
+                                                    </div>
+                                                </div>
+                                                <div id="instructionList">
+                                                    <?php if (!empty($instructionsList)): ?>
+                                                        <?php foreach ($instructionsList as $ins): ?>
+                                                            <div class="form-check instruction-item">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="instructions[]"
+                                                                    value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                                    id="ins<?php echo $ins['id']; ?>">
+                                                                <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                                    <?php echo htmlspecialchars($ins['instructionsName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- <div class="form-group pb-3">
@@ -856,23 +1063,24 @@
                                         <div id="fileList" style="margin-top: 0.5rem;"></div>
                                         <div id="fileError" class="text-danger pt-1"></div> 
                                     </div> --><!-- This code is common for all 3 new, edi and followup -->
-                                    <div class="form-group pb-3">
+
+                                    <div class="form-group pb-3" data-page="new">
                                         <label class="form-label fieldLabel">Attachments</label>
-                                        <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                        <button type="button" class="addFileBtn btn text-light float-end mb-2"
                                             style="background-color: #00ad8e;"> + Add File </button>
                                         <div class="mb-3"></div>
-                                        <div id="dropZone"
+                                        <div class="dropZone"
                                             style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
                                             <p class="text-muted mb-0">Drag and drop files here, or click the button below.
                                             </p>
                                         </div>
-                                        <input type="file" id="fileInput" class="d-none"
-                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
-                                        <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none"
+                                        <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                             multiple>
-                                        <div id="fileList" style="margin-top: 0.5rem;"></div>
-                                        <div id="fileError" class="text-danger pt-1"></div>
-                                        <input type="hidden" id="removedFiles" name="removedFiles" value="">
+                                        <input type="file" class="submitFileInput d-none" name="consultationFiles[]"
+                                            multiple>
+                                        <div class="fileList" style="margin-top: 0.5rem;"></div>
+                                        <div class="fileError text-danger pt-1"></div>
+                                        <input type="hidden" class="removedFiles" name="removedFiles" value="">
                                     </div>
 
                                     <div class="form-group pb-3">
@@ -893,6 +1101,90 @@
                                     <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                         style="background-color: #00ad8e;">Save</button>
                                 </form>
+                                <!---------------------------------------------------- Image Edit Modal -------------------------->
+                                <div class="modal fade" id="imageEditModal" tabindex="-1"
+                                    aria-labelledby="imageEditModalLabel" aria-hidden="true" data-bs-backdrop="static"
+                                    data-bs-keyboard="false">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <!-- Custom Toolbar -->
+                                                <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                                    <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
+                                                        title="Crop">✂️ Crop</button>
+                                                    <button type="button" id="rotate-btn"
+                                                        class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
+                                                </div>
+                                                <h5 class=" fw-medium" id="imageEditModalLabel"
+                                                    style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image
+                                                </h5>
+                                                <button type="button" class="btn-close btn btn-danger"
+                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
+
+                                                <!-- Bootstrap container for image -->
+                                                <div class="container">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-12"
+                                                            style="position: relative; width: 600px; height: 600px;">
+                                                            <img id="editor-image" class="img-fluid"
+                                                                style=" object-fit: contain; display: none; ">
+                                                            <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer" style="background-color: white;">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn text-light"
+                                                    style="background-color: #00ad8e;" id="saveEditedImage">OK</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-----------------------------end edit image------------------>
+
+                                <div class="modal fade" id="newConsultationPreviewModal" tabindex="-1"
+                                    aria-labelledby="newConsultationPreviewModalLabel" aria-hidden="true"
+                                    data-bs-backdrop="static" data-bs-keyboard="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                                                    id="newConsultationPreviewModalLabel">
+                                                    New Consultation Attachment Preview
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center position-relative">
+                                                <button id="prevNewConsultation"
+                                                    class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                                    style="font-size: 1.5rem; z-index: 10;" disabled>
+                                                    <b>&lt;</b>
+                                                </button>
+                                                <div id="newconsultation-content-wrapper">
+                                                    <img id="newConsultationImage" src="" alt="Attachment"
+                                                        class="img-fluid d-none">
+                                                    <iframe id="newConsultationPDF" src="" class="w-100"
+                                                        style="height:500px;" frameborder="0"></iframe>
+                                                </div>
+                                                <button id="nextNewConsultation"
+                                                    class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                                    style="font-size: 1.5rem; z-index: 10;" disabled>
+                                                    <b>&gt;</b>
+                                                </button>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary text-light"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!------- end attachment display -->
                             </div>
                         </div>
                     </div>
@@ -948,7 +1240,6 @@
                                 </div>
                             </div>
 
-
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
@@ -992,7 +1283,49 @@
                                 </div>
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="fastingBsugar"
@@ -1012,7 +1345,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar (Random)
+                                        <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
                                         </label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="randomBsugar"
@@ -1020,37 +1353,6 @@
                                                 value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
-                                                name="patientsCholestrol" step="0.1" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
-                                            <p class="mx-2 my-2">mg/dL</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                placeholder="E.g. 98.6"
-                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                            <p class="mx-2 my-2">°F</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1145,42 +1447,6 @@
                                 </div>
                                 <input type="hidden" name="investigationsJson" id="investigationsJson">
 
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                Instructions</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
-                                    <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="instructionSearch"
-                                                    placeholder="Search Instructions">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearInstructionSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none"
-                                                    id="addInstruction">+ Add</button>
-                                            </div>
-                                        </div>
-                                        <div id="instructionList">
-                                            <?php if (!empty($instructionsList)): ?>
-                                                <?php foreach ($instructionsList as $ins): ?>
-                                                    <div class="form-check instruction-item">
-                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                            id="ins<?php echo $ins['id']; ?>">
-                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -1271,24 +1537,58 @@
                                     </div>
                                 </div>
 
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
+                                            <?php if (!empty($instructionsList)): ?>
+                                                <?php foreach ($instructionsList as $ins): ?>
+                                                    <div class="form-check instruction-item">
+                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
+                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                            id="ins<?php echo $ins['id']; ?>">
+                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <div class="form-group pb-3">
+                            <div class="form-group pb-3" data-page="followup">
                                 <label class="form-label fieldLabel">Attachments</label>
-                                <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                <button type="button" class="addFileBtn btn text-light float-end mb-2"
                                     style="background-color: #00ad8e;"> + Add File </button>
                                 <div class="mb-3"></div>
-                                <div id="dropZone"
+                                <div class="dropZone"
                                     style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
-                                    </p>
+                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
                                 </div>
-                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                     multiple>
-                                <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
-                                <div id="fileList" style="margin-top: 0.5rem;"></div>
-                                <div id="fileError" class="text-danger pt-1"></div>
-                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
+                                <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
+                                <div class="fileList" style="margin-top: 0.5rem;"></div>
+                                <div class="fileError text-danger pt-1"></div>
+                                <input type="hidden" class="removedFiles" name="removedFiles" value="">
                             </div>
 
                             <div class="form-group pb-3">
@@ -1309,10 +1609,91 @@
                             <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                 style="background-color: #00ad8e;">Save as new</button>
                         </form>
+                        <!---------------------------------------------------- Image Edit Modal -------------------------->
+                        <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- Custom Toolbar -->
+                                        <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                            <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Crop">✂️ Crop</button>
+                                            <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Rotate">⟳ Rotate</button>
+                                        </div>
+                                        <h5 class=" fw-medium" id="imageEditModalLabel"
+                                            style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                        <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
 
+                                        <!-- Bootstrap container for image -->
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-12"
+                                                    style="position: relative; width: 600px; height: 600px;">
+                                                    <img id="editor-image" class="img-fluid"
+                                                        style=" object-fit: contain; display: none; ">
+                                                    <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="background-color: white;">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                                            id="saveEditedImage">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-----------------------------end ------------------>
+
+                        <!-- Preview display Followup Model -->
+                        <div class="modal fade" id="followupPreviewModal" tabindex="-1"
+                            aria-labelledby="followupPreviewModalLabel" aria-hidden="true" data-bs-backdrop="static"
+                            data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                                            id="followupPreviewModalLabel">
+                                            Follow-up Attachment Preview
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+
+                                        <button id="prevFollowup"
+                                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem; z-index: 10;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <div id="followup-content-wrapper">
+                                            <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
+                                            <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
+                                                frameborder="0"></iframe>
+                                        </div>
+                                        <button id="nextFollowup"
+                                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem; z-index: 10;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
             </section>
-
+            <!-------------------------- Edit Consultant -->
         <?php } elseif ($method == "editConsult") { ?>
             <section>
                 <div class="card rounded pb-3">
@@ -1404,7 +1785,49 @@
                                 </div>
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Blood Sugar
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="fastingBsugar"
@@ -1424,7 +1847,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Blood Sugar (Random)
+                                        <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
                                         </label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="randomBsugar"
@@ -1432,37 +1855,6 @@
                                                 value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsCholestrol">Cholestrol</label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsCholestrol"
-                                                name="patientsCholestrol" step="0.1" min="0" placeholder="E.g. 50"
-                                                value="<?= isset($vitals['cholesterol_mg_dl']) ? $vitals['cholesterol_mg_dl'] : '' ?>">
-                                            <p class="mx-2 my-2">mg/dL</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                placeholder="E.g. 98.6"
-                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                            <p class="mx-2 my-2">°F</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1507,7 +1899,6 @@
                                                 <div class="suggestions-box" id="suggestionsBox"></div>
                                             </div>
                                             <div id="findingsList" class="mt-2"></div>
-                                            <!-- Display added findings -->
                                         </div>
                                     </div>
                                 </div>
@@ -1555,42 +1946,6 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="investigationsJson" id="investigationsJson">
-
-
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                Instructions</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
-                                    <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="instructionSearch"
-                                                    placeholder="Search Instructions">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearInstructionSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none"
-                                                    id="addInstruction">+ Add</button>
-                                            </div>
-                                        </div>
-                                        <div id="instructionList">
-                                            <?php if (!empty($instructionsList)): ?>
-                                                <?php foreach ($instructionsList as $ins): ?>
-                                                    <div class="form-check instruction-item">
-                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                            id="ins<?php echo $ins['id']; ?>">
-                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1682,9 +2037,44 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
+                                            <?php if (!empty($instructionsList)): ?>
+                                                <?php foreach ($instructionsList as $ins): ?>
+                                                    <div class="form-check instruction-item">
+                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
+                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                            id="ins<?php echo $ins['id']; ?>">
+                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="form-group pb-3">
+                            <div class="form-group pb-3 " data-page="edit" id="editFileSection">
                                 <label class="form-label fieldLabel">Attachments</label>
                                 <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
                                     style="background-color: #00ad8e;"> + Add File </button>
@@ -1720,9 +2110,80 @@
                             <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                 style="background-color: #00ad8e;">Update</button>
                         </form>
+                        <!---------------------------------------------------- Image Edit Modal -------------------------->
+                        <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- Custom Toolbar -->
+                                        <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                            <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Crop">✂️ Crop</button>
+                                            <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Rotate">⟳ Rotate</button>
+                                        </div>
+                                        <h5 class=" fw-medium" id="imageEditModalLabel"
+                                            style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                        <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-12"
+                                                    style="position: relative; width: 600px; height: 600px;">
+                                                    <img id="editor-image" class="img-fluid"
+                                                        style=" object-fit: contain; display: none; ">
+                                                    <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="background-color: white;">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                                            id="saveEditedImage">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- File Preview  in Edit Modal -->
+                        <div class="modal fade" id="editPreviewModal" tabindex="-1" aria-labelledby="editPreviewModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                                            id="editPreviewModalLabel">Attachment Preview</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+                                        <button id="prevFile"
+                                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <div id="filePreviewContent"></div>
+                                        <button id="nextFile"
+                                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
-
             </section>
         <?php } ?>
 
@@ -1925,51 +2386,77 @@
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="medicinesModalTitle"
-                            style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="modal-title fw-medium" id="medicinesModalTitle"
+                                style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
+                            <small id="medicineCompositionText" class="text-muted d-block"></small>
+                        </div>
+                        <div>
+                            <span id="medicineCategoryText" class="text-dark me-3"></span>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
                     </div>
+
                     <div class="modal-body" style="font-family: Poppins, sans-serif;">
-                        <!-- Quantity -->
+
+                        <!-- Quantity + Units -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Quantity</label>
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <input type="number" id="medicineQuantity" class="form-control w-25"
-                                    placeholder="Enter quantity">
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
+                                    placeholder="Enter qty">
+
                                 <select id="medicineUnit" class="form-select w-25">
-                                    <option value="ml">ml</option>
                                     <option value="mg">mg</option>
+                                    <option value="ml">ml</option>
+                                    <option value="units">units</option>
+                                    <option value="drops">drops</option>
                                     <option value="tab">tab</option>
                                     <option value="cap">cap</option>
-                                    <option value="drop">drop</option>
                                 </select>
                             </div>
-                            <div id="quantityButtons" class="d-flex flex-wrap gap-2"></div>
                         </div>
-                        <!-- Default Timing / Frequency -->
+
+                        <!-- Timing -->
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Default Timing
-                                <span class="text-primary" role="button" id="toggleTimingType">switch</span>
-                            </label>
-                            <div id="timingOptions" class="d-flex flex-wrap gap-2 mb-2">
-                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="4h">4h</button>
-                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="6h">6h</button>
-                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="8h">8h</button>
-                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="12h">12h</button>
-                                <button class="btn btn-outline-secondary btn-sm timing-btn" data-val="48h">48h</button>
+                            <label class="form-label fw-semibold">Timing</label>
+
+                            <div id="timingOptions" class="d-flex flex-wrap gap-4">
+                                <div class="form-check d-flex align-items-center gap-2">
+                                    <input type="checkbox" id="morningCheck">
+                                    <label for="morningCheck" class="mb-0">Morning</label>
+                                    <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
+                                        disabled placeholder="Qty">
+                                </div>
+
+                                <div class="form-check d-flex align-items-center gap-2">
+                                    <input type="checkbox" id="afternoonCheck">
+                                    <label for="afternoonCheck" class="mb-0">Afternoon</label>
+                                    <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
+                                        disabled placeholder="Qty">
+                                </div>
+
+                                <div class="form-check d-flex align-items-center gap-2">
+                                    <input type="checkbox" id="eveningCheck">
+                                    <label for="eveningCheck" class="mb-0">Evening</label>
+                                    <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
+                                        disabled placeholder="Qty">
+                                </div>
+
+                                <div class="form-check d-flex align-items-center gap-2">
+                                    <input type="checkbox" id="nightCheck">
+                                    <label for="nightCheck" class="mb-0">Night</label>
+                                    <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5"
+                                        disabled placeholder="Qty">
+                                </div>
                             </div>
-                            <div id="frequencyOptions" class="d-none d-flex flex-wrap gap-2 mb-2">
-                                <button class="btn btn-outline-secondary btn-sm freq-btn" data-val="Once">Once</button>
-                                <button class="btn btn-outline-secondary btn-sm freq-btn"
-                                    data-val="Twice">Twice</button>
-                                <button class="btn btn-outline-secondary btn-sm freq-btn"
-                                    data-val="Thrice">Thrice</button>
-                                <button class="btn btn-outline-secondary btn-sm freq-btn" data-val="4 times">4
-                                    times</button>
-                                <button class="btn btn-outline-secondary btn-sm freq-btn" data-val="5 times">5
-                                    times</button>
-                            </div>
+                        </div>
+
+                        <!-- Food Timing -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Food Timing</label>
                             <div class="d-flex flex-wrap gap-3 mt-2">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="foodTiming" value="Before Food"
@@ -1993,16 +2480,21 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Duration -->
-                        <div>
+
+                        <div class="mb-4">
                             <label class="form-label fw-semibold">Duration</label>
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <input type="text" class="form-control w-25" id="medicineDuration"
-                                    placeholder="Enter custom duration">
-                            </div>
-                            <div id="durationButtons" class="d-flex flex-wrap gap-2"></div>
+                            <input type="number" id="medicineDuration" min="0" class="form-control w-50"
+                                placeholder="Enter duration (days)">
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Notes</label>
+                            <textarea id="medicineNotes" class="form-control" rows="3"
+                                placeholder="Enter any additional notes..."></textarea>
+                        </div>
+
                     </div>
+
                     <div class="modal-footer">
                         <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button class="btn text-light" style="background-color: #00ad8e;"
@@ -2012,34 +2504,58 @@
             </div>
         </div>
 
-        <!-- Attachment Display Modal -->
-        <div class="modal fade" id="attachmentModal" tabindex="-1" aria-labelledby="attachmentModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <!-- Attachment Display Dashboard Modal -->
+        <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                    <!-- Header with dynamic file name -->
                     <div class="modal-header">
                         <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                            id="attachmentModalLabel">
+                            id="dashboardPreviewModalLabel">
                             Attachment Preview
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <!-- Body to show image or PDF -->
-                    <div class="modal-body text-center">
-                        <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none">
-                        <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
+                    <div class="modal-body text-center position-relative p-0">
+
+                        <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
+                            style="height: 43px; width: 100%; background-color: #cccecfff; border-radius: 5px; display: none;">
+                            <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out"
+                                disabled>
+                                <b style="font-size: 1.2rem;">-</b>
+                            </button>
+                            <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled>
+                                <b style="font-size: 1.2rem;">+</b>
+                            </button>
+                            <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
+                                    class="bi bi-download"></i></button>
+                        </div>
+
+                        <button id="prevAttachment"
+                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                            style="font-size: 1.5rem;" disabled><b>&lt;</b></button>
+
+                        <div id="attachment-content-wrapper" class="w-100"
+                            style="max-height: calc(70vh - 100px); overflow: auto; min-height: 400px;">
+                            <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
+                                style="transform-origin: top left; transition: transform 0.2s ease-out;">
+                            <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;"
+                                frameborder="0"></iframe>
+                        </div>
+
+                        <button id="nextAttachment"
+                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                            style="font-size: 1.5rem;" disabled><b>&gt;</b></button>
                     </div>
 
-                    <!-- Footer with close button -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">
-                            Close
-                        </button>
+                        <button type="button" class="btn btn-secondary text-light"
+                            data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
 
         <!-- All modal files -->
@@ -2055,9 +2571,11 @@
         document.addEventListener("DOMContentLoaded", () => {
             const timeSelect = document.getElementById("consultTime");
             const dateInput = document.getElementById("consultDate");
-
-            const phpDate = "<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>";
-            const phpTime = "<?= isset($consultation['consult_time']) ? $consultation['consult_time'] : '' ?>";
+            const method = "<?= isset($method) ? $method : '' ?>";
+            const phpDate = method !== "consultDashboard"
+                ? "<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>" : "";
+            const phpTime = method !== "consultDashboard"
+                ? "<?= isset($consultation['consult_time']) ? $consultation['consult_time'] : '' ?>" : "";
 
             for (let h = 0; h < 24; h++) {
                 for (let m = 0; m < 60; m += 10) {
@@ -2099,8 +2617,21 @@
 
     <!-- Next follow up update date field disable -->
     <script>
-        const today = new Date().toISOString().split("T")[0];
-        document.getElementById("nextFollowUpDate").setAttribute("min", today);
+        document.addEventListener("DOMContentLoaded", () => {
+            const followUpDate = document.getElementById("nextFollowUpDate");
+            const consultDate = document.getElementById("consultDate");
+
+            function updateFollowUpMinDate() {
+                const selectedDate = consultDate.value;
+                if (selectedDate) {
+                    followUpDate.setAttribute("min", selectedDate);
+                }
+            }
+
+            updateFollowUpMinDate();
+
+            consultDate.addEventListener("change", updateFollowUpMinDate);
+        });
     </script>
 
     <!-- Symptoms Modal Script -->
@@ -3462,328 +3993,281 @@
 
     <!-- Medicine Modal Script -->
     <script>
-        const medicinesList = <?php echo json_encode(array_column($medicinesList, 'medicineBrand')); ?>;
-        const medicineUnits = ['ml', 'mg', 'tab', 'cap', 'drop'];
+        document.addEventListener('DOMContentLoaded', function () {
+            const medicinesData = <?php echo json_encode($medicinesList); ?>;
+            const medicinesList = medicinesData.map(m => m.medicineName);
 
-        const medicinesInput = document.getElementById("medicinesSearchInput");
-        const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
-        const medicinesTagContainer = document.getElementById("medicinesInput");
-        const medicinesModal = new bootstrap.Modal(document.getElementById("medicinesModal"));
-        const medicinesModalTitle = document.getElementById("medicinesModalTitle");
-        const medicineQuantity = document.getElementById("medicineQuantity");
-        const medicineUnit = document.getElementById("medicineUnit");
-        const medicineDuration = document.getElementById("medicineDuration");
-        const toggleTimingType = document.getElementById("toggleTimingType");
-        const timingOptions = document.getElementById("timingOptions");
-        const frequencyOptions = document.getElementById("frequencyOptions");
-        const quantityButtons = document.getElementById("quantityButtons");
-        const durationButtons = document.getElementById("durationButtons");
+            const medicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
 
-        let selectedMedicines = [];
-        let pendingMedicine = "";
-        let editingMedicineTag = null;
-        let isTimingMode = true;
+            const medicinesInput = document.getElementById("medicinesSearchInput");
+            const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
+            const medicinesTagContainer = document.getElementById("medicinesInput");
 
-        function renderMedicinesSuggestions() {
-            const query = medicinesInput.value.trim();
-            const queryLower = query.toLowerCase();
-            medicinesSuggestionsBox.innerHTML = "";
+            const medicinesModalEl = document.getElementById("medicinesModal");
+            const medicinesModal = new bootstrap.Modal(medicinesModalEl);
 
-            const filtered = medicinesList.filter(m =>
-                m.toLowerCase().includes(queryLower) &&
-                !selectedMedicines.some(obj => obj.medicine === m)
-            );
+            const medicinesModalTitle = document.getElementById("medicinesModalTitle");
+            const medicineCompositionText = document.getElementById("medicineCompositionText");
+            const medicineCategoryText = document.getElementById("medicineCategoryText");
+            const medicineQuantity = document.getElementById("medicineQuantity");
+            const medicineUnit = document.getElementById("medicineUnit");
+            const medicineDuration = document.getElementById("medicineDuration");
+            const medicineNotes = document.getElementById("medicineNotes");
 
-            if (filtered.length === 0 && query !== "") {
-                const customOption = document.createElement("div");
-                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                customOption.onclick = () => {
-                    openMedicineModal(query);
-                    medicinesInput.value = "";
+            const slots = ["morning", "afternoon", "evening", "night"];
+
+            let selectedMedicines = [];
+            let pendingMedicineName = "";
+            let editingMedicineTag = null;
+
+            function forEachSlot(cb) {
+                slots.forEach(slot => cb(
+                    slot,
+                    document.getElementById(`${slot}Check`),
+                    document.getElementById(`${slot}Qty`)
+                ));
+            }
+
+            function toDbShape(row) {
+                if (!row) return null;
+                return {
+                    id: row.id ?? row.medicine_id ?? row.MedicineID ?? "",
+                    consultation_id: row.consultation_id ?? row.consultationId ?? undefined,
+                    medicine_name: row.medicine_name ?? row.medicine ?? row.medicineBrand ?? "",
+                    quantity: row.quantity ?? "",
+                    unit: row.unit ?? "",
+                    timing: row.timing ?? row.timingString ?? "0-0-0-0",
+                    food_timing: row.food_timing ?? row.foodTiming ?? "",
+                    duration: row.duration ?? "",
+                    notes: row.notes ?? ""
                 };
-                medicinesSuggestionsBox.appendChild(customOption);
-            } else {
-                filtered.forEach(item => {
+            }
+
+            function buildTimingString() {
+                const parts = [];
+                forEachSlot((slot, check, qty) => {
+                    parts.push(check && check.checked && qty && qty.value ? String(qty.value) : "0");
+                });
+                return parts.join("-");
+            }
+
+            function applyTimingString(timingStr) {
+                const parts = String(timingStr || "0-0-0-0").split("-");
+                slots.forEach((slot, i) => {
+                    const check = document.getElementById(`${slot}Check`);
+                    const qty = document.getElementById(`${slot}Qty`);
+                    if (!check || !qty) return;
+                    const v = parts[i] ?? "0";
+                    if (v !== "0") {
+                        check.checked = true;
+                        qty.disabled = false;
+                        qty.value = v;
+                    } else {
+                        check.checked = false;
+                        qty.value = "";
+                        qty.disabled = true;
+                    }
+                });
+            }
+
+            forEachSlot((slot, check, qty) => {
+                if (!check || !qty) return;
+                qty.disabled = true;
+                check.addEventListener("change", () => {
+                    if (check.checked) {
+                        qty.disabled = false;
+                        if (!qty.value) qty.value = 1;
+                    } else {
+                        qty.value = "";
+                        qty.disabled = true;
+                    }
+                });
+                qty.addEventListener("focus", () => {
+                    if (!check.checked) qty.blur();
+                });
+            });
+
+            function renderMedicinesSuggestions() {
+                if (!medicinesInput || !medicinesSuggestionsBox) return;
+
+                const query = medicinesInput.value.trim().toLowerCase();
+                medicinesSuggestionsBox.innerHTML = "";
+
+                const filtered = medicinesList.filter(m =>
+                    m.toLowerCase().includes(query) &&
+                    !selectedMedicines.some(obj => obj.medicine_name === m)
+                );
+
+                if (filtered.length === 0 && query !== "") {
                     const div = document.createElement("div");
-                    div.textContent = item;
-                    div.onclick = () => {
-                        openMedicineModal(item);
-                        medicinesInput.value = "";
-                    };
+                    div.innerHTML = `Add "<strong>${medicinesInput.value}</strong>"`;
+                    div.onclick = () => { openMedicineModal(medicinesInput.value); medicinesInput.value = ""; };
                     medicinesSuggestionsBox.appendChild(div);
+                } else {
+                    filtered.forEach(item => {
+                        const div = document.createElement("div");
+                        div.textContent = item;
+                        div.onclick = () => { openMedicineModal(item); medicinesInput.value = ""; };
+                        medicinesSuggestionsBox.appendChild(div);
+                    });
+                }
+                medicinesSuggestionsBox.style.display = "block";
+            }
+
+            if (medicinesInput) {
+                medicinesInput.addEventListener("input", renderMedicinesSuggestions);
+                medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
+                medicinesInput.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
+                        e.preventDefault();
+                        openMedicineModal(medicinesInput.value.trim());
+                        medicinesInput.value = "";
+                    }
+                });
+                document.addEventListener("click", (e) => {
+                    if (!medicinesTagContainer?.contains(e.target)) {
+                        if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
+                    }
                 });
             }
 
-            medicinesSuggestionsBox.style.display = "block";
-        }
+            window.openMedicineModal = function (name, existing = null, tagEl = null) {
+                pendingMedicineName = name;
+                editingMedicineTag = tagEl;
 
-        function setupQuantityButtons() {
-            const quantities = [1, 2, 4, 5, 8, 10, 12, 15, 18, 20];
-            quantities.forEach(q => {
-                const btn = document.createElement('button');
-                btn.className = 'btn btn-outline-secondary btn-sm';
-                btn.textContent = q;
-                btn.onclick = () => {
-                    medicineQuantity.value = q;
-                    quantityButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                };
-                quantityButtons.appendChild(btn);
-            });
-        }
+                const medData = medicinesData.find(m => m.medicineName === name);
+                medicinesModalTitle.textContent = existing ? `Edit: ${name}` : `Details for: ${name}`;
+                medicineCompositionText.textContent = medData ? medData.compositionName : "(No composition available)";
+                medicineCategoryText.textContent = medData ? `Category: ${medData.category}` : "(No category)";
 
-        function setupDurationButtons() {
-            const durations = ['1d', '2d', '3d', '4d', '5d', '1w', '10d', '2w', '15d', '3w'];
-            durations.forEach(d => {
-                const btn = document.createElement('button');
-                btn.className = 'btn btn-outline-secondary btn-sm dur-btn';
-                btn.setAttribute('data-val', d);
-                btn.textContent = d;
-                btn.onclick = () => {
-                    medicineDuration.value = d;
-                    durationButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                };
-                durationButtons.appendChild(btn);
-            });
-        }
-
-        function setupTimingFrequencyButtons() {
-            timingOptions.querySelectorAll('.timing-btn').forEach(btn => {
-                btn.onclick = () => {
-                    timingOptions.querySelectorAll('.timing-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                };
-            });
-            frequencyOptions.querySelectorAll('.freq-btn').forEach(btn => {
-                btn.onclick = () => {
-                    frequencyOptions.querySelectorAll('.freq-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                };
-            });
-        }
-
-        toggleTimingType.onclick = () => {
-            isTimingMode = !isTimingMode;
-            timingOptions.classList.toggle('d-none', !isTimingMode);
-            frequencyOptions.classList.toggle('d-none', isTimingMode);
-            toggleTimingType.textContent = isTimingMode ? 'switch to frequency' : 'switch to timing';
-        };
-
-        function openMedicineModal(tagName, existing = null, tagEl = null) {
-            pendingMedicine = tagName;
-            editingMedicineTag = tagEl;
-
-            medicinesModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            medicineQuantity.value = existing?.quantity || "";
-            medicineUnit.value = existing?.unit || "tab";
-            medicineDuration.value = existing?.duration || "";
-            const foodTimingRadios = document.getElementsByName('foodTiming');
-            foodTimingRadios.forEach(radio => radio.checked = radio.value === (existing?.foodTiming || ""));
-
-            const timingButtons = timingOptions.querySelectorAll('.timing-btn');
-            const freqButtons = frequencyOptions.querySelectorAll('.freq-btn');
-            timingButtons.forEach(b => b.classList.remove('active'));
-            freqButtons.forEach(b => b.classList.remove('active'));
-
-            if (existing?.timing) {
-                isTimingMode = true;
-                timingOptions.classList.remove('d-none');
-                frequencyOptions.classList.add('d-none');
-                toggleTimingType.textContent = 'switch to frequency';
-                timingButtons.forEach(b => {
-                    if (b.getAttribute('data-val') === existing.timing) b.classList.add('active');
+                medicineQuantity.value = "";
+                medicineUnit.value = "mg";
+                medicineDuration.value = "";
+                medicineNotes.value = "";
+                forEachSlot((slot, check, qty) => {
+                    if (!check || !qty) return;
+                    check.checked = false; qty.value = ""; qty.disabled = true;
                 });
-            } else if (existing?.frequency) {
-                isTimingMode = false;
-                timingOptions.classList.add('d-none');
-                frequencyOptions.classList.remove('d-none');
-                toggleTimingType.textContent = 'switch to timing';
-                freqButtons.forEach(b => {
-                    if (b.getAttribute('data-val') === existing.frequency) b.classList.add('active');
-                });
-            } else {
-                isTimingMode = true;
-                timingOptions.classList.remove('d-none');
-                frequencyOptions.classList.add('d-none');
-                toggleTimingType.textContent = 'switch to frequency';
-            }
+                document.querySelectorAll('input[name="foodTiming"]').forEach(r => r.checked = false);
 
-            quantityButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-            if (existing?.quantity) {
-                const qtyBtn = Array.from(quantityButtons.querySelectorAll('button')).find(b => b.textContent === existing.quantity);
-                if (qtyBtn) qtyBtn.classList.add('active');
-            }
+                const row = toDbShape(existing);
+                if (row) {
+                    medicineQuantity.value = row.quantity || "";
+                    medicineUnit.value = row.unit || "mg";
+                    medicineDuration.value = row.duration || "";
+                    medicineNotes.value = row.notes || "";
+                    applyTimingString(row.timing);
+                    document.querySelectorAll('input[name="foodTiming"]').forEach(r => {
+                        r.checked = (r.value === (row.food_timing || ""));
+                    });
+                }
 
-            durationButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-            if (existing?.duration) {
-                const durBtn = Array.from(durationButtons.querySelectorAll('button')).find(b => b.getAttribute('data-val') === existing.duration);
-                if (durBtn) durBtn.classList.add('active');
-            }
-
-            medicinesModal.show();
-        }
-
-        function saveMedicineModal() {
-            const quantity = medicineQuantity.value.trim();
-            const unit = medicineUnit.value;
-            const duration = medicineDuration.value.trim();
-            const foodTiming = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
-            const timing = isTimingMode ? timingOptions.querySelector('.timing-btn.active')?.getAttribute('data-val') || "" : "";
-            const frequency = !isTimingMode ? frequencyOptions.querySelector('.freq-btn.active')?.getAttribute('data-val') || "" : "";
-
-            if (!pendingMedicine) return;
-
-            const existingIndex = selectedMedicines.findIndex(m => m.medicine === pendingMedicine);
-
-            if (!medicinesList.includes(pendingMedicine)) {
-                fetch("<?= site_url('Consultation/addMedicine') ?>", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "name=" + encodeURIComponent(pendingMedicine)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            medicinesList.push(pendingMedicine);
-                        } else {
-                            console.error("Error saving new medicine", data);
-                        }
-                    })
-                    .catch(err => console.error(err));
-            }
-
-            const data = {
-                id: existingIndex !== -1 ? selectedMedicines[existingIndex].id || "new" : "new",
-                medicine: pendingMedicine,
-                quantity,
-                unit,
-                timing,
-                frequency,
-                foodTiming,
-                duration
+                medicinesModal.show();
             };
 
-            if (editingMedicineTag && existingIndex !== -1) {
-                selectedMedicines[existingIndex] = data;
-                updateMedicineTagDisplay(editingMedicineTag, data);
-                editingMedicineTag.setAttribute("data-id", data.id);
-            } else {
-                selectedMedicines.push(data);
-                addMedicineTag(data);
-            }
+            window.saveMedicineModal = function () {
+                const quantity = (medicineQuantity.value || "").trim();
+                const unit = (medicineUnit.value || "").trim();
+                const duration = (medicineDuration.value || "").trim();
+                const notes = (medicineNotes.value || "").trim();
+                const timing = buildTimingString();
+                const food_timing = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
 
-            medicinesModal.hide();
-            pendingMedicine = "";
-            editingMedicineTag = null;
-            updateMedicinesHiddenInput();
-        }
+                if (!pendingMedicineName) return;
 
-        function addMedicineTag(data) {
-            const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-            tag.style.cursor = "pointer";
-            tag.setAttribute("data-id", data.id || "new");
+                const existingIndex = selectedMedicines.findIndex(m => m.medicine_name === pendingMedicineName);
 
-            const textSpan = document.createElement("span");
-            tag.appendChild(textSpan);
+                const resolvedId = (existingIndex !== -1 && selectedMedicines[existingIndex]?.id)
+                    ? selectedMedicines[existingIndex].id
+                    : "new";
 
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tag.remove();
-                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
-                updateMedicinesHiddenInput();
-            };
+                const data = {
+                    id: resolvedId,
+                    medicine_name: pendingMedicineName,
+                    quantity,
+                    unit,
+                    timing,
+                    food_timing,
+                    duration,
+                    notes
+                };
 
-            tag.appendChild(removeBtn);
-            updateMedicineTagDisplay(tag, data);
-
-            tag.onclick = () => {
-                openMedicineModal(data.medicine, data, tag);
-            };
-
-            medicinesTagContainer.insertBefore(tag, medicinesInput);
-        }
-
-        function updateMedicineTagDisplay(tagEl, data) {
-            const textParts = [`${data.medicine} (${data.unit || 'tab'})`];
-            const details = [];
-
-            if (data.quantity) details.push(`Qty: ${data.quantity}`);
-            if (data.timing) details.push(`Timing: ${data.timing}`);
-            if (data.frequency) details.push(`Freq: ${data.frequency}`);
-            if (data.foodTiming) details.push(data.foodTiming);
-            if (data.duration) details.push(`Duration: ${data.duration}`);
-
-            if (details.length > 0) {
-                textParts.push(`(${details.join(", ")})`);
-            }
-
-            tagEl.innerHTML = textParts.join(" ");
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tagEl.remove();
-                selectedMedicines = selectedMedicines.filter(s => s.medicine !== data.medicine);
-                updateMedicinesHiddenInput();
-            };
-            tagEl.appendChild(removeBtn);
-            tagEl.setAttribute("data-id", data.id || "new");
-        }
-
-        function updateMedicinesHiddenInput() {
-            document.getElementById("medicinesJson").value = JSON.stringify(selectedMedicines);
-        }
-
-        medicinesInput.addEventListener("input", renderMedicinesSuggestions);
-        medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
-        medicinesInput.addEventListener("keydown", e => {
-            if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
-                e.preventDefault();
-                openMedicineModal(medicinesInput.value.trim());
-                medicinesInput.value = "";
-            }
-        });
-
-        document.addEventListener("click", (e) => {
-            if (!medicinesTagContainer.contains(e.target)) {
-                medicinesSuggestionsBox.style.display = "none";
-            }
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
-            setupQuantityButtons();
-            setupDurationButtons();
-            setupTimingFrequencyButtons();
-
-            const preloadMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
-            if (preloadMedicines.length > 0) {
-                preloadMedicines.forEach(item => {
-                    const data = {
-                        id: item.id || "",
-                        medicine: item.medicine_name,
-                        quantity: item.quantity || "",
-                        unit: item.unit || "tab",
-                        timing: item.timing || "",
-                        frequency: item.frequency || "",
-                        foodTiming: item.food_timing || "",
-                        duration: item.duration || ""
-                    };
+                if (editingMedicineTag && existingIndex !== -1) {
+                    if (selectedMedicines[existingIndex].consultation_id) {
+                        data.consultation_id = selectedMedicines[existingIndex].consultation_id;
+                    }
+                    selectedMedicines[existingIndex] = data;
+                    updateMedicineTagDisplay(editingMedicineTag, data);
+                    editingMedicineTag.setAttribute("data-id", data.id || "new");
+                } else {
                     selectedMedicines.push(data);
                     addMedicineTag(data);
+                }
+
+                updateMedicinesHiddenInput();
+                medicinesModal.hide();
+                pendingMedicineName = "";
+                editingMedicineTag = null;
+            };
+
+            function addMedicineTag(row) {
+                if (!medicinesTagContainer) return;
+                const tag = document.createElement("span");
+                tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+                tag.style.cursor = "pointer";
+                tag.setAttribute("data-id", row.id || "new");
+
+                updateMedicineTagDisplay(tag, row);
+
+                tag.onclick = () => openMedicineModal(row.medicine_name, row, tag);
+
+                if (medicinesInput && medicinesInput.parentElement === medicinesTagContainer) {
+                    medicinesTagContainer.insertBefore(tag, medicinesInput);
+                } else {
+                    medicinesTagContainer.appendChild(tag);
+                }
+            }
+
+            function updateMedicineTagDisplay(tagEl, row) {
+                const qtyText = row.quantity ? `${row.quantity} ${row.unit || ""}`.trim() : "0";
+                tagEl.innerHTML = `${row.medicine_name} (Qty: ${qtyText}, Timing: ${row.timing || "0-0-0-0"}, Duration: ${row.duration || 0})`;
+
+                tagEl.setAttribute("data-id", row.id || "new");
+
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.className = "text-light ms-2";
+                removeBtn.style.border = "none";
+                removeBtn.style.background = "transparent";
+                removeBtn.style.fontSize = "1rem";
+                removeBtn.innerHTML = "&times;";
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    tagEl.remove();
+                    selectedMedicines = selectedMedicines.filter(s => s.medicine_name !== row.medicine_name);
+                    updateMedicinesHiddenInput();
+                };
+                tagEl.appendChild(removeBtn);
+            }
+
+            function updateMedicinesHiddenInput() {
+                let hidden = document.getElementById("medicinesJson");
+                if (!hidden) {
+                    hidden = document.createElement("input");
+                    hidden.type = "hidden";
+                    hidden.id = "medicinesJson";
+                    hidden.name = "medicinesJson";
+                    const form = medicinesModalEl.closest("form") || document.querySelector("form");
+                    (form || document.body).appendChild(hidden);
+                }
+                hidden.value = JSON.stringify(selectedMedicines);
+            }
+
+            if (Array.isArray(medicines) && medicines.length) {
+                medicines.forEach(m => {
+                    const row = toDbShape(m);
+                    selectedMedicines.push(row);
+                    addMedicineTag(row);
                 });
                 updateMedicinesHiddenInput();
             }
@@ -3791,321 +4275,640 @@
     </script>
 
     <!-- Upload attachments script -->
-    <!-- <script>
-        (function () {
-            const MAX_FILES = 10;
-            const fileInput = document.getElementById("fileInput");
-            const addBtn = document.getElementById("addFileBtn");
-            const fileList = document.getElementById("fileList");
-            const fileError = document.getElementById("fileError");
-            const removedFilesInput = document.getElementById("removedFiles");
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const isEditPage = !!document.getElementById('fileList');
+            const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
+            const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
+            const isFollowup = !!document.getElementById('followupPreviewModal');
 
+            console.log('Page context:', { isEditPage, isDashboardPage, isNewConsultation, isFollowup });
+
+            // === Find Containers for Class-based Elements ===
+            const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
+            const followupContainer = isFollowup ? document.querySelector('[data-page="followup"]') : null;
+
+            // === Remove conflicting modals (Unchanged Logic) ===
+            if (isEditPage) {
+                ['attachmentModal', 'newConsultationPreviewModal', 'followupPreviewModal', 'dashboardPreviewModal'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.remove();
+                });
+            }
+
+            // === DOM Elements Initialization ===
+            const editElements = {
+                fileInput: document.getElementById("fileInput"),
+                submitFileInput: document.getElementById("submitFileInput"),
+                addBtn: document.getElementById("addFileBtn"),
+                fileList: document.getElementById("fileList"),
+                fileError: document.getElementById("fileError"),
+                removedFilesInput: document.getElementById("removedFiles"),
+                dropZone: document.getElementById("dropZone"),
+                imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), { backdrop: 'static', keyboard: false }) : null,
+                editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), { backdrop: 'static', keyboard: true }) : null,
+                previewContent: document.getElementById('filePreviewContent'),
+                modalTitle: document.getElementById('editPreviewModalLabel'),
+                prevBtn: document.getElementById('prevFile'),
+                nextBtn: document.getElementById('nextFile')
+            };
+
+            const newConsultationElements = isNewConsultation && newConsultationContainer ? {
+                previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), { backdrop: 'static', keyboard: true }),
+                image: document.getElementById('newConsultationImage'),
+                pdf: document.getElementById('newConsultationPDF'),
+                modalTitle: document.getElementById('newConsultationPreviewModalLabel'),
+                prevBtn: document.getElementById('prevNewConsultation'),
+                nextBtn: document.getElementById('nextNewConsultation'),
+                fileInput: newConsultationContainer.querySelector(".fileInput"),
+                submitFileInput: newConsultationContainer.querySelector(".submitFileInput"),
+                addBtn: newConsultationContainer.querySelector(".addFileBtn"),
+                fileList: newConsultationContainer.querySelector(".fileList"),
+                fileError: newConsultationContainer.querySelector(".fileError"),
+                dropZone: newConsultationContainer.querySelector(".dropZone"),
+            } : {};
+
+            const followupElements = isFollowup && followupContainer ? {
+                previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), { backdrop: 'static', keyboard: true }),
+                image: document.getElementById('followupImage'),
+                pdf: document.getElementById('followupPDF'),
+                modalTitle: document.getElementById('followupPreviewModalLabel'),
+                prevBtn: document.getElementById('prevFollowup'),
+                nextBtn: document.getElementById('nextFollowup'),
+                fileInput: followupContainer.querySelector(".fileInput"),
+                submitFileInput: followupContainer.querySelector(".submitFileInput"),
+                addBtn: followupContainer.querySelector(".addFileBtn"),
+                fileList: followupContainer.querySelector(".fileList"),
+                fileError: followupContainer.querySelector(".fileError"),
+                dropZone: followupContainer.querySelector(".dropZone"),
+            } : {};
+
+            const dashboardElements = isDashboardPage ? {
+                previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), { backdrop: 'static', keyboard: true }),
+                image: document.getElementById('attachmentImage'),
+                pdf: document.getElementById('attachmentPDF'),
+                modalTitle: document.getElementById('dashboardPreviewModalLabel'),
+                prevBtn: document.getElementById('prevAttachment'),
+                nextBtn: document.getElementById('nextAttachment')
+            } : {};
+
+            const MAX_FILES = 10;
+            let cropper;
             let newFiles = [];
             let existingFiles = [];
             let removedFiles = [];
+            let currentRotationAngle = 0;
+            let originalDataURL = null;
+            let currentImageBlob = null;
+            let currentIndex = -1;
+            let currentFiles = [];
+            let currentZoom = 1.0;
+            const ZOOM_STEP = 0.2;
+            let isDragging = false;
+            let startX, startY, scrollLeft, scrollTop;
 
-            existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+            const BASE_FILE_URL = '<?php echo base_url('Uploads/consultations/'); ?>';
 
-            renderFileList();
+            function getCurrentElements() {
+                if (isNewConsultation) return newConsultationElements;
+                if (isFollowup) return followupElements;
+                return editElements;
+            }
 
-            addBtn.addEventListener("click", () => {
-                if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                    fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
-                    return;
+            if (isEditPage && editElements.fileList) {
+                try {
+                    existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+                } catch (e) {
+                    console.error('Error parsing existingFiles:', e);
+                    existingFiles = [];
                 }
-                fileInput.click();
-            });
 
-            fileInput.addEventListener("change", (e) => {
-                fileError.textContent = "";
-                if (!fileInput.files.length) return;
-
-                for (let i = 0; i < fileInput.files.length; i++) {
-                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                        fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
-                        break;
-                    }
-                    newFiles.push(fileInput.files[i]);
-                }
+                existingFiles = existingFiles.map(file => {
+                    const fileName = file.file_name || file.name || 'Unknown';
+                    const extension = fileName.split('.').pop().toLowerCase();
+                    const mimeType = file.mime_type || getMimeType(extension);
+                    const url = file.url || (file.file_path ? BASE_FILE_URL + encodeURIComponent(file.file_path) : BASE_FILE_URL + encodeURIComponent(fileName));
+                    return { file_name: fileName, ext: extension, mime_type: mimeType, url, size: file.size || 0 };
+                });
 
                 renderFileList();
-            });
+            }
+            if (isNewConsultation || isFollowup) {
+                renderFileList();
+            }
 
-            function renderFileList() {
-                fileList.innerHTML = "";
 
-                if (existingFiles.length + newFiles.length === 0) {
-                    fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
-                    return;
-                }
+            function getMimeType(ext) {
+                const map = { 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'pdf': 'application/pdf', 'doc': 'application/msword', 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingprocessingml.document' };
+                return map[ext] || 'application/octet-stream';
+            }
 
-                const ul = document.createElement("ul");
-                ul.style.paddingLeft = "1.2rem";
 
-                existingFiles.forEach((file, index) => {
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
+            const currentElements = getCurrentElements();
+            const dropZone = currentElements.dropZone;
 
-                    const name = document.createTextNode(file.file_name + " ");
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
-
-                    removeBtn.addEventListener("click", () => {
-                        removedFiles.push(file.file_name);
-                        existingFiles.splice(index, 1);
-                        removedFilesInput.value = JSON.stringify(removedFiles);
-                        renderFileList();
-                    });
-
-                    li.appendChild(name);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
+            if (dropZone) {
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+                    dropZone.addEventListener(ev, preventDefaults, false);
+                    document.body.addEventListener(ev, preventDefaults, false);
                 });
-
-                newFiles.forEach((file, index) => {
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
-
-                    const name = document.createTextNode(file.name + " ");
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
-
-                    removeBtn.addEventListener("click", () => {
-                        newFiles.splice(index, 1);
-                        renderFileList();
-                    });
-
-                    li.appendChild(name);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
+                ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => highlight(dropZone), false));
+                ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => unhighlight(dropZone), false));
+                dropZone.addEventListener('drop', async e => {
+                    unhighlight(dropZone);
+                    await processNewFiles(Array.from(e.dataTransfer.files));
                 });
-
-                fileList.appendChild(ul);
             }
 
-            document.getElementById("consultationForm").addEventListener("submit", (e) => {
-                const formData = new FormData(e.target);
+            function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+            function highlight(el) { el.style.borderColor = '#00ad8e'; el.style.backgroundColor = '#f2ebebff'; }
+            function unhighlight(el) { el.style.borderColor = '#ccc'; el.style.backgroundColor = 'transparent'; }
 
-                newFiles.forEach(file => {
-                    formData.append("consultationFiles[]", file);
-                });
-
-            });
-        })();
-    </script> -->
-    <script>
-        (function () {
-            const MAX_FILES = 10;
-            const fileInput = document.getElementById("fileInput");
-            const submitFileInput = document.getElementById("submitFileInput");
-            const addBtn = document.getElementById("addFileBtn");
-            const fileList = document.getElementById("fileList");
-            const fileError = document.getElementById("fileError");
-            const removedFilesInput = document.getElementById("removedFiles");
-            const dropZone = document.getElementById("dropZone");
-
-            let newFiles = [];
-            let existingFiles = [];
-            let removedFiles = [];
-
-            existingFiles = <?php echo json_encode($attachments ?? []); ?>;
-
-            renderFileList();
-
-            // --- DRAG AND DROP HANDLERS ---
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
-                document.body.addEventListener(eventName, preventDefaults, false);
-            });
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, unhighlight, false);
-            });
-
-            dropZone.addEventListener('drop', handleDrop, false);
-
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            function highlight() {
-                dropZone.style.borderColor = '#00ad8e';
-                dropZone.style.backgroundColor = '#f7f7f7';
-            }
-
-            function unhighlight() {
-                dropZone.style.borderColor = '#ccc';
-                dropZone.style.backgroundColor = 'transparent';
-            }
-
-            function handleDrop(e) {
-                unhighlight();
-                const dt = e.dataTransfer;
-                const files = dt.files;
-
-                processNewFiles(files);
-            }
-
-            function processNewFiles(files) {
-                fileError.textContent = "";
+            async function processNewFiles(files) {
+                const currentElements = getCurrentElements();
+                if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
+                currentElements.fileError.textContent = "";
                 if (!files.length) return;
 
-                const allowedTypes = fileInput.getAttribute('accept').split(',').map(t => t.trim());
-                for (let i = 0; i < files.length; i++) {
-                    // Check file type
-                    if (files[i].type && !allowedTypes.includes(files[i].type) && !allowedTypes.some(t => files[i].name.endsWith(t))) {
-                        fileError.textContent = `File type not allowed for: ${files[i].name}`;
+                const allowedTypes = (currentElements.fileInput?.getAttribute('accept') || '').split(',').map(t => t.trim()).filter(t => t);
+                for (let file of files) {
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    const type = file.type || getMimeType(ext);
+
+                    if (allowedTypes.length && !allowedTypes.includes(type) && !allowedTypes.some(t => file.name.endsWith(t.replace('.', '')))) {
+                        currentElements.fileError.textContent = `File type not allowed: ${file.name}`;
+                        continue;
+                    }
+                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                        currentElements.fileError.textContent = `Max ${MAX_FILES} files allowed.`;
+                        break;
+                    }
+                    if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === file.name && f.size === file.size)) {
+                        currentElements.fileError.textContent = `File "${file.name}" already uploaded.`;
                         continue;
                     }
 
-                    // Check max files limit
-                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                        fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
-                        break;
-                    }
-
-                    // Avoid duplicate files by checking file name and size
-                    if (!newFiles.some(f => f.name === files[i].name && f.size === files[i].size)) {
-                        newFiles.push(files[i]);
+                    if (['image/jpeg', 'image/jpg', 'image/png'].includes(type) && editElements.imageEditModal) {
+                        const edited = await editImage(file);
+                        if (edited) newFiles.push({ name: edited.name, file: edited, type: edited.type, ext, url: null, size: edited.size });
+                    } else {
+                        newFiles.push({ name: file.name, file, type, ext, url: null, size: file.size });
                     }
                 }
-
                 renderFileList();
                 updateSubmitFileInput();
             }
 
-            function updateSubmitFileInput() {
-                const dataTransfer = new DataTransfer();
-                newFiles.forEach(file => dataTransfer.items.add(file));
-                submitFileInput.files = dataTransfer.files;
+            function editImage(file) {
+                return new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const dataURL = e.target.result;
+                        const img = document.getElementById('editor-image');
+                        const canvas = document.getElementById('editor-canvas');
+                        if (cropper) cropper.destroy();
+                        currentRotationAngle = 0; originalDataURL = dataURL; currentImageBlob = file;
+                        img.src = dataURL; img.style.display = 'block'; canvas.style.display = 'none';
+                        editElements.imageEditModal.show();
+                        cropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1, autoCropArea: 1, responsive: true, scalable: true, zoomable: true, minContainerWidth: 600, minContainerHeight: 600 });
+
+                        const escapeHandler = ev => ev.key === 'Escape' && editElements.imageEditModal.hide();
+                        document.addEventListener('keydown', escapeHandler);
+                        editElements.imageEditModal._element.addEventListener('hidden.bs.modal', () => {
+                            document.removeEventListener('keydown', escapeHandler);
+                            resolve(null); cleanup();
+                        }, { once: true });
+
+                        document.getElementById('crop-btn').onclick = () => {
+                            img.style.display = 'block'; canvas.style.display = 'none';
+                            if (!cropper) cropper = new Cropper(img, { viewMode: 1, dragMode: 'crop', autoCrop: false, movable: false, zoomable: false, scalable: false });
+                            cropper.setDragMode('crop');
+                        };
+
+                        document.getElementById('rotate-btn').onclick = () => {
+                            if (!originalDataURL) return;
+                            currentRotationAngle = (currentRotationAngle + 90) % 360;
+                            const imgObj = new Image(); imgObj.src = originalDataURL;
+                            imgObj.onload = () => {
+                                const tempCanvas = document.createElement('canvas'), ctx = tempCanvas.getContext('2d');
+                                const angleRad = currentRotationAngle * Math.PI / 180;
+                                const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
+                                const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
+                                tempCanvas.width = w; tempCanvas.height = h;
+                                ctx.translate(w / 2, h / 2); ctx.rotate(angleRad);
+                                ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
+                                tempCanvas.toBlob(blob => {
+                                    currentImageBlob = new File([blob], file.name, { type: file.type });
+                                    const url = URL.createObjectURL(currentImageBlob);
+                                    img.src = url; if (cropper) cropper.destroy();
+                                    cropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1, autoCropArea: 1, responsive: true, scalable: true, zoomable: true, minContainerWidth: 600, minContainerHeight: 600 });
+                                }, file.type, 1);
+                            };
+                        };
+
+                        const saveBtn = document.getElementById('saveEditedImage');
+                        const saveHandler = () => {
+                            if (cropper) {
+                                cropper.getCroppedCanvas({ fillColor: file.type.includes('png') ? 'transparent' : '#ffffff' }).toBlob(blob => {
+                                    const edited = new File([blob], file.name, { type: file.type });
+                                    const errorElement = getCurrentElements().fileError; // Use context-aware error element
+                                    if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
+                                        errorElement.textContent = `File "${edited.name}" already uploaded.`; resolve(null); cleanup();
+                                    } else { resolve(edited); cleanup(); }
+                                }, file.type, 1);
+                            } else {
+                                const edited = currentImageBlob ? new File([currentImageBlob], file.name, { type: file.type }) : file;
+                                const errorElement = getCurrentElements().fileError; // Use context-aware error element
+                                if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
+                                    errorElement.textContent = `File "${edited.name}" already uploaded.`; resolve(null); cleanup();
+                                } else { resolve(edited); cleanup(); }
+                            }
+                        };
+                        saveBtn.addEventListener('click', saveHandler, { once: true });
+
+                        function cleanup() {
+                            editElements.imageEditModal.hide();
+                            if (cropper) { cropper.destroy(); cropper = null; }
+                            img.src = ''; img.style.display = 'none'; canvas.style.display = 'none';
+                            currentRotationAngle = 0; originalDataURL = null; currentImageBlob = null;
+                            const newBtn = saveBtn.cloneNode(true); saveBtn.parentNode.replaceChild(newBtn, saveBtn);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                });
             }
 
-            // --- BUTTON AND FILE INPUT HANDLERS ---
-            addBtn.addEventListener("click", () => {
-                if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                    fileError.textContent = `You can upload up to ${MAX_FILES} files only.`;
-                    return;
-                }
-                fileInput.click();
-            });
+            if (isEditPage || isNewConsultation || isFollowup) {
+                const elements = getCurrentElements();
 
-            fileInput.addEventListener("change", () => {
-                if (fileInput.files.length > 0) {
-                    processNewFiles(fileInput.files);
-                    fileInput.value = ""; // Clear fileInput to allow new selections
+                if (elements.addBtn) {
+                    elements.addBtn.addEventListener("click", () => {
+                        if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                            elements.fileError.textContent = `Maximum ${MAX_FILES} files allowed.`;
+                            return;
+                        }
+                        elements.fileInput.click();
+                    });
                 }
-            });
+                if (elements.fileInput) {
+                    elements.fileInput.addEventListener("change", async () => {
+                        if (elements.fileInput.files.length) {
+                            await processNewFiles(Array.from(elements.fileInput.files));
+                            elements.fileInput.value = "";
+                        }
+                    });
+                }
+            }
 
-            // --- RENDER FILE LIST FUNCTION ---
+
             function renderFileList() {
-                fileList.innerHTML = "";
+                const currentElements = getCurrentElements();
+                if (!currentElements.fileList) return;
+                currentElements.fileList.innerHTML = "";
+                const context = isEditPage ? "edit" : isNewConsultation ? "new" : "followup";
 
-                if (existingFiles.length + newFiles.length === 0) {
-                    fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+                if (!existingFiles.length && !newFiles.length) {
+                    currentElements.fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
                     return;
                 }
 
-                const ul = document.createElement("ul");
-                ul.style.paddingLeft = "1.2rem";
+                const ul = document.createElement("ul"); ul.style.paddingLeft = "1.2rem";
+                [...existingFiles, ...newFiles].forEach((file, i) => {
+                    const isExisting = isEditPage && i < existingFiles.length;
+                    const fileIndexInArray = isExisting ? i : i - existingFiles.length;
 
-                existingFiles.forEach((file, index) => {
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
+                    const li = document.createElement("li"); li.style.marginBottom = "6px";
+                    const link = document.createElement("a"); link.href = "javascript:void(0);"; link.textContent = isExisting ? file.file_name : file.name;
+                    link.className = "openAttachment"; link.style.color = "#007bff"; link.style.textDecoration = "underline"; link.style.cursor = "pointer";
+                    link.setAttribute("data-file", isExisting ? file.url : (file.file ? file.name : ''));
+                    link.setAttribute("data-ext", isExisting ? file.ext : file.ext);
+                    link.setAttribute("data-context", context);
+                    link.setAttribute("data-is-existing", isExisting.toString());
+                    link.setAttribute("data-file-index", fileIndexInArray.toString());
 
-                    const name = document.createTextNode(file.file_name + " ");
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
-
-                    removeBtn.addEventListener("click", () => {
-                        removedFiles.push(file.file_name);
-                        existingFiles.splice(index, 1);
-                        removedFilesInput.value = JSON.stringify(removedFiles);
-                        renderFileList();
-                    });
-
-                    li.appendChild(name);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
+                    const removeBtn = document.createElement("button"); removeBtn.type = "button"; removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger"; removeBtn.style.marginLeft = "8px";
+                    removeBtn.onclick = () => {
+                        if (isExisting) { removedFiles.push(file.file_name); existingFiles.splice(fileIndexInArray, 1); if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles); }
+                        else newFiles.splice(fileIndexInArray, 1);
+                        renderFileList(); updateSubmitFileInput();
+                    };
+                    li.appendChild(link); li.appendChild(removeBtn); ul.appendChild(li);
                 });
-
-                newFiles.forEach((file, index) => {
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
-
-                    const name = document.createTextNode(file.name + " ");
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
-
-                    removeBtn.addEventListener("click", () => {
-                        newFiles.splice(index, 1);
-                        renderFileList();
-                        updateSubmitFileInput();
-                    });
-
-                    li.appendChild(name);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
-                });
-
-                fileList.appendChild(ul);
+                currentElements.fileList.appendChild(ul);
             }
-        })();</script>
 
+            function updateSubmitFileInput() {
+                const currentElements = getCurrentElements();
+                if (!currentElements.submitFileInput) return;
+                const dt = new DataTransfer();
+                newFiles.forEach(f => dt.items.add(f.file));
+                currentElements.submitFileInput.files = dt.files;
+            }
 
-    <!-- Attachment display modal script -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const attachmentLinks = document.querySelectorAll(".openAttachment");
-            const modal = new bootstrap.Modal(document.getElementById('attachmentModal'));
-            const attachmentImage = document.getElementById('attachmentImage');
-            const attachmentPDF = document.getElementById('attachmentPDF');
-            const modalTitle = document.getElementById('attachmentModalLabel');
+            function showPreview(file, isExisting, index, context) {
+                const fileName = isExisting ? file.file_name : file.name;
+                const fileType = isExisting ? (file.mime_type || getMimeType(file.ext)) : file.type;
+                const url = isExisting ? file.url : URL.createObjectURL(file.file);
 
-            attachmentLinks.forEach(link => {
-                link.addEventListener("click", function () {
-                    const file = this.getAttribute("data-file");
-                    const ext = this.getAttribute("data-ext").toLowerCase();
-                    const fileName = this.textContent;
+                let elements, showModal, updateNav;
+                if (context === 'edit' && editElements.editPreviewModal) {
+                    elements = editElements; showModal = () => editElements.editPreviewModal.show(); updateNav = updateEditNavigation;
+                    elements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
+                    elements.previewContent.innerHTML = '';
+                } else if (context === 'new' && newConsultationElements.previewModal) {
+                    elements = newConsultationElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+                    elements.modalTitle.textContent = `New Consultation Attachment Preview - ${fileName}`;
+                    elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+                } else if (context === 'followup' && followupElements.previewModal) {
+                    elements = followupElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+                    elements.modalTitle.textContent = `Follow-up Attachment Preview - ${fileName}`;
+                    elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+                } else if (context === 'dashboard' && dashboardElements.previewModal) {
+                    elements = dashboardElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+                    elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
+                    elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
 
-                    // Set modal title with file name
-                    modalTitle.textContent = `Attachment Preview - ${fileName}`;
+                    document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
 
-                    // Hide both initially
-                    attachmentImage.classList.add("d-none");
-                    attachmentPDF.classList.add("d-none");
+                    const toolbar = document.getElementById('attachment-toolbar');
+                    const downloadBtn = document.getElementById('downloadAttachmentBtn');
+                    const attachmentImage = document.getElementById('attachmentImage');
 
-                    if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
-                        attachmentImage.src = file;
-                        attachmentImage.classList.remove("d-none");
-                    } else if (['pdf'].includes(ext)) {
-                        attachmentPDF.src = file;
-                        attachmentPDF.classList.remove("d-none");
+                    toolbar.style.display = 'none';
+
+                    currentZoom = 1.0;
+                    attachmentImage.style.transform = `scale(${currentZoom})`;
+
+                    downloadBtn.onclick = () => {
+                        const tempLink = document.createElement('a');
+                        tempLink.href = url;
+                        tempLink.download = fileName;
+                        document.body.appendChild(tempLink);
+                        tempLink.click();
+                        document.body.removeChild(tempLink);
+                    };
+
+                    if (fileType.includes('image')) {
+                        toolbar.style.display = 'flex';
+                        document.getElementById('zoomOutBtn').disabled = true;
+                        document.getElementById('zoomInBtn').disabled = false;
+                        attachmentImage.style.cursor = 'grab';
                     } else {
-                        alert("Preview not available for this file type.");
-                        return;
+                        attachmentImage.style.cursor = 'default';
                     }
 
-                    modal.show();
+                } else return;
+
+                currentIndex = index;
+
+                const display = () => {
+                    if (fileType.includes('image')) {
+                        if (context === 'edit') { const img = document.createElement('img'); img.src = url; img.style.maxWidth = '100%'; img.maxHeight = '70vh'; elements.previewContent.appendChild(img); }
+                        else { elements.image.src = url; elements.image.classList.remove('d-none'); }
+                    } else if (fileType === 'application/pdf') {
+                        if (context === 'edit') { const embed = document.createElement('embed'); embed.src = url; embed.style.width = '100%'; embed.style.height = '70vh'; elements.previewContent.appendChild(embed); }
+                        else { elements.pdf.src = url; elements.pdf.classList.remove('d-none'); }
+                    } else {
+                        const p = document.createElement('p'); p.textContent = `Preview not available for ${fileName}.`; p.style.textAlign = 'center';
+
+                        if (context === 'dashboard') {
+                            elements.image.classList.add('d-none');
+                            elements.pdf.classList.add('d-none');
+                            p.id = 'no-preview-message';
+                            document.getElementById('attachment-content-wrapper').appendChild(p);
+                        } else if (context === 'edit') {
+                            elements.previewContent.appendChild(p);
+                        } else {
+                            elements.image.classList.remove('d-none');
+                            elements.image.alt = p.textContent;
+                        }
+                    }
+                    updateNav(index); showModal();
+                };
+
+                if (isExisting && context !== 'edit') {
+                    fetch(url, { method: 'HEAD' }).then(r => r.ok ? display() : fail()).catch(fail);
+                } else display();
+
+                function fail() {
+                    const p = document.createElement('p'); p.textContent = `Cannot access ${fileName}.`; p.style.textAlign = 'center';
+                    context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
+                    updateNav(index); showModal();
+                }
+
+                elements.previewModal._element.addEventListener('hidden.bs.modal', () => {
+                    if (!isExisting && url.startsWith('blob:')) URL.revokeObjectURL(url);
+                    if (context === 'edit') elements.previewContent.innerHTML = '';
+                    else { elements.image.src = ''; elements.pdf.src = ''; elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none'); }
+                    currentIndex = -1; currentFiles = [];
+
+                    if (context === 'dashboard') {
+                        document.getElementById('attachmentImage').style.cursor = 'default';
+                        document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
+                        document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+                    }
+                }, { once: true });
+            }
+
+            function updateEditNavigation(index) {
+                editElements.prevBtn.disabled = index === 0; editElements.nextBtn.disabled = index === currentFiles.length - 1;
+                editElements.prevBtn.classList.toggle('disabled', index === 0); editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+            }
+
+            function updateNavButtons(el, index) {
+                el.prevBtn.disabled = index === 0;
+                el.nextBtn.disabled = index === currentFiles.length - 1;
+                el.prevBtn.classList.toggle('disabled', index === 0);
+                el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+            }
+
+            document.removeEventListener('click', handleAttachmentClick);
+            function handleAttachmentClick(e) {
+                const link = e.target.closest('.openAttachment');
+                if (!link) return;
+                e.preventDefault(); e.stopPropagation();
+
+                const context = link.getAttribute('data-context');
+                const fileName = link.textContent.trim();
+
+                let allRelevantLinks = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
+                currentFiles = allRelevantLinks;
+
+                if (context === 'dashboard') {
+                    const match = fileName.match(/_(\d+)_/);
+                    const consultationId = match ? match[1] : null;
+
+                    if (consultationId) {
+                        const filterPattern = new RegExp(`_${consultationId}_`);
+                        currentFiles = allRelevantLinks.filter(fileLink =>
+                            filterPattern.test(fileLink.textContent.trim())
+                        );
+                    } else {
+                        currentFiles = [link];
+                    }
+                }
+
+                const index = currentFiles.indexOf(link);
+                if (index === -1) return;
+
+                if (['new', 'edit', 'followup'].includes(context)) {
+                    const isExisting = link.getAttribute('data-is-existing') === "true";
+                    const fileIndexInArray = parseInt(link.getAttribute('data-file-index'), 10);
+
+                    let file = null;
+                    if (isExisting) {
+                        file = existingFiles[fileIndexInArray];
+                    } else {
+                        file = newFiles[fileIndexInArray];
+                    }
+
+                    if (file) showPreview(file, isExisting, index, context);
+                    else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
+
+                } else if (context === 'dashboard') {
+                    showPreview({ url: link.getAttribute('data-file'), ext: link.getAttribute('data-ext'), file_name: fileName }, true, index, 'dashboard');
+                }
+            }
+            document.addEventListener('click', handleAttachmentClick);
+
+            function setupNav(prevBtn, nextBtn, context) {
+                if (!prevBtn || !nextBtn) return;
+                prevBtn.onclick = () => { if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context); };
+                nextBtn.onclick = () => { if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context); };
+                [prevBtn, nextBtn].forEach(btn => {
+                    btn.addEventListener("mouseenter", () => btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer');
+                    btn.addEventListener("mouseleave", () => btn.style.cursor = '');
                 });
-            });
+            }
+
+            function navigate(index, context) {
+                const link = currentFiles[index];
+                link.click();
+            }
+
+            setupNav(editElements.prevBtn, editElements.nextBtn, 'edit');
+            if (newConsultationElements.prevBtn) setupNav(newConsultationElements.prevBtn, newConsultationElements.nextBtn, 'new');
+            if (followupElements.prevBtn) setupNav(followupElements.prevBtn, followupElements.nextBtn, 'followup');
+            if (dashboardElements.prevBtn) setupNav(dashboardElements.prevBtn, dashboardElements.nextBtn, 'dashboard');
+
+            // === Dashboard Zoom & Pan (double-tap + hold ONLY) ===
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const attachmentImage = document.getElementById('attachmentImage');
+            const contentWrapper = document.getElementById('attachment-content-wrapper');
+
+            if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
+
+                zoomInBtn.addEventListener('click', () => {
+                    if (attachmentImage.classList.contains('d-none')) return;
+                    currentZoom = Math.min(currentZoom + ZOOM_STEP, 3.0);
+                    attachmentImage.style.transform = `scale(${currentZoom})`;
+                    zoomOutBtn.disabled = false;
+                    if (currentZoom >= 3.0) zoomInBtn.disabled = true;
+                    if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+                });
+
+                zoomOutBtn.addEventListener('click', () => {
+                    if (attachmentImage.classList.contains('d-none')) return;
+                    currentZoom = Math.max(currentZoom - ZOOM_STEP, 1.0);
+                    attachmentImage.style.transform = `scale(${currentZoom})`;
+                    zoomInBtn.disabled = false;
+                    if (currentZoom <= 1.0) {
+                        zoomOutBtn.disabled = true;
+                        contentWrapper.scrollTo(0, 0);
+                        attachmentImage.style.cursor = 'default';
+                    } else {
+                        attachmentImage.style.cursor = 'grab';
+                    }
+                });
+
+                attachmentImage.setAttribute('draggable', 'false');
+                attachmentImage.addEventListener('dragstart', e => e.preventDefault());
+
+                // CSS – allow only panning, block everything else
+                attachmentImage.style.touchAction = 'pan-x pan-y';
+                attachmentImage.style.userSelect = 'none';
+
+                let isDragging = false;
+                let startX, startY, scrollLeft, scrollTop;
+
+                const startDrag = (clientX, clientY) => {
+                    if (attachmentImage.classList.contains('d-none') || currentZoom <= 1.0) return;
+
+                    isDragging = true;
+                    attachmentImage.style.cursor = 'grabbing';
+
+                    startX = clientX - contentWrapper.offsetLeft;
+                    startY = clientY - contentWrapper.offsetTop;
+                    scrollLeft = contentWrapper.scrollLeft;
+                    scrollTop = contentWrapper.scrollTop;
+
+                    contentWrapper.style.userSelect = 'none';
+                };
+
+                const moveDrag = (clientX, clientY) => {
+                    if (!isDragging) return;
+                    const x = clientX - contentWrapper.offsetLeft;
+                    const y = clientY - contentWrapper.offsetTop;
+                    const walkX = x - startX;
+                    const walkY = y - startY;
+
+                    contentWrapper.scrollLeft = scrollLeft - walkX;
+                    contentWrapper.scrollTop = scrollTop - walkY;
+                };
+
+                const stopDrag = () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+                    contentWrapper.style.userSelect = '';
+                };
+
+                contentWrapper.addEventListener('mousedown', e => startDrag(e.pageX, e.pageY));
+                contentWrapper.addEventListener('mousemove', e => moveDrag(e.pageX, e.pageY));
+                document.addEventListener('mouseup', stopDrag);
+                contentWrapper.addEventListener('mouseleave', stopDrag);
+
+
+                let lastTap = 0;
+                let tapTimeout = null;
+
+                contentWrapper.addEventListener('touchstart', e => {
+                    const now = Date.now();
+                    const TAP_DELAY = 300;
+                    const DOUBLE_TAP_THRESHOLD = 500;
+
+                    if (now - lastTap < TAP_DELAY) {
+                        // ---- DOUBLE TAP DETECTED ----
+                        clearTimeout(tapTimeout);
+                        e.preventDefault();
+
+                        tapTimeout = setTimeout(() => {
+                            if (e.touches.length === 1) {
+                                const touch = e.touches[0];
+                                startDrag(touch.pageX, touch.pageY);
+                            }
+                        }, 150);
+                    } else {
+                        lastTap = now;
+                        tapTimeout = setTimeout(() => { }, DOUBLE_TAP_THRESHOLD);
+                    }
+                });
+
+                contentWrapper.addEventListener('touchmove', e => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    moveDrag(touch.pageX, touch.pageY);
+                });
+
+                contentWrapper.addEventListener('touchend', stopDrag);
+                contentWrapper.addEventListener('touchcancel', stopDrag);
+            }
         });
+
+
     </script>
 
     <!-- Delete Consultation Script -->
@@ -4152,6 +4955,97 @@
         });
     </script>
 
+    <!-- Modal move on screen -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const draggableModalIds = [
+                '#symptomsModal',
+                '#inputModal',
+                '#diagnosisModal',
+                '#investigationsModal'
+            ];
+            draggableModalIds.forEach(id => {
+                const modalElement = document.querySelector(id);
+                if (modalElement) {
+                    makeModalDraggable(modalElement);
+                    modalElement.addEventListener('hidden.bs.modal', function () {
+                        const modalDialog = modalElement.querySelector('.modal-dialog');
+                        modalDialog.style.left = '';
+                        modalDialog.style.top = '';
+                        modalDialog.style.margin = '';
+                        modalDialog.style.transform = '';
+                    });
+                }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    const openModal = document.querySelector('.modal.show');
+                    if (openModal) {
+                        const modalInstance = bootstrap.Modal.getInstance(openModal);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    }
+                }
+            });
+        });
+        function makeModalDraggable(modal) {
+            const modalDialog = modal.querySelector('.modal-dialog');
+            const modalHeader = modal.querySelector('.modal-header');
+
+            if (!modalHeader) return; // Safety check if a modal has no header
+
+            let isDragging = false;
+            let hasDragged = false;
+            let initialPosX = 0;
+            let initialPosY = 0;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            modalHeader.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                isDragging = true;
+                hasDragged = false;
+
+                const rect = modalDialog.getBoundingClientRect();
+                initialPosX = rect.left;
+                initialPosY = rect.top;
+
+                offsetX = e.clientX - initialPosX;
+                offsetY = e.clientY - initialPosY;
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+
+                if (!hasDragged) {
+                    modalDialog.style.margin = '0';
+                    modalDialog.style.transform = 'none';
+                    modalDialog.style.left = initialPosX + 'px';
+                    modalDialog.style.top = initialPosY + 'px';
+                    hasDragged = true;
+                }
+
+                let newPosX = e.clientX - offsetX;
+                let newPosY = e.clientY - offsetY;
+
+                modalDialog.style.left = newPosX + 'px';
+                modalDialog.style.top = newPosY + 'px';
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+        }
+    </script>
+
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
@@ -4167,6 +5061,9 @@
 
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 
+    <!-- Fabric.js and Cropper.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 </body>
 
 </html>

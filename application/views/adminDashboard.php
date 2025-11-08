@@ -40,6 +40,68 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        /* Consultation previous and next arrows */
+        .consultation-item {
+            display: none;
+        }
+
+        .consultation-item.active {
+            display: block;
+        }
+
+        /* 1.Attachment Preview  */
+        #dashboardPreviewModal .modal-body {
+            padding: 0;
+        }
+
+        #dashboardPreviewModal .modal-body::before,
+        #dashboardPreviewModal .modal-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background: #fff;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        #dashboardPreviewModal .modal-body::before {
+            left: 0;
+        }
+
+        #dashboardPreviewModal .modal-body::after {
+            right: 0;
+        }
+
+        #dashboardPreviewModal .preview-area {
+            margin-left: 50px;
+            margin-right: 50px;
+            max-height: calc(80vh - 160px);
+            min-height: 400px;
+            overflow: auto;
+            background: #fff;
+        }
+
+        #dashboardPreviewModal #prevAttachment,
+        #dashboardPreviewModal #nextAttachment {
+            z-index: 10;
+        }
+
+        #dashboardPreviewModal .preview-area img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #dashboardPreviewModal .preview-area iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+            border: none;
+        }
     </style>
 </head>
 
@@ -700,7 +762,6 @@
             <?php
         } else if ($method == "healthCareProvider") {
             ?>
-
                             <section>
                                 <div class="card rounded">
                                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
@@ -1506,9 +1567,278 @@
                                                                 </p>
                                                             </div>
                         <?php } ?>
+
+                                                        <p class="fs-5 fw-semibold mt-3">All Consultations</p>
+                        <?php if (!empty($consultations)): ?>
+                                                            <div class="consultation-container">
+                                                                <div class="d-flex justify-content-end mb-2">
+                                                                    <div class="consultation-nav">
+                                                                        <button id="nav-left" class="btn btn-outline-secondary me-2"
+                                                                            onclick="navigateConsultations(-1)">&#9664;</button>
+                                                                        <span id="consultation-counter">
+                                                                            < 1 of <?= count($consultations) ?> >
+                                                                        </span>
+                                                                        <button id="nav-right" class="btn btn-outline-secondary ms-2"
+                                                                            onclick="navigateConsultations(1)">&#9654;</button>
+                                                                    </div>
+                                                                </div>
+                                    <?php
+                                    usort($consultations, function ($a, $b) {
+                                        return strtotime($b['created_at']) - strtotime($a['created_at']);
+                                    });
+                                    ?>
+                                <?php foreach ($consultations as $index => $consultation): ?>
+                                                                    <div class="consultation-item <?= $index === 0 ? 'active' : '' ?>" data-index="<?= $index ?>">
+                                                                        <div class="border border-5 mb-3 shadow-sm">
+                                                                            <div class="card-body" id="consultation-content-<?= $consultation['id'] ?>">
+                                                                                <div class="d-md-flex justify-content-between">
+                                                                                    <h5 class="card-title mb-0">
+                                                        <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
+                                                                                    </h5>
+                                                                                </div>
+
+                                                                                <!-- Vitals -->
+                                                <?php if (!empty($consultation['vitals'])): ?>
+                                                                                    <p><strong>Vitals:</strong></p>
+                                                                                    <div class="row g-2 mb-4">
+                                                            <?php
+                                                            $vitals = [
+                                                                'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
+                                                                'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
+                                                                'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
+                                                                'Cholesterol' => !empty($consultation['vitals']['cholesterol_mg_dl']) ? $consultation['vitals']['cholesterol_mg_dl'] . ' mg/dL' : null,
+                                                                'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
+                                                                'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
+                                                                'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
+                                                                'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
+                                                                'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
+                                                            ];
+
+                                                            foreach ($vitals as $label => $value):
+                                                                if ($value):
+                                                                    ?>
+                                                                                                <div class="col-12 col-md-6">
+                                                                                                    <div
+                                                                                                        class="d-flex justify-content-between align-items-center border p-2 rounded">
+                                                                                                        <span class="fw-medium"><?= $label ?>:</span>
+                                                                                                        <span class="text-primary"><?= $value ?></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                <?php
+                                                                endif;
+                                                            endforeach;
+                                                            ?>
+                                                                                    </div>
+                                                <?php endif; ?>
+
+                                                                                <!-- Symptoms -->
+                                                <?php if (!empty($consultation['symptoms'])): ?>
+                                                                                    <p><strong>Symptoms:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['symptoms'] as $symptom): ?>
+                                                                                            <li>
+                                                                <?= $symptom['symptom_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($symptom['since']))
+                                                                        $details[] = $symptom['since'];
+                                                                    if (!empty($symptom['severity']))
+                                                                        $details[] = $symptom['severity'];
+                                                                    if (!empty($symptom['note']))
+                                                                        $details[] = $symptom['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Findings -->
+                                                <?php if (!empty($consultation['findings'])): ?>
+                                                                                    <p><strong>Findings:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['findings'] as $finding): ?>
+                                                                                            <li>
+                                                                <?= $finding['finding_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($finding['since']))
+                                                                        $details[] = $finding['since'];
+                                                                    if (!empty($finding['severity']))
+                                                                        $details[] = $finding['severity'];
+                                                                    if (!empty($finding['note']))
+                                                                        $details[] = $finding['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Diagnosis -->
+                                                <?php if (!empty($consultation['diagnosis'])): ?>
+                                                                                    <p><strong>Diagnosis:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
+                                                                                            <li>
+                                                                <?= $diagnosis['diagnosis_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($diagnosis['since']))
+                                                                        $details[] = $diagnosis['since'];
+                                                                    if (!empty($diagnosis['severity']))
+                                                                        $details[] = $diagnosis['severity'];
+                                                                    if (!empty($diagnosis['note']))
+                                                                        $details[] = $diagnosis['note'];
+                                                                    if (!empty($details)) {
+                                                                        echo ' (' . implode(', ', $details) . ')';
+                                                                    }
+                                                                    ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Investigations -->
+                                                <?php if (!empty($consultation['investigations'])): ?>
+                                                                                    <p><strong>Investigations:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['investigations'] as $inv): ?>
+                                                                                            <li>
+                                                                <?= htmlspecialchars($inv['investigation_name']) ?>
+                                                                <?php if (!empty($inv['note'])): ?>
+                                                                                                    - <?= htmlspecialchars($inv['note']) ?>
+                                                                <?php endif; ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Instructions -->
+                                                <?php if (!empty($consultation['instructions'])): ?>
+                                                                                    <p><strong>Instructions:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['instructions'] as $ins): ?>
+                                                                                            <li><?= $ins['instruction_name'] ?></li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- ====== Medicines ====== -->
+                                                <?php if (!empty($consultation['medicines'])): ?>
+                                                                                    <p><strong>Medicines:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['medicines'] as $medicine): ?>
+                                                                                            <li>
+                                                                <?= $medicine['medicine_name'] ?>
+                                                                    <?php
+                                                                    $details = [];
+                                                                    if (!empty($medicine['quantity']))
+                                                                        $details[] = $medicine['quantity'];
+                                                                    if (!empty($medicine['unit']))
+                                                                        $details[] = $medicine['unit'];
+                                                                    if (!empty($medicine['timing']))
+                                                                        $details[] = $medicine['timing'];
+                                                                    if (!empty($medicine['frequency']))
+                                                                        $details[] = $medicine['frequency'];
+                                                                    if (!empty($medicine['food_timing']))
+                                                                        $details[] = $medicine['food_timing'];
+                                                                    if (!empty($medicine['duration']))
+                                                                        $details[] = $medicine['duration'];
+                                                                    if (!empty($details))
+                                                                        echo ' (' . implode(' - ', $details) . ')';
+                                                                    ?>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                <?php if (!empty($consultation['attachments'])): ?>
+                                                                                    <p><strong>Attachments:</strong></p>
+                                                                                    <ul>
+                                                        <?php foreach ($consultation['attachments'] as $attach): ?>
+                                                                <?php
+                                                                $filePath = base_url('uploads/consultations/' . $attach['file_name']);
+                                                                $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
+                                                                ?>
+                                                                                            <li>
+                                                                                                <a href="javascript:void(0);" class="openAttachment"
+                                                                                                    data-file="<?= $filePath ?>" data-ext="<?= $ext ?>">
+                                                                    <?= $attach['file_name'] ?>
+                                                                                                </a>
+                                                                                            </li>
+                                                        <?php endforeach; ?>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+
+                                                                                <!-- Notes -->
+                                                <?php if (!empty($consultation['notes'])): ?>
+                                                                                    <p><strong>Notes:</strong></p>
+                                                                                    <ul>
+                                                                                        <li><?= $consultation['notes'] ?></li>
+                                                                                    </ul>
+                                                <?php endif; ?>
+
+                                                                                <!-- Next Follow-Up -->
+                                                <?php if (!empty($consultation['next_follow_up'])): ?>
+                                                                                    <p><strong>Next Follow-Up Date:</strong></p>
+                                                                                    <ul>
+                                                                                        <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
+                                                                                        </li>
+                                                                                    </ul>
+                                                <?php endif; ?>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                <?php endforeach; ?>
+                                                            </div>
+                        <?php else: ?>
+                                                            <p>No Previous Consultation.</p>
+                        <?php endif; ?>
                                                     </div>
                                                 </div>
                                             </section>
+
+                                            <!-- Previous and Next arrows script -->
+                                            <script>
+                                                let currentIndex = 0;
+                                                const consultationItems = document.querySelectorAll('.consultation-item');
+                                                const totalItems = consultationItems.length;
+                                                const counterDisplay = document.getElementById('consultation-counter');
+                                                const navLeft = document.getElementById('nav-left');
+                                                const navRight = document.getElementById('nav-right');
+
+                                                function updateCounterAndButtons() {
+                                                    counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
+                                                    navLeft.disabled = currentIndex === 0;
+                                                    navRight.disabled = currentIndex === totalItems - 1;
+                                                }
+
+                                                function navigateConsultations(direction) {
+                                                    if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
+                                                        return;
+                                                    }
+                                                    consultationItems[currentIndex].classList.remove('active');
+                                                    currentIndex = (currentIndex + direction + totalItems) % totalItems;
+                                                    consultationItems[currentIndex].classList.add('active');
+                                                    updateCounterAndButtons();
+                                                }
+
+                                                document.addEventListener('keydown', function (event) {
+                                                    if (event.key === 'ArrowLeft' && currentIndex > 0) {
+                                                        navigateConsultations(-1);
+                                                    } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
+                                                        navigateConsultations(1);
+                                                    }
+                                                });
+
+                                                updateCounterAndButtons();
+                                            </script>
 
             <?php
         } else if ($method == "specialization") {
@@ -1518,10 +1848,10 @@
                                                     <div class="card rounded">
                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                             <p style="font-size: 24px; font-weight: 500">Specialization List</p>
-                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSpecilization"
-                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                            <button type="button" onclick="openAddModal('specialization')" style="background-color: #2b353bf5;"
+                                                                class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                 <i class="bi bi-plus-square-fill"></i> New
-                                                            </a>
+                                                            </button>
                                                         </div>
                                                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                             <div class="ms-2">
@@ -1565,7 +1895,7 @@
                                                         </div>
                                                 </section>
 
-                                                <script>
+                                                <!--  <script>
                                                     const baseUrl = '<?php echo base_url(); ?>';
                                                     let itemsPerPageSpecialization = 10;
                                                     const specializationList = <?php echo json_encode($specilalizationList); ?>;
@@ -1632,12 +1962,26 @@
                                                         } else {
                                                             itemsToShow.forEach((specialization, index) => {
                                                                 const specializationRow = document.createElement('tr');
-                                                                specializationRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
-                <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${specialization.id}" data-name="${specialization.specializationName}" data-type="specialization"><i class="bi bi-trash"></i></button>
-                </td>`;
+                                                               specializationRow.innerHTML = `
+    <td class="pt-3">${start + index + 1}.</td>
+    <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
+    <td class="d-flex d-md-block">
+        <button class="btn btn-secondary me-2 edit-btn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#editSpecializationModal"
+                data-id="${specialization.id}"
+                data-name="${specialization.specializationName}">
+            <i class="bi bi-pen"></i>
+        </button>
+        <button class="btn btn-danger delete-btn" 
+                data-bs-toggle="modal" 
+                data-bs-target="#confirmDelete" 
+                data-id="${specialization.id}"
+                data-name="${specialization.specializationName}" 
+                data-type="specialization">
+            <i class="bi bi-trash"></i>
+        </button>
+    </td>`;
                                                                 specializationTableBody.appendChild(specializationRow);
                                                             });
                                                         }
@@ -1689,7 +2033,159 @@
                                                     toggleClearIcons();
                                                     filteredSpecializationList = [...specializationList];
                                                     displaySpecializationPage(initialPageSpecialization);
+                                                </script> -->
+
+                                                <!--  Altered Specialization -->
+                                                <script>
+                                                    const baseUrl = '<?php echo base_url(); ?>';
+                                                    let itemsPerPageSpecialization = 10;
+                                                    const specializationList = <?php echo json_encode($specilalizationList); ?>;
+                                                    let filteredSpecializationList = [...specializationList];
+                                                    const initialPageSpecialization = parseInt(localStorage.getItem('currentPageSpecialization')) || 1;
+
+                                                    const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
+                                                    const searchBar = document.getElementById('searchBar');
+                                                    const clearSearch = document.getElementById('clearSearch');
+
+                                                    // Load saved itemsPerPage
+                                                    const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageSpecialization')) || itemsPerPageSpecialization;
+                                                    itemsPerPageDropdown.value = savedItemsPerPage;
+                                                    itemsPerPageSpecialization = savedItemsPerPage;
+
+                                                    // Event Listeners
+                                                    itemsPerPageDropdown.addEventListener('change', (event) => {
+                                                        itemsPerPageSpecialization = parseInt(event.target.value);
+                                                        localStorage.setItem('itemsPerPageSpecialization', itemsPerPageSpecialization);
+                                                        applyFilters();
+                                                    });
+
+                                                    searchBar.addEventListener('input', () => {
+                                                        toggleClearIcons();
+                                                        applyFilters();
+                                                    });
+
+                                                    clearSearch.addEventListener('click', () => {
+                                                        searchBar.value = '';
+                                                        toggleClearIcons();
+                                                        applyFilters();
+                                                    });
+
+                                                    function toggleClearIcons() {
+                                                        clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                                                    }
+
+                                                    function applyFilters() {
+                                                        const searchTerm = searchBar.value.toLowerCase();
+                                                        filteredSpecializationList = specializationList.filter((specialization) => {
+                                                            const specializationName = specialization.specializationName || '';
+                                                            return specializationName.toLowerCase().includes(searchTerm);
+                                                        });
+                                                        displaySpecializationPage(1);
+                                                    }
+
+                                                    function displaySpecializationPage(page) {
+                                                        localStorage.setItem('currentPageSpecialization', page);
+                                                        const start = (page - 1) * itemsPerPageSpecialization;
+                                                        const end = start + itemsPerPageSpecialization;
+                                                        const itemsToShow = filteredSpecializationList.slice(start, end);
+
+                                                        const specializationTableBody = document.getElementById('specializationTableBody');
+                                                        specializationTableBody.innerHTML = '';
+
+                                                        updateEntriesInfo(start + 1, Math.min(end, filteredSpecializationList.length), filteredSpecializationList.length);
+
+                                                        if (itemsToShow.length === 0) {
+                                                            const noMatchesRow = document.createElement('tr');
+                                                            noMatchesRow.innerHTML = '<td colspan="3" class="text-center">No matches found.</td>';
+                                                            specializationTableBody.appendChild(noMatchesRow);
+                                                        } else {
+                                                            itemsToShow.forEach((specialization, index) => {
+                                                                const specializationRow = document.createElement('tr');
+                                                                specializationRow.innerHTML = `
+                                                <td class="pt-3">${start + index + 1}.</td>
+                                                <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
+                                                <td class="d-flex d-md-block">
+                                                    <button class="btn btn-secondary me-2 edit-btn" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#editCommonModal"
+                                                        data-type="specialization"
+                                                        data-id="${specialization.id}"
+                                                        data-name="${specialization.specializationName}">
+                                                    <i class="bi bi-pen"></i>
+                                                </button>
+                                                <button class="btn btn-danger delete-btn" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#confirmDelete" 
+                                                        data-id="${specialization.id}"
+                                                        data-name="${specialization.specializationName}" 
+                                                        data-type="specialization">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                                </td>`;
+                                                                specializationTableBody.appendChild(specializationRow);
+                                                            });
+                                                        }
+
+                                                        generateSpecializationPagination(filteredSpecializationList.length, page);
+                                                    }
+
+                                                    function updateEntriesInfo(start, end, totalEntries) {
+                                                        const entriesInfo = document.getElementById('entriesInfo');
+                                                        entriesInfo.textContent = `Showing ${start} to ${end} of ${totalEntries} entries.`;
+                                                    }
+
+                                                    function generateSpecializationPagination(totalItems, currentPage) {
+                                                        const totalPages = Math.ceil(totalItems / itemsPerPageSpecialization);
+                                                        const paginationContainer = document.getElementById('paginationContainerSpecialization');
+                                                        paginationContainer.innerHTML = '';
+
+                                                        const ul = document.createElement('ul');
+                                                        ul.className = 'pagination';
+
+                                                        const prevLi = document.createElement('li');
+                                                        prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
+                                                        prevLi.onclick = () => { if (currentPage > 1) displaySpecializationPage(currentPage - 1); };
+                                                        ul.appendChild(prevLi);
+
+                                                        const startPage = Math.max(1, currentPage - 2);
+                                                        const endPage = Math.min(totalPages, startPage + 4);
+
+                                                        for (let i = startPage; i <= endPage; i++) {
+                                                            const li = document.createElement('li');
+                                                            li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
+                                                            li.onclick = () => displaySpecializationPage(i);
+                                                            ul.appendChild(li);
+                                                        }
+
+                                                        const nextLi = document.createElement('li');
+                                                        nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
+                                                        nextLi.onclick = () => { if (currentPage < totalPages) displaySpecializationPage(currentPage + 1); };
+                                                        ul.appendChild(nextLi);
+
+                                                        paginationContainer.appendChild(ul);
+                                                    }
+
+                                                    // On load
+                                                    toggleClearIcons();
+                                                    filteredSpecializationList = [...specializationList];
+                                                    displaySpecializationPage(initialPageSpecialization);
                                                 </script>
+
+                                                <!-- ADD THIS BELOW -->
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                        document.body.addEventListener('click', function (e) {
+                                                            const btn = e.target.closest('.edit-btn');
+                                                            if (!btn) return;
+
+                                                            document.getElementById('editSpecId').value = btn.dataset.id;
+                                                            document.getElementById('editSpecName').value = btn.dataset.name;
+                                                            document.getElementById('editSpecializationForm').action =
+                                                                `${baseUrl}Edfadmin/updateSpecialization/${btn.dataset.id}`;
+                                                        });
+                                                    });
+                                                </script>
+
             <?php
         } else if ($method == "symptoms") {
             ?>
@@ -1698,10 +2194,10 @@
                                                         <div class="card rounded">
                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                 <p style="font-size: 24px; font-weight: 500">Symptoms List</p>
-                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newSymptoms"
-                                                                    style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                <button type="button" onclick="openAddModal('symptoms')" style="background-color: #2b353bf5;"
+                                                                    class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                     <i class="bi bi-plus-square-fill"></i> New
-                                                                </a>
+                                                                </button>
                                                             </div>
                                                             <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                 <div class="ms-2">
@@ -1811,11 +2307,26 @@
                                                                 itemsToShow.forEach((symptom, index) => {
                                                                     const symptomRow = document.createElement('tr');
                                                                     symptomRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${symptom.symptomsName}</td>
-                <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${symptom.id}" data-name="${symptom.symptomsName}" data-type="symptom"><i class="bi bi-trash"></i></button>
-                </td>`;
+                                                                    <td class="pt-3">${start + index + 1}.</td>
+                                                                    <td style="font-size: 16px" class="pt-3">${symptom.symptomsName}</td>
+                                                                    <td class="d-flex d-md-block">
+                                                                            <button class="btn btn-secondary me-2 edit-btn"
+                                                                            data-bs-toggle="modal"
+                                                                            data-bs-target="#editCommonModal"
+                                                                            data-type="symptoms"
+                                                                            data-id="${symptom.id}"
+                                                                            data-name="${symptom.symptomsName}">
+                                                                        <i class="bi bi-pen"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-danger delete-btn" 
+                                                                            data-bs-toggle="modal" 
+                                                                            data-bs-target="#confirmDelete" 
+                                                                            data-id="${symptom.id}"
+                                                                            data-name="${symptom.symptomName}" 
+                                                                            data-type="symptoms">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </button>
+                                                                    </td>`;
                                                                     symptomsTableBody.appendChild(symptomRow);
                                                                 });
                                                             }
@@ -1876,10 +2387,10 @@
                                                             <div class="card rounded">
                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                     <p style="font-size: 24px; font-weight: 500">Findings List</p>
-                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newFindings"
-                                                                        style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                    <button type="button" onclick="openAddModal('findings')" style="background-color: #2b353bf5;"
+                                                                        class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                         <i class="bi bi-plus-square-fill"></i> New
-                                                                    </a>
+                                                                    </button>
                                                                 </div>
                                                                 <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                     <div class="ms-2">
@@ -1989,11 +2500,26 @@
                                                                     itemsToShow.forEach((finding, index) => {
                                                                         const findingRow = document.createElement('tr');
                                                                         findingRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${finding.findingsName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${finding.id}" data-name="${finding.findingsName}" data-type="finding"><i class="bi bi-trash"></i></button>
-                    </td>`;
+                                                                <td class="pt-3">${start + index + 1}.</td>
+                                                                <td style="font-size: 16px" class="pt-3">${finding.findingsName}</td>
+                                                                <td class="d-flex d-md-block">
+                                                                <button class="btn btn-secondary me-2 edit-btn"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#editCommonModal"
+                                                                    data-type="findings"
+                                                                    data-id="${finding.id}"
+                                                                    data-name="${finding.findingsName}">
+                                                                <i class="bi bi-pen"></i>
+                                                            </button>
+                                                                   <button class="btn btn-danger delete-btn" 
+                                                                        data-bs-toggle="modal" 
+                                                                        data-bs-target="#confirmDelete" 
+                                                                        data-id="${finding.id}"
+                                                                        data-name="${finding.findingName}" 
+                                                                        data-type="findings">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                                </td>`;
                                                                         findingsTableBody.appendChild(findingRow);
                                                                     });
                                                                 }
@@ -2055,10 +2581,10 @@
                                                                 <div class="card rounded">
                                                                     <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                         <p style="font-size: 24px; font-weight: 500">Diagnosis List</p>
-                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newDiagnosis"
-                                                                            style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                        <button type="button" onclick="openAddModal('diagnosis')" style="background-color: #2b353bf5;"
+                                                                            class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                             <i class="bi bi-plus-square-fill"></i> New
-                                                                        </a>
+                                                                        </button>
                                                                     </div>
                                                                     <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                         <div class="ms-2">
@@ -2168,11 +2694,26 @@
                                                                         itemsToShow.forEach((diagnosis, index) => {
                                                                             const diagnosisRow = document.createElement('tr');
                                                                             diagnosisRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${diagnosis.diagnosisName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${diagnosis.id}" data-name="${diagnosis.diagnosisName}" data-type="diagnosis"><i class="bi bi-trash"></i></button>
-                    </td>`;
+                                                                            <td class="pt-3">${start + index + 1}.</td>
+                                                                            <td style="font-size: 16px" class="pt-3">${diagnosis.diagnosisName}</td>
+                                                                            <td class="d-flex d-md-block">
+                                                                            <button class="btn btn-secondary me-2 edit-btn"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#editCommonModal"
+                                                                                    data-type="diagnosis"
+                                                                                    data-id="${diagnosis.id}"
+                                                                                    data-name="${diagnosis.diagnosisName}">
+                                                                                <i class="bi bi-pen"></i>
+                                                                            </button>
+                                                                             <button class="btn btn-danger delete-btn" 
+                                                                                    data-bs-toggle="modal" 
+                                                                                    data-bs-target="#confirmDelete" 
+                                                                                    data-id="${diagnosis.id}"
+                                                                                    data-name="${diagnosis.diagnosisName}" 
+                                                                                    data-type="diagnosis">
+                                                                                    <i class="bi bi-trash"></i>
+                                                                            </button>
+                                                                            </td>`;
                                                                             diagnosisTableBody.appendChild(diagnosisRow);
                                                                         });
                                                                     }
@@ -2236,10 +2777,11 @@
                                                                     <div class="card rounded">
                                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                             <p style="font-size: 24px; font-weight: 500">Investigation List</p>
-                                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newInvestigation"
-                                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                            <button type="button" onclick="openAddModal('investigation')" style="background-color: #2b353bf5;"
+                                                                                class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                 <i class="bi bi-plus-square-fill"></i> New
-                                                                            </a>
+                                                                            </button>
+
                                                                         </div>
                                                                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                             <div class="ms-2">
@@ -2349,11 +2891,25 @@
                                                                             itemsToShow.forEach((investigation, index) => {
                                                                                 const investigationRow = document.createElement('tr');
                                                                                 investigationRow.innerHTML = `
-                      <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${investigation.investigationsName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${investigation.id}" data-name="${investigation.investigationsName}" data-type="investigation"><i class="bi bi-trash"></i></button>
-                    </td>`;
+                                                                                    <td class="pt-3">${start + index + 1}.</td>
+                                                                                    <td style="font-size: 16px" class="pt-3">${investigation.investigationsName}</td>
+                                                                                    <td class="d-flex d-md-block">
+                                                                                    <button class="btn btn-secondary me-2 edit-btn"
+                                                                                            data-bs-toggle="modal"
+                                                                                            data-bs-target="#editCommonModal"
+                                                                                            data-type="investigation"
+                                                                                            data-id="${investigation.id}"
+                                                                                            data-name="${investigation.investigationsName}">
+                                                                                        <i class="bi bi-pen"></i>
+                                                                                    </button>
+                                                                                    <button class="btn btn-danger delete-btn" 
+                                                                                            data-bs-toggle="modal" 
+                                                                                            data-bs-target="#confirmDelete" 
+                                                                                            data-id="${investigation.id}"
+                                                                                            data-name="${investigation.investigationName}" 
+                                                                                            data-type="investigation">
+                                                                                            <i class="bi bi-trash"></i>
+                                                                                    </button>  </td>`;
                                                                                 investigationTableBody.appendChild(investigationRow);
                                                                             });
                                                                         }
@@ -2415,10 +2971,11 @@
                                                                         <div class="card rounded">
                                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                 <p style="font-size: 24px; font-weight: 500">Instruction List</p>
-                                                                                <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newInstruction"
-                                                                                    style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                <button type="button" onclick="openAddModal('instruction')" style="background-color: #2b353bf5;"
+                                                                                    class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                     <i class="bi bi-plus-square-fill"></i> New
-                                                                                </a>
+                                                                                </button>
+
                                                                             </div>
                                                                             <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                 <div class="ms-2">
@@ -2528,14 +3085,26 @@
                                                                                 itemsToShow.forEach((instruction, index) => {
                                                                                     const instructionRow = document.createElement('tr');
                                                                                     instructionRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${instruction.instructionsName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
-                            data-id="${instruction.id}" data-name="${instruction.instructionsName}" data-type="instruction">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>`;
+                                                                                        <td class="pt-3">${start + index + 1}.</td>
+                                                                                        <td style="font-size: 16px" class="pt-3">${instruction.instructionsName}</td>
+                                                                                        <td class="d-flex d-md-block">
+                                                                                        <button class="btn btn-secondary me-2 edit-btn"
+                                                                                                data-bs-toggle="modal"
+                                                                                                data-bs-target="#editCommonModal"
+                                                                                                data-type="instruction"
+                                                                                                data-id="${instruction.id}"
+                                                                                                data-name="${instruction.instructionsName}">
+                                                                                            <i class="bi bi-pen"></i>
+                                                                                        </button>
+                                                                                        <button class="btn btn-danger delete-btn" 
+                                                                                                data-bs-toggle="modal" 
+                                                                                                data-bs-target="#confirmDelete" 
+                                                                                                data-id="${instruction.id}"
+                                                                                                data-name="${instruction.instructionName}" 
+                                                                                                data-type="instruction">
+                                                                                                <i class="bi bi-trash"></i>
+                                                                                        </button>
+                                                                                        </td>`;
                                                                                     instructionTableBody.appendChild(instructionRow);
                                                                                 });
                                                                             }
@@ -2596,10 +3165,11 @@
                                                                             <div class="card rounded">
                                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                     <p style="font-size: 24px; font-weight: 500">Procedure List</p>
-                                                                                    <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newProcedure"
-                                                                                        style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                    <button type="button" onclick="openAddModal('procedure')" style="background-color: #2b353bf5;"
+                                                                                        class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                         <i class="bi bi-plus-square-fill"></i> New
-                                                                                    </a>
+                                                                                    </button>
+
                                                                                 </div>
                                                                                 <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                     <div class="ms-2">
@@ -2709,14 +3279,26 @@
                                                                                     itemsToShow.forEach((procedure, index) => {
                                                                                         const procedureRow = document.createElement('tr');
                                                                                         procedureRow.innerHTML = `
-                    <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${procedure.proceduresName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" 
-                            data-id="${procedure.id}" data-name="${procedure.proceduresName}" data-type="procedure">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>`;
+                                                                                            <td class="pt-3">${start + index + 1}.</td>
+                                                                                            <td style="font-size: 16px" class="pt-3">${procedure.proceduresName}</td>
+                                                                                            <td class="d-flex d-md-block">
+                                                                                            <button class="btn btn-secondary me-2 edit-btn"
+                                                                                                    data-bs-toggle="modal"
+                                                                                                    data-bs-target="#editCommonModal"
+                                                                                                    data-type="procedure"
+                                                                                                    data-id="${procedure.id}"
+                                                                                                    data-name="${procedure.proceduresName}">
+                                                                                                <i class="bi bi-pen"></i>
+                                                                                            </button>
+                                                                                             <button class="btn btn-danger delete-btn" 
+                                                                                                    data-bs-toggle="modal" 
+                                                                                                    data-bs-target="#confirmDelete" 
+                                                                                                    data-id="${procedure.id}"
+                                                                                                    data-name="${procedure.procedureName}" 
+                                                                                                    data-type="procedure">
+                                                                                                    <i class="bi bi-trash"></i>
+                                                                                            </button>
+                                                                                            </td>`;
                                                                                         procedureTableBody.appendChild(procedureRow);
                                                                                     });
                                                                                 }
@@ -2779,10 +3361,11 @@
                                                                                 <div class="card rounded">
                                                                                     <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
                                                                                         <p style="font-size: 24px; font-weight: 500">Advice List</p>
-                                                                                        <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newAdvice"
-                                                                                            style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                        <button type="button" onclick="openAddModal('advice')" style="background-color: #2b353bf5;"
+                                                                                            class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                             <i class="bi bi-plus-square-fill"></i> New
-                                                                                        </a>
+                                                                                        </button>
+
                                                                                     </div>
                                                                                     <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                         <div class="ms-2">
@@ -2892,11 +3475,26 @@
                                                                                         itemsToShow.forEach((advice, index) => {
                                                                                             const adviceRow = document.createElement('tr');
                                                                                             adviceRow.innerHTML = `
-                     <td class="pt-3">${start + index + 1}.</td>
-                    <td style="font-size: 16px" class="pt-3">${advice.adviceName}</td>
-                    <td class="d-flex d-md-block">
-                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${advice.id}" data-name="${advice.adviceName}" data-type="advice"><i class="bi bi-trash"></i></button>
-                    </td>`;
+                                                                                            <td class="pt-3">${start + index + 1}.</td>
+                                                                                            <td style="font-size: 16px" class="pt-3">${advice.adviceName}</td>
+                                                                                            <td class="d-flex d-md-block">
+                                                                                            <button class="btn btn-secondary me-2 edit-btn"
+                                                                                                    data-bs-toggle="modal"
+                                                                                                    data-bs-target="#editCommonModal"
+                                                                                                    data-type="advice"
+                                                                                                    data-id="${advice.id}"
+                                                                                                    data-name="${advice.adviceName}">
+                                                                                                <i class="bi bi-pen"></i>
+                                                                                            </button>
+                                                                                             <button class="btn btn-danger delete-btn" 
+                                                                                                    data-bs-toggle="modal" 
+                                                                                                    data-bs-target="#confirmDelete" 
+                                                                                                    data-id="${advice.id}"
+                                                                                                    data-name="${advice.adviceName}" 
+                                                                                                    data-type="advice">
+                                                                                                    <i class="bi bi-trash"></i>
+                                                                                            </button>
+                                                                                            </td>`;
                                                                                             adviceTableBody.appendChild(adviceRow);
                                                                                         });
                                                                                     }
@@ -2957,10 +3555,9 @@
                                                                                     <div class="card rounded">
                                                                                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                                                                                             <p style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                                            <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#newMedicine"
-                                                                                                style="background-color: #2b353bf5;" class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
-                                                                                                <i class="bi bi-plus-square-fill"></i> New
-                                                                                            </a>
+                                                                                            <a href="#" role="butto" onclick="openAddMedicineModal()" style="background-color: #2b353bf5;"
+                                                                                                class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                                <i class="bi bi-plus-square-fill"></i> New</a>
                                                                                         </div>
                                                                                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                             <div class="ms-2">
@@ -2983,17 +3580,17 @@
 
                                                                                         <div class="card-body p-2 p-sm-4">
                                                                                             <div class="table-responsive">
-                                                                                                <table class="table table-hover text-center" id="medicinesTable">
+                                                                                                <table class="table table-hover" id="medicinesTable">
                                                                                                     <thead>
                                                                                                         <tr>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                             </th>
-                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">BRAND
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">MEDICINE
                                                                                                                 NAME</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                                MEDICINE NAME</th>
+                                                                                                                COMPOSITION</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                                STRENGTH</th>
+                                                                                                                CATEGORY</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                                             </th>
                                                                                                         </tr>
@@ -3077,13 +3674,19 @@
                                                                                             itemsToShow.forEach((medicine, index) => {
                                                                                                 const medicineRow = document.createElement('tr');
                                                                                                 medicineRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.medicineBrand}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
-                <td style="font-size: 16px" class="pt-3">${medicine.strength}</td>
-                <td class="d-flex d-md-block">
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${medicine.id}" data-name="${medicine.medicineName}" data-type="medicine"><i class="bi bi-trash"></i></button>
-                </td>`;
+                        <td class="pt-3">${start + index + 1}.</td>
+                        <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
+                        <td style="font-size: 16px" class="pt-3">${medicine.compositionName}</td>
+                        <td style="font-size: 16px" class="pt-3">${medicine.category}</td>
+                        <td class="d-flex d-md-block">
+                            <button class="btn btn-secondary edit-btn" data-id="${medicine.id}"
+                                data-name="${medicine.medicineName}" data-composition="${medicine.compositionName}"
+                                 data-category="${medicine.category}"><i class="bi bi-pen"></i></button>
+                            <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete"
+                                data-id="${medicine.id}" data-name="${medicine.medicineName}" 
+                                 data-type="medicine"><i class="bi bi-trash"></i>
+                             </button>
+                        </td>`;
                                                                                                 medicinesTableBody.appendChild(medicineRow);
                                                                                             });
                                                                                         }
@@ -3131,10 +3734,54 @@
                                                                                         paginationContainer.appendChild(ul);
                                                                                     }
 
-                                                                                    // On load: Show all data, then render
                                                                                     toggleClearIcons();
                                                                                     filteredMedicinesList = [...medicinesList];
                                                                                     displayMedicinesPage(initialPageMedicines);
+                                                                                </script>
+
+                                                                                <script>
+                                                                                    function openAddMedicineModal() {
+                                                                                        document.getElementById('medicineModalLabel').innerText = "Add New Medicine";
+                                                                                        document.getElementById('medicineForm').action = "<?php echo base_url('Edfadmin/saveMedicine'); ?>";
+                                                                                        document.getElementById('medicineSubmit').innerText = "Add";
+
+                                                                                        document.getElementById('medicineId').value = '';
+                                                                                        document.getElementById('medicineName').value = '';
+                                                                                        document.getElementById('medicineComposition').value = '';
+                                                                                        document.getElementById('medicineCategory').value = '';
+
+                                                                                        var myModal = new bootstrap.Modal(document.getElementById('medicineModal'));
+                                                                                        myModal.show();
+                                                                                    }
+
+                                                                                    function openEditMedicineModal(medicine) {
+                                                                                        document.getElementById('medicineModalLabel').innerText = "Edit Medicine";
+                                                                                        document.getElementById('medicineForm').action = "<?php echo base_url('Edfadmin/saveMedicine'); ?>";
+                                                                                        document.getElementById('medicineSubmit').innerText = "Update";
+
+                                                                                        document.getElementById('medicineId').value = medicine.id;
+                                                                                        document.getElementById('medicineName').value = medicine.name;
+                                                                                        document.getElementById('medicineComposition').value = medicine.composition;
+                                                                                        document.getElementById('medicineCategory').value = medicine.category;
+
+
+                                                                                        var myModal = new bootstrap.Modal(document.getElementById('medicineModal'));
+                                                                                        myModal.show();
+                                                                                    }
+
+                                                                                    document.addEventListener('click', function (e) {
+                                                                                        const editButton = e.target.closest('.edit-btn');
+                                                                                        if (editButton) {
+                                                                                            const medicine = {
+                                                                                                id: editButton.dataset.id,
+                                                                                                name: editButton.dataset.name,
+                                                                                                composition: editButton.dataset.composition,
+                                                                                                category: editButton.dataset.category
+                                                                                            };
+                                                                                            openEditMedicineModal(medicine);
+                                                                                        }
+                                                                                    });
+
                                                                                 </script>
 
 
@@ -3145,6 +3792,7 @@
 
     </main>
 
+    <!-- Sidebar active code -->
     <script>
         <?php if ($method == "dashboard") { ?>
             document.getElementById('dashboard').style.color = "white";
@@ -3175,6 +3823,195 @@
         <?php } ?>
     </script>
 
+    <!-- Script to display patient attachments in modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalEl = document.getElementById('dashboardPreviewModal');
+            const modal = new bootstrap.Modal(modalEl);
+            const toolbarEl = document.getElementById('attachment-toolbar');
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const downloadBtn = document.getElementById('downloadAttachmentBtn');
+            const prevBtn = document.getElementById('prevAttachment');
+            const nextBtn = document.getElementById('nextAttachment');
+
+            const imgEl = document.getElementById('attachmentImage');
+            const pdfEl = document.getElementById('attachmentPDF');
+            const previewArea = document.querySelector('.preview-area');
+
+            let messageEl = null;
+            let currentAttachments = [];
+            let currentIdx = -1;
+
+            // CLICK ON ANY FILE → BUILD ATTACHMENTS FROM ITS GROUP
+            document.querySelectorAll('.openAttachment').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const consultationContainer = this.closest('[data-consultation-id]') ||
+                        this.closest('.consultation') ||
+                        this.closest('div');
+
+                    if (!consultationContainer) return;
+                    // === 2. Build attachments ONLY from this container ===
+                    const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
+                    currentAttachments = [];
+                    linksInGroup.forEach((l, idx) => {
+                        const url = l.dataset.file;
+                        const ext = l.dataset.ext.toLowerCase();
+                        const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
+                        currentAttachments.push({ url, ext, fileName, link: l, index: idx });
+                    });
+                    // === 3. Find current file index ===
+                    const clickedUrl = this.dataset.file;
+                    currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
+                    if (currentIdx === -1) return;
+                    // === 4. Show file and open modal ===
+                    showFile(currentAttachments[currentIdx]);
+                    modal.show();
+                });
+            });
+            function showFile(fileObj) {
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgEl.src = '';
+                pdfEl.src = '';
+                toolbarEl.style.display = 'none';
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
+                if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(fileObj.ext)) {
+                    imgEl.src = fileObj.url;
+                    imgEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+                    enableImageZoom();
+                }
+                else if (fileObj.ext === 'pdf') {
+                    pdfEl.src = fileObj.url + '#toolbar=0';
+                    pdfEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+                    enablePdfZoom();
+                }
+                else {
+                    messageEl = document.createElement('div');
+                    messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
+                    messageEl.style.zIndex = '5';
+                    messageEl.innerHTML = `
+                <p class="mb-0 fs-5">
+                    Preview not available for <strong>${fileObj.fileName}</strong>
+                </p>
+            `;
+                    previewArea.appendChild(messageEl);
+                    toolbarEl.style.display = 'flex';
+                }
+
+                // Navigation (only within current group)
+                prevBtn.disabled = (currentIdx === 0);
+                nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
+
+                prevBtn.onclick = () => {
+                    if (currentIdx > 0) showFile(currentAttachments[--currentIdx]);
+                };
+                nextBtn.onclick = () => {
+                    if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
+                };
+
+                // Download
+                downloadBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const a = document.createElement('a');
+                    a.href = fileObj.url;
+                    a.download = '';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+            }
+            // ZOOM FUNCTIONS
+            let imgScale = 1;
+            const SCALE_STEP = 0.2;
+            const MIN_SCALE = 0.4;
+            const MAX_SCALE = 3;
+
+            function enableImageZoom() {
+                zoomInBtn.onclick = () => { imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
+                zoomOutBtn.onclick = () => { imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE); imgEl.style.transform = `scale(${imgScale})`; };
+            }
+            function enablePdfZoom() {
+                let pdfZoom = 100;
+                const ZOOM_STEP = 20;
+                const MIN_ZOOM = 50;
+                const MAX_ZOOM = 200;
+
+                const setPdfZoom = () => {
+                    pdfEl.src = `${currentAttachments[currentIdx].url}#zoom=${pdfZoom}&toolbar=0`;
+                };
+
+                zoomInBtn.onclick = () => { pdfZoom = Math.min(pdfZoom + ZOOM_STEP, MAX_ZOOM); setPdfZoom(); };
+                zoomOutBtn.onclick = () => { pdfZoom = Math.max(pdfZoom - ZOOM_STEP, MIN_ZOOM); setPdfZoom(); };
+            }
+
+            // CLEANUP
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                imgEl.src = '';
+                pdfEl.src = '';
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgScale = 1;
+                toolbarEl.style.display = 'none';
+                currentAttachments = [];
+                currentIdx = -1;
+            });
+        });
+    </script>
+
+
+    <!-- Patient Attachment Display Dashboard Modal -->
+    <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                        id="dashboardPreviewModalLabel">
+                        Attachment Preview in Dashboard
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body text-center position-relative p-0">
+                    <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
+                        style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
+                        <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled><b
+                                style="font-size:1.2rem;">-</b></button>
+                        <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled><b
+                                style="font-size:1.2rem;">+</b></button>
+                        <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
+                                class="bi bi-download"></i></button>
+                    </div>
+
+                    <button id="prevAttachment"
+                        class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                        style="font-size:1.5rem;" disabled><b>&lt;</b></button>
+                    <button id="nextAttachment"
+                        class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                        style="font-size:1.5rem;" disabled><b>&gt;</b></button>
+
+                    <div class="preview-area">
+                        <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
+                            style="transform-origin:top left;transition:transform .2s ease-out;">
+                        <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;"
+                            frameborder="0"></iframe>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 

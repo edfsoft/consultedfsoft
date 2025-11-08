@@ -178,7 +178,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #00ad8e"><?php echo $appointmentList[0]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[0]['patientComplaint'] != '' ? $appointmentList[0]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[0]['timeOfAppoint'])); ?>
@@ -201,7 +201,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #00ad8e"><?php echo $appointmentList[1]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[1]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[1]['patientComplaint'] != '' ? $appointmentList[1]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[1]['timeOfAppoint'])); ?>
@@ -224,7 +224,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #00ad8e"><?php echo $appointmentList[2]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[2]['patientComplaint']; ?></span>
+                                                            <?php echo $appointmentList[2]['patientComplaint'] != '' ? $appointmentList[2]['patientComplaint'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[2]['timeOfAppoint'])); ?>
@@ -321,7 +321,7 @@
                                             <tr>
                                                 <td>
                                                     <span
-                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint']; ?></span>
+                                                        style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint'] != '' ? $appointmentList[0]['patientComplaint'] : "-"; ?></span>
                                                 </td>
                                                 <!-- <td class="px-5">
                                                     <span style="font-size: 16px; font-weight: 400">172cm</span>
@@ -456,7 +456,8 @@
                                                         <?php echo $value['referalDoctor'] ?>
                                                         </a>
                                                     </td>
-                                                    <td style="font-size: 16px" class="pt-3"><?php echo $value['patientComplaint'] ?>
+                                                    <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
                                                     </td>
                                                     <td style="font-size: 16px" class="d-flex d-lg-block">
                                                         <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
@@ -602,12 +603,13 @@
                                                         <?php echo $value['referalDoctor'] ?>
                                                         </a>
                                                     </td>
-                                                    <td style="font-size: 16px" class="pt-3"><?php echo $value['patientComplaint'] ?>
+                                                    <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
                                                     </td>
                                                     <td style="font-size: 16px" class="">
                                                         <a href="<?php echo base_url() . "Healthcareprovider/appointmentReschedule/" . $value['id'] ?>"
                                                             class="btn btn-secondary mx-1">Reschedule</a>
-                                                        <a href="#" class="btn btn-danger" disabled>Refund</a>
+                                                        <!-- <a href="#" class="btn btn-danger" disabled>Refund</a> -->
                                                     </td>
 
                                                 </tr>
@@ -638,7 +640,8 @@
                                             name="patientDetails" onsubmit="return validateAppointment()"
                                             oninput="clearErrorAppointment()">
                                             <div>
-                                                <div class="form-group pb-2">
+                                                <!-- Old Id select -->
+                                                <!-- <div class="form-group pb-2">
                                                     <label class="form-label" for="patientId">Patient Id <span
                                                             class="text-danger">*</span></label>
                                                     <select class="form-select" name="patientId" id="patientId">
@@ -649,11 +652,42 @@
                                                             <option value="<?php echo $value['patientId'] . '|' . $value['id'] ?>">
                                                         <?php echo $value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName'] ?>
                                                             </option>
-                                                <?php } ?>
+                                                    <?php } ?>
                                                         <option value="new">+ Add New Patient</option>
                                                     </select>
                                                     <div id="patientId_err" class="text-danger pt-1"></div>
+                                                </div> -->
+                                                <!-- Old Id select End -->
+                                                <div class="form-group pb-2">
+                                                    <label class="form-label" for="patientId">
+                                                        Patient Id <span class="text-danger">*</span>
+                                                    </label>
+
+                                                    <!-- Search + Add button on the SAME line -->
+                                                    <div class="input-group mb-1">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Search patient Id / Name" id="patientSearch"
+                                                            autocomplete="off">
+                                                        <span class="input-group-text bg-white border-start-0">
+                                                            <i class="bi bi-search"></i>
+                                                        </span>
+                                                        <button class="btn btn-outline-primary d-flex align-items-center"
+                                                            type="button" id="addPatientBtn" title="Add New Patient">
+                                                            <i class="bi bi-plus-lg me-1"></i> Add Patient
+                                                        </button>
+                                                    </div>
+                                                    <!-- SELECT – we give it a data-attribute so JS can find the original options -->
+                                                    <select class="form-select" name="patientId" id="patientId">
+                                                <?php foreach ($patientsId as $value): ?>
+                                                            <option
+                                                                value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
+                                                        <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
+                                                            </option>
+                                                <?php endforeach; ?>
+                                                    </select>
+                                                    <div id="patientId_err" class="text-danger pt-1"></div>
                                                 </div>
+
                                                 <!-- Add New patient -->
                                                 <!-- <div id="newPatientFields" class="border p-3 mt-2 rounded d-none bg-light">
                                                     <h6>Add New Patient</h6>
@@ -673,6 +707,8 @@
                                                 <div class="form-group pb-3">
                                                     <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                             class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control mb-1" id="referralDoctorSearch"
+                                                        placeholder="Search Chief Consultant Id / Name" autocomplete="off">
                                                     <select class="form-select" name="referalDoctor" id="referalDoctor"
                                                         oninput="adjustTimeOptions()">
                                                         <option value="">Select Chief Consultant Id</option>
@@ -770,8 +806,8 @@
                                                 </div>
 
                                                 <div class="form-group py-3">
-                                                    <label class="form-label" for="appReason">Patient's Complaint / Symptoms<span
-                                                            class="text-danger">*</span></label>
+                                                    <label class="form-label" for="appReason">Patient's Complaint / Symptoms<!-- <span
+                                                            class="text-danger">*</span> --></label>
                                                     <input type="text" id="appReason" name="appReason" readonly class="form-control"
                                                         hidden>
                                                     <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer">
@@ -812,6 +848,7 @@
                     <!-- Modal for add new patient -->
                     <div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel"
                         aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                        <input type="hidden" id="newPatientResult" value="">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -866,7 +903,7 @@
                     </div>
 
                     <!-- Open Modal and Close Modal -->
-                    <script>
+                    <!--  <script>
                         let patientDropdown = document.getElementById('patientId');
 
                         patientDropdown.addEventListener('change', function () {
@@ -883,11 +920,285 @@
                         document.getElementById('newPatientModal').addEventListener('hidden.bs.modal', function () {
                             document.getElementById('patientId').value = '';
                         });
+                    </script> -->
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const select = document.getElementById('patientId');
+                            const searchInput = document.getElementById('patientSearch');
+                            const addBtn = document.getElementById('addPatientBtn');
+                            let originalOptions = Array.from(select.options);
+
+                            select.value = "";
+                            // 1. Live search filter
+                            searchInput.addEventListener('input', function () {
+                                const term = this.value.toLowerCase().trim();
+
+                                if (term.length > 0) {
+                                    select.size = 6;
+                                } else {
+                                    select.size = 1;
+                                }
+
+                                select.innerHTML = '<option value="">Select Patient Id</option>';
+                                let matches = 0;
+                                originalOptions.forEach(opt => {
+                                    if (opt.value === '') return;
+                                    if (opt.textContent.toLowerCase().includes(term)) {
+                                        select.appendChild(opt.cloneNode(true));
+                                        matches++;
+                                    }
+                                });
+                                if (matches === 0 && term !== '') {
+                                    const no = document.createElement('option');
+                                    no.disabled = true;
+                                    no.textContent = '— No patient found —';
+                                    select.appendChild(no);
+                                }
+                            });
+
+                            // 4. When user picks a patient → clear search box
+                            select.addEventListener('change', function () {
+                                if (this.value) {
+                                    searchInput.value = '';
+                                }
+                                select.size = 1;
+                            });
+
+                            // 4. +Add button → open modal
+                            addBtn.addEventListener('click', function () {
+                                showNewPatientModal();
+                                searchInput.value = '';
+                                select.value = '';
+                            });
+
+                            // 5. FIXED: When modal closes → Add & Select new patient
+                            document.getElementById('newPatientModal').addEventListener('hidden.bs.modal', function () {
+                                const resultInput = document.getElementById('newPatientResult');
+                                if (resultInput && resultInput.value) {
+                                    const patient = JSON.parse(resultInput.value);
+                                    addPatientToSelectAndSelect(patient);
+                                    resultInput.value = '';
+                                }
+                                document.getElementById('patientSearch').value = '';
+                            });
+                        });
+
+                        // Open modal
+                        function showNewPatientModal() {
+                            const modal = new bootstrap.Modal(document.getElementById('newPatientModal'));
+                            modal.show();
+                        }
+
+                        // Add new patient to dropdown and SELECT it
+                        function addPatientToSelectAndSelect(patient) {
+                            const select = document.getElementById('patientId');
+                            const value = patient.patientId + '|' + patient.id;
+                            const text = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
+
+                            // Avoid duplicate
+                            let exists = false;
+                            for (let opt of select.options) {
+                                if (opt.value === value) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!exists) {
+                                const option = new Option(text, value, true, true);
+                                select.add(option);
+                                originalOptions = Array.from(select.options);
+                            } else {
+                                select.value = value;
+                            }
+
+                            select.dispatchEvent(new Event('change'));
+                        }
+
                     </script>
+
+                    <!--  Referal Id Search Area -->
+                    <script>
+                        let newPatientModalInstance;
+                        function setupSearchDropdown(selectElementId, searchInputId, placeholderText, noResultText) {
+                            const selectElement = document.getElementById(selectElementId);
+                            const searchInputElement = document.getElementById(searchInputId);
+
+                            if (!selectElement || !searchInputElement) {
+                                console.error(`Missing required elements for search: #${selectElementId} or #${searchInputId}`);
+                                return;
+                            }
+
+                            let originalOptions = Array.from(selectElement.options);
+                            const MAX_DISPLAY_COUNT = 5;
+
+                            // Ensure the placeholder is selected on form initialization
+                            selectElement.value = "";
+                            searchInputElement.addEventListener('input', function () {
+                                const term = this.value.toLowerCase().trim();
+
+                                // Open/Close the dropdown based on search term length
+                                if (term.length > 0) {
+                                    selectElement.size = 6;
+                                } else {
+                                    selectElement.size = 1;
+                                }
+
+                                // Reset the dropdown content with the placeholder
+                                selectElement.innerHTML = `<option value="">${placeholderText}</option>`;
+                                let matches = 0;
+                                let count = 0;
+
+                                originalOptions.forEach(opt => {
+                                    if (opt.value === '') return;
+
+                                    // Stop adding options once the limit is reached
+                                    if (count >= MAX_DISPLAY_COUNT) return;
+
+                                    if (opt.textContent.toLowerCase().includes(term)) {
+                                        selectElement.appendChild(opt.cloneNode(true));
+                                        matches++;
+                                        count++;
+                                    }
+                                });
+
+                                if (term.length > 0) {
+                                    selectElement.size = Math.min(matches + 1, MAX_DISPLAY_COUNT + 1);
+                                }
+
+                                // Show "No result" message
+                                if (matches === 0 && term !== '') {
+                                    const no = document.createElement('option');
+                                    no.disabled = true;
+                                    no.textContent = noResultText;
+                                    selectElement.appendChild(no);
+                                    selectElement.size = 2;
+                                }
+                            });
+
+                            // 2. Click search → open dropdown
+                            searchInputElement.addEventListener('click', function () {
+                                selectElement.size = 6;
+                                this.focus();
+                                this._ignoreBlur = true;
+                            });
+
+                            // 3. Click away → close dropdown
+                            searchInputElement.addEventListener('blur', function () {
+                                if (this._ignoreBlur) {
+                                    this._ignoreBlur = false;
+                                    return;
+                                }
+                                setTimeout(() => selectElement.size = 1, 100);
+                            });
+
+                            // 4. When user picks an item → clear search box
+                            selectElement.addEventListener('change', function () {
+                                if (this.value) {
+                                    searchInputElement.value = '';
+                                }
+                                selectElement.size = 1;
+                            });
+
+                            return { originalOptions: originalOptions, selectElement: selectElement };
+                        }
+
+                        // Open modal (Assumes bootstrap is loaded)
+                        function showNewPatientModal() {
+                            if (newPatientModalInstance) {
+                                newPatientModalInstance.show();
+                            } else {
+                                console.error('New Patient Modal instance not initialized.');
+                            }
+                        }
+                        // Add new patient to dropdown and SELECT it
+                        function addPatientToSelectAndSelect(patient, selectElement, originalOptionsRef) {
+                            const value = patient.patientId + '|' + patient.id;
+                            const text = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
+
+                            // Avoid duplicate
+                            let exists = false;
+                            for (let opt of selectElement.options) {
+                                if (opt.value === value) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!exists) {
+                                const option = new Option(text, value, true, true); // selected
+                                selectElement.add(option);
+                                if (originalOptionsRef) {
+                                    originalOptionsRef.splice(0, originalOptionsRef.length, ...Array.from(selectElement.options));
+                                }
+                            } else {
+                                selectElement.value = value;
+                            }
+
+                            selectElement.dispatchEvent(new Event('change'));
+                        }
+
+                        // Main DOMContentLoaded logic
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const patientElements = setupSearchDropdown(
+                                'patientId',
+                                'patientSearch',
+                                'Select Patient Id',
+                                '— No patient found —'
+                            );
+                            let originalOptions = patientElements.originalOptions;
+                            const select = patientElements.selectElement;
+
+                            // Set up Referral Doctor Search
+                            setupSearchDropdown(
+                                'referalDoctor',
+                                'referralDoctorSearch',
+                                'Select Chief Consultant Id',
+                                '— No doctor found —'
+                            );
+                            const newPatientModalElement = document.getElementById('newPatientModal');
+                            if (newPatientModalElement) {
+                                newPatientModalInstance = new bootstrap.Modal(newPatientModalElement);
+                            }
+
+                            const searchInput = document.getElementById('patientSearch');
+                            const addBtn = document.getElementById('addPatientBtn');
+
+                            // 5. +Add button → open modal
+                            if (addBtn) {
+                                addBtn.addEventListener('click', function () {
+                                    showNewPatientModal();
+                                    if (searchInput) searchInput.value = '';
+                                    if (select) select.value = '';
+                                });
+                            }
+
+                            // 6. FIXED: When modal closes → Add & Select new patient
+                            if (newPatientModalElement) {
+                                newPatientModalElement.addEventListener('hidden.bs.modal', function () {
+                                    const resultInput = document.getElementById('newPatientResult');
+                                    if (resultInput && resultInput.value) {
+                                        try {
+                                            const patient = JSON.parse(resultInput.value);
+                                            addPatientToSelectAndSelect(patient, select, originalOptions);
+                                            resultInput.value = '';
+                                        } catch (e) {
+                                            console.error("Error parsing new patient result:", e);
+                                        }
+                                    }
+                                    if (searchInput) document.getElementById('patientSearch').value = '';
+                                });
+                            }
+
+                        });
+                    </script>
+
 
                     <!-- Add to db and validation -->
                     <script>
                         function saveNewPatient() {
+                            // Clear all errors and status
                             document.getElementById("newFirstName_err").innerHTML = "";
                             document.getElementById("newLastName_err").innerHTML = "";
                             document.getElementById("newMobile_err").innerHTML = "";
@@ -905,6 +1216,7 @@
 
                             let isValid = true;
 
+                            // Validation
                             if (firstName === "") {
                                 document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
                                 isValid = false;
@@ -953,14 +1265,20 @@
                                     .then(response => response.json())
                                     .then(data => {
                                         if (data.success) {
+                                            // Success message
                                             document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
-                                            const patientId = data.patientId + '|' + data.id;
-                                            const patientName = data.patientId + ' / ' + data.firstName;
+                                            document.getElementById("newPatientStatus").className = "text-success mt-2";
 
-                                            const select = document.getElementById('patientId');
-                                            const newOption = new Option(patientName, patientId, true, true);
-                                            select.add(newOption);
+                                            // Store patient data in hidden field for modal close handler
+                                            const patientData = {
+                                                patientId: data.patientId,
+                                                id: data.id,
+                                                firstName: data.firstName,
+                                                lastName: data.lastName || ''
+                                            };
+                                            document.getElementById("newPatientResult").value = JSON.stringify(patientData);
 
+                                            // Clear form
                                             document.getElementById("newFirstName").value = "";
                                             document.getElementById("newLastName").value = "";
                                             document.getElementById("newMobile").value = "";
@@ -968,15 +1286,18 @@
                                             document.getElementById("newGender").value = "";
                                             document.getElementById("newAge").value = "";
 
+                                            // Close modal
                                             const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
                                             modal.hide();
                                         } else {
                                             document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
+                                            document.getElementById("newPatientStatus").className = "text-danger mt-2";
                                         }
                                     })
                                     .catch(error => {
                                         console.error('Error:', error);
                                         document.getElementById("newPatientStatus").innerHTML = "An error occurred while saving the patient.";
+                                        document.getElementById("newPatientStatus").className = "text-danger mt-2";
                                     });
                             }
                         }
@@ -1206,7 +1527,7 @@
                             var date = document.getElementById("appDate").value;
                             var dayTime = document.getElementById("dayTime").value;
                             var time = document.getElementById("appTime").value;
-                            var reason = document.getElementById("appReason").value;
+                            // var reason = document.getElementById("appReason").value;
 
                             if (patientId != "") {
                                 document.getElementById("patientId_err").innerHTML = "";
@@ -1223,9 +1544,9 @@
                             if (time != "") {
                                 document.getElementById("appTime_err").innerHTML = "";
                             }
-                            if (appReason != "") {
-                                document.getElementById("appReason_err").innerHTML = "";
-                            }
+                            // if (appReason != "") {
+                            //     document.getElementById("appReason_err").innerHTML = "";
+                            // }
                         }
 
                         function validateAppointment() {
@@ -1234,7 +1555,7 @@
                             var date = document.getElementById("appDate").value;
                             var dayTime = document.getElementById("dayTime").value;
                             var time = document.getElementById("appTime").value;
-                            var reason = document.getElementById("appReason").value;
+                            // var reason = document.getElementById("appReason").value;
 
                             if (patientId == "") {
                                 document.getElementById("patientId_err").innerHTML = "Id must be filled out.";
@@ -1272,13 +1593,13 @@
                             } else {
                                 document.getElementById("appTime_err").innerHTML = "";
                             }
-                            if (reason == "") {
-                                document.getElementById("appReason_err").innerHTML = "Complaints must be filled out.";
-                                document.getElementById("appReason").focus();
-                                return false;
-                            } else {
-                                document.getElementById("appReason_err").innerHTML = "";
-                            }
+                            // if (reason == "") {
+                            //     document.getElementById("appReason_err").innerHTML = "Complaints must be filled out.";
+                            //     document.getElementById("appReason").focus();
+                            //     return false;
+                            // } else {
+                            //     document.getElementById("appReason_err").innerHTML = "";
+                            // }
                             return true;
                         }
                     </script>
@@ -1381,8 +1702,9 @@
                                                     <div class="form-group py-3">
                                                         <label class="form-label" for="appReason">Patient's Complaint / Symptoms</label>
                                                         <input type="text" class="form-control" id="appReason" name="appReason"
-                                                            value="<?php echo $value['patientComplaint'] ?>" disabled
-                                                            onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
+                                                            value="<?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>"
+                                                            disabled onmouseover="style='cursor: no-drop;'"
+                                                            onmouseout="style='cursor: ns-resize;">
                                                     </div>
 
                                                     <div class="form-group pb-3">
@@ -1686,8 +2008,9 @@
                                                         <div class="form-group py-3">
                                                             <label class="form-label" for="appReason">Patient's Complaint / Symptoms</label>
                                                             <input type="text" class="form-control" id="appReason" name="appReason"
-                                                                value="<?php echo $value['patientComplaint'] ?>" disabled
-                                                                onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
+                                                                value="<?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>"
+                                                                disabled onmouseover="style='cursor: no-drop;'"
+                                                                onmouseout="style='cursor: ns-resize;">
                                                         </div>
 
                                                         <div class="form-group pb-3">

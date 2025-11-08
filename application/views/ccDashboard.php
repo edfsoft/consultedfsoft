@@ -68,18 +68,6 @@
         }
         #dashboardPreviewModal .modal-body::before,
         #dashboardPreviewModal .modal-body::after {
-        /*  Display Preview */
-        .preview-area {
-            position: relative;
-            margin: 0 50px;
-            height: calc(70vh - 100px);
-            min-height: 400px;
-            overflow: auto;
-            background: #fff;
-        }
-
-        .preview-area::before,
-        .preview-area::after {
             content: '';
             position: absolute;
             top: 0;
@@ -101,21 +89,6 @@
             min-height: 400px;
             overflow: auto;
             background: #fff;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .preview-area::before {
-            left: -50px;
-        }
-
-        .preview-area::after {
-            right: -50px;
-        }
-
-        #prevAttachment,
-        #nextAttachment {
-            z-index: 10;
         }
     </style>
 </head>

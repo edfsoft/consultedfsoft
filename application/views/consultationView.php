@@ -193,11 +193,6 @@
         /* Dashboard Attachment Preview */
         #dashboardPreviewModal .modal-body::before,
         #dashboardPreviewModal .modal-body::after {
-
-        /* DashboardPreview */
-        /* Need to check the below style, it affect all the modals */
-        /* .modal-body::before,
-        .modal-body::after {
             content: '';
             position: absolute;
             top: 0;
@@ -207,19 +202,36 @@
             z-index: 1;
             pointer-events: none;
         }
-
-        .modal-body::before {
-            left: 0;
-        }
-
-        .modal-body::after {
-            right: 0;
-        }
-
-        #prevAttachment,
-        #nextAttachment {
+        #dashboardPreviewModal .modal-body::before { left: 0; }
+        #dashboardPreviewModal .modal-body::after  { right: 0; }
+        #dashboardPreviewModal #prevAttachment,
+        #dashboardPreviewModal #nextAttachment {
             z-index: 10;
-        } */
+        }
+
+        /*Attachment Preview for Edit, followUp and New Consultant Page */
+        #editPreviewModal #filePreviewContent,
+        #followupPreviewModal #followup-content-wrapper,
+        #newConsultationPreviewModal #newconsultation-content-wrapper {
+            max-height: calc(75vh - 120px);
+            min-height: 400px;
+            overflow: auto;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        #editPreviewModal #filePreviewContent img,
+        #followupPreviewModal #followup-content-wrapper img,
+        #newConsultationPreviewModal #newconsultation-content-wrapper img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        #editPreviewModal #filePreviewContent iframe {
+            width: 100%;
+            height: 70vh;
+            border: none;
+        }
     </style>
 </head>
 
@@ -4935,18 +4947,13 @@
         '#diagnosisModal', 
         '#investigationsModal'
     ];
-
     // Loop through each ID and apply the draggable logic
     draggableModalIds.forEach(id => {
         const modalElement = document.querySelector(id);
         if (modalElement) {
-            // Make it draggable
             makeModalDraggable(modalElement);
-
-            // Add the listener to reset its position when closed
             modalElement.addEventListener('hidden.bs.modal', function () {
                 const modalDialog = modalElement.querySelector('.modal-dialog');
-                // Remove the inline styles to let Bootstrap re-center it
                 modalDialog.style.left = '';
                 modalDialog.style.top = '';
                 modalDialog.style.margin = '';
@@ -4956,20 +4963,12 @@
     });
 
     // --- 2. ADD 'ESC' KEY TO CLOSE ALL MODALS ---
-    // This listener watches the whole document for a key press
     document.addEventListener('keydown', function(e) {
         // Check if the pressed key is 'Escape'
         if (e.key === 'Escape') {
-            
-            // Find the currently open (shown) Bootstrap modal
             const openModal = document.querySelector('.modal.show');
-            
-            // If an open modal exists
             if (openModal) {
-                // Get the Bootstrap 5 instance for that modal
                 const modalInstance = bootstrap.Modal.getInstance(openModal);
-                
-                // If the instance is found, call its .hide() method
                 if (modalInstance) {
                     modalInstance.hide();
                 }
@@ -4977,11 +4976,7 @@
         }
     });
 });
-
-/**
- * Reusable function to make a Bootstrap modal draggable.
- * (This function is unchanged from before)
- */
+/* Reusable function to make a Bootstrap modal draggable. */
 function makeModalDraggable(modal) {
     const modalDialog = modal.querySelector('.modal-dialog');
     const modalHeader = modal.querySelector('.modal-header');

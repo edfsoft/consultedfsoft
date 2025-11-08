@@ -22,22 +22,20 @@
 
 <!-- Universal Delete confirmation Script  -->
 <script>
-document.addEventListener("click", (event) => {
-    const deleteButton = event.target.closest(".delete-btn");
-    if (!deleteButton) return;
+    document.addEventListener("click", (event) => {
+        const deleteButton = event.target.closest(".delete-btn");
+        if (!deleteButton) return;
 
-    const id   = deleteButton.dataset.id;
-    const type = deleteButton.dataset.type;   // e.g., "specialization"
-    const name = deleteButton.dataset.name;
+        const id = deleteButton.dataset.id;
+        const type = deleteButton.dataset.type;
+        const name = deleteButton.dataset.name;
 
-    // --- Build universal URL ---
-    const baseUrl = "<?= base_url(); ?>";
-    const deleteUrl = `${baseUrl}Edfadmin/deleteItem/${type}/${id}`;
+        const baseUrl = "<?= base_url(); ?>";
+        const deleteUrl = `${baseUrl}Edfadmin/deleteItem/${type}/${id}`;
 
-    // --- Update modal ---
-    document.getElementById("deleteItemName").textContent = name;
-    document.getElementById("deleteConfirmButton").href = deleteUrl;
-});
+        document.getElementById("deleteItemName").textContent = name;
+        document.getElementById("deleteConfirmButton").href = deleteUrl;
+    });
 </script>
 
 <!-- Add and Edit medicine modal -->

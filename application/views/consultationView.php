@@ -141,14 +141,17 @@
         #imageEditModal .modal-xl {
             max-width: 1200px;
         }
+
         #imageEditModal .modal-content {
             overflow: hidden;
         }
+
         #imageEditModal .modal-body {
             padding: 20px;
             max-height: 80vh;
             overflow: auto;
         }
+
         #imageEditModal .editor-container {
             width: 100%;
             min-width: 600px;
@@ -164,30 +167,35 @@
             /* Subtle border */
             border-radius: 4px;
         }
+
         #imageEditModal #editor-image,
         #imageEditModal #editor-canvas {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
+
         .modal-footer {
             position: relative;
             z-index: 1000;
             padding: 15px;
         }
+
         .modal-footer .btn {
             position: relative;
             z-index: 1001;
             width: 100px;
             text-align: center;
         }
-       /* Make Models draggable for all specified modals */
+
+        /* Make Models draggable for all specified modals */
         #symptomsModal .modal-header,
         #inputModal .modal-header,
         #diagnosisModal .modal-header,
         #investigationsModal .modal-header {
             cursor: move;
-            user-select: none; /* Prevents text selection on double-click */
+            user-select: none;
+            /* Prevents text selection on double-click */
         }
 
         /* Dashboard Attachment Preview */
@@ -202,8 +210,15 @@
             z-index: 1;
             pointer-events: none;
         }
-        #dashboardPreviewModal .modal-body::before { left: 0; }
-        #dashboardPreviewModal .modal-body::after  { right: 0; }
+
+        #dashboardPreviewModal .modal-body::before {
+            left: 0;
+        }
+
+        #dashboardPreviewModal .modal-body::after {
+            right: 0;
+        }
+
         #dashboardPreviewModal #prevAttachment,
         #dashboardPreviewModal #nextAttachment {
             z-index: 10;
@@ -219,6 +234,7 @@
             padding-left: 50px;
             padding-right: 50px;
         }
+
         #editPreviewModal #filePreviewContent img,
         #followupPreviewModal #followup-content-wrapper img,
         #newConsultationPreviewModal #newconsultation-content-wrapper img {
@@ -227,6 +243,7 @@
             display: block;
             margin: 0 auto;
         }
+
         #editPreviewModal #filePreviewContent iframe {
             width: 100%;
             height: 70vh;
@@ -484,7 +501,8 @@
                                                         <?php if (!empty($consultation['medicines'])): ?>
                                                             <p><strong>Medicines:</strong></p>
                                                             <table
-                                                                style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                                                style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
+                                                                class="mb-3">
                                                                 <thead>
                                                                     <tr>
                                                                         <th
@@ -508,7 +526,8 @@
                                                                     <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
                                                                         <tr>
                                                                             <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= $index + 1 . ' .' ?></td>
+                                                                                <?= $index + 1 . ' .' ?>
+                                                                            </td>
                                                                             <td style="border: 1px solid #000; padding: 6px;">
                                                                                 <?= htmlspecialchars($medicine['medicine_name']) ?>
                                                                                 <?php if (!empty($medicine['quantity']) || !empty($medicine['unit'])): ?>
@@ -518,9 +537,11 @@
                                                                                 <?php endif; ?>
                                                                             </td>
                                                                             <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['timing'] ?? '-') ?></td>
+                                                                                <?= htmlspecialchars($medicine['timing'] ?? '-') ?>
+                                                                            </td>
                                                                             <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['duration'] ?? '-') ?></td>
+                                                                                <?= htmlspecialchars($medicine['duration'] ?? '-') ?>
+                                                                            </td>
                                                                             <td style="border: 1px solid #000; padding: 6px;">
                                                                                 <?php
                                                                                 $notes = [];
@@ -1138,17 +1159,17 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                             <div class="modal-body text-center position-relative">
-                                            <button id="prevNewConsultation"
-                                                class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                                                style="font-size: 1.5rem; z-index: 10;" disabled>
-                                                <b>&lt;</b>
-                                            </button>
+                                            <div class="modal-body text-center position-relative">
+                                                <button id="prevNewConsultation"
+                                                    class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                                    style="font-size: 1.5rem; z-index: 10;" disabled>
+                                                    <b>&lt;</b>
+                                                </button>
                                                 <div id="newconsultation-content-wrapper">
-                                                <img id="newConsultationImage" src="" alt="Attachment"
-                                                    class="img-fluid d-none">
-                                                <iframe id="newConsultationPDF" src="" class="w-100" style="height:500px;"
-                                                    frameborder="0"></iframe>
+                                                    <img id="newConsultationImage" src="" alt="Attachment"
+                                                        class="img-fluid d-none">
+                                                    <iframe id="newConsultationPDF" src="" class="w-100"
+                                                        style="height:500px;" frameborder="0"></iframe>
                                                 </div>
                                                 <button id="nextNewConsultation"
                                                     class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
@@ -1645,23 +1666,23 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-<div class="modal-body text-center position-relative">
+                                    <div class="modal-body text-center position-relative">
 
-    <button id="prevFollowup"
-        class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-        style="font-size: 1.5rem; z-index: 10;" disabled>
-        <b>&lt;</b>
-    </button>
-<div id="followup-content-wrapper">
-        <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
-        <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
-            frameborder="0"></iframe>
-    </div>
+                                        <button id="prevFollowup"
+                                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem; z-index: 10;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <div id="followup-content-wrapper">
+                                            <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
+                                            <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
+                                                frameborder="0"></iframe>
+                                        </div>
                                         <button id="nextFollowup"
-        class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-        style="font-size: 1.5rem; z-index: 10;" disabled>
-        <b>&gt;</b>
-    </button>
+                                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem; z-index: 10;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary text-light"
@@ -2361,6 +2382,127 @@
         </div>
 
         <!-- Medicine Modal -->
+        <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="modal-title fw-medium" id="medicinesModalTitle"
+                                style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
+                            <small id="medicineCompositionText" class="text-muted d-block"></small>
+                        </div>
+                        <div>
+                            <span id="medicineCategoryText" class="text-dark me-3"></span>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                    </div>
+
+                    <div class="modal-body" style="font-family: Poppins, sans-serif;">
+
+                        <!-- Quantity + Units -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Quantity</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
+                                    placeholder="Enter qty">
+
+                                <select id="medicineUnit" class="form-select w-25">
+                                    <option value="mg">mg</option>
+                                    <option value="ml">ml</option>
+                                    <option value="units">units</option>
+                                    <option value="drops">drops</option>
+                                    <option value="tab">tab</option>
+                                    <option value="cap">cap</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Timing -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Timing</label>
+
+                            <div id="timingOptions" class="d-flex flex-wrap gap-4">
+                                <div class="form-check d-flex align-items-center gap-2">
+                                    <input type="checkbox" id="morningCheck">
+                                    <label for="morningCheck" class="mb-0">Morning</label>
+                                    <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
+                                        disabled placeholder="Qty">
+                                </div>
+
+                                <div class="form-check d-flex align-items-center gap-2">
+                                    <input type="checkbox" id="afternoonCheck">
+                                    <label for="afternoonCheck" class="mb-0">Afternoon</label>
+                                    <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
+                                        disabled placeholder="Qty">
+                                </div>
+
+                                <div class="form-check d-flex align-items-center gap-2">
+                                    <input type="checkbox" id="eveningCheck">
+                                    <label for="eveningCheck" class="mb-0">Evening</label>
+                                    <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
+                                        disabled placeholder="Qty">
+                                </div>
+
+                                <div class="form-check d-flex align-items-center gap-2">
+                                    <input type="checkbox" id="nightCheck">
+                                    <label for="nightCheck" class="mb-0">Night</label>
+                                    <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5"
+                                        disabled placeholder="Qty">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Food Timing -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Food Timing</label>
+                            <div class="d-flex flex-wrap gap-3 mt-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="foodTiming" value="Before Food"
+                                        id="beforeFood">
+                                    <label class="form-check-label" for="beforeFood">Before Food</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="foodTiming" value="After Food"
+                                        id="afterFood">
+                                    <label class="form-check-label" for="afterFood">After Food</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="foodTiming" value="Empty Stomach"
+                                        id="emptyStomach">
+                                    <label class="form-check-label" for="emptyStomach">Empty Stomach</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="foodTiming" value="Bedtime"
+                                        id="bedtime">
+                                    <label class="form-check-label" for="bedtime">Bedtime</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Duration</label>
+                            <input type="number" id="medicineDuration" min="0" class="form-control w-50"
+                                placeholder="Enter duration (days)">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Notes</label>
+                            <textarea id="medicineNotes" class="form-control" rows="3"
+                                placeholder="Enter any additional notes..."></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn text-light" style="background-color: #00ad8e;"
+                            onclick="saveMedicineModal()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Attachment Display Dashboard Modal -->
         <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
@@ -2414,7 +2556,7 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -3850,128 +3992,6 @@
     </script>
 
     <!-- Medicine Modal Script -->
-    <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle" aria-hidden="true"
-        data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header d-flex justify-content-between align-items-center">
-                    <div>
-                        <h5 class="modal-title fw-medium" id="medicinesModalTitle"
-                            style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
-                        <small id="medicineCompositionText" class="text-muted d-block"></small>
-                    </div>
-                    <div>
-                        <span id="medicineCategoryText" class="text-dark me-3"></span>
-
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                </div>
-
-                <div class="modal-body" style="font-family: Poppins, sans-serif;">
-
-                    <!-- Quantity + Units -->
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">Quantity</label>
-                        <div class="d-flex align-items-center gap-2">
-                            <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
-                                placeholder="Enter qty">
-
-                            <select id="medicineUnit" class="form-select w-25">
-                                <option value="mg">mg</option>
-                                <option value="ml">ml</option>
-                                <option value="units">units</option>
-                                <option value="drops">drops</option>
-                                <option value="tab">tab</option>
-                                <option value="cap">cap</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Timing -->
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">Timing</label>
-
-                        <div id="timingOptions" class="d-flex flex-wrap gap-4">
-                            <div class="form-check d-flex align-items-center gap-2">
-                                <input type="checkbox" id="morningCheck">
-                                <label for="morningCheck" class="mb-0">Morning</label>
-                                <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
-                                    disabled placeholder="Qty">
-                            </div>
-
-                            <div class="form-check d-flex align-items-center gap-2">
-                                <input type="checkbox" id="afternoonCheck">
-                                <label for="afternoonCheck" class="mb-0">Afternoon</label>
-                                <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
-                                    disabled placeholder="Qty">
-                            </div>
-
-                            <div class="form-check d-flex align-items-center gap-2">
-                                <input type="checkbox" id="eveningCheck">
-                                <label for="eveningCheck" class="mb-0">Evening</label>
-                                <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
-                                    disabled placeholder="Qty">
-                            </div>
-
-                            <div class="form-check d-flex align-items-center gap-2">
-                                <input type="checkbox" id="nightCheck">
-                                <label for="nightCheck" class="mb-0">Night</label>
-                                <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5" disabled
-                                    placeholder="Qty">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Food Timing -->
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">Food Timing</label>
-                        <div class="d-flex flex-wrap gap-3 mt-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="foodTiming" value="Before Food"
-                                    id="beforeFood">
-                                <label class="form-check-label" for="beforeFood">Before Food</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="foodTiming" value="After Food"
-                                    id="afterFood">
-                                <label class="form-check-label" for="afterFood">After Food</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="foodTiming" value="Empty Stomach"
-                                    id="emptyStomach">
-                                <label class="form-check-label" for="emptyStomach">Empty Stomach</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="foodTiming" value="Bedtime"
-                                    id="bedtime">
-                                <label class="form-check-label" for="bedtime">Bedtime</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label fw-semibold">Duration</label>
-                        <input type="number" id="medicineDuration" min="0" class="form-control w-50"
-                            placeholder="Enter duration (days)">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Notes</label>
-                        <textarea id="medicineNotes" class="form-control" rows="3"
-                            placeholder="Enter any additional notes..."></textarea>
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn text-light" style="background-color: #00ad8e;"
-                        onclick="saveMedicineModal()">OK</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const medicinesData = <?php echo json_encode($medicinesList); ?>;
@@ -4935,103 +4955,96 @@
         });
     </script>
 
-   /*  Model Model on screen */
-<script>
- document.addEventListener("DOMContentLoaded", function() {
+    <!-- Modal move on screen -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
 
-    // --- 1. MAKE MODALS DRAGGABLE ---
-    // List all modal IDs you want to be draggable
-    const draggableModalIds = [
-        '#symptomsModal', 
-        '#inputModal', 
-        '#diagnosisModal', 
-        '#investigationsModal'
-    ];
-    // Loop through each ID and apply the draggable logic
-    draggableModalIds.forEach(id => {
-        const modalElement = document.querySelector(id);
-        if (modalElement) {
-            makeModalDraggable(modalElement);
-            modalElement.addEventListener('hidden.bs.modal', function () {
-                const modalDialog = modalElement.querySelector('.modal-dialog');
-                modalDialog.style.left = '';
-                modalDialog.style.top = '';
-                modalDialog.style.margin = '';
-                modalDialog.style.transform = '';
-            });
-        }
-    });
-
-    // --- 2. ADD 'ESC' KEY TO CLOSE ALL MODALS ---
-    document.addEventListener('keydown', function(e) {
-        // Check if the pressed key is 'Escape'
-        if (e.key === 'Escape') {
-            const openModal = document.querySelector('.modal.show');
-            if (openModal) {
-                const modalInstance = bootstrap.Modal.getInstance(openModal);
-                if (modalInstance) {
-                    modalInstance.hide();
+            const draggableModalIds = [
+                '#symptomsModal',
+                '#inputModal',
+                '#diagnosisModal',
+                '#investigationsModal'
+            ];
+            draggableModalIds.forEach(id => {
+                const modalElement = document.querySelector(id);
+                if (modalElement) {
+                    makeModalDraggable(modalElement);
+                    modalElement.addEventListener('hidden.bs.modal', function () {
+                        const modalDialog = modalElement.querySelector('.modal-dialog');
+                        modalDialog.style.left = '';
+                        modalDialog.style.top = '';
+                        modalDialog.style.margin = '';
+                        modalDialog.style.transform = '';
+                    });
                 }
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    const openModal = document.querySelector('.modal.show');
+                    if (openModal) {
+                        const modalInstance = bootstrap.Modal.getInstance(openModal);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    }
+                }
+            });
+        });
+        function makeModalDraggable(modal) {
+            const modalDialog = modal.querySelector('.modal-dialog');
+            const modalHeader = modal.querySelector('.modal-header');
+
+            if (!modalHeader) return; // Safety check if a modal has no header
+
+            let isDragging = false;
+            let hasDragged = false;
+            let initialPosX = 0;
+            let initialPosY = 0;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            modalHeader.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                isDragging = true;
+                hasDragged = false;
+
+                const rect = modalDialog.getBoundingClientRect();
+                initialPosX = rect.left;
+                initialPosY = rect.top;
+
+                offsetX = e.clientX - initialPosX;
+                offsetY = e.clientY - initialPosY;
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+
+                if (!hasDragged) {
+                    modalDialog.style.margin = '0';
+                    modalDialog.style.transform = 'none';
+                    modalDialog.style.left = initialPosX + 'px';
+                    modalDialog.style.top = initialPosY + 'px';
+                    hasDragged = true;
+                }
+
+                let newPosX = e.clientX - offsetX;
+                let newPosY = e.clientY - offsetY;
+
+                modalDialog.style.left = newPosX + 'px';
+                modalDialog.style.top = newPosY + 'px';
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
             }
         }
-    });
-});
-/* Reusable function to make a Bootstrap modal draggable. */
-function makeModalDraggable(modal) {
-    const modalDialog = modal.querySelector('.modal-dialog');
-    const modalHeader = modal.querySelector('.modal-header');
-
-    if (!modalHeader) return; // Safety check if a modal has no header
-
-    let isDragging = false;
-    let hasDragged = false;
-    let initialPosX = 0;
-    let initialPosY = 0;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    modalHeader.addEventListener('mousedown', function(e) {
-        e.preventDefault();
-        isDragging = true;
-        hasDragged = false;
-
-        const rect = modalDialog.getBoundingClientRect();
-        initialPosX = rect.left;
-        initialPosY = rect.top;
-
-        offsetX = e.clientX - initialPosX;
-        offsetY = e.clientY - initialPosY;
-
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
-    });
-
-    function onMouseMove(e) {
-        if (!isDragging) return;
-
-        if (!hasDragged) {
-            modalDialog.style.margin = '0';
-            modalDialog.style.transform = 'none';
-            modalDialog.style.left = initialPosX + 'px';
-            modalDialog.style.top = initialPosY + 'px';
-            hasDragged = true;
-        }
-        
-        let newPosX = e.clientX - offsetX;
-        let newPosY = e.clientY - offsetY;
-
-        modalDialog.style.left = newPosX + 'px';
-        modalDialog.style.top = newPosY + 'px';
-    }
-
-    function onMouseUp() {
-        isDragging = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-    }
-}
-</script>
-
+    </script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

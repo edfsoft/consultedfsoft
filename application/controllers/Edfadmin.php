@@ -541,51 +541,50 @@ class Edfadmin extends CI_Controller
     }
 
 
- // Universal Model Delete
-public function deleteItem()
-{
-    $type = $this->uri->segment(3);   // e.g., specialization, symptoms
-    $id   = $this->uri->segment(4);   // the record ID
+    // Universal Model Delete
+    public function deleteItem()
+    {
+        $type = $this->uri->segment(3);
+        $id = $this->uri->segment(4);
 
-    // Map URL segment → table name
-    $typeMap = [
-        'specialization' => 'specialization_list',
-        'symptoms'       => 'symptoms_list',
-        'findings'       => 'findings_list',
-        'diagnosis'      => 'diagnosis_list',
-        'investigation'  => 'investigations_list',
-        'instruction'    => 'instructions_list',
-        'procedure'      => 'procedures_list',
-        'advice'         => 'advices_list'
-    ];
+        $typeMap = [
+            'specialization' => 'specialization_list',
+            'symptoms' => 'symptoms_list',
+            'findings' => 'findings_list',
+            'diagnosis' => 'diagnosis_list',
+            'investigation' => 'investigations_list',
+            'instruction' => 'instructions_list',
+            'procedure' => 'procedures_list',
+            'advice' => 'advices_list'
+        ];
 
-    $pluralMap = [
-        'specialization' => 'specialization',
-        'symptoms'       => 'symptoms',
-        'findings'       => 'findings',
-        'diagnosis'      => 'diagnosis',
-        'investigation'  => 'investigations',
-        'instruction'    => 'instructions',
-        'procedure'      => 'procedures',
-        'advice'         => 'advices'
-    ];
+        $pluralMap = [
+            'specialization' => 'specialization',
+            'symptoms' => 'symptoms',
+            'findings' => 'findings',
+            'diagnosis' => 'diagnosis',
+            'investigation' => 'investigations',
+            'instruction' => 'instructions',
+            'procedure' => 'procedures',
+            'advice' => 'advices'
+        ];
 
-    if (!isset($typeMap[$type]) || !$id) {
-        $this->session->set_flashdata('showErrorMessage', 'Invalid request.');
-        redirect('Edfadmin/dashboard');
+        if (!isset($typeMap[$type]) || !$id) {
+            $this->session->set_flashdata('showErrorMessage', 'Invalid request.');
+            redirect('Edfadmin/dashboard');
+        }
+
+        $table = $typeMap[$type];
+        $listUrl = $pluralMap[$type] . 'List';
+
+        if ($this->AdminModel->deleteItem($table, $id)) {
+            $this->session->set_flashdata('showSuccessMessage', ucfirst($type) . ' deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error deleting ' . $type);
+        }
+
+        redirect('Edfadmin/' . $listUrl);
     }
-
-    $table = $typeMap[$type];
-    $listUrl = $pluralMap[$type] . 'List';
-
-    if ($this->AdminModel->deleteItem($table, $id)) {
-        $this->session->set_flashdata('showSuccessMessage', ucfirst($type) . ' deleted successfully');
-    } else {
-        $this->session->set_flashdata('showErrorMessage', 'Error deleting ' . $type);
-    }
-
-    redirect('Edfadmin/' . $listUrl);
-}
 
     public function logout()
     {

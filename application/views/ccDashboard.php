@@ -66,6 +66,7 @@
         #dashboardPreviewModal #nextAttachment {
             z-index: 10;
         }
+
         #dashboardPreviewModal .modal-body::before,
         #dashboardPreviewModal .modal-body::after {
             content: '';
@@ -77,14 +78,17 @@
             z-index: 5;
             pointer-events: none;
         }
+
         #dashboardPreviewModal .modal-body::before {
             left: 0;
         }
+
         #dashboardPreviewModal .modal-body::after {
             right: 0;
         }
+
         #dashboardPreviewModal .preview-area {
-            margin: 0 50px; 
+            margin: 0 50px;
             height: calc(70vh - 100px);
             min-height: 400px;
             overflow: auto;

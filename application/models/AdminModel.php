@@ -229,18 +229,18 @@ class AdminModel extends CI_Model
         return $this->db->update($table, [$field => $name]);
     }
 
-// universal Model Delete
-public function deleteItem($table, $id)
-{
-    if (empty($table) || empty($id)) {
-        return false;
+    // universal Model Delete
+    public function deleteItem($table, $id)
+    {
+        if (empty($table) || empty($id)) {
+            return false;
+        }
+
+        $this->db->where('id', $id);
+        $this->db->delete($table);
+
+        return $this->db->affected_rows() > 0;
     }
-
-    $this->db->where('id', $id);
-    $this->db->delete($table);
-
-    return $this->db->affected_rows() > 0;
-}
 
 
 }

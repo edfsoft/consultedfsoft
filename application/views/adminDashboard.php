@@ -3573,7 +3573,7 @@
 
                                                                                         <div class="card-body p-2 p-sm-4">
                                                                                             <div class="table-responsive">
-                                                                                                <table class="table table-hover text-center" id="medicinesTable">
+                                                                                                <table class="table table-hover" id="medicinesTable">
                                                                                                     <thead>
                                                                                                         <tr>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
@@ -3816,7 +3816,7 @@
         <?php } ?>
     </script>
 
-    <!-- Patient Attachments Preview -->
+    <!-- Script to display patient attachments in modal -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const modalEl = document.getElementById('dashboardPreviewModal');

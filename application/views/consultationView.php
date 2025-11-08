@@ -192,7 +192,8 @@
         #symptomsModal .modal-header,
         #inputModal .modal-header,
         #diagnosisModal .modal-header,
-        #investigationsModal .modal-header {
+        #investigationsModal .modal-header, 
+        #medicinesModal .modal-header{
             cursor: move;
             user-select: none;
             /* Prevents text selection on double-click */
@@ -4963,7 +4964,8 @@
                 '#symptomsModal',
                 '#inputModal',
                 '#diagnosisModal',
-                '#investigationsModal'
+                '#investigationsModal',
+                 '#medicinesModal'
             ];
             draggableModalIds.forEach(id => {
                 const modalElement = document.querySelector(id);

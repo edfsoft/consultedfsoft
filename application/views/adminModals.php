@@ -184,11 +184,11 @@
 </script>
 
 <!-- UNIVERSAL EDIT MODAL -->
-<div class="modal fade" id="editCommonModal" tabindex="-1" aria-labelledby="editCommonModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCommonModal" tabindex="-1" aria-labelledby="editCommonModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editCommonModalLabel">Edit Item</h5>
+                <h5 class="modal-title fw-medium" id="editCommonModalLabel" style="font-family: Poppins, sans-serif;">Edit Item</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="editCommonForm" method="POST" action="">

@@ -464,45 +464,61 @@
                                                         <?php endif; ?>
 
                                                         <!-- ====== Medicines ====== -->
-                                                      <?php if (!empty($consultation['medicines'])): ?>
-    <p><strong>Medicines:</strong></p>
-    <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
-        <thead>
-            <tr>
-                <th style="border: 1px solid #000; padding: 6px; text-align: left;">S.No</th>
-                <th style="border: 1px solid #000; padding: 6px; text-align: left;">Name</th>
-                <th style="border: 1px solid #000; padding: 6px; text-align: left;">Frequency</th>
-                <th style="border: 1px solid #000; padding: 6px; text-align: left;">Duration</th>
-                <th style="border: 1px solid #000; padding: 6px; text-align: left;">Notes</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
-                <tr>
-                    <td style="border: 1px solid #000; padding: 6px;"><?= $index + 1 .' .' ?></td>
-                    <td style="border: 1px solid #000; padding: 6px;">
-                        <?= htmlspecialchars($medicine['medicine_name']) ?>
-                        <?php if (!empty($medicine['quantity']) || !empty($medicine['unit'])): ?>
-                            <small>
-                                (<?= htmlspecialchars($medicine['quantity'] ?? '') . ' ' . htmlspecialchars($medicine['unit'] ?? '') ?>)
-                            </small>
-                        <?php endif; ?>
-                    </td>
-                    <td style="border: 1px solid #000; padding: 6px;"><?= htmlspecialchars($medicine['timing'] ?? '-') ?></td>
-                    <td style="border: 1px solid #000; padding: 6px;"><?= htmlspecialchars($medicine['duration'] ?? '-') ?></td>
-                    <td style="border: 1px solid #000; padding: 6px;">
-                        <?php
-                            $notes = [];
-                            if (!empty($medicine['food_timing'])) $notes[] = $medicine['food_timing'];
-                            if (!empty($medicine['notes'])) $notes[] = $medicine['notes'];
-                            echo !empty($notes) ? htmlspecialchars(implode(' - ', $notes)) : '-';
-                        ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php endif; ?>
+                                                        <?php if (!empty($consultation['medicines'])): ?>
+                                                            <p><strong>Medicines:</strong></p>
+                                                            <table
+                                                                style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            S.No</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Name</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Frequency</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Duration</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Notes</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                        <tr>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= $index + 1 . ' .' ?></td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                <?php if (!empty($medicine['quantity']) || !empty($medicine['unit'])): ?>
+                                                                                    <small>
+                                                                                        (<?= htmlspecialchars($medicine['quantity'] ?? '') . ' ' . htmlspecialchars($medicine['unit'] ?? '') ?>)
+                                                                                    </small>
+                                                                                <?php endif; ?>
+                                                                            </td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= htmlspecialchars($medicine['timing'] ?? '-') ?></td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= htmlspecialchars($medicine['duration'] ?? '-') ?></td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?php
+                                                                                $notes = [];
+                                                                                if (!empty($medicine['food_timing']))
+                                                                                    $notes[] = $medicine['food_timing'];
+                                                                                if (!empty($medicine['notes']))
+                                                                                    $notes[] = $medicine['notes'];
+                                                                                echo !empty($notes) ? htmlspecialchars(implode(' - ', $notes)) : '-';
+                                                                                ?>
+                                                                            </td>
+                                                                        </tr>
+                                                                    <?php endforeach; ?>
+                                                                </tbody>
+                                                            </table>
+                                                        <?php endif; ?>
 
 
                                                         <!-- Attachments

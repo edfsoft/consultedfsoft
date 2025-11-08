@@ -43,6 +43,8 @@
         .fieldLink:hover {
             text-decoration: underline;
         }
+
+ 
     </style>
 </head>
 
@@ -1056,7 +1058,6 @@ function validatePatientDetails() {
     }
 
     return isValid;
-    console.print
 }
     </script>
 

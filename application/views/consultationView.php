@@ -138,21 +138,17 @@
         }
 
         /*-----------------------Edit-Page------------------*/
-
         #imageEditModal .modal-xl {
             max-width: 1200px;
         }
-
         #imageEditModal .modal-content {
             overflow: hidden;
         }
-
         #imageEditModal .modal-body {
             padding: 20px;
             max-height: 80vh;
             overflow: auto;
         }
-
         #imageEditModal .editor-container {
             width: 100%;
             min-width: 600px;
@@ -168,32 +164,35 @@
             /* Subtle border */
             border-radius: 4px;
         }
-
         #imageEditModal #editor-image,
         #imageEditModal #editor-canvas {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
         }
-
         .modal-footer {
             position: relative;
             z-index: 1000;
             padding: 15px;
         }
-
         .modal-footer .btn {
             position: relative;
             z-index: 1001;
             width: 100px;
             text-align: center;
         }
-<<<<<<< HEAD
+       /* Make Models draggable for all specified modals */
+        #symptomsModal .modal-header,
+        #inputModal .modal-header,
+        #diagnosisModal .modal-header,
+        #investigationsModal .modal-header {
+            cursor: move;
+            user-select: none; /* Prevents text selection on double-click */
+        }
 
-        /* DashboardPreview */
-        /* 50px WHITE SIDE BORDERS — OVERLAY METHOD (SAFE) */
-        .modal-body::before,
-        .modal-body::after {
+        /* Dashboard Attachment Preview */
+        #dashboardPreviewModal .modal-body::before,
+        #dashboardPreviewModal .modal-body::after {
             content: '';
             position: absolute;
             top: 0;
@@ -203,15 +202,36 @@
             z-index: 1;
             pointer-events: none;
         }
-        .modal-body::before { left: 0; }
-        .modal-body::after  { right: 0; }
-
-        /* Ensure buttons are above borders */
-        #prevAttachment, #nextAttachment {
+        #dashboardPreviewModal .modal-body::before { left: 0; }
+        #dashboardPreviewModal .modal-body::after  { right: 0; }
+        #dashboardPreviewModal #prevAttachment,
+        #dashboardPreviewModal #nextAttachment {
             z-index: 10;
         }
-=======
->>>>>>> 0f22e84039912f44816d77124a4e59b044e38a85
+
+        /*Attachment Preview for Edit, followUp and New Consultant Page */
+        #editPreviewModal #filePreviewContent,
+        #followupPreviewModal #followup-content-wrapper,
+        #newConsultationPreviewModal #newconsultation-content-wrapper {
+            max-height: calc(75vh - 120px);
+            min-height: 400px;
+            overflow: auto;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        #editPreviewModal #filePreviewContent img,
+        #followupPreviewModal #followup-content-wrapper img,
+        #newConsultationPreviewModal #newconsultation-content-wrapper img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        #editPreviewModal #filePreviewContent iframe {
+            width: 100%;
+            height: 70vh;
+            border: none;
+        }
     </style>
 </head>
 
@@ -1089,19 +1109,21 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body text-center position-relative">
-                                                <button id="prevNewConsultation"
-                                                    class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                                                    style="font-size: 1.5rem;" disabled>
-                                                    <b>&lt;</b>
-                                                </button>
+                                             <div class="modal-body text-center position-relative">
+                                            <button id="prevNewConsultation"
+                                                class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                                style="font-size: 1.5rem; z-index: 10;" disabled>
+                                                <b>&lt;</b>
+                                            </button>
+                                                <div id="newconsultation-content-wrapper">
                                                 <img id="newConsultationImage" src="" alt="Attachment"
                                                     class="img-fluid d-none">
                                                 <iframe id="newConsultationPDF" src="" class="w-100" style="height:500px;"
                                                     frameborder="0"></iframe>
+                                                </div>
                                                 <button id="nextNewConsultation"
                                                     class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                                                    style="font-size: 1.5rem;" disabled>
+                                                    style="font-size: 1.5rem; z-index: 10;" disabled>
                                                     <b>&gt;</b>
                                                 </button>
                                             </div>
@@ -1594,20 +1616,23 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body text-center position-relative">
-                                        <button id="prevFollowup"
-                                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                                            style="font-size: 1.5rem;" disabled>
-                                            <b>&lt;</b>
-                                        </button>
-                                        <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
-                                        <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
-                                            frameborder="0"></iframe>
+<div class="modal-body text-center position-relative">
+
+    <button id="prevFollowup"
+        class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+        style="font-size: 1.5rem; z-index: 10;" disabled>
+        <b>&lt;</b>
+    </button>
+<div id="followup-content-wrapper">
+        <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
+        <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
+            frameborder="0"></iframe>
+    </div>
                                         <button id="nextFollowup"
-                                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                                            style="font-size: 1.5rem;" disabled>
-                                            <b>&gt;</b>
-                                        </button>
+        class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+        style="font-size: 1.5rem; z-index: 10;" disabled>
+        <b>&gt;</b>
+    </button>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary text-light"
@@ -2456,62 +2481,8 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-        </div> --> 
-
-        <!-- Attachment Display Dashboard Modal --> 
-<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
-     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="dashboardPreviewModalLabel">
-                    Attachment Preview in Dashboard
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!-- ONLY CHANGE: p-0 to remove padding -->
-            <div class="modal-body text-center position-relative p-0">
-
-                <!-- Toolbar (unchanged) -->
-                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0" 
-                     style="height: 43px; width: 100%; background-color: #cccecfff; border-radius: 5px; display: none;">
-                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled>
-                        <b style="font-size: 1.2rem;">-</b>
-                    </button>
-                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled>
-                        <b style="font-size: 1.2rem;">+</b>
-                    </button>
-                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i class="bi bi-download"></i></button>
-                </div>
-
-                <!-- Prev / Next (unchanged) -->
-                <button id="prevAttachment" class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y" 
-                        style="font-size: 1.5rem;" disabled><b>&lt;</b></button>
-
-                <!-- Content Wrapper (unchanged) -->
-                <div id="attachment-content-wrapper" class="w-100" 
-                     style="max-height: calc(70vh - 100px); overflow: auto; min-height: 400px;">
-                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none" 
-                         style="transform-origin: top left; transition: transform 0.2s ease-out;">
-                    <iframe id="attachmentPDF" src="" class="w-100" style="height:500px;" frameborder="0"></iframe>
-                </div>
-
-                <button id="nextAttachment" class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y" 
-                        style="font-size: 1.5rem;" disabled><b>&gt;</b></button>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
     </div>
-</div>
- 
-=======
-        </div>
->>>>>>> 0f22e84039912f44816d77124a4e59b044e38a85
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -4956,6 +4927,121 @@
             });
         });
     </script>
+
+   /*  Model Model on screen */
+<script>
+ document.addEventListener("DOMContentLoaded", function() {
+
+    // --- 1. MAKE MODALS DRAGGABLE ---
+    // List all modal IDs you want to be draggable
+    const draggableModalIds = [
+        '#symptomsModal', 
+        '#inputModal', 
+        '#diagnosisModal', 
+        '#investigationsModal'
+    ];
+
+    // Loop through each ID and apply the draggable logic
+    draggableModalIds.forEach(id => {
+        const modalElement = document.querySelector(id);
+        if (modalElement) {
+            // Make it draggable
+            makeModalDraggable(modalElement);
+
+            // Add the listener to reset its position when closed
+            modalElement.addEventListener('hidden.bs.modal', function () {
+                const modalDialog = modalElement.querySelector('.modal-dialog');
+                // Remove the inline styles to let Bootstrap re-center it
+                modalDialog.style.left = '';
+                modalDialog.style.top = '';
+                modalDialog.style.margin = '';
+                modalDialog.style.transform = '';
+            });
+        }
+    });
+
+    // --- 2. ADD 'ESC' KEY TO CLOSE ALL MODALS ---
+    // This listener watches the whole document for a key press
+    document.addEventListener('keydown', function(e) {
+        // Check if the pressed key is 'Escape'
+        if (e.key === 'Escape') {
+            
+            // Find the currently open (shown) Bootstrap modal
+            const openModal = document.querySelector('.modal.show');
+            
+            // If an open modal exists
+            if (openModal) {
+                // Get the Bootstrap 5 instance for that modal
+                const modalInstance = bootstrap.Modal.getInstance(openModal);
+                
+                // If the instance is found, call its .hide() method
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            }
+        }
+    });
+});
+
+/**
+ * Reusable function to make a Bootstrap modal draggable.
+ * (This function is unchanged from before)
+ */
+function makeModalDraggable(modal) {
+    const modalDialog = modal.querySelector('.modal-dialog');
+    const modalHeader = modal.querySelector('.modal-header');
+
+    if (!modalHeader) return; // Safety check if a modal has no header
+
+    let isDragging = false;
+    let hasDragged = false;
+    let initialPosX = 0;
+    let initialPosY = 0;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    modalHeader.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        isDragging = true;
+        hasDragged = false;
+
+        const rect = modalDialog.getBoundingClientRect();
+        initialPosX = rect.left;
+        initialPosY = rect.top;
+
+        offsetX = e.clientX - initialPosX;
+        offsetY = e.clientY - initialPosY;
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+    });
+
+    function onMouseMove(e) {
+        if (!isDragging) return;
+
+        if (!hasDragged) {
+            modalDialog.style.margin = '0';
+            modalDialog.style.transform = 'none';
+            modalDialog.style.left = initialPosX + 'px';
+            modalDialog.style.top = initialPosY + 'px';
+            hasDragged = true;
+        }
+        
+        let newPosX = e.clientX - offsetX;
+        let newPosY = e.clientY - offsetY;
+
+        modalDialog.style.left = newPosX + 'px';
+        modalDialog.style.top = newPosY + 'px';
+    }
+
+    function onMouseUp() {
+        isDragging = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    }
+}
+</script>
+
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

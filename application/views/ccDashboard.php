@@ -61,23 +61,35 @@
             display: block;
         }
 
-       /*  Display Preview */
-       .preview-area {
-        position: relative;
-        margin: 0 50px;               /* Space for side borders */
-        height: calc(70vh - 100px);
-        min-height: 400px;
-        overflow: auto;
-        background: #fff;
-    }
-    .preview-area::before,
-    .preview-area::after {
-        content: ''; position: absolute; top: 0; bottom: 0; width: 50px;
-        background: #fff; z-index: 1; pointer-events: none;
-    }
-    .preview-area::before { left: -50px; }
-    .preview-area::after  { right: -50px; }
-    #prevAttachment, #nextAttachment { z-index: 10; }
+        /* Attachment Display Preview */
+        #dashboardPreviewModal #prevAttachment,
+        #dashboardPreviewModal #nextAttachment {
+            z-index: 10;
+        }
+        #dashboardPreviewModal .modal-body::before,
+        #dashboardPreviewModal .modal-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            background: #fff;
+            z-index: 5;
+            pointer-events: none;
+        }
+        #dashboardPreviewModal .modal-body::before {
+            left: 0;
+        }
+        #dashboardPreviewModal .modal-body::after {
+            right: 0;
+        }
+        #dashboardPreviewModal .preview-area {
+            margin: 0 50px; 
+            height: calc(70vh - 100px);
+            min-height: 400px;
+            overflow: auto;
+            background: #fff;
+        }
     </style>
 </head>
 

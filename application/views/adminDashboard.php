@@ -3589,8 +3589,6 @@
                                                                                                                 NAME</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
                                                                                                                 COMPOSITION</th>
-                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
-                                                                                                                CATEGORY</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                                             </th>
                                                                                                         </tr>
@@ -3675,9 +3673,8 @@
                                                                                                 const medicineRow = document.createElement('tr');
                                                                                                 medicineRow.innerHTML = `
                         <td class="pt-3">${start + index + 1}.</td>
-                        <td style="font-size: 16px" class="pt-3">${medicine.medicineName}</td>
+                        <td style="font-size: 16px" class="pt-3">${medicine.category} - ${medicine.medicineName}</td>
                         <td style="font-size: 16px" class="pt-3">${medicine.compositionName}</td>
-                        <td style="font-size: 16px" class="pt-3">${medicine.category}</td>
                         <td class="d-flex d-md-block">
                             <button class="btn btn-secondary edit-btn" data-id="${medicine.id}"
                                 data-name="${medicine.medicineName}" data-composition="${medicine.compositionName}"

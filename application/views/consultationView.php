@@ -513,10 +513,13 @@
                                                                             Name</th>
                                                                         <th
                                                                             style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                            Frequency</th>
+                                                                            Quantity</th>
                                                                         <th
                                                                             style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                            Duration</th>
+                                                                            Timings</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Frequency</th>
                                                                         <th
                                                                             style="border: 1px solid #000; padding: 6px; text-align: left;">
                                                                             Notes</th>
@@ -529,27 +532,24 @@
                                                                                 <?= $index + 1 . ' .' ?>
                                                                             </td>
                                                                             <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['medicine_name']) ?>
-                                                                                <?php if (!empty($medicine['quantity']) || !empty($medicine['unit'])): ?>
+                                                                                <?php if (!empty($medicine['medicine_name'])): ?>
                                                                                     <small>
-                                                                                        (<?= htmlspecialchars($medicine['quantity'] ?? '') . ' ' . htmlspecialchars($medicine['unit'] ?? '') ?>)
+                                                                                        (<?= htmlspecialchars($medicine['medicine_name']); ?>)
                                                                                     </small>
+                                                                                    <?= htmlspecialchars($medicine['medicine_name']) ?>
                                                                                 <?php endif; ?>
+                                                                            </td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                            </td>
+                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
                                                                             </td>
                                                                             <td style="border: 1px solid #000; padding: 6px;">
                                                                                 <?= htmlspecialchars($medicine['timing'] ?? '-') ?>
                                                                             </td>
                                                                             <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['duration'] ?? '-') ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?php
-                                                                                $notes = [];
-                                                                                if (!empty($medicine['food_timing']))
-                                                                                    $notes[] = $medicine['food_timing'];
-                                                                                if (!empty($medicine['notes']))
-                                                                                    $notes[] = $medicine['notes'];
-                                                                                echo !empty($notes) ? htmlspecialchars(implode(' - ', $notes)) : '-';
+                                                                                <?php echo !empty($notes) ? htmlspecialchars($notes) : '-';
                                                                                 ?>
                                                                             </td>
                                                                         </tr>

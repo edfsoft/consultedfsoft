@@ -55,6 +55,7 @@ class CcModel extends CI_Model
         }
     }
 
+    // New signup and admin add CC
     public function check_existing_user($mobileNumber, $mailId)
     {
         $existingFields = [];

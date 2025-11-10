@@ -25,6 +25,7 @@ class HcpModel extends CI_Model
         return true;
     }
 
+    // New signup and admin add HCP
     public function check_existing_user($mobileNumber, $mailId)
     {
         $existingFields = [];
@@ -504,7 +505,7 @@ class HcpModel extends CI_Model
         $post = $this->input->post(null, true);
         $updatedata = array(
             'hcpPassword' => password_hash($post['drCnfmPassword'], PASSWORD_BCRYPT),
-            	'firstLoginPswd' => '1'
+            'firstLoginPswd' => '1'
         );
         $this->db->where('id', $post['hcpDbId']);
         $this->db->update('hcp_details', $updatedata);

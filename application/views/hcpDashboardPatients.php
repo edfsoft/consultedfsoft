@@ -951,20 +951,6 @@
 
     <!-- Patient add and edit validation script -->
     <script>
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     document.getElementById('patientMobile').addEventListener('input', function () {
-        //         this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
-        //     });
-
-        //     document.getElementById('partnerMobile').addEventListener('input', function () {
-        //         this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
-        //     });
-
-        //     document.getElementById('patientAge').addEventListener('input', function () {
-        //         this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3);
-        //     });
-        // });
-
         function validatePatientDetails() {
             let isValid = true;
 
@@ -974,29 +960,6 @@
             var age = document.getElementById("patientAge").value;
             var gdMob = document.getElementById("partnerMobile").value;
             var AltMob = document.getElementById("patientAltMobile").value;
-            // var email = document.getElementById("patientEmail").value.trim();
-            // var emailErr = document.getElementById("patientEmail_err");
-
-            // === EMAIL VALIDATION ===
-            // if (email === "") {
-            //     emailErr.innerHTML = "Please enter an email address";
-            //     isValid = false;
-            // } else if (email.length > 50) {
-            //     emailErr.innerHTML = "Email must be 50 characters or less";
-            //     isValid = false;
-            // } else if (!email.includes("@")) {
-            //     emailErr.innerHTML = "Email must contain '@'";
-            //     isValid = false;
-            // } else {
-            //     var domain = email.split("@").pop().toLowerCase();
-            //     var allowedDomains = ["gmail.com", "yahoo.com", "outlook.com"];
-            //     if (!allowedDomains.includes(domain)) {
-            //         emailErr.innerHTML = "Only gmail.com, yahoo.com, or outlook.com are allowed";
-            //         isValid = false;
-            //     } else {
-            //         emailErr.innerHTML = "";
-            //     }
-            // }
 
             // === NAME ===
             if (name === "") {

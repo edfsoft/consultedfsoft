@@ -120,6 +120,9 @@ class Healthcareprovider extends CI_Controller
                 'hcpsMobileNum' => $login['hcpMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
+             if ($login['firstLoginPswd'] == '0') {
+                $this->session->set_userdata('firstLogin', '0');
+            }
             redirect('Healthcareprovider/dashboard');
         } else if (isset($login['approvalStatus']) && $login['approvalStatus'] == 0) {
             $this->session->set_flashdata('errorMessage', 'You can log in once the verification process is done.');
@@ -451,7 +454,74 @@ class Healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/myProfile');
     }
 
+    public function changePassword()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "passwordChange";
+            $hcpDetails = $this->HcpModel->getHcpDetails();
+            $this->data['hcpDetails'] = $hcpDetails;
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+    }
 
+    public function sendEmailOtp()/* OTP for change password in the HCP after login*/
+    {
+        $email = $this->input->post('email');
+
+        if (!$email) {
+            echo json_encode(['status' => 'fail', 'message' => 'Email required']);
+            return;
+        }
+
+        $otp = rand(1000, 9999);
+        $this->session->set_userdata('email_otp', $otp);
+        $this->session->set_userdata('email_otp_address', $email);
+
+        $message = "Hi there, <br><br>
+        Your OTP is <b> $otp </b> to change the new password for your account. 
+        <br>This OTP is valid for 10 minutes.
+        <br><br> Warm regards, <br>
+        Team Santhosam";
+        $subject = "EDF Password Security";
+        $this->load->library('email');
+        $this->email->from('erodediabetesfoundation@gmail.com', $subject);
+        $this->email->to($email);
+        $this->email->subject('Your OTP for Password Change');
+        $this->email->message($message);
+        $this->email->set_mailtype("html");
+        $mailSent = $this->email->send();
+        if ($mailSent) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'fail']);
+        }
+    }
+
+    public function verifyEmailOtp()
+    {
+        $enteredOtp = $this->input->post('otp');
+        $sessionOtp = $this->session->userdata('email_otp');
+
+        if ($enteredOtp == $sessionOtp) {
+            echo json_encode(['status' => 'success']);
+            $this->session->unset_userdata(['email_otp', 'email_otp_address']); // after otp verification is done.
+        } else {
+            echo json_encode(['status' => 'fail']);
+        }
+    }
+
+    public function saveNewPassword()
+    {
+        $this->session->unset_userdata('firstLogin');
+        if ($this->HcpModel->updateNewPassword()) {
+            $this->session->set_flashdata('successMessage', 'Password updated successfully');
+        } else {
+            $this->session->set_flashdata('errorMessage', 'Error in updating password');
+        }
+        redirect('Healthcareprovider/myProfile');
+    }
 
     public function logout()
     {

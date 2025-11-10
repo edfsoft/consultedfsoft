@@ -310,7 +310,7 @@ class Chiefconsultant extends CI_Controller
         }
     }
 
-    public function sendEmailOtp()// For CC change password
+    public function sendEmailOtp()// For CC change password after login
     {
         $email = $this->input->post('email');
 
@@ -319,7 +319,7 @@ class Chiefconsultant extends CI_Controller
             return;
         }
 
-        $otp = rand(100000, 999999);
+        $otp = rand(1000, 9999);
         $this->session->set_userdata('email_otp', $otp);
         $this->session->set_userdata('email_otp_address', $email);
 

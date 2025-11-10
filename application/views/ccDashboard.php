@@ -1970,7 +1970,7 @@
                                                             <a href="<?php echo base_url() . "Chiefconsultant/myProfile" ?>" class="float-end text-dark mt-2"><i
                                                                     class="bi bi-arrow-left"></i> Back</a>
                                                         </div>
-                                                        <div class="card-body ps-5 p-sm-4">
+                                                        <div class="card-body">
                             <?php
                             foreach ($ccDetails as $key => $value) {
                                 ?>
@@ -1979,13 +1979,13 @@
                                                                     <div class="d-md-flex justify-content-between pb-3">
                                                                         <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                             <label class="form-label pb-2" for="drName">Name</label>
-                                                                            <input type="text" class="fieldStyle form-control p-3" id="drName" name="drName"
+                                                                            <input type="text" class="form-control" id="drName" name="drName"
                                                                                 style="cursor: no-drop;" value="<?php echo $value['doctorName']; ?>"
                                                                                 placeholder="Suresh Kumar" disabled readonly>
                                                                         </div>
                                                                         <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                             <label class="form-label pb-2" for="drMobile">Mobile </label>
-                                                                            <input type="number" class="fieldStyle form-control p-3" id="drMobile" name="drMobile"
+                                                                            <input type="number" class="form-control" id="drMobile" name="drMobile"
                                                                                 style="cursor: no-drop;" value="<?php echo $value['doctorMobile']; ?>"
                                                                                 placeholder="9632587410" disabled readonly>
                                                                         </div>
@@ -1994,7 +1994,7 @@
                                                                         <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                             <label class="form-label pb-2" for="drEmail">Email</label>
                                                                             <div class="">
-                                                                                <input type="email" class="fieldStyle form-control p-3" id="drEmail" name="drEmail"
+                                                                                <input type="email" class="form-control" id="drEmail" name="drEmail"
                                                                                     style="cursor: no-drop;" value="<?php echo $value['doctorMail']; ?>"
                                                                                     placeholder="example@gmail.com" disabled readonly>
                                                                             </div>
@@ -2008,7 +2008,7 @@
                                                                         <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                             <label for="emailOtp" class="form-label pb-2">Enter OTP <span
                                                                                     class="text-danger">*</span></label>
-                                                                            <input type="text" id="emailOtp" maxlength="6" class="fieldStyle form-control p-3"
+                                                                            <input type="text" id="emailOtp" maxlength="6" class="form-control"
                                                                                 placeholder="Enter OTP" disabled>
                                                                             <small id="emailOtpError" class="text-danger"></small>
                                                                         </div>
@@ -2018,8 +2018,8 @@
                                                                             <label class="form-label pb-2" for="drNewPassword">New Password <span
                                                                                     class="text-danger">*</span></label>
                                                                             <div style="position: relative;">
-                                                                                <input type="password" class="fieldStyle form-control p-3" id="drNewPassword"
-                                                                                    name="drNewPassword" placeholder="Enter New Password">
+                                                                                <input type="password" class="form-control" id="drNewPassword" name="drNewPassword"
+                                                                                    placeholder="Enter New Password">
                                                                                 <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drNewPassword', this)"
                                                                                     style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
                                                                             </div>
@@ -2029,7 +2029,7 @@
                                                                             <label class="form-label pb-2" for="drCnfmPassword">Confirm Password <span
                                                                                     class="text-danger">*</span></label>
                                                                             <div style="position: relative;">
-                                                                                <input type="password" class="fieldStyle form-control p-3" id="drCnfmPassword"
+                                                                                <input type="password" class="form-control" id="drCnfmPassword"
                                                                                     name="drCnfmPassword" placeholder="Re-Enter New Password">
                                                                                 <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drCnfmPassword', this)"
                                                                                     style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
@@ -2086,7 +2086,7 @@
                                                     document.getElementById('emailOtp').addEventListener('input', () => {
                                                         const otp = document.getElementById('emailOtp').value.trim();
 
-                                                        if (otp.length === 6) {
+                                                        if (otp.length === 4) {
                                                             fetch("<?= base_url('Chiefconsultant/verifyEmailOtp') ?>", {
                                                                 method: "POST",
                                                                 headers: {
@@ -2160,8 +2160,8 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title fw-medium" id="firstLoginLabel">Update Password Alert</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title fw-medium" id="firstLoginLabel"
+                            style="font-family: Poppins, sans-serif;">Update Password Alert</h5>
                     </div>
                     <div class="modal-body">
                         <p>⚠️ Please change your temporary password immediately before proceeding any further.</p>

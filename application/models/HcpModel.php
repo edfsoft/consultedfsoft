@@ -498,6 +498,18 @@ class HcpModel extends CI_Model
         return true;
     }
 
+
+    public function updateNewPassword()/* Password chnage after login */
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            'hcpPassword' => password_hash($post['drCnfmPassword'], PASSWORD_BCRYPT),
+            	'firstLoginPswd' => '1'
+        );
+        $this->db->where('id', $post['hcpDbId']);
+        $this->db->update('hcp_details', $updatedata);
+    }
+
     public function getCcProfile()
     {
         $details = "SELECT * FROM `cc_details` WHERE deleteStatus = '0' AND approvalStatus = '1'";

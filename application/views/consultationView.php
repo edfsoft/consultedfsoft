@@ -249,6 +249,19 @@
             height: 70vh;
             border: none;
         }
+
+        /* Limit height of dropdown and make it scrollable */
+        #procedureList,
+        #adviceList,
+        #instructionList {
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border: 1px solid #ccc;
+            padding: 5px;
+            background-color: #fff;
+            border-radius: 4px;
+        }
     </style>
 </head>
 

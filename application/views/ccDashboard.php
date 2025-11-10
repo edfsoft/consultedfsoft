@@ -1823,28 +1823,28 @@
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="yearOfExp">Years of Experience</label>
-                                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
+                                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp" maxlength="25"
                                                                             value="<?php echo $value['yearOfExperience']; ?>" placeholder="25">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                     <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="qualification">Qualification</label>
                                                                         <input type="text" class="form-control" id="qualification" name="qualification"
-                                                                            value="<?php echo $value['qualification']; ?>" placeholder="MBBS">
+                                                                            maxlength="90" value="<?php echo $value['qualification']; ?>" placeholder="MBBS">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="regDetails">Registration detail</label>
-                                                                        <input type="text" class="form-control" id="regDetails" name="regDetails"
+                                                                        <input type="text" class="form-control" id="regDetails" name="regDetails" maxlength="90"
                                                                             value="<?php echo $value['regDetails']; ?>"
                                                                             placeholder="Tamil Nadu Medical Council">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                     <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="membership">Membership</label>
-                                                                        <input type="text" class="form-control" id="membership" name="membership"
+                                                                        <input type="text" class="form-control" id="membership" name="membership" maxlength="90"
                                                                             value="<?php echo $value['membership']; ?>" placeholder="Life member IMA">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
@@ -1853,19 +1853,19 @@
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="hospitalName">Hospital / Clinic Name</label><br>
                                                                         <input type="text" class="form-control" id="hospitalName" name="hospitalName"
-                                                                            value="<?php echo $value['hospitalName']; ?>" placeholder="MMCH">
+                                                                            maxlength="90" value="<?php echo $value['hospitalName']; ?>" placeholder="MMCH">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                     <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="location">Location</label><br>
-                                                                        <input type="text" class="form-control" id="location" name="location"
+                                                                        <input type="text" class="form-control" id="location" name="location" maxlength="90"
                                                                             value="<?php echo $value['location']; ?>" placeholder="Erode">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                 </div>
                                                                 <div class="py-3">
                                                                     <label class="form-label" for="services">Services</label><br>
-                                                                    <textarea class="form-control" id="services" name="services" rows="" cols=""
+                                                                    <textarea class="form-control" id="services" name="services" rows="" cols="" maxlength="490"
                                                                         placeholder="Completed diabetes care under one roof"><?php echo $value['services']; ?></textarea>
                                                                     <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                 </div>

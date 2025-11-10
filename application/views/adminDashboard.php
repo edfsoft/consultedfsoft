@@ -420,7 +420,7 @@
                                     onsubmit="return validateSignup()" oninput="return removeError()">
                                     <div class="mb-3">
                                         <label for="ccName" class="form-label">Name <span class="text-danger">*</span></label>
-                                        <input type="text" name="ccName" id="ccName" placeholder="Suresh Kumar"
+                                        <input type="text" name="ccName" id="ccName" maxlength="30" placeholder="Suresh Kumar"
                                             class="form-control">
                                         <div id="name_err" class="text-danger pt-1"></div>
                                     </div>
@@ -433,8 +433,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="ccEmail" class="form-label">Email Id <span class="text-danger">*</span></label>
-                                        <input type="email" name="ccEmail" id="ccEmail" placeholder="example@gmail.com"
-                                            class="form-control">
+                                        <input type="email" name="ccEmail" id="ccEmail" maxlength="30"
+                                            placeholder="example@gmail.com" class="form-control">
                                         <div id="mail_err" class="text-danger pt-1"></div>
                                     </div>
                                     <div class="mb-3">
@@ -456,8 +456,8 @@
                                         <label for="ccPassword" class="form-label">Password <span
                                                 class="text-danger">*</span></label>
                                         <div style="position: relative;">
-                                            <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
-                                                class="form-control">
+                                            <input type="password" name="ccPassword" id="ccPassword" maxlength="20"
+                                                placeholder="password" class="form-control">
                                             <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('ccPassword', this)"
                                                 style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                                         </div>
@@ -470,7 +470,7 @@
                                         <label for="ccCnfmPassword" class="form-label">Confirm Password <span
                                                 class="text-danger">*</span></label>
                                         <div style="position: relative;">
-                                            <input type="password" name="ccCnfmPassword" id="ccCnfmPassword"
+                                            <input type="password" name="ccCnfmPassword" id="ccCnfmPassword" maxlength="20"
                                                 placeholder="confirm password" class="form-control">
                                             <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('ccCnfmPassword', this)"
                                                 style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
@@ -977,7 +977,7 @@
                                                 onsubmit="return validateSignup()" oninput="return removeError()">
                                                 <div class="mb-3">
                                                     <label for="hcpName" class="form-label">Name <span class="text-danger">*</span></label>
-                                                    <input type="text" name="hcpName" id="hcpName" placeholder="Suresh Kumar"
+                                                    <input type="text" name="hcpName" id="hcpName" maxlength="30" placeholder="Suresh Kumar"
                                                         class="form-control">
                                                     <div id="name_err" class="text-danger pt-1"></div>
                                                 </div>
@@ -990,8 +990,8 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="hcpEmail" class="form-label">Email Id <span class="text-danger">*</span></label>
-                                                    <input type="email" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com"
-                                                        class="form-control">
+                                                    <input type="email" name="hcpEmail" id="hcpEmail" maxlength="30"
+                                                        placeholder="example@gmail.com" class="form-control">
                                                     <div id="mail_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <div class="mb-3">
@@ -1013,8 +1013,8 @@
                                                     <label for="hcpPassword" class="form-label">Password <span
                                                             class="text-danger">*</span></label>
                                                     <div style="position: relative;">
-                                                        <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
-                                                            class="form-control">
+                                                        <input type="password" name="hcpPassword" id="hcpPassword" maxlength="20"
+                                                            placeholder="password" class="form-control">
                                                         <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('hcpPassword', this)"
                                                             style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                                                     </div>
@@ -1027,7 +1027,7 @@
                                                     <label for="hcpCnfmPassword" class="form-label">Confirm Password <span
                                                             class="text-danger">*</span></label>
                                                     <div style="position: relative;">
-                                                        <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
+                                                        <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword" maxlength="20"
                                                             placeholder="confirm password" class="form-control">
                                                         <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('hcpCnfmPassword', this)"
                                                             style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>

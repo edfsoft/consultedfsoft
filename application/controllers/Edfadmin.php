@@ -88,7 +88,7 @@ class Edfadmin extends CI_Controller
 
         if (!empty($existingFields)) {
             $errorMessage = implode(', ', $existingFields) . ' already exist. Please use different credential.';
-            $this->session->set_flashdata('errorMessage', $errorMessage);
+            $this->session->set_flashdata('showErrorMessage', $errorMessage);
             redirect('Edfadmin/ccList');
             exit();
         } else {
@@ -214,7 +214,7 @@ class Edfadmin extends CI_Controller
 
         if (!empty($existingFields)) {
             $errorMessage = implode(', ', $existingFields) . ' already exist. Please use different credential.';
-            $this->session->set_flashdata('errorMessage', $errorMessage);
+            $this->session->set_flashdata('showErrorMessage', $errorMessage);
             redirect('Edfadmin/hcpList');
             exit();
         } else {

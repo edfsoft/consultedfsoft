@@ -96,7 +96,7 @@
                         onsubmit="return validateSignup()" oninput="return removeError()">
                         <div class="mb-3">
                             <label for="ccName" class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" name="ccName" id="ccName" placeholder="Suresh Kumar"
+                            <input type="text" name="ccName" id="ccName" maxlength="30" placeholder="Suresh Kumar"
                                 class="form-control rounded-pill p-3">
                             <div id="name_err" class="text-danger pt-1"></div>
                         </div>
@@ -108,8 +108,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="ccEmail" class="form-label">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="ccEmail" id="ccEmail" placeholder="example@gmail.com"
-                                class="form-control rounded-pill p-3">
+                            <input type="email" name="ccEmail" id="ccEmail" maxlength="30"
+                                placeholder="example@gmail.com" class="form-control rounded-pill p-3">
                             <div id="mail_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="mb-3">
@@ -130,8 +130,8 @@
                         <div class="position-relative">
                             <label for="ccPassword" class="form-label">Password <span
                                     class="text-danger">*</span></label>
-                            <input type="password" name="ccPassword" id="ccPassword" placeholder="password"
-                                class="form-control rounded-pill p-3">
+                            <input type="password" name="ccPassword" id="ccPassword" maxlength="20"
+                                placeholder="password" class="form-control rounded-pill p-3">
                             <i id="togglePassword"
                                 class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
                                 style="cursor: pointer;"></i>
@@ -143,7 +143,7 @@
                         <div class="my-3">
                             <label for="ccCnfmPassword" class="form-label">Confirm Password <span
                                     class="text-danger">*</span></label>
-                            <input type="password" name="ccCnfmPassword" id="ccCnfmPassword"
+                            <input type="password" name="ccCnfmPassword" id="ccCnfmPassword" maxlength="20"
                                 placeholder="re-type password" class="form-control rounded-pill p-3">
                             <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                         </div>

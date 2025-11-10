@@ -2596,14 +2596,15 @@
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="yearOfExp">Years of Experience</label>
-                                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
+                                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp" maxlength="25"
                                                                             value="<?php echo $value['hcpExperience']; ?>" placeholder="E.g. 25">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                     <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="qualification">Qualification</label>
                                                                         <input type="text" class="form-control" id="qualification" name="qualification"
-                                                                            value="<?php echo $value['hcpQualification']; ?>" placeholder="E.g. MBBS">
+                                                                            value="<?php echo $value['hcpQualification']; ?>" maxlength="90"
+                                                                            placeholder="E.g. MBBS">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                 </div>
@@ -2617,14 +2618,15 @@
                                                                     <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="hospitalName">Hospital / Clinic Name</label>
                                                                         <input type="text" class="form-control" id="hospitalName" name="hospitalName"
-                                                                            value="<?php echo $value['hcpHospitalName']; ?>" placeholder="E.g. MMCH">
+                                                                            maxlength="90" value="<?php echo $value['hcpHospitalName']; ?>"
+                                                                            placeholder="E.g. MMCH">
                                                                         <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="location">Location</label>
-                                                                        <input type="text" class="form-control" id="location" name="location"
+                                                                        <input type="text" class="form-control" id="location" name="location" maxlength="90"
                                                                             value="<?php echo $value['hcpLocation']; ?>" placeholder="E.g. Erode">
                                                                         <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
                                                                     </div>
@@ -2758,8 +2760,9 @@
                                                                                     style="cursor: no-drop;" value="<?php echo $value['hcpMail']; ?>"
                                                                                     placeholder="example@gmail.com" disabled readonly>
                                                                             </div>
-                                                                            <p type="button" class="float-end mt-2 m-0 p-0" style="color: #00ad8e;" id="sendEmailOtpBtn"
-                                                                                onclick="sendEmailOtp()" onmouseover="this.style.textDecoration='underline'"
+                                                                            <p type="button" class="float-end mt-2 m-0 p-0" style="color: #00ad8e;"
+                                                                                id="sendEmailOtpBtn" onclick="sendEmailOtp()"
+                                                                                onmouseover="this.style.textDecoration='underline'"
                                                                                 onmouseout="this.style.textDecoration='none'">Send
                                                                                 OTP</p>
                                                                             <small id="emailOtpStatus" class="text-success"></small>

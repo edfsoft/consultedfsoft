@@ -43,7 +43,7 @@ class Healthcareprovider extends CI_Controller
        <b> $otp </b> <br>
         Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
        <br> Best regards,<br>  
-        Health Care Provider Support Team ";
+        EDF Support Team ";
 
         $this->email->set_newline("\r\n");
         $this->email->from('erodediabetesfoundation@gmail.com', 'Consult EDF');
@@ -120,7 +120,7 @@ class Healthcareprovider extends CI_Controller
                 'hcpsMobileNum' => $login['hcpMobile'],
             );
             $this->session->set_userdata($LoggedInDetails);
-             if ($login['firstLoginPswd'] == '0') {
+            if ($login['firstLoginPswd'] == '0') {
                 $this->session->set_userdata('firstLogin', '0');
             }
             redirect('Healthcareprovider/dashboard');
@@ -483,7 +483,7 @@ class Healthcareprovider extends CI_Controller
         Your OTP is <b> $otp </b> to change the new password for your account. 
         <br>This OTP is valid for 10 minutes.
         <br><br> Warm regards, <br>
-        Team Santhosam";
+        Team EDF";
         $subject = "EDF Password Security";
         $this->load->library('email');
         $this->email->from('erodediabetesfoundation@gmail.com', $subject);

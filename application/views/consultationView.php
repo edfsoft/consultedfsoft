@@ -2386,11 +2386,57 @@
                             placeholder="Procedure name" required>
                     </div>
                     <div class="modal-footer">
-
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <!-- Add-new-medicine modal  -->
+        <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-titlefw-medium" style="font-family: Poppins, sans-serif;">Add New Medicine</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="newMedicineName" class="form-label fieldLabel pb-2">Medicine Name <span
+                                class="text-danger">*</span></label>
+                        <input type="text" id="newMedicineName" class="form-control" placeholder="E.g. Dolo 650"
+                            required>
+
+                        <label for="newMedicineComposition" class="form-label fieldLabel pb-2 mt-2">Composition Name
+                            <span class="text-danger">*</span></label>
+                        <input type="text" id="newMedicineComposition" class="form-control"
+                            placeholder="E.g. Paracetamol" required>
+
+                        <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category <span
+                                class="text-danger">*</span></label>
+                        <select id="newMedicineCategory" class="form-select" required>
+                            <option value="">Select Category</option>
+                            <option value="TAB">Tablet</option>
+                            <option value="CAP">Capsule</option>
+                            <option value="SYR">Syrup</option>
+                            <option value="INJ">Injection</option>
+                            <option value="DROPS">Drops</option>
+                            <option value="OINT">Ointment</option>
+                            <option value="CREAM">Cream</option>
+                            <option value="GEL">Gel</option>
+                            <option value="SPRAY">Spray</option>
+                            <option value="POW">Powder</option>
+                            <option value="SUSP">Suppository</option>
+                            <option value="INSULIN">Insulin</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="addMedicineConfirmBtn" class="btn text-light"
+                            style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -2407,28 +2453,19 @@
                         </div>
                         <div>
                             <span id="medicineCategoryText" class="text-dark me-3"></span>
-
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                     </div>
 
                     <div class="modal-body" style="font-family: Poppins, sans-serif;">
 
-                        <!-- Quantity + Units -->
+                        <!-- Quantity (global total) -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Quantity</label>
                             <div class="d-flex align-items-center gap-2">
                                 <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
                                     placeholder="Enter qty">
-
-                                <select id="medicineUnit" class="form-select w-25">
-                                    <option value="mg">mg</option>
-                                    <option value="ml">ml</option>
-                                    <option value="units">units</option>
-                                    <option value="drops">drops</option>
-                                    <option value="tab">tab</option>
-                                    <option value="cap">cap</option>
-                                </select>
+                                <!-- Note: Global unit removed - units are per-slot now -->
                             </div>
                         </div>
 
@@ -2437,11 +2474,20 @@
                             <label class="form-label fw-semibold">Timing</label>
 
                             <div id="timingOptions" class="d-flex flex-wrap gap-4">
+                                <!-- Each slot: checkbox, label, qty, unit -->
                                 <div class="form-check d-flex align-items-center gap-2">
                                     <input type="checkbox" id="morningCheck">
                                     <label for="morningCheck" class="mb-0">Morning</label>
                                     <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
+                                    <select id="morningUnit" class="form-select w-25" disabled>
+                                        <option value="mg">mg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="units">units</option>
+                                        <option value="drops">drops</option>
+                                        <option value="tab">tab</option>
+                                        <option value="cap">cap</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-check d-flex align-items-center gap-2">
@@ -2449,6 +2495,14 @@
                                     <label for="afternoonCheck" class="mb-0">Afternoon</label>
                                     <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
+                                    <select id="afternoonUnit" class="form-select w-25" disabled>
+                                        <option value="mg">mg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="units">units</option>
+                                        <option value="drops">drops</option>
+                                        <option value="tab">tab</option>
+                                        <option value="cap">cap</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-check d-flex align-items-center gap-2">
@@ -2456,6 +2510,14 @@
                                     <label for="eveningCheck" class="mb-0">Evening</label>
                                     <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
+                                    <select id="eveningUnit" class="form-select w-25" disabled>
+                                        <option value="mg">mg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="units">units</option>
+                                        <option value="drops">drops</option>
+                                        <option value="tab">tab</option>
+                                        <option value="cap">cap</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-check d-flex align-items-center gap-2">
@@ -2463,7 +2525,16 @@
                                     <label for="nightCheck" class="mb-0">Night</label>
                                     <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
+                                    <select id="nightUnit" class="form-select w-25" disabled>
+                                        <option value="mg">mg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="units">units</option>
+                                        <option value="drops">drops</option>
+                                        <option value="tab">tab</option>
+                                        <option value="cap">cap</option>
+                                    </select>
                                 </div>
+
                             </div>
                         </div>
 
@@ -2492,12 +2563,6 @@
                                     <label class="form-check-label" for="bedtime">Bedtime</label>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Duration</label>
-                            <input type="number" id="medicineDuration" min="0" class="form-control w-50"
-                                placeholder="Enter duration (days)">
                         </div>
 
                         <div class="mb-3">
@@ -4129,25 +4194,45 @@
     <!-- Medicine Modal Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const medicinesData = <?php echo json_encode($medicinesList); ?>;
+            // server-provided arrays
+            const medicinesData = <?php echo json_encode($medicinesList); ?> || [];
             const medicinesList = medicinesData.map(m => m.medicineName);
 
-            const medicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
+            const medicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?> || [];
 
+            // DOM refs (assume medicinesSearchInput exists in page)
             const medicinesInput = document.getElementById("medicinesSearchInput");
             const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
             const medicinesTagContainer = document.getElementById("medicinesInput");
 
+            // ADD button next to search input (created dynamically)
+            let addButton = null;
+            if (medicinesInput) {
+                addButton = document.createElement('button');
+                addButton.type = 'button';
+                addButton.id = 'medicinesAddBtn';
+                addButton.className = 'btn btn-outline-primary ms-2 mt-2';
+                addButton.style.display = 'none';
+                addButton.textContent = '+ Add';
+                medicinesInput.parentElement.appendChild(addButton);
+            }
+
             const medicinesModalEl = document.getElementById("medicinesModal");
             const medicinesModal = new bootstrap.Modal(medicinesModalEl);
+
+            const addMedicineModalEl = document.getElementById("addMedicineModal");
+            const addMedicineModal = new bootstrap.Modal(addMedicineModalEl);
 
             const medicinesModalTitle = document.getElementById("medicinesModalTitle");
             const medicineCompositionText = document.getElementById("medicineCompositionText");
             const medicineCategoryText = document.getElementById("medicineCategoryText");
             const medicineQuantity = document.getElementById("medicineQuantity");
-            const medicineUnit = document.getElementById("medicineUnit");
-            const medicineDuration = document.getElementById("medicineDuration");
             const medicineNotes = document.getElementById("medicineNotes");
+
+            const newMedicineNameInput = document.getElementById('newMedicineName');
+            const newMedicineCompositionInput = document.getElementById('newMedicineComposition');
+            const newMedicineCategorySelect = document.getElementById('newMedicineCategory');
+            const addMedicineConfirmBtn = document.getElementById('addMedicineConfirmBtn');
 
             const slots = ["morning", "afternoon", "evening", "night"];
 
@@ -4159,7 +4244,8 @@
                 slots.forEach(slot => cb(
                     slot,
                     document.getElementById(`${slot}Check`),
-                    document.getElementById(`${slot}Qty`)
+                    document.getElementById(`${slot}Qty`),
+                    document.getElementById(`${slot}Unit`)
                 ));
             }
 
@@ -4170,51 +4256,77 @@
                     consultation_id: row.consultation_id ?? row.consultationId ?? undefined,
                     medicine_name: row.medicine_name ?? row.medicine ?? row.medicineBrand ?? "",
                     quantity: row.quantity ?? "",
+                    // remove global unit - now timing contains units, but keep empty for backward compatibility
                     unit: row.unit ?? "",
+                    // timing string with units, e.g. "2 drops-0-0-1 drop"
                     timing: row.timing ?? row.timingString ?? "0-0-0-0",
                     food_timing: row.food_timing ?? row.foodTiming ?? "",
-                    duration: row.duration ?? "",
-                    notes: row.notes ?? ""
+                    // duration removed
+                    notes: row.notes ?? "",
+                    composition: row.compositionName ?? row.composition ?? "",
+                    category: row.category ?? row.medicineCategory ?? ""
                 };
             }
 
+            // Build timing string now includes units per slot. Example part: "2 drops" or "0"
             function buildTimingString() {
                 const parts = [];
-                forEachSlot((slot, check, qty) => {
-                    parts.push(check && check.checked && qty && qty.value ? String(qty.value) : "0");
+                forEachSlot((slot, check, qty, unit) => {
+                    if (check && check.checked && qty && qty.value) {
+                        const u = unit && unit.value ? unit.value : "";
+                        const qtyVal = String(qty.value);
+                        parts.push(u ? `${qtyVal} ${u}` : `${qtyVal}`);
+                    } else {
+                        parts.push("0");
+                    }
                 });
                 return parts.join("-");
             }
 
+            // Apply timing string to UI: if part non-zero, set qty, unit and check
             function applyTimingString(timingStr) {
                 const parts = String(timingStr || "0-0-0-0").split("-");
                 slots.forEach((slot, i) => {
                     const check = document.getElementById(`${slot}Check`);
                     const qty = document.getElementById(`${slot}Qty`);
-                    if (!check || !qty) return;
+                    const unit = document.getElementById(`${slot}Unit`);
+                    if (!check || !qty || !unit) return;
                     const v = parts[i] ?? "0";
                     if (v !== "0") {
                         check.checked = true;
                         qty.disabled = false;
-                        qty.value = v;
+                        unit.disabled = false;
+                        // detect "number unit" form
+                        const matches = String(v).match(/^([\d.]+)\s*(.*)$/);
+                        if (matches) {
+                            qty.value = matches[1];
+                            unit.value = matches[2] || unit.value;
+                        } else {
+                            qty.value = v;
+                        }
                     } else {
                         check.checked = false;
                         qty.value = "";
                         qty.disabled = true;
+                        unit.disabled = true;
                     }
                 });
             }
 
-            forEachSlot((slot, check, qty) => {
-                if (!check || !qty) return;
+            // initialize slot listeners (enable/disable qty & unit together)
+            forEachSlot((slot, check, qty, unit) => {
+                if (!check || !qty || !unit) return;
                 qty.disabled = true;
+                unit.disabled = true;
                 check.addEventListener("change", () => {
                     if (check.checked) {
                         qty.disabled = false;
+                        unit.disabled = false;
                         if (!qty.value) qty.value = 1;
                     } else {
                         qty.value = "";
                         qty.disabled = true;
+                        unit.disabled = true;
                     }
                 });
                 qty.addEventListener("focus", () => {
@@ -4222,6 +4334,7 @@
                 });
             });
 
+            // render suggestions
             function renderMedicinesSuggestions() {
                 if (!medicinesInput || !medicinesSuggestionsBox) return;
 
@@ -4233,16 +4346,29 @@
                     !selectedMedicines.some(obj => obj.medicine_name === m)
                 );
 
+                // Toggle ADD button: show when query non-empty and no exact or partial match? Per request show when not found
+                if (addButton) {
+                    // show ADD if query non-empty and there is no exact match in medicinesList
+                    const exactMatch = medicinesList.some(m => m.toLowerCase() === query);
+                    addButton.style.display = (query !== "" && !exactMatch) ? "inline-block" : "none";
+                }
+
                 if (filtered.length === 0 && query !== "") {
+                    // keep previous behavior: suggestion to add via suggestion box (clickable)
                     const div = document.createElement("div");
                     div.innerHTML = `Add "<strong>${medicinesInput.value}</strong>"`;
-                    div.onclick = () => { openMedicineModal(medicinesInput.value); medicinesInput.value = ""; };
+                    div.onclick = () => {
+                        // open add modal prefilled
+                        openAddMedicineModal(medicinesInput.value);
+                        medicinesInput.value = "";
+                        medicinesSuggestionsBox.style.display = "none";
+                    };
                     medicinesSuggestionsBox.appendChild(div);
                 } else {
                     filtered.forEach(item => {
                         const div = document.createElement("div");
                         div.textContent = item;
-                        div.onclick = () => { openMedicineModal(item); medicinesInput.value = ""; };
+                        div.onclick = () => { openMedicineModal(item); medicinesInput.value = ""; medicinesSuggestionsBox.style.display = "none"; };
                         medicinesSuggestionsBox.appendChild(div);
                     });
                 }
@@ -4255,46 +4381,138 @@
                 medicinesInput.addEventListener("keydown", (e) => {
                     if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
                         e.preventDefault();
-                        openMedicineModal(medicinesInput.value.trim());
+                        // If exact match, open details; otherwise open add modal
+                        const q = medicinesInput.value.trim();
+                        const found = medicinesList.find(m => m.toLowerCase() === q.toLowerCase());
+                        if (found) {
+                            openMedicineModal(found);
+                        } else {
+                            openAddMedicineModal(q);
+                        }
                         medicinesInput.value = "";
+                        medicinesSuggestionsBox.style.display = "none";
                     }
                 });
                 document.addEventListener("click", (e) => {
-                    if (!medicinesTagContainer?.contains(e.target)) {
+                    if (!medicinesTagContainer?.contains(e.target) && !medicinesInput?.contains(e.target)) {
                         if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
                     }
                 });
             }
 
+            // Click on dynamic ADD button
+            if (addButton) {
+                addButton.addEventListener('click', () => {
+                    const q = medicinesInput.value.trim();
+                    openAddMedicineModal(q);
+                    medicinesInput.value = "";
+                    medicinesSuggestionsBox && (medicinesSuggestionsBox.style.display = "none");
+                    addButton.style.display = 'none';
+                });
+            }
+
+            // Open the small Add-New-Medicine modal
+            function openAddMedicineModal(prefillName = "") {
+                newMedicineNameInput.value = prefillName || "";
+                newMedicineCompositionInput.value = "";
+                newMedicineCategorySelect.value = "";
+                addMedicineModal.show();
+                setTimeout(() => newMedicineNameInput.focus(), 200);
+            }
+
+            // when add confirm clicked — placeholder fetch to server to add medicine to DB
+            addMedicineConfirmBtn.addEventListener('click', async () => {
+                const name = (newMedicineNameInput.value || "").trim();
+                const composition = (newMedicineCompositionInput.value || "").trim();
+                const category = (newMedicineCategorySelect.value || "").trim();
+
+                if (!name || !composition || !category) {
+                    alert('Please fill all fields.');
+                    return;
+                }
+
+                // Replace this fetch with your actual server endpoint + adjust request format as needed.
+                try {
+                    addMedicineConfirmBtn.disabled = true;
+                    addMedicineConfirmBtn.textContent = 'Adding...';
+
+                    const payload = { medicineName: name, compositionName: composition, category };
+
+                    // Example POST — change URL and response parsing to match your backend.
+                    const res = await fetch('<?= site_url('Consultation/addNewMedicines') ?>', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!res.ok) {
+                        throw new Error('Failed to add medicine');
+                    }
+                    const saved = await res.json(); // expected to return the saved medicine object (id, medicineName, compositionName, category, etc.)
+
+                    // normalize returned object
+                    const savedObj = {
+                        id: saved.id ?? saved.medicine_id ?? "new-" + Date.now(),
+                        medicineName: saved.medicineName ?? saved.medicine_name ?? name,
+                        compositionName: saved.compositionName ?? saved.composition ?? composition,
+                        category: saved.category ?? category
+                    };
+
+                    // update local arrays so new med is available immediately
+                    medicinesData.push(savedObj);
+                    medicinesList.push(savedObj.medicineName);
+
+                    addMedicineModal.hide();
+                    // open the usual medicine details modal for the newly added medicine
+                    openMedicineModal(savedObj.medicineName);
+                } catch (err) {
+                    console.error(err);
+                    alert('Could not add medicine. Check console for details.');
+                } finally {
+                    addMedicineConfirmBtn.disabled = false;
+                    addMedicineConfirmBtn.textContent = 'Add & Open';
+                }
+            });
+
+            // Expose openMedicineModal globally as before
             window.openMedicineModal = function (name, existing = null, tagEl = null) {
                 pendingMedicineName = name;
                 editingMedicineTag = tagEl;
 
-                const medData = medicinesData.find(m => m.medicineName === name);
+                const medData = medicinesData.find(m => (m.medicineName || m.medicine_name) === name);
                 medicinesModalTitle.textContent = existing ? `Edit: ${name}` : `Details for: ${name}`;
-                medicineCompositionText.textContent = medData ? medData.compositionName : "(No composition available)";
-                medicineCategoryText.textContent = medData ? `Category: ${medData.category}` : "(No category)";
+                medicineCompositionText.textContent = medData ? (medData.compositionName || medData.composition || "(No composition available)") : "(No composition available)";
+                medicineCategoryText.textContent = medData ? `Category: ${medData.category || medData.medicineCategory || ""}` : "(No category)";
 
                 medicineQuantity.value = "";
-                medicineUnit.value = "mg";
-                medicineDuration.value = "";
                 medicineNotes.value = "";
-                forEachSlot((slot, check, qty) => {
-                    if (!check || !qty) return;
-                    check.checked = false; qty.value = ""; qty.disabled = true;
+                // reset slots
+                slots.forEach(slot => {
+                    const check = document.getElementById(`${slot}Check`);
+                    const qty = document.getElementById(`${slot}Qty`);
+                    const unit = document.getElementById(`${slot}Unit`);
+                    if (!check || !qty || !unit) return;
+                    check.checked = false;
+                    qty.value = "";
+                    qty.disabled = true;
+                    unit.disabled = true;
+                    // default unit set if medData has category? we keep default options as-is
                 });
                 document.querySelectorAll('input[name="foodTiming"]').forEach(r => r.checked = false);
 
                 const row = toDbShape(existing);
                 if (row) {
                     medicineQuantity.value = row.quantity || "";
-                    medicineUnit.value = row.unit || "mg";
-                    medicineDuration.value = row.duration || "";
                     medicineNotes.value = row.notes || "";
                     applyTimingString(row.timing);
                     document.querySelectorAll('input[name="foodTiming"]').forEach(r => {
                         r.checked = (r.value === (row.food_timing || ""));
                     });
+                } else if (medData) {
+                    // Pre-fill composition/category display; leave quantities empty
+                    applyTimingString(medData.timing ?? "0-0-0-0");
+                } else {
+                    applyTimingString("0-0-0-0");
                 }
 
                 medicinesModal.show();
@@ -4302,8 +4520,6 @@
 
             window.saveMedicineModal = function () {
                 const quantity = (medicineQuantity.value || "").trim();
-                const unit = (medicineUnit.value || "").trim();
-                const duration = (medicineDuration.value || "").trim();
                 const notes = (medicineNotes.value || "").trim();
                 const timing = buildTimingString();
                 const food_timing = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
@@ -4316,15 +4532,21 @@
                     ? selectedMedicines[existingIndex].id
                     : "new";
 
+                // try find medData composition/category if available
+                const medData = medicinesData.find(m => (m.medicineName || m.medicine_name) === pendingMedicineName);
+                const composition = medData?.compositionName ?? medData?.composition ?? "";
+                const category = medData?.category ?? medData?.medicineCategory ?? "";
+
                 const data = {
                     id: resolvedId,
                     medicine_name: pendingMedicineName,
                     quantity,
-                    unit,
+                    // unit removed globally; unit info is embedded in timing parts
                     timing,
                     food_timing,
-                    duration,
-                    notes
+                    notes,
+                    composition,
+                    category
                 };
 
                 if (editingMedicineTag && existingIndex !== -1) {
@@ -4364,8 +4586,12 @@
             }
 
             function updateMedicineTagDisplay(tagEl, row) {
-                const qtyText = row.quantity ? `${row.quantity} ${row.unit || ""}`.trim() : "0";
-                tagEl.innerHTML = `${row.medicine_name} (Qty: ${qtyText}, Timing: ${row.timing || "0-0-0-0"}, Duration: ${row.duration || 0})`;
+                // show composition/category + timing (already includes units)
+                const qtyText = row.quantity ? `${row.quantity}`.trim() : "0";
+                const timingText = row.timing || "0-0-0-0";
+                const comp = row.composition ? ` | ${row.composition}` : "";
+                const cat = row.category ? ` | ${row.category}` : "";
+                tagEl.innerHTML = `${row.medicine_name}${comp}${cat} (Qty: ${qtyText}, Timing: ${timingText})`;
 
                 tagEl.setAttribute("data-id", row.id || "new");
 
@@ -4398,6 +4624,7 @@
                 hidden.value = JSON.stringify(selectedMedicines);
             }
 
+            // initialize from server-sent existing medicines array
             if (Array.isArray(medicines) && medicines.length) {
                 medicines.forEach(m => {
                     const row = toDbShape(m);

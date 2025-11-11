@@ -3745,18 +3745,56 @@
 
             const preloadInstructions = <?php echo isset($instructions) ? json_encode($instructions) : '[]'; ?>;
 
-            function norm(s) { return s.toLowerCase().trim(); }
+            function norm(s) { return (s || '').toLowerCase().trim(); }
+
+            function sortList() {
+                const items = Array.from(list.querySelectorAll('.instruction-item'));
+                const selected = items.filter(i => i.querySelector('input').checked);
+                const unselected = items.filter(i => !i.querySelector('input').checked);
+
+                unselected.sort((a, b) => {
+                    const nameA = a.querySelector('label').textContent.trim().toLowerCase();
+                    const nameB = b.querySelector('label').textContent.trim().toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+
+                list.innerHTML = '';
+                selected.forEach(i => list.appendChild(i));
+                unselected.forEach(i => list.appendChild(i));
+            }
 
             function filter() {
                 const q = norm(searchInput.value);
                 let matches = 0;
+                let hasVisible = false;
+
                 list.querySelectorAll('.instruction-item').forEach(item => {
                     const labelText = item.querySelector('label').textContent;
                     const show = norm(labelText).includes(q) || q === '';
                     item.classList.toggle('d-none', !show);
                     if (show) matches++;
+                    if (show) hasVisible = true;
                 });
+
+                let noResultMsg = list.querySelector('.no-result');
+                if (!hasVisible) {
+                    if (!noResultMsg) {
+                        noResultMsg = document.createElement('div');
+                        noResultMsg.className = 'no-result text-muted mt-2';
+                        noResultMsg.textContent = 'No result found on search – Add new';
+                        list.appendChild(noResultMsg);
+                    }
+                } else if (noResultMsg) {
+                    noResultMsg.remove();
+                }
+
                 addBtn.classList.toggle('d-none', !(q && matches === 0));
+            }
+
+            function handleCheckChange(e) {
+                if (e.target.matches('input[type="checkbox"]')) {
+                    sortList();
+                }
             }
 
             searchInput.addEventListener('input', filter);
@@ -3797,9 +3835,13 @@
                 `;
                             list.prepend(wrapper);
 
+                            // Attach sorting behavior to new checkbox
+                            wrapper.querySelector('input').addEventListener('change', handleCheckChange);
+
                             if (modal) { modal.hide(); }
                             searchInput.value = '';
                             filter();
+                            sortList();
                         } else {
                             alert(data.message || "Error saving instruction");
                         }
@@ -3807,6 +3849,7 @@
                     .catch(err => console.error(err));
             });
 
+            // 🧾 Preload instructions from database
             if (Array.isArray(preloadInstructions)) {
                 preloadInstructions.forEach(ins => {
                     const checkbox = list.querySelector(
@@ -3818,6 +3861,9 @@
                 });
             }
 
+            list.addEventListener('change', handleCheckChange);
+
+            sortList();
             filter();
         });
     </script>

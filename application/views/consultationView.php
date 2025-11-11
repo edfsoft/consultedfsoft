@@ -259,7 +259,7 @@
             overflow-x: hidden;
             border: 1px solid #ccc;
             padding: 5px;
-            background-color: #fff;
+            background-color: #f3f2f2ff;
             border-radius: 4px;
         }
     </style>
@@ -517,58 +517,115 @@
                                                                 style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
                                                                 class="mb-3">
                                                                 <thead>
+                                                                    <!-- First header row -->
                                                                     <tr>
-                                                                        <th
+                                                                        <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px; text-align: left;">
                                                                             S.No</th>
-                                                                        <th
+                                                                        <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px; text-align: left;">
                                                                             Name</th>
-                                                                        <th
+                                                                        <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px; text-align: left;">
                                                                             Quantity</th>
-                                                                        <th
+                                                                        <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                            Timings</th>
-                                                                        <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Food Timing</th>
+
+                                                                        <!-- Frequency spanning four columns -->
+                                                                        <th colspan="4"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                             Frequency</th>
-                                                                        <th
+
+                                                                        <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px; text-align: left;">
                                                                             Notes</th>
                                                                     </tr>
+
+                                                                    <!-- Second header row for sub-columns -->
+                                                                    <tr>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Morning</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Afternoon</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Evening</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Night</th>
+                                                                    </tr>
                                                                 </thead>
+
                                                                 <tbody>
-                                                                    <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                    <?php if (!empty($consultation['medicines'])): ?>
+                                                                        <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                            <?php
+                                                                            // Safely split timing into 4 parts
+                                                                            $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
+                                                                            $timingParts = preg_split('/\s*-\s*/', $timingString);
+                                                                            $timingParts = array_pad($timingParts, 4, '0'); // ensure 4 values
+                                                                            list($morning, $afternoon, $evening, $night) = $timingParts;
+                                                                            ?>
+                                                                            <tr>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= $index + 1 . '.' ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?php if (!empty($medicine['medicine_name'])): ?>
+                                                                                        <?php if (!empty($medicine['category'])): ?>
+                                                                                            <small
+                                                                                                class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
+                                                                                        <?php endif; ?>
+                                                                                        <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                    <?php else: ?>
+                                                                                        -
+                                                                                    <?php endif; ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                </td>
+
+                                                                                <!-- Frequency split -->
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
+                                                                                </td>
+
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach; ?>
+                                                                    <?php else: ?>
                                                                         <tr>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= $index + 1 . ' .' ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?php if (!empty($medicine['medicine_name'])): ?>
-                                                                                    <small>
-                                                                                        (<?= htmlspecialchars($medicine['medicine_name']); ?>)
-                                                                                    </small>
-                                                                                    <?= htmlspecialchars($medicine['medicine_name']) ?>
-                                                                                <?php endif; ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['timing'] ?? '-') ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?php echo !empty($notes) ? htmlspecialchars($notes) : '-';
-                                                                                ?>
+                                                                            <td colspan="9"
+                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                No medicines found.
                                                                             </td>
                                                                         </tr>
-                                                                    <?php endforeach; ?>
+                                                                    <?php endif; ?>
                                                                 </tbody>
                                                             </table>
+
+
                                                         <?php endif; ?>
 
 

@@ -520,16 +520,16 @@
                                                                     <!-- First header row -->
                                                                     <tr>
                                                                         <th rowspan="2"
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             S.No</th>
                                                                         <th rowspan="2"
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             Name</th>
                                                                         <th rowspan="2"
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             Quantity</th>
                                                                         <th rowspan="2"
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             Food Timing</th>
 
                                                                         <!-- Frequency spanning four columns -->
@@ -538,7 +538,7 @@
                                                                             Frequency</th>
 
                                                                         <th rowspan="2"
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             Notes</th>
                                                                     </tr>
 
@@ -570,7 +570,7 @@
                                                                             list($morning, $afternoon, $evening, $night) = $timingParts;
                                                                             ?>
                                                                             <tr>
-                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                     <?= $index + 1 . '.' ?>
                                                                                 </td>
                                                                                 <td style="border: 1px solid #000; padding: 6px;">
@@ -584,10 +584,10 @@
                                                                                         -
                                                                                     <?php endif; ?>
                                                                                 </td>
-                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                     <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
                                                                                 </td>
-                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                     <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
                                                                                 </td>
 

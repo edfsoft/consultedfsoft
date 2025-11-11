@@ -3965,19 +3965,55 @@
 
             function norm(s) { return (s || '').toLowerCase().trim(); }
 
+            function sortList() {
+                const items = Array.from(adviceList.querySelectorAll('.advice-item'));
+                const selected = items.filter(i => i.querySelector('input').checked);
+                const unselected = items.filter(i => !i.querySelector('input').checked);
+
+                unselected.sort((a, b) => {
+                    const nameA = a.querySelector('label').textContent.trim().toLowerCase();
+                    const nameB = b.querySelector('label').textContent.trim().toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+
+                adviceList.innerHTML = '';
+                selected.forEach(i => adviceList.appendChild(i));
+                unselected.forEach(i => adviceList.appendChild(i));
+            }
+
             function filter() {
                 const q = norm(adviceSearch.value);
                 let matches = 0;
+                let hasVisible = false;
+
                 adviceList.querySelectorAll('.advice-item').forEach(item => {
                     const labelText = item.querySelector('label').textContent;
                     const show = norm(labelText).includes(q) || q === '';
                     item.classList.toggle('d-none', !show);
                     if (show) matches++;
+                    if (show) hasVisible = true;
                 });
+
+                let noResultMsg = adviceList.querySelector('.no-result');
+                if (!hasVisible) {
+                    if (!noResultMsg) {
+                        noResultMsg = document.createElement('div');
+                        noResultMsg.className = 'no-result text-muted mt-2';
+                        noResultMsg.textContent = 'No result found on search – Add new';
+                        adviceList.appendChild(noResultMsg);
+                    }
+                } else if (noResultMsg) {
+                    noResultMsg.remove();
+                }
+
                 addAdvice.classList.toggle('d-none', !(q && matches === 0));
             }
 
-            adviceSearch.addEventListener('input', filter);
+            function handleCheckChange(e) {
+                if (e.target.matches('input[type="checkbox"]')) {
+                    sortList();
+                }
+            }
 
             clearAdviceSearch.addEventListener('click', () => {
                 adviceSearch.value = '';
@@ -4001,15 +4037,11 @@
         `;
                 adviceList.prepend(div);
 
-                const checkbox = div.querySelector('input');
-                checkbox.addEventListener('change', () => {
-                    if (!checkbox.checked) {
-                        div.remove();
-                    }
-                });
+                div.querySelector('input').addEventListener('change', handleCheckChange);
 
                 adviceSearch.value = '';
                 filter();
+                sortList();
             });
 
             if (Array.isArray(preloadAdvices)) {
@@ -4040,6 +4072,10 @@
                 });
             }
 
+            adviceSearch.addEventListener('input', filter);
+            adviceList.addEventListener('change', handleCheckChange);
+
+            sortList();
             filter();
         });
     </script>

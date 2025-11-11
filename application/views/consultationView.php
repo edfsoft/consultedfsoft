@@ -259,7 +259,7 @@
             overflow-x: hidden;
             border: 1px solid #ccc;
             padding: 5px;
-            background-color: #f3f2f2ff;
+            background-color: #00ad8d12;
             border-radius: 4px;
         }
     </style>
@@ -361,275 +361,275 @@
                                                                     <i class="bi bi-download"></i>
                                                                 </button>
 
-                                                                            <button type="button" class="btn btn-danger"
-                                                                                onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
-                                                                                <i class="bi bi-trash"></i>
-                                                                            </button>
+                                                                <button type="button" class="btn btn-danger"
+                                                                    onclick="confirmDeleteConsult('<?php echo $patientDetails[0]['id']; ?>','<?php echo $consultation['id']; ?>', '<?php echo date('d M Y', strtotime($consultation['consult_date'])); ?>', '<?php echo date('h:i A', strtotime($consultation['consult_time'])); ?>')">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
 
                                                                 <button class="btn btn-secondary"
                                                                     onclick="window.location.href='<?php echo site_url('Consultation/editConsultation/' . $consultation['id']); ?>'">
                                                                     <i class="bi bi-pen"></i>
                                                                 </button>
 
-                                                                            <button class="btn text-light" style="background-color: #00ad8e;"
-                                                                                onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">
-                                                                                Follow-up / Repeat
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
+                                                                <button class="btn text-light" style="background-color: #00ad8e;"
+                                                                    onclick="window.location.href='<?php echo site_url('Consultation/followupConsultation/' . $consultation['id']); ?>'">
+                                                                    Follow-up / Repeat
+                                                                </button>
+                                                            </div>
+                                                        </div>
 
-                                                                    <!-- Vitals -->
-                                                                    <?php if (!empty($consultation['vitals'])): ?>
-                                                                            <p><strong>Vitals:</strong></p>
-                                                                            <div class="row g-2 mb-4">
-                                                                                <?php
-                                                                                $vitals = [
-                                                                                    'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
-                                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
-                                                                                    'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
-                                                                                    'HbA1c' => !empty($consultation['vitals']['HbA1c_percent']) ? $consultation['vitals']['HbA1c_percent'] . ' %' : null,
-                                                                                    'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
-                                                                                    'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
-                                                                                    'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
-                                                                                    'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
-                                                                                    'Pulse Rate' => !empty($consultation['vitals']['pulse_rate']) ? $consultation['vitals']['pulse_rate'] . ' /min' : null,
-                                                                                    'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
-                                                                                ];
+                                                        <!-- Vitals -->
+                                                        <?php if (!empty($consultation['vitals'])): ?>
+                                                            <p><strong>Vitals:</strong></p>
+                                                            <div class="row g-2 mb-4">
+                                                                <?php
+                                                                $vitals = [
+                                                                    'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
+                                                                    'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
+                                                                    'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
+                                                                    'HbA1c' => !empty($consultation['vitals']['HbA1c_percent']) ? $consultation['vitals']['HbA1c_percent'] . ' %' : null,
+                                                                    'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
+                                                                    'PP Blood Sugar' => !empty($consultation['vitals']['blood_sugar_pp']) ? $consultation['vitals']['blood_sugar_pp'] . ' mg/dL' : null,
+                                                                    'Random Blood Sugar' => !empty($consultation['vitals']['blood_sugar_random']) ? $consultation['vitals']['blood_sugar_random'] . ' mg/dL' : null,
+                                                                    'SPO2' => !empty($consultation['vitals']['spo2_percent']) ? $consultation['vitals']['spo2_percent'] . ' %' : null,
+                                                                    'Pulse Rate' => !empty($consultation['vitals']['pulse_rate']) ? $consultation['vitals']['pulse_rate'] . ' /min' : null,
+                                                                    'Temperature' => !empty($consultation['vitals']['temperature_f']) ? $consultation['vitals']['temperature_f'] . ' °F' : null,
+                                                                ];
 
-                                                                                foreach ($vitals as $label => $value):
-                                                                                    if ($value):
-                                                                                        ?>
-                                                                                                <div class="col-12 col-md-6">
-                                                                                                    <div
-                                                                                                        class="d-flex justify-content-between align-items-center border p-2 rounded">
-                                                                                                        <span class="fw-medium"><?= $label ?>:</span>
-                                                                                                        <span class="text-primary"><?= $value ?></span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <?php
-                                                                                    endif;
-                                                                                endforeach;
-                                                                                ?>
+                                                                foreach ($vitals as $label => $value):
+                                                                    if ($value):
+                                                                        ?>
+                                                                        <div class="col-12 col-md-6">
+                                                                            <div
+                                                                                class="d-flex justify-content-between align-items-center border p-2 rounded">
+                                                                                <span class="fw-medium"><?= $label ?>:</span>
+                                                                                <span class="text-primary"><?= $value ?></span>
                                                                             </div>
-                                                                    <?php endif; ?>
+                                                                        </div>
+                                                                        <?php
+                                                                    endif;
+                                                                endforeach;
+                                                                ?>
+                                                            </div>
+                                                        <?php endif; ?>
 
-                                                                    <!-- Symptoms -->
-                                                                    <?php if (!empty($consultation['symptoms'])): ?>
-                                                                            <p><strong>Symptoms:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['symptoms'] as $symptom): ?>
-                                                                                        <li>
-                                                                                            <?= $symptom['symptom_name'] ?>
-                                                                                            <?php
-                                                                                            $details = [];
-                                                                                            if (!empty($symptom['since']))
-                                                                                                $details[] = $symptom['since'];
-                                                                                            if (!empty($symptom['severity']))
-                                                                                                $details[] = $symptom['severity'];
-                                                                                            if (!empty($symptom['note']))
-                                                                                                $details[] = $symptom['note'];
-                                                                                            if (!empty($details)) {
-                                                                                                echo ' (' . implode(', ', $details) . ')';
-                                                                                            }
-                                                                                            ?>
-                                                                                        </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
-                                                                    <?php endif; ?>
+                                                        <!-- Symptoms -->
+                                                        <?php if (!empty($consultation['symptoms'])): ?>
+                                                            <p><strong>Symptoms:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['symptoms'] as $symptom): ?>
+                                                                    <li>
+                                                                        <?= $symptom['symptom_name'] ?>
+                                                                        <?php
+                                                                        $details = [];
+                                                                        if (!empty($symptom['since']))
+                                                                            $details[] = $symptom['since'];
+                                                                        if (!empty($symptom['severity']))
+                                                                            $details[] = $symptom['severity'];
+                                                                        if (!empty($symptom['note']))
+                                                                            $details[] = $symptom['note'];
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                                    <!-- Findings -->
-                                                                    <?php if (!empty($consultation['findings'])): ?>
-                                                                            <p><strong>Findings:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['findings'] as $finding): ?>
-                                                                                        <li>
-                                                                                            <?= $finding['finding_name'] ?>
-                                                                                            <?php
-                                                                                            $details = [];
-                                                                                            if (!empty($finding['since']))
-                                                                                                $details[] = $finding['since'];
-                                                                                            if (!empty($finding['severity']))
-                                                                                                $details[] = $finding['severity'];
-                                                                                            if (!empty($finding['note']))
-                                                                                                $details[] = $finding['note'];
-                                                                                            if (!empty($details)) {
-                                                                                                echo ' (' . implode(', ', $details) . ')';
-                                                                                            }
-                                                                                            ?>
-                                                                                        </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
-                                                                    <?php endif; ?>
+                                                        <!-- Findings -->
+                                                        <?php if (!empty($consultation['findings'])): ?>
+                                                            <p><strong>Findings:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['findings'] as $finding): ?>
+                                                                    <li>
+                                                                        <?= $finding['finding_name'] ?>
+                                                                        <?php
+                                                                        $details = [];
+                                                                        if (!empty($finding['since']))
+                                                                            $details[] = $finding['since'];
+                                                                        if (!empty($finding['severity']))
+                                                                            $details[] = $finding['severity'];
+                                                                        if (!empty($finding['note']))
+                                                                            $details[] = $finding['note'];
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                                    <!-- Diagnosis -->
-                                                                    <?php if (!empty($consultation['diagnosis'])): ?>
-                                                                            <p><strong>Diagnosis:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
-                                                                                        <li>
-                                                                                            <?= $diagnosis['diagnosis_name'] ?>
-                                                                                            <?php
-                                                                                            $details = [];
-                                                                                            if (!empty($diagnosis['since']))
-                                                                                                $details[] = $diagnosis['since'];
-                                                                                            if (!empty($diagnosis['severity']))
-                                                                                                $details[] = $diagnosis['severity'];
-                                                                                            if (!empty($diagnosis['note']))
-                                                                                                $details[] = $diagnosis['note'];
-                                                                                            if (!empty($details)) {
-                                                                                                echo ' (' . implode(', ', $details) . ')';
-                                                                                            }
-                                                                                            ?>
-                                                                                        </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
-                                                                    <?php endif; ?>
+                                                        <!-- Diagnosis -->
+                                                        <?php if (!empty($consultation['diagnosis'])): ?>
+                                                            <p><strong>Diagnosis:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
+                                                                    <li>
+                                                                        <?= $diagnosis['diagnosis_name'] ?>
+                                                                        <?php
+                                                                        $details = [];
+                                                                        if (!empty($diagnosis['since']))
+                                                                            $details[] = $diagnosis['since'];
+                                                                        if (!empty($diagnosis['severity']))
+                                                                            $details[] = $diagnosis['severity'];
+                                                                        if (!empty($diagnosis['note']))
+                                                                            $details[] = $diagnosis['note'];
+                                                                        if (!empty($details)) {
+                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                        }
+                                                                        ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                                    <!-- Investigations -->
-                                                                    <?php if (!empty($consultation['investigations'])): ?>
-                                                                            <p><strong>Investigations:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['investigations'] as $inv): ?>
-                                                                                        <li>
-                                                                                            <?= htmlspecialchars($inv['investigation_name']) ?>
-                                                                                            <?php if (!empty($inv['note'])): ?>
-                                                                                                    - <?= htmlspecialchars($inv['note']) ?>
-                                                                                            <?php endif; ?>
-                                                                                        </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
-                                                                    <?php endif; ?>
+                                                        <!-- Investigations -->
+                                                        <?php if (!empty($consultation['investigations'])): ?>
+                                                            <p><strong>Investigations:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['investigations'] as $inv): ?>
+                                                                    <li>
+                                                                        <?= htmlspecialchars($inv['investigation_name']) ?>
+                                                                        <?php if (!empty($inv['note'])): ?>
+                                                                            - <?= htmlspecialchars($inv['note']) ?>
+                                                                        <?php endif; ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                                    <!-- Instructions -->
-                                                                    <?php if (!empty($consultation['instructions'])): ?>
-                                                                            <p><strong>Instructions:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['instructions'] as $ins): ?>
-                                                                                        <li><?= $ins['instruction_name'] ?></li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
-                                                                    <?php endif; ?>
+                                                        <!-- Instructions -->
+                                                        <?php if (!empty($consultation['instructions'])): ?>
+                                                            <p><strong>Instructions:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['instructions'] as $ins): ?>
+                                                                    <li><?= $ins['instruction_name'] ?></li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                                    <!-- ====== Medicines ====== -->
+                                                        <!-- ====== Medicines ====== -->
+                                                        <?php if (!empty($consultation['medicines'])): ?>
+                                                            <p><strong>Medicines:</strong></p>
+                                                            <table
+                                                                style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
+                                                                class="mb-3">
+                                                                <thead>
+                                                                    <!-- First header row -->
+                                                                    <tr>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            S.No</th>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Name</th>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Quantity</th>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Food Timing</th>
+
+                                                                        <!-- Frequency spanning four columns -->
+                                                                        <th colspan="4"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Frequency</th>
+
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                            Notes</th>
+                                                                    </tr>
+
+                                                                    <!-- Second header row for sub-columns -->
+                                                                    <tr>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Morning</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Afternoon</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Evening</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Night</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
                                                                     <?php if (!empty($consultation['medicines'])): ?>
-                                                                            <p><strong>Medicines:</strong></p>
-                                                                            <table
-                                                                                style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
-                                                                                class="mb-3">
-                                                                                <thead>
-                                                                                    <!-- First header row -->
-                                                                                    <tr>
-                                                                                        <th rowspan="2"
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                                            S.No</th>
-                                                                                        <th rowspan="2"
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                                            Name</th>
-                                                                                        <th rowspan="2"
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                                            Quantity</th>
-                                                                                        <th rowspan="2"
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                                            Food Timing</th>
-
-                                                                                        <!-- Frequency spanning four columns -->
-                                                                                        <th colspan="4"
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                            Frequency</th>
-
-                                                                                        <th rowspan="2"
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                                            Notes</th>
-                                                                                    </tr>
-
-                                                                                    <!-- Second header row for sub-columns -->
-                                                                                    <tr>
-                                                                                        <th
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                            Morning</th>
-                                                                                        <th
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                            Afternoon</th>
-                                                                                        <th
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                            Evening</th>
-                                                                                        <th
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                            Night</th>
-                                                                                    </tr>
-                                                                                </thead>
-
-                                                                                <tbody>
-                                                                                    <?php if (!empty($consultation['medicines'])): ?>
-                                                                                            <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
-                                                                                                    <?php
-                                                                                                    // Safely split timing into 4 parts
-                                                                                                    $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
-                                                                                                    $timingParts = preg_split('/\s*-\s*/', $timingString);
-                                                                                                    $timingParts = array_pad($timingParts, 4, '0'); // ensure 4 values
-                                                                                                    list($morning, $afternoon, $evening, $night) = $timingParts;
-                                                                                                    ?>
-                                                                                                    <tr>
-                                                                                                        <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                            <?= $index + 1 . '.' ?>
-                                                                                                        </td>
-                                                                                                        <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                            <?php if (!empty($medicine['medicine_name'])): ?>
-                                                                                                                    <?php if (!empty($medicine['category'])): ?>
-                                                                                                                            <small
-                                                                                                                                class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
-                                                                                                                    <?php endif; ?>
-                                                                                                                    <?= htmlspecialchars($medicine['medicine_name']) ?>
-                                                                                                            <?php else: ?>
-                                                                                                                    -
-                                                                                                            <?php endif; ?>
-                                                                                                        </td>
-                                                                                                        <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                            <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
-                                                                                                        </td>
-                                                                                                        <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                            <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
-                                                                                                        </td>
-
-                                                                                                        <!-- Frequency split -->
-                                                                                                        <td
-                                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                            <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
-                                                                                                        </td>
-                                                                                                        <td
-                                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                            <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
-                                                                                                        </td>
-                                                                                                        <td
-                                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                            <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
-                                                                                                        </td>
-                                                                                                        <td
-                                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                            <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
-                                                                                                        </td>
-
-                                                                                                        <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                            <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                            <?php endforeach; ?>
+                                                                        <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                            <?php
+                                                                            // Safely split timing into 4 parts
+                                                                            $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
+                                                                            $timingParts = preg_split('/\s*-\s*/', $timingString);
+                                                                            $timingParts = array_pad($timingParts, 4, '0'); // ensure 4 values
+                                                                            list($morning, $afternoon, $evening, $night) = $timingParts;
+                                                                            ?>
+                                                                            <tr>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= $index + 1 . '.' ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?php if (!empty($medicine['medicine_name'])): ?>
+                                                                                        <?php if (!empty($medicine['category'])): ?>
+                                                                                            <small
+                                                                                                class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
+                                                                                        <?php endif; ?>
+                                                                                        <?= htmlspecialchars($medicine['medicine_name']) ?>
                                                                                     <?php else: ?>
-                                                                                            <tr>
-                                                                                                <td colspan="9"
-                                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                    No medicines found.
-                                                                                                </td>
-                                                                                            </tr>
+                                                                                        -
                                                                                     <?php endif; ?>
-                                                                                </tbody>
-                                                                            </table>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                </td>
 
+                                                                                <!-- Frequency split -->
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
+                                                                                </td>
 
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach; ?>
+                                                                    <?php else: ?>
+                                                                        <tr>
+                                                                            <td colspan="9"
+                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                No medicines found.
+                                                                            </td>
+                                                                        </tr>
                                                                     <?php endif; ?>
+                                                                </tbody>
+                                                            </table>
 
 
-                                                                    <!-- Attachments
+                                                        <?php endif; ?>
+
+
+                                                        <!-- Attachments
                                                         <?php if (!empty($consultation['attachments'])): ?>
                                                             <p><strong>Attachments:</strong></p>
                                                             <ul>
@@ -638,491 +638,491 @@
                                                                 <?php endforeach; ?>
                                                             </ul>
                                                         <?php endif; ?> -->
-                                                                    <!-- Attachments -->
-                                                                    <?php if (!empty($consultation['attachments'])): ?>
-                                                                            <p><strong>Attachments:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['attachments'] as $attach): ?>
-                                                                                        <?php
-                                                                                        $filePath = base_url('uploads/consultations/' . $attach['file_name']);
-                                                                                        $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
-                                                                                        ?>
-                                                                                        <li>
-                                                                                            <a href="javascript:void(0);" class="openAttachment"
-                                                                                                data-file="<?= $filePath ?>" data-ext="<?= $ext ?>"
-                                                                                                data-context="dashboard">
-                                                                                                <?= htmlspecialchars($attach['file_name']) ?>
-                                                                                            </a>
-                                                                                        </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
-                                                                    <?php endif; ?>
+                                                        <!-- Attachments -->
+                                                        <?php if (!empty($consultation['attachments'])): ?>
+                                                            <p><strong>Attachments:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['attachments'] as $attach): ?>
+                                                                    <?php
+                                                                    $filePath = base_url('uploads/consultations/' . $attach['file_name']);
+                                                                    $ext = pathinfo($attach['file_name'], PATHINFO_EXTENSION);
+                                                                    ?>
+                                                                    <li>
+                                                                        <a href="javascript:void(0);" class="openAttachment"
+                                                                            data-file="<?= $filePath ?>" data-ext="<?= $ext ?>"
+                                                                            data-context="dashboard">
+                                                                            <?= htmlspecialchars($attach['file_name']) ?>
+                                                                        </a>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
 
 
-                                                                    <!-- Notes -->
-                                                                    <?php if (!empty($consultation['notes'])): ?>
-                                                                            <p><strong>Notes:</strong></p>
-                                                                            <ul>
-                                                                                <li><?= $consultation['notes'] ?></li>
-                                                                            </ul>
-                                                                    <?php endif; ?>
+                                                        <!-- Notes -->
+                                                        <?php if (!empty($consultation['notes'])): ?>
+                                                            <p><strong>Notes:</strong></p>
+                                                            <ul>
+                                                                <li><?= $consultation['notes'] ?></li>
+                                                            </ul>
+                                                        <?php endif; ?>
 
-                                                                    <!-- Next Follow-Up -->
-                                                                    <?php if (!empty($consultation['next_follow_up'])): ?>
-                                                                            <p><strong>Next Follow-Up Date:</strong></p>
-                                                                            <ul>
-                                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
-                                                                                </li>
-                                                                            </ul>
-                                                                    <?php endif; ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                <?php endforeach; ?>
+                                                        <!-- Next Follow-Up -->
+                                                        <?php if (!empty($consultation['next_follow_up'])): ?>
+                                                            <p><strong>Next Follow-Up Date:</strong></p>
+                                                            <ul>
+                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
+                                                                </li>
+                                                            </ul>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <!-- Previous and Next arrows script -->
-                                            <script>
-                                                let currentIndex = 0;
-                                                const consultationItems = document.querySelectorAll('.consultation-item');
-                                                const totalItems = consultationItems.length;
-                                                const counterDisplay = document.getElementById('consultation-counter');
-                                                const navLeft = document.getElementById('nav-left');
-                                                const navRight = document.getElementById('nav-right');
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <!-- Previous and Next arrows script -->
+                                    <script>
+                                        let currentIndex = 0;
+                                        const consultationItems = document.querySelectorAll('.consultation-item');
+                                        const totalItems = consultationItems.length;
+                                        const counterDisplay = document.getElementById('consultation-counter');
+                                        const navLeft = document.getElementById('nav-left');
+                                        const navRight = document.getElementById('nav-right');
 
-                                                function updateCounterAndButtons() {
-                                                    counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
-                                                    navLeft.disabled = currentIndex === 0;
-                                                    navRight.disabled = currentIndex === totalItems - 1;
+                                        function updateCounterAndButtons() {
+                                            counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
+                                            navLeft.disabled = currentIndex === 0;
+                                            navRight.disabled = currentIndex === totalItems - 1;
+                                        }
+
+                                        function navigateConsultations(direction) {
+                                            if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
+                                                return;
+                                            }
+                                            consultationItems[currentIndex].classList.remove('active');
+                                            currentIndex = (currentIndex + direction + totalItems) % totalItems;
+                                            consultationItems[currentIndex].classList.add('active');
+                                            updateCounterAndButtons();
+                                        }
+
+                                        document.addEventListener('keydown', function (event) {
+                                            if (event.key === 'ArrowLeft' && currentIndex > 0) {
+                                                navigateConsultations(-1);
+                                            } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
+                                                navigateConsultations(1);
+                                            }
+                                        });
+
+                                        updateCounterAndButtons();
+                                    </script>
+                                    <!-- ✅ Add jsPDF and html2canvas -->
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+                                    <script
+                                        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+                                    <script>
+                                        async function downloadConsultationPDF(consultationId) {
+                                            const element = document.getElementById('consultation-content-' + consultationId);
+                                            if (!element) {
+                                                alert("Consultation content not found!");
+                                                return;
+                                            }
+
+                                            const { jsPDF } = window.jspdf;
+                                            const pdf = new jsPDF('p', 'mm', 'a4');
+
+                                            // Capture element as canvas
+                                            await html2canvas(element, {
+                                                scale: 2,
+                                                useCORS: true,
+                                            }).then(canvas => {
+                                                const imgData = canvas.toDataURL('image/png');
+                                                const imgWidth = 190; // width of A4 minus margins
+                                                const pageHeight = 295; // height of A4
+                                                const imgHeight = canvas.height * imgWidth / canvas.width;
+                                                let heightLeft = imgHeight;
+                                                let position = 10;
+
+                                                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                                                heightLeft -= pageHeight;
+
+                                                while (heightLeft > 0) {
+                                                    position = heightLeft - imgHeight;
+                                                    pdf.addPage();
+                                                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                                                    heightLeft -= pageHeight;
                                                 }
 
-                                                function navigateConsultations(direction) {
-                                                    if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
-                                                        return;
-                                                    }
-                                                    consultationItems[currentIndex].classList.remove('active');
-                                                    currentIndex = (currentIndex + direction + totalItems) % totalItems;
-                                                    consultationItems[currentIndex].classList.add('active');
-                                                    updateCounterAndButtons();
-                                                }
+                                                pdf.save('consultation_' + consultationId + '.pdf');
+                                            });
+                                        }
+                                    </script>
+                                <?php else: ?>
+                                    <p>No Previous Consultation.</p>
+                                <?php endif; ?>
+                            </div>
 
-                                                document.addEventListener('keydown', function (event) {
-                                                    if (event.key === 'ArrowLeft' && currentIndex > 0) {
-                                                        navigateConsultations(-1);
-                                                    } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
-                                                        navigateConsultations(1);
-                                                    }
-                                                });
+                            <!-- New Consultation -->
+                            <div class="tab-pane fade" id="new-consultation" role="tabpanel">
+                                <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
+                                    id="consultationForm" class="mb-5" enctype="multipart/form-data">
+                                    <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                        value="<?php echo $patientDetails[0]['id'] ?>">
+                                    <input type="hidden" id="patientId" name="patientId"
+                                        value="<?php echo $patientDetails[0]['patientId'] ?>">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
 
-                                                updateCounterAndButtons();
-                                            </script>
-                                            <!-- ✅ Add jsPDF and html2canvas -->
-                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-                                            <script
-                                                src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+                                        <div>
+                                            <label for="consultDate" class="form-label fieldLabel">Consultation Date &
+                                                Time:</label>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <input type="date" id="consultDate" name="consultDate" class="form-control"
+                                                    style="width: 180px;">
+                                                <select id="consultTime" name="consultTime" class="form-select"
+                                                    style="width: 150px;">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                            <script>
-                                                async function downloadConsultationPDF(consultationId) {
-                                                    const element = document.getElementById('consultation-content-' + consultationId);
-                                                    if (!element) {
-                                                        alert("Consultation content not found!");
-                                                        return;
-                                                    }
-
-                                                    const { jsPDF } = window.jspdf;
-                                                    const pdf = new jsPDF('p', 'mm', 'a4');
-
-                                                    // Capture element as canvas
-                                                    await html2canvas(element, {
-                                                        scale: 2,
-                                                        useCORS: true,
-                                                    }).then(canvas => {
-                                                        const imgData = canvas.toDataURL('image/png');
-                                                        const imgWidth = 190; // width of A4 minus margins
-                                                        const pageHeight = 295; // height of A4
-                                                        const imgHeight = canvas.height * imgWidth / canvas.width;
-                                                        let heightLeft = imgHeight;
-                                                        let position = 10;
-
-                                                        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                                                        heightLeft -= pageHeight;
-
-                                                        while (heightLeft > 0) {
-                                                            position = heightLeft - imgHeight;
-                                                            pdf.addPage();
-                                                            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                                                            heightLeft -= pageHeight;
-                                                        }
-
-                                                        pdf.save('consultation_' + consultationId + '.pdf');
-                                                    });
-                                                }
-                                            </script>
-                                    <?php else: ?>
-                                            <p>No Previous Consultation.</p>
-                                    <?php endif; ?>
-                                </div>
-
-                                <!-- New Consultation -->
-                                <div class="tab-pane fade" id="new-consultation" role="tabpanel">
-                                    <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
-                                        id="consultationForm" class="mb-5" enctype="multipart/form-data">
-                                        <input type="hidden" id="patientIdDb" name="patientIdDb"
-                                            value="<?php echo $patientDetails[0]['id'] ?>">
-                                        <input type="hidden" id="patientId" name="patientId"
-                                            value="<?php echo $patientDetails[0]['patientId'] ?>">
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-                                            <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
-
-                                            <div>
-                                                <label for="consultDate" class="form-label fieldLabel">Consultation Date &
-                                                    Time:</label>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <input type="date" id="consultDate" name="consultDate" class="form-control"
-                                                        style="width: 180px;">
-                                                    <select id="consultTime" name="consultTime" class="form-select"
-                                                        style="width: 150px;">
-                                                    </select>
+                                    <div class="p-3">
+                                        <div class="d-md-flex mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="patientHeight">Height</label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientHeight"
+                                                        name="patientHeight" step="0.1" min="0" placeholder="E.g. 135">
+                                                    <p class="mx-2 my-2">Cm</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                        name="patientWeight" step="0.1" min="0" placeholder="E.g. 50">
+                                                    <p class="mx-2 my-2">Kg</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientWeight">Systolic BP
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientSystolicBp" name="patientSystolicBp"
+                                                        placeholder="E.g. 120" step="0.1" min="0">
+                                                </div>
+                                                <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientHeight">Diastolic
+                                                    BP</label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientDiastolicBp" name="patientDiastolicBp"
+                                                        placeholder="E.g. 80" step="0.1" min="0">
+                                                    <p class="mx-2 my-2">mmHg</p>
+                                                </div>
+                                                <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
+                                            </div>
+                                        </div>
+                                        <div class="d-md-flex mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                        name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5">
+                                                    <p class="mx-2 my-2">%</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
+                                                    <p class="mx-2 my-2">%</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientPulseRate" name="patientPulseRate" placeholder="E.g. 75"
+                                                        step="1" min="0">
+                                                    <p class="mx-2 my-2">/min</p>
+                                                </div>
+                                                <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                                </label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
+                                                        step="0.01" placeholder="E.g. 98.6">
+                                                    <p class="mx-2 my-2">°F</p>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="p-3">
-                                            <div class="d-md-flex mb-3">
-                                                <div class="col-md-4">
-                                                    <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                                    <div class="d-flex me-4">
-                                                        <input type="number" class="form-control fieldStyle" id="patientHeight"
-                                                            name="patientHeight" step="0.1" min="0" placeholder="E.g. 135">
-                                                        <p class="mx-2 my-2">Cm</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mt-3 mt-md-0">
-                                                    <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                                    <div class="d-flex me-4">
-                                                        <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                                            name="patientWeight" step="0.1" min="0" placeholder="E.g. 50">
-                                                        <p class="mx-2 my-2">Kg</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 mt-3 mt-md-0">
-                                                    <label class="form-label fieldLabel" for="patientWeight">Systolic BP
-                                                    </label>
-                                                    <div class="d-flex me-4">
-                                                        <input type="number" class="form-control fieldStyle"
-                                                            id="patientSystolicBp" name="patientSystolicBp"
-                                                            placeholder="E.g. 120" step="0.1" min="0">
-                                                    </div>
-                                                    <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
-                                                </div>
-                                                <div class="col-md-2 mt-3 mt-md-0">
-                                                    <label class="form-label fieldLabel" for="patientHeight">Diastolic
-                                                        BP</label>
-                                                    <div class="d-flex">
-                                                        <input type="number" class="form-control fieldStyle"
-                                                            id="patientDiastolicBp" name="patientDiastolicBp"
-                                                            placeholder="E.g. 80" step="0.1" min="0">
-                                                        <p class="mx-2 my-2">mmHg</p>
-                                                    </div>
-                                                    <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
+                                        <div class="d-md-flex mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
+                                                    (Fasting)</label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                        name="fastingBsugar" step="0.1" min="0" placeholder="E.g. 75">
+                                                    <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
-                                            <div class="d-md-flex mb-3">
-                                                <div class="col-md-4">
-                                                    <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                                    <div class="d-flex me-4">
-                                                        <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                            name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5">
-                                                        <p class="mx-2 my-2">%</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mt-3 mt-md-0">
-                                                    <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                                    <div class="d-flex me-4">
-                                                        <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                            name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
-                                                        <p class="mx-2 my-2">%</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2 mt-3 mt-md-0">
-                                                    <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                                    </label>
-                                                    <div class="d-flex me-4">
-                                                        <input type="number" class="form-control fieldStyle"
-                                                            id="patientPulseRate" name="patientPulseRate" placeholder="E.g. 75"
-                                                            step="1" min="0">
-                                                        <p class="mx-2 my-2">/min</p>
-                                                    </div>
-                                                    <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                                </div>
-                                                <div class="col-md-2 mt-3 mt-md-0">
-                                                    <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                                    </label>
-                                                    <div class="d-flex">
-                                                        <input type="number" class="form-control fieldStyle"
-                                                            id="patientTemperature" name="patientTemperature" step="0.1" min="0"
-                                                            step="0.01" placeholder="E.g. 98.6">
-                                                        <p class="mx-2 my-2">°F</p>
-                                                    </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP)
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                        name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                                    <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
-                                            <div class="d-md-flex mb-3">
-                                                <div class="col-md-4">
-                                                    <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
-                                                        (Fasting)</label>
-                                                    <div class="d-flex me-4">
-                                                        <input type="number" class="form-control fieldStyle" id="fastingBsugar"
-                                                            name="fastingBsugar" step="0.1" min="0" placeholder="E.g. 75">
-                                                        <p class="mx-2 my-2">mg/dL</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mt-3 mt-md-0">
-                                                    <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP)
-                                                    </label>
-                                                    <div class="d-flex me-4">
-                                                        <input type="number" class="form-control fieldStyle" id="ppBsugar"
-                                                            name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
-                                                        <p class="mx-2 my-2">mg/dL</p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 mt-3 mt-md-0">
-                                                    <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar
-                                                        (Random)
-                                                    </label>
-                                                    <div class="d-flex">
-                                                        <input type="number" class="form-control fieldStyle" id="randomBsugar"
-                                                            name="randomBsugar" step="0.1" min="0" placeholder="E.g. 125">
-                                                        <p class="mx-2 my-2">mg/dL</p>
-                                                    </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar
+                                                    (Random)
+                                                </label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                        name="randomBsugar" step="0.1" min="0" placeholder="E.g. 125">
+                                                    <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <p class="my-3 fs-5 fw-semibold">Consultation Details:</p>
-                                        <div class="p-3">
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                    style="background-color: rgb(206, 206, 206);" role="button"
-                                                    data-toggle="collapse" data-target="#symptomsCollapse">
-                                                    <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
-                                                    <span class="toggle-icon">+</span>
-                                                </div>
-                                                <div class="collapse field-container mt-2" id="symptomsCollapse">
-                                                    <div id="symptomsWrapper">
-                                                        <div class="mb-3 position-relative">
-                                                            <div class="tags-input" id="symptomsInput">
-                                                                <input type="text"
-                                                                    class="form-control border-0 p-0 m-0 shadow-none"
-                                                                    id="symptomsSearchInput"
-                                                                    placeholder="Search or type to add..." />
-                                                            </div>
-                                                            <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
-                                                        </div>
-                                                        <div id="symptomsList" class="mt-2"></div>
-                                                    </div>
-                                                </div>
+                                    <p class="my-3 fs-5 fw-semibold">Consultation Details:</p>
+                                    <div class="p-3">
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-toggle="collapse" data-target="#symptomsCollapse">
+                                                <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
+                                                <span class="toggle-icon">+</span>
                                             </div>
-                                            <input type="hidden" name="symptomsJson" id="symptomsJson">
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                    style="background-color: rgb(206, 206, 206);" role="button"
-                                                    data-toggle="collapse" data-target="#findingsCollapse">
-                                                    <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
-                                                    <span class="toggle-icon">+</span>
-                                                </div>
-                                                <div class="collapse field-container mt-2" id="findingsCollapse">
-                                                    <div id="findingsWrapper">
-                                                        <div class="mb-3 position-relative">
-                                                            <div class="tags-input" id="findingsInput">
-                                                                <input type="text"
-                                                                    class="form-control border-0 p-0 m-0 shadow-none"
-                                                                    id="searchInput" placeholder="Search or type to add..." />
-                                                            </div>
-                                                            <div class="suggestions-box" id="suggestionsBox"></div>
-                                                        </div>
-                                                        <div id="findingsList" class="mt-2"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="findingsJson" id="findingsJson">
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                    style="background-color: rgb(206, 206, 206);" role="button"
-                                                    data-toggle="collapse" data-target="#diagnosisCollapse">
-                                                    <span><strong><i class="bi bi-clipboard2-heart me-2"></i>
-                                                            Diagnosis</strong></span>
-                                                    <span class="toggle-icon">+</span>
-                                                </div>
-                                                <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                            <div class="collapse field-container mt-2" id="symptomsCollapse">
+                                                <div id="symptomsWrapper">
                                                     <div class="mb-3 position-relative">
-                                                        <div class="tags-input" id="diagnosisInputBox">
-                                                            <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                                id="diagnosisInput"
-                                                                placeholder="Search or type to add diagnosis..." />
+                                                        <div class="tags-input" id="symptomsInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="symptomsSearchInput"
+                                                                placeholder="Search or type to add..." />
                                                         </div>
-                                                        <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
+                                                        <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
                                                     </div>
+                                                    <div id="symptomsList" class="mt-2"></div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="diagnosisJson" id="diagnosisJson">
+                                        </div>
+                                        <input type="hidden" name="symptomsJson" id="symptomsJson">
 
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                    style="background-color: rgb(206, 206, 206);" role="button"
-                                                    data-toggle="collapse" data-target="#investigationsCollapse">
-                                                    <span><strong><i class="bi bi-patch-question me-2"></i>
-                                                            Investigations</strong></span>
-                                                    <span class="toggle-icon">+</span>
-                                                </div>
-                                                <div class="collapse field-container mt-2" id="investigationsCollapse">
-                                                    <div id="investigationsWrapper">
-                                                        <div class="mb-3 position-relative">
-                                                            <div class="tags-input" id="investigationsInput">
-                                                                <input type="text"
-                                                                    class="form-control border-0 p-0 m-0 shadow-none"
-                                                                    id="investigationsSearchInput"
-                                                                    placeholder="Search or type to add..." />
-                                                            </div>
-                                                            <div class="suggestions-box" id="investigationsSuggestionsBox">
-                                                            </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-toggle="collapse" data-target="#findingsCollapse">
+                                                <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2" id="findingsCollapse">
+                                                <div id="findingsWrapper">
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="tags-input" id="findingsInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="searchInput" placeholder="Search or type to add..." />
                                                         </div>
-                                                        <div id="investigationsList" class="mt-2"></div>
+                                                        <div class="suggestions-box" id="suggestionsBox"></div>
                                                     </div>
+                                                    <div id="findingsList" class="mt-2"></div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="investigationsJson" id="investigationsJson">
+                                        </div>
+                                        <input type="hidden" name="findingsJson" id="findingsJson">
 
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                                    <span><strong><i class="bi bi-prescription2 me-2"></i>
-                                                            Procedures</strong></span>
-                                                    <span class="toggle-icon">+</span>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-toggle="collapse" data-target="#diagnosisCollapse">
+                                                <span><strong><i class="bi bi-clipboard2-heart me-2"></i>
+                                                        Diagnosis</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                                <div class="mb-3 position-relative">
+                                                    <div class="tags-input" id="diagnosisInputBox">
+                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                            id="diagnosisInput"
+                                                            placeholder="Search or type to add diagnosis..." />
+                                                    </div>
+                                                    <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="diagnosisJson" id="diagnosisJson">
 
-                                                <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-toggle="collapse" data-target="#investigationsCollapse">
+                                                <span><strong><i class="bi bi-patch-question me-2"></i>
+                                                        Investigations</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                                <div id="investigationsWrapper">
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="tags-input" id="investigationsInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="investigationsSearchInput"
+                                                                placeholder="Search or type to add..." />
+                                                        </div>
+                                                        <div class="suggestions-box" id="investigationsSuggestionsBox">
+                                                        </div>
+                                                    </div>
+                                                    <div id="investigationsList" class="mt-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="investigationsJson" id="investigationsJson">
+
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                        Procedures</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+
+                                            <div class="collapse field-container mt-2">
+                                                <div class="input-group mb-2">
+                                                    <input type="text" class="form-control" id="procedureSearch"
+                                                        placeholder="Search Instructions">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearProcedureSearch">✖</button>
+                                                    <button type="button" class="btn btn-outline-primary d-none"
+                                                        id="addProcedure">+ Add</button>
+                                                </div>
+                                                <div id="procedureList">
+                                                    <?php if (!empty($proceduresList)): ?>
+                                                        <?php foreach ($proceduresList as $pro): ?>
+                                                            <div class="form-check procedure-item">
+                                                                <input class="form-check-input" type="checkbox" name="procedures[]"
+                                                                    value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
+                                                                    id="pro<?php echo $pro['id']; ?>">
+                                                                <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
+                                                                    <?php echo htmlspecialchars($pro['proceduresName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button"
+                                                data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                                <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                                <div id="medicinesWrapper">
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="tags-input" id="medicinesInput">
+                                                            <input type="text"
+                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                                id="medicinesSearchInput"
+                                                                placeholder="Search or type to add..." />
+                                                        </div>
+                                                        <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                    </div>
+                                                    <div id="medicinesList" class="mt-2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="medicinesJson" id="medicinesJson">
+
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                        Advice</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+
+                                            <div class="collapse field-container mt-2">
+                                                <div class="input-group mb-2">
+                                                    <input type="text" class="form-control" id="adviceSearch"
+                                                        placeholder="Search Advice">
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearAdviceSearch">✖</button>
+                                                    <button type="button" class="btn btn-outline-primary d-none"
+                                                        id="addAdvice">+ Add</button>
+                                                </div>
+                                                <div id="adviceList">
+                                                    <?php if (!empty($advicesList)): ?>
+                                                        <?php foreach ($advicesList as $adv): ?>
+                                                            <div class="form-check advice-item">
+                                                                <input class="form-check-input" type="checkbox" name="advices[]"
+                                                                    value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                                    id="adv<?php echo $adv['id']; ?>">
+                                                                <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                                    <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                        Instructions</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
+                                            <div class="collapse field-container mt-2">
+                                                <div class="mb-3">
                                                     <div class="input-group mb-2">
-                                                        <input type="text" class="form-control" id="procedureSearch"
+                                                        <input type="text" class="form-control" id="instructionSearch"
                                                             placeholder="Search Instructions">
                                                         <button type="button" class="btn btn-outline-secondary"
-                                                            id="clearProcedureSearch">✖</button>
+                                                            id="clearInstructionSearch">✖</button>
                                                         <button type="button" class="btn btn-outline-primary d-none"
-                                                            id="addProcedure">+ Add</button>
-                                                    </div>
-                                                    <div id="procedureList">
-                                                        <?php if (!empty($proceduresList)): ?>
-                                                                <?php foreach ($proceduresList as $pro): ?>
-                                                                        <div class="form-check procedure-item">
-                                                                            <input class="form-check-input" type="checkbox" name="procedures[]"
-                                                                                value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
-                                                                                id="pro<?php echo $pro['id']; ?>">
-                                                                            <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
-                                                                                <?php echo htmlspecialchars($pro['proceduresName']); ?>
-                                                                            </label>
-                                                                        </div>
-                                                                <?php endforeach; ?>
-                                                        <?php endif; ?>
+                                                            id="addInstruction">+ Add</button>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                    style="background-color: rgb(206, 206, 206);" role="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
-                                                    <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
-                                                    <span class="toggle-icon">+</span>
-                                                </div>
-                                                <div class="collapse field-container mt-2" id="medicinesCollapse">
-                                                    <div id="medicinesWrapper">
-                                                        <div class="mb-3 position-relative">
-                                                            <div class="tags-input" id="medicinesInput">
-                                                                <input type="text"
-                                                                    class="form-control border-0 p-0 m-0 shadow-none"
-                                                                    id="medicinesSearchInput"
-                                                                    placeholder="Search or type to add..." />
+                                                <div id="instructionList">
+                                                    <?php if (!empty($instructionsList)): ?>
+                                                        <?php foreach ($instructionsList as $ins): ?>
+                                                            <div class="form-check instruction-item">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    name="instructions[]"
+                                                                    value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                                    id="ins<?php echo $ins['id']; ?>">
+                                                                <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                                    <?php echo htmlspecialchars($ins['instructionsName']); ?>
+                                                                </label>
                                                             </div>
-                                                            <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                                        </div>
-                                                        <div id="medicinesList" class="mt-2"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="medicinesJson" id="medicinesJson">
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                                    <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                            Advice</strong></span>
-                                                    <span class="toggle-icon">+</span>
-                                                </div>
-
-                                                <div class="collapse field-container mt-2">
-                                                    <div class="input-group mb-2">
-                                                        <input type="text" class="form-control" id="adviceSearch"
-                                                            placeholder="Search Advice">
-                                                        <button type="button" class="btn btn-outline-secondary"
-                                                            id="clearAdviceSearch">✖</button>
-                                                        <button type="button" class="btn btn-outline-primary d-none"
-                                                            id="addAdvice">+ Add</button>
-                                                    </div>
-                                                    <div id="adviceList">
-                                                        <?php if (!empty($advicesList)): ?>
-                                                                <?php foreach ($advicesList as $adv): ?>
-                                                                        <div class="form-check advice-item">
-                                                                            <input class="form-check-input" type="checkbox" name="advices[]"
-                                                                                value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
-                                                                                id="adv<?php echo $adv['id']; ?>">
-                                                                            <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
-                                                                                <?php echo htmlspecialchars($adv['adviceName']); ?>
-                                                                            </label>
-                                                                        </div>
-                                                                <?php endforeach; ?>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                                    style="background-color: rgb(206, 206, 206);" role="button">
-                                                    <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                            Instructions</strong></span>
-                                                    <span class="toggle-icon">+</span>
-                                                </div>
-                                                <div class="collapse field-container mt-2">
-                                                    <div class="mb-3">
-                                                        <div class="input-group mb-2">
-                                                            <input type="text" class="form-control" id="instructionSearch"
-                                                                placeholder="Search Instructions">
-                                                            <button type="button" class="btn btn-outline-secondary"
-                                                                id="clearInstructionSearch">✖</button>
-                                                            <button type="button" class="btn btn-outline-primary d-none"
-                                                                id="addInstruction">+ Add</button>
-                                                        </div>
-                                                    </div>
-                                                    <div id="instructionList">
-                                                        <?php if (!empty($instructionsList)): ?>
-                                                                <?php foreach ($instructionsList as $ins): ?>
-                                                                        <div class="form-check instruction-item">
-                                                                            <input class="form-check-input" type="checkbox"
-                                                                                name="instructions[]"
-                                                                                value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                                                id="ins<?php echo $ins['id']; ?>">
-                                                                            <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                                                <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                                            </label>
-                                                                        </div>
-                                                                <?php endforeach; ?>
-                                                        <?php endif; ?>
-                                                    </div>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- <div class="form-group pb-3">
+                                    <!-- <div class="form-group pb-3">
                                         <label class="form-label fieldLabel">Attachments</label>
                                         <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
                                             accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
@@ -1134,432 +1134,937 @@
                                         <div id="fileError" class="text-danger pt-1"></div> 
                                     </div> --><!-- This code is common for all 3 new, edi and followup -->
 
-                                        <div class="form-group pb-3" data-page="new">
-                                            <label class="form-label fieldLabel">Attachments</label>
-                                            <button type="button" class="addFileBtn btn text-light float-end mb-2"
-                                                style="background-color: #00ad8e;"> + Add File </button>
-                                            <div class="mb-3"></div>
-                                            <div class="dropZone"
-                                                style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                                <p class="text-muted mb-0">Drag and drop files here, or click the button below.
-                                                </p>
-                                            </div>
-                                            <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                                multiple>
-                                            <input type="file" class="submitFileInput d-none" name="consultationFiles[]"
-                                                multiple>
-                                            <div class="fileList" style="margin-top: 0.5rem;"></div>
-                                            <div class="fileError text-danger pt-1"></div>
-                                            <input type="hidden" class="removedFiles" name="removedFiles" value="">
+                                    <div class="form-group pb-3" data-page="new">
+                                        <label class="form-label fieldLabel">Attachments</label>
+                                        <button type="button" class="addFileBtn btn text-light float-end mb-2"
+                                            style="background-color: #00ad8e;"> + Add File </button>
+                                        <div class="mb-3"></div>
+                                        <div class="dropZone"
+                                            style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                            <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                            </p>
                                         </div>
+                                        <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                            multiple>
+                                        <input type="file" class="submitFileInput d-none" name="consultationFiles[]"
+                                            multiple>
+                                        <div class="fileList" style="margin-top: 0.5rem;"></div>
+                                        <div class="fileError text-danger pt-1"></div>
+                                        <input type="hidden" class="removedFiles" name="removedFiles" value="">
+                                    </div>
 
-                                        <div class="form-group pb-3">
-                                            <label class="form-label fieldLabel" for="notes">Notes <span
-                                                    class="text-danger">*</span></label>
-                                            <textarea class="form-control" name="notes" id="notes"
-                                                placeholder="Enter the notes"></textarea>
-                                            <div id="advices_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="form-group pb-3">
-                                            <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date
-                                                <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" id="nextFollowUpDate"
-                                                name="nextFollowUpDate">
-                                            <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
-                                        </div>
+                                    <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel" for="notes">Notes <span
+                                                class="text-danger">*</span></label>
+                                        <textarea class="form-control" name="notes" id="notes"
+                                            placeholder="Enter the notes"></textarea>
+                                        <div id="advices_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="form-group pb-3">
+                                        <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date
+                                            <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" id="nextFollowUpDate"
+                                            name="nextFollowUpDate">
+                                        <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
+                                    </div>
 
-                                        <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
-                                            style="background-color: #00ad8e;">Save</button>
-                                    </form>
-                                    <!---------------------------------------------------- Image Edit Modal -------------------------->
-                                    <div class="modal fade" id="imageEditModal" tabindex="-1"
-                                        aria-labelledby="imageEditModalLabel" aria-hidden="true" data-bs-backdrop="static"
-                                        data-bs-keyboard="false">
-                                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <!-- Custom Toolbar -->
-                                                    <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
-                                                        <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
-                                                            title="Crop">✂️ Crop</button>
-                                                        <button type="button" id="rotate-btn"
-                                                            class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
-                                                    </div>
-                                                    <h5 class=" fw-medium" id="imageEditModalLabel"
-                                                        style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image
-                                                    </h5>
-                                                    <button type="button" class="btn-close btn btn-danger"
-                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
+                                        style="background-color: #00ad8e;">Save</button>
+                                </form>
+                                <!---------------------------------------------------- Image Edit Modal -------------------------->
+                                <div class="modal fade" id="imageEditModal" tabindex="-1"
+                                    aria-labelledby="imageEditModalLabel" aria-hidden="true" data-bs-backdrop="static"
+                                    data-bs-keyboard="false">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <!-- Custom Toolbar -->
+                                                <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                                    <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
+                                                        title="Crop">✂️ Crop</button>
+                                                    <button type="button" id="rotate-btn"
+                                                        class="btn btn-sm btn-outline-dark" title="Rotate">⟳ Rotate</button>
                                                 </div>
-                                                <div class="modal-body text-center">
+                                                <h5 class=" fw-medium" id="imageEditModalLabel"
+                                                    style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image
+                                                </h5>
+                                                <button type="button" class="btn-close btn btn-danger"
+                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center">
 
-                                                    <!-- Bootstrap container for image -->
-                                                    <div class="container">
-                                                        <div class="row justify-content-center">
-                                                            <div class="col-12"
-                                                                style="position: relative; width: 600px; height: 600px;">
-                                                                <img id="editor-image" class="img-fluid"
-                                                                    style=" object-fit: contain; display: none; ">
-                                                                <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
-                                                            </div>
+                                                <!-- Bootstrap container for image -->
+                                                <div class="container">
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-12"
+                                                            style="position: relative; width: 600px; height: 600px;">
+                                                            <img id="editor-image" class="img-fluid"
+                                                                style=" object-fit: contain; display: none; ">
+                                                            <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="modal-footer" style="background-color: white;">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="button" class="btn text-light"
-                                                        style="background-color: #00ad8e;" id="saveEditedImage">OK</button>
-                                                </div>
+                                            </div>
+                                            <div class="modal-footer" style="background-color: white;">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn text-light"
+                                                    style="background-color: #00ad8e;" id="saveEditedImage">OK</button>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-----------------------------end edit image------------------>
+                                </div>
+                                <!-----------------------------end edit image------------------>
 
-                                    <div class="modal fade" id="newConsultationPreviewModal" tabindex="-1"
-                                        aria-labelledby="newConsultationPreviewModalLabel" aria-hidden="true"
-                                        data-bs-backdrop="static" data-bs-keyboard="true">
-                                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                                                        id="newConsultationPreviewModalLabel">
-                                                        New Consultation Attachment Preview
-                                                    </h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
+                                <div class="modal fade" id="newConsultationPreviewModal" tabindex="-1"
+                                    aria-labelledby="newConsultationPreviewModalLabel" aria-hidden="true"
+                                    data-bs-backdrop="static" data-bs-keyboard="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                                                    id="newConsultationPreviewModalLabel">
+                                                    New Consultation Attachment Preview
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body text-center position-relative">
+                                                <button id="prevNewConsultation"
+                                                    class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                                    style="font-size: 1.5rem; z-index: 10;" disabled>
+                                                    <b>&lt;</b>
+                                                </button>
+                                                <div id="newconsultation-content-wrapper">
+                                                    <img id="newConsultationImage" src="" alt="Attachment"
+                                                        class="img-fluid d-none">
+                                                    <iframe id="newConsultationPDF" src="" class="w-100"
+                                                        style="height:500px;" frameborder="0"></iframe>
                                                 </div>
-                                                <div class="modal-body text-center position-relative">
-                                                    <button id="prevNewConsultation"
-                                                        class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                                                        style="font-size: 1.5rem; z-index: 10;" disabled>
-                                                        <b>&lt;</b>
-                                                    </button>
-                                                    <div id="newconsultation-content-wrapper">
-                                                        <img id="newConsultationImage" src="" alt="Attachment"
-                                                            class="img-fluid d-none">
-                                                        <iframe id="newConsultationPDF" src="" class="w-100"
-                                                            style="height:500px;" frameborder="0"></iframe>
+                                                <button id="nextNewConsultation"
+                                                    class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                                    style="font-size: 1.5rem; z-index: 10;" disabled>
+                                                    <b>&gt;</b>
+                                                </button>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary text-light"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!------- end attachment display -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        <?php } elseif ($method == "followupConsult") { ?>
+            <section>
+                <div class="card rounded pb-3">
+                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                        <div class="border border-2 rounded text-center py-2 position-relative px-5">
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                    class="position-absolute top-0 end-0 m-2">
+                                    <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
+                                </a>
+                                <p style="font-size: 16px; font-weight: 700">
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['patientId'] ?>
+                                </p>
+                                <p>
+                                    <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                        <?php echo $value['mobileNumber'] ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
+                                </p>
+                            <?php } ?>
+                        </div>
+                        <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
+                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                    </div>
+
+                    <div class="card-body mx-3 px-md-4">
+                        <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
+                            enctype="multipart/form-data" id="consultationForm" class="mb-5">
+                            <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                value="<?php echo $patientDetails[0]['id'] ?>">
+                            <input type="hidden" id="patientId" name="patientId"
+                                value="<?php echo $patientDetails[0]['patientId'] ?>">
+                            <p class="fs-4 fw-semibold mb-3">Follow-up Consultation:</p>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
+                                <div>
+                                    <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input type="date" id="consultDate" name="consultDate" class="form-control"
+                                            style="width: 180px;">
+                                        <select id="consultTime" name="consultTime" class="form-select"
+                                            style="width: 150px;">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-3">
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientHeight">Height</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientHeight"
+                                                name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
+                                                value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
+                                            <p class="mx-2 my-2">Cm</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
+                                            <p class="mx-2 my-2">Kg</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Systolic BP
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
+                                                name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
+                                                value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
+                                        </div>
+                                        <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
+                                                name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
+                                                value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
+                                        </div>
+                                        <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
+                                            (Fasting)</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                name="fastingBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                placeholder="E.g. 75">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                name="randomBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                placeholder="E.g. 125">
+                                            <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#symptomsCollapse">
+                                        <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="symptomsCollapse">
+                                        <div id="symptomsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="symptomsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="symptomsSearchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
+                                            </div>
+                                            <div id="symptomsList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="symptomsJson" id="symptomsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#findingsCollapse">
+                                        <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="findingsCollapse">
+                                        <div id="findingsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="findingsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="searchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="suggestionsBox"></div>
+                                            </div>
+                                            <div id="findingsList" class="mt-2"></div>
+                                            <!-- Display added findings -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="findingsJson" id="findingsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#diagnosisCollapse">
+                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i>
+                                                Diagnosis</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                        <div class="mb-3 position-relative">
+                                            <div class="tags-input" id="diagnosisInputBox">
+                                                <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                    id="diagnosisInput" placeholder="Search or type to add diagnosis..." />
+                                            </div>
+                                            <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="diagnosisJson" id="diagnosisJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#investigationsCollapse">
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
+                                                Investigations</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                        <div id="investigationsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="investigationsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="investigationsSearchInput"
+                                                        placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
+                                            </div>
+                                            <div id="investigationsList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="investigationsJson" id="investigationsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                Procedures</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="procedureSearch"
+                                                placeholder="Search Instructions">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearProcedureSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
+                                                Add</button>
+                                        </div>
+                                        <div id="procedureList">
+                                            <?php if (!empty($proceduresList)): ?>
+                                                <?php foreach ($proceduresList as $pro): ?>
+                                                    <div class="form-check procedure-item">
+                                                        <input class="form-check-input" type="checkbox" name="procedures[]"
+                                                            value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
+                                                            id="pro<?php echo $pro['id']; ?>">
+                                                        <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
+                                                            <?php echo htmlspecialchars($pro['proceduresName']); ?>
+                                                        </label>
                                                     </div>
-                                                    <button id="nextNewConsultation"
-                                                        class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                                                        style="font-size: 1.5rem; z-index: 10;" disabled>
-                                                        <b>&gt;</b>
-                                                    </button>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button"
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                        <div id="medicinesWrapper">
+                                            <div class="input-group mb-2 position-relative">
+                                                <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                    <input type="text" class="form-control" id="medicinesSearchInput"
+                                                        placeholder="Search or type to add..." />
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary text-light"
-                                                        data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearMedicineSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="medicinesAddBtn">+ Add</button>
+                                            </div>
+                                            <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                            <div id="medicinesList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="medicinesJson" id="medicinesJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="adviceSearch"
+                                                placeholder="Search Advice">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearAdviceSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
+                                                Add</button>
+                                        </div>
+                                        <div id="adviceList">
+                                            <?php if (!empty($advicesList)): ?>
+                                                <?php foreach ($advicesList as $adv): ?>
+                                                    <div class="form-check advice-item">
+                                                        <input class="form-check-input" type="checkbox" name="advices[]"
+                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                            id="adv<?php echo $adv['id']; ?>">
+                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="instructionSearch"
+                                                    placeholder="Search Instructions">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
+                                            </div>
+                                        </div>
+                                        <div id="instructionList">
+                                            <?php if (!empty($instructionsList)): ?>
+                                                <?php foreach ($instructionsList as $ins): ?>
+                                                    <div class="form-check instruction-item">
+                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
+                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                            id="ins<?php echo $ins['id']; ?>">
+                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group pb-3" data-page="followup">
+                                <label class="form-label fieldLabel">Attachments</label>
+                                <button type="button" class="addFileBtn btn text-light float-end mb-2"
+                                    style="background-color: #00ad8e;"> + Add File </button>
+                                <div class="mb-3"></div>
+                                <div class="dropZone"
+                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
+                                </div>
+                                <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                    multiple>
+                                <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
+                                <div class="fileList" style="margin-top: 0.5rem;"></div>
+                                <div class="fileError text-danger pt-1"></div>
+                                <input type="hidden" class="removedFiles" name="removedFiles" value="">
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="notes">Notes <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="notes" id="notes"
+                                    placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
+                                <div id="advices_err" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
+                                    value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
+                                <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
+                            </div>
+
+                            <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
+                                style="background-color: #00ad8e;">Save as new</button>
+                        </form>
+                        <!---------------------------------------------------- Image Edit Modal -------------------------->
+                        <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- Custom Toolbar -->
+                                        <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                            <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Crop">✂️ Crop</button>
+                                            <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Rotate">⟳ Rotate</button>
+                                        </div>
+                                        <h5 class=" fw-medium" id="imageEditModalLabel"
+                                            style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                        <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+
+                                        <!-- Bootstrap container for image -->
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-12"
+                                                    style="position: relative; width: 600px; height: 600px;">
+                                                    <img id="editor-image" class="img-fluid"
+                                                        style=" object-fit: contain; display: none; ">
+                                                    <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <!------- end attachment display -->
+                                    <div class="modal-footer" style="background-color: white;">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                                            id="saveEditedImage">OK</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-----------------------------end ------------------>
+
+                        <!-- Preview display Followup Model -->
+                        <div class="modal fade" id="followupPreviewModal" tabindex="-1"
+                            aria-labelledby="followupPreviewModalLabel" aria-hidden="true" data-bs-backdrop="static"
+                            data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                                            id="followupPreviewModalLabel">
+                                            Follow-up Attachment Preview
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+
+                                        <button id="prevFollowup"
+                                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem; z-index: 10;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <div id="followup-content-wrapper">
+                                            <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
+                                            <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
+                                                frameborder="0"></iframe>
+                                        </div>
+                                        <button id="nextFollowup"
+                                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem; z-index: 10;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-
-        <?php } elseif ($method == "followupConsult") { ?>
-                <section>
-                    <div class="card rounded pb-3">
-                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                            <div class="border border-2 rounded text-center py-2 position-relative px-5">
-                                <?php
-                                foreach ($patientDetails as $key => $value) {
-                                    ?>
-                                        <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
-                                            class="position-absolute top-0 end-0 m-2">
-                                            <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
-                                        </a>
-                                        <p style="font-size: 16px; font-weight: 700">
-                                            <?php echo $value['firstName'] ?>                 <?php echo $value['lastName'] ?> |
-                                            <?php echo $value['patientId'] ?>
-                                        </p>
-                                        <p>
-                                            <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
-                                                <?php echo $value['mobileNumber'] ?>
-                                            </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
-                                        </p>
-                                <?php } ?>
-                            </div>
-                            <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
-                                class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+            </section>
+            <!-------------------------- Edit Consultant -->
+        <?php } elseif ($method == "editConsult") { ?>
+            <section>
+                <div class="card rounded pb-3">
+                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                        <div class="border border-2 rounded text-center py-2 position-relative px-5">
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+                                <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
+                                    class="position-absolute top-0 end-0 m-2">
+                                    <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
+                                </a>
+                                <p style="font-size: 16px; font-weight: 700">
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['patientId'] ?>
+                                </p>
+                                <p>
+                                    <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
+                                        <?php echo $value['mobileNumber'] ?>
+                                    </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
+                                </p>
+                            <?php } ?>
                         </div>
+                        <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
+                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                    </div>
 
-                        <div class="card-body mx-3 px-md-4">
-                            <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
-                                enctype="multipart/form-data" id="consultationForm" class="mb-5">
-                                <input type="hidden" id="patientIdDb" name="patientIdDb"
-                                    value="<?php echo $patientDetails[0]['id'] ?>">
-                                <input type="hidden" id="patientId" name="patientId"
-                                    value="<?php echo $patientDetails[0]['patientId'] ?>">
-                                <p class="fs-4 fw-semibold mb-3">Follow-up Consultation:</p>
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
-                                    <div>
-                                        <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <input type="date" id="consultDate" name="consultDate" class="form-control"
-                                                style="width: 180px;">
-                                            <select id="consultTime" name="consultTime" class="form-select"
-                                                style="width: 150px;">
-                                            </select>
+                    <div class="card-body mx-3 px-md-4">
+                        <form action="<?php echo base_url() . 'Consultation/saveEditConsult' ?>" method="post"
+                            enctype="multipart/form-data" id="consultationForm" class="mb-5">
+                            <input type="hidden" id="patientIdDb" name="patientIdDb"
+                                value="<?php echo $patientDetails[0]['id'] ?>">
+                            <input type="hidden" id="patientId" name="patientId"
+                                value="<?php echo $patientDetails[0]['patientId'] ?>">
+                            <input type="hidden" id="consultationDbId" name="consultationDbId"
+                                value="<?php echo $consultation['id'] ?>">
+                            <input type="hidden" id="vitalsDbId" name="vitalsDbId" value="<?php echo $vitals['id'] ?>">
+                            <div class="float-end">
+                                <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="date" id="consultDate" name="consultDate" class="form-control"
+                                        value="<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>">
+                                    <select id="consultTime" name="consultTime" class="form-select" style="width:150px;">
+                                    </select>
+                                </div>
+                            </div>
+                            <p class="fs-4 fw-semibold mb-3">Edit Consultation:</p>
+                            <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
+                            <div class="p-3">
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientHeight">Height</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientHeight"
+                                                name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
+                                                value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
+                                            <p class="mx-2 my-2">Cm</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Weight </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientWeight"
+                                                name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
+                                                value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
+                                            <p class="mx-2 my-2">Kg</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientWeight">Systolic BP
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
+                                                name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
+                                                value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
+                                        </div>
+                                        <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
+                                                name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
+                                                value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
+                                        </div>
+                                        <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="p-3">
-                                    <div class="d-md-flex mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientHeight"
-                                                    name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
-                                                    value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
-                                                <p class="mx-2 my-2">Cm</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                                    name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
-                                                    value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
-                                                <p class="mx-2 my-2">Kg</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientWeight">Systolic BP
-                                            </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
-                                                    name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
-                                                    value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
-                                            </div>
-                                            <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="col-md-2 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
-                                            <div class="d-flex">
-                                                <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
-                                                    name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
-                                                    value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
-                                                <p class="mx-2 my-2">mmHg</p>
-                                            </div>
-                                            <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
+                                            (Fasting)</label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="fastingBsugar"
+                                                name="fastingBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
+                                                placeholder="E.g. 75">
+                                            <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="d-md-flex mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                    name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
-                                                    value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
-                                                <p class="mx-2 my-2">%</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                    name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                    value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                                <p class="mx-2 my-2">%</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                            </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientPulseRate"
-                                                    name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
-                                                    value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
-                                                <p class="mx-2 my-2">/min</p>
-                                            </div>
-                                            <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="col-md-2 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                            </label>
-                                            <div class="d-flex">
-                                                <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                    name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                    placeholder="E.g. 98.6"
-                                                    value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                                <p class="mx-2 my-2">°F</p>
-                                            </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="ppBsugar"
+                                                value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
+                                                name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
+                                            <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="d-md-flex mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
-                                                (Fasting)</label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="fastingBsugar"
-                                                    name="fastingBsugar" step="0.1" min="0"
-                                                    value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
-                                                    placeholder="E.g. 75">
-                                                <p class="mx-2 my-2">mg/dL</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="ppBsugar"
-                                                    value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
-                                                    name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
-                                                <p class="mx-2 my-2">mg/dL</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
-                                            </label>
-                                            <div class="d-flex">
-                                                <input type="number" class="form-control fieldStyle" id="randomBsugar"
-                                                    name="randomBsugar" step="0.1" min="0"
-                                                    value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
-                                                    placeholder="E.g. 125">
-                                                <p class="mx-2 my-2">mg/dL</p>
-                                            </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
+                                        </label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="randomBsugar"
+                                                name="randomBsugar" step="0.1" min="0"
+                                                value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
+                                                placeholder="E.g. 125">
+                                            <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-3">
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                            data-target="#symptomsCollapse">
-                                            <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="symptomsCollapse">
-                                            <div id="symptomsWrapper">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="symptomsInput">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="symptomsSearchInput" placeholder="Search or type to add..." />
-                                                    </div>
-                                                    <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
-                                                </div>
-                                                <div id="symptomsList" class="mt-2"></div>
-                                            </div>
-                                        </div>
+                            </div>
+                            <div class="p-3">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#symptomsCollapse">
+                                        <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
+                                        <span class="toggle-icon">+</span>
                                     </div>
-                                    <input type="hidden" name="symptomsJson" id="symptomsJson">
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                            data-target="#findingsCollapse">
-                                            <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="findingsCollapse">
-                                            <div id="findingsWrapper">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="findingsInput">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="searchInput" placeholder="Search or type to add..." />
-                                                    </div>
-                                                    <div class="suggestions-box" id="suggestionsBox"></div>
-                                                </div>
-                                                <div id="findingsList" class="mt-2"></div>
-                                                <!-- Display added findings -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="findingsJson" id="findingsJson">
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                            data-target="#diagnosisCollapse">
-                                            <span><strong><i class="bi bi-clipboard2-heart me-2"></i>
-                                                    Diagnosis</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                    <div class="collapse field-container mt-2" id="symptomsCollapse">
+                                        <div id="symptomsWrapper">
                                             <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="diagnosisInputBox">
+                                                <div class="tags-input" id="symptomsInput">
                                                     <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="diagnosisInput" placeholder="Search or type to add diagnosis..." />
+                                                        id="symptomsSearchInput" placeholder="Search or type to add..." />
                                                 </div>
-                                                <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
+                                                <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
                                             </div>
+                                            <div id="symptomsList" class="mt-2"></div>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="diagnosisJson" id="diagnosisJson">
+                                </div>
+                                <input type="hidden" name="symptomsJson" id="symptomsJson">
 
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                            data-target="#investigationsCollapse">
-                                            <span><strong><i class="bi bi-patch-question me-2"></i>
-                                                    Investigations</strong></span>
-                                            <span class="toggle-icon">+</span>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#findingsCollapse">
+                                        <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="findingsCollapse">
+                                        <div id="findingsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="findingsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="searchInput" placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="suggestionsBox"></div>
+                                            </div>
+                                            <div id="findingsList" class="mt-2"></div>
                                         </div>
-                                        <div class="collapse field-container mt-2" id="investigationsCollapse">
-                                            <div id="investigationsWrapper">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="investigationsInput">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="investigationsSearchInput"
-                                                            placeholder="Search or type to add..." />
+                                    </div>
+                                </div>
+                                <input type="hidden" name="findingsJson" id="findingsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#diagnosisCollapse">
+                                        <span><strong><i class="bi bi-clipboard2-heart me-2"></i> Diagnosis</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="diagnosisCollapse">
+                                        <div class="mb-3 position-relative">
+                                            <div class="tags-input" id="diagnosisInputBox">
+                                                <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                    id="diagnosisInput" placeholder="Search or type to add diagnosis..." />
+                                            </div>
+                                            <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="diagnosisJson" id="diagnosisJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
+                                        data-target="#investigationsCollapse">
+                                        <span><strong><i class="bi bi-patch-question me-2"></i>
+                                                Investigations</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2" id="investigationsCollapse">
+                                        <div id="investigationsWrapper">
+                                            <div class="mb-3 position-relative">
+                                                <div class="tags-input" id="investigationsInput">
+                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
+                                                        id="investigationsSearchInput"
+                                                        placeholder="Search or type to add..." />
+                                                </div>
+                                                <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
+                                            </div>
+                                            <div id="investigationsList" class="mt-2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="investigationsJson" id="investigationsJson">
+
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-prescription2 me-2"></i>
+                                                Procedures</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="procedureSearch"
+                                                placeholder="Search Instructions">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearProcedureSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
+                                                Add</button>
+                                        </div>
+                                        <div id="procedureList">
+                                            <?php if (!empty($proceduresList)): ?>
+                                                <?php foreach ($proceduresList as $pro): ?>
+                                                    <div class="form-check procedure-item">
+                                                        <input class="form-check-input" type="checkbox" name="procedures[]"
+                                                            value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
+                                                            id="pro<?php echo $pro['id']; ?>">
+                                                        <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
+                                                            <?php echo htmlspecialchars($pro['proceduresName']); ?>
+                                                        </label>
                                                     </div>
-                                                    <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
-                                                </div>
-                                                <div id="investigationsList" class="mt-2"></div>
-                                            </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="investigationsJson" id="investigationsJson">
+                                </div>
 
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                            <span><strong><i class="bi bi-prescription2 me-2"></i>
-                                                    Procedures</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-
-                                        <div class="collapse field-container mt-2">
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="procedureSearch"
-                                                    placeholder="Search Instructions">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearProcedureSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
-                                                    Add</button>
-                                            </div>
-                                            <div id="procedureList">
-                                                <?php if (!empty($proceduresList)): ?>
-                                                        <?php foreach ($proceduresList as $pro): ?>
-                                                                <div class="form-check procedure-item">
-                                                                    <input class="form-check-input" type="checkbox" name="procedures[]"
-                                                                        value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
-                                                                        id="pro<?php echo $pro['id']; ?>">
-                                                                    <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
-                                                                        <?php echo htmlspecialchars($pro['proceduresName']); ?>
-                                                                    </label>
-                                                                </div>
-                                                        <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
+                                <!-- Medicine section -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button"
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+                                        <span class="toggle-icon">+</span>
                                     </div>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button"
-                                            data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
-                                            <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="medicinesCollapse">
-                                            <!-- <div id="medicinesWrapper">
+                                    <div class="collapse field-container mt-2" id="medicinesCollapse">
+                                        <div id="medicinesWrapper">
                                             <div class="mb-3 position-relative">
                                                 <div class="tags-input" id="medicinesInput">
                                                     <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
@@ -1568,709 +2073,192 @@
                                                 <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
                                             </div>
                                             <div id="medicinesList" class="mt-2"></div>
-                                        </div> -->
-                                            <div id="medicinesWrapper">
-                                                <div class="input-group mb-2 position-relative">
-                                                    <div class="tags-input flex-grow-1" id="medicinesInput">
-                                                        <input type="text" class="form-control" id="medicinesSearchInput"
-                                                            placeholder="Search or type to add..." />
-                                                    </div>
-                                                    <!-- Clear (X) button -->
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearMedicineSearch">✖</button>
-                                                    <!-- Add (+) button -->
-                                                    <button type="button" class="btn btn-outline-primary d-none"
-                                                        id="medicinesAddBtn">+ Add</button>
-                                                </div>
-                                                <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                                <div id="medicinesList" class="mt-2"></div>
-                                            </div>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="medicinesJson" id="medicinesJson">
+                                </div>
+                                <input type="hidden" name="medicinesJson" id="medicinesJson">
 
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                            <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                    Advice</strong></span>
-                                            <span class="toggle-icon">+</span>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" id="adviceSearch"
+                                                placeholder="Search Advice">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="clearAdviceSearch">✖</button>
+                                            <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
+                                                Add</button>
                                         </div>
+                                        <div id="adviceList">
+                                            <?php if (!empty($advicesList)): ?>
+                                                <?php foreach ($advicesList as $adv): ?>
+                                                    <div class="form-check advice-item">
+                                                        <input class="form-check-input" type="checkbox" name="advices[]"
+                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
+                                                            id="adv<?php echo $adv['id']; ?>">
+                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
+                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
+                                                        </label>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                        <div class="collapse field-container mt-2">
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
+                                                Instructions</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+                                    <div class="collapse field-container mt-2">
+                                        <div class="mb-3">
                                             <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="adviceSearch"
-                                                    placeholder="Search Advice">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearAdviceSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
-                                                    Add</button>
-                                            </div>
-                                            <div id="adviceList">
-                                                <?php if (!empty($advicesList)): ?>
-                                                        <?php foreach ($advicesList as $adv): ?>
-                                                                <div class="form-check advice-item">
-                                                                    <input class="form-check-input" type="checkbox" name="advices[]"
-                                                                        value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
-                                                                        id="adv<?php echo $adv['id']; ?>">
-                                                                    <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
-                                                                        <?php echo htmlspecialchars($adv['adviceName']); ?>
-                                                                    </label>
-                                                                </div>
-                                                        <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                            <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                    Instructions</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2">
-                                            <div class="mb-3">
-                                                <div class="input-group mb-2">
-                                                    <input type="text" class="form-control" id="instructionSearch"
-                                                        placeholder="Search Instructions">
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearInstructionSearch">✖</button>
-                                                    <button type="button" class="btn btn-outline-primary d-none"
-                                                        id="addInstruction">+ Add</button>
-                                                </div>
-                                            </div>
-                                            <div id="instructionList">
-                                                <?php if (!empty($instructionsList)): ?>
-                                                        <?php foreach ($instructionsList as $ins): ?>
-                                                                <div class="form-check instruction-item">
-                                                                    <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                                        value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                                        id="ins<?php echo $ins['id']; ?>">
-                                                                    <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                                        <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                                    </label>
-                                                                </div>
-                                                        <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group pb-3" data-page="followup">
-                                    <label class="form-label fieldLabel">Attachments</label>
-                                    <button type="button" class="addFileBtn btn text-light float-end mb-2"
-                                        style="background-color: #00ad8e;"> + Add File </button>
-                                    <div class="mb-3"></div>
-                                    <div class="dropZone"
-                                        style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                        <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
-                                    </div>
-                                    <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                        multiple>
-                                    <input type="file" class="submitFileInput d-none" name="consultationFiles[]" multiple>
-                                    <div class="fileList" style="margin-top: 0.5rem;"></div>
-                                    <div class="fileError text-danger pt-1"></div>
-                                    <input type="hidden" class="removedFiles" name="removedFiles" value="">
-                                </div>
-
-                                <div class="form-group pb-3">
-                                    <label class="form-label fieldLabel" for="notes">Notes <span
-                                            class="text-danger">*</span></label>
-                                    <textarea class="form-control" name="notes" id="notes"
-                                        placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
-                                    <div id="advices_err" class="text-danger pt-1"></div>
-                                </div>
-                                <div class="form-group pb-3">
-                                    <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
-                                            class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
-                                        value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
-                                    <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
-                                </div>
-
-                                <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
-                                    style="background-color: #00ad8e;">Save as new</button>
-                            </form>
-                            <!---------------------------------------------------- Image Edit Modal -------------------------->
-                            <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
-                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <!-- Custom Toolbar -->
-                                            <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
-                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
-                                                    title="Crop">✂️ Crop</button>
-                                                <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
-                                                    title="Rotate">⟳ Rotate</button>
-                                            </div>
-                                            <h5 class=" fw-medium" id="imageEditModalLabel"
-                                                style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
-                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body text-center">
-
-                                            <!-- Bootstrap container for image -->
-                                            <div class="container">
-                                                <div class="row justify-content-center">
-                                                    <div class="col-12"
-                                                        style="position: relative; width: 600px; height: 600px;">
-                                                        <img id="editor-image" class="img-fluid"
-                                                            style=" object-fit: contain; display: none; ">
-                                                        <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer" style="background-color: white;">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                                                id="saveEditedImage">OK</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-----------------------------end ------------------>
-
-                            <!-- Preview display Followup Model -->
-                            <div class="modal fade" id="followupPreviewModal" tabindex="-1"
-                                aria-labelledby="followupPreviewModalLabel" aria-hidden="true" data-bs-backdrop="static"
-                                data-bs-keyboard="true">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                                                id="followupPreviewModalLabel">
-                                                Follow-up Attachment Preview
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body text-center position-relative">
-
-                                            <button id="prevFollowup"
-                                                class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                                                style="font-size: 1.5rem; z-index: 10;" disabled>
-                                                <b>&lt;</b>
-                                            </button>
-                                            <div id="followup-content-wrapper">
-                                                <img id="followupImage" src="" alt="Attachment" class="img-fluid d-none">
-                                                <iframe id="followupPDF" src="" class="w-100" style="height:500px;"
-                                                    frameborder="0"></iframe>
-                                            </div>
-                                            <button id="nextFollowup"
-                                                class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                                                style="font-size: 1.5rem; z-index: 10;" disabled>
-                                                <b>&gt;</b>
-                                            </button>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary text-light"
-                                                data-bs-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </section>
-                <!-------------------------- Edit Consultant -->
-        <?php } elseif ($method == "editConsult") { ?>
-                <section>
-                    <div class="card rounded pb-3">
-                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                            <div class="border border-2 rounded text-center py-2 position-relative px-5">
-                                <?php
-                                foreach ($patientDetails as $key => $value) {
-                                    ?>
-                                        <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
-                                            class="position-absolute top-0 end-0 m-2">
-                                            <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
-                                        </a>
-                                        <p style="font-size: 16px; font-weight: 700">
-                                            <?php echo $value['firstName'] ?>                 <?php echo $value['lastName'] ?> |
-                                            <?php echo $value['patientId'] ?>
-                                        </p>
-                                        <p>
-                                            <a href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
-                                                <?php echo $value['mobileNumber'] ?>
-                                            </a> | <?php echo $value['gender'] ?> | <?php echo $value['age'] ?> Year(s)
-                                        </p>
-                                <?php } ?>
-                            </div>
-                            <a href="<?php echo base_url() . "Consultation/consultation/" . $value['id']; ?>"
-                                class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                        </div>
-
-                        <div class="card-body mx-3 px-md-4">
-                            <form action="<?php echo base_url() . 'Consultation/saveEditConsult' ?>" method="post"
-                                enctype="multipart/form-data" id="consultationForm" class="mb-5">
-                                <input type="hidden" id="patientIdDb" name="patientIdDb"
-                                    value="<?php echo $patientDetails[0]['id'] ?>">
-                                <input type="hidden" id="patientId" name="patientId"
-                                    value="<?php echo $patientDetails[0]['patientId'] ?>">
-                                <input type="hidden" id="consultationDbId" name="consultationDbId"
-                                    value="<?php echo $consultation['id'] ?>">
-                                <input type="hidden" id="vitalsDbId" name="vitalsDbId" value="<?php echo $vitals['id'] ?>">
-                                <div class="float-end">
-                                    <label for="consultDate" class="form-label fieldLabel">Consultation Date & Time:</label>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <input type="date" id="consultDate" name="consultDate" class="form-control"
-                                            value="<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>">
-                                        <select id="consultTime" name="consultTime" class="form-select" style="width:150px;">
-                                        </select>
-                                    </div>
-                                </div>
-                                <p class="fs-4 fw-semibold mb-3">Edit Consultation:</p>
-                                <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
-                                <div class="p-3">
-                                    <div class="d-md-flex mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel" for="patientHeight">Height</label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientHeight"
-                                                    name="patientHeight" step="0.1" min="0" placeholder="E.g. 135"
-                                                    value="<?= isset($vitals['height_cm']) ? $vitals['height_cm'] : '' ?>">
-                                                <p class="mx-2 my-2">Cm</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientWeight">Weight </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientWeight"
-                                                    name="patientWeight" step="0.1" min="0" placeholder="E.g. 50"
-                                                    value="<?= isset($vitals['weight_kg']) ? $vitals['weight_kg'] : '' ?>">
-                                                <p class="mx-2 my-2">Kg</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientWeight">Systolic BP
-                                            </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
-                                                    name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
-                                                    value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
-                                            </div>
-                                            <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="col-md-2 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
-                                            <div class="d-flex">
-                                                <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
-                                                    name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
-                                                    value="<?= isset($vitals['diastolic_bp']) ? $vitals['diastolic_bp'] : '' ?>">
-                                                <p class="mx-2 my-2">mmHg</p>
-                                            </div>
-                                            <!-- <div id="patientBp_err" class="text-danger pt-1"></div> -->
-                                        </div>
-                                    </div>
-                                    <div class="d-md-flex mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                    name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
-                                                    value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
-                                                <p class="mx-2 my-2">%</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                    name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                    value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                                <p class="mx-2 my-2">%</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                            </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="patientPulseRate"
-                                                    name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
-                                                    value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
-                                                <p class="mx-2 my-2">/min</p>
-                                            </div>
-                                            <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                        </div>
-                                        <div class="col-md-2 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                            </label>
-                                            <div class="d-flex">
-                                                <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                    name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                    placeholder="E.g. 98.6"
-                                                    value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                                <p class="mx-2 my-2">°F</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-md-flex mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
-                                                (Fasting)</label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="fastingBsugar"
-                                                    name="fastingBsugar" step="0.1" min="0"
-                                                    value="<?= isset($vitals['blood_sugar_fasting']) ? $vitals['blood_sugar_fasting'] : '' ?>"
-                                                    placeholder="E.g. 75">
-                                                <p class="mx-2 my-2">mg/dL</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
-                                            <div class="d-flex me-4">
-                                                <input type="number" class="form-control fieldStyle" id="ppBsugar"
-                                                    value="<?= isset($vitals['blood_sugar_pp']) ? $vitals['blood_sugar_pp'] : '' ?>"
-                                                    name="ppBsugar" step="0.1" min="0" placeholder="E.g. 100">
-                                                <p class="mx-2 my-2">mg/dL</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
-                                            </label>
-                                            <div class="d-flex">
-                                                <input type="number" class="form-control fieldStyle" id="randomBsugar"
-                                                    name="randomBsugar" step="0.1" min="0"
-                                                    value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
-                                                    placeholder="E.g. 125">
-                                                <p class="mx-2 my-2">mg/dL</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="p-3">
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                            data-target="#symptomsCollapse">
-                                            <span><strong><i class="bi bi-virus me-2"></i> Symptoms</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="symptomsCollapse">
-                                            <div id="symptomsWrapper">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="symptomsInput">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="symptomsSearchInput" placeholder="Search or type to add..." />
-                                                    </div>
-                                                    <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
-                                                </div>
-                                                <div id="symptomsList" class="mt-2"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="symptomsJson" id="symptomsJson">
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                            data-target="#findingsCollapse">
-                                            <span><strong><i class="bi bi-search me-2"></i> Findings</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="findingsCollapse">
-                                            <div id="findingsWrapper">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="findingsInput">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="searchInput" placeholder="Search or type to add..." />
-                                                    </div>
-                                                    <div class="suggestions-box" id="suggestionsBox"></div>
-                                                </div>
-                                                <div id="findingsList" class="mt-2"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="findingsJson" id="findingsJson">
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                            data-target="#diagnosisCollapse">
-                                            <span><strong><i class="bi bi-clipboard2-heart me-2"></i> Diagnosis</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="diagnosisCollapse">
-                                            <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="diagnosisInputBox">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="diagnosisInput" placeholder="Search or type to add diagnosis..." />
-                                                </div>
-                                                <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="diagnosisJson" id="diagnosisJson">
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button" data-toggle="collapse"
-                                            data-target="#investigationsCollapse">
-                                            <span><strong><i class="bi bi-patch-question me-2"></i>
-                                                    Investigations</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="investigationsCollapse">
-                                            <div id="investigationsWrapper">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="investigationsInput">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="investigationsSearchInput"
-                                                            placeholder="Search or type to add..." />
-                                                    </div>
-                                                    <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
-                                                </div>
-                                                <div id="investigationsList" class="mt-2"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="investigationsJson" id="investigationsJson">
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                            <span><strong><i class="bi bi-prescription2 me-2"></i>
-                                                    Procedures</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-
-                                        <div class="collapse field-container mt-2">
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="procedureSearch"
+                                                <input type="text" class="form-control" id="instructionSearch"
                                                     placeholder="Search Instructions">
                                                 <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearProcedureSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
-                                                    Add</button>
-                                            </div>
-                                            <div id="procedureList">
-                                                <?php if (!empty($proceduresList)): ?>
-                                                        <?php foreach ($proceduresList as $pro): ?>
-                                                                <div class="form-check procedure-item">
-                                                                    <input class="form-check-input" type="checkbox" name="procedures[]"
-                                                                        value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
-                                                                        id="pro<?php echo $pro['id']; ?>">
-                                                                    <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
-                                                                        <?php echo htmlspecialchars($pro['proceduresName']); ?>
-                                                                    </label>
-                                                                </div>
-                                                        <?php endforeach; ?>
-                                                <?php endif; ?>
+                                                    id="clearInstructionSearch">✖</button>
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="addInstruction">+ Add</button>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Medicine section -->
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button"
-                                            data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
-                                            <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2" id="medicinesCollapse">
-                                            <div id="medicinesWrapper">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="medicinesInput">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="medicinesSearchInput" placeholder="Search or type to add..." />
+                                        <div id="instructionList">
+                                            <?php if (!empty($instructionsList)): ?>
+                                                <?php foreach ($instructionsList as $ins): ?>
+                                                    <div class="form-check instruction-item">
+                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
+                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
+                                                            id="ins<?php echo $ins['id']; ?>">
+                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
+                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
+                                                        </label>
                                                     </div>
-                                                    <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                                </div>
-                                                <div id="medicinesList" class="mt-2"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="medicinesJson" id="medicinesJson">
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                            <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                    Advice</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-
-                                        <div class="collapse field-container mt-2">
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="adviceSearch"
-                                                    placeholder="Search Advice">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearAdviceSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
-                                                    Add</button>
-                                            </div>
-                                            <div id="adviceList">
-                                                <?php if (!empty($advicesList)): ?>
-                                                        <?php foreach ($advicesList as $adv): ?>
-                                                                <div class="form-check advice-item">
-                                                                    <input class="form-check-input" type="checkbox" name="advices[]"
-                                                                        value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
-                                                                        id="adv<?php echo $adv['id']; ?>">
-                                                                    <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
-                                                                        <?php echo htmlspecialchars($adv['adviceName']); ?>
-                                                                    </label>
-                                                                </div>
-                                                        <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                            style="background-color: rgb(206, 206, 206);" role="button">
-                                            <span><strong><i class="bi bi-clipboard2-pulse me-2"></i>
-                                                    Instructions</strong></span>
-                                            <span class="toggle-icon">+</span>
-                                        </div>
-                                        <div class="collapse field-container mt-2">
-                                            <div class="mb-3">
-                                                <div class="input-group mb-2">
-                                                    <input type="text" class="form-control" id="instructionSearch"
-                                                        placeholder="Search Instructions">
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearInstructionSearch">✖</button>
-                                                    <button type="button" class="btn btn-outline-primary d-none"
-                                                        id="addInstruction">+ Add</button>
-                                                </div>
-                                            </div>
-                                            <div id="instructionList">
-                                                <?php if (!empty($instructionsList)): ?>
-                                                        <?php foreach ($instructionsList as $ins): ?>
-                                                                <div class="form-check instruction-item">
-                                                                    <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                                        value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                                        id="ins<?php echo $ins['id']; ?>">
-                                                                    <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                                        <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                                    </label>
-                                                                </div>
-                                                        <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group pb-3 " data-page="edit" id="editFileSection">
-                                    <label class="form-label fieldLabel">Attachments</label>
-                                    <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                        style="background-color: #00ad8e;"> + Add File </button>
-                                    <div class="mb-3"></div>
-                                    <div id="dropZone"
-                                        style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                        <p class="text-muted mb-0">Drag and drop files here, or click the button below.
-                                        </p>
-                                    </div>
-                                    <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                                        multiple>
-                                    <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
-                                    <div id="fileList" style="margin-top: 0.5rem;"></div>
-                                    <div id="fileError" class="text-danger pt-1"></div>
-                                    <input type="hidden" id="removedFiles" name="removedFiles" value="">
-                                </div>
-
-                                <div class="form-group pb-3">
-                                    <label class="form-label fieldLabel" for="notes">Notes <span
-                                            class="text-danger">*</span></label>
-                                    <textarea class="form-control" name="notes" id="notes"
-                                        placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
-                                    <div id="advices_err" class="text-danger pt-1"></div>
-                                </div>
-                                <div class="form-group pb-3">
-                                    <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
-                                            class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
-                                        value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
-                                    <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
-                                </div>
-
-                                <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
-                                    style="background-color: #00ad8e;">Update</button>
-                            </form>
-                            <!---------------------------------------------------- Image Edit Modal -------------------------->
-                            <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
-                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <!-- Custom Toolbar -->
-                                            <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
-                                                <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
-                                                    title="Crop">✂️ Crop</button>
-                                                <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
-                                                    title="Rotate">⟳ Rotate</button>
-                                            </div>
-                                            <h5 class=" fw-medium" id="imageEditModalLabel"
-                                                style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
-                                            <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body text-center">
-
-                                            <div class="container">
-                                                <div class="row justify-content-center">
-                                                    <div class="col-12"
-                                                        style="position: relative; width: 600px; height: 600px;">
-                                                        <img id="editor-image" class="img-fluid"
-                                                            style=" object-fit: contain; display: none; ">
-                                                        <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer" style="background-color: white;">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Cancel</button>
-                                            <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                                                id="saveEditedImage">OK</button>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- File Preview  in Edit Modal -->
-                            <div class="modal fade" id="editPreviewModal" tabindex="-1" aria-labelledby="editPreviewModalLabel"
-                                aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-                                <div class="modal-dialog modal-lg modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                                                id="editPreviewModalLabel">Attachment Preview</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                            <div class="form-group pb-3 " data-page="edit" id="editFileSection">
+                                <label class="form-label fieldLabel">Attachments</label>
+                                <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
+                                    style="background-color: #00ad8e;"> + Add File </button>
+                                <div class="mb-3"></div>
+                                <div id="dropZone"
+                                    style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
+                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                    </p>
+                                </div>
+                                <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                                    multiple>
+                                <input type="file" id="submitFileInput" name="consultationFiles[]" class="d-none" multiple>
+                                <div id="fileList" style="margin-top: 0.5rem;"></div>
+                                <div id="fileError" class="text-danger pt-1"></div>
+                                <input type="hidden" id="removedFiles" name="removedFiles" value="">
+                            </div>
+
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="notes">Notes <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" name="notes" id="notes"
+                                    placeholder="Enter the notes"><?= isset($consultation['notes']) ? $consultation['notes'] : '' ?></textarea>
+                                <div id="advices_err" class="text-danger pt-1"></div>
+                            </div>
+                            <div class="form-group pb-3">
+                                <label class="form-label fieldLabel" for="nextFollowUpDate">Next Follow-up Date <span
+                                        class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="nextFollowUpDate" name="nextFollowUpDate"
+                                    value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
+                                <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
+                            </div>
+
+                            <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
+                                style="background-color: #00ad8e;">Update</button>
+                        </form>
+                        <!---------------------------------------------------- Image Edit Modal -------------------------->
+                        <div class="modal fade" id="imageEditModal" tabindex="-1" aria-labelledby="imageEditModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- Custom Toolbar -->
+                                        <div id="editor-toolbar" style="margin-bottom: 10px; text-align: left;">
+                                            <button type="button" id="crop-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Crop">✂️ Crop</button>
+                                            <button type="button" id="rotate-btn" class="btn btn-sm btn-outline-dark"
+                                                title="Rotate">⟳ Rotate</button>
                                         </div>
-                                        <div class="modal-body text-center position-relative">
-                                            <button id="prevFile"
-                                                class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                                                style="font-size: 1.5rem;" disabled>
-                                                <b>&lt;</b>
-                                            </button>
-                                            <div id="filePreviewContent"></div>
-                                            <button id="nextFile"
-                                                class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                                                style="font-size: 1.5rem;" disabled>
-                                                <b>&gt;</b>
-                                            </button>
+                                        <h5 class=" fw-medium" id="imageEditModalLabel"
+                                            style="font-family: Poppins, sans-serif; margin-left:25%">Edit Image</h5>
+                                        <button type="button" class="btn-close btn btn-danger" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+
+                                        <div class="container">
+                                            <div class="row justify-content-center">
+                                                <div class="col-12"
+                                                    style="position: relative; width: 600px; height: 600px;">
+                                                    <img id="editor-image" class="img-fluid"
+                                                        style=" object-fit: contain; display: none; ">
+                                                    <canvas id="editor-canvas" class="img-fluid" style=""></canvas>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary text-light"
-                                                data-bs-dismiss="modal">Close</button>
-                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="background-color: white;">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                                            id="saveEditedImage">OK</button>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                </section>
+
+                        <!-- File Preview  in Edit Modal -->
+                        <div class="modal fade" id="editPreviewModal" tabindex="-1" aria-labelledby="editPreviewModalLabel"
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                                            id="editPreviewModalLabel">Attachment Preview</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center position-relative">
+                                        <button id="prevFile"
+                                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem;" disabled>
+                                            <b>&lt;</b>
+                                        </button>
+                                        <div id="filePreviewContent"></div>
+                                        <button id="nextFile"
+                                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                                            style="font-size: 1.5rem;" disabled>
+                                            <b>&gt;</b>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary text-light"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+            </section>
         <?php } ?>
 
         <!-- ******************************************************************************************************************************************** -->
@@ -5382,7 +5370,7 @@
     <!-- Sidebar active color change code -->
     <script>
         <?php if ($method == "consultDashboard" || $method == "followupConsult" || $method == "editConsult") { ?>
-                document.getElementById('patients').style.color = "#87F7E3";
+            document.getElementById('patients').style.color = "#87F7E3";
         <?php } ?>
     </script>
 

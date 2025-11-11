@@ -1036,17 +1036,19 @@
                                             </div>
                                             <div class="collapse field-container mt-2" id="medicinesCollapse">
                                                 <div id="medicinesWrapper">
-                                                    <div class="mb-3 position-relative">
-                                                        <div class="tags-input" id="medicinesInput">
-                                                            <input type="text"
-                                                                class="form-control border-0 p-0 m-0 shadow-none"
-                                                                id="medicinesSearchInput"
-                                                                placeholder="Search or type to add..." />
-                                                        </div>
-                                                        <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                <div class="input-group mb-2 position-relative">
+                                                    <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                        <input type="text" class="form-control" id="medicinesSearchInput"
+                                                            placeholder="Search or type to add..." />
                                                     </div>
-                                                    <div id="medicinesList" class="mt-2"></div>
+                                                    <!-- <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearMedicineSearch">✖</button> -->
+                                                    <button type="button" class="btn btn-outline-primary d-none"
+                                                        id="medicinesAddBtn">+ Add</button>
                                                 </div>
+                                                <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                <div id="medicinesList" class="mt-2"></div>
+                                            </div>
                                             </div>
                                         </div>
                                         <input type="hidden" name="medicinesJson" id="medicinesJson">
@@ -1565,8 +1567,8 @@
                                                     <input type="text" class="form-control" id="medicinesSearchInput"
                                                         placeholder="Search or type to add..." />
                                                 </div>
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearMedicineSearch">✖</button>
+                                                <!-- <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearMedicineSearch">✖</button> -->
                                                 <button type="button" class="btn btn-outline-primary d-none"
                                                     id="medicinesAddBtn">+ Add</button>
                                             </div>
@@ -2065,13 +2067,17 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="medicinesCollapse">
                                         <div id="medicinesWrapper">
-                                            <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="medicinesInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="medicinesSearchInput" placeholder="Search or type to add..." />
+                                            <div class="input-group mb-2 position-relative">
+                                                <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                    <input type="text" class="form-control" id="medicinesSearchInput"
+                                                        placeholder="Search or type to add..." />
                                                 </div>
-                                                <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                <!-- <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearMedicineSearch">✖</button> -->
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="medicinesAddBtn">+ Add</button>
                                             </div>
+                                            <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
                                             <div id="medicinesList" class="mt-2"></div>
                                         </div>
                                     </div>

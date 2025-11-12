@@ -70,6 +70,20 @@
     <?php $this->load->view('hcpHeader'); ?>
 
     <main id="main" class="main">
+        <?php
+        $firstLogin = $this->session->userdata('firstLogin');
+        if ($firstLogin !== null && $firstLogin == '0' && $method !== "passwordChange") {
+            ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var myModal = new bootstrap.Modal(document.getElementById('firstLoginAlert'), {
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    myModal.show();
+                });
+            </script>
+        <?php } ?>
         <?php if ($this->session->flashdata('showSuccessMessage')) { ?>
             <div id="display_message"
                 style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
@@ -2254,7 +2268,7 @@
                                                 doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
                                                 doctorItem.innerHTML =
                                                     '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
-                                                    '<img src="' + (value.ccPhoto ? value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + '" ' +
+                                                    '<img src="' + (value.ccPhoto ? '<?php echo base_url(); ?>uploads/' + value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg' ) +
                                                     'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
                                                     'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
                                                     '<div>' +
@@ -2347,8 +2361,8 @@
                                 foreach ($ccDetails as $key => $value) {
                                     ?>
                                 <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                                            <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                class="rounded-circle"
+                                                            <img src="<?php echo base_url('uploads/' . $value['ccPhoto']); ?>" alt="Profile Photo"
+                                                                width="140" height="140" class="rounded-circle"
                                                                 onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
@@ -2449,8 +2463,8 @@
                                 ?>
                                                         <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
-                                                                <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                    class="rounded-circle"
+                                                                <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo"
+                                                                    width="140" height="140" class="rounded-circle"
                                                                     onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt=" Profile Photo" width="140"
@@ -2533,23 +2547,24 @@
                             <?php
                             foreach ($hcpDetails as $key => $value) {
                                 ?>
-                                                            <div class="position-relative">
-                                                                <img id="previewImage" src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
-                                                                    ? base_url('uploads/' . $value['hcpPhoto'])
-                                                                    : base_url('assets/BlankProfileCircle.png') ?>"
-                                                                    alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
-                                                                    style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
-                                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
-                                                                <a href="#" class="position-absolute rounded-circle px-2 py-1"
-                                                                    style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
-                                                                    role="button" data-bs-toggle="modal" data-bs-target="#updateHCPPhoto"><i
-                                                                        class="bi bi-camera"></i></a>
-                                                            </div>
-
                                                             <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
                                                                 name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
                                                                 onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="">
-
+                                                                <div class="position-relative">
+                                                                    <img id="previewImage"
+                                                                        src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
+                                                                            ? base_url('uploads/' . $value['hcpPhoto'])
+                                                                            : base_url('assets/img/BlankProfileCircle.png') ?>"
+                                                                        alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
+                                                                        style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
+                                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                                                    <input type="file" id="profilePhoto" name="profilePhoto"
+                                                                        class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
+                                                                    <a href="#" class="position-absolute rounded-circle px-2 py-1"
+                                                                        style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
+                                                                        onclick="document.getElementById('profilePhoto').click();"><i
+                                                                            class="bi bi-camera"></i></a>
+                                                                </div>
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="drName">Full Name</label>
@@ -2582,14 +2597,15 @@
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="yearOfExp">Years of Experience</label>
-                                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp"
+                                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp" maxlength="25"
                                                                             value="<?php echo $value['hcpExperience']; ?>" placeholder="E.g. 25">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                     <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="qualification">Qualification</label>
                                                                         <input type="text" class="form-control" id="qualification" name="qualification"
-                                                                            value="<?php echo $value['hcpQualification']; ?>" placeholder="E.g. MBBS">
+                                                                            value="<?php echo $value['hcpQualification']; ?>" maxlength="90"
+                                                                            placeholder="E.g. MBBS">
                                                                         <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                 </div>
@@ -2603,14 +2619,15 @@
                                                                     <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
                                                                         <label class="form-label" for="hospitalName">Hospital / Clinic Name</label>
                                                                         <input type="text" class="form-control" id="hospitalName" name="hospitalName"
-                                                                            value="<?php echo $value['hcpHospitalName']; ?>" placeholder="E.g. MMCH">
+                                                                            maxlength="90" value="<?php echo $value['hcpHospitalName']; ?>"
+                                                                            placeholder="E.g. MMCH">
                                                                         <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="location">Location</label>
-                                                                        <input type="text" class="form-control" id="location" name="location"
+                                                                        <input type="text" class="form-control" id="location" name="location" maxlength="90"
                                                                             value="<?php echo $value['hcpLocation']; ?>" placeholder="E.g. Erode">
                                                                         <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
                                                                     </div>
@@ -2704,10 +2721,222 @@
                                                 }
                                             </script>
 
+            <?php
+        } else if ($method == "passwordChange") {
+            ?>
+                                                <section>
+                                                    <div class="card rounded m-md-2">
+                                                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                            <p style="font-size: 24px; font-weight: 500"> Change Password</p>
+                                                            <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
+                                                                class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                                        </div>
+                                                        <div class="card-body">
+                            <?php
+                            foreach ($hcpDetails as $key => $value) {
+                                ?>
+                                                                <form action="<?php echo base_url() . "Healthcareprovider/saveNewPassword" ?>" name="PasswordForm"
+                                                                    method="POST" class="px-md-3" onsubmit="return validateNewPassword()"
+                                                                    oninput="validateNewPassword()">
+                                                                    <input type="hidden" name="hcpDbId" id="hcpDbId" value="<?php echo $value['id']; ?>">
+                                                                    <div class="d-md-flex justify-content-between pb-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drName">Full Name</label>
+                                                                            <input type="text" class="form-control" id="drName" name="drName"
+                                                                                style="cursor: no-drop;" value="<?php echo $value['hcpName']; ?>"
+                                                                                placeholder="Suresh Kumar" disabled readonly>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label class="form-label pb-2" for="drMobile">Mobile Number </label>
+                                                                            <input type="text" class="form-control" id="drMobile" name="drMobile"
+                                                                                style="cursor: no-drop;" value="<?php echo $value['hcpMobile']; ?>"
+                                                                                placeholder="9632587410" disabled readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-md-flex justify-content-between pt-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drEmail">Email Id</label>
+                                                                            <div class="">
+                                                                                <input type="email" class="form-control" id="drEmail" name="drEmail"
+                                                                                    style="cursor: no-drop;" value="<?php echo $value['hcpMail']; ?>"
+                                                                                    placeholder="example@gmail.com" disabled readonly>
+                                                                            </div>
+                                                                            <p type="button" class="float-end mt-2 m-0 p-0" style="color: #00ad8e;"
+                                                                                id="sendEmailOtpBtn" onclick="sendEmailOtp()"
+                                                                                onmouseover="this.style.textDecoration='underline'"
+                                                                                onmouseout="this.style.textDecoration='none'">Send
+                                                                                OTP</p>
+                                                                            <small id="emailOtpStatus" class="text-success"></small>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label for="emailOtp" class="form-label pb-2">Enter OTP <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <input type="text" id="emailOtp" maxlength="6" class="form-control"
+                                                                                placeholder="Enter OTP" disabled>
+                                                                            <small id="emailOtpError" class="text-danger"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-md-flex justify-content-between py-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drNewPassword">New Password <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <div style="position: relative;">
+                                                                                <input type="password" class="form-control" id="drNewPassword" maxlength="20"
+                                                                                    name="drNewPassword" placeholder="Enter New Password">
+                                                                                <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drNewPassword', this)"
+                                                                                    style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
+                                                                            </div>
+                                                                            <small id="passwordError" class="text-danger"></small>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label class="form-label pb-2" for="drCnfmPassword">Confirm Password <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <div style="position: relative;">
+                                                                                <input type="password" class="form-control" id="drCnfmPassword" maxlength="20"
+                                                                                    name="drCnfmPassword" placeholder="Re-Enter New Password">
+                                                                                <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drCnfmPassword', this)"
+                                                                                    style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
+                                                                            </div>
+                                                                            <small id="confirmPasswordError" class="text-danger"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="btn float-end mt-3"
+                                                                        style="color: white;background-color: #00ad8e;">Save</button>
+                                                                </form>
+                        <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                </section>
+
+                                                <script>
+                                                    function togglePasswordVisibility(id, icon) {
+                                                        const passwordField = document.getElementById(id);
+
+                                                        if (passwordField.type === "password") {
+                                                            passwordField.type = "text";
+                                                            icon.classList.remove('bi-eye-fill');
+                                                            icon.classList.add('bi-eye-slash-fill');
+                                                        } else {
+                                                            passwordField.type = "password";
+                                                            icon.classList.remove('bi-eye-slash-fill');
+                                                            icon.classList.add('bi-eye-fill');
+                                                        }
+                                                    }
+                                                </script>
+
+                                                <script>
+                                                    function sendEmailOtp() {
+                                                        const email = document.getElementById('drEmail').value.trim();
+
+                                                        fetch("<?= base_url('Healthcareprovider/sendEmailOtp') ?>", {
+                                                            method: "POST",
+                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                            body: `email=${encodeURIComponent(email)}`
+                                                        })
+                                                            .then(res => res.json())
+                                                            .then(data => {
+                                                                if (data.status === "success") {
+                                                                    document.getElementById('emailOtp').disabled = false;
+                                                                    document.getElementById('emailOtp').focus();
+                                                                    document.getElementById('emailOtpStatus').textContent = "OTP sent to your email.";
+                                                                    alert("OTP sent to your email.");
+                                                                } else {
+                                                                    document.getElementById('emailOtpStatus').textContent = "Failed to send OTP.";
+                                                                }
+                                                            });
+                                                    }
+
+                                                    document.getElementById('emailOtp').addEventListener('input', () => {
+                                                        const otp = document.getElementById('emailOtp').value.trim();
+
+                                                        if (otp.length === 4) {
+                                                            fetch("<?= base_url('Healthcareprovider/verifyEmailOtp') ?>", {
+                                                                method: "POST",
+                                                                headers: {
+                                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                                },
+                                                                body: `otp=${otp}`
+                                                            })
+                                                                .then(res => res.json())
+                                                                .then(data => {
+                                                                    if (data.status === "success") {
+                                                                        document.getElementById('emailOtpError').textContent = "";
+                                                                        document.getElementById('emailOtpStatus').textContent = "OTP verified successfully!";
+                                                                        document.getElementById('emailOtp').disabled = true;
+                                                                        document.getElementById('emailOtp').dataset.verified = "true";
+                                                                    } else {
+                                                                        document.getElementById('emailOtpError').textContent = "Invalid OTP.";
+                                                                        document.getElementById('emailOtpStatus').textContent = "";
+                                                                        document.getElementById('emailOtp').dataset.verified = "false";
+                                                                    }
+                                                                })
+                                                                .catch(err => {
+                                                                    console.error("OTP verification error:", err);
+                                                                    document.getElementById('emailOtpError').textContent = "Server error during OTP verification.";
+                                                                });
+                                                        }
+                                                    });
+
+                                                    function validateNewPassword() {
+                                                        let password = document.getElementById("drNewPassword").value.trim();
+                                                        let confirmPassword = document.getElementById("drCnfmPassword").value.trim();
+                                                        let otpVerified = document.getElementById("emailOtp").dataset.verified === "true";
+
+                                                        let isValid = true;
+
+                                                        if (password === "") {
+                                                            document.getElementById("passwordError").textContent = "Please enter a new password.";
+                                                            isValid = false;
+                                                        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/.test(password)) {
+                                                            document.getElementById("passwordError").textContent = "Please enter a valid password (8 to 20 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character).";
+                                                            isValid = false;
+                                                        } else {
+                                                            document.getElementById("passwordError").textContent = "";
+                                                        }
+
+                                                        if (confirmPassword === "") {
+                                                            document.getElementById("confirmPasswordError").textContent = "Please re-enter the password.";
+                                                            isValid = false;
+                                                        } else if (confirmPassword !== password) {
+                                                            document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+                                                            isValid = false;
+                                                        } else {
+                                                            document.getElementById("confirmPasswordError").textContent = "";
+                                                        }
+
+                                                        if (!otpVerified) {
+                                                            document.getElementById('emailOtpError').textContent = "Please enter a valid OTP and wait for verification.";
+                                                            isValid = false;
+                                                        }
+
+                                                        return isValid;
+                                                    }
+                                                </script>
         <?php } ?>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
+
+        <!-- Change Password Alert  -->
+        <div class="modal fade" id="firstLoginAlert" tabindex="-1" role="dialog" aria-labelledby="firstLoginLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="firstLoginLabel"
+                            style="font-family: Poppins, sans-serif;">Update Password Alert</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>⚠️ Please change your temporary password immediately before proceeding any further.</p>
+                        <div class="text-end">
+                            <a href="<?php echo base_url('Healthcareprovider/changePassword'); ?>"
+                                class="btn text-light" style="background-color: #00ad8e;">Update
+                                Password</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -2718,76 +2947,6 @@
         <?php } elseif ($method == "chiefDoctors" || $method == "chiefDoctorProfile") { ?>
             document.getElementById('chiefDoctor').style.color = "#87F7E3";
         <?php } ?>
-    </script>
-
-    <!-- Crop Image and Upload HCP profile -->
-    <script>
-        let cropper;
-
-        document.getElementById('hcpProfile').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const image = document.getElementById('previewImage');
-                    image.src = e.target.result;
-
-                    if (cropper) cropper.destroy();
-
-                    cropper = new Cropper(image, {
-                        aspectRatio: 1,
-                        viewMode: 2,
-                        dragMode: 'move',
-                        cropBoxResizable: false,
-                        cropBoxMovable: true,
-                        ready: function () {
-                            cropper.setCropBoxData({
-                                width: 200,
-                                height: 200
-                            });
-                        }
-                    });
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('uploadButton').addEventListener('click', function () {
-            if (!cropper) {
-                alert("Please select an image to upload.");
-                return;
-            }
-            cropper.getCroppedCanvas({ width: 200, height: 200 }).toBlob(blob => {
-                if (!blob) {
-                    alert("Cropping failed. Please try again.");
-                    return;
-                }
-
-                const now = new Date();
-                const day = String(now.getDate()).padStart(2, '0');
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const year = now.getFullYear();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-
-                const fileName = `doctorHCP_${day}_${month}_${year}_${hours}_${minutes}.jpg`;
-
-                const formData = new FormData();
-                formData.append('hcpProfile', blob, fileName);
-
-                fetch("<?php echo base_url() . 'Healthcareprovider/updatePhoto' ?>", {
-                    method: "POST",
-                    body: formData
-                })
-                    .then(response => response.text())
-                    .then(data => {
-                        var myModal = new bootstrap.Modal(document.getElementById('updateHCPPhoto'));
-                        myModal.hide();
-                        location.reload();
-                    })
-                    .catch(error => console.error("Upload failed:", error));
-            }, "image/jpeg");
-        });
     </script>
 
     <!-- Common Script -->

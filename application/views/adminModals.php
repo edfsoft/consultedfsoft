@@ -79,6 +79,7 @@
                         <option value="SPRAY">Spray</option>
                         <option value="POW">Powder</option>
                         <option value="SUSP">Suppository</option>
+                        <option value="INSULIN">Insulin</option>
                     </select>
 
                     <button type="submit" id="medicineSubmit" class="btn text-light float-end mt-3"

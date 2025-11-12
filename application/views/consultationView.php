@@ -279,7 +279,7 @@
                 style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
                 <?php echo $this->session->flashdata('showErrorMessage'); ?>
             </div>
-        <?php
+            <?php
         }
         if ($method == "consultDashboard") { ?>
             <section>
@@ -288,13 +288,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -404,7 +404,7 @@
 
                                                                 foreach ($vitals as $label => $value):
                                                                     if ($value):
-                                                                ?>
+                                                                        ?>
                                                                         <div class="col-12 col-md-6">
                                                                             <div
                                                                                 class="d-flex justify-content-between align-items-center border p-2 rounded">
@@ -412,7 +412,7 @@
                                                                                 <span class="text-primary"><?= $value ?></span>
                                                                             </div>
                                                                         </div>
-                                                                <?php
+                                                                        <?php
                                                                     endif;
                                                                 endforeach;
                                                                 ?>
@@ -576,7 +576,8 @@
                                                                             list($morning, $afternoon, $evening, $night) = $timingParts;
                                                                             ?>
                                                                             <tr>
-                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                     <?= $index + 1 . '.' ?>
                                                                                 </td>
                                                                                 <td style="border: 1px solid #000; padding: 6px;">
@@ -590,10 +591,12 @@
                                                                                         -
                                                                                     <?php endif; ?>
                                                                                 </td>
-                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                     <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
                                                                                 </td>
-                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                     <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
                                                                                 </td>
 
@@ -683,21 +686,25 @@
                                                         <?php endif; ?>
                                                     </div>
                                                 </div>
-                                                <!-- Preview Page to Download -->
-                                                <div class="modal fade" id="consultationModal<?= $consultation['id'] ?>" tabindex="-1"
-                                                    aria-labelledby="consultationModalLabel<?= $consultation['id'] ?>" aria-hidden="true">
+                                                <!-- Preview Page to Download Consultation -->
+                                                <div class="modal fade" id="consultationModal<?= $consultation['id'] ?>"
+                                                    tabindex="-1" aria-labelledby="consultationModalLabel<?= $consultation['id'] ?>"
+                                                    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
 
                                                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                         <div class="modal-content">
 
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="consultationModalLabel<?= $consultation['id'] ?>">
+                                                                <h5 class="modal-title"
+                                                                    id="consultationModalLabel<?= $consultation['id'] ?>">
                                                                     <p style="font-size: 16px; font-weight: 700; margin-bottom: 0;">
-                                                                        <?php echo $patientDetails[0]['firstName'] ?> <?php echo $patientDetails[0]['lastName'] ?> |
+                                                                        <?php echo $patientDetails[0]['firstName'] ?>
+                                                                        <?php echo $patientDetails[0]['lastName'] ?> |
                                                                         <?php echo $patientDetails[0]['patientId'] ?>
                                                                     </p>
                                                                 </h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
                                                             </div>
 
                                                             <div class="modal-body" style="background-color: #f8f9fa;">
@@ -707,24 +714,32 @@
                                                                     <div class="row mb-3">
 
                                                                         <div class="col-md-8">
-                                                                            <p class="mb-1"><strong>Name<span style="margin-right: 30px;"></span>:</strong>
-                                                                                <?php echo $patientDetails[0]['firstName'] ?> <?php echo $patientDetails[0]['lastName'] ?>
+                                                                            <p class="mb-1"><strong>Name<span
+                                                                                        style="margin-right: 30px;"></span>:</strong>
+                                                                                <?php echo $patientDetails[0]['firstName'] ?>
+                                                                                <?php echo $patientDetails[0]['lastName'] ?>
                                                                             </p>
                                                                             <p class="mb-1"><strong>Age & Sex:</strong>
-                                                                                <?php echo $patientDetails[0]['age'] ?> Year(s) / <?php echo $patientDetails[0]['gender'] ?>
+                                                                                <?php echo $patientDetails[0]['age'] ?> Year(s) /
+                                                                                <?php echo $patientDetails[0]['gender'] ?>
                                                                             </p>
-                                                                            <p class="mb-1"><strong>Patient ID<span style="margin-right: 3px;"></span>:</strong>
+                                                                            <p class="mb-1"><strong>Patient ID<span
+                                                                                        style="margin-right: 3px;"></span>:</strong>
                                                                                 <?php echo $patientDetails[0]['patientId'] ?>
                                                                             </p>
                                                                         </div>
 
                                                                         <div class="col-md-4">
-                                                                            <div style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                                                                                <p class="mb-1" style="margin: 0; text-align: right;">
-                                                                                    <strong>Date<span style="margin-right: 3px;"></span>:</strong>
+                                                                            <div
+                                                                                style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+                                                                                <p class="mb-1"
+                                                                                    style="margin: 0; text-align: right;">
+                                                                                    <strong>Date<span
+                                                                                            style="margin-right: 3px;"></span>:</strong>
                                                                                     <?= date('d M Y, h:i A', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
                                                                                 </p>
-                                                                                <p class="mb-1" style="margin: 0; text-align: right;">
+                                                                                <p class="mb-1"
+                                                                                    style="margin: 0; text-align: right;">
                                                                                     <strong>Mobile:</strong>
                                                                                     <?php echo $patientDetails[0]['mobileNumber'] ?>
                                                                                 </p>
@@ -743,9 +758,12 @@
                                                                                         <?= $symptom['symptom_name'] ?>
                                                                                         <?php
                                                                                         $details = [];
-                                                                                        if (!empty($symptom['since'])) $details[] = $symptom['since'];
-                                                                                        if (!empty($symptom['severity'])) $details[] = $symptom['severity'];
-                                                                                        if (!empty($symptom['note'])) $details[] = $symptom['note'];
+                                                                                        if (!empty($symptom['since']))
+                                                                                            $details[] = $symptom['since'];
+                                                                                        if (!empty($symptom['severity']))
+                                                                                            $details[] = $symptom['severity'];
+                                                                                        if (!empty($symptom['note']))
+                                                                                            $details[] = $symptom['note'];
                                                                                         if (!empty($details)) {
                                                                                             echo ' (' . implode(', ', $details) . ')';
                                                                                         }
@@ -765,9 +783,12 @@
                                                                                         <?= $diagnosis['diagnosis_name'] ?>
                                                                                         <?php
                                                                                         $details = [];
-                                                                                        if (!empty($diagnosis['since'])) $details[] = $diagnosis['since'];
-                                                                                        if (!empty($diagnosis['severity'])) $details[] = $diagnosis['severity'];
-                                                                                        if (!empty($diagnosis['note'])) $details[] = $diagnosis['note'];
+                                                                                        if (!empty($diagnosis['since']))
+                                                                                            $details[] = $diagnosis['since'];
+                                                                                        if (!empty($diagnosis['severity']))
+                                                                                            $details[] = $diagnosis['severity'];
+                                                                                        if (!empty($diagnosis['note']))
+                                                                                            $details[] = $diagnosis['note'];
                                                                                         if (!empty($details)) {
                                                                                             echo ' (' . implode(', ', $details) . ')';
                                                                                         }
@@ -800,7 +821,6 @@
                                                                                         style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                                         Food Timing</th>
 
-                                                                                    <!-- Frequency spanning four columns -->
                                                                                     <th colspan="4"
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                         Frequency</th>
@@ -810,7 +830,6 @@
                                                                                         Notes</th>
                                                                                 </tr>
 
-                                                                                <!-- Second header row for sub-columns -->
                                                                                 <tr>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
@@ -838,7 +857,8 @@
                                                                                         list($morning, $afternoon, $evening, $night) = $timingParts;
                                                                                         ?>
                                                                                         <tr>
-                                                                                            <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                                 <?= $index + 1 . '.' ?>
                                                                                             </td>
                                                                                             <td style="border: 1px solid #000; padding: 6px;">
@@ -852,10 +872,12 @@
                                                                                                     -
                                                                                                 <?php endif; ?>
                                                                                             </td>
-                                                                                            <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                                 <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
                                                                                             </td>
-                                                                                            <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                                 <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
                                                                                             </td>
 
@@ -893,23 +915,22 @@
                                                                             </tbody>
                                                                         </table>
 
-
                                                                     <?php endif; ?>
-
-
 
                                                                     <?php if (!empty($consultation['next_follow_up'])): ?>
                                                                         <div class="mt-3">
                                                                             <p><strong>Next Follow-Up Date:</strong></p>
                                                                             <ul>
-                                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?></li>
+                                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
+                                                                                </li>
                                                                             </ul>
                                                                         </div>
                                                                     <?php endif; ?>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
 
                                                                 <button type="button" class="btn btn-primary download-pdf-btn"
                                                                     data-content-id="consultationDetails<?= $consultation['id'] ?>"
@@ -921,7 +942,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- End   Preview Page to Download -->
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
@@ -929,87 +949,6 @@
                                     <p>No Previous Consultation.</p>
                                 <?php endif; ?>
                             </div>
-
-
-                            <!-- Previous and Next arrows script -->
-                            <script>
-                                let currentIndex = 0;
-                                const consultationItems = document.querySelectorAll('.consultation-item');
-                                const totalItems = consultationItems.length;
-                                const counterDisplay = document.getElementById('consultation-counter');
-                                const navLeft = document.getElementById('nav-left');
-                                const navRight = document.getElementById('nav-right');
-
-                                function updateCounterAndButtons() {
-                                    counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
-                                    navLeft.disabled = currentIndex === 0;
-                                    navRight.disabled = currentIndex === totalItems - 1;
-                                }
-
-                                function navigateConsultations(direction) {
-                                    if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
-                                        return;
-                                    }
-                                    consultationItems[currentIndex].classList.remove('active');
-                                    currentIndex = (currentIndex + direction + totalItems) % totalItems;
-                                    consultationItems[currentIndex].classList.add('active');
-                                    updateCounterAndButtons();
-                                }
-
-                                document.addEventListener('keydown', function(event) {
-                                    if (event.key === 'ArrowLeft' && currentIndex > 0) {
-                                        navigateConsultations(-1);
-                                    } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
-                                        navigateConsultations(1);
-                                    }
-                                });
-
-                                updateCounterAndButtons();
-                            </script>
-                            <!-- ✅ Add jsPDF and html2canvas -->
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-                            <script
-                                src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-                            <script>
-                                async function downloadConsultationPDF(consultationId) {
-                                    const element = document.getElementById('consultation-content-' + consultationId);
-                                    if (!element) {
-                                        alert("Consultation content not found!");
-                                        return;
-                                    }
-
-                                    const {
-                                        jsPDF
-                                    } = window.jspdf;
-                                    const pdf = new jsPDF('p', 'mm', 'a4');
-
-                                    // Capture element as canvas
-                                    await html2canvas(element, {
-                                        scale: 2,
-                                        useCORS: true,
-                                    }).then(canvas => {
-                                        const imgData = canvas.toDataURL('image/png');
-                                        const imgWidth = 190; // width of A4 minus margins
-                                        const pageHeight = 295; // height of A4
-                                        const imgHeight = canvas.height * imgWidth / canvas.width;
-                                        let heightLeft = imgHeight;
-                                        let position = 10;
-
-                                        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                                        heightLeft -= pageHeight;
-
-                                        while (heightLeft > 0) {
-                                            position = heightLeft - imgHeight;
-                                            pdf.addPage();
-                                            pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                                            heightLeft -= pageHeight;
-                                        }
-
-                                        pdf.save('consultation_' + consultationId + '.pdf');
-                                    });
-                                }
-                            </script>
 
                             <!-- New Consultation -->
                             <div class="tab-pane fade" id="new-consultation" role="tabpanel">
@@ -1287,7 +1226,8 @@
                                                 <div id="medicinesWrapper">
                                                     <div class="input-group mb-2 position-relative">
                                                         <div class="tags-input flex-grow-1" id="medicinesInput">
-                                                            <input type="text" class="form-control" id="medicinesSearchInput"
+                                                            <input type="text" class="form-control"
+                                                                id="medicinesSearchInput"
                                                                 placeholder="Search or type to add..." />
                                                         </div>
                                                         <!-- <button type="button" class="btn btn-outline-secondary"
@@ -1519,13 +1459,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -2026,13 +1966,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -2774,23 +2714,17 @@
                     </div>
 
                     <div class="modal-body" style="font-family: Poppins, sans-serif;">
-
-                        <!-- Quantity (global total) -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Quantity</label>
                             <div class="d-flex align-items-center gap-2">
                                 <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
-                                    placeholder="Enter qty">
-                                <!-- Note: Global unit removed - units are per-slot now -->
+                                    placeholder="Enter quantity">
                             </div>
                         </div>
-
-                        <!-- Timing -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Timing</label>
 
                             <div id="timingOptions" class="d-flex flex-wrap gap-4">
-                                <!-- Each slot: checkbox, label, qty, unit -->
                                 <div class="form-check d-flex align-items-center gap-2">
                                     <input type="checkbox" id="morningCheck">
                                     <label for="morningCheck" class="mb-0">Morning</label>
@@ -2853,8 +2787,6 @@
 
                             </div>
                         </div>
-
-                        <!-- Food Timing -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Food Timing</label>
                             <div class="d-flex flex-wrap gap-3 mt-2">
@@ -2950,7 +2882,10 @@
                 </div>
             </div>
         </div>
-        </div>
+
+        <!-- ✅ Add jsPDF and html2canvas -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -2959,6 +2894,42 @@
 
     <!-- ******************************************************************************************************************************************** -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Previous and Next arrows script in consulation dashboard page -->
+    <script>
+        let currentIndex = 0;
+        const consultationItems = document.querySelectorAll('.consultation-item');
+        const totalItems = consultationItems.length;
+        const counterDisplay = document.getElementById('consultation-counter');
+        const navLeft = document.getElementById('nav-left');
+        const navRight = document.getElementById('nav-right');
+
+        function updateCounterAndButtons() {
+            counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
+            navLeft.disabled = currentIndex === 0;
+            navRight.disabled = currentIndex === totalItems - 1;
+        }
+
+        function navigateConsultations(direction) {
+            if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
+                return;
+            }
+            consultationItems[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + direction + totalItems) % totalItems;
+            consultationItems[currentIndex].classList.add('active');
+            updateCounterAndButtons();
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowLeft' && currentIndex > 0) {
+                navigateConsultations(-1);
+            } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
+                navigateConsultations(1);
+            }
+        });
+
+        updateCounterAndButtons();
+    </script>
 
     <!-- Consultation date and time default -->
     <script>
@@ -3102,12 +3073,12 @@
 
             if (!symptomsList.includes(pendingSymptom)) {
                 fetch("<?= site_url('Consultation/addSymptom') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingSymptom)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingSymptom)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3258,7 +3229,7 @@
 
     <!-- Symptoms save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseSymptomTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -3302,7 +3273,7 @@
 
             function updateSymptomsJson() {
                 let symptoms = [];
-                $('#symptomsInput > span.bg-success').each(function() {
+                $('#symptomsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let symptom = parseSymptomTagText(tagText);
 
@@ -3321,7 +3292,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateSymptomsJson();
             });
         });
@@ -3401,12 +3372,12 @@
 
             if (!findingsList.includes(pendingTag)) {
                 fetch("<?= site_url('Consultation/addFinding') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingTag)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingTag)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3557,7 +3528,7 @@
 
     <!-- Findings save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
 
@@ -3594,7 +3565,7 @@
 
             function updateFindingsJson() {
                 let findings = [];
-                $('#findingsInput > span.bg-success').each(function() {
+                $('#findingsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let finding = parseTagText(tagText);
                     if (finding) {
@@ -3613,7 +3584,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateFindingsJson(); // Ensure latest data
                 console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
             });
@@ -3696,12 +3667,12 @@
 
             if (!diagnosisList.includes(pendingDiagnosis)) {
                 fetch("<?= site_url('Consultation/addDiagnosis') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingDiagnosis)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingDiagnosis)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3860,7 +3831,7 @@
 
     <!-- Diagnosis save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseDiagnosisTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -3897,7 +3868,7 @@
 
             function updateDiagnosisJson() {
                 let diagnoses = [];
-                $('#diagnosisInputBox > span.bg-success').each(function() {
+                $('#diagnosisInputBox > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
                     let diagnosis = parseDiagnosisTagText(tagText);
                     if (diagnosis) {
@@ -3916,7 +3887,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateDiagnosisJson(); // Ensure latest data
                 console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
             });
@@ -3991,12 +3962,12 @@
 
             if (!investigationsList.includes(pendingInvestigation)) {
                 fetch("<?= site_url('Consultation/addInvestigation') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingInvestigation)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingInvestigation)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4138,7 +4109,7 @@
 
     <!-- Investigation save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseInvestigationTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -4167,7 +4138,7 @@
 
             function updateInvestigationsJson() {
                 let investigations = [];
-                $('#investigationsInput > span.bg-success').each(function() {
+                $('#investigationsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let investigation = parseInvestigationTagText(tagText);
 
@@ -4186,7 +4157,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function() {
+            $('#consultationForm').on('submit', function () {
                 updateInvestigationsJson();
             });
         });
@@ -4284,12 +4255,12 @@
                 if (!name) return;
 
                 fetch("<?= site_url('Consultation/addInstruction') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(name)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(name)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4431,12 +4402,12 @@
                 if (!name) return;
 
                 fetch("<?= site_url('Consultation/addProcedure') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(name)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(name)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4611,7 +4582,7 @@
 
     <!-- Medicine Modal Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // server-provided arrays
             const medicinesData = <?php echo json_encode($medicinesList); ?> || [];
             const medicinesList = medicinesData.map(m => m.medicineName);
@@ -4925,7 +4896,7 @@
             });
 
             // --- existing open/save/tag logic unchanged ---
-            window.openMedicineModal = function(name, existing = null, tagEl = null) {
+            window.openMedicineModal = function (name, existing = null, tagEl = null) {
                 pendingMedicineName = name;
                 editingMedicineTag = tagEl;
 
@@ -4965,7 +4936,7 @@
                 medicinesModal.show();
             };
 
-            window.saveMedicineModal = function() {
+            window.saveMedicineModal = function () {
                 const quantity = (medicineQuantity.value || "").trim();
                 const notes = (medicineNotes.value || "").trim();
                 const timing = buildTimingString();
@@ -5075,7 +5046,7 @@
 
     <!-- Upload attachments script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const isEditPage = !!document.getElementById('fileList');
             const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
             const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
@@ -5886,7 +5857,7 @@
                         }, 150);
                     } else {
                         lastTap = now;
-                        tapTimeout = setTimeout(() => {}, DOUBLE_TAP_THRESHOLD);
+                        tapTimeout = setTimeout(() => { }, DOUBLE_TAP_THRESHOLD);
                     }
                 });
 
@@ -5919,7 +5890,7 @@
             modal.show();
         }
 
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
             if (deleteConsultationId && deletePatientId) {
                 window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
                     deletePatientId + "/" + deleteConsultationId;
@@ -5949,7 +5920,7 @@
 
     <!-- Modal move on screen -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
 
             const draggableModalIds = [
                 '#symptomsModal',
@@ -5961,7 +5932,7 @@
                 const modalElement = document.querySelector(id);
                 if (modalElement) {
                     makeModalDraggable(modalElement);
-                    modalElement.addEventListener('hidden.bs.modal', function() {
+                    modalElement.addEventListener('hidden.bs.modal', function () {
                         const modalDialog = modalElement.querySelector('.modal-dialog');
                         modalDialog.style.left = '';
                         modalDialog.style.top = '';
@@ -5971,7 +5942,7 @@
                 }
             });
 
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape') {
                     const openModal = document.querySelector('.modal.show');
                     if (openModal) {
@@ -5997,7 +5968,7 @@
             let offsetX = 0;
             let offsetY = 0;
 
-            modalHeader.addEventListener('mousedown', function(e) {
+            modalHeader.addEventListener('mousedown', function (e) {
                 e.preventDefault();
                 isDragging = true;
                 hasDragged = false;
@@ -6039,7 +6010,7 @@
         }
     </script>
 
-    <!-- PDF Download Script -->
+    <!-- Consultation - PDF Download Script -->
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
 
@@ -6049,7 +6020,7 @@
             // Add a click listener to EACH button
             downloadButtons.forEach(button => {
 
-                button.addEventListener('click', function(event) {
+                button.addEventListener('click', function (event) {
 
                     // Get the specific content ID from this button's data-attribute
                     const contentId = event.currentTarget.getAttribute('data-content-id');

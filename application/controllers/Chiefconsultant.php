@@ -39,24 +39,17 @@ class Chiefconsultant extends CI_Controller
         $otp = rand(1000, 9999);
         $this->session->set_userdata('generated_otp', $otp);
 
-        $message = "Your OTP is $otp to change the new password for your Chief Consultant [CC] account.";
+        $message = " Dear User, <br> <br>
+        Your One-Time Password (OTP) to reset your Chief Consultant (CC) account password is:
+       <b> $otp </b> <br>
+        Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
+       <br> Best regards,<br>  
+        EDF Support Team ";
 
-        $config = array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'mail.arramjobs.in',
-            'smtp_port' => 465,
-            'smtp_user' => 'arramjobs@arramjobs.in',
-            'smtp_pass' => '',  // Mail Password
-            'mailtype' => 'text',
-            'charset' => 'utf-8',
-            'wordwrap' => TRUE
-        );
-
-        $this->email->initialize($config);
         $this->email->set_newline("\r\n");
-        $this->email->from('arramjobs@arramjobs.in', 'Consult EDF');
+        $this->email->from('erodediabetesfoundation@gmail.com', 'Consult EDF');
         $this->email->to($to);
-        $this->email->subject('Consultation at Erode Diabetes Foundation');
+        $this->email->subject('OTP to Reset Your CC Account Password');
         $this->email->message($message);
 
         if ($this->email->send()) {
@@ -278,16 +271,6 @@ class Chiefconsultant extends CI_Controller
         }
     }
 
-    public function updatePhoto()
-    {
-        if ($this->CcModel->updateProfilePhoto()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Profile photo updated successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in updating profile photo');
-        }
-        redirect('Chiefconsultant/editMyProfile');
-    }
-
     public function updateMyProfile()
     {
         if ($this->CcModel->updateProfileDetails()) {
@@ -310,7 +293,7 @@ class Chiefconsultant extends CI_Controller
         }
     }
 
-    public function sendEmailOtp()// For CC change password
+    public function sendEmailOtp()// For CC change password after login
     {
         $email = $this->input->post('email');
 
@@ -319,7 +302,7 @@ class Chiefconsultant extends CI_Controller
             return;
         }
 
-        $otp = rand(100000, 999999);
+        $otp = rand(1000, 9999);
         $this->session->set_userdata('email_otp', $otp);
         $this->session->set_userdata('email_otp_address', $email);
 

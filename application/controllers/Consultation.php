@@ -122,6 +122,44 @@ class Consultation extends CI_Controller
         ]);
     }
 
+    // Add new medicine from consultation page
+    public function addNewMedicines()
+    {
+        $data = json_decode($this->input->raw_input_stream, true);
+
+        $medicineName = trim($data['medicineName'] ?? '');
+        $compositionName = trim($data['compositionName'] ?? '');
+        $category = trim($data['category'] ?? '');
+
+        $insertData = [
+            'medicineName' => $medicineName,
+            'compositionName' => $compositionName,
+            'category' => $category,
+        ];
+
+        $insert = $this->db->insert('medicines_list', $insertData);
+
+        if ($insert) {
+            $insertData['id'] = $this->db->insert_id();
+
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => true,
+                    'message' => 'Medicine added successfully.',
+                    'data' => $insertData
+                ]));
+        } else {
+            return $this->output
+                ->set_status_header(500)
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                    'status' => false,
+                    'message' => 'Failed to save medicine. Please try again.'
+                ]));
+        }
+    }
+
     // Follow up Consultation view page
     public function followupConsultation($consultation_id)
     {
@@ -239,11 +277,11 @@ class Consultation extends CI_Controller
                 $data = array(
                     'consultation_id' => $consultationId,
                     'medicine_name' => $medicine['medicine_name'],
+                    'composition_name' => $medicine['composition'],
+                    'category' => $medicine['category'],
                     'quantity' => $medicine['quantity'],
-                    'unit' => $medicine['unit'],
                     'timing' => $medicine['timing'],
                     'food_timing' => $medicine['food_timing'],
-                    'duration' => $medicine['duration'],
                     'notes' => $medicine['notes'],
                 );
 
@@ -502,11 +540,11 @@ class Consultation extends CI_Controller
                 $data = array(
                     'consultation_id' => $consultationId,
                     'medicine_name' => $medicine['medicine_name'],
+                    'composition_name' => $medicine['composition'],
+                    'category' => $medicine['category'],
                     'quantity' => $medicine['quantity'],
-                    'unit' => $medicine['unit'],
                     'timing' => $medicine['timing'],
                     'food_timing' => $medicine['food_timing'],
-                    'duration' => $medicine['duration'],
                     'notes' => $medicine['notes'],
                 );
 

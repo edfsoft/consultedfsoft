@@ -192,10 +192,10 @@
         #symptomsModal .modal-header,
         #inputModal .modal-header,
         #diagnosisModal .modal-header,
-        #investigationsModal .modal-header {
+        #investigationsModal .modal-header,
+        #medicinesModal .modal-header {
             cursor: move;
             user-select: none;
-            /* Prevents text selection on double-click */
         }
 
         /* Dashboard Attachment Preview */
@@ -248,6 +248,19 @@
             width: 100%;
             height: 70vh;
             border: none;
+        }
+
+        /* Limit height of dropdown and make it scrollable */
+        #procedureList,
+        #adviceList,
+        #instructionList {
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border: 1px solid #ccc;
+            padding: 5px;
+            background-color: #00ad8d12;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -322,7 +335,7 @@
                                                 <button id="nav-left" class="btn btn-outline-secondary me-2"
                                                     onclick="navigateConsultations(-1)">&#9664;</button>
                                                 <span id="consultation-counter">
-                                                    < 1 of <?= count($consultations) ?> >
+                                                    < 1 of <?= count($consultations) ?>>
                                                 </span>
                                                 <button id="nav-right" class="btn btn-outline-secondary ms-2"
                                                     onclick="navigateConsultations(1)">&#9654;</button>
@@ -343,9 +356,15 @@
                                                                 <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
                                                             </h5>
                                                             <div class="mt-md-3 mb-4 mb-md-0">
-                                                                <button class="btn btn-secondary"
+                                                                <!--     <button class="btn btn-secondary"
                                                                     onclick="downloadConsultationPDF(<?= $consultation['id'] ?>)">
                                                                     <i class="bi bi-download"></i>
+                                                                </button> -->
+
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#consultationModal<?= $consultation['id'] ?>">
+                                                                    <i class="bi bi-eye"></i>
                                                                 </button>
 
                                                                 <button type="button" class="btn btn-danger"
@@ -504,58 +523,118 @@
                                                                 style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
                                                                 class="mb-3">
                                                                 <thead>
+                                                                    <!-- First header row -->
                                                                     <tr>
-                                                                        <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             S.No</th>
-                                                                        <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             Name</th>
-                                                                        <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                            Quantity</th>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                            Food Timing</th>
+
+                                                                        <!-- Frequency spanning four columns -->
+                                                                        <th colspan="4"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                             Frequency</th>
-                                                                        <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
-                                                                            Duration</th>
-                                                                        <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: left;">
+
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                             Notes</th>
                                                                     </tr>
+
+                                                                    <!-- Second header row for sub-columns -->
+                                                                    <tr>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Morning</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Afternoon</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Evening</th>
+                                                                        <th
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Night</th>
+                                                                    </tr>
                                                                 </thead>
+
                                                                 <tbody>
-                                                                    <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                    <?php if (!empty($consultation['medicines'])): ?>
+                                                                        <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                            <?php
+                                                                            // Safely split timing into 4 parts
+                                                                            $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
+                                                                            $timingParts = preg_split('/\s*-\s*/', $timingString);
+                                                                            $timingParts = array_pad($timingParts, 4, '0'); // ensure 4 values
+                                                                            list($morning, $afternoon, $evening, $night) = $timingParts;
+                                                                            ?>
+                                                                            <tr>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= $index + 1 . '.' ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?php if (!empty($medicine['medicine_name'])): ?>
+                                                                                        <?php if (!empty($medicine['category'])): ?>
+                                                                                            <small
+                                                                                                class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
+                                                                                        <?php endif; ?>
+                                                                                        <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                    <?php else: ?>
+                                                                                        -
+                                                                                    <?php endif; ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                </td>
+
+                                                                                <!-- Frequency split -->
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
+                                                                                </td>
+                                                                                <td
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
+                                                                                </td>
+
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                                    <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php endforeach; ?>
+                                                                    <?php else: ?>
                                                                         <tr>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= $index + 1 . ' .' ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['medicine_name']) ?>
-                                                                                <?php if (!empty($medicine['quantity']) || !empty($medicine['unit'])): ?>
-                                                                                    <small>
-                                                                                        (<?= htmlspecialchars($medicine['quantity'] ?? '') . ' ' . htmlspecialchars($medicine['unit'] ?? '') ?>)
-                                                                                    </small>
-                                                                                <?php endif; ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['timing'] ?? '-') ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?= htmlspecialchars($medicine['duration'] ?? '-') ?>
-                                                                            </td>
-                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                <?php
-                                                                                $notes = [];
-                                                                                if (!empty($medicine['food_timing']))
-                                                                                    $notes[] = $medicine['food_timing'];
-                                                                                if (!empty($medicine['notes']))
-                                                                                    $notes[] = $medicine['notes'];
-                                                                                echo !empty($notes) ? htmlspecialchars(implode(' - ', $notes)) : '-';
-                                                                                ?>
+                                                                            <td colspan="9"
+                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                No medicines found.
                                                                             </td>
                                                                         </tr>
-                                                                    <?php endforeach; ?>
+                                                                    <?php endif; ?>
                                                                 </tbody>
                                                             </table>
+
+
                                                         <?php endif; ?>
 
 
@@ -607,86 +686,265 @@
                                                         <?php endif; ?>
                                                     </div>
                                                 </div>
+                                                <!-- Preview Page to Download Consultation -->
+                                                <div class="modal fade" id="consultationModal<?= $consultation['id'] ?>"
+                                                    tabindex="-1" aria-labelledby="consultationModalLabel<?= $consultation['id'] ?>"
+                                                    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+                                                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                                        <div class="modal-content">
+
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="consultationModalLabel<?= $consultation['id'] ?>">
+                                                                    <p style="font-size: 16px; font-weight: 700; margin-bottom: 0;">
+                                                                        <?php echo $patientDetails[0]['firstName'] ?>
+                                                                        <?php echo $patientDetails[0]['lastName'] ?> |
+                                                                        <?php echo $patientDetails[0]['patientId'] ?>
+                                                                    </p>
+                                                                </h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
+                                                            </div>
+
+                                                            <div class="modal-body" style="background-color: #f8f9fa;">
+
+                                                                <div id="consultationDetails<?= $consultation['id'] ?>"
+                                                                    style="background: #fff; border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px; width: 100%; margin: 0 auto; min-height: 500px; padding-top: 100px;">
+                                                                    <div class="row mb-3">
+
+                                                                        <div class="col-md-8">
+                                                                            <p class="mb-1"><strong>Name<span
+                                                                                        style="margin-right: 30px;"></span>:</strong>
+                                                                                <?php echo $patientDetails[0]['firstName'] ?>
+                                                                                <?php echo $patientDetails[0]['lastName'] ?>
+                                                                            </p>
+                                                                            <p class="mb-1"><strong>Age & Sex:</strong>
+                                                                                <?php echo $patientDetails[0]['age'] ?> Year(s) /
+                                                                                <?php echo $patientDetails[0]['gender'] ?>
+                                                                            </p>
+                                                                            <p class="mb-1"><strong>Patient ID<span
+                                                                                        style="margin-right: 3px;"></span>:</strong>
+                                                                                <?php echo $patientDetails[0]['patientId'] ?>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div class="col-md-4">
+                                                                            <div
+                                                                                style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+                                                                                <p class="mb-1"
+                                                                                    style="margin: 0; text-align: right;">
+                                                                                    <strong>Date<span
+                                                                                            style="margin-right: 3px;"></span>:</strong>
+                                                                                    <?= date('d M Y, h:i A', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
+                                                                                </p>
+                                                                                <p class="mb-1"
+                                                                                    style="margin: 0; text-align: right;">
+                                                                                    <strong>Mobile:</strong>
+                                                                                    <?php echo $patientDetails[0]['mobileNumber'] ?>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div style="height: 2em;"></div>
+
+                                                                    <?php if (!empty($consultation['symptoms'])): ?>
+                                                                        <div class="mb-3">
+                                                                            <p><strong>Symptoms:</strong></p>
+                                                                            <ul>
+                                                                                <?php foreach ($consultation['symptoms'] as $symptom): ?>
+                                                                                    <li>
+                                                                                        <?= $symptom['symptom_name'] ?>
+                                                                                        <?php
+                                                                                        $details = [];
+                                                                                        if (!empty($symptom['since']))
+                                                                                            $details[] = $symptom['since'];
+                                                                                        if (!empty($symptom['severity']))
+                                                                                            $details[] = $symptom['severity'];
+                                                                                        if (!empty($symptom['note']))
+                                                                                            $details[] = $symptom['note'];
+                                                                                        if (!empty($details)) {
+                                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                                        }
+                                                                                        ?>
+                                                                                    </li>
+                                                                                <?php endforeach; ?>
+                                                                            </ul>
+                                                                        </div>
+                                                                    <?php endif; ?>
+
+                                                                    <?php if (!empty($consultation['diagnosis'])): ?>
+                                                                        <div class="mb-3">
+                                                                            <p><strong>Diagnosis:</strong></p>
+                                                                            <ul>
+                                                                                <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
+                                                                                    <li>
+                                                                                        <?= $diagnosis['diagnosis_name'] ?>
+                                                                                        <?php
+                                                                                        $details = [];
+                                                                                        if (!empty($diagnosis['since']))
+                                                                                            $details[] = $diagnosis['since'];
+                                                                                        if (!empty($diagnosis['severity']))
+                                                                                            $details[] = $diagnosis['severity'];
+                                                                                        if (!empty($diagnosis['note']))
+                                                                                            $details[] = $diagnosis['note'];
+                                                                                        if (!empty($details)) {
+                                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                                        }
+                                                                                        ?>
+                                                                                    </li>
+                                                                                <?php endforeach; ?>
+                                                                            </ul>
+                                                                        </div>
+                                                                    <?php endif; ?>
+
+                                                                    <!-- ====== Medicines ====== -->
+                                                                    <?php if (!empty($consultation['medicines'])): ?>
+                                                                        <p><strong>Medicines:</strong></p>
+                                                                        <table
+                                                                            style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
+                                                                            class="mb-3">
+                                                                            <thead>
+                                                                                <!-- First header row -->
+                                                                                <tr>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        S.No</th>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        Name</th>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        Quantity</th>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        Food Timing</th>
+
+                                                                                    <th colspan="4"
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        Frequency</th>
+
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        Notes</th>
+                                                                                </tr>
+
+                                                                                <tr>
+                                                                                    <th
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        Morning</th>
+                                                                                    <th
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        Afternoon</th>
+                                                                                    <th
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        Evening</th>
+                                                                                    <th
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        Night</th>
+                                                                                </tr>
+                                                                            </thead>
+
+                                                                            <tbody>
+                                                                                <?php if (!empty($consultation['medicines'])): ?>
+                                                                                    <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                                        <?php
+                                                                                        // Safely split timing into 4 parts
+                                                                                        $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
+                                                                                        $timingParts = preg_split('/\s*-\s*/', $timingString);
+                                                                                        $timingParts = array_pad($timingParts, 4, '0'); // ensure 4 values
+                                                                                        list($morning, $afternoon, $evening, $night) = $timingParts;
+                                                                                        ?>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                                <?= $index + 1 . '.' ?>
+                                                                                            </td>
+                                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                                <?php if (!empty($medicine['medicine_name'])): ?>
+                                                                                                    <?php if (!empty($medicine['category'])): ?>
+                                                                                                        <small
+                                                                                                            class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
+                                                                                                    <?php endif; ?>
+                                                                                                    <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                                <?php else: ?>
+                                                                                                    -
+                                                                                                <?php endif; ?>
+                                                                                            </td>
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                                <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                            </td>
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                                <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                            </td>
+
+                                                                                            <!-- Frequency split -->
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                                <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
+                                                                                            </td>
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                                <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
+                                                                                            </td>
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                                <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
+                                                                                            </td>
+                                                                                            <td
+                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                                <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
+                                                                                            </td>
+
+                                                                                            <td style="border: 1px solid #000; padding: 6px;">
+                                                                                                <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    <?php endforeach; ?>
+                                                                                <?php else: ?>
+                                                                                    <tr>
+                                                                                        <td colspan="9"
+                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            No medicines found.
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                <?php endif; ?>
+                                                                            </tbody>
+                                                                        </table>
+
+                                                                    <?php endif; ?>
+
+                                                                    <?php if (!empty($consultation['next_follow_up'])): ?>
+                                                                        <div class="mt-3">
+                                                                            <p><strong>Next Follow-Up Date:</strong></p>
+                                                                            <ul>
+                                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+
+                                                                <button type="button" class="btn btn-primary download-pdf-btn"
+                                                                    data-content-id="consultationDetails<?= $consultation['id'] ?>"
+                                                                    data-filename="Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>.pdf">
+                                                                    <i class="bi bi-download"></i>
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
-                                    <!-- Previous and Next arrows script -->
-                                    <script>
-                                        let currentIndex = 0;
-                                        const consultationItems = document.querySelectorAll('.consultation-item');
-                                        const totalItems = consultationItems.length;
-                                        const counterDisplay = document.getElementById('consultation-counter');
-                                        const navLeft = document.getElementById('nav-left');
-                                        const navRight = document.getElementById('nav-right');
-
-                                        function updateCounterAndButtons() {
-                                            counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
-                                            navLeft.disabled = currentIndex === 0;
-                                            navRight.disabled = currentIndex === totalItems - 1;
-                                        }
-
-                                        function navigateConsultations(direction) {
-                                            if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
-                                                return;
-                                            }
-                                            consultationItems[currentIndex].classList.remove('active');
-                                            currentIndex = (currentIndex + direction + totalItems) % totalItems;
-                                            consultationItems[currentIndex].classList.add('active');
-                                            updateCounterAndButtons();
-                                        }
-
-                                        document.addEventListener('keydown', function (event) {
-                                            if (event.key === 'ArrowLeft' && currentIndex > 0) {
-                                                navigateConsultations(-1);
-                                            } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
-                                                navigateConsultations(1);
-                                            }
-                                        });
-
-                                        updateCounterAndButtons();
-                                    </script>
-                                    <!-- ✅ Add jsPDF and html2canvas -->
-                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-                                    <script
-                                        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-                                    <script>
-                                        async function downloadConsultationPDF(consultationId) {
-                                            const element = document.getElementById('consultation-content-' + consultationId);
-                                            if (!element) {
-                                                alert("Consultation content not found!");
-                                                return;
-                                            }
-
-                                            const { jsPDF } = window.jspdf;
-                                            const pdf = new jsPDF('p', 'mm', 'a4');
-
-                                            // Capture element as canvas
-                                            await html2canvas(element, {
-                                                scale: 2,
-                                                useCORS: true,
-                                            }).then(canvas => {
-                                                const imgData = canvas.toDataURL('image/png');
-                                                const imgWidth = 190; // width of A4 minus margins
-                                                const pageHeight = 295; // height of A4
-                                                const imgHeight = canvas.height * imgWidth / canvas.width;
-                                                let heightLeft = imgHeight;
-                                                let position = 10;
-
-                                                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                                                heightLeft -= pageHeight;
-
-                                                while (heightLeft > 0) {
-                                                    position = heightLeft - imgHeight;
-                                                    pdf.addPage();
-                                                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
-                                                    heightLeft -= pageHeight;
-                                                }
-
-                                                pdf.save('consultation_' + consultationId + '.pdf');
-                                            });
-                                        }
-                                    </script>
                                 <?php else: ?>
                                     <p>No Previous Consultation.</p>
                                 <?php endif; ?>
@@ -966,15 +1224,18 @@
                                             </div>
                                             <div class="collapse field-container mt-2" id="medicinesCollapse">
                                                 <div id="medicinesWrapper">
-                                                    <div class="mb-3 position-relative">
-                                                        <div class="tags-input" id="medicinesInput">
-                                                            <input type="text"
-                                                                class="form-control border-0 p-0 m-0 shadow-none"
+                                                    <div class="input-group mb-2 position-relative">
+                                                        <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                            <input type="text" class="form-control"
                                                                 id="medicinesSearchInput"
                                                                 placeholder="Search or type to add..." />
                                                         </div>
-                                                        <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                        <!-- <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearMedicineSearch">✖</button> -->
+                                                        <button type="button" class="btn btn-outline-primary d-none"
+                                                            id="medicinesAddBtn">+ Add</button>
                                                     </div>
+                                                    <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
                                                     <div id="medicinesList" class="mt-2"></div>
                                                 </div>
                                             </div>
@@ -996,7 +1257,7 @@
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         id="clearAdviceSearch">✖</button>
                                                     <button type="button" class="btn btn-outline-primary d-none"
-                                                        id="addAdvice">+ Add</button>
+                                                        id="addAdvice">+ Add here</button>
                                                 </div>
                                                 <div id="adviceList">
                                                     <?php if (!empty($advicesList)): ?>
@@ -1490,13 +1751,17 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="medicinesCollapse">
                                         <div id="medicinesWrapper">
-                                            <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="medicinesInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="medicinesSearchInput" placeholder="Search or type to add..." />
+                                            <div class="input-group mb-2 position-relative">
+                                                <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                    <input type="text" class="form-control" id="medicinesSearchInput"
+                                                        placeholder="Search or type to add..." />
                                                 </div>
-                                                <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                <!-- <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearMedicineSearch">✖</button> -->
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="medicinesAddBtn">+ Add</button>
                                             </div>
+                                            <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
                                             <div id="medicinesList" class="mt-2"></div>
                                         </div>
                                     </div>
@@ -1518,7 +1783,7 @@
                                             <button type="button" class="btn btn-outline-secondary"
                                                 id="clearAdviceSearch">✖</button>
                                             <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
-                                                Add</button>
+                                                Add here</button>
                                         </div>
                                         <div id="adviceList">
                                             <?php if (!empty($advicesList)): ?>
@@ -1991,13 +2256,17 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="medicinesCollapse">
                                         <div id="medicinesWrapper">
-                                            <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="medicinesInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="medicinesSearchInput" placeholder="Search or type to add..." />
+                                            <div class="input-group mb-2 position-relative">
+                                                <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                    <input type="text" class="form-control" id="medicinesSearchInput"
+                                                        placeholder="Search or type to add..." />
                                                 </div>
-                                                <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+                                                <!-- <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearMedicineSearch">✖</button> -->
+                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                    id="medicinesAddBtn">+ Add</button>
                                             </div>
+                                            <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
                                             <div id="medicinesList" class="mt-2"></div>
                                         </div>
                                     </div>
@@ -2019,7 +2288,7 @@
                                             <button type="button" class="btn btn-outline-secondary"
                                                 id="clearAdviceSearch">✖</button>
                                             <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
-                                                Add</button>
+                                                Add here</button>
                                         </div>
                                         <div id="adviceList">
                                             <?php if (!empty($advicesList)): ?>
@@ -2373,11 +2642,57 @@
                             placeholder="Procedure name" required>
                     </div>
                     <div class="modal-footer">
-
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <!-- Add-new-medicine modal  -->
+        <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-titlefw-medium" style="font-family: Poppins, sans-serif;">Add New Medicine</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="newMedicineName" class="form-label fieldLabel pb-2">Medicine Name <span
+                                class="text-danger">*</span></label>
+                        <input type="text" id="newMedicineName" class="form-control" placeholder="E.g. Dolo 650"
+                            required>
+
+                        <label for="newMedicineComposition" class="form-label fieldLabel pb-2 mt-2">Composition Name
+                            <span class="text-danger">*</span></label>
+                        <input type="text" id="newMedicineComposition" class="form-control"
+                            placeholder="E.g. Paracetamol" required>
+
+                        <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category <span
+                                class="text-danger">*</span></label>
+                        <select id="newMedicineCategory" class="form-select" required>
+                            <option value="">Select Category</option>
+                            <option value="TAB">Tablet</option>
+                            <option value="CAP">Capsule</option>
+                            <option value="SYR">Syrup</option>
+                            <option value="INJ">Injection</option>
+                            <option value="DROPS">Drops</option>
+                            <option value="OINT">Ointment</option>
+                            <option value="CREAM">Cream</option>
+                            <option value="GEL">Gel</option>
+                            <option value="SPRAY">Spray</option>
+                            <option value="POW">Powder</option>
+                            <option value="SUSP">Suppository</option>
+                            <option value="INSULIN">Insulin</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="addMedicineConfirmBtn" class="btn text-light"
+                            style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -2394,32 +2709,18 @@
                         </div>
                         <div>
                             <span id="medicineCategoryText" class="text-dark me-3"></span>
-
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                     </div>
 
                     <div class="modal-body" style="font-family: Poppins, sans-serif;">
-
-                        <!-- Quantity + Units -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Quantity</label>
                             <div class="d-flex align-items-center gap-2">
                                 <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
-                                    placeholder="Enter qty">
-
-                                <select id="medicineUnit" class="form-select w-25">
-                                    <option value="mg">mg</option>
-                                    <option value="ml">ml</option>
-                                    <option value="units">units</option>
-                                    <option value="drops">drops</option>
-                                    <option value="tab">tab</option>
-                                    <option value="cap">cap</option>
-                                </select>
+                                    placeholder="Enter quantity">
                             </div>
                         </div>
-
-                        <!-- Timing -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Timing</label>
 
@@ -2429,6 +2730,14 @@
                                     <label for="morningCheck" class="mb-0">Morning</label>
                                     <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
+                                    <select id="morningUnit" class="form-select w-25" disabled>
+                                        <option value="mg">mg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="units">units</option>
+                                        <option value="drops">drops</option>
+                                        <option value="tab">tab</option>
+                                        <option value="cap">cap</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-check d-flex align-items-center gap-2">
@@ -2436,6 +2745,14 @@
                                     <label for="afternoonCheck" class="mb-0">Afternoon</label>
                                     <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
+                                    <select id="afternoonUnit" class="form-select w-25" disabled>
+                                        <option value="mg">mg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="units">units</option>
+                                        <option value="drops">drops</option>
+                                        <option value="tab">tab</option>
+                                        <option value="cap">cap</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-check d-flex align-items-center gap-2">
@@ -2443,6 +2760,14 @@
                                     <label for="eveningCheck" class="mb-0">Evening</label>
                                     <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
+                                    <select id="eveningUnit" class="form-select w-25" disabled>
+                                        <option value="mg">mg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="units">units</option>
+                                        <option value="drops">drops</option>
+                                        <option value="tab">tab</option>
+                                        <option value="cap">cap</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-check d-flex align-items-center gap-2">
@@ -2450,11 +2775,18 @@
                                     <label for="nightCheck" class="mb-0">Night</label>
                                     <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
+                                    <select id="nightUnit" class="form-select w-25" disabled>
+                                        <option value="mg">mg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="units">units</option>
+                                        <option value="drops">drops</option>
+                                        <option value="tab">tab</option>
+                                        <option value="cap">cap</option>
+                                    </select>
                                 </div>
+
                             </div>
                         </div>
-
-                        <!-- Food Timing -->
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Food Timing</label>
                             <div class="d-flex flex-wrap gap-3 mt-2">
@@ -2479,12 +2811,6 @@
                                     <label class="form-check-label" for="bedtime">Bedtime</label>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Duration</label>
-                            <input type="number" id="medicineDuration" min="0" class="form-control w-50"
-                                placeholder="Enter duration (days)">
                         </div>
 
                         <div class="mb-3">
@@ -2556,7 +2882,6 @@
                 </div>
             </div>
         </div>
-        </div>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -2566,16 +2891,52 @@
     <!-- ******************************************************************************************************************************************** -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Previous and Next arrows script in consulation dashboard page -->
+    <script>
+        let currentIndex = 0;
+        const consultationItems = document.querySelectorAll('.consultation-item');
+        const totalItems = consultationItems.length;
+        const counterDisplay = document.getElementById('consultation-counter');
+        const navLeft = document.getElementById('nav-left');
+        const navRight = document.getElementById('nav-right');
+
+        function updateCounterAndButtons() {
+            counterDisplay.textContent = ` ${currentIndex + 1} of ${totalItems} `;
+            navLeft.disabled = currentIndex === 0;
+            navRight.disabled = currentIndex === totalItems - 1;
+        }
+
+        function navigateConsultations(direction) {
+            if ((direction === -1 && currentIndex === 0) || (direction === 1 && currentIndex === totalItems - 1)) {
+                return;
+            }
+            consultationItems[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + direction + totalItems) % totalItems;
+            consultationItems[currentIndex].classList.add('active');
+            updateCounterAndButtons();
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowLeft' && currentIndex > 0) {
+                navigateConsultations(-1);
+            } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
+                navigateConsultations(1);
+            }
+        });
+
+        updateCounterAndButtons();
+    </script>
+
     <!-- Consultation date and time default -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const timeSelect = document.getElementById("consultTime");
             const dateInput = document.getElementById("consultDate");
             const method = "<?= isset($method) ? $method : '' ?>";
-            const phpDate = method !== "consultDashboard"
-                ? "<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>" : "";
-            const phpTime = method !== "consultDashboard"
-                ? "<?= isset($consultation['consult_time']) ? $consultation['consult_time'] : '' ?>" : "";
+            const phpDate = method !== "consultDashboard" ?
+                "<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>" : "";
+            const phpTime = method !== "consultDashboard" ?
+                "<?= isset($consultation['consult_time']) ? $consultation['consult_time'] : '' ?>" : "";
 
             for (let h = 0; h < 24; h++) {
                 for (let m = 0; m < 60; m += 10) {
@@ -2709,7 +3070,9 @@
             if (!symptomsList.includes(pendingSymptom)) {
                 fetch("<?= site_url('Consultation/addSymptom') ?>", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     body: "name=" + encodeURIComponent(pendingSymptom)
                 })
                     .then(res => res.json())
@@ -2725,11 +3088,23 @@
 
             if (editingSymptomTag && existingIndex !== -1) {
                 let existingId = selectedSymptoms[existingIndex].id || "new";
-                selectedSymptoms[existingIndex] = { id: existingId, symptom: pendingSymptom, note, since, severity };
+                selectedSymptoms[existingIndex] = {
+                    id: existingId,
+                    symptom: pendingSymptom,
+                    note,
+                    since,
+                    severity
+                };
                 updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
                 editingSymptomTag.setAttribute("data-id", existingId);
             } else {
-                const data = { id: "new", symptom: pendingSymptom, note, since, severity };
+                const data = {
+                    id: "new",
+                    symptom: pendingSymptom,
+                    note,
+                    since,
+                    severity
+                };
                 selectedSymptoms.push(data);
                 addSymptomTag(data);
             }
@@ -2846,7 +3221,6 @@
                 updateHiddenInput();
             }
         });
-
     </script>
 
     <!-- Symptoms save script -->
@@ -2909,7 +3283,10 @@
             }
 
             const observer = new MutationObserver(updateSymptomsJson);
-            observer.observe(document.getElementById('symptomsInput'), { childList: true, subtree: true });
+            observer.observe(document.getElementById('symptomsInput'), {
+                childList: true,
+                subtree: true
+            });
 
             $('#consultationForm').on('submit', function (e) {
                 updateSymptomsJson();
@@ -2992,7 +3369,9 @@
             if (!findingsList.includes(pendingTag)) {
                 fetch("<?= site_url('Consultation/addFinding') ?>", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     body: "name=" + encodeURIComponent(pendingTag)
                 })
                     .then(res => res.json())
@@ -3008,11 +3387,23 @@
 
             if (editingTagEl && existingIndex !== -1) {
                 let existingId = selectedFindings[existingIndex].id || "new";
-                selectedFindings[existingIndex] = { id: existingId, finding: pendingTag, note, since, severity };
+                selectedFindings[existingIndex] = {
+                    id: existingId,
+                    finding: pendingTag,
+                    note,
+                    since,
+                    severity
+                };
                 updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
                 editingTagEl.setAttribute("data-id", existingId);
             } else {
-                const data = { id: "new", finding: pendingTag, note, since, severity };
+                const data = {
+                    id: "new",
+                    finding: pendingTag,
+                    note,
+                    since,
+                    severity
+                };
                 selectedFindings.push(data);
                 addTag(data);
             }
@@ -3137,7 +3528,9 @@
             function parseTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
 
-                let finding, note = '', since = '', severity = '';
+                let finding, note = '',
+                    since = '',
+                    severity = '';
 
                 const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
 
@@ -3158,7 +3551,12 @@
                     finding = text;
                 }
 
-                return { finding, note, since, severity };
+                return {
+                    finding,
+                    note,
+                    since,
+                    severity
+                };
             }
 
             function updateFindingsJson() {
@@ -3177,7 +3575,10 @@
             }
 
             const observer = new MutationObserver(updateFindingsJson);
-            observer.observe(document.getElementById('findingsInput'), { childList: true, subtree: true });
+            observer.observe(document.getElementById('findingsInput'), {
+                childList: true,
+                subtree: true
+            });
 
             $('#consultationForm').on('submit', function (e) {
                 updateFindingsJson(); // Ensure latest data
@@ -3242,9 +3643,9 @@
             pendingDiagnosis = name;
             editingDiagnosisTag = tagEl;
 
-            diagnosisModalTitle.textContent = existing
-                ? `Edit Diagnosis: ${name}`
-                : `Diagnosis Details for: ${name}`;
+            diagnosisModalTitle.textContent = existing ?
+                `Edit Diagnosis: ${name}` :
+                `Diagnosis Details for: ${name}`;
 
             diagnosisNote.value = existing?.note || "";
             diagnosisSince.value = existing?.since || "";
@@ -3263,7 +3664,9 @@
             if (!diagnosisList.includes(pendingDiagnosis)) {
                 fetch("<?= site_url('Consultation/addDiagnosis') ?>", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     body: "name=" + encodeURIComponent(pendingDiagnosis)
                 })
                     .then(res => res.json())
@@ -3282,12 +3685,24 @@
             if (editingDiagnosisTag && existingIndex !== -1) {
                 // Update existing diagnosis
                 let existingId = selectedDiagnosis[existingIndex].id || "new";
-                selectedDiagnosis[existingIndex] = { id: existingId, name: pendingDiagnosis, note, since, severity };
+                selectedDiagnosis[existingIndex] = {
+                    id: existingId,
+                    name: pendingDiagnosis,
+                    note,
+                    since,
+                    severity
+                };
                 updateDiagnosisTag(editingDiagnosisTag, selectedDiagnosis[existingIndex]);
                 editingDiagnosisTag.setAttribute("data-id", existingId);
             } else {
                 // New diagnosis → id="new"
-                const data = { id: "new", name: pendingDiagnosis, note, since, severity };
+                const data = {
+                    id: "new",
+                    name: pendingDiagnosis,
+                    note,
+                    since,
+                    severity
+                };
                 selectedDiagnosis.push(data);
                 addDiagnosisTag(data);
             }
@@ -3416,7 +3831,9 @@
             function parseDiagnosisTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
-                let name, note = '', since = '', severity = '';
+                let name, note = '',
+                    since = '',
+                    severity = '';
 
                 const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
 
@@ -3437,7 +3854,12 @@
                     name = text;
                 }
 
-                return { name, note, since, severity };
+                return {
+                    name,
+                    note,
+                    since,
+                    severity
+                };
             }
 
             function updateDiagnosisJson() {
@@ -3456,7 +3878,10 @@
             }
 
             const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
-            diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), { childList: true, subtree: true });
+            diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), {
+                childList: true,
+                subtree: true
+            });
 
             $('#consultationForm').on('submit', function (e) {
                 updateDiagnosisJson(); // Ensure latest data
@@ -3534,7 +3959,9 @@
             if (!investigationsList.includes(pendingInvestigation)) {
                 fetch("<?= site_url('Consultation/addInvestigation') ?>", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     body: "name=" + encodeURIComponent(pendingInvestigation)
                 })
                     .then(res => res.json())
@@ -3550,11 +3977,19 @@
 
             if (editingInvestigationTag && existingIndex !== -1) {
                 let existingId = selectedInvestigations[existingIndex].id || "new";
-                selectedInvestigations[existingIndex] = { id: existingId, investigation: pendingInvestigation, note };
+                selectedInvestigations[existingIndex] = {
+                    id: existingId,
+                    investigation: pendingInvestigation,
+                    note
+                };
                 updateInvestigationTagDisplay(editingInvestigationTag, selectedInvestigations[existingIndex]);
                 editingInvestigationTag.setAttribute("data-id", existingId);
             } else {
-                const data = { id: "new", investigation: pendingInvestigation, note };
+                const data = {
+                    id: "new",
+                    investigation: pendingInvestigation,
+                    note
+                };
                 selectedInvestigations.push(data);
                 addInvestigationTag(data);
             }
@@ -3690,7 +4125,10 @@
 
                     return parsed;
                 } else {
-                    return { investigation: text, note: '' };
+                    return {
+                        investigation: text,
+                        note: ''
+                    };
                 }
             }
 
@@ -3710,7 +4148,10 @@
             }
 
             const observer = new MutationObserver(updateInvestigationsJson);
-            observer.observe(document.getElementById('investigationsInput'), { childList: true, subtree: true });
+            observer.observe(document.getElementById('investigationsInput'), {
+                childList: true,
+                subtree: true
+            });
 
             $('#consultationForm').on('submit', function () {
                 updateInvestigationsJson();
@@ -3732,18 +4173,58 @@
 
             const preloadInstructions = <?php echo isset($instructions) ? json_encode($instructions) : '[]'; ?>;
 
-            function norm(s) { return s.toLowerCase().trim(); }
+            function norm(s) {
+                return (s || '').toLowerCase().trim();
+            }
+
+            function sortList() {
+                const items = Array.from(list.querySelectorAll('.instruction-item'));
+                const selected = items.filter(i => i.querySelector('input').checked);
+                const unselected = items.filter(i => !i.querySelector('input').checked);
+
+                unselected.sort((a, b) => {
+                    const nameA = a.querySelector('label').textContent.trim().toLowerCase();
+                    const nameB = b.querySelector('label').textContent.trim().toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+
+                list.innerHTML = '';
+                selected.forEach(i => list.appendChild(i));
+                unselected.forEach(i => list.appendChild(i));
+            }
 
             function filter() {
                 const q = norm(searchInput.value);
                 let matches = 0;
+                let hasVisible = false;
+
                 list.querySelectorAll('.instruction-item').forEach(item => {
                     const labelText = item.querySelector('label').textContent;
                     const show = norm(labelText).includes(q) || q === '';
                     item.classList.toggle('d-none', !show);
                     if (show) matches++;
+                    if (show) hasVisible = true;
                 });
+
+                let noResultMsg = list.querySelector('.no-result');
+                if (!hasVisible) {
+                    if (!noResultMsg) {
+                        noResultMsg = document.createElement('div');
+                        noResultMsg.className = 'no-result text-muted mt-2';
+                        noResultMsg.textContent = 'No result found on search – Add new';
+                        list.appendChild(noResultMsg);
+                    }
+                } else if (noResultMsg) {
+                    noResultMsg.remove();
+                }
+
                 addBtn.classList.toggle('d-none', !(q && matches === 0));
+            }
+
+            function handleCheckChange(e) {
+                if (e.target.matches('input[type="checkbox"]')) {
+                    sortList();
+                }
             }
 
             searchInput.addEventListener('input', filter);
@@ -3756,8 +4237,12 @@
 
             addBtn.addEventListener('click', () => {
                 newInstructionInput.value = searchInput.value.trim();
-                if (modal) { modal.show(); }
-                else { modalEl.classList.add('show'); modalEl.style.display = 'block'; }
+                if (modal) {
+                    modal.show();
+                } else {
+                    modalEl.classList.add('show');
+                    modalEl.style.display = 'block';
+                }
             });
 
             addForm.addEventListener('submit', (e) => {
@@ -3767,7 +4252,9 @@
 
                 fetch("<?= site_url('Consultation/addInstruction') ?>", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     body: "name=" + encodeURIComponent(name)
                 })
                     .then(res => res.json())
@@ -3784,9 +4271,15 @@
                 `;
                             list.prepend(wrapper);
 
-                            if (modal) { modal.hide(); }
+                            // Attach sorting behavior to new checkbox
+                            wrapper.querySelector('input').addEventListener('change', handleCheckChange);
+
+                            if (modal) {
+                                modal.hide();
+                            }
                             searchInput.value = '';
                             filter();
+                            sortList();
                         } else {
                             alert(data.message || "Error saving instruction");
                         }
@@ -3794,6 +4287,7 @@
                     .catch(err => console.error(err));
             });
 
+            // 🧾 Preload instructions from database
             if (Array.isArray(preloadInstructions)) {
                 preloadInstructions.forEach(ins => {
                     const checkbox = list.querySelector(
@@ -3805,6 +4299,9 @@
                 });
             }
 
+            list.addEventListener('change', handleCheckChange);
+
+            sortList();
             filter();
         });
     </script>
@@ -3823,18 +4320,58 @@
 
             const preloadProcedures = <?php echo isset($procedures) ? json_encode($procedures) : '[]'; ?>;
 
-            function norm(s) { return s.toLowerCase().trim(); }
+            function norm(s) {
+                return s.toLowerCase().trim();
+            }
+
+            function sortList() {
+                const items = Array.from(list.querySelectorAll('.procedure-item'));
+                const selected = items.filter(i => i.querySelector('input').checked);
+                const unselected = items.filter(i => !i.querySelector('input').checked);
+
+                unselected.sort((a, b) => {
+                    const nameA = a.querySelector('label').textContent.trim().toLowerCase();
+                    const nameB = b.querySelector('label').textContent.trim().toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+
+                list.innerHTML = '';
+                selected.forEach(i => list.appendChild(i));
+                unselected.forEach(i => list.appendChild(i));
+            }
 
             function filter() {
                 const q = norm(searchInput.value);
                 let matches = 0;
+                let hasVisible = false;
+
                 list.querySelectorAll('.procedure-item').forEach(item => {
                     const labelText = item.querySelector('label').textContent;
                     const show = norm(labelText).includes(q) || q === '';
                     item.classList.toggle('d-none', !show);
                     if (show) matches++;
+                    if (show) hasVisible = true;
                 });
+
+                let noResultMsg = list.querySelector('.no-result');
+                if (!hasVisible) {
+                    if (!noResultMsg) {
+                        noResultMsg = document.createElement('div');
+                        noResultMsg.className = 'no-result text-muted mt-2';
+                        noResultMsg.textContent = 'No result found on search – Add new';
+                        list.appendChild(noResultMsg);
+                    }
+                } else if (noResultMsg) {
+                    noResultMsg.remove();
+                }
+
                 addBtn.classList.toggle('d-none', !(q && matches === 0));
+            }
+
+            function handleCheckChange(e) {
+                if (e.target.matches('input[type="checkbox"]')) {
+                    sortList();
+                }
             }
 
             searchInput.addEventListener('input', filter);
@@ -3847,8 +4384,12 @@
 
             addBtn.addEventListener('click', () => {
                 newProcedureInput.value = searchInput.value.trim();
-                if (modal) { modal.show(); }
-                else { modalEl.classList.add('show'); modalEl.style.display = 'block'; }
+                if (modal) {
+                    modal.show();
+                } else {
+                    modalEl.classList.add('show');
+                    modalEl.style.display = 'block';
+                }
             });
 
             addForm.addEventListener('submit', (e) => {
@@ -3858,7 +4399,9 @@
 
                 fetch("<?= site_url('Consultation/addProcedure') ?>", {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     body: "name=" + encodeURIComponent(name)
                 })
                     .then(res => res.json())
@@ -3875,7 +4418,9 @@
                 `;
                             list.prepend(wrapper);
 
-                            if (modal) { modal.hide(); }
+                            if (modal) {
+                                modal.hide();
+                            }
                             searchInput.value = '';
                             filter();
                         } else {
@@ -3890,12 +4435,14 @@
                     const checkbox = list.querySelector(
                         `input[type="checkbox"][value="${pro.procedure_name}"]`
                     );
-                    if (checkbox) {
-                        checkbox.checked = true;
-                    }
+                    if (checkbox) checkbox.checked = true;
                 });
             }
 
+            list.addEventListener('change', handleCheckChange);
+
+            // Initial sort and filter
+            sortList();
             filter();
         });
     </script>
@@ -3910,21 +4457,59 @@
 
             const preloadAdvices = <?php echo isset($advices) ? json_encode($advices) : '[]'; ?>;
 
-            function norm(s) { return (s || '').toLowerCase().trim(); }
+            function norm(s) {
+                return (s || '').toLowerCase().trim();
+            }
+
+            function sortList() {
+                const items = Array.from(adviceList.querySelectorAll('.advice-item'));
+                const selected = items.filter(i => i.querySelector('input').checked);
+                const unselected = items.filter(i => !i.querySelector('input').checked);
+
+                unselected.sort((a, b) => {
+                    const nameA = a.querySelector('label').textContent.trim().toLowerCase();
+                    const nameB = b.querySelector('label').textContent.trim().toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+
+                adviceList.innerHTML = '';
+                selected.forEach(i => adviceList.appendChild(i));
+                unselected.forEach(i => adviceList.appendChild(i));
+            }
 
             function filter() {
                 const q = norm(adviceSearch.value);
                 let matches = 0;
+                let hasVisible = false;
+
                 adviceList.querySelectorAll('.advice-item').forEach(item => {
                     const labelText = item.querySelector('label').textContent;
                     const show = norm(labelText).includes(q) || q === '';
                     item.classList.toggle('d-none', !show);
                     if (show) matches++;
+                    if (show) hasVisible = true;
                 });
+
+                let noResultMsg = adviceList.querySelector('.no-result');
+                if (!hasVisible) {
+                    if (!noResultMsg) {
+                        noResultMsg = document.createElement('div');
+                        noResultMsg.className = 'no-result text-muted mt-2';
+                        noResultMsg.textContent = 'No results found. You can add new advice for this consultation only.';
+                        adviceList.appendChild(noResultMsg);
+                    }
+                } else if (noResultMsg) {
+                    noResultMsg.remove();
+                }
+
                 addAdvice.classList.toggle('d-none', !(q && matches === 0));
             }
 
-            adviceSearch.addEventListener('input', filter);
+            function handleCheckChange(e) {
+                if (e.target.matches('input[type="checkbox"]')) {
+                    sortList();
+                }
+            }
 
             clearAdviceSearch.addEventListener('click', () => {
                 adviceSearch.value = '';
@@ -3948,15 +4533,11 @@
         `;
                 adviceList.prepend(div);
 
-                const checkbox = div.querySelector('input');
-                checkbox.addEventListener('change', () => {
-                    if (!checkbox.checked) {
-                        div.remove();
-                    }
-                });
+                div.querySelector('input').addEventListener('change', handleCheckChange);
 
                 adviceSearch.value = '';
                 filter();
+                sortList();
             });
 
             if (Array.isArray(preloadAdvices)) {
@@ -3987,6 +4568,10 @@
                 });
             }
 
+            adviceSearch.addEventListener('input', filter);
+            adviceList.addEventListener('change', handleCheckChange);
+
+            sortList();
             filter();
         });
     </script>
@@ -3994,25 +4579,80 @@
     <!-- Medicine Modal Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const medicinesData = <?php echo json_encode($medicinesList); ?>;
+            // server-provided arrays
+            const medicinesData = <?php echo json_encode($medicinesList); ?> || [];
             const medicinesList = medicinesData.map(m => m.medicineName);
 
-            const medicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?>;
+            const medicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?> || [];
 
+            // DOM refs
             const medicinesInput = document.getElementById("medicinesSearchInput");
             const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
             const medicinesTagContainer = document.getElementById("medicinesInput");
 
+            // ✅ Create wrapper for input + clear + add buttons
+            if (medicinesInput) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'input-group mb-2';
+
+                medicinesInput.classList.add('form-control');
+                medicinesInput.classList.remove('border-0', 'p-0', 'm-0', 'shadow-none');
+
+                // Move existing input into wrapper
+                medicinesInput.parentElement.insertBefore(wrapper, medicinesInput);
+                wrapper.appendChild(medicinesInput);
+
+                // ❌ Clear button
+                const clearBtn = document.createElement('button');
+                clearBtn.type = 'button';
+                clearBtn.id = 'clearMedicineSearch';
+                clearBtn.className = 'btn btn-outline-secondary';
+                clearBtn.textContent = '✖';
+                clearBtn.style.display = 'none';
+                wrapper.appendChild(clearBtn);
+
+                // ➕ Add button
+                const addButton = document.createElement('button');
+                addButton.type = 'button';
+                addButton.id = 'medicinesAddBtn';
+                addButton.className = 'btn btn-outline-primary';
+                addButton.textContent = '+ Add';
+                addButton.style.display = 'none';
+                wrapper.appendChild(addButton);
+
+                // Event for clear button
+                clearBtn.addEventListener('click', () => {
+                    medicinesInput.value = "";
+                    clearBtn.style.display = "none";
+                    addButton.style.display = "none";
+                    if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
+                    medicinesInput.focus();
+                });
+
+                // make them available globally for rest of script
+                window.addButton = addButton;
+                window.clearBtn = clearBtn;
+            }
+
+            const addButton = window.addButton;
+            const clearBtn = window.clearBtn;
+
             const medicinesModalEl = document.getElementById("medicinesModal");
             const medicinesModal = new bootstrap.Modal(medicinesModalEl);
+
+            const addMedicineModalEl = document.getElementById("addMedicineModal");
+            const addMedicineModal = new bootstrap.Modal(addMedicineModalEl);
 
             const medicinesModalTitle = document.getElementById("medicinesModalTitle");
             const medicineCompositionText = document.getElementById("medicineCompositionText");
             const medicineCategoryText = document.getElementById("medicineCategoryText");
             const medicineQuantity = document.getElementById("medicineQuantity");
-            const medicineUnit = document.getElementById("medicineUnit");
-            const medicineDuration = document.getElementById("medicineDuration");
             const medicineNotes = document.getElementById("medicineNotes");
+
+            const newMedicineNameInput = document.getElementById('newMedicineName');
+            const newMedicineCompositionInput = document.getElementById('newMedicineComposition');
+            const newMedicineCategorySelect = document.getElementById('newMedicineCategory');
+            const addMedicineConfirmBtn = document.getElementById('addMedicineConfirmBtn');
 
             const slots = ["morning", "afternoon", "evening", "night"];
 
@@ -4024,7 +4664,8 @@
                 slots.forEach(slot => cb(
                     slot,
                     document.getElementById(`${slot}Check`),
-                    document.getElementById(`${slot}Qty`)
+                    document.getElementById(`${slot}Qty`),
+                    document.getElementById(`${slot}Unit`)
                 ));
             }
 
@@ -4038,15 +4679,22 @@
                     unit: row.unit ?? "",
                     timing: row.timing ?? row.timingString ?? "0-0-0-0",
                     food_timing: row.food_timing ?? row.foodTiming ?? "",
-                    duration: row.duration ?? "",
-                    notes: row.notes ?? ""
+                    notes: row.notes ?? "",
+                    composition: row.compositionName ?? row.composition ?? "",
+                    category: row.category ?? row.medicineCategory ?? ""
                 };
             }
 
             function buildTimingString() {
                 const parts = [];
-                forEachSlot((slot, check, qty) => {
-                    parts.push(check && check.checked && qty && qty.value ? String(qty.value) : "0");
+                forEachSlot((slot, check, qty, unit) => {
+                    if (check && check.checked && qty && qty.value) {
+                        const u = unit && unit.value ? unit.value : "";
+                        const qtyVal = String(qty.value);
+                        parts.push(u ? `${qtyVal} ${u}` : `${qtyVal}`);
+                    } else {
+                        parts.push("0");
+                    }
                 });
                 return parts.join("-");
             }
@@ -4056,30 +4704,43 @@
                 slots.forEach((slot, i) => {
                     const check = document.getElementById(`${slot}Check`);
                     const qty = document.getElementById(`${slot}Qty`);
-                    if (!check || !qty) return;
+                    const unit = document.getElementById(`${slot}Unit`);
+                    if (!check || !qty || !unit) return;
                     const v = parts[i] ?? "0";
                     if (v !== "0") {
                         check.checked = true;
                         qty.disabled = false;
-                        qty.value = v;
+                        unit.disabled = false;
+                        const matches = String(v).match(/^([\d.]+)\s*(.*)$/);
+                        if (matches) {
+                            qty.value = matches[1];
+                            unit.value = matches[2] || unit.value;
+                        } else {
+                            qty.value = v;
+                        }
                     } else {
                         check.checked = false;
                         qty.value = "";
                         qty.disabled = true;
+                        unit.disabled = true;
                     }
                 });
             }
 
-            forEachSlot((slot, check, qty) => {
-                if (!check || !qty) return;
+            // initialize slot listeners
+            forEachSlot((slot, check, qty, unit) => {
+                if (!check || !qty || !unit) return;
                 qty.disabled = true;
+                unit.disabled = true;
                 check.addEventListener("change", () => {
                     if (check.checked) {
                         qty.disabled = false;
+                        unit.disabled = false;
                         if (!qty.value) qty.value = 1;
                     } else {
                         qty.value = "";
                         qty.disabled = true;
+                        unit.disabled = true;
                     }
                 });
                 qty.addEventListener("focus", () => {
@@ -4087,27 +4748,45 @@
                 });
             });
 
+            // render suggestions
             function renderMedicinesSuggestions() {
                 if (!medicinesInput || !medicinesSuggestionsBox) return;
 
                 const query = medicinesInput.value.trim().toLowerCase();
                 medicinesSuggestionsBox.innerHTML = "";
 
+                // show clear button when typing
+                if (clearBtn) clearBtn.style.display = query ? 'inline-block' : 'none';
+
                 const filtered = medicinesList.filter(m =>
                     m.toLowerCase().includes(query) &&
                     !selectedMedicines.some(obj => obj.medicine_name === m)
                 );
 
+                // ✅ Show "+ Add" button ONLY when no matches found
+                if (addButton) {
+                    addButton.style.display = (query && filtered.length === 0) ? "inline-block" : "none";
+                }
+
                 if (filtered.length === 0 && query !== "") {
                     const div = document.createElement("div");
                     div.innerHTML = `Add "<strong>${medicinesInput.value}</strong>"`;
-                    div.onclick = () => { openMedicineModal(medicinesInput.value); medicinesInput.value = ""; };
+                    div.onclick = () => {
+                        openAddMedicineModal(medicinesInput.value);
+                        medicinesInput.value = "";
+                        medicinesSuggestionsBox.style.display = "none";
+                        if (addButton) addButton.style.display = "none";
+                    };
                     medicinesSuggestionsBox.appendChild(div);
                 } else {
                     filtered.forEach(item => {
                         const div = document.createElement("div");
                         div.textContent = item;
-                        div.onclick = () => { openMedicineModal(item); medicinesInput.value = ""; };
+                        div.onclick = () => {
+                            openMedicineModal(item);
+                            medicinesInput.value = "";
+                            medicinesSuggestionsBox.style.display = "none";
+                        };
                         medicinesSuggestionsBox.appendChild(div);
                     });
                 }
@@ -4120,46 +4799,134 @@
                 medicinesInput.addEventListener("keydown", (e) => {
                     if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
                         e.preventDefault();
-                        openMedicineModal(medicinesInput.value.trim());
+                        const q = medicinesInput.value.trim();
+                        const found = medicinesList.find(m => m.toLowerCase() === q.toLowerCase());
+                        if (found) {
+                            openMedicineModal(found);
+                        } else {
+                            openAddMedicineModal(q);
+                        }
                         medicinesInput.value = "";
+                        medicinesSuggestionsBox.style.display = "none";
+                        if (addButton) addButton.style.display = "none";
+                        if (clearBtn) clearBtn.style.display = "none";
                     }
                 });
                 document.addEventListener("click", (e) => {
-                    if (!medicinesTagContainer?.contains(e.target)) {
+                    if (!medicinesTagContainer?.contains(e.target) && !medicinesInput?.contains(e.target)) {
                         if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
                     }
                 });
             }
 
+            // Click on dynamic ADD button
+            if (addButton) {
+                addButton.addEventListener('click', () => {
+                    const q = medicinesInput.value.trim();
+                    openAddMedicineModal(q);
+                    medicinesInput.value = "";
+                    medicinesSuggestionsBox && (medicinesSuggestionsBox.style.display = "none");
+                    addButton.style.display = 'none';
+                    if (clearBtn) clearBtn.style.display = 'none';
+                });
+            }
+
+            function openAddMedicineModal(prefillName = "") {
+                newMedicineNameInput.value = prefillName || "";
+                newMedicineCompositionInput.value = "";
+                newMedicineCategorySelect.value = "";
+                addMedicineModal.show();
+                setTimeout(() => newMedicineNameInput.focus(), 200);
+            }
+
+            addMedicineConfirmBtn.addEventListener('click', async () => {
+                const name = (newMedicineNameInput.value || "").trim();
+                const composition = (newMedicineCompositionInput.value || "").trim();
+                const category = (newMedicineCategorySelect.value || "").trim();
+
+                if (!name || !composition || !category) {
+                    alert('Please fill all fields.');
+                    return;
+                }
+
+                try {
+                    addMedicineConfirmBtn.disabled = true;
+                    addMedicineConfirmBtn.textContent = 'Adding...';
+
+                    const payload = {
+                        medicineName: name,
+                        compositionName: composition,
+                        category
+                    };
+
+                    const res = await fetch('<?= site_url('Consultation/addNewMedicines') ?>', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!res.ok) throw new Error('Failed to add medicine');
+                    const saved = await res.json();
+
+                    const savedObj = {
+                        id: saved.id ?? saved.medicine_id ?? "new-" + Date.now(),
+                        medicineName: saved.medicineName ?? saved.medicine_name ?? name,
+                        compositionName: saved.compositionName ?? saved.composition ?? composition,
+                        category: saved.category ?? category
+                    };
+
+                    medicinesData.push(savedObj);
+                    medicinesList.push(savedObj.medicineName);
+
+                    addMedicineModal.hide();
+                    openMedicineModal(savedObj.medicineName);
+                } catch (err) {
+                    console.error(err);
+                    alert('Could not add medicine. Check console for details.');
+                } finally {
+                    addMedicineConfirmBtn.disabled = false;
+                    addMedicineConfirmBtn.textContent = 'Add & Open';
+                }
+            });
+
+            // --- existing open/save/tag logic unchanged ---
             window.openMedicineModal = function (name, existing = null, tagEl = null) {
                 pendingMedicineName = name;
                 editingMedicineTag = tagEl;
 
-                const medData = medicinesData.find(m => m.medicineName === name);
+                const medData = medicinesData.find(m => (m.medicineName || m.medicine_name) === name);
                 medicinesModalTitle.textContent = existing ? `Edit: ${name}` : `Details for: ${name}`;
-                medicineCompositionText.textContent = medData ? medData.compositionName : "(No composition available)";
-                medicineCategoryText.textContent = medData ? `Category: ${medData.category}` : "(No category)";
+                medicineCompositionText.textContent = medData ? (medData.compositionName || medData.composition || "(No composition available)") : "(No composition available)";
+                medicineCategoryText.textContent = medData ? `Category: ${medData.category || medData.medicineCategory || ""}` : "(No category)";
 
                 medicineQuantity.value = "";
-                medicineUnit.value = "mg";
-                medicineDuration.value = "";
                 medicineNotes.value = "";
-                forEachSlot((slot, check, qty) => {
-                    if (!check || !qty) return;
-                    check.checked = false; qty.value = ""; qty.disabled = true;
+                slots.forEach(slot => {
+                    const check = document.getElementById(`${slot}Check`);
+                    const qty = document.getElementById(`${slot}Qty`);
+                    const unit = document.getElementById(`${slot}Unit`);
+                    if (!check || !qty || !unit) return;
+                    check.checked = false;
+                    qty.value = "";
+                    qty.disabled = true;
+                    unit.disabled = true;
                 });
                 document.querySelectorAll('input[name="foodTiming"]').forEach(r => r.checked = false);
 
                 const row = toDbShape(existing);
                 if (row) {
                     medicineQuantity.value = row.quantity || "";
-                    medicineUnit.value = row.unit || "mg";
-                    medicineDuration.value = row.duration || "";
                     medicineNotes.value = row.notes || "";
                     applyTimingString(row.timing);
                     document.querySelectorAll('input[name="foodTiming"]').forEach(r => {
                         r.checked = (r.value === (row.food_timing || ""));
                     });
+                } else if (medData) {
+                    applyTimingString(medData.timing ?? "0-0-0-0");
+                } else {
+                    applyTimingString("0-0-0-0");
                 }
 
                 medicinesModal.show();
@@ -4167,8 +4934,6 @@
 
             window.saveMedicineModal = function () {
                 const quantity = (medicineQuantity.value || "").trim();
-                const unit = (medicineUnit.value || "").trim();
-                const duration = (medicineDuration.value || "").trim();
                 const notes = (medicineNotes.value || "").trim();
                 const timing = buildTimingString();
                 const food_timing = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
@@ -4176,20 +4941,22 @@
                 if (!pendingMedicineName) return;
 
                 const existingIndex = selectedMedicines.findIndex(m => m.medicine_name === pendingMedicineName);
+                const resolvedId = (existingIndex !== -1 && selectedMedicines[existingIndex]?.id) ?
+                    selectedMedicines[existingIndex].id : "new";
 
-                const resolvedId = (existingIndex !== -1 && selectedMedicines[existingIndex]?.id)
-                    ? selectedMedicines[existingIndex].id
-                    : "new";
+                const medData = medicinesData.find(m => (m.medicineName || m.medicine_name) === pendingMedicineName);
+                const composition = medData?.compositionName ?? medData?.composition ?? "";
+                const category = medData?.category ?? medData?.medicineCategory ?? "";
 
                 const data = {
                     id: resolvedId,
                     medicine_name: pendingMedicineName,
                     quantity,
-                    unit,
                     timing,
                     food_timing,
-                    duration,
-                    notes
+                    notes,
+                    composition,
+                    category
                 };
 
                 if (editingMedicineTag && existingIndex !== -1) {
@@ -4216,11 +4983,8 @@
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
                 tag.style.cursor = "pointer";
                 tag.setAttribute("data-id", row.id || "new");
-
                 updateMedicineTagDisplay(tag, row);
-
                 tag.onclick = () => openMedicineModal(row.medicine_name, row, tag);
-
                 if (medicinesInput && medicinesInput.parentElement === medicinesTagContainer) {
                     medicinesTagContainer.insertBefore(tag, medicinesInput);
                 } else {
@@ -4229,9 +4993,11 @@
             }
 
             function updateMedicineTagDisplay(tagEl, row) {
-                const qtyText = row.quantity ? `${row.quantity} ${row.unit || ""}`.trim() : "0";
-                tagEl.innerHTML = `${row.medicine_name} (Qty: ${qtyText}, Timing: ${row.timing || "0-0-0-0"}, Duration: ${row.duration || 0})`;
-
+                const qtyText = row.quantity ? `${row.quantity}`.trim() : "0";
+                const timingText = row.timing || "0-0-0-0";
+                const comp = row.composition ? ` | ${row.composition}` : "";
+                const cat = row.category ? ` | ${row.category}` : "";
+                tagEl.innerHTML = `${row.medicine_name}${comp}${cat} (Qty: ${qtyText}, Timing: ${timingText})`;
                 tagEl.setAttribute("data-id", row.id || "new");
 
                 const removeBtn = document.createElement("button");
@@ -4282,7 +5048,12 @@
             const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
             const isFollowup = !!document.getElementById('followupPreviewModal');
 
-            console.log('Page context:', { isEditPage, isDashboardPage, isNewConsultation, isFollowup });
+            console.log('Page context:', {
+                isEditPage,
+                isDashboardPage,
+                isNewConsultation,
+                isFollowup
+            });
 
             // === Find Containers for Class-based Elements ===
             const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
@@ -4305,8 +5076,14 @@
                 fileError: document.getElementById("fileError"),
                 removedFilesInput: document.getElementById("removedFiles"),
                 dropZone: document.getElementById("dropZone"),
-                imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), { backdrop: 'static', keyboard: false }) : null,
-                editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), { backdrop: 'static', keyboard: true }) : null,
+                imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), {
+                    backdrop: 'static',
+                    keyboard: false
+                }) : null,
+                editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), {
+                    backdrop: 'static',
+                    keyboard: true
+                }) : null,
                 previewContent: document.getElementById('filePreviewContent'),
                 modalTitle: document.getElementById('editPreviewModalLabel'),
                 prevBtn: document.getElementById('prevFile'),
@@ -4314,7 +5091,10 @@
             };
 
             const newConsultationElements = isNewConsultation && newConsultationContainer ? {
-                previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), { backdrop: 'static', keyboard: true }),
+                previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), {
+                    backdrop: 'static',
+                    keyboard: true
+                }),
                 image: document.getElementById('newConsultationImage'),
                 pdf: document.getElementById('newConsultationPDF'),
                 modalTitle: document.getElementById('newConsultationPreviewModalLabel'),
@@ -4329,7 +5109,10 @@
             } : {};
 
             const followupElements = isFollowup && followupContainer ? {
-                previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), { backdrop: 'static', keyboard: true }),
+                previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), {
+                    backdrop: 'static',
+                    keyboard: true
+                }),
                 image: document.getElementById('followupImage'),
                 pdf: document.getElementById('followupPDF'),
                 modalTitle: document.getElementById('followupPreviewModalLabel'),
@@ -4344,7 +5127,10 @@
             } : {};
 
             const dashboardElements = isDashboardPage ? {
-                previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), { backdrop: 'static', keyboard: true }),
+                previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), {
+                    backdrop: 'static',
+                    keyboard: true
+                }),
                 image: document.getElementById('attachmentImage'),
                 pdf: document.getElementById('attachmentPDF'),
                 modalTitle: document.getElementById('dashboardPreviewModalLabel'),
@@ -4388,7 +5174,13 @@
                     const extension = fileName.split('.').pop().toLowerCase();
                     const mimeType = file.mime_type || getMimeType(extension);
                     const url = file.url || (file.file_path ? BASE_FILE_URL + encodeURIComponent(file.file_path) : BASE_FILE_URL + encodeURIComponent(fileName));
-                    return { file_name: fileName, ext: extension, mime_type: mimeType, url, size: file.size || 0 };
+                    return {
+                        file_name: fileName,
+                        ext: extension,
+                        mime_type: mimeType,
+                        url,
+                        size: file.size || 0
+                    };
                 });
 
                 renderFileList();
@@ -4399,7 +5191,14 @@
 
 
             function getMimeType(ext) {
-                const map = { 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'png': 'image/png', 'pdf': 'application/pdf', 'doc': 'application/msword', 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingprocessingml.document' };
+                const map = {
+                    'jpg': 'image/jpeg',
+                    'jpeg': 'image/jpeg',
+                    'png': 'image/png',
+                    'pdf': 'application/pdf',
+                    'doc': 'application/msword',
+                    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingprocessingml.document'
+                };
                 return map[ext] || 'application/octet-stream';
             }
 
@@ -4420,9 +5219,20 @@
                 });
             }
 
-            function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
-            function highlight(el) { el.style.borderColor = '#00ad8e'; el.style.backgroundColor = '#f2ebebff'; }
-            function unhighlight(el) { el.style.borderColor = '#ccc'; el.style.backgroundColor = 'transparent'; }
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight(el) {
+                el.style.borderColor = '#00ad8e';
+                el.style.backgroundColor = '#f2ebebff';
+            }
+
+            function unhighlight(el) {
+                el.style.borderColor = '#ccc';
+                el.style.backgroundColor = 'transparent';
+            }
 
             async function processNewFiles(files) {
                 const currentElements = getCurrentElements();
@@ -4450,9 +5260,23 @@
 
                     if (['image/jpeg', 'image/jpg', 'image/png'].includes(type) && editElements.imageEditModal) {
                         const edited = await editImage(file);
-                        if (edited) newFiles.push({ name: edited.name, file: edited, type: edited.type, ext, url: null, size: edited.size });
+                        if (edited) newFiles.push({
+                            name: edited.name,
+                            file: edited,
+                            type: edited.type,
+                            ext,
+                            url: null,
+                            size: edited.size
+                        });
                     } else {
-                        newFiles.push({ name: file.name, file, type, ext, url: null, size: file.size });
+                        newFiles.push({
+                            name: file.name,
+                            file,
+                            type,
+                            ext,
+                            url: null,
+                            size: file.size
+                        });
                     }
                 }
                 renderFileList();
@@ -4467,41 +5291,81 @@
                         const img = document.getElementById('editor-image');
                         const canvas = document.getElementById('editor-canvas');
                         if (cropper) cropper.destroy();
-                        currentRotationAngle = 0; originalDataURL = dataURL; currentImageBlob = file;
-                        img.src = dataURL; img.style.display = 'block'; canvas.style.display = 'none';
+                        currentRotationAngle = 0;
+                        originalDataURL = dataURL;
+                        currentImageBlob = file;
+                        img.src = dataURL;
+                        img.style.display = 'block';
+                        canvas.style.display = 'none';
                         editElements.imageEditModal.show();
-                        cropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1, autoCropArea: 1, responsive: true, scalable: true, zoomable: true, minContainerWidth: 600, minContainerHeight: 600 });
+                        cropper = new Cropper(img, {
+                            aspectRatio: NaN,
+                            viewMode: 1,
+                            autoCropArea: 1,
+                            responsive: true,
+                            scalable: true,
+                            zoomable: true,
+                            minContainerWidth: 600,
+                            minContainerHeight: 600
+                        });
 
                         const escapeHandler = ev => ev.key === 'Escape' && editElements.imageEditModal.hide();
                         document.addEventListener('keydown', escapeHandler);
                         editElements.imageEditModal._element.addEventListener('hidden.bs.modal', () => {
                             document.removeEventListener('keydown', escapeHandler);
-                            resolve(null); cleanup();
-                        }, { once: true });
+                            resolve(null);
+                            cleanup();
+                        }, {
+                            once: true
+                        });
 
                         document.getElementById('crop-btn').onclick = () => {
-                            img.style.display = 'block'; canvas.style.display = 'none';
-                            if (!cropper) cropper = new Cropper(img, { viewMode: 1, dragMode: 'crop', autoCrop: false, movable: false, zoomable: false, scalable: false });
+                            img.style.display = 'block';
+                            canvas.style.display = 'none';
+                            if (!cropper) cropper = new Cropper(img, {
+                                viewMode: 1,
+                                dragMode: 'crop',
+                                autoCrop: false,
+                                movable: false,
+                                zoomable: false,
+                                scalable: false
+                            });
                             cropper.setDragMode('crop');
                         };
 
                         document.getElementById('rotate-btn').onclick = () => {
                             if (!originalDataURL) return;
                             currentRotationAngle = (currentRotationAngle + 90) % 360;
-                            const imgObj = new Image(); imgObj.src = originalDataURL;
+                            const imgObj = new Image();
+                            imgObj.src = originalDataURL;
                             imgObj.onload = () => {
-                                const tempCanvas = document.createElement('canvas'), ctx = tempCanvas.getContext('2d');
+                                const tempCanvas = document.createElement('canvas'),
+                                    ctx = tempCanvas.getContext('2d');
                                 const angleRad = currentRotationAngle * Math.PI / 180;
                                 const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
                                 const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
-                                tempCanvas.width = w; tempCanvas.height = h;
-                                ctx.translate(w / 2, h / 2); ctx.rotate(angleRad);
+                                tempCanvas.width = w;
+                                tempCanvas.height = h;
+                                ctx.translate(w / 2, h / 2);
+                                ctx.rotate(angleRad);
                                 ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
                                 tempCanvas.toBlob(blob => {
-                                    currentImageBlob = new File([blob], file.name, { type: file.type });
+                                    currentImageBlob = new File([blob], file.name, {
+                                        type: file.type
+                                    });
                                     const url = URL.createObjectURL(currentImageBlob);
-                                    img.src = url; if (cropper) cropper.destroy();
-                                    cropper = new Cropper(img, { aspectRatio: NaN, viewMode: 1, autoCropArea: 1, responsive: true, scalable: true, zoomable: true, minContainerWidth: 600, minContainerHeight: 600 });
+                                    img.src = url;
+                                    if (cropper) cropper.destroy();
+                                    cropper = new Cropper(img, {
+                                        aspectRatio: NaN,
+                                        viewMode: 1,
+                                        autoCropArea: 1,
+                                        responsive: true,
+                                        scalable: true,
+                                        zoomable: true,
+                                        minContainerWidth: 600,
+                                        minContainerHeight: 600
+                                    });
                                 }, file.type, 1);
                             };
                         };
@@ -4509,29 +5373,55 @@
                         const saveBtn = document.getElementById('saveEditedImage');
                         const saveHandler = () => {
                             if (cropper) {
-                                cropper.getCroppedCanvas({ fillColor: file.type.includes('png') ? 'transparent' : '#ffffff' }).toBlob(blob => {
-                                    const edited = new File([blob], file.name, { type: file.type });
+                                cropper.getCroppedCanvas({
+                                    fillColor: file.type.includes('png') ? 'transparent' : '#ffffff'
+                                }).toBlob(blob => {
+                                    const edited = new File([blob], file.name, {
+                                        type: file.type
+                                    });
                                     const errorElement = getCurrentElements().fileError; // Use context-aware error element
                                     if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
-                                        errorElement.textContent = `File "${edited.name}" already uploaded.`; resolve(null); cleanup();
-                                    } else { resolve(edited); cleanup(); }
+                                        errorElement.textContent = `File "${edited.name}" already uploaded.`;
+                                        resolve(null);
+                                        cleanup();
+                                    } else {
+                                        resolve(edited);
+                                        cleanup();
+                                    }
                                 }, file.type, 1);
                             } else {
-                                const edited = currentImageBlob ? new File([currentImageBlob], file.name, { type: file.type }) : file;
+                                const edited = currentImageBlob ? new File([currentImageBlob], file.name, {
+                                    type: file.type
+                                }) : file;
                                 const errorElement = getCurrentElements().fileError; // Use context-aware error element
                                 if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
-                                    errorElement.textContent = `File "${edited.name}" already uploaded.`; resolve(null); cleanup();
-                                } else { resolve(edited); cleanup(); }
+                                    errorElement.textContent = `File "${edited.name}" already uploaded.`;
+                                    resolve(null);
+                                    cleanup();
+                                } else {
+                                    resolve(edited);
+                                    cleanup();
+                                }
                             }
                         };
-                        saveBtn.addEventListener('click', saveHandler, { once: true });
+                        saveBtn.addEventListener('click', saveHandler, {
+                            once: true
+                        });
 
                         function cleanup() {
                             editElements.imageEditModal.hide();
-                            if (cropper) { cropper.destroy(); cropper = null; }
-                            img.src = ''; img.style.display = 'none'; canvas.style.display = 'none';
-                            currentRotationAngle = 0; originalDataURL = null; currentImageBlob = null;
-                            const newBtn = saveBtn.cloneNode(true); saveBtn.parentNode.replaceChild(newBtn, saveBtn);
+                            if (cropper) {
+                                cropper.destroy();
+                                cropper = null;
+                            }
+                            img.src = '';
+                            img.style.display = 'none';
+                            canvas.style.display = 'none';
+                            currentRotationAngle = 0;
+                            originalDataURL = null;
+                            currentImageBlob = null;
+                            const newBtn = saveBtn.cloneNode(true);
+                            saveBtn.parentNode.replaceChild(newBtn, saveBtn);
                         }
                     };
                     reader.readAsDataURL(file);
@@ -4572,28 +5462,44 @@
                     return;
                 }
 
-                const ul = document.createElement("ul"); ul.style.paddingLeft = "1.2rem";
+                const ul = document.createElement("ul");
+                ul.style.paddingLeft = "1.2rem";
                 [...existingFiles, ...newFiles].forEach((file, i) => {
                     const isExisting = isEditPage && i < existingFiles.length;
                     const fileIndexInArray = isExisting ? i : i - existingFiles.length;
 
-                    const li = document.createElement("li"); li.style.marginBottom = "6px";
-                    const link = document.createElement("a"); link.href = "javascript:void(0);"; link.textContent = isExisting ? file.file_name : file.name;
-                    link.className = "openAttachment"; link.style.color = "#007bff"; link.style.textDecoration = "underline"; link.style.cursor = "pointer";
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+                    const link = document.createElement("a");
+                    link.href = "javascript:void(0);";
+                    link.textContent = isExisting ? file.file_name : file.name;
+                    link.className = "openAttachment";
+                    link.style.color = "#007bff";
+                    link.style.textDecoration = "underline";
+                    link.style.cursor = "pointer";
                     link.setAttribute("data-file", isExisting ? file.url : (file.file ? file.name : ''));
                     link.setAttribute("data-ext", isExisting ? file.ext : file.ext);
                     link.setAttribute("data-context", context);
                     link.setAttribute("data-is-existing", isExisting.toString());
                     link.setAttribute("data-file-index", fileIndexInArray.toString());
 
-                    const removeBtn = document.createElement("button"); removeBtn.type = "button"; removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger"; removeBtn.style.marginLeft = "8px";
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
                     removeBtn.onclick = () => {
-                        if (isExisting) { removedFiles.push(file.file_name); existingFiles.splice(fileIndexInArray, 1); if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles); }
-                        else newFiles.splice(fileIndexInArray, 1);
-                        renderFileList(); updateSubmitFileInput();
+                        if (isExisting) {
+                            removedFiles.push(file.file_name);
+                            existingFiles.splice(fileIndexInArray, 1);
+                            if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles);
+                        } else newFiles.splice(fileIndexInArray, 1);
+                        renderFileList();
+                        updateSubmitFileInput();
                     };
-                    li.appendChild(link); li.appendChild(removeBtn); ul.appendChild(li);
+                    li.appendChild(link);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
                 });
                 currentElements.fileList.appendChild(ul);
             }
@@ -4613,21 +5519,32 @@
 
                 let elements, showModal, updateNav;
                 if (context === 'edit' && editElements.editPreviewModal) {
-                    elements = editElements; showModal = () => editElements.editPreviewModal.show(); updateNav = updateEditNavigation;
+                    elements = editElements;
+                    showModal = () => editElements.editPreviewModal.show();
+                    updateNav = updateEditNavigation;
                     elements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
                     elements.previewContent.innerHTML = '';
                 } else if (context === 'new' && newConsultationElements.previewModal) {
-                    elements = newConsultationElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+                    elements = newConsultationElements;
+                    showModal = () => elements.previewModal.show();
+                    updateNav = () => updateNavButtons(elements, index);
                     elements.modalTitle.textContent = `New Consultation Attachment Preview - ${fileName}`;
-                    elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+                    elements.image.classList.add('d-none');
+                    elements.pdf.classList.add('d-none');
                 } else if (context === 'followup' && followupElements.previewModal) {
-                    elements = followupElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+                    elements = followupElements;
+                    showModal = () => elements.previewModal.show();
+                    updateNav = () => updateNavButtons(elements, index);
                     elements.modalTitle.textContent = `Follow-up Attachment Preview - ${fileName}`;
-                    elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+                    elements.image.classList.add('d-none');
+                    elements.pdf.classList.add('d-none');
                 } else if (context === 'dashboard' && dashboardElements.previewModal) {
-                    elements = dashboardElements; showModal = () => elements.previewModal.show(); updateNav = () => updateNavButtons(elements, index);
+                    elements = dashboardElements;
+                    showModal = () => elements.previewModal.show();
+                    updateNav = () => updateNavButtons(elements, index);
                     elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
-                    elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none');
+                    elements.image.classList.add('d-none');
+                    elements.pdf.classList.add('d-none');
 
                     document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
 
@@ -4664,13 +5581,31 @@
 
                 const display = () => {
                     if (fileType.includes('image')) {
-                        if (context === 'edit') { const img = document.createElement('img'); img.src = url; img.style.maxWidth = '100%'; img.maxHeight = '70vh'; elements.previewContent.appendChild(img); }
-                        else { elements.image.src = url; elements.image.classList.remove('d-none'); }
+                        if (context === 'edit') {
+                            const img = document.createElement('img');
+                            img.src = url;
+                            img.style.maxWidth = '100%';
+                            img.maxHeight = '70vh';
+                            elements.previewContent.appendChild(img);
+                        } else {
+                            elements.image.src = url;
+                            elements.image.classList.remove('d-none');
+                        }
                     } else if (fileType === 'application/pdf') {
-                        if (context === 'edit') { const embed = document.createElement('embed'); embed.src = url; embed.style.width = '100%'; embed.style.height = '70vh'; elements.previewContent.appendChild(embed); }
-                        else { elements.pdf.src = url; elements.pdf.classList.remove('d-none'); }
+                        if (context === 'edit') {
+                            const embed = document.createElement('embed');
+                            embed.src = url;
+                            embed.style.width = '100%';
+                            embed.style.height = '70vh';
+                            elements.previewContent.appendChild(embed);
+                        } else {
+                            elements.pdf.src = url;
+                            elements.pdf.classList.remove('d-none');
+                        }
                     } else {
-                        const p = document.createElement('p'); p.textContent = `Preview not available for ${fileName}.`; p.style.textAlign = 'center';
+                        const p = document.createElement('p');
+                        p.textContent = `Preview not available for ${fileName}.`;
+                        p.style.textAlign = 'center';
 
                         if (context === 'dashboard') {
                             elements.image.classList.add('d-none');
@@ -4684,36 +5619,52 @@
                             elements.image.alt = p.textContent;
                         }
                     }
-                    updateNav(index); showModal();
+                    updateNav(index);
+                    showModal();
                 };
 
                 if (isExisting && context !== 'edit') {
-                    fetch(url, { method: 'HEAD' }).then(r => r.ok ? display() : fail()).catch(fail);
+                    fetch(url, {
+                        method: 'HEAD'
+                    }).then(r => r.ok ? display() : fail()).catch(fail);
                 } else display();
 
                 function fail() {
-                    const p = document.createElement('p'); p.textContent = `Cannot access ${fileName}.`; p.style.textAlign = 'center';
+                    const p = document.createElement('p');
+                    p.textContent = `Cannot access ${fileName}.`;
+                    p.style.textAlign = 'center';
                     context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
-                    updateNav(index); showModal();
+                    updateNav(index);
+                    showModal();
                 }
 
                 elements.previewModal._element.addEventListener('hidden.bs.modal', () => {
                     if (!isExisting && url.startsWith('blob:')) URL.revokeObjectURL(url);
                     if (context === 'edit') elements.previewContent.innerHTML = '';
-                    else { elements.image.src = ''; elements.pdf.src = ''; elements.image.classList.add('d-none'); elements.pdf.classList.add('d-none'); }
-                    currentIndex = -1; currentFiles = [];
+                    else {
+                        elements.image.src = '';
+                        elements.pdf.src = '';
+                        elements.image.classList.add('d-none');
+                        elements.pdf.classList.add('d-none');
+                    }
+                    currentIndex = -1;
+                    currentFiles = [];
 
                     if (context === 'dashboard') {
                         document.getElementById('attachmentImage').style.cursor = 'default';
                         document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
                         document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
                     }
-                }, { once: true });
+                }, {
+                    once: true
+                });
             }
 
             function updateEditNavigation(index) {
-                editElements.prevBtn.disabled = index === 0; editElements.nextBtn.disabled = index === currentFiles.length - 1;
-                editElements.prevBtn.classList.toggle('disabled', index === 0); editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+                editElements.prevBtn.disabled = index === 0;
+                editElements.nextBtn.disabled = index === currentFiles.length - 1;
+                editElements.prevBtn.classList.toggle('disabled', index === 0);
+                editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
             }
 
             function updateNavButtons(el, index) {
@@ -4724,10 +5675,12 @@
             }
 
             document.removeEventListener('click', handleAttachmentClick);
+
             function handleAttachmentClick(e) {
                 const link = e.target.closest('.openAttachment');
                 if (!link) return;
-                e.preventDefault(); e.stopPropagation();
+                e.preventDefault();
+                e.stopPropagation();
 
                 const context = link.getAttribute('data-context');
                 const fileName = link.textContent.trim();
@@ -4767,15 +5720,23 @@
                     else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
 
                 } else if (context === 'dashboard') {
-                    showPreview({ url: link.getAttribute('data-file'), ext: link.getAttribute('data-ext'), file_name: fileName }, true, index, 'dashboard');
+                    showPreview({
+                        url: link.getAttribute('data-file'),
+                        ext: link.getAttribute('data-ext'),
+                        file_name: fileName
+                    }, true, index, 'dashboard');
                 }
             }
             document.addEventListener('click', handleAttachmentClick);
 
             function setupNav(prevBtn, nextBtn, context) {
                 if (!prevBtn || !nextBtn) return;
-                prevBtn.onclick = () => { if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context); };
-                nextBtn.onclick = () => { if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context); };
+                prevBtn.onclick = () => {
+                    if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context);
+                };
+                nextBtn.onclick = () => {
+                    if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context);
+                };
                 [prevBtn, nextBtn].forEach(btn => {
                     btn.addEventListener("mouseenter", () => btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer');
                     btn.addEventListener("mouseleave", () => btn.style.cursor = '');
@@ -4907,8 +5868,6 @@
                 contentWrapper.addEventListener('touchcancel', stopDrag);
             }
         });
-
-
     </script>
 
     <!-- Delete Consultation Script -->
@@ -4929,8 +5888,8 @@
 
         document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
             if (deleteConsultationId && deletePatientId) {
-                window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>"
-                    + deletePatientId + "/" + deleteConsultationId;
+                window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
+                    deletePatientId + "/" + deleteConsultationId;
             }
         });
     </script>
@@ -4963,7 +5922,8 @@
                 '#symptomsModal',
                 '#inputModal',
                 '#diagnosisModal',
-                '#investigationsModal'
+                '#investigationsModal',
+                '#medicinesModal'
             ];
             draggableModalIds.forEach(id => {
                 const modalElement = document.querySelector(id);
@@ -4991,6 +5951,7 @@
                 }
             });
         });
+
         function makeModalDraggable(modal) {
             const modalDialog = modal.querySelector('.modal-dialog');
             const modalHeader = modal.querySelector('.modal-header');
@@ -5046,6 +6007,67 @@
         }
     </script>
 
+    <!-- Consultation - PDF Download Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+
+            // Find ALL download buttons (by class)
+            const downloadButtons = document.querySelectorAll('.download-pdf-btn');
+
+            // Add a click listener to EACH button
+            downloadButtons.forEach(button => {
+
+                button.addEventListener('click', function (event) {
+
+                    // Get the specific content ID from this button's data-attribute
+                    const contentId = event.currentTarget.getAttribute('data-content-id');
+                    // Get the filename from this button's data-attribute
+                    const fileName = event.currentTarget.getAttribute('data-filename');
+
+                    // Find the correct content div to print
+                    const contentToDownload = document.getElementById(contentId);
+
+                    if (contentToDownload) {
+                        // Use html2canvas to "screenshot" the div
+                        html2canvas(contentToDownload, {
+                            scale: 2, // improve rendering quality
+                            backgroundColor: '#ffffff'
+                        }).then((canvas) => {
+                            const imgData = canvas.toDataURL('image/png');
+                            const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+
+                            const pdfWidth = pdf.internal.pageSize.getWidth();
+                            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+                            const imgWidth = pdfWidth;
+                            const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+
+                            let position = 0;
+
+                            if (imgHeight < pdfHeight) {
+                                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                            } else {
+                                // For longer pages: split across pages
+                                let heightLeft = imgHeight;
+                                while (heightLeft > 0) {
+                                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                                    heightLeft -= pdfHeight;
+                                    if (heightLeft > 0) pdf.addPage();
+                                    position = -pdfHeight;
+                                }
+                            }
+
+                            pdf.save(fileName);
+                        });
+
+                    } else {
+                        console.error('Could not find content to download:', contentId);
+                    }
+                });
+            });
+        });
+    </script>
+
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
@@ -5058,9 +6080,11 @@
     <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
     <!-- PDF Download link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-
+    <!-- Drag And Drop -->
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-
+    <!-- Consultation Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- Fabric.js and Cropper.js JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>

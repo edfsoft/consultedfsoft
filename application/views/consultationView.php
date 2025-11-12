@@ -279,7 +279,7 @@
                 style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
                 <?php echo $this->session->flashdata('showErrorMessage'); ?>
             </div>
-            <?php
+        <?php
         }
         if ($method == "consultDashboard") { ?>
             <section>
@@ -288,13 +288,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                                ?>
+                            ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -404,7 +404,7 @@
 
                                                                 foreach ($vitals as $label => $value):
                                                                     if ($value):
-                                                                        ?>
+                                                                ?>
                                                                         <div class="col-12 col-md-6">
                                                                             <div
                                                                                 class="d-flex justify-content-between align-items-center border p-2 rounded">
@@ -412,7 +412,7 @@
                                                                                 <span class="text-primary"><?= $value ?></span>
                                                                             </div>
                                                                         </div>
-                                                                        <?php
+                                                                <?php
                                                                     endif;
                                                                 endforeach;
                                                                 ?>
@@ -558,7 +558,7 @@
                                                                             Afternoon</th>
                                                                         <th
                                                                             style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                            Evening</th>
+                                                                            Evevning</th>
                                                                         <th
                                                                             style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                             Night</th>
@@ -816,7 +816,7 @@
                                                                                         Name</th>
                                                                                     <th rowspan="2"
                                                                                         style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                                        Quantity</th>
+                                                                                        Qty</th>
                                                                                     <th rowspan="2"
                                                                                         style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                                         Food Timing</th>
@@ -833,13 +833,13 @@
                                                                                 <tr>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Morning</th>
+                                                                                        Morn</th>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Afternoon</th>
+                                                                                        Aft</th>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Evening</th>
+                                                                                        Eve</th>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                         Night</th>
@@ -865,9 +865,16 @@
                                                                                                 <?php if (!empty($medicine['medicine_name'])): ?>
                                                                                                     <?php if (!empty($medicine['category'])): ?>
                                                                                                         <small
-                                                                                                            class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
+                                                                                                            class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small><br>
                                                                                                     <?php endif; ?>
+
                                                                                                     <?= htmlspecialchars($medicine['medicine_name']) ?>
+
+                                                                                                    <?php if (!empty($medicine['composition_name'])): ?>
+                                                                                                        <br><small
+                                                                                                            class="text-muted">(<?= htmlspecialchars($medicine['composition_name']) ?>)</small>
+                                                                                                    <?php endif; ?>
+
                                                                                                 <?php else: ?>
                                                                                                     -
                                                                                                 <?php endif; ?>
@@ -1459,13 +1466,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                                ?>
+                            ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -1966,13 +1973,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                                ?>
+                            ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -2916,7 +2923,7 @@
             updateCounterAndButtons();
         }
 
-        document.addEventListener('keydown', function (event) {
+        document.addEventListener('keydown', function(event) {
             if (event.key === 'ArrowLeft' && currentIndex > 0) {
                 navigateConsultations(-1);
             } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
@@ -3069,12 +3076,12 @@
 
             if (!symptomsList.includes(pendingSymptom)) {
                 fetch("<?= site_url('Consultation/addSymptom') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(pendingSymptom)
-                })
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "name=" + encodeURIComponent(pendingSymptom)
+                    })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3225,7 +3232,7 @@
 
     <!-- Symptoms save script -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             function parseSymptomTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -3269,7 +3276,7 @@
 
             function updateSymptomsJson() {
                 let symptoms = [];
-                $('#symptomsInput > span.bg-success').each(function () {
+                $('#symptomsInput > span.bg-success').each(function() {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let symptom = parseSymptomTagText(tagText);
 
@@ -3288,7 +3295,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function (e) {
+            $('#consultationForm').on('submit', function(e) {
                 updateSymptomsJson();
             });
         });
@@ -3368,12 +3375,12 @@
 
             if (!findingsList.includes(pendingTag)) {
                 fetch("<?= site_url('Consultation/addFinding') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(pendingTag)
-                })
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "name=" + encodeURIComponent(pendingTag)
+                    })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3524,7 +3531,7 @@
 
     <!-- Findings save script -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             function parseTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
 
@@ -3561,7 +3568,7 @@
 
             function updateFindingsJson() {
                 let findings = [];
-                $('#findingsInput > span.bg-success').each(function () {
+                $('#findingsInput > span.bg-success').each(function() {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let finding = parseTagText(tagText);
                     if (finding) {
@@ -3580,7 +3587,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function (e) {
+            $('#consultationForm').on('submit', function(e) {
                 updateFindingsJson(); // Ensure latest data
                 console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
             });
@@ -3663,12 +3670,12 @@
 
             if (!diagnosisList.includes(pendingDiagnosis)) {
                 fetch("<?= site_url('Consultation/addDiagnosis') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(pendingDiagnosis)
-                })
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "name=" + encodeURIComponent(pendingDiagnosis)
+                    })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3827,7 +3834,7 @@
 
     <!-- Diagnosis save script -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             function parseDiagnosisTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -3864,7 +3871,7 @@
 
             function updateDiagnosisJson() {
                 let diagnoses = [];
-                $('#diagnosisInputBox > span.bg-success').each(function () {
+                $('#diagnosisInputBox > span.bg-success').each(function() {
                     let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
                     let diagnosis = parseDiagnosisTagText(tagText);
                     if (diagnosis) {
@@ -3883,7 +3890,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function (e) {
+            $('#consultationForm').on('submit', function(e) {
                 updateDiagnosisJson(); // Ensure latest data
                 console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
             });
@@ -3958,12 +3965,12 @@
 
             if (!investigationsList.includes(pendingInvestigation)) {
                 fetch("<?= site_url('Consultation/addInvestigation') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(pendingInvestigation)
-                })
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "name=" + encodeURIComponent(pendingInvestigation)
+                    })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4105,7 +4112,7 @@
 
     <!-- Investigation save script -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             function parseInvestigationTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -4134,7 +4141,7 @@
 
             function updateInvestigationsJson() {
                 let investigations = [];
-                $('#investigationsInput > span.bg-success').each(function () {
+                $('#investigationsInput > span.bg-success').each(function() {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let investigation = parseInvestigationTagText(tagText);
 
@@ -4153,7 +4160,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function () {
+            $('#consultationForm').on('submit', function() {
                 updateInvestigationsJson();
             });
         });
@@ -4251,12 +4258,12 @@
                 if (!name) return;
 
                 fetch("<?= site_url('Consultation/addInstruction') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(name)
-                })
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "name=" + encodeURIComponent(name)
+                    })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4398,12 +4405,12 @@
                 if (!name) return;
 
                 fetch("<?= site_url('Consultation/addProcedure') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(name)
-                })
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "name=" + encodeURIComponent(name)
+                    })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4578,7 +4585,7 @@
 
     <!-- Medicine Modal Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // server-provided arrays
             const medicinesData = <?php echo json_encode($medicinesList); ?> || [];
             const medicinesList = medicinesData.map(m => m.medicineName);
@@ -4892,7 +4899,7 @@
             });
 
             // --- existing open/save/tag logic unchanged ---
-            window.openMedicineModal = function (name, existing = null, tagEl = null) {
+            window.openMedicineModal = function(name, existing = null, tagEl = null) {
                 pendingMedicineName = name;
                 editingMedicineTag = tagEl;
 
@@ -4932,7 +4939,7 @@
                 medicinesModal.show();
             };
 
-            window.saveMedicineModal = function () {
+            window.saveMedicineModal = function() {
                 const quantity = (medicineQuantity.value || "").trim();
                 const notes = (medicineNotes.value || "").trim();
                 const timing = buildTimingString();
@@ -5042,7 +5049,7 @@
 
     <!-- Upload attachments script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const isEditPage = !!document.getElementById('fileList');
             const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
             const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
@@ -5853,7 +5860,7 @@
                         }, 150);
                     } else {
                         lastTap = now;
-                        tapTimeout = setTimeout(() => { }, DOUBLE_TAP_THRESHOLD);
+                        tapTimeout = setTimeout(() => {}, DOUBLE_TAP_THRESHOLD);
                     }
                 });
 
@@ -5886,7 +5893,7 @@
             modal.show();
         }
 
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
             if (deleteConsultationId && deletePatientId) {
                 window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
                     deletePatientId + "/" + deleteConsultationId;
@@ -5916,7 +5923,7 @@
 
     <!-- Modal move on screen -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
 
             const draggableModalIds = [
                 '#symptomsModal',
@@ -5929,7 +5936,7 @@
                 const modalElement = document.querySelector(id);
                 if (modalElement) {
                     makeModalDraggable(modalElement);
-                    modalElement.addEventListener('hidden.bs.modal', function () {
+                    modalElement.addEventListener('hidden.bs.modal', function() {
                         const modalDialog = modalElement.querySelector('.modal-dialog');
                         modalDialog.style.left = '';
                         modalDialog.style.top = '';
@@ -5939,7 +5946,7 @@
                 }
             });
 
-            document.addEventListener('keydown', function (e) {
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     const openModal = document.querySelector('.modal.show');
                     if (openModal) {
@@ -5965,7 +5972,7 @@
             let offsetX = 0;
             let offsetY = 0;
 
-            modalHeader.addEventListener('mousedown', function (e) {
+            modalHeader.addEventListener('mousedown', function(e) {
                 e.preventDefault();
                 isDragging = true;
                 hasDragged = false;
@@ -6017,51 +6024,88 @@
             // Add a click listener to EACH button
             downloadButtons.forEach(button => {
 
-                button.addEventListener('click', function (event) {
+                // 1. Store the button's original content (the icon)
+                const originalButtonHtml = button.innerHTML;
+
+                button.addEventListener('click', function(event) {
+
+                    // 2. IMMEDIATELY disable the button and show a spinner
+                    button.disabled = true;
+                    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> loading..`;
 
                     // Get the specific content ID from this button's data-attribute
                     const contentId = event.currentTarget.getAttribute('data-content-id');
                     // Get the filename from this button's data-attribute
                     const fileName = event.currentTarget.getAttribute('data-filename');
-
                     // Find the correct content div to print
                     const contentToDownload = document.getElementById(contentId);
 
                     if (contentToDownload) {
-                        // Use html2canvas to "screenshot" the div
+
+                        // Temporarily remove shadow class for clean PDF
+                        contentToDownload.classList.add('no-shadow-for-pdf');
+
                         html2canvas(contentToDownload, {
-                            scale: 2, // improve rendering quality
+                            scale: 2,
                             backgroundColor: '#ffffff'
                         }).then((canvas) => {
+
+                            // Add shadow back right after screenshot
+                            contentToDownload.classList.remove('no-shadow-for-pdf');
+
                             const imgData = canvas.toDataURL('image/png');
                             const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
 
                             const pdfWidth = pdf.internal.pageSize.getWidth();
                             const pdfHeight = pdf.internal.pageSize.getHeight();
+                            const contentWidth = canvas.width;
+                            const contentHeight = canvas.height;
 
-                            const imgWidth = pdfWidth;
-                            const imgHeight = (canvas.height * pdfWidth) / canvas.width;
+                            const ratio = contentWidth / pdfWidth;
+                            const imgHeight = contentHeight / ratio;
+                            const finalImgWidth = pdfWidth - 20; // 10mm margin
+                            const finalImgHeight = imgHeight;
 
-                            let position = 0;
+                            pdf.addImage(imgData, 'PNG', 10, 10, finalImgWidth, finalImgHeight);
 
-                            if (imgHeight < pdfHeight) {
-                                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                            // 3. Save the PDF
+                            pdf.save(fileName);
+
+                            // 4. Find the modal this button is inside of
+                            const modalElement = button.closest('.modal');
+                            if (modalElement) {
+                                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+
+                                // 5. Add a one-time event listener to reset the button AFTER the modal is hidden
+                                modalElement.addEventListener('hidden.bs.modal', () => {
+                                    button.disabled = false;
+                                    button.innerHTML = originalButtonHtml;
+                                }, {
+                                    once: true
+                                }); // {once: true} is important!
+
+                                // 6. Close the modal
+                                modalInstance.hide();
+
                             } else {
-                                // For longer pages: split across pages
-                                let heightLeft = imgHeight;
-                                while (heightLeft > 0) {
-                                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                                    heightLeft -= pdfHeight;
-                                    if (heightLeft > 0) pdf.addPage();
-                                    position = -pdfHeight;
-                                }
+                                // Failsafe in case modal isn't found
+                                button.disabled = false;
+                                button.innerHTML = originalButtonHtml;
                             }
 
-                            pdf.save(fileName);
+                        }).catch(err => {
+                            // Failsafe if PDF generation fails
+                            console.error('PDF download error:', err);
+                            contentToDownload.classList.remove('no-shadow-for-pdf');
+                            button.disabled = false;
+                            button.innerHTML = originalButtonHtml;
                         });
 
                     } else {
                         console.error('Could not find content to download:', contentId);
+                        // Failsafe if content isn't found
+                        button.disabled = false;
+                        button.innerHTML = originalButtonHtml;
                     }
                 });
             });

@@ -453,36 +453,6 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    // public function updateProfilePhoto()
-    // {
-    //     $post = $this->input->post(null, true);
-    //     $hcpIdDb = $_SESSION['hcpIdDb'];
-
-    //     $config['upload_path'] = "./uploads/";
-    //     $basepath = base_url() . 'uploads/';
-    //     $config['allowed_types'] = "jpg|png|jpeg";
-    //     $config['max_size'] = 1024;
-
-    //     $this->load->library('upload', $config);
-
-
-    //     if ($this->upload->do_upload('hcpProfile')) {
-    //         $data = $this->upload->data();
-    //         $photo = $data['file_name'];
-    //     } else {
-    //         $error = $this->upload->display_errors();
-    //     }
-
-    //     $photoFileName = $basepath . $photo;
-
-    //     $updatedata = array(
-    //         'hcpPhoto' => $photoFileName
-    //     );
-    //     $this->db->where('id', $hcpIdDb);
-    //     $this->db->update('hcp_details', $updatedata);
-    //     return true;
-    // }
-
     public function updateProfileDetails()
     {
         $post = $this->input->post(null, true);

@@ -185,12 +185,15 @@
 </script>
 
 <!-- UNIVERSAL EDIT MODAL -->
-<div class="modal fade" id="editCommonModal" tabindex="-1" aria-labelledby="editCommonModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCommonModal" tabindex="-1" aria-labelledby="editCommonModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editCommonModalLabel">Edit Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="editCommonModalLabel">
+                    Edit Item</h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
             </div>
             <form id="editCommonForm" method="POST" action="">
                 <div class="modal-body">

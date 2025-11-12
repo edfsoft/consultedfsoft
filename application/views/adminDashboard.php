@@ -2322,7 +2322,7 @@
                                                                             data-bs-toggle="modal" 
                                                                             data-bs-target="#confirmDelete" 
                                                                             data-id="${symptom.id}"
-                                                                            data-name="${symptom.symptomName}" 
+                                                                            data-name="${symptom.symptomsName}" 
                                                                             data-type="symptoms">
                                                                         <i class="bi bi-trash"></i>
                                                                     </button>
@@ -2515,7 +2515,7 @@
                                                                         data-bs-toggle="modal" 
                                                                         data-bs-target="#confirmDelete" 
                                                                         data-id="${finding.id}"
-                                                                        data-name="${finding.findingName}" 
+                                                                        data-name="${finding.findingsName}" 
                                                                         data-type="findings">
                                                                     <i class="bi bi-trash"></i>
                                                                 </button>
@@ -2906,7 +2906,7 @@
                                                                                             data-bs-toggle="modal" 
                                                                                             data-bs-target="#confirmDelete" 
                                                                                             data-id="${investigation.id}"
-                                                                                            data-name="${investigation.investigationName}" 
+                                                                                            data-name="${investigation.investigationsName}" 
                                                                                             data-type="investigation">
                                                                                             <i class="bi bi-trash"></i>
                                                                                     </button>  </td>`;
@@ -3100,7 +3100,7 @@
                                                                                                 data-bs-toggle="modal" 
                                                                                                 data-bs-target="#confirmDelete" 
                                                                                                 data-id="${instruction.id}"
-                                                                                                data-name="${instruction.instructionName}" 
+                                                                                                data-name="${instruction.instructionsName}" 
                                                                                                 data-type="instruction">
                                                                                                 <i class="bi bi-trash"></i>
                                                                                         </button>
@@ -3294,7 +3294,7 @@
                                                                                                     data-bs-toggle="modal" 
                                                                                                     data-bs-target="#confirmDelete" 
                                                                                                     data-id="${procedure.id}"
-                                                                                                    data-name="${procedure.procedureName}" 
+                                                                                                    data-name="${procedure.proceduresName}" 
                                                                                                     data-type="procedure">
                                                                                                     <i class="bi bi-trash"></i>
                                                                                             </button>

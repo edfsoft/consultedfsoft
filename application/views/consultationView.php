@@ -192,10 +192,10 @@
         #symptomsModal .modal-header,
         #inputModal .modal-header,
         #diagnosisModal .modal-header,
-        #investigationsModal .modal-header {
+        #investigationsModal .modal-header,
+        #medicinesModal .modal-header {
             cursor: move;
             user-select: none;
-            /* Prevents text selection on double-click */
         }
 
         /* Dashboard Attachment Preview */
@@ -1257,7 +1257,7 @@
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         id="clearAdviceSearch">✖</button>
                                                     <button type="button" class="btn btn-outline-primary d-none"
-                                                        id="addAdvice">+ Add</button>
+                                                        id="addAdvice">+ Add here</button>
                                                 </div>
                                                 <div id="adviceList">
                                                     <?php if (!empty($advicesList)): ?>
@@ -1783,7 +1783,7 @@
                                             <button type="button" class="btn btn-outline-secondary"
                                                 id="clearAdviceSearch">✖</button>
                                             <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
-                                                Add</button>
+                                                Add here</button>
                                         </div>
                                         <div id="adviceList">
                                             <?php if (!empty($advicesList)): ?>
@@ -2288,7 +2288,7 @@
                                             <button type="button" class="btn btn-outline-secondary"
                                                 id="clearAdviceSearch">✖</button>
                                             <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
-                                                Add</button>
+                                                Add here</button>
                                         </div>
                                         <div id="adviceList">
                                             <?php if (!empty($advicesList)): ?>
@@ -2882,10 +2882,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- ✅ Add jsPDF and html2canvas -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -4499,7 +4495,7 @@
                     if (!noResultMsg) {
                         noResultMsg = document.createElement('div');
                         noResultMsg.className = 'no-result text-muted mt-2';
-                        noResultMsg.textContent = 'No result found on search – Add new';
+                        noResultMsg.textContent = 'No results found. You can add new advice for this consultation only.';
                         adviceList.appendChild(noResultMsg);
                     }
                 } else if (noResultMsg) {
@@ -5926,7 +5922,8 @@
                 '#symptomsModal',
                 '#inputModal',
                 '#diagnosisModal',
-                '#investigationsModal'
+                '#investigationsModal',
+                '#medicinesModal'
             ];
             draggableModalIds.forEach(id => {
                 const modalElement = document.querySelector(id);
@@ -6083,9 +6080,11 @@
     <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
     <!-- PDF Download link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-
+    <!-- Drag And Drop -->
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-
+    <!-- Consultation Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- Fabric.js and Cropper.js JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>

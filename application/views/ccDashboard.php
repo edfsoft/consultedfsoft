@@ -1479,8 +1479,7 @@
                                                 hcpItem.className = 'card col-lg-4 m-3 hcp-item';
                                                 hcpItem.innerHTML =
                                                     '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
-                                                    '<img src="' + (value.hcpPhoto ? '<?php echo base_url(); ?>uploads/' + value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + '" alt="Profile Photo" class="img-fluid" />'
-                                                'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
+                                                    '<img src="' + (value.hcpPhoto ? '<?php echo base_url(); ?>uploads/' + value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + 'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
                                                     'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
                                                     '<div>' +
                                                     '<p class=\'card-title\'><b>' + value.hcpName + '</b> /<br>' + value.hcpId + '</p>' +
@@ -1652,8 +1651,8 @@
                                 ?>
                                                         <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                                                <img src="<?php echo $value['ccPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                    class="rounded-circle"
+                                                                <img src="<?php echo base_url('uploads/' . $value['ccPhoto']); ?>" alt="Profile Photo"
+                                                                    width="140" height="140" class="rounded-circle"
                                                                     onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                                 <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
@@ -1761,22 +1760,24 @@
                             <?php
                             foreach ($ccDetails as $key => $value) {
                                 ?>
-                                                            <div class="position-relative">
-                                                                <img id="previewImage" src="<?= isset($value['ccPhoto']) && $value['ccPhoto'] !== "No data"
-                                                                    ? base_url('uploads/' . $value['ccPhoto'])
-                                                                    : base_url('assets/BlankProfileCircle.png') ?>"
-                                                                    alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
-                                                                    style="box-shadow: 0px 4px 4px #0079AD; outline: 1px solid white;"
-                                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
-                                                                <a href="#" class="position-absolute rounded-circle px-2 py-1"
-                                                                    style="color: #0079AD;border: 2px solid #0079AD;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
-                                                                    role="button" data-bs-toggle="modal" data-bs-target="#updateCCPhoto"><i
-                                                                        class="bi bi-camera"></i></a>
-                                                            </div>
-
                                                             <form action="<?php echo base_url() . "Chiefconsultant/updateMyProfile" ?>" name="profileEditForm"
                                                                 enctype="multipart/form-data" method="POST" onsubmit="return validateDetails()"
                                                                 oninput="clearErrorDetails()" class="">
+                                                                <div class="position-relative">
+                                                                    <img id="previewImage"
+                                                                        src="<?= isset($value['ccPhoto']) && $value['ccPhoto'] !== "No data"
+                                                                            ? base_url('uploads/' . $value['ccPhoto'])
+                                                                            : base_url('assets/img/BlankProfileCircle.png') ?>"
+                                                                        alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
+                                                                        style="box-shadow: 0px 4px 4px #0079AD; outline: 1px solid white;"
+                                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                                                    <input type="file" id="profilePhoto" name="profilePhoto"
+                                                                        class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
+                                                                    <a href="#" class="position-absolute rounded-circle px-2 py-1"
+                                                                        style="color: #0079AD;border: 2px solid #0079AD;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
+                                                                        onclick="document.getElementById('profilePhoto').click();"><i
+                                                                            class="bi bi-camera"></i></a>
+                                                                </div>
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="drName">Full Name</label>
@@ -2188,76 +2189,6 @@
         <?php } ?>
     </script>
 
-    <!-- Crop Image and Upload CC profile -->
-    <script>
-        let cropper;
-
-        document.getElementById('ccProfile').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const image = document.getElementById('previewImage');
-                    image.src = e.target.result;
-
-                    if (cropper) cropper.destroy();
-
-                    cropper = new Cropper(image, {
-                        aspectRatio: 1,
-                        viewMode: 2,
-                        dragMode: 'move',
-                        cropBoxResizable: false,
-                        cropBoxMovable: true,
-                        ready: function () {
-                            cropper.setCropBoxData({
-                                width: 200,
-                                height: 200
-                            });
-                        }
-                    });
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('uploadButton').addEventListener('click', function () {
-            if (!cropper) {
-                alert("Please select an image to upload.");
-                return;
-            }
-            cropper.getCroppedCanvas({ width: 200, height: 200 }).toBlob(blob => {
-                if (!blob) {
-                    alert("Cropping failed. Please try again.");
-                    return;
-                }
-
-                const now = new Date();
-                const day = String(now.getDate()).padStart(2, '0');
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const year = now.getFullYear();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-
-                const fileName = `doctorCC_${day}_${month}_${year}_${hours}_${minutes}.jpg`;
-
-                const formData = new FormData();
-                formData.append('ccProfile', blob, fileName);
-
-                fetch("<?php echo base_url() . 'Chiefconsultant/updatePhoto' ?>", {
-                    method: "POST",
-                    body: formData
-                })
-                    .then(response => response.text())
-                    .then(data => {
-                        var myModal = new bootstrap.Modal(document.getElementById('updateCCPhoto'));
-                        myModal.hide();
-                        location.reload();
-                    })
-                    .catch(error => console.error("Upload failed:", error));
-            }, "image/jpeg");
-        });
-    </script>
-
     <!-- Consultation card show more and less -->
     <script>
         function toggleCard(btn) {
@@ -2432,9 +2363,6 @@
         });
     </script>
 
-    <!-- Cropper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
@@ -2445,6 +2373,8 @@
     <script src="<?php echo base_url(); ?>assets/js/main.js"></script>
     <!-- PDF Download link -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <!-- Cropper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 </body>
 

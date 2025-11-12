@@ -453,35 +453,35 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function updateProfilePhoto()
-    {
-        $post = $this->input->post(null, true);
-        $hcpIdDb = $_SESSION['hcpIdDb'];
+    // public function updateProfilePhoto()
+    // {
+    //     $post = $this->input->post(null, true);
+    //     $hcpIdDb = $_SESSION['hcpIdDb'];
 
-        $config['upload_path'] = "./uploads/";
-        $basepath = base_url() . 'uploads/';
-        $config['allowed_types'] = "jpg|png|jpeg";
-        $config['max_size'] = 1024;
+    //     $config['upload_path'] = "./uploads/";
+    //     $basepath = base_url() . 'uploads/';
+    //     $config['allowed_types'] = "jpg|png|jpeg";
+    //     $config['max_size'] = 1024;
 
-        $this->load->library('upload', $config);
+    //     $this->load->library('upload', $config);
 
 
-        if ($this->upload->do_upload('hcpProfile')) {
-            $data = $this->upload->data();
-            $photo = $data['file_name'];
-        } else {
-            $error = $this->upload->display_errors();
-        }
+    //     if ($this->upload->do_upload('hcpProfile')) {
+    //         $data = $this->upload->data();
+    //         $photo = $data['file_name'];
+    //     } else {
+    //         $error = $this->upload->display_errors();
+    //     }
 
-        $photoFileName = $basepath . $photo;
+    //     $photoFileName = $basepath . $photo;
 
-        $updatedata = array(
-            'hcpPhoto' => $photoFileName
-        );
-        $this->db->where('id', $hcpIdDb);
-        $this->db->update('hcp_details', $updatedata);
-        return true;
-    }
+    //     $updatedata = array(
+    //         'hcpPhoto' => $photoFileName
+    //     );
+    //     $this->db->where('id', $hcpIdDb);
+    //     $this->db->update('hcp_details', $updatedata);
+    //     return true;
+    // }
 
     public function updateProfileDetails()
     {
@@ -496,6 +496,38 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $hcpIdDb);
         $this->db->update('hcp_details', $updatedata);
+
+        $uploadPath = './uploads/';
+        $allowedTypes = ['jpg', 'jpeg', 'png'];
+        $maxSize = 1 * 1024 * 1024;
+
+        if (!empty($_FILES['profilePhoto']['name'])) {
+            $ext = pathinfo($_FILES['profilePhoto']['name'], PATHINFO_EXTENSION);
+            $ext = strtolower($ext);
+
+            if (!in_array($ext, $allowedTypes)) {
+                return ['status' => false, 'message' => 'Invalid file type'];
+            }
+
+            if ($_FILES['profilePhoto']['size'] > $maxSize) {
+                return ['status' => false, 'message' => 'File size exceeds 1MB'];
+            }
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $formattedId = str_pad($hcpIdDb, 2, '0', STR_PAD_LEFT);
+            $fileName = 'hcp_profile_' . $formattedId . '.' . $ext;
+            $targetPath = $uploadPath . $fileName;
+
+            if (!move_uploaded_file($_FILES['profilePhoto']['tmp_name'], $targetPath)) {
+                return false;
+            }
+            $this->db->where('id', $hcpIdDb);
+            $this->db->update('hcp_details', ['hcpPhoto' => $fileName]);
+        }
+
         return true;
     }
 

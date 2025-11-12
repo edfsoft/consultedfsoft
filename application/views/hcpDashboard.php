@@ -2463,7 +2463,7 @@
                                 ?>
                                                         <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
-                                                                <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
+                                                                <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo" width="140" height="140"
                                                                     class="rounded-circle"
                                                                     onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
@@ -2547,23 +2547,24 @@
                             <?php
                             foreach ($hcpDetails as $key => $value) {
                                 ?>
-                                                            <div class="position-relative">
-                                                                <img id="previewImage" src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
-                                                                    ? base_url('uploads/' . $value['hcpPhoto'])
-                                                                    : base_url('assets/BlankProfileCircle.png') ?>"
-                                                                    alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
-                                                                    style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
-                                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
-                                                                <a href="#" class="position-absolute rounded-circle px-2 py-1"
-                                                                    style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
-                                                                    role="button" data-bs-toggle="modal" data-bs-target="#updateHCPPhoto"><i
-                                                                        class="bi bi-camera"></i></a>
-                                                            </div>
-
                                                             <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
                                                                 name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
                                                                 onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="">
-
+                                                                <div class="position-relative">
+                                                                    <img id="previewImage"
+                                                                        src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
+                                                                            ? base_url('uploads/' . $value['hcpPhoto'])
+                                                                            : base_url('assets/img/BlankProfileCircle.png') ?>"
+                                                                        alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
+                                                                        style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
+                                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                                                    <input type="file" id="profilePhoto" name="profilePhoto"
+                                                                        class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
+                                                                    <a href="#" class="position-absolute rounded-circle px-2 py-1"
+                                                                        style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
+                                                                        onclick="document.getElementById('profilePhoto').click();"><i
+                                                                            class="bi bi-camera"></i></a>
+                                                                </div>
                                                                 <div class="d-md-flex justify-content-between py-3">
                                                                     <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
                                                                         <label class="form-label" for="drName">Full Name</label>
@@ -2949,74 +2950,91 @@
     </script>
 
     <!-- Crop Image and Upload HCP profile -->
-    <script>
+   <!-- <script>
         let cropper;
+        let activeInput = null;
 
-        document.getElementById('hcpProfile').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
+        document.querySelectorAll(".image-input").forEach((input) => {
+            input.addEventListener("change", function (e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+                if (!allowedTypes.includes(file.type)) {
+                    alert("Only JPG, JPEG, PNG allowed.");
+                    input.value = "";
+                    return;
+                }
+
+                if (file.size > 1 * 1024 * 1024) {
+                    alert("Max file size is 1MB.");
+                    input.value = "";
+                    return;
+                }
+
                 const reader = new FileReader();
-                reader.onload = function (e) {
-                    const image = document.getElementById('previewImage');
-                    image.src = e.target.result;
+                reader.onload = function (event) {
+                    const image = document.getElementById("cropperImage");
+                    image.src = event.target.result;
+
+                    const modal = new bootstrap.Modal(document.getElementById("cropModal"));
+                    modal.show();
+
+                    activeInput = input;
 
                     if (cropper) cropper.destroy();
 
                     cropper = new Cropper(image, {
                         aspectRatio: 1,
-                        viewMode: 2,
-                        dragMode: 'move',
-                        cropBoxResizable: false,
-                        cropBoxMovable: true,
-                        ready: function () {
+                        viewMode: 1,
+                        autoCropArea: 1,
+                        responsive: true,
+                        scalable: true,
+                        zoomable: true,
+                        minContainerWidth: 600,
+                        minContainerHeight: 600,
+                        ready() {
                             cropper.setCropBoxData({
                                 width: 200,
-                                height: 200
+                                height: 200,
                             });
-                        }
+                        },
                     });
                 };
                 reader.readAsDataURL(file);
-            }
+            });
         });
 
-        document.getElementById('uploadButton').addEventListener('click', function () {
-            if (!cropper) {
-                alert("Please select an image to upload.");
-                return;
-            }
-            cropper.getCroppedCanvas({ width: 200, height: 200 }).toBlob(blob => {
-                if (!blob) {
-                    alert("Cropping failed. Please try again.");
-                    return;
-                }
+        document.getElementById("cropImageBtn").addEventListener("click", function () {
+            if (!cropper) return;
 
-                const now = new Date();
-                const day = String(now.getDate()).padStart(2, '0');
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const year = now.getFullYear();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
+            const canvas = cropper.getCroppedCanvas({
+                width: 200,
+                height: 200,
+            });
 
-                const fileName = `doctorHCP_${day}_${month}_${year}_${hours}_${minutes}.jpg`;
+            canvas.toBlob((blob) => {
+                const file = new File([blob], "cropped.jpg", { type: "image/jpeg" });
 
-                const formData = new FormData();
-                formData.append('hcpProfile', blob, fileName);
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                activeInput.files = dataTransfer.files;
 
-                fetch("<?php echo base_url() . 'Healthcareprovider/updatePhoto' ?>", {
-                    method: "POST",
-                    body: formData
-                })
-                    .then(response => response.text())
-                    .then(data => {
-                        var myModal = new bootstrap.Modal(document.getElementById('updateHCPPhoto'));
-                        myModal.hide();
-                        location.reload();
-                    })
-                    .catch(error => console.error("Upload failed:", error));
+                // Show preview
+                const preview = document.getElementById("previewImage");
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                bootstrap.Modal.getInstance(document.getElementById("cropModal")).hide();
+                cropper.destroy();
+                cropper = null;
             }, "image/jpeg");
         });
-    </script>
+
+    </script> -->
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

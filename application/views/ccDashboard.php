@@ -1479,8 +1479,8 @@
                                                 hcpItem.className = 'card col-lg-4 m-3 hcp-item';
                                                 hcpItem.innerHTML =
                                                     '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
-                                                    '<img src="' + (value.ccPhoto ? value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + '" ' +
-                                                    'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
+                                                    '<img src="' + (value.hcpPhoto ? '<?php echo base_url(); ?>uploads/' + value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + '" alt="Profile Photo" class="img-fluid" />'
+                                                'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
                                                     'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
                                                     '<div>' +
                                                     '<p class=\'card-title\'><b>' + value.hcpName + '</b> /<br>' + value.hcpId + '</p>' +
@@ -1569,8 +1569,8 @@
                                 ?>
                                                     <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
-                                                            <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
-                                                                class="rounded-circle"
+                                                            <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo"
+                                                                width="140" height="140" class="rounded-circle"
                                                                 onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
                                                             <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"

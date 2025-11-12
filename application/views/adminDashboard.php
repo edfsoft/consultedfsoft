@@ -1173,7 +1173,7 @@
                                     ?>
 
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
-                                                            <img src="<?php echo $value['hcpPhoto'] ?>" alt="Profile Photo" width="140" height="140"
+                                                            <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo" width="140" height="140"
                                                                 class="rounded-circle"
                                                                 onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>

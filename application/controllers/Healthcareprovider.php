@@ -434,15 +434,15 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function updatePhoto()
-    {
-        if ($this->HcpModel->updateProfilePhoto()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Profile photo updated successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in updating profile photo');
-        }
-        redirect('Healthcareprovider/editMyProfile');
-    }
+    // public function updatePhoto()
+    // {
+    //     if ($this->HcpModel->updateProfilePhoto()) {
+    //         $this->session->set_flashdata('showSuccessMessage', 'Profile photo updated successfully');
+    //     } else {
+    //         $this->session->set_flashdata('showErrorMessage', 'Error in updating profile photo');
+    //     }
+    //     redirect('Healthcareprovider/editMyProfile');
+    // }
 
     public function updateMyProfile()
     {

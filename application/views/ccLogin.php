@@ -118,7 +118,8 @@
                             <button type="submit"
                                 class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
                                 style="background-color:#0079AD;font-size:16px;font-weight:600;">Login</button>
-                            <!-- <a href="<?php echo base_url() . "Chiefconsultant/resetPassword" ?>" id="forgotPassword" class="text-danger mt-5">Forgot password?</a> -->
+                            <a href="<?php echo base_url() . "Chiefconsultant/resetPassword" ?>" id="forgotPassword"
+                                class="text-danger mt-5">Forgot password?</a>
                         </div>
                     </form>
 

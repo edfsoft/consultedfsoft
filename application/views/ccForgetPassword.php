@@ -42,11 +42,13 @@
             z-index: -1;
         }
 
-        #forgotPassword {
+        #resend,
+        #login {
             text-decoration: none;
         }
 
-        #forgotPassword:hover {
+        #resend:hover,
+        #login:hover {
             text-decoration: underline;
         }
 

@@ -96,7 +96,7 @@
                         name="hcpsignupform" onsubmit="return validateSignup()" oninput="return removeError()">
                         <div class="mb-3">
                             <label for="hcpName" class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" name="hcpName" id="hcpName" placeholder="Suresh Kumar"
+                            <input type="text" name="hcpName" id="hcpName" maxlength="30" placeholder="Suresh Kumar"
                                 class="form-control rounded-pill p-3">
                             <div id="name_err" class="text-danger pt-1"></div>
                         </div>
@@ -108,8 +108,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="hcpEmail" class="form-label">Email <span class="text-danger">*</span></label>
-                            <input type="email" name="hcpEmail" id="hcpEmail" placeholder="example@gmail.com"
-                                class="form-control rounded-pill p-3">
+                            <input type="email" name="hcpEmail" id="hcpEmail" maxlength="30"
+                                placeholder="example@gmail.com" class="form-control rounded-pill p-3">
                             <div id="mail_err" class="text-danger pt-1"></div>
                         </div>
                         <div class="mb-3">
@@ -131,7 +131,7 @@
                             <label for="hcpPassword" class="form-label">Password <span
                                     class="text-danger">*</span></label>
                             <input type="password" name="hcpPassword" id="hcpPassword" placeholder="password"
-                                class="form-control rounded-pill p-3">
+                                maxlength="20" class="form-control rounded-pill p-3">
                             <i id="togglePassword"
                                 class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
                                 style="cursor: pointer;"></i>
@@ -144,7 +144,7 @@
                         <div class="my-3">
                             <label for="hcpCnfmPassword" class="form-label">Confirm Password <span
                                     class="text-danger">*</span></label>
-                            <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword"
+                            <input type="password" name="hcpCnfmPassword" id="hcpCnfmPassword" maxlength="20"
                                 placeholder="re-type password" class="form-control rounded-pill p-3">
                             <div id="cnfmpassword_err" class="text-danger pt-1"></div>
                         </div>

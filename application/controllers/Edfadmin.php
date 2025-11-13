@@ -555,7 +555,8 @@ class Edfadmin extends CI_Controller
             'investigation' => 'investigations_list',
             'instruction' => 'instructions_list',
             'procedure' => 'procedures_list',
-            'advice' => 'advices_list'
+            'advice' => 'advices_list',
+            'medicine' => 'medicines_list'
         ];
 
         $pluralMap = [
@@ -566,7 +567,8 @@ class Edfadmin extends CI_Controller
             'investigation' => 'investigations',
             'instruction' => 'instructions',
             'procedure' => 'procedures',
-            'advice' => 'advices'
+            'advice' => 'advices',
+            'medicine' => 'medicines'
         ];
 
         if (!isset($typeMap[$type]) || !$id) {
@@ -594,6 +596,4 @@ class Edfadmin extends CI_Controller
         $this->session->unset_userdata('adminMobileNum');
         redirect('Edfadmin/');
     }
-
-
 }

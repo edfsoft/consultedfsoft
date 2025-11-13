@@ -358,6 +358,7 @@ class Chiefconsultant extends CI_Controller
         $this->session->unset_userdata('ccName');
         $this->session->unset_userdata('ccMailId');
         $this->session->unset_userdata('ccMobileNum');
+        $this->session->unset_userdata('firstLogin');
         redirect('Chiefconsultant/');
     }
 

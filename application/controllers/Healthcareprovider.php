@@ -520,6 +520,7 @@ class Healthcareprovider extends CI_Controller
         $this->session->unset_userdata('hcpsName');
         $this->session->unset_userdata('hcpsMailId');
         $this->session->unset_userdata('hcpsMobileNum');
+        $this->session->unset_userdata('firstLogin');
         redirect('Healthcareprovider/');
     }
 

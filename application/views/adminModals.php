@@ -125,45 +125,70 @@
         const input = document.getElementById("universalInput");
         const form = document.getElementById("universalAddForm");
 
+        // Find the submit button inside the form
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+            // Re-enable the button in case it was disabled
+            submitButton.disabled = false;
+            // Reset the text back to "Add"
+            submitButton.innerHTML = 'Add';
+        }
+
         const config = {
             specialization: {
-                title: "Add New Specialization", label: "Specialization Name",
-                placeholder: "E.g. Diabetologist", name: "specializationName",
+                title: "Add New Specialization",
+                label: "Specialization Name",
+                placeholder: "E.g. Diabetologist",
+                name: "specializationName",
                 action: "<?php echo base_url() . 'Edfadmin/addListItem/specialization'; ?>"
             },
             symptoms: {
-                title: "Add New Symptom", label: "Symptom / Complaint Name",
-                placeholder: "E.g. Head ache", name: "symptomName",
+                title: "Add New Symptom",
+                label: "Symptom / Complaint Name",
+                placeholder: "E.g. Head ache",
+                name: "symptomName",
                 action: "<?php echo base_url() . 'Edfadmin/addListItem/symptoms'; ?>"
             },
             findings: {
-                title: "Add New Finding", label: "Finding Name",
-                placeholder: "E.g. Blood Sugar High", name: "findingName",
+                title: "Add New Finding",
+                label: "Finding Name",
+                placeholder: "E.g. Blood Sugar High",
+                name: "findingName",
                 action: "<?php echo base_url() . 'Edfadmin/addListItem/findings'; ?>"
             },
             diagnosis: {
-                title: "Add New Diagnosis", label: "Diagnosis Name",
-                placeholder: "E.g. Diabetes", name: "diagnosisName",
+                title: "Add New Diagnosis",
+                label: "Diagnosis Name",
+                placeholder: "E.g. Diabetes",
+                name: "diagnosisName",
                 action: "<?php echo base_url() . 'Edfadmin/addListItem/diagnosis'; ?>"
             },
             investigation: {
-                title: "Add New Investigation", label: "Investigation Name",
-                placeholder: "E.g. ECG", name: "investigationsName",
+                title: "Add New Investigation",
+                label: "Investigation Name",
+                placeholder: "E.g. ECG",
+                name: "investigationsName",
                 action: "<?php echo base_url() . 'Edfadmin/addListItem/investigations'; ?>"
             },
             instruction: {
-                title: "Add New Instruction", label: "Instruction Name",
-                placeholder: "E.g. Low fat in diet", name: "instructionsName",
+                title: "Add New Instruction",
+                label: "Instruction Name",
+                placeholder: "E.g. Low fat in diet",
+                name: "instructionsName",
                 action: "<?php echo base_url() . 'Edfadmin/addListItem/instructions'; ?>"
             },
             procedure: {
-                title: "Add New Procedure", label: "Procedure Name",
-                placeholder: "E.g. Coronary angiogram", name: "proceduresName",
+                title: "Add New Procedure",
+                label: "Procedure Name",
+                placeholder: "E.g. Coronary angiogram",
+                name: "proceduresName",
                 action: "<?php echo base_url() . 'Edfadmin/addListItem/procedures'; ?>"
             },
             advice: {
-                title: "Add New Advice", label: "Advice Name",
-                placeholder: "E.g. Take rest", name: "advicesName",
+                title: "Add New Advice",
+                label: "Advice Name",
+                placeholder: "E.g. Take rest",
+                name: "advicesName",
                 action: "<?php echo base_url() . 'Edfadmin/addListItem/advices'; ?>"
             }
         };
@@ -179,9 +204,35 @@
 
         form.reset();
 
+        // This line requires the Bootstrap JS file to be loaded
         const modal = new bootstrap.Modal(document.getElementById("universalAddModal"));
         modal.show();
     }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const universalForm = document.getElementById('universalAddForm');
+
+        if (universalForm) {
+            universalForm.addEventListener('submit', function(e) {
+                // Find the submit button inside this specific form
+                const submitButton = universalForm.querySelector('button[type="submit"]');
+
+                if (submitButton) {
+                    // If button is already disabled, stop this duplicate submission
+                    if (submitButton.disabled) {
+                        e.preventDefault(); // Stop the form from submitting again
+                        return;
+                    }
+
+                    // Disable the button immediately on the first click
+                    submitButton.disabled = true;
+
+                    // Change the button text to show it's working
+                    submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...`;
+                }
+            });
+        }
+    });
 </script>
 
 <!-- UNIVERSAL EDIT MODAL -->
@@ -218,7 +269,6 @@
         const modal = document.getElementById('editCommonModal');
         if (modal) {
             clearInterval(waitForModal);
-
             const typeToController = {
                 specialization: 'specialization',
                 symptoms: 'symptoms',
@@ -229,7 +279,6 @@
                 procedure: 'procedures',
                 advice: 'advices'
             };
-
             const fieldLabels = {
                 specialization: 'Specialization Name',
                 symptoms: 'Symptom / Complaint Name',
@@ -240,11 +289,18 @@
                 procedure: 'Procedure Name',
                 advice: 'Advice Name'
             };
-
-            document.body.addEventListener('click', function (e) {
+            // This is your existing listener that OPENS the modal
+            document.body.addEventListener('click', function(e) {
                 const btn = e.target.closest('.edit-btn');
                 if (!btn) return;
+                // resetting the modal's button before it's shown.
+                const editForm = document.getElementById('editCommonForm');
+                const submitButton = editForm.querySelector('button[type="submit"]');
 
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Update'; // Reset to "Update" 
+                }
                 const type = btn.dataset.type;
                 const id = btn.dataset.id;
                 const name = btn.dataset.name;
@@ -252,21 +308,32 @@
 
                 document.getElementById('editCommonModalLabel')
                     .textContent = `Edit ${cap}`;
-
                 document.getElementById('editCommonLabel')
                     .textContent = `${fieldLabels[type] || cap + ' Name'} `;
-
                 document.getElementById('editCommonId').value = id;
-
                 document.getElementById('editCommonName').value = name;
-
                 const baseUrl = '<?php echo base_url(); ?>';
                 const ctrl = typeToController[type] || type;
                 document.getElementById('editCommonForm')
                     .action = `${baseUrl}Edfadmin/updateListItem/${ctrl}/${id}`;
             });
-
-            console.log('Universal Edit Modal: Ready');
+            const editForm = document.getElementById('editCommonForm');
+            if (editForm) {
+                editForm.addEventListener('submit', function(e) {
+                    const submitButton = editForm.querySelector('button[type="submit"]');
+                    if (submitButton) {
+                        // If button is already disabled, stop this duplicate submission
+                        if (submitButton.disabled) {
+                            e.preventDefault();
+                            return;
+                        }
+                        // Disable the button immediately on the first click
+                        submitButton.disabled = true;
+                        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...`;
+                    }
+                });
+            }
+            console.log('Universal Edit Modal: Ready (with n-click fix)');
         }
     }, 50);
 </script>

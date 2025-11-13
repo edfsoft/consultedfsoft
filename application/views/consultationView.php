@@ -637,7 +637,6 @@
 
                                                         <?php endif; ?>
 
-
                                                         <!-- Attachments
                                                         <?php if (!empty($consultation['attachments'])): ?>
                                                             <p><strong>Attachments:</strong></p>

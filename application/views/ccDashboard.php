@@ -906,32 +906,111 @@
                                                 <?php endif; ?>
 
                                                         <!-- ====== Medicines ====== -->
+                                                        <!-- ====== Medicines ====== -->
                                                 <?php if (!empty($consultation['medicines'])): ?>
                                                             <p><strong>Medicines:</strong></p>
-                                                            <ul>
-                                                        <?php foreach ($consultation['medicines'] as $medicine): ?>
-                                                                    <li>
-                                                                <?= $medicine['medicine_name'] ?>
-                                                                    <?php
-                                                                    $details = [];
-                                                                    if (!empty($medicine['quantity']))
-                                                                        $details[] = $medicine['quantity'];
-                                                                    if (!empty($medicine['unit']))
-                                                                        $details[] = $medicine['unit'];
-                                                                    if (!empty($medicine['timing']))
-                                                                        $details[] = $medicine['timing'];
-                                                                    if (!empty($medicine['frequency']))
-                                                                        $details[] = $medicine['frequency'];
-                                                                    if (!empty($medicine['food_timing']))
-                                                                        $details[] = $medicine['food_timing'];
-                                                                    if (!empty($medicine['duration']))
-                                                                        $details[] = $medicine['duration'];
-                                                                    if (!empty($details))
-                                                                        echo ' (' . implode(' - ', $details) . ')';
-                                                                    ?>
-                                                                    </li>
-                                                        <?php endforeach; ?>
-                                                            </ul>
+                                                            <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
+                                                                class="mb-3">
+                                                                <thead>
+                                                                    <!-- First header row -->
+                                                                    <tr>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                            S.No</th>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                            Name</th>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                            Quantity</th>
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                            Food Timing</th>
+
+                                                                        <!-- Frequency spanning four columns -->
+                                                                        <th colspan="4"
+                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Frequency</th>
+
+                                                                        <th rowspan="2"
+                                                                            style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                            Notes</th>
+                                                                    </tr>
+
+                                                                    <!-- Second header row for sub-columns -->
+                                                                    <tr>
+                                                                        <th style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Morning</th>
+                                                                        <th style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Afternoon</th>
+                                                                        <th style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Evevning</th>
+                                                                        <th style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            Night</th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+                                                            <?php if (!empty($consultation['medicines'])): ?>
+                                                                <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                        <?php
+                                                                        // Safely split timing into 4 parts
+                                                                        $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
+                                                                        $timingParts = preg_split('/\s*-\s*/', $timingString);
+                                                                        $timingParts = array_pad($timingParts, 4, '0'); // ensure 4 values
+                                                                        list($morning, $afternoon, $evening, $night) = $timingParts;
+                                                                        ?>
+                                                                            <tr>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            <?= $index + 1 . '.' ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                            <?php if (!empty($medicine['medicine_name'])): ?>
+                                                                                <?php if (!empty($medicine['category'])): ?>
+                                                                                            <small
+                                                                                                class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
+                                                                                <?php endif; ?>
+                                                                                <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                            <?php else: ?>
+                                                                                        -
+                                                                            <?php endif; ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                </td>
+
+                                                                                <!-- Frequency split -->
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
+                                                                                </td>
+
+                                                                                <td style="border: 1px solid #000; padding: 6px;">
+                                                                            <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                <?php endforeach; ?>
+                                                            <?php else: ?>
+                                                                        <tr>
+                                                                            <td colspan="9"
+                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                No medicines found.
+                                                                            </td>
+                                                                        </tr>
+                                                            <?php endif; ?>
+                                                                </tbody>
+                                                            </table>
                                                 <?php endif; ?>
 
                                                 <?php if (!empty($consultation['attachments'])): ?>

@@ -46,7 +46,7 @@ class Healthcareprovider extends CI_Controller
         EDF Support Team ";
 
         $this->email->set_newline("\r\n");
-        $this->email->from('erodediabetesfoundation@gmail.com', 'Consult EDF');
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($to);
         $this->email->subject('OTP to Reset Your HCP Account Password');
         $this->email->message($message);
@@ -476,7 +476,7 @@ class Healthcareprovider extends CI_Controller
         Team EDF";
         $subject = "EDF Password Security";
         $this->load->library('email');
-        $this->email->from('erodediabetesfoundation@gmail.com', $subject);
+        $this->email->from('noreply@consult.edftech.in', $subject);
         $this->email->to($email);
         $this->email->subject('Your OTP for Password Change');
         $this->email->message($message);
@@ -520,7 +520,30 @@ class Healthcareprovider extends CI_Controller
         $this->session->unset_userdata('hcpsName');
         $this->session->unset_userdata('hcpsMailId');
         $this->session->unset_userdata('hcpsMobileNum');
+        $this->session->unset_userdata('firstLogin');
         redirect('Healthcareprovider/');
     }
+
+
+    // Check mail
+    public function testMailEdf()
+    {
+        $message = "Hii, This is test mail, Mail sent successfully";
+
+        $this->email->from('noreply@consult.edftech.in', 'EDF Tech Test mail');
+        $this->email->to('karthicklingasamy6@gmail.com');
+        $this->email->subject('EDF test mail check');
+        $this->email->message($message);
+
+        if ($this->email->send()) {
+            echo "Mail sent successfully!";
+        } else {
+            echo "Mail sending failed!<br>";
+            echo $this->email->print_debugger();
+        }
+    }
+
+
+
 
 }

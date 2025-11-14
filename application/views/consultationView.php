@@ -262,6 +262,17 @@
             background-color: #00ad8d12;
             border-radius: 4px;
         }
+
+        /* Medicines timing option in 2 lines */
+        #timingOptions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        #timingOptions .form-check {
+            width: 48%;
+        }
     </style>
 </head>
 
@@ -279,7 +290,7 @@
                 style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
                 <?php echo $this->session->flashdata('showErrorMessage'); ?>
             </div>
-        <?php
+            <?php
         }
         if ($method == "consultDashboard") { ?>
             <section>
@@ -288,13 +299,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -404,7 +415,7 @@
 
                                                                 foreach ($vitals as $label => $value):
                                                                     if ($value):
-                                                                ?>
+                                                                        ?>
                                                                         <div class="col-12 col-md-6">
                                                                             <div
                                                                                 class="d-flex justify-content-between align-items-center border p-2 rounded">
@@ -412,7 +423,7 @@
                                                                                 <span class="text-primary"><?= $value ?></span>
                                                                             </div>
                                                                         </div>
-                                                                <?php
+                                                                        <?php
                                                                     endif;
                                                                 endforeach;
                                                                 ?>
@@ -637,7 +648,6 @@
 
                                                         <?php endif; ?>
 
-
                                                         <!-- Attachments
                                                         <?php if (!empty($consultation['attachments'])): ?>
                                                             <p><strong>Attachments:</strong></p>
@@ -730,14 +740,24 @@
                                                                         </div>
 
                                                                         <div class="col-md-4">
-                                                                            <div
+                                                                           <div
                                                                                 style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
                                                                                 <p class="mb-1"
                                                                                     style="margin: 0; text-align: right;">
                                                                                     <strong>Date<span
-                                                                                            style="margin-right: 3px;"></span>:</strong>
-                                                                                    <?= date('d M Y, h:i A', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
+                                                                                            style="margin-right: px;"></span>:</strong>
+                                                                                    <?php // Changed format to only show Date ?>
+                                                                                    <?= date('d M Y', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
                                                                                 </p>
+
+                                                                                <?php ?>
+                                                                                <p class="mb-1"
+                                                                                    style="margin: 0; text-align: right;">
+                                                                                    <strong>Time<span
+                                                                                            style="margin-right: 14px;"></span>:</strong>
+                                                                                    <?= date('h:i A', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
+                                                                                </p>
+
                                                                                 <p class="mb-1"
                                                                                     style="margin: 0; text-align: right;">
                                                                                     <strong>Mobile:</strong>
@@ -1466,13 +1486,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -1973,13 +1993,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -2714,8 +2734,8 @@
                                 style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
                             <small id="medicineCompositionText" class="text-muted d-block"></small>
                         </div>
+                        <span id="medicineCategoryText" class="text-dark"></span>
                         <div>
-                            <span id="medicineCategoryText" class="text-dark me-3"></span>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                     </div>
@@ -2923,7 +2943,7 @@
             updateCounterAndButtons();
         }
 
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', function (event) {
             if (event.key === 'ArrowLeft' && currentIndex > 0) {
                 navigateConsultations(-1);
             } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
@@ -3076,12 +3096,12 @@
 
             if (!symptomsList.includes(pendingSymptom)) {
                 fetch("<?= site_url('Consultation/addSymptom') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingSymptom)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingSymptom)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3232,7 +3252,7 @@
 
     <!-- Symptoms save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseSymptomTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -3276,7 +3296,7 @@
 
             function updateSymptomsJson() {
                 let symptoms = [];
-                $('#symptomsInput > span.bg-success').each(function() {
+                $('#symptomsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let symptom = parseSymptomTagText(tagText);
 
@@ -3295,7 +3315,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateSymptomsJson();
             });
         });
@@ -3375,12 +3395,12 @@
 
             if (!findingsList.includes(pendingTag)) {
                 fetch("<?= site_url('Consultation/addFinding') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingTag)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingTag)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3531,7 +3551,7 @@
 
     <!-- Findings save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
 
@@ -3568,7 +3588,7 @@
 
             function updateFindingsJson() {
                 let findings = [];
-                $('#findingsInput > span.bg-success').each(function() {
+                $('#findingsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let finding = parseTagText(tagText);
                     if (finding) {
@@ -3587,7 +3607,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateFindingsJson(); // Ensure latest data
                 console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
             });
@@ -3670,12 +3690,12 @@
 
             if (!diagnosisList.includes(pendingDiagnosis)) {
                 fetch("<?= site_url('Consultation/addDiagnosis') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingDiagnosis)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingDiagnosis)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3834,7 +3854,7 @@
 
     <!-- Diagnosis save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseDiagnosisTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -3871,7 +3891,7 @@
 
             function updateDiagnosisJson() {
                 let diagnoses = [];
-                $('#diagnosisInputBox > span.bg-success').each(function() {
+                $('#diagnosisInputBox > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
                     let diagnosis = parseDiagnosisTagText(tagText);
                     if (diagnosis) {
@@ -3890,7 +3910,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateDiagnosisJson(); // Ensure latest data
                 console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
             });
@@ -3965,12 +3985,12 @@
 
             if (!investigationsList.includes(pendingInvestigation)) {
                 fetch("<?= site_url('Consultation/addInvestigation') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingInvestigation)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingInvestigation)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4112,7 +4132,7 @@
 
     <!-- Investigation save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseInvestigationTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -4141,7 +4161,7 @@
 
             function updateInvestigationsJson() {
                 let investigations = [];
-                $('#investigationsInput > span.bg-success').each(function() {
+                $('#investigationsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let investigation = parseInvestigationTagText(tagText);
 
@@ -4160,7 +4180,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function() {
+            $('#consultationForm').on('submit', function () {
                 updateInvestigationsJson();
             });
         });
@@ -4258,12 +4278,12 @@
                 if (!name) return;
 
                 fetch("<?= site_url('Consultation/addInstruction') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(name)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(name)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4405,12 +4425,12 @@
                 if (!name) return;
 
                 fetch("<?= site_url('Consultation/addProcedure') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(name)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(name)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4585,7 +4605,7 @@
 
     <!-- Medicine Modal Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // server-provided arrays
             const medicinesData = <?php echo json_encode($medicinesList); ?> || [];
             const medicinesList = medicinesData.map(m => m.medicineName);
@@ -4899,7 +4919,7 @@
             });
 
             // --- existing open/save/tag logic unchanged ---
-            window.openMedicineModal = function(name, existing = null, tagEl = null) {
+            window.openMedicineModal = function (name, existing = null, tagEl = null) {
                 pendingMedicineName = name;
                 editingMedicineTag = tagEl;
 
@@ -4939,7 +4959,7 @@
                 medicinesModal.show();
             };
 
-            window.saveMedicineModal = function() {
+            window.saveMedicineModal = function () {
                 const quantity = (medicineQuantity.value || "").trim();
                 const notes = (medicineNotes.value || "").trim();
                 const timing = buildTimingString();
@@ -5048,358 +5068,345 @@
     </script>
 
     <!-- Upload attachments script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const isEditPage = !!document.getElementById('fileList');
-            const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
-            const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
-            const isFollowup = !!document.getElementById('followupPreviewModal');
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const isEditPage = !!document.getElementById('fileList');
+        const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
+        const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
+        const isFollowup = !!document.getElementById('followupPreviewModal');
 
-            console.log('Page context:', {
-                isEditPage,
-                isDashboardPage,
-                isNewConsultation,
-                isFollowup
+        console.log('Page context:', {
+            isEditPage,
+            isDashboardPage,
+            isNewConsultation,
+            isFollowup
+        });
+
+        // === Find Containers for Class-based Elements ===
+        const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
+        const followupContainer = isFollowup ? document.querySelector('[data-page="followup"]') : null;
+
+        // === Remove conflicting modals (Unchanged Logic) ===
+        if (isEditPage) {
+            ['attachmentModal', 'newConsultationPreviewModal', 'followupPreviewModal', 'dashboardPreviewModal'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.remove();
+            });
+        }
+
+        // === DOM Elements Initialization ===
+        const editElements = {
+            fileInput: document.getElementById("fileInput"),
+            submitFileInput: document.getElementById("submitFileInput"),
+            addBtn: document.getElementById("addFileBtn"),
+            fileList: document.getElementById("fileList"),
+            fileError: document.getElementById("fileError"),
+            removedFilesInput: document.getElementById("removedFiles"),
+            dropZone: document.getElementById("dropZone"),
+            imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), {
+                backdrop: 'static',
+                keyboard: false
+            }) : null,
+            editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), {
+                backdrop: 'static',
+                keyboard: true
+            }) : null,
+            previewContent: document.getElementById('filePreviewContent'),
+            modalTitle: document.getElementById('editPreviewModalLabel'),
+            prevBtn: document.getElementById('prevFile'),
+            nextBtn: document.getElementById('nextFile')
+        };
+
+        const newConsultationElements = isNewConsultation && newConsultationContainer ? {
+            previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), {
+                backdrop: 'static',
+                keyboard: true
+            }),
+            image: document.getElementById('newConsultationImage'),
+            pdf: document.getElementById('newConsultationPDF'),
+            modalTitle: document.getElementById('newConsultationPreviewModalLabel'),
+            prevBtn: document.getElementById('prevNewConsultation'),
+            nextBtn: document.getElementById('nextNewConsultation'),
+            fileInput: newConsultationContainer.querySelector(".fileInput"),
+            submitFileInput: newConsultationContainer.querySelector(".submitFileInput"),
+            addBtn: newConsultationContainer.querySelector(".addFileBtn"),
+            fileList: newConsultationContainer.querySelector(".fileList"),
+            fileError: newConsultationContainer.querySelector(".fileError"),
+            dropZone: newConsultationContainer.querySelector(".dropZone"),
+        } : {};
+
+        const followupElements = isFollowup && followupContainer ? {
+            previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), {
+                backdrop: 'static',
+                keyboard: true
+            }),
+            image: document.getElementById('followupImage'),
+            pdf: document.getElementById('followupPDF'),
+            modalTitle: document.getElementById('followupPreviewModalLabel'),
+            prevBtn: document.getElementById('prevFollowup'),
+            nextBtn: document.getElementById('nextFollowup'),
+            fileInput: followupContainer.querySelector(".fileInput"),
+            submitFileInput: followupContainer.querySelector(".submitFileInput"),
+            addBtn: followupContainer.querySelector(".addFileBtn"),
+            fileList: followupContainer.querySelector(".fileList"),
+            fileError: followupContainer.querySelector(".fileError"),
+            dropZone: followupContainer.querySelector(".dropZone"),
+        } : {};
+
+        const dashboardElements = isDashboardPage ? {
+            previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), {
+                backdrop: 'static',
+                keyboard: true
+            }),
+            image: document.getElementById('attachmentImage'),
+            pdf: document.getElementById('attachmentPDF'),
+            modalTitle: document.getElementById('dashboardPreviewModalLabel'),
+            prevBtn: document.getElementById('prevAttachment'),
+            nextBtn: document.getElementById('nextAttachment')
+        } : {};
+
+        const MAX_FILES = 10;
+        let cropper;
+        let newFiles = [];
+        let existingFiles = [];
+        let removedFiles = [];
+        let currentRotationAngle = 0;
+        let originalDataURL = null;
+        let currentImageBlob = null;
+        let currentIndex = -1;
+        let currentFiles = [];
+        let currentZoom = 1.0;
+        const ZOOM_STEP = 0.2;
+        let isDragging = false;
+        let startX, startY, scrollLeft, scrollTop;
+
+        const BASE_FILE_URL = '<?php echo base_url('uploads/consultations/'); ?>';
+
+        function getCurrentElements() {
+            if (isNewConsultation) return newConsultationElements;
+            if (isFollowup) return followupElements;
+            return editElements;
+        }
+
+        if (isEditPage && editElements.fileList) {
+            try {
+                existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+            } catch (e) {
+                console.error('Error parsing existingFiles:', e);
+                existingFiles = [];
+            }
+
+            existingFiles = existingFiles.map(file => {
+                const fileName = file.file_name || file.name || 'Unknown';
+                const extension = fileName.split('.').pop().toLowerCase();
+                const mimeType = file.mime_type || getMimeType(extension);
+                const url = file.url || (file.file_path ? BASE_FILE_URL + 
+                encodeURIComponent(file.file_path) : BASE_FILE_URL + encodeURIComponent(fileName));
+                return {
+                    file_name: fileName,
+                    ext: extension,
+                    mime_type: mimeType,
+                    url,
+                    size: file.size || 0
+                };
             });
 
-            // === Find Containers for Class-based Elements ===
-            const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
-            const followupContainer = isFollowup ? document.querySelector('[data-page="followup"]') : null;
+            renderFileList();
+        }
+        if (isNewConsultation || isFollowup) {
+            renderFileList();
+        }
 
-            // === Remove conflicting modals (Unchanged Logic) ===
-            if (isEditPage) {
-                ['attachmentModal', 'newConsultationPreviewModal', 'followupPreviewModal', 'dashboardPreviewModal'].forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.remove();
-                });
-            }
 
-            // === DOM Elements Initialization ===
-            const editElements = {
-                fileInput: document.getElementById("fileInput"),
-                submitFileInput: document.getElementById("submitFileInput"),
-                addBtn: document.getElementById("addFileBtn"),
-                fileList: document.getElementById("fileList"),
-                fileError: document.getElementById("fileError"),
-                removedFilesInput: document.getElementById("removedFiles"),
-                dropZone: document.getElementById("dropZone"),
-                imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), {
-                    backdrop: 'static',
-                    keyboard: false
-                }) : null,
-                editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), {
-                    backdrop: 'static',
-                    keyboard: true
-                }) : null,
-                previewContent: document.getElementById('filePreviewContent'),
-                modalTitle: document.getElementById('editPreviewModalLabel'),
-                prevBtn: document.getElementById('prevFile'),
-                nextBtn: document.getElementById('nextFile')
+        function getMimeType(ext) {
+            const map = {
+                'jpg': 'image/jpeg',
+                'jpeg': 'image/jpeg',
+                'png': 'image/png',
+                'pdf': 'application/pdf',
+                'doc': 'application/msword',
+                'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
             };
-
-            const newConsultationElements = isNewConsultation && newConsultationContainer ? {
-                previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), {
-                    backdrop: 'static',
-                    keyboard: true
-                }),
-                image: document.getElementById('newConsultationImage'),
-                pdf: document.getElementById('newConsultationPDF'),
-                modalTitle: document.getElementById('newConsultationPreviewModalLabel'),
-                prevBtn: document.getElementById('prevNewConsultation'),
-                nextBtn: document.getElementById('nextNewConsultation'),
-                fileInput: newConsultationContainer.querySelector(".fileInput"),
-                submitFileInput: newConsultationContainer.querySelector(".submitFileInput"),
-                addBtn: newConsultationContainer.querySelector(".addFileBtn"),
-                fileList: newConsultationContainer.querySelector(".fileList"),
-                fileError: newConsultationContainer.querySelector(".fileError"),
-                dropZone: newConsultationContainer.querySelector(".dropZone"),
-            } : {};
-
-            const followupElements = isFollowup && followupContainer ? {
-                previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), {
-                    backdrop: 'static',
-                    keyboard: true
-                }),
-                image: document.getElementById('followupImage'),
-                pdf: document.getElementById('followupPDF'),
-                modalTitle: document.getElementById('followupPreviewModalLabel'),
-                prevBtn: document.getElementById('prevFollowup'),
-                nextBtn: document.getElementById('nextFollowup'),
-                fileInput: followupContainer.querySelector(".fileInput"),
-                submitFileInput: followupContainer.querySelector(".submitFileInput"),
-                addBtn: followupContainer.querySelector(".addFileBtn"),
-                fileList: followupContainer.querySelector(".fileList"),
-                fileError: followupContainer.querySelector(".fileError"),
-                dropZone: followupContainer.querySelector(".dropZone"),
-            } : {};
-
-            const dashboardElements = isDashboardPage ? {
-                previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), {
-                    backdrop: 'static',
-                    keyboard: true
-                }),
-                image: document.getElementById('attachmentImage'),
-                pdf: document.getElementById('attachmentPDF'),
-                modalTitle: document.getElementById('dashboardPreviewModalLabel'),
-                prevBtn: document.getElementById('prevAttachment'),
-                nextBtn: document.getElementById('nextAttachment')
-            } : {};
-
-            const MAX_FILES = 10;
-            let cropper;
-            let newFiles = [];
-            let existingFiles = [];
-            let removedFiles = [];
-            let currentRotationAngle = 0;
-            let originalDataURL = null;
-            let currentImageBlob = null;
-            let currentIndex = -1;
-            let currentFiles = [];
-            let currentZoom = 1.0;
-            const ZOOM_STEP = 0.2;
-            let isDragging = false;
-            let startX, startY, scrollLeft, scrollTop;
-
-            const BASE_FILE_URL = '<?php echo base_url('Uploads/consultations/'); ?>';
-
-            function getCurrentElements() {
-                if (isNewConsultation) return newConsultationElements;
-                if (isFollowup) return followupElements;
-                return editElements;
-            }
-
-            if (isEditPage && editElements.fileList) {
-                try {
-                    existingFiles = <?php echo json_encode($attachments ?? []); ?>;
-                } catch (e) {
-                    console.error('Error parsing existingFiles:', e);
-                    existingFiles = [];
-                }
-
-                existingFiles = existingFiles.map(file => {
-                    const fileName = file.file_name || file.name || 'Unknown';
-                    const extension = fileName.split('.').pop().toLowerCase();
-                    const mimeType = file.mime_type || getMimeType(extension);
-                    const url = file.url || (file.file_path ? BASE_FILE_URL + encodeURIComponent(file.file_path) : BASE_FILE_URL + encodeURIComponent(fileName));
-                    return {
-                        file_name: fileName,
-                        ext: extension,
-                        mime_type: mimeType,
-                        url,
-                        size: file.size || 0
-                    };
-                });
-
-                renderFileList();
-            }
-            if (isNewConsultation || isFollowup) {
-                renderFileList();
-            }
+            return map[ext] || 'application/octet-stream';
+        }
 
 
-            function getMimeType(ext) {
-                const map = {
-                    'jpg': 'image/jpeg',
-                    'jpeg': 'image/jpeg',
-                    'png': 'image/png',
-                    'pdf': 'application/pdf',
-                    'doc': 'application/msword',
-                    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingprocessingml.document'
-                };
-                return map[ext] || 'application/octet-stream';
-            }
+        const currentElements = getCurrentElements();
+        const dropZone = currentElements.dropZone;
 
+        if (dropZone) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+                dropZone.addEventListener(ev, preventDefaults, false);
+                document.body.addEventListener(ev, preventDefaults, false);
+            });
+            ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => highlight(dropZone), false));
+            ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => unhighlight(dropZone), false));
+            dropZone.addEventListener('drop', async e => {
+                unhighlight(dropZone);
+                await processNewFiles(Array.from(e.dataTransfer.files));
+            });
+        }
 
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(el) {
+            el.style.borderColor = '#00ad8e';
+            el.style.backgroundColor = '#f2ebebff';
+        }
+
+        function unhighlight(el) {
+            el.style.borderColor = '#ccc';
+            el.style.backgroundColor = 'transparent';
+        }
+
+        async function processNewFiles(files) {
             const currentElements = getCurrentElements();
-            const dropZone = currentElements.dropZone;
+            if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
+            currentElements.fileError.textContent = "";
+            if (!files.length) return;
 
-            if (dropZone) {
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
-                    dropZone.addEventListener(ev, preventDefaults, false);
-                    document.body.addEventListener(ev, preventDefaults, false);
-                });
-                ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => highlight(dropZone), false));
-                ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => unhighlight(dropZone), false));
-                dropZone.addEventListener('drop', async e => {
-                    unhighlight(dropZone);
-                    await processNewFiles(Array.from(e.dataTransfer.files));
-                });
-            }
+            const allowedTypes = (currentElements.fileInput?.getAttribute('accept') || '').split(',').map(t => t.trim()).filter(t => t);
+            for (let file of files) {
+                const ext = file.name.split('.').pop().toLowerCase();
+                const type = file.type || getMimeType(ext);
 
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            function highlight(el) {
-                el.style.borderColor = '#00ad8e';
-                el.style.backgroundColor = '#f2ebebff';
-            }
-
-            function unhighlight(el) {
-                el.style.borderColor = '#ccc';
-                el.style.backgroundColor = 'transparent';
-            }
-
-            async function processNewFiles(files) {
-                const currentElements = getCurrentElements();
-                if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
-                currentElements.fileError.textContent = "";
-                if (!files.length) return;
-
-                const allowedTypes = (currentElements.fileInput?.getAttribute('accept') || '').split(',').map(t => t.trim()).filter(t => t);
-                for (let file of files) {
-                    const ext = file.name.split('.').pop().toLowerCase();
-                    const type = file.type || getMimeType(ext);
-
-                    if (allowedTypes.length && !allowedTypes.includes(type) && !allowedTypes.some(t => file.name.endsWith(t.replace('.', '')))) {
-                        currentElements.fileError.textContent = `File type not allowed: ${file.name}`;
-                        continue;
-                    }
-                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                        currentElements.fileError.textContent = `Max ${MAX_FILES} files allowed.`;
-                        break;
-                    }
-                    if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === file.name && f.size === file.size)) {
-                        currentElements.fileError.textContent = `File "${file.name}" already uploaded.`;
-                        continue;
-                    }
-
-                    if (['image/jpeg', 'image/jpg', 'image/png'].includes(type) && editElements.imageEditModal) {
-                        const edited = await editImage(file);
-                        if (edited) newFiles.push({
-                            name: edited.name,
-                            file: edited,
-                            type: edited.type,
-                            ext,
-                            url: null,
-                            size: edited.size
-                        });
-                    } else {
-                        newFiles.push({
-                            name: file.name,
-                            file,
-                            type,
-                            ext,
-                            url: null,
-                            size: file.size
-                        });
-                    }
+                if (allowedTypes.length && !allowedTypes.includes(type) && !allowedTypes.some(t => file.name.endsWith(t.replace('.', '')))) {
+                    currentElements.fileError.textContent = `File type not allowed: ${file.name}`;
+                    continue;
                 }
-                renderFileList();
-                updateSubmitFileInput();
-            }
+                if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                    currentElements.fileError.textContent = `Max ${MAX_FILES} files allowed.`;
+                    break;
+                }
+                if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === file.name && f.size === file.size)) {
+                    currentElements.fileError.textContent = `File "${file.name}" already uploaded.`;
+                    continue;
+                }
 
-            function editImage(file) {
-                return new Promise(resolve => {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        const dataURL = e.target.result;
-                        const img = document.getElementById('editor-image');
-                        const canvas = document.getElementById('editor-canvas');
-                        if (cropper) cropper.destroy();
-                        currentRotationAngle = 0;
-                        originalDataURL = dataURL;
-                        currentImageBlob = file;
-                        img.src = dataURL;
+                if (['image/jpeg', 'image/jpg', 'image/png'].includes(type) && editElements.imageEditModal) {
+                    const edited = await editImage(file);
+                    if (edited) newFiles.push({
+                        name: edited.name,
+                        file: edited,
+                        type: edited.type,
+                        ext,
+                        url: null,
+                        size: edited.size
+                    });
+                } else {
+                    newFiles.push({
+                        name: file.name,
+                        file,
+                        type,
+                        ext,
+                        url: null,
+                        size: file.size
+                    });
+                }
+            }
+            renderFileList();
+            updateSubmitFileInput();
+        }
+
+        function editImage(file) {
+            return new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const dataURL = e.target.result;
+                    const img = document.getElementById('editor-image');
+                    const canvas = document.getElementById('editor-canvas');
+                    if (cropper) cropper.destroy();
+                    currentRotationAngle = 0;
+                    originalDataURL = dataURL;
+                    currentImageBlob = file;
+                    img.src = dataURL;
+                    img.style.display = 'block';
+                    canvas.style.display = 'none';
+                    editElements.imageEditModal.show();
+                    cropper = new Cropper(img, {
+                        aspectRatio: NaN,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                        responsive: true,
+                        scalable: true,
+                        zoomable: true,
+                        minContainerWidth: 600,
+                        minContainerHeight: 600
+                    });
+
+                    const escapeHandler = ev => ev.key === 'Escape' && editElements.imageEditModal.hide();
+                    document.addEventListener('keydown', escapeHandler);
+                    editElements.imageEditModal._element.addEventListener('hidden.bs.modal', () => {
+                        document.removeEventListener('keydown', escapeHandler);
+                        resolve(null);
+                        cleanup();
+                    }, {
+                        once: true
+                    });
+
+                    document.getElementById('crop-btn').onclick = () => {
                         img.style.display = 'block';
                         canvas.style.display = 'none';
-                        editElements.imageEditModal.show();
-                        cropper = new Cropper(img, {
-                            aspectRatio: NaN,
+                        if (!cropper) cropper = new Cropper(img, {
                             viewMode: 1,
-                            autoCropArea: 1,
-                            responsive: true,
-                            scalable: true,
-                            zoomable: true,
-                            minContainerWidth: 600,
-                            minContainerHeight: 600
+                            dragMode: 'crop',
+                            autoCrop: false,
+                            movable: false,
+                            zoomable: false,
+                            scalable: false
                         });
+                        cropper.setDragMode('crop');
+                    };
 
-                        const escapeHandler = ev => ev.key === 'Escape' && editElements.imageEditModal.hide();
-                        document.addEventListener('keydown', escapeHandler);
-                        editElements.imageEditModal._element.addEventListener('hidden.bs.modal', () => {
-                            document.removeEventListener('keydown', escapeHandler);
-                            resolve(null);
-                            cleanup();
-                        }, {
-                            once: true
-                        });
-
-                        document.getElementById('crop-btn').onclick = () => {
-                            img.style.display = 'block';
-                            canvas.style.display = 'none';
-                            if (!cropper) cropper = new Cropper(img, {
-                                viewMode: 1,
-                                dragMode: 'crop',
-                                autoCrop: false,
-                                movable: false,
-                                zoomable: false,
-                                scalable: false
-                            });
-                            cropper.setDragMode('crop');
-                        };
-
-                        document.getElementById('rotate-btn').onclick = () => {
-                            if (!originalDataURL) return;
-                            currentRotationAngle = (currentRotationAngle + 90) % 360;
-                            const imgObj = new Image();
-                            imgObj.src = originalDataURL;
-                            imgObj.onload = () => {
-                                const tempCanvas = document.createElement('canvas'),
-                                    ctx = tempCanvas.getContext('2d');
-                                const angleRad = currentRotationAngle * Math.PI / 180;
-                                const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
-                                const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
-                                tempCanvas.width = w;
-                                tempCanvas.height = h;
-                                ctx.translate(w / 2, h / 2);
-                                ctx.rotate(angleRad);
-                                ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
-                                tempCanvas.toBlob(blob => {
-                                    currentImageBlob = new File([blob], file.name, {
-                                        type: file.type
-                                    });
-                                    const url = URL.createObjectURL(currentImageBlob);
-                                    img.src = url;
-                                    if (cropper) cropper.destroy();
-                                    cropper = new Cropper(img, {
-                                        aspectRatio: NaN,
-                                        viewMode: 1,
-                                        autoCropArea: 1,
-                                        responsive: true,
-                                        scalable: true,
-                                        zoomable: true,
-                                        minContainerWidth: 600,
-                                        minContainerHeight: 600
-                                    });
-                                }, file.type, 1);
-                            };
-                        };
-
-                        const saveBtn = document.getElementById('saveEditedImage');
-                        const saveHandler = () => {
-                            if (cropper) {
-                                cropper.getCroppedCanvas({
-                                    fillColor: file.type.includes('png') ? 'transparent' : '#ffffff'
-                                }).toBlob(blob => {
-                                    const edited = new File([blob], file.name, {
-                                        type: file.type
-                                    });
-                                    const errorElement = getCurrentElements().fileError; // Use context-aware error element
-                                    if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
-                                        errorElement.textContent = `File "${edited.name}" already uploaded.`;
-                                        resolve(null);
-                                        cleanup();
-                                    } else {
-                                        resolve(edited);
-                                        cleanup();
-                                    }
-                                }, file.type, 1);
-                            } else {
-                                const edited = currentImageBlob ? new File([currentImageBlob], file.name, {
+                    document.getElementById('rotate-btn').onclick = () => {
+                        if (!originalDataURL) return;
+                        currentRotationAngle = (currentRotationAngle + 90) % 360;
+                        const imgObj = new Image();
+                        imgObj.src = originalDataURL;
+                        imgObj.onload = () => {
+                            const tempCanvas = document.createElement('canvas'),
+                                ctx = tempCanvas.getContext('2d');
+                            const angleRad = currentRotationAngle * Math.PI / 180;
+                            const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
+                            const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
+                            tempCanvas.width = w;
+                            tempCanvas.height = h;
+                            ctx.translate(w / 2, h / 2);
+                            ctx.rotate(angleRad);
+                            ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
+                            tempCanvas.toBlob(blob => {
+                                currentImageBlob = new File([blob], file.name, {
                                     type: file.type
-                                }) : file;
+                                });
+                                const url = URL.createObjectURL(currentImageBlob);
+                                img.src = url;
+                                if (cropper) cropper.destroy();
+                                cropper = new Cropper(img, {
+                                    aspectRatio: NaN,
+                                    viewMode: 1,
+                                    autoCropArea: 1,
+                                    responsive: true,
+                                    scalable: true,
+                                    zoomable: true,
+                                    minContainerWidth: 600,
+                                    minContainerHeight: 600
+                                });
+                            }, file.type, 1);
+                        };
+                    };
+
+                    const saveBtn = document.getElementById('saveEditedImage');
+                    const saveHandler = () => {
+                        if (cropper) {
+                            cropper.getCroppedCanvas({
+                                fillColor: file.type.includes('png') ? 'transparent' : '#ffffff'
+                            }).toBlob(blob => {
+                                const edited = new File([blob], file.name, {
+                                    type: file.type
+                                });
                                 const errorElement = getCurrentElements().fileError; // Use context-aware error element
                                 if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
                                     errorElement.textContent = `File "${edited.name}" already uploaded.`;
@@ -5409,473 +5416,492 @@
                                     resolve(edited);
                                     cleanup();
                                 }
+                            }, file.type, 1);
+                        } else {
+                            const edited = currentImageBlob ? new File([currentImageBlob], file.name, {
+                                type: file.type
+                            }) : file;
+                            const errorElement = getCurrentElements().fileError; // Use context-aware error element
+                            if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
+                                errorElement.textContent = `File "${edited.name}" already uploaded.`;
+                                resolve(null);
+                                cleanup();
+                            } else {
+                                resolve(edited);
+                                cleanup();
                             }
-                        };
-                        saveBtn.addEventListener('click', saveHandler, {
-                            once: true
-                        });
-
-                        function cleanup() {
-                            editElements.imageEditModal.hide();
-                            if (cropper) {
-                                cropper.destroy();
-                                cropper = null;
-                            }
-                            img.src = '';
-                            img.style.display = 'none';
-                            canvas.style.display = 'none';
-                            currentRotationAngle = 0;
-                            originalDataURL = null;
-                            currentImageBlob = null;
-                            const newBtn = saveBtn.cloneNode(true);
-                            saveBtn.parentNode.replaceChild(newBtn, saveBtn);
                         }
                     };
-                    reader.readAsDataURL(file);
+                    saveBtn.addEventListener('click', saveHandler, {
+                        once: true
+                    });
+
+                    function cleanup() {
+                        editElements.imageEditModal.hide();
+                        if (cropper) {
+                            cropper.destroy();
+                            cropper = null;
+                        }
+                        img.src = '';
+                        img.style.display = 'none';
+                        canvas.style.display = 'none';
+                        currentRotationAngle = 0;
+                        originalDataURL = null;
+                        currentImageBlob = null;
+                        const newBtn = saveBtn.cloneNode(true);
+                        saveBtn.parentNode.replaceChild(newBtn, saveBtn);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        if (isEditPage || isNewConsultation || isFollowup) {
+            const elements = getCurrentElements();
+
+            if (elements.addBtn) {
+                elements.addBtn.addEventListener("click", () => {
+                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                        elements.fileError.textContent = `Maximum ${MAX_FILES} files allowed.`;
+                        return;
+                    }
+                    elements.fileInput.click();
                 });
             }
-
-            if (isEditPage || isNewConsultation || isFollowup) {
-                const elements = getCurrentElements();
-
-                if (elements.addBtn) {
-                    elements.addBtn.addEventListener("click", () => {
-                        if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                            elements.fileError.textContent = `Maximum ${MAX_FILES} files allowed.`;
-                            return;
-                        }
-                        elements.fileInput.click();
-                    });
-                }
-                if (elements.fileInput) {
-                    elements.fileInput.addEventListener("change", async () => {
-                        if (elements.fileInput.files.length) {
-                            await processNewFiles(Array.from(elements.fileInput.files));
-                            elements.fileInput.value = "";
-                        }
-                    });
-                }
-            }
-
-
-            function renderFileList() {
-                const currentElements = getCurrentElements();
-                if (!currentElements.fileList) return;
-                currentElements.fileList.innerHTML = "";
-                const context = isEditPage ? "edit" : isNewConsultation ? "new" : "followup";
-
-                if (!existingFiles.length && !newFiles.length) {
-                    currentElements.fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
-                    return;
-                }
-
-                const ul = document.createElement("ul");
-                ul.style.paddingLeft = "1.2rem";
-                [...existingFiles, ...newFiles].forEach((file, i) => {
-                    const isExisting = isEditPage && i < existingFiles.length;
-                    const fileIndexInArray = isExisting ? i : i - existingFiles.length;
-
-                    const li = document.createElement("li");
-                    li.style.marginBottom = "6px";
-                    const link = document.createElement("a");
-                    link.href = "javascript:void(0);";
-                    link.textContent = isExisting ? file.file_name : file.name;
-                    link.className = "openAttachment";
-                    link.style.color = "#007bff";
-                    link.style.textDecoration = "underline";
-                    link.style.cursor = "pointer";
-                    link.setAttribute("data-file", isExisting ? file.url : (file.file ? file.name : ''));
-                    link.setAttribute("data-ext", isExisting ? file.ext : file.ext);
-                    link.setAttribute("data-context", context);
-                    link.setAttribute("data-is-existing", isExisting.toString());
-                    link.setAttribute("data-file-index", fileIndexInArray.toString());
-
-                    const removeBtn = document.createElement("button");
-                    removeBtn.type = "button";
-                    removeBtn.textContent = "✕";
-                    removeBtn.className = "btn btn-sm btn-danger";
-                    removeBtn.style.marginLeft = "8px";
-                    removeBtn.onclick = () => {
-                        if (isExisting) {
-                            removedFiles.push(file.file_name);
-                            existingFiles.splice(fileIndexInArray, 1);
-                            if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles);
-                        } else newFiles.splice(fileIndexInArray, 1);
-                        renderFileList();
-                        updateSubmitFileInput();
-                    };
-                    li.appendChild(link);
-                    li.appendChild(removeBtn);
-                    ul.appendChild(li);
+            if (elements.fileInput) {
+                elements.fileInput.addEventListener("change", async () => {
+                    if (elements.fileInput.files.length) {
+                        await processNewFiles(Array.from(elements.fileInput.files));
+                        elements.fileInput.value = "";
+                    }
                 });
-                currentElements.fileList.appendChild(ul);
+            }
+        }
+
+
+        function renderFileList() {
+            const currentElements = getCurrentElements();
+            if (!currentElements.fileList) return;
+            currentElements.fileList.innerHTML = "";
+            const context = isEditPage ? "edit" : isNewConsultation ? "new" : "followup";
+
+            if (!existingFiles.length && !newFiles.length) {
+                currentElements.fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+                return;
             }
 
-            function updateSubmitFileInput() {
-                const currentElements = getCurrentElements();
-                if (!currentElements.submitFileInput) return;
-                const dt = new DataTransfer();
-                newFiles.forEach(f => dt.items.add(f.file));
-                currentElements.submitFileInput.files = dt.files;
-            }
+            const ul = document.createElement("ul");
+            ul.style.paddingLeft = "1.2rem";
+            [...existingFiles, ...newFiles].forEach((file, i) => {
+                const isExisting = isEditPage && i < existingFiles.length;
+                const fileIndexInArray = isExisting ? i : i - existingFiles.length;
 
-            function showPreview(file, isExisting, index, context) {
-                const fileName = isExisting ? file.file_name : file.name;
-                const fileType = isExisting ? (file.mime_type || getMimeType(file.ext)) : file.type;
-                const url = isExisting ? file.url : URL.createObjectURL(file.file);
+                const li = document.createElement("li");
+                li.style.marginBottom = "6px";
+                const link = document.createElement("a");
+                link.href = "javascript:void(0);";
+                link.textContent = isExisting ? file.file_name : file.name;
+                link.className = "openAttachment";
+                link.style.color = "#007bff";
+                link.style.textDecoration = "underline";
+                link.style.cursor = "pointer";
+                link.setAttribute("data-file", isExisting ? file.url : (file.file ? file.name : ''));
+                link.setAttribute("data-ext", isExisting ? file.ext : file.ext);
+                link.setAttribute("data-context", context);
+                link.setAttribute("data-is-existing", isExisting.toString());
+                link.setAttribute("data-file-index", fileIndexInArray.toString());
 
-                let elements, showModal, updateNav;
-                if (context === 'edit' && editElements.editPreviewModal) {
-                    elements = editElements;
-                    showModal = () => editElements.editPreviewModal.show();
-                    updateNav = updateEditNavigation;
-                    elements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
-                    elements.previewContent.innerHTML = '';
-                } else if (context === 'new' && newConsultationElements.previewModal) {
-                    elements = newConsultationElements;
-                    showModal = () => elements.previewModal.show();
-                    updateNav = () => updateNavButtons(elements, index);
-                    elements.modalTitle.textContent = `New Consultation Attachment Preview - ${fileName}`;
-                    elements.image.classList.add('d-none');
-                    elements.pdf.classList.add('d-none');
-                } else if (context === 'followup' && followupElements.previewModal) {
-                    elements = followupElements;
-                    showModal = () => elements.previewModal.show();
-                    updateNav = () => updateNavButtons(elements, index);
-                    elements.modalTitle.textContent = `Follow-up Attachment Preview - ${fileName}`;
-                    elements.image.classList.add('d-none');
-                    elements.pdf.classList.add('d-none');
-                } else if (context === 'dashboard' && dashboardElements.previewModal) {
-                    elements = dashboardElements;
-                    showModal = () => elements.previewModal.show();
-                    updateNav = () => updateNavButtons(elements, index);
-                    elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
-                    elements.image.classList.add('d-none');
-                    elements.pdf.classList.add('d-none');
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.textContent = "✕";
+                removeBtn.className = "btn btn-sm btn-danger";
+                removeBtn.style.marginLeft = "8px";
+                removeBtn.onclick = () => {
+                    if (isExisting) {
+                        removedFiles.push(file.file_name);
+                        existingFiles.splice(fileIndexInArray, 1);
+                        if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles);
+                    } else newFiles.splice(fileIndexInArray, 1);
+                    renderFileList();
+                    updateSubmitFileInput();
+                };
+                li.appendChild(link);
+                li.appendChild(removeBtn);
+                ul.appendChild(li);
+            });
+            currentElements.fileList.appendChild(ul);
+        }
 
-                    document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+        function updateSubmitFileInput() {
+            const currentElements = getCurrentElements();
+            if (!currentElements.submitFileInput) return;
+            const dt = new DataTransfer();
+            newFiles.forEach(f => dt.items.add(f.file));
+            currentElements.submitFileInput.files = dt.files;
+        }
 
-                    const toolbar = document.getElementById('attachment-toolbar');
-                    const downloadBtn = document.getElementById('downloadAttachmentBtn');
-                    const attachmentImage = document.getElementById('attachmentImage');
+        function showPreview(file, isExisting, index, context) {
+            const fileName = isExisting ? file.file_name : file.name;
+            const fileType = isExisting ? (file.mime_type || getMimeType(file.ext)) : file.type;
+            const url = isExisting ? file.url : URL.createObjectURL(file.file);
 
-                    toolbar.style.display = 'none';
+            let elements, showModal, updateNav;
+            if (context === 'edit' && editElements.editPreviewModal) {
+                elements = editElements;
+                showModal = () => editElements.editPreviewModal.show();
+                updateNav = updateEditNavigation;
+                elements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
+                elements.previewContent.innerHTML = '';
+            } else if (context === 'new' && newConsultationElements.previewModal) {
+                elements = newConsultationElements;
+                showModal = () => elements.previewModal.show();
+                updateNav = () => updateNavButtons(elements, index);
+                elements.modalTitle.textContent = `New Consultation Attachment Preview - ${fileName}`;
+                elements.image.classList.add('d-none');
+                elements.pdf.classList.add('d-none');
+            } else if (context === 'followup' && followupElements.previewModal) {
+                elements = followupElements;
+                showModal = () => elements.previewModal.show();
+                updateNav = () => updateNavButtons(elements, index);
+                elements.modalTitle.textContent = `Follow-up Attachment Preview - ${fileName}`;
+                elements.image.classList.add('d-none');
+                elements.pdf.classList.add('d-none');
+            } else if (context === 'dashboard' && dashboardElements.previewModal) {
+                elements = dashboardElements;
+                showModal = () => elements.previewModal.show();
+                updateNav = () => updateNavButtons(elements, index);
+                elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
+                elements.image.classList.add('d-none');
+                elements.pdf.classList.add('d-none');
 
-                    currentZoom = 1.0;
-                    attachmentImage.style.transform = `scale(${currentZoom})`;
+                document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
 
-                    downloadBtn.onclick = () => {
-                        const tempLink = document.createElement('a');
-                        tempLink.href = url;
-                        tempLink.download = fileName;
-                        document.body.appendChild(tempLink);
-                        tempLink.click();
-                        document.body.removeChild(tempLink);
-                    };
+                const toolbar = document.getElementById('attachment-toolbar');
+                const downloadBtn = document.getElementById('downloadAttachmentBtn');
+                const attachmentImage = document.getElementById('attachmentImage');
 
-                    if (fileType.includes('image')) {
-                        toolbar.style.display = 'flex';
-                        document.getElementById('zoomOutBtn').disabled = true;
-                        document.getElementById('zoomInBtn').disabled = false;
-                        attachmentImage.style.cursor = 'grab';
-                    } else {
-                        attachmentImage.style.cursor = 'default';
-                    }
+                toolbar.style.display = 'none';
 
-                } else return;
+                currentZoom = 1.0;
+                attachmentImage.style.transform = `scale(${currentZoom})`;
 
-                currentIndex = index;
+                let hasDownloaded = false; // Restrict multi download
+                const patientId = document.getElementById('patientId').value;
+                const newFileName = fileName.replace(/^[^_]+/, `attachment_${patientId}`);
+                downloadBtn.onclick = () => {
+                    if (hasDownloaded) return;  // Stop further clicks
+                    hasDownloaded = true;
 
-                const display = () => {
-                    if (fileType.includes('image')) {
-                        if (context === 'edit') {
-                            const img = document.createElement('img');
-                            img.src = url;
-                            img.style.maxWidth = '100%';
-                            img.maxHeight = '70vh';
-                            elements.previewContent.appendChild(img);
-                        } else {
-                            elements.image.src = url;
-                            elements.image.classList.remove('d-none');
-                        }
-                    } else if (fileType === 'application/pdf') {
-                        if (context === 'edit') {
-                            const embed = document.createElement('embed');
-                            embed.src = url;
-                            embed.style.width = '100%';
-                            embed.style.height = '70vh';
-                            elements.previewContent.appendChild(embed);
-                        } else {
-                            elements.pdf.src = url;
-                            elements.pdf.classList.remove('d-none');
-                        }
-                    } else {
-                        const p = document.createElement('p');
-                        p.textContent = `Preview not available for ${fileName}.`;
-                        p.style.textAlign = 'center';
-
-                        if (context === 'dashboard') {
-                            elements.image.classList.add('d-none');
-                            elements.pdf.classList.add('d-none');
-                            p.id = 'no-preview-message';
-                            document.getElementById('attachment-content-wrapper').appendChild(p);
-                        } else if (context === 'edit') {
-                            elements.previewContent.appendChild(p);
-                        } else {
-                            elements.image.classList.remove('d-none');
-                            elements.image.alt = p.textContent;
-                        }
-                    }
-                    updateNav(index);
-                    showModal();
+                    const tempLink = document.createElement('a');
+                    tempLink.href = url;
+                    tempLink.download = newFileName;
+                    document.body.appendChild(tempLink);
+                    tempLink.click();
+                    document.body.removeChild(tempLink);
                 };
 
-                if (isExisting && context !== 'edit') {
-                    fetch(url, {
-                        method: 'HEAD'
-                    }).then(r => r.ok ? display() : fail()).catch(fail);
-                } else display();
-
-                function fail() {
-                    const p = document.createElement('p');
-                    p.textContent = `Cannot access ${fileName}.`;
-                    p.style.textAlign = 'center';
-                    context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
-                    updateNav(index);
-                    showModal();
+                if (fileType.includes('image')) {
+                    toolbar.style.display = 'flex';
+                    document.getElementById('zoomOutBtn').disabled = true;
+                    document.getElementById('zoomInBtn').disabled = false;
+                    attachmentImage.style.cursor = 'grab';
+                } else {
+                    attachmentImage.style.cursor = 'default';
                 }
+            } else return;
 
-                elements.previewModal._element.addEventListener('hidden.bs.modal', () => {
-                    if (!isExisting && url.startsWith('blob:')) URL.revokeObjectURL(url);
-                    if (context === 'edit') elements.previewContent.innerHTML = '';
-                    else {
-                        elements.image.src = '';
-                        elements.pdf.src = '';
-                        elements.image.classList.add('d-none');
-                        elements.pdf.classList.add('d-none');
+            currentIndex = index;
+
+            const display = () => {
+                if (fileType.includes('image')) {
+                    if (context === 'edit') {
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.style.maxWidth = '100%';
+                        img.maxHeight = '70vh';
+                        elements.previewContent.appendChild(img);
+                    } else {
+                        elements.image.src = url;
+                        elements.image.classList.remove('d-none');
                     }
-                    currentIndex = -1;
-                    currentFiles = [];
+                } else if (fileType === 'application/pdf') {
+                    if (context === 'edit') {
+                        const embed = document.createElement('embed');
+                        embed.src = url;
+                        embed.style.width = '100%';
+                        embed.style.height = '70vh';
+                        elements.previewContent.appendChild(embed);
+                    } else {
+                        elements.pdf.src = url;
+                        elements.pdf.classList.remove('d-none');
+                    }
+                } else {
+                    const p = document.createElement('p');
+                    p.textContent = `Preview not available for ${fileName}.`;
+                    p.style.textAlign = 'center';
 
                     if (context === 'dashboard') {
-                        document.getElementById('attachmentImage').style.cursor = 'default';
-                        document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
-                        document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+                        elements.image.classList.add('d-none');
+                        elements.pdf.classList.add('d-none');
+                        p.id = 'no-preview-message';
+                        document.getElementById('attachment-content-wrapper').appendChild(p);
+                    } else if (context === 'edit') {
+                        elements.previewContent.appendChild(p);
+                    } else {
+                        elements.image.classList.remove('d-none');
+                        elements.image.alt = p.textContent;
                     }
-                }, {
-                    once: true
-                });
+                }
+                updateNav(index);
+                showModal();
+            };
+
+            if (isExisting && context !== 'edit') {
+                fetch(url, {
+                    method: 'HEAD'
+                }).then(r => r.ok ? display() : fail()).catch(fail);
+            } else display();
+
+            function fail() {
+                const p = document.createElement('p');
+                p.textContent = `Cannot access ${fileName}.`;
+                p.style.textAlign = 'center';
+                context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
+                updateNav(index);
+                showModal();
             }
 
-            function updateEditNavigation(index) {
-                editElements.prevBtn.disabled = index === 0;
-                editElements.nextBtn.disabled = index === currentFiles.length - 1;
-                editElements.prevBtn.classList.toggle('disabled', index === 0);
-                editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
-            }
-
-            function updateNavButtons(el, index) {
-                el.prevBtn.disabled = index === 0;
-                el.nextBtn.disabled = index === currentFiles.length - 1;
-                el.prevBtn.classList.toggle('disabled', index === 0);
-                el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
-            }
-
-            document.removeEventListener('click', handleAttachmentClick);
-
-            function handleAttachmentClick(e) {
-                const link = e.target.closest('.openAttachment');
-                if (!link) return;
-                e.preventDefault();
-                e.stopPropagation();
-
-                const context = link.getAttribute('data-context');
-                const fileName = link.textContent.trim();
-
-                let allRelevantLinks = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
-                currentFiles = allRelevantLinks;
+            elements.previewModal._element.addEventListener('hidden.bs.modal', () => {
+                if (!isExisting && url.startsWith('blob:')) URL.revokeObjectURL(url);
+                if (context === 'edit') elements.previewContent.innerHTML = '';
+                else {
+                    elements.image.src = '';
+                    elements.pdf.src = '';
+                    elements.image.classList.add('d-none');
+                    elements.pdf.classList.add('d-none');
+                }
+                currentIndex = -1;
+                currentFiles = [];
 
                 if (context === 'dashboard') {
-                    const match = fileName.match(/_(\d+)_/);
-                    const consultationId = match ? match[1] : null;
+                    document.getElementById('attachmentImage').style.cursor = 'default';
+                    document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
+                    document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+                }
+            }, {
+                once: true
+            });
+        }
 
-                    if (consultationId) {
-                        const filterPattern = new RegExp(`_${consultationId}_`);
-                        currentFiles = allRelevantLinks.filter(fileLink =>
-                            filterPattern.test(fileLink.textContent.trim())
-                        );
-                    } else {
-                        currentFiles = [link];
-                    }
+        function updateEditNavigation(index) {
+            editElements.prevBtn.disabled = index === 0;
+            editElements.nextBtn.disabled = index === currentFiles.length - 1;
+            editElements.prevBtn.classList.toggle('disabled', index === 0);
+            editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+        }
+
+        function updateNavButtons(el, index) {
+            el.prevBtn.disabled = index === 0;
+            el.nextBtn.disabled = index === currentFiles.length - 1;
+            el.prevBtn.classList.toggle('disabled', index === 0);
+            el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+        }
+
+        document.removeEventListener('click', handleAttachmentClick);
+
+        function handleAttachmentClick(e) {
+            const link = e.target.closest('.openAttachment');
+            if (!link) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const context = link.getAttribute('data-context');
+            const fileName = link.textContent.trim();
+
+            let allRelevantLinks = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
+            currentFiles = allRelevantLinks;
+
+            if (context === 'dashboard') {
+                const match = fileName.match(/_(\d+)_/);
+                const consultationId = match ? match[1] : null;
+
+                if (consultationId) {
+                    const filterPattern = new RegExp(`_${consultationId}_`);
+                    currentFiles = allRelevantLinks.filter(fileLink =>
+                        filterPattern.test(fileLink.textContent.trim())
+                    );
+                } else {
+                    currentFiles = [link];
+                }
+            }
+
+            const index = currentFiles.indexOf(link);
+            if (index === -1) return;
+
+            if (['new', 'edit', 'followup'].includes(context)) {
+                const isExisting = link.getAttribute('data-is-existing') === "true";
+                const fileIndexInArray = parseInt(link.getAttribute('data-file-index'), 10);
+
+                let file = null;
+                if (isExisting) {
+                    file = existingFiles[fileIndexInArray];
+                } else {
+                    file = newFiles[fileIndexInArray];
                 }
 
-                const index = currentFiles.indexOf(link);
-                if (index === -1) return;
+                if (file) showPreview(file, isExisting, index, context);
+                else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
 
-                if (['new', 'edit', 'followup'].includes(context)) {
-                    const isExisting = link.getAttribute('data-is-existing') === "true";
-                    const fileIndexInArray = parseInt(link.getAttribute('data-file-index'), 10);
+            } else if (context === 'dashboard') {
+                showPreview({
+                    url: link.getAttribute('data-file'),
+                    ext: link.getAttribute('data-ext'),
+                    file_name: fileName
+                }, true, index, 'dashboard');
+            }
+        }
+        document.addEventListener('click', handleAttachmentClick);
 
-                    let file = null;
-                    if (isExisting) {
-                        file = existingFiles[fileIndexInArray];
-                    } else {
-                        file = newFiles[fileIndexInArray];
-                    }
+        function setupNav(prevBtn, nextBtn, context) {
+            if (!prevBtn || !nextBtn) return;
+            prevBtn.onclick = () => {
+                if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context);
+            };
+            nextBtn.onclick = () => {
+                if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context);
+            };
+            [prevBtn, nextBtn].forEach(btn => {
+                btn.addEventListener("mouseenter", () => btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer');
+                btn.addEventListener("mouseleave", () => btn.style.cursor = '');
+            });
+        }
 
-                    if (file) showPreview(file, isExisting, index, context);
-                    else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
+        function navigate(index, context) {
+            const link = currentFiles[index];
+            link.click();
+        }
 
-                } else if (context === 'dashboard') {
-                    showPreview({
-                        url: link.getAttribute('data-file'),
-                        ext: link.getAttribute('data-ext'),
-                        file_name: fileName
-                    }, true, index, 'dashboard');
+        setupNav(editElements.prevBtn, editElements.nextBtn, 'edit');
+        if (newConsultationElements.prevBtn) setupNav(newConsultationElements.prevBtn, newConsultationElements.nextBtn, 'new');
+        if (followupElements.prevBtn) setupNav(followupElements.prevBtn, followupElements.nextBtn, 'followup');
+        if (dashboardElements.prevBtn) setupNav(dashboardElements.prevBtn, dashboardElements.nextBtn, 'dashboard');
+
+        // === Dashboard Zoom & Pan (double-tap + hold ONLY) ===
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        const attachmentImage = document.getElementById('attachmentImage');
+        const contentWrapper = document.getElementById('attachment-content-wrapper');
+
+        if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
+
+            zoomInBtn.addEventListener('click', () => {
+                if (attachmentImage.classList.contains('d-none')) return;
+                currentZoom = Math.min(currentZoom + ZOOM_STEP, 3.0);
+                attachmentImage.style.transform = `scale(${currentZoom})`;
+                zoomOutBtn.disabled = false;
+                if (currentZoom >= 3.0) zoomInBtn.disabled = true;
+                if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+            });
+
+            zoomOutBtn.addEventListener('click', () => {
+                if (attachmentImage.classList.contains('d-none')) return;
+                currentZoom = Math.max(currentZoom - ZOOM_STEP, 1.0);
+                attachmentImage.style.transform = `scale(${currentZoom})`;
+                zoomInBtn.disabled = false;
+                if (currentZoom <= 1.0) {
+                    zoomOutBtn.disabled = true;
+                    contentWrapper.scrollTo(0, 0);
+                    attachmentImage.style.cursor = 'default';
+                } else {
+                    attachmentImage.style.cursor = 'grab';
                 }
-            }
-            document.addEventListener('click', handleAttachmentClick);
+            });
 
-            function setupNav(prevBtn, nextBtn, context) {
-                if (!prevBtn || !nextBtn) return;
-                prevBtn.onclick = () => {
-                    if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context);
-                };
-                nextBtn.onclick = () => {
-                    if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context);
-                };
-                [prevBtn, nextBtn].forEach(btn => {
-                    btn.addEventListener("mouseenter", () => btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer');
-                    btn.addEventListener("mouseleave", () => btn.style.cursor = '');
-                });
-            }
+            attachmentImage.setAttribute('draggable', 'false');
+            attachmentImage.addEventListener('dragstart', e => e.preventDefault());
 
-            function navigate(index, context) {
-                const link = currentFiles[index];
-                link.click();
-            }
+            // CSS – allow only panning, block everything else
+            attachmentImage.style.touchAction = 'pan-x pan-y';
+            attachmentImage.style.userSelect = 'none';
 
-            setupNav(editElements.prevBtn, editElements.nextBtn, 'edit');
-            if (newConsultationElements.prevBtn) setupNav(newConsultationElements.prevBtn, newConsultationElements.nextBtn, 'new');
-            if (followupElements.prevBtn) setupNav(followupElements.prevBtn, followupElements.nextBtn, 'followup');
-            if (dashboardElements.prevBtn) setupNav(dashboardElements.prevBtn, dashboardElements.nextBtn, 'dashboard');
+            let isDragging = false;
+            let startX, startY, scrollLeft, scrollTop;
 
-            // === Dashboard Zoom & Pan (double-tap + hold ONLY) ===
-            const zoomInBtn = document.getElementById('zoomInBtn');
-            const zoomOutBtn = document.getElementById('zoomOutBtn');
-            const attachmentImage = document.getElementById('attachmentImage');
-            const contentWrapper = document.getElementById('attachment-content-wrapper');
+            const startDrag = (clientX, clientY) => {
+                if (attachmentImage.classList.contains('d-none') || currentZoom <= 1.0) return;
 
-            if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
+                isDragging = true;
+                attachmentImage.style.cursor = 'grabbing';
 
-                zoomInBtn.addEventListener('click', () => {
-                    if (attachmentImage.classList.contains('d-none')) return;
-                    currentZoom = Math.min(currentZoom + ZOOM_STEP, 3.0);
-                    attachmentImage.style.transform = `scale(${currentZoom})`;
-                    zoomOutBtn.disabled = false;
-                    if (currentZoom >= 3.0) zoomInBtn.disabled = true;
-                    if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
-                });
+                startX = clientX - contentWrapper.offsetLeft;
+                startY = clientY - contentWrapper.offsetTop;
+                scrollLeft = contentWrapper.scrollLeft;
+                scrollTop = contentWrapper.scrollTop;
 
-                zoomOutBtn.addEventListener('click', () => {
-                    if (attachmentImage.classList.contains('d-none')) return;
-                    currentZoom = Math.max(currentZoom - ZOOM_STEP, 1.0);
-                    attachmentImage.style.transform = `scale(${currentZoom})`;
-                    zoomInBtn.disabled = false;
-                    if (currentZoom <= 1.0) {
-                        zoomOutBtn.disabled = true;
-                        contentWrapper.scrollTo(0, 0);
-                        attachmentImage.style.cursor = 'default';
-                    } else {
-                        attachmentImage.style.cursor = 'grab';
-                    }
-                });
+                contentWrapper.style.userSelect = 'none';
+            };
 
-                attachmentImage.setAttribute('draggable', 'false');
-                attachmentImage.addEventListener('dragstart', e => e.preventDefault());
+            const moveDrag = (clientX, clientY) => {
+                if (!isDragging) return;
+                const x = clientX - contentWrapper.offsetLeft;
+                const y = clientY - contentWrapper.offsetTop;
+                const walkX = x - startX;
+                const walkY = y - startY;
 
-                // CSS – allow only panning, block everything else
-                attachmentImage.style.touchAction = 'pan-x pan-y';
-                attachmentImage.style.userSelect = 'none';
+                contentWrapper.scrollLeft = scrollLeft - walkX;
+                contentWrapper.scrollTop = scrollTop - walkY;
+            };
 
-                let isDragging = false;
-                let startX, startY, scrollLeft, scrollTop;
+            const stopDrag = () => {
+                if (!isDragging) return;
+                isDragging = false;
+                if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+                contentWrapper.style.userSelect = '';
+            };
 
-                const startDrag = (clientX, clientY) => {
-                    if (attachmentImage.classList.contains('d-none') || currentZoom <= 1.0) return;
-
-                    isDragging = true;
-                    attachmentImage.style.cursor = 'grabbing';
-
-                    startX = clientX - contentWrapper.offsetLeft;
-                    startY = clientY - contentWrapper.offsetTop;
-                    scrollLeft = contentWrapper.scrollLeft;
-                    scrollTop = contentWrapper.scrollTop;
-
-                    contentWrapper.style.userSelect = 'none';
-                };
-
-                const moveDrag = (clientX, clientY) => {
-                    if (!isDragging) return;
-                    const x = clientX - contentWrapper.offsetLeft;
-                    const y = clientY - contentWrapper.offsetTop;
-                    const walkX = x - startX;
-                    const walkY = y - startY;
-
-                    contentWrapper.scrollLeft = scrollLeft - walkX;
-                    contentWrapper.scrollTop = scrollTop - walkY;
-                };
-
-                const stopDrag = () => {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
-                    contentWrapper.style.userSelect = '';
-                };
-
-                contentWrapper.addEventListener('mousedown', e => startDrag(e.pageX, e.pageY));
-                contentWrapper.addEventListener('mousemove', e => moveDrag(e.pageX, e.pageY));
-                document.addEventListener('mouseup', stopDrag);
-                contentWrapper.addEventListener('mouseleave', stopDrag);
+            contentWrapper.addEventListener('mousedown', e => startDrag(e.pageX, e.pageY));
+            contentWrapper.addEventListener('mousemove', e => moveDrag(e.pageX, e.pageY));
+            document.addEventListener('mouseup', stopDrag);
+            contentWrapper.addEventListener('mouseleave', stopDrag);
 
 
-                let lastTap = 0;
-                let tapTimeout = null;
+            let lastTap = 0;
+            let tapTimeout = null;
 
-                contentWrapper.addEventListener('touchstart', e => {
-                    const now = Date.now();
-                    const TAP_DELAY = 300;
-                    const DOUBLE_TAP_THRESHOLD = 500;
+            contentWrapper.addEventListener('touchstart', e => {
+                const now = Date.now();
+                const TAP_DELAY = 300;
+                const DOUBLE_TAP_THRESHOLD = 500;
 
-                    if (now - lastTap < TAP_DELAY) {
-                        // ---- DOUBLE TAP DETECTED ----
-                        clearTimeout(tapTimeout);
-                        e.preventDefault();
-
-                        tapTimeout = setTimeout(() => {
-                            if (e.touches.length === 1) {
-                                const touch = e.touches[0];
-                                startDrag(touch.pageX, touch.pageY);
-                            }
-                        }, 150);
-                    } else {
-                        lastTap = now;
-                        tapTimeout = setTimeout(() => {}, DOUBLE_TAP_THRESHOLD);
-                    }
-                });
-
-                contentWrapper.addEventListener('touchmove', e => {
-                    if (!isDragging) return;
+                if (now - lastTap < TAP_DELAY) {
+                    // ---- DOUBLE TAP DETECTED ----
+                    clearTimeout(tapTimeout);
                     e.preventDefault();
-                    const touch = e.touches[0];
-                    moveDrag(touch.pageX, touch.pageY);
-                });
 
-                contentWrapper.addEventListener('touchend', stopDrag);
-                contentWrapper.addEventListener('touchcancel', stopDrag);
-            }
-        });
-    </script>
+                    tapTimeout = setTimeout(() => {
+                        if (e.touches.length === 1) {
+                            const touch = e.touches[0];
+                            startDrag(touch.pageX, touch.pageY);
+                        }
+                    }, 150);
+                } else {
+                    lastTap = now;
+                    tapTimeout = setTimeout(() => {}, DOUBLE_TAP_THRESHOLD);
+                }
+            });
+
+            contentWrapper.addEventListener('touchmove', e => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const touch = e.touches[0];
+                moveDrag(touch.pageX, touch.pageY);
+            });
+
+            contentWrapper.addEventListener('touchend', stopDrag);
+            contentWrapper.addEventListener('touchcancel', stopDrag);
+        }
+    });
+</script>
 
     <!-- Delete Consultation Script -->
     <script>
@@ -5893,7 +5919,7 @@
             modal.show();
         }
 
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
             if (deleteConsultationId && deletePatientId) {
                 window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
                     deletePatientId + "/" + deleteConsultationId;
@@ -5923,7 +5949,7 @@
 
     <!-- Modal move on screen -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
 
             const draggableModalIds = [
                 '#symptomsModal',
@@ -5936,7 +5962,7 @@
                 const modalElement = document.querySelector(id);
                 if (modalElement) {
                     makeModalDraggable(modalElement);
-                    modalElement.addEventListener('hidden.bs.modal', function() {
+                    modalElement.addEventListener('hidden.bs.modal', function () {
                         const modalDialog = modalElement.querySelector('.modal-dialog');
                         modalDialog.style.left = '';
                         modalDialog.style.top = '';
@@ -5946,7 +5972,7 @@
                 }
             });
 
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape') {
                     const openModal = document.querySelector('.modal.show');
                     if (openModal) {
@@ -5972,7 +5998,7 @@
             let offsetX = 0;
             let offsetY = 0;
 
-            modalHeader.addEventListener('mousedown', function(e) {
+            modalHeader.addEventListener('mousedown', function (e) {
                 e.preventDefault();
                 isDragging = true;
                 hasDragged = false;
@@ -6027,7 +6053,7 @@
                 // 1. Store the button's original content (the icon)
                 const originalButtonHtml = button.innerHTML;
 
-                button.addEventListener('click', function(event) {
+                button.addEventListener('click', function (event) {
 
                     // 2. IMMEDIATELY disable the button and show a spinner
                     button.disabled = true;

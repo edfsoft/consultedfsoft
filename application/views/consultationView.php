@@ -262,6 +262,17 @@
             background-color: #00ad8d12;
             border-radius: 4px;
         }
+
+        /* Medicines timing option in 2 lines */
+        #timingOptions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        #timingOptions .form-check {
+            width: 48%;
+        }
     </style>
 </head>
 
@@ -279,7 +290,7 @@
                 style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color:rgb(237, 212, 212);color:rgb(87, 21, 21);padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
                 <?php echo $this->session->flashdata('showErrorMessage'); ?>
             </div>
-        <?php
+            <?php
         }
         if ($method == "consultDashboard") { ?>
             <section>
@@ -288,13 +299,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -404,7 +415,7 @@
 
                                                                 foreach ($vitals as $label => $value):
                                                                     if ($value):
-                                                                ?>
+                                                                        ?>
                                                                         <div class="col-12 col-md-6">
                                                                             <div
                                                                                 class="d-flex justify-content-between align-items-center border p-2 rounded">
@@ -412,7 +423,7 @@
                                                                                 <span class="text-primary"><?= $value ?></span>
                                                                             </div>
                                                                         </div>
-                                                                <?php
+                                                                        <?php
                                                                     endif;
                                                                 endforeach;
                                                                 ?>
@@ -636,7 +647,6 @@
 
 
                                                         <?php endif; ?>
-
 
                                                         <!-- Attachments
                                                         <?php if (!empty($consultation['attachments'])): ?>
@@ -1476,13 +1486,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -1983,13 +1993,13 @@
                         <div class="border border-2 rounded text-center py-2 position-relative px-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
-                            ?>
+                                ?>
                                 <a href="<?php echo base_url() . "Healthcareprovider/patientformUpdate/" . $value['id']; ?>"
                                     class="position-absolute top-0 end-0 m-2">
                                     <button class="btn btn-secondary btn-sm"><i class="bi bi-pen"></i></button>
                                 </a>
                                 <p style="font-size: 16px; font-weight: 700">
-                                    <?php echo $value['firstName'] ?> <?php echo $value['lastName'] ?> |
+                                    <?php echo $value['firstName'] ?>         <?php echo $value['lastName'] ?> |
                                     <?php echo $value['patientId'] ?>
                                 </p>
                                 <p>
@@ -2724,8 +2734,8 @@
                                 style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
                             <small id="medicineCompositionText" class="text-muted d-block"></small>
                         </div>
+                        <span id="medicineCategoryText" class="text-dark"></span>
                         <div>
-                            <span id="medicineCategoryText" class="text-dark me-3"></span>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                     </div>
@@ -2933,7 +2943,7 @@
             updateCounterAndButtons();
         }
 
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', function (event) {
             if (event.key === 'ArrowLeft' && currentIndex > 0) {
                 navigateConsultations(-1);
             } else if (event.key === 'ArrowRight' && currentIndex < totalItems - 1) {
@@ -3086,12 +3096,12 @@
 
             if (!symptomsList.includes(pendingSymptom)) {
                 fetch("<?= site_url('Consultation/addSymptom') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingSymptom)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingSymptom)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3242,7 +3252,7 @@
 
     <!-- Symptoms save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseSymptomTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -3286,7 +3296,7 @@
 
             function updateSymptomsJson() {
                 let symptoms = [];
-                $('#symptomsInput > span.bg-success').each(function() {
+                $('#symptomsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let symptom = parseSymptomTagText(tagText);
 
@@ -3305,7 +3315,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateSymptomsJson();
             });
         });
@@ -3385,12 +3395,12 @@
 
             if (!findingsList.includes(pendingTag)) {
                 fetch("<?= site_url('Consultation/addFinding') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingTag)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingTag)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3541,7 +3551,7 @@
 
     <!-- Findings save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
 
@@ -3578,7 +3588,7 @@
 
             function updateFindingsJson() {
                 let findings = [];
-                $('#findingsInput > span.bg-success').each(function() {
+                $('#findingsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let finding = parseTagText(tagText);
                     if (finding) {
@@ -3597,7 +3607,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateFindingsJson(); // Ensure latest data
                 console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
             });
@@ -3680,12 +3690,12 @@
 
             if (!diagnosisList.includes(pendingDiagnosis)) {
                 fetch("<?= site_url('Consultation/addDiagnosis') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingDiagnosis)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingDiagnosis)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -3844,7 +3854,7 @@
 
     <!-- Diagnosis save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseDiagnosisTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -3881,7 +3891,7 @@
 
             function updateDiagnosisJson() {
                 let diagnoses = [];
-                $('#diagnosisInputBox > span.bg-success').each(function() {
+                $('#diagnosisInputBox > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
                     let diagnosis = parseDiagnosisTagText(tagText);
                     if (diagnosis) {
@@ -3900,7 +3910,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function(e) {
+            $('#consultationForm').on('submit', function (e) {
                 updateDiagnosisJson(); // Ensure latest data
                 console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
             });
@@ -3975,12 +3985,12 @@
 
             if (!investigationsList.includes(pendingInvestigation)) {
                 fetch("<?= site_url('Consultation/addInvestigation') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(pendingInvestigation)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(pendingInvestigation)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4122,7 +4132,7 @@
 
     <!-- Investigation save script -->
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             function parseInvestigationTagText(text) {
                 text = text.trim().replace(/&times;$/g, '').trim();
 
@@ -4151,7 +4161,7 @@
 
             function updateInvestigationsJson() {
                 let investigations = [];
-                $('#investigationsInput > span.bg-success').each(function() {
+                $('#investigationsInput > span.bg-success').each(function () {
                     let tagText = $(this).clone().children().remove().end().text().trim();
                     let investigation = parseInvestigationTagText(tagText);
 
@@ -4170,7 +4180,7 @@
                 subtree: true
             });
 
-            $('#consultationForm').on('submit', function() {
+            $('#consultationForm').on('submit', function () {
                 updateInvestigationsJson();
             });
         });
@@ -4268,12 +4278,12 @@
                 if (!name) return;
 
                 fetch("<?= site_url('Consultation/addInstruction') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(name)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(name)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4415,12 +4425,12 @@
                 if (!name) return;
 
                 fetch("<?= site_url('Consultation/addProcedure') ?>", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        },
-                        body: "name=" + encodeURIComponent(name)
-                    })
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "name=" + encodeURIComponent(name)
+                })
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === "success") {
@@ -4595,7 +4605,7 @@
 
     <!-- Medicine Modal Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // server-provided arrays
             const medicinesData = <?php echo json_encode($medicinesList); ?> || [];
             const medicinesList = medicinesData.map(m => m.medicineName);
@@ -4909,7 +4919,7 @@
             });
 
             // --- existing open/save/tag logic unchanged ---
-            window.openMedicineModal = function(name, existing = null, tagEl = null) {
+            window.openMedicineModal = function (name, existing = null, tagEl = null) {
                 pendingMedicineName = name;
                 editingMedicineTag = tagEl;
 
@@ -4949,7 +4959,7 @@
                 medicinesModal.show();
             };
 
-            window.saveMedicineModal = function() {
+            window.saveMedicineModal = function () {
                 const quantity = (medicineQuantity.value || "").trim();
                 const notes = (medicineNotes.value || "").trim();
                 const timing = buildTimingString();
@@ -5909,7 +5919,7 @@
             modal.show();
         }
 
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
             if (deleteConsultationId && deletePatientId) {
                 window.location.href = "<?php echo site_url('Consultation/deleteConsultation/'); ?>" +
                     deletePatientId + "/" + deleteConsultationId;
@@ -5939,7 +5949,7 @@
 
     <!-- Modal move on screen -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
 
             const draggableModalIds = [
                 '#symptomsModal',
@@ -5952,7 +5962,7 @@
                 const modalElement = document.querySelector(id);
                 if (modalElement) {
                     makeModalDraggable(modalElement);
-                    modalElement.addEventListener('hidden.bs.modal', function() {
+                    modalElement.addEventListener('hidden.bs.modal', function () {
                         const modalDialog = modalElement.querySelector('.modal-dialog');
                         modalDialog.style.left = '';
                         modalDialog.style.top = '';
@@ -5962,7 +5972,7 @@
                 }
             });
 
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape') {
                     const openModal = document.querySelector('.modal.show');
                     if (openModal) {
@@ -5988,7 +5998,7 @@
             let offsetX = 0;
             let offsetY = 0;
 
-            modalHeader.addEventListener('mousedown', function(e) {
+            modalHeader.addEventListener('mousedown', function (e) {
                 e.preventDefault();
                 isDragging = true;
                 hasDragged = false;
@@ -6043,7 +6053,7 @@
                 // 1. Store the button's original content (the icon)
                 const originalButtonHtml = button.innerHTML;
 
-                button.addEventListener('click', function(event) {
+                button.addEventListener('click', function (event) {
 
                     // 2. IMMEDIATELY disable the button and show a spinner
                     button.disabled = true;

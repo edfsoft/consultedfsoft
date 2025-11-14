@@ -47,7 +47,7 @@ class Chiefconsultant extends CI_Controller
         EDF Support Team ";
 
         $this->email->set_newline("\r\n");
-        $this->email->from('erodediabetesfoundation@gmail.com', 'Consult EDF');
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($to);
         $this->email->subject('OTP to Reset Your CC Account Password');
         $this->email->message($message);
@@ -312,7 +312,7 @@ class Chiefconsultant extends CI_Controller
         Warm regards,<br>
         Team EDF";
         $this->load->library('email');
-        $this->email->from('erodediabetesfoundation@gmail.com', 'EDF OTP Verification');
+        $this->email->from('noreply@consult.edftech.in', 'EDF OTP Verification');
         $this->email->to($email);
         $this->email->subject('Change Password OTP');
         $this->email->message($message);
@@ -358,6 +358,7 @@ class Chiefconsultant extends CI_Controller
         $this->session->unset_userdata('ccName');
         $this->session->unset_userdata('ccMailId');
         $this->session->unset_userdata('ccMobileNum');
+        $this->session->unset_userdata('firstLogin');
         redirect('Chiefconsultant/');
     }
 

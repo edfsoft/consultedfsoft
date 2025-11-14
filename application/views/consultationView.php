@@ -2723,9 +2723,10 @@
                             <h5 class="modal-title fw-medium" id="medicinesModalTitle"
                                 style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
                             <small id="medicineCompositionText" class="text-muted d-block"></small>
+
                         </div>
+                        <span id="medicineCategoryText" class="text-dark"></span>
                         <div>
-                            <span id="medicineCategoryText" class="text-dark me-3"></span>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                     </div>

@@ -547,7 +547,7 @@
                                                                             Quantity</th>
                                                                         <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                            Food Timing</th>
+                                                                            Food <br> Timing</th>
 
                                                                         <!-- Frequency spanning four columns -->
                                                                         <th colspan="4"
@@ -562,16 +562,16 @@
                                                                     <!-- Second header row for sub-columns -->
                                                                     <tr>
                                                                         <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            style="border: 1px solid #000; padding: 10px; text-align: center;">
                                                                             Morning</th>
                                                                         <th
                                                                             style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                             Afternoon</th>
                                                                         <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                            Evevning</th>
+                                                                            style="border: 1px solid #000; padding: 10px; text-align: center;">
+                                                                            Evening</th>
                                                                         <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            style="border: 1px solid #000; padding: 0 16px 0 16px; text-align: center;">
                                                                             Night</th>
                                                                     </tr>
                                                                 </thead>
@@ -594,10 +594,10 @@
                                                                                 <td style="border: 1px solid #000; padding: 6px;">
                                                                                     <?php if (!empty($medicine['medicine_name'])): ?>
                                                                                         <?php if (!empty($medicine['category'])): ?>
-                                                                                            <small
-                                                                                                class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
+                                                                                            <small style="font-size:12px;"
+                                                                                                class="text-muted"><?= htmlspecialchars($medicine['category']) ?></small>
                                                                                         <?php endif; ?>
-                                                                                        <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                        <strong>. <?= htmlspecialchars($medicine['medicine_name']) ?></strong>
                                                                                     <?php else: ?>
                                                                                         -
                                                                                     <?php endif; ?>
@@ -612,21 +612,76 @@
                                                                                 </td>
 
                                                                                 <!-- Frequency split -->
-                                                                                <td
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                    <?php
+                                                                                    if ($morning !== '0' && $morning !== '' && $morning !== '-') {
+                                                                                        // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                        $parts = preg_split('/(\d+)/', $morning, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                        $number = $parts[1] ?? $morning;  // the digits
+                                                                                        $unit   = trim(str_replace($number, '', $morning)); // everything else (ml, tab, etc.)
+
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                        if ($unit) {
+                                                                                            echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo '-';
+                                                                                    }
+                                                                                    ?>
                                                                                 </td>
-                                                                                <td
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
+
+                                                                                  <td style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                    <?php
+                                                                                    if ($afternoon !== '0' && $afternoon !== '' && $afternoon !== '-') {
+                                                                                        // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                        $parts = preg_split('/(\d+)/', $afternoon, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                        $number = $parts[1] ?? $afternoon;  // the digits
+                                                                                        $unit   = trim(str_replace($number, '', $afternoon)); // everything else (ml, tab, etc.)
+
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                        if ($unit) {
+                                                                                            echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo '-';
+                                                                                    }
+                                                                                    ?>
                                                                                 </td>
-                                                                                <td
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
+                                                                             
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                    <?php
+                                                                                    if ($evening !== '0' && $evening !== '' && $evening !== '-') {
+                                                                                        // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                        $parts = preg_split('/(\d+)/', $evening, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                        $number = $parts[1] ?? $evening;  // the digits
+                                                                                        $unit   = trim(str_replace($number, '', $evening)); // everything else (ml, tab, etc.)
+
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                        if ($unit) {
+                                                                                            echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo '-';
+                                                                                    }
+                                                                                    ?>
                                                                                 </td>
-                                                                                <td
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
+                                                                               
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                    <?php
+                                                                                    if ($night !== '0' && $night !== '' && $night !== '-') {
+                                                                                        // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                        $parts = preg_split('/(\d+)/', $night, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                        $number = $parts[1] ?? $night;  // the digits
+                                                                                        $unit   = trim(str_replace($number, '', $night)); // everything else (ml, tab, etc.)
+
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                        if ($unit) {
+                                                                                            echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo '-';
+                                                                                    }
+                                                                                    ?>
                                                                                 </td>
 
                                                                                 <td style="border: 1px solid #000; padding: 6px;">
@@ -745,8 +800,8 @@
                                                                                 <p class="mb-1"
                                                                                     style="margin: 0; text-align: right;">
                                                                                     <strong>Date<span
-                                                                                            style="margin-right: px;"></span>:</strong>
-                                                                                    <?php // Changed format to only show Date ?>
+                                                                                            style="margin-right: 15px;"></span>:</strong>
+                                                                                    <?php ?>
                                                                                     <?= date('d M Y', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
                                                                                 </p>
 
@@ -838,7 +893,7 @@
                                                                                         style="border: 1px solid #000; padding: 6px;  text-align: center;">
                                                                                         Qty</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 0 2px 0 2px;  text-align: center;">
                                                                                         Food Timing</th>
 
                                                                                     <th colspan="4"
@@ -852,8 +907,8 @@
 
                                                                                 <tr>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Morn</th>
+                                                                                        style="border: 1px solid #000; padding: 3px; text-align: center;">
+                                                                                        Mrn</th>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                         Aft</th>
@@ -862,7 +917,7 @@
                                                                                         Eve</th>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Night</th>
+                                                                                        Ngt</th>
                                                                                 </tr>
                                                                             </thead>
 
@@ -884,15 +939,15 @@
                                                                                             <td style="border: 1px solid #000; padding: 6px;">
                                                                                                 <?php if (!empty($medicine['medicine_name'])): ?>
                                                                                                     <?php if (!empty($medicine['category'])): ?>
-                                                                                                        <small
-                                                                                                            class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small><br>
+                                                                                                        <small style="font-size:12px;"
+                                                                                                            class="text-muted"><?= htmlspecialchars($medicine['category']) ?></small><br>
                                                                                                     <?php endif; ?>
 
-                                                                                                    <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                                    <strong>. <?= htmlspecialchars($medicine['medicine_name']) ?></strong>
 
-                                                                                                    <?php if (!empty($medicine['composition_name'])): ?>
-                                                                                                        <br><small
-                                                                                                            class="text-muted">(<?= htmlspecialchars($medicine['composition_name']) ?>)</small>
+                                                                                                    <span><?php if (!empty($medicine['composition_name'])): ?></span>
+                                                                                                        <br><small style="font-style:italic; font-size:13px;"
+                                                                                                            class="text-muted"><?= htmlspecialchars($medicine['composition_name']) ?></small>
                                                                                                     <?php endif; ?>
 
                                                                                                 <?php else: ?>
@@ -909,21 +964,76 @@
                                                                                             </td>
 
                                                                                             <!-- Frequency split -->
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
+                                                                                            <td style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                                <?php
+                                                                                                if ($morning !== '0' && $morning !== '' && $morning !== '-') {
+                                                                                                    // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                                    $parts = preg_split('/(\d+)/', $morning, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                                    $number = $parts[1] ?? $morning;  // the digits
+                                                                                                    $unit   = trim(str_replace($number, '', $morning)); // everything else (ml, tab, etc.)
+
+                                                                                                    echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                                    if ($unit) {
+                                                                                                        echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                                    }
+                                                                                                } else {
+                                                                                                    echo '-';
+                                                                                                }
+                                                                                                ?>
                                                                                             </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
+
+                                                                                            <td style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                                <?php
+                                                                                                if ($afternoon !== '0' && $afternoon !== '' && $afternoon !== '-') {
+                                                                                                    // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                                    $parts = preg_split('/(\d+)/', $afternoon, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                                    $number = $parts[1] ?? $afternoon;  // the digits
+                                                                                                    $unit   = trim(str_replace($number, '', $afternoon)); // everything else (ml, tab, etc.)
+
+                                                                                                    echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                                    if ($unit) {
+                                                                                                        echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                                    }
+                                                                                                } else {
+                                                                                                    echo '-';
+                                                                                                }
+                                                                                                ?>
                                                                                             </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
+                                                                                        
+                                                                                            <td style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                                <?php
+                                                                                                if ($evening !== '0' && $evening !== '' && $evening !== '-') {
+                                                                                                    // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                                    $parts = preg_split('/(\d+)/', $evening, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                                    $number = $parts[1] ?? $evening;  // the digits
+                                                                                                    $unit   = trim(str_replace($number, '', $evening)); // everything else (ml, tab, etc.)
+
+                                                                                                    echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                                    if ($unit) {
+                                                                                                        echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                                    }
+                                                                                                } else {
+                                                                                                    echo '-';
+                                                                                                }
+                                                                                                ?>
                                                                                             </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
+                                                                                        
+                                                                                            <td style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                                <?php
+                                                                                                if ($night !== '0' && $night !== '' && $night !== '-') {
+                                                                                                    // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                                    $parts = preg_split('/(\d+)/', $night, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                                    $number = $parts[1] ?? $night;  // the digits
+                                                                                                    $unit   = trim(str_replace($number, '', $night)); // everything else (ml, tab, etc.)
+
+                                                                                                    echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                                    if ($unit) {
+                                                                                                        echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                                    }
+                                                                                                } else {
+                                                                                                    echo '-';
+                                                                                                }
+                                                                                                ?>
                                                                                             </td>
 
                                                                                             <td style="border: 1px solid #000; padding: 6px;">
@@ -2700,18 +2810,20 @@
                                 class="text-danger">*</span></label>
                         <select id="newMedicineCategory" class="form-select" required>
                             <option value="">Select Category</option>
-                            <option value="TAB">Tablet</option>
-                            <option value="CAP">Capsule</option>
-                            <option value="SYR">Syrup</option>
-                            <option value="INJ">Injection</option>
+                            <option value="TABLET">Tablet</option>
+                            <option value="CAPSULE">Capsule</option>
+                            <option value="SYRUP">Syrup</option>
+                            <option value="INJECTION">Injection</option>
                             <option value="DROPS">Drops</option>
-                            <option value="OINT">Ointment</option>
+                            <option value="OINTMENT">Ointment</option>
                             <option value="CREAM">Cream</option>
                             <option value="GEL">Gel</option>
                             <option value="SPRAY">Spray</option>
-                            <option value="POW">Powder</option>
-                            <option value="SUSP">Suppository</option>
+                            <option value="POWDER">Powder</option>
+                            <option value="SUPPOSITORY">Suppository</option>
                             <option value="INSULIN">Insulin</option>
+                            <option value="OIL">Oil</option>
+                            <option value="NEEDLE">Needle</option>
                         </select>
                     </div>
                     <div class="modal-footer">
@@ -2746,8 +2858,25 @@
                             <div class="d-flex align-items-center gap-2">
                                 <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
                                     placeholder="Enter quantity">
-                            </div>
+
+                            <div class="mb-4" style="position: relative; left: 200px;">
+                                <label class="form-label fw-semibold">Food Timing</label>
+                                <div class="d-flex align-items-center gap-3" >
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="foodTiming" value="Before"
+                                            id="beforeFood">
+                                        <label class="form-check-label" for="beforeFood">Before Food</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="foodTiming" value="After"
+                                            id="afterFood">
+                                        <label class="form-check-label" for="afterFood">After Food</label>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div> 
                         </div>
+
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Timing</label>
 
@@ -2758,6 +2887,7 @@
                                     <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
                                     <select id="morningUnit" class="form-select w-25" disabled>
+                                        <option value=""></option>
                                         <option value="mg">mg</option>
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
@@ -2773,6 +2903,7 @@
                                     <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
                                     <select id="afternoonUnit" class="form-select w-25" disabled>
+                                        <option value=""></option>
                                         <option value="mg">mg</option>
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
@@ -2788,6 +2919,7 @@
                                     <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
                                     <select id="eveningUnit" class="form-select w-25" disabled>
+                                        <option value=""></option>
                                         <option value="mg">mg</option>
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
@@ -2803,6 +2935,7 @@
                                     <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
                                     <select id="nightUnit" class="form-select w-25" disabled>
+                                        <option value=""></option>
                                         <option value="mg">mg</option>
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
@@ -2814,31 +2947,7 @@
 
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Food Timing</label>
-                            <div class="d-flex flex-wrap gap-3 mt-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="foodTiming" value="Before Food"
-                                        id="beforeFood">
-                                    <label class="form-check-label" for="beforeFood">Before Food</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="foodTiming" value="After Food"
-                                        id="afterFood">
-                                    <label class="form-check-label" for="afterFood">After Food</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="foodTiming" value="Empty Stomach"
-                                        id="emptyStomach">
-                                    <label class="form-check-label" for="emptyStomach">Empty Stomach</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="foodTiming" value="Bedtime"
-                                        id="bedtime">
-                                    <label class="form-check-label" for="bedtime">Bedtime</label>
-                                </div>
-                            </div>
-                        </div>
+
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Notes</label>
@@ -6044,7 +6153,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
 
-            // Find ALL download buttons (by class)
             const downloadButtons = document.querySelectorAll('.download-pdf-btn');
 
             // Add a click listener to EACH button
@@ -6057,11 +6165,8 @@
 
                     // 2. IMMEDIATELY disable the button and show a spinner
                     button.disabled = true;
-                    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> loading..`;
-
-                    // Get the specific content ID from this button's data-attribute
+                    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
                     const contentId = event.currentTarget.getAttribute('data-content-id');
-                    // Get the filename from this button's data-attribute
                     const fileName = event.currentTarget.getAttribute('data-filename');
                     // Find the correct content div to print
                     const contentToDownload = document.getElementById(contentId);

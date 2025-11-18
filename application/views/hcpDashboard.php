@@ -404,7 +404,7 @@
                 <div class="card rounded-5 mx-1 mt-4">
                     <div class="card-body p-4">
                         <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-3">
-                            <i class="bi bi-clock-history pe-3"></i> Today's Appointments (Next Follow-ups)
+                            <i class="bi bi-clock-history pe-3"></i>  Appointments (Next Follow-ups)
                         </p>
 
                         <!-- Curved Box -->
@@ -418,7 +418,7 @@
                                 </button>
 
                                 <div class="text-center">
-                                    <h5 class="mb-0 fw-semibold" id="appointmentsDate">13-Nov-2025</h5>
+                                    <h5 class="mb-0 fw-semibold" id="appointmentsDate">17-Oct-2025</h5>
                                     <small id="appointmentsDay">Thursday</small>
                                 </div>
 
@@ -442,18 +442,7 @@
                                         </tr>
                                     </thead>
                                     <tbody id="appointmentsTableBody">
-                                        <!-- Example Row (replace dynamically) -->
-                                        <tr>
-                                            <td>1</td>
-                                            <td>10:30 AM</td>
-                                            <td>John Doe</td>
-                                            <td>PID001</td>
-                                            <td>9876543210</td>
-                                            <td>Fever, Cold</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-dark">View</button>
-                                            </td>
-                                        </tr>
+                                        <!-- Data loaded here -->
                                     </tbody>
                                 </table>
                             </div>
@@ -461,12 +450,97 @@
                     </div>
                 </div>
 
-
-
             </section>
 
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dateEl = document.getElementById('appointmentsDate');
+    const dayEl = document.getElementById('appointmentsDay');
+    const prevBtn = document.getElementById('prevDayBtn');
+    const nextBtn = document.getElementById('nextDayBtn');
+    const tbody = document.getElementById('appointmentsTableBody');
 
+    let currentDate = new Date();
+
+    const baseUrl = '<?= base_url("Healthcareprovider/getFollowUpAppointments") ?>';
+
+    function formatDate(date) {
+        return date.toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'short', year: 'numeric'
+        }).replace(/ /g, '-');
+    }
+
+    function formatConsultDate(dateStr) {
+        if (!dateStr) return '-';
+        const date = new Date(dateStr + 'T00:00:00'); // Fix for invalid date
+        return date.toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'short', year: 'numeric'
+        }).replace(/ /g, '-');
+    }
+
+    function updateHeader() {
+        dateEl.textContent = formatDate(currentDate);
+        dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+    }
+
+    function loadAppointments() {
+        const apiDate = formatDate(currentDate);
+        updateHeader();
+
+        fetch(`${baseUrl}?date=${apiDate}`)
+            .then(r => r.json())
+            .then(res => {
+                if (res.success && res.data.length > 0) {
+                    renderTable(res.data);
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No follow-ups scheduled for this date</td></tr>`;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error loading data</td></tr>`;
+            });
+    }
+
+    function renderTable(data) {
+        tbody.innerHTML = '';
+        data.forEach((row, i) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${i + 1}</td>
+                <td>
+                    
+                    <strong>${formatConsultDate(row.consult_date)}</strong>
+                    ${row.time_12hr}<br>
+                </td>
+                <td>${row.patientName}</td>
+                <td>${row.patientId}</td>
+                <td>${row.mobileNumber}</td>
+                <td>${row.symptoms || '-'}</td>
+                <td>
+                    <a href="<?= base_url('Healthcareprovider/patientdetails/') ?>${row.consultationPatientId}" 
+                       class="btn btn-sm btn-dark">View</a>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    prevBtn.addEventListener('click', () => {
+        currentDate.setDate(currentDate.getDate() - 1);
+        loadAppointments();
+    });
+
+    nextBtn.addEventListener('click', () => {
+        currentDate.setDate(currentDate.getDate() + 1);
+        loadAppointments();
+    });
+
+    // Load today's follow-ups
+    loadAppointments();
+});
+</script>
 
 
         <?php
@@ -3028,45 +3102,6 @@
             </div>
         </div>
     </main>
-
-    <!-- Follup Appointment Dashboard -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const dateEl = document.getElementById('appointmentsDate');
-            const dayEl = document.getElementById('appointmentsDay');
-            const prevBtn = document.getElementById('prevDayBtn');
-            const nextBtn = document.getElementById('nextDayBtn');
-
-            let currentDate = new Date();
-
-            function updateDateDisplay() {
-                const options = {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric'
-                };
-                const dayName = currentDate.toLocaleDateString('en-US', {
-                    weekday: 'long'
-                });
-                dateEl.textContent = currentDate.toLocaleDateString('en-GB', options).replace(/ /g, '-');
-                dayEl.textContent = dayName;
-            }
-
-            prevBtn.addEventListener('click', () => {
-                currentDate.setDate(currentDate.getDate() - 1);
-                updateDateDisplay();
-                // TODO: fetch previous day's appointments
-            });
-
-            nextBtn.addEventListener('click', () => {
-                currentDate.setDate(currentDate.getDate() + 1);
-                updateDateDisplay();
-                // TODO: fetch next day's appointments
-            });
-
-            updateDateDisplay();
-        });
-    </script>
 
     <script>
         <?php if ($method == "dashboard") { ?>

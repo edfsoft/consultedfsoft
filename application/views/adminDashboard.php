@@ -3959,196 +3959,196 @@
 
 
     <!-- Script to display patient attachments in modal -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modalEl = document.getElementById('dashboardPreviewModal');
-        const modal = new bootstrap.Modal(modalEl);
-        const toolbarEl = document.getElementById('attachment-toolbar');
-        const zoomInBtn = document.getElementById('zoomInBtn');
-        const zoomOutBtn = document.getElementById('zoomOutBtn');
-        const downloadBtn = document.getElementById('downloadAttachmentBtn');
-        const prevBtn = document.getElementById('prevAttachment');
-        const nextBtn = document.getElementById('nextAttachment');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalEl = document.getElementById('dashboardPreviewModal');
+            const modal = new bootstrap.Modal(modalEl);
+            const toolbarEl = document.getElementById('attachment-toolbar');
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const downloadBtn = document.getElementById('downloadAttachmentBtn');
+            const prevBtn = document.getElementById('prevAttachment');
+            const nextBtn = document.getElementById('nextAttachment');
 
-        const imgEl = document.getElementById('attachmentImage');
-        const pdfEl = document.getElementById('attachmentPDF');
-        const previewArea = document.querySelector('.preview-area');
+            const imgEl = document.getElementById('attachmentImage');
+            const pdfEl = document.getElementById('attachmentPDF');
+            const previewArea = document.querySelector('.preview-area');
 
-        let messageEl = null;
-        let currentAttachments = [];
-        let currentIdx = -1;
+            let messageEl = null;
+            let currentAttachments = [];
+            let currentIdx = -1;
 
-        // Track downloaded files in this modal session
-        const downloadedFiles = new Map(); // url → true
+            // Track downloaded files in this modal session
+            const downloadedFiles = new Map(); // url → true
 
-        // CLICK ON ANY FILE → BUILD ATTACHMENTS FROM ITS GROUP
-        document.querySelectorAll('.openAttachment').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                const consultationContainer = this.closest('[data-consultation-id]') ||
-                    this.closest('.consultation') ||
-                    this.closest('div');
+            // CLICK ON ANY FILE → BUILD ATTACHMENTS FROM ITS GROUP
+            document.querySelectorAll('.openAttachment').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const consultationContainer = this.closest('[data-consultation-id]') ||
+                        this.closest('.consultation') ||
+                        this.closest('div');
 
-                if (!consultationContainer) return;
+                    if (!consultationContainer) return;
 
-                const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
-                currentAttachments = [];
-                linksInGroup.forEach((l, idx) => {
-                    const url = l.dataset.file;
-                    const ext = l.dataset.ext.toLowerCase();
-                    const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
-                    currentAttachments.push({ url, ext, fileName, link: l, index: idx });
+                    const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
+                    currentAttachments = [];
+                    linksInGroup.forEach((l, idx) => {
+                        const url = l.dataset.file;
+                        const ext = l.dataset.ext.toLowerCase();
+                        const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
+                        currentAttachments.push({ url, ext, fileName, link: l, index: idx });
+                    });
+
+                    const clickedUrl = this.dataset.file;
+                    currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
+                    if (currentIdx === -1) return;
+
+                    showFile(currentAttachments[currentIdx]);
+                    modal.show();
                 });
-
-                const clickedUrl = this.dataset.file;
-                currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
-                if (currentIdx === -1) return;
-
-                showFile(currentAttachments[currentIdx]);
-                modal.show();
             });
-        });
 
-        function showFile(fileObj) {
-            // Reset display
-            imgEl.classList.add('d-none');
-            pdfEl.classList.add('d-none');
-            if (messageEl) messageEl.remove();
-            imgEl.src = '';
-            pdfEl.src = '';
-            toolbarEl.style.display = 'none';
+            function showFile(fileObj) {
+                // Reset display
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgEl.src = '';
+                pdfEl.src = '';
+                toolbarEl.style.display = 'none';
 
-            // Show file
-            if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(fileObj.ext)) {
-                imgEl.src = fileObj.url;
-                imgEl.classList.remove('d-none');
-                toolbarEl.style.display = 'flex';
-                enableImageZoom();
-            } else if (fileObj.ext === 'pdf') {
-                pdfEl.src = fileObj.url + '#toolbar=0';
-                pdfEl.classList.remove('d-none');
-                toolbarEl.style.display = 'flex';
-                enablePdfZoom();
-            } else {
-                messageEl = document.createElement('div');
-                messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
-                messageEl.style.zIndex = '5';
-                messageEl.innerHTML = `<p class="mb-0 fs-5">Preview not available for <strong>${fileObj.fileName}</strong></p>`;
-                previewArea.appendChild(messageEl);
-                toolbarEl.style.display = 'flex';
+                // Show file
+                if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(fileObj.ext)) {
+                    imgEl.src = fileObj.url;
+                    imgEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+                    enableImageZoom();
+                } else if (fileObj.ext === 'pdf') {
+                    pdfEl.src = fileObj.url + '#toolbar=0';
+                    pdfEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+                    enablePdfZoom();
+                } else {
+                    messageEl = document.createElement('div');
+                    messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
+                    messageEl.style.zIndex = '5';
+                    messageEl.innerHTML = `<p class="mb-0 fs-5">Preview not available for <strong>${fileObj.fileName}</strong></p>`;
+                    previewArea.appendChild(messageEl);
+                    toolbarEl.style.display = 'flex';
+                }
+
+                // Navigation
+                prevBtn.disabled = (currentIdx === 0);
+                nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
+
+                prevBtn.onclick = () => {
+                    if (currentIdx > 0) showFile(currentAttachments[--currentIdx]);
+                };
+                nextBtn.onclick = () => {
+                    if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
+                };
+
+                // DOWNLOAD: One-time per file
+                const isDownloaded = downloadedFiles.has(fileObj.url);
+                downloadBtn.disabled = isDownloaded;
+                downloadBtn.innerHTML = isDownloaded
+                    ? '<i class="bi bi-check2"></i>'
+                    : '<i class="bi bi-download"></i>';
+                downloadBtn.title = isDownloaded ? "Downloaded" : "";
+
+                downloadBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (isDownloaded) return;
+
+                    // Mark as downloaded
+                    downloadedFiles.set(fileObj.url, true);
+
+                    // Update button
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="bi bi-check2"></i>';
+                    downloadBtn.title = "Downloaded";
+
+                    // Get patient ID from DOM
+                    const patientIdP = document.querySelector('p[style*="font-weight:600"]');
+                    const patientId = patientIdP ? patientIdP.textContent.trim() : 'unknown';
+
+                    // New filename
+                    const newFileName = fileObj.fileName.replace(/^[^_]+/, `attachment_${patientId}`);
+
+                    const a = document.createElement('a');
+                    a.href = fileObj.url;
+                    a.download = newFileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+
+                // ZOOM BUTTONS: ALWAYS ENABLED WHEN FILE IS PREVIEWED
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
             }
 
-            // Navigation
-            prevBtn.disabled = (currentIdx === 0);
-            nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
+            // ZOOM FUNCTIONS
+            let imgScale = 1;
+            const SCALE_STEP = 0.2;
+            const MIN_SCALE = 0.4;
+            const MAX_SCALE = 3;
 
-            prevBtn.onclick = () => {
-                if (currentIdx > 0) showFile(currentAttachments[--currentIdx]);
-            };
-            nextBtn.onclick = () => {
-                if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
-            };
+            function enableImageZoom() {
+                zoomInBtn.onclick = () => {
+                    imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE);
+                    imgEl.style.transform = `scale(${imgScale})`;
+                };
+                zoomOutBtn.onclick = () => {
+                    imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE);
+                    imgEl.style.transform = `scale(${imgScale})`;
+                };
+            }
 
-            // DOWNLOAD: One-time per file
-            const isDownloaded = downloadedFiles.has(fileObj.url);
-            downloadBtn.disabled = isDownloaded;
-            downloadBtn.innerHTML = isDownloaded 
-                ? '<i class="bi bi-check2"></i>' 
-                : '<i class="bi bi-download"></i>';
-            downloadBtn.title = isDownloaded ? "Downloaded" : "";
+            function enablePdfZoom() {
+                let pdfZoom = 100;
+                const ZOOM_STEP = 20;
+                const MIN_ZOOM = 50;
+                const MAX_ZOOM = 200;
 
-            downloadBtn.onclick = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                const setPdfZoom = () => {
+                    pdfEl.src = `${currentAttachments[currentIdx].url}#zoom=${pdfZoom}&toolbar=0`;
+                };
 
-                if (isDownloaded) return;
+                zoomInBtn.onclick = () => {
+                    pdfZoom = Math.min(pdfZoom + ZOOM_STEP, MAX_ZOOM);
+                    setPdfZoom();
+                };
+                zoomOutBtn.onclick = () => {
+                    pdfZoom = Math.max(pdfZoom - ZOOM_STEP, MIN_ZOOM);
+                    setPdfZoom();
+                };
+            }
 
-                // Mark as downloaded
-                downloadedFiles.set(fileObj.url, true);
+            // RESET ON MODAL CLOSE
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                imgEl.src = '';
+                pdfEl.src = '';
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgScale = 1;
+                toolbarEl.style.display = 'none';
+                currentAttachments = [];
+                currentIdx = -1;
 
-                // Update button
-                downloadBtn.disabled = true;
-                downloadBtn.innerHTML = '<i class="bi bi-check2"></i>';
-                downloadBtn.title = "Downloaded";
+                // Reset download tracking
+                downloadedFiles.clear();
 
-                // Get patient ID from DOM
-                const patientIdP = document.querySelector('p[style*="font-weight:600"]');
-                const patientId = patientIdP ? patientIdP.textContent.trim() : 'unknown';
-
-                // New filename
-                const newFileName = fileObj.fileName.replace(/^[^_]+/, `attachment_${patientId}`);
-
-                const a = document.createElement('a');
-                a.href = fileObj.url;
-                a.download = newFileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            };
-
-            // ZOOM BUTTONS: ALWAYS ENABLED WHEN FILE IS PREVIEWED
-            zoomInBtn.disabled = false;
-            zoomOutBtn.disabled = false;
-        }
-
-        // ZOOM FUNCTIONS
-        let imgScale = 1;
-        const SCALE_STEP = 0.2;
-        const MIN_SCALE = 0.4;
-        const MAX_SCALE = 3;
-
-        function enableImageZoom() {
-            zoomInBtn.onclick = () => {
-                imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE);
-                imgEl.style.transform = `scale(${imgScale})`;
-            };
-            zoomOutBtn.onclick = () => {
-                imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE);
-                imgEl.style.transform = `scale(${imgScale})`;
-            };
-        }
-
-        function enablePdfZoom() {
-            let pdfZoom = 100;
-            const ZOOM_STEP = 20;
-            const MIN_ZOOM = 50;
-            const MAX_ZOOM = 200;
-
-            const setPdfZoom = () => {
-                pdfEl.src = `${currentAttachments[currentIdx].url}#zoom=${pdfZoom}&toolbar=0`;
-            };
-
-            zoomInBtn.onclick = () => {
-                pdfZoom = Math.min(pdfZoom + ZOOM_STEP, MAX_ZOOM);
-                setPdfZoom();
-            };
-            zoomOutBtn.onclick = () => {
-                pdfZoom = Math.max(pdfZoom - ZOOM_STEP, MIN_ZOOM);
-                setPdfZoom();
-            };
-        }
-
-        // RESET ON MODAL CLOSE
-        modalEl.addEventListener('hidden.bs.modal', function () {
-            imgEl.src = '';
-            pdfEl.src = '';
-            imgEl.classList.add('d-none');
-            pdfEl.classList.add('d-none');
-            if (messageEl) messageEl.remove();
-            imgScale = 1;
-            toolbarEl.style.display = 'none';
-            currentAttachments = [];
-            currentIdx = -1;
-
-            // Reset download tracking
-            downloadedFiles.clear();
-
-            // Re-enable zoom buttons
-            zoomInBtn.disabled = false;
-            zoomOutBtn.disabled = false;
+                // Re-enable zoom buttons
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
+            });
         });
-    });
-</script>
+    </script>
 
     <!-- Patient Attachment Display Dashboard Modal -->
     <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"

@@ -2283,227 +2283,227 @@
         }
     </script>
 
-<!-- Patient Attachment Display Modal -->
-<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
-    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                    id="dashboardPreviewModalLabel">
-                    Attachment Preview
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body text-center position-relative p-0">
-
-                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
-                    style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
-                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled><b
-                            style="font-size:1.2rem;">-</b></button>
-                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled><b
-                            style="font-size:1.2rem;">+</b></button>
-                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
-                            class="bi bi-download"></i></button>
+    <!-- Patient Attachment Display Modal -->
+    <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                        id="dashboardPreviewModalLabel">
+                        Attachment Preview
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <button id="prevAttachment"
-                    class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                    style="font-size:1.5rem;" disabled><b>&lt;</b></button>
-                <button id="nextAttachment"
-                    class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                    style="font-size:1.5rem;" disabled><b>&gt;</b></button>
+                <div class="modal-body text-center position-relative p-0">
 
-                <div class="preview-area">
-                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
-                        style="transform-origin:top left;transition:transform .2s ease-out;">
-                    <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;"
-                        frameborder="0"></iframe>
+                    <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
+                        style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
+                        <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled><b
+                                style="font-size:1.2rem;">-</b></button>
+                        <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled><b
+                                style="font-size:1.2rem;">+</b></button>
+                        <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
+                                class="bi bi-download"></i></button>
+                    </div>
+
+                    <button id="prevAttachment"
+                        class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                        style="font-size:1.5rem;" disabled><b>&lt;</b></button>
+                    <button id="nextAttachment"
+                        class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                        style="font-size:1.5rem;" disabled><b>&gt;</b></button>
+
+                    <div class="preview-area">
+                        <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
+                            style="transform-origin:top left;transition:transform .2s ease-out;">
+                        <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;"
+                            frameborder="0"></iframe>
+                    </div>
+
                 </div>
 
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <!-- Script to display patient attachments in modal -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modalEl = document.getElementById('dashboardPreviewModal');
-        const modal = new bootstrap.Modal(modalEl);
-        const toolbarEl = document.getElementById('attachment-toolbar');
-        const zoomInBtn = document.getElementById('zoomInBtn');
-        const zoomOutBtn = document.getElementById('zoomOutBtn');
-        const downloadBtn = document.getElementById('downloadAttachmentBtn');
-        const prevBtn = document.getElementById('prevAttachment');
-        const nextBtn = document.getElementById('nextAttachment');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modalEl = document.getElementById('dashboardPreviewModal');
+            const modal = new bootstrap.Modal(modalEl);
+            const toolbarEl = document.getElementById('attachment-toolbar');
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const downloadBtn = document.getElementById('downloadAttachmentBtn');
+            const prevBtn = document.getElementById('prevAttachment');
+            const nextBtn = document.getElementById('nextAttachment');
 
-        const imgEl = document.getElementById('attachmentImage');
-        const pdfEl = document.getElementById('attachmentPDF');
-        const previewArea = document.querySelector('.preview-area');
+            const imgEl = document.getElementById('attachmentImage');
+            const pdfEl = document.getElementById('attachmentPDF');
+            const previewArea = document.querySelector('.preview-area');
 
-        let messageEl = null;
-        let currentAttachments = [];
-        let currentIdx = -1;
-        const downloadedFiles = new Map(); // url → true
+            let messageEl = null;
+            let currentAttachments = [];
+            let currentIdx = -1;
+            const downloadedFiles = new Map(); // url → true
 
-        // === OPEN ATTACHMENT ===
-        document.querySelectorAll('.openAttachment').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                const consultationContainer = this.closest('[data-consultation-id]') ||
-                    this.closest('.consultation') ||
-                    this.closest('div');
-                if (!consultationContainer) return;
+            // === OPEN ATTACHMENT ===
+            document.querySelectorAll('.openAttachment').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const consultationContainer = this.closest('[data-consultation-id]') ||
+                        this.closest('.consultation') ||
+                        this.closest('div');
+                    if (!consultationContainer) return;
 
-                const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
-                currentAttachments = [];
-                linksInGroup.forEach((l, idx) => {
-                    const url = l.dataset.file;
-                    const ext = l.dataset.ext.toLowerCase();
-                    const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
-                    currentAttachments.push({ url, ext, fileName, link: l, index: idx });
+                    const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
+                    currentAttachments = [];
+                    linksInGroup.forEach((l, idx) => {
+                        const url = l.dataset.file;
+                        const ext = l.dataset.ext.toLowerCase();
+                        const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
+                        currentAttachments.push({ url, ext, fileName, link: l, index: idx });
+                    });
+
+                    const clickedUrl = this.dataset.file;
+                    currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
+                    if (currentIdx === -1) return;
+
+                    showFile(currentAttachments[currentIdx]);
+                    modal.show();
                 });
-
-                const clickedUrl = this.dataset.file;
-                currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
-                if (currentIdx === -1) return;
-
-                showFile(currentAttachments[currentIdx]);
-                modal.show();
             });
-        });
 
-        // === SHOW FILE ===
-        function showFile(fileObj) {
-            // Reset
-            imgEl.classList.add('d-none');
-            pdfEl.classList.add('d-none');
-            if (messageEl) messageEl.remove();
-            imgEl.src = '';
-            pdfEl.src = '';
-            toolbarEl.style.display = 'none';
+            // === SHOW FILE ===
+            function showFile(fileObj) {
+                // Reset
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgEl.src = '';
+                pdfEl.src = '';
+                toolbarEl.style.display = 'none';
 
-            // ZOOM BUTTONS: FORCE ENABLED
-            zoomInBtn.disabled = false;
-            zoomOutBtn.disabled = false;
-            zoomInBtn.removeAttribute('disabled');
-            zoomOutBtn.removeAttribute('disabled');
+                // ZOOM BUTTONS: FORCE ENABLED
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
+                zoomInBtn.removeAttribute('disabled');
+                zoomOutBtn.removeAttribute('disabled');
 
-            // Image
-            if (['jpg','jpeg','png','gif','bmp','webp','svg'].includes(fileObj.ext)) {
-                imgEl.src = fileObj.url;
-                imgEl.classList.remove('d-none');
-                toolbarEl.style.display = 'flex';
-                enableImageZoom();
+                // Image
+                if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(fileObj.ext)) {
+                    imgEl.src = fileObj.url;
+                    imgEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+                    enableImageZoom();
 
+                    zoomInBtn.style.display = 'inline-block';
+                    zoomOutBtn.style.display = 'inline-block';
+                }
+                // PDF
+                else if (fileObj.ext === 'pdf') {
+                    pdfEl.src = fileObj.url + '#toolbar=0';
+                    pdfEl.classList.remove('d-none');
+                    toolbarEl.style.display = 'flex';
+
+                    zoomInBtn.style.display = 'none';
+                    zoomOutBtn.style.display = 'none';
+                }
+                // Unsupported
+                else {
+                    messageEl = document.createElement('div');
+                    messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
+                    messageEl.style.zIndex = '5';
+                    messageEl.innerHTML = `<p class="mb-0 fs-5">Preview not available for <strong>${fileObj.fileName}</strong></p>`;
+                    previewArea.appendChild(messageEl);
+                    toolbarEl.style.display = 'flex';
+
+                    zoomInBtn.style.display = 'none';
+                    zoomOutBtn.style.display = 'none';
+                }
+
+                // Navigation
+                prevBtn.disabled = (currentIdx === 0);
+                nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
+                prevBtn.onclick = () => { if (currentIdx > 0) showFile(currentAttachments[--currentIdx]); };
+                nextBtn.onclick = () => { if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]); };
+
+                // Download: Once per file
+                const already = downloadedFiles.has(fileObj.url);
+                downloadBtn.disabled = already;
+                downloadBtn.innerHTML = already ? '<i class="bi bi-check2"></i>' : '<i class="bi bi-download"></i>';
+                downloadBtn.title = already ? 'Downloaded' : '';
+
+                downloadBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (already) return;
+
+                    downloadedFiles.set(fileObj.url, true);
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="bi bi-check2"></i>';
+                    downloadBtn.title = 'Downloaded';
+
+                    const patientIdP = document.querySelector('p[style*="font-weight:600"]');
+                    const patientId = patientIdP ? patientIdP.textContent.trim() : 'unknown';
+                    const newFileName = fileObj.fileName.replace(/^[^_]+/, `attachment_${patientId}`);
+
+                    const a = document.createElement('a');
+                    a.href = fileObj.url;
+                    a.download = newFileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                };
+            }
+
+            // === IMAGE ZOOM ===
+            let imgScale = 1;
+            const SCALE_STEP = 0.2;
+            const MIN_SCALE = 0.4;
+            const MAX_SCALE = 3;
+
+            function enableImageZoom() {
+                zoomInBtn.onclick = () => {
+                    imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE);
+                    imgEl.style.transform = `scale(${imgScale})`;
+                };
+                zoomOutBtn.onclick = () => {
+                    imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE);
+                    imgEl.style.transform = `scale(${imgScale})`;
+                };
+            }
+
+            // === MODAL CLOSE RESET ===
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                imgEl.src = '';
+                pdfEl.src = '';
+                imgEl.classList.add('d-none');
+                pdfEl.classList.add('d-none');
+                if (messageEl) messageEl.remove();
+                imgScale = 1;
+                toolbarEl.style.display = 'none';
+                currentAttachments = [];
+                currentIdx = -1;
+
+                downloadedFiles.clear();
+
+                // Re-enable zoom buttons
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
+                zoomInBtn.removeAttribute('disabled');
+                zoomOutBtn.removeAttribute('disabled');
                 zoomInBtn.style.display = 'inline-block';
                 zoomOutBtn.style.display = 'inline-block';
-            }
-            // PDF
-            else if (fileObj.ext === 'pdf') {
-                pdfEl.src = fileObj.url + '#toolbar=0';
-                pdfEl.classList.remove('d-none');
-                toolbarEl.style.display = 'flex';
-
-                zoomInBtn.style.display = 'none';
-                zoomOutBtn.style.display = 'none';
-            }
-            // Unsupported
-            else {
-                messageEl = document.createElement('div');
-                messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
-                messageEl.style.zIndex = '5';
-                messageEl.innerHTML = `<p class="mb-0 fs-5">Preview not available for <strong>${fileObj.fileName}</strong></p>`;
-                previewArea.appendChild(messageEl);
-                toolbarEl.style.display = 'flex';
-
-                zoomInBtn.style.display = 'none';
-                zoomOutBtn.style.display = 'none';
-            }
-
-            // Navigation
-            prevBtn.disabled = (currentIdx === 0);
-            nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
-            prevBtn.onclick = () => { if (currentIdx > 0) showFile(currentAttachments[--currentIdx]); };
-            nextBtn.onclick = () => { if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]); };
-
-            // Download: Once per file
-            const already = downloadedFiles.has(fileObj.url);
-            downloadBtn.disabled = already;
-            downloadBtn.innerHTML = already ? '<i class="bi bi-check2"></i>' : '<i class="bi bi-download"></i>';
-            downloadBtn.title = already ? 'Downloaded' : '';
-
-            downloadBtn.onclick = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (already) return;
-
-                downloadedFiles.set(fileObj.url, true);
-                downloadBtn.disabled = true;
-                downloadBtn.innerHTML = '<i class="bi bi-check2"></i>';
-                downloadBtn.title = 'Downloaded';
-
-                const patientIdP = document.querySelector('p[style*="font-weight:600"]');
-                const patientId = patientIdP ? patientIdP.textContent.trim() : 'unknown';
-                const newFileName = fileObj.fileName.replace(/^[^_]+/, `attachment_${patientId}`);
-
-                const a = document.createElement('a');
-                a.href = fileObj.url;
-                a.download = newFileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            };
-        }
-
-        // === IMAGE ZOOM ===
-        let imgScale = 1;
-        const SCALE_STEP = 0.2;
-        const MIN_SCALE = 0.4;
-        const MAX_SCALE = 3;
-
-        function enableImageZoom() {
-            zoomInBtn.onclick = () => {
-                imgScale = Math.min(imgScale + SCALE_STEP, MAX_SCALE);
-                imgEl.style.transform = `scale(${imgScale})`;
-            };
-            zoomOutBtn.onclick = () => {
-                imgScale = Math.max(imgScale - SCALE_STEP, MIN_SCALE);
-                imgEl.style.transform = `scale(${imgScale})`;
-            };
-        }
-
-        // === MODAL CLOSE RESET ===
-        modalEl.addEventListener('hidden.bs.modal', function () {
-            imgEl.src = '';
-            pdfEl.src = '';
-            imgEl.classList.add('d-none');
-            pdfEl.classList.add('d-none');
-            if (messageEl) messageEl.remove();
-            imgScale = 1;
-            toolbarEl.style.display = 'none';
-            currentAttachments = [];
-            currentIdx = -1;
-
-            downloadedFiles.clear();
-
-            // Re-enable zoom buttons
-            zoomInBtn.disabled = false;
-            zoomOutBtn.disabled = false;
-            zoomInBtn.removeAttribute('disabled');
-            zoomOutBtn.removeAttribute('disabled');
-            zoomInBtn.style.display = 'inline-block';
-            zoomOutBtn.style.display = 'inline-block';
+            });
         });
-    });
-</script>
+    </script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

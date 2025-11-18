@@ -215,7 +215,7 @@
         const universalForm = document.getElementById('universalAddForm');
 
         if (universalForm) {
-            universalForm.addEventListener('submit', function(e) {
+            universalForm.addEventListener('submit', function (e) {
                 // Find the submit button inside this specific form
                 const submitButton = universalForm.querySelector('button[type="submit"]');
 
@@ -292,7 +292,7 @@
                 advice: 'Advice Name'
             };
             // This is your existing listener that OPENS the modal
-            document.body.addEventListener('click', function(e) {
+            document.body.addEventListener('click', function (e) {
                 const btn = e.target.closest('.edit-btn');
                 if (!btn) return;
                 // resetting the modal's button before it's shown.
@@ -321,7 +321,7 @@
             });
             const editForm = document.getElementById('editCommonForm');
             if (editForm) {
-                editForm.addEventListener('submit', function(e) {
+                editForm.addEventListener('submit', function (e) {
                     const submitButton = editForm.querySelector('button[type="submit"]');
                     if (submitButton) {
                         // If button is already disabled, stop this duplicate submission

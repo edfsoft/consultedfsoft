@@ -597,7 +597,7 @@
                                                                                             <small style="font-size:12px;"
                                                                                                 class="text-muted"><?= htmlspecialchars($medicine['category']) ?></small>
                                                                                         <?php endif; ?>
-                                                                                        <strong>.
+                                                                                        <strong>
                                                                                             <?= htmlspecialchars($medicine['medicine_name']) ?></strong>
                                                                                     <?php else: ?>
                                                                                         -
@@ -622,7 +622,7 @@
                                                                                         $number = $parts[1] ?? $morning;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $morning)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -641,7 +641,7 @@
                                                                                         $number = $parts[1] ?? $afternoon;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $afternoon)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -660,7 +660,7 @@
                                                                                         $number = $parts[1] ?? $evening;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $evening)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -679,7 +679,7 @@
                                                                                         $number = $parts[1] ?? $night;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $night)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -756,327 +756,220 @@
                                                         <?php endif; ?>
                                                     </div>
                                                 </div>
-                                                <!-- Preview Page to Download Consultation -->
-                                                <div class="modal fade" id="consultationModal<?= $consultation['id'] ?>"
-                                                    tabindex="-1" aria-labelledby="consultationModalLabel<?= $consultation['id'] ?>"
-                                                    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+
+                                                            <!-- preview for consultaion model  -->
+                                                <div class="modal fade" id="consultationModal<?= $consultation['id'] ?>" tabindex="-1"
+                                                    aria-labelledby="consultationModalLabel<?= $consultation['id'] ?>" aria-hidden="true" data-bs-backdrop="static"
+                                                    data-bs-keyboard="false">
 
                                                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                         <div class="modal-content">
 
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
-                                                                    id="consultationModalLabel<?= $consultation['id'] ?>">
-                                                                    <p style="font-size: 16px; font-weight: 700; margin-bottom: 0;">
-                                                                        <?php echo $patientDetails[0]['firstName'] ?>
-                                                                        <?php echo $patientDetails[0]['lastName'] ?> |
-                                                                        <?php echo $patientDetails[0]['patientId'] ?>
-                                                                    </p>
-                                                                </h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                    aria-label="Close"></button>
+                                                            <div class="modal-header" style="border-bottom: none;">
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
 
-                                                            <div class="modal-body" style="background-color: #f8f9fa;">
+                                                            <div class="modal-body" style="background-color: #f8f9fa; padding: 10px;">
 
                                                                 <div id="consultationDetails<?= $consultation['id'] ?>"
-                                                                    style="background: #fff; border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px; width: 100%; margin: 0 auto; min-height: 500px; padding-top: 100px;">
-                                                                    <div class="row mb-3">
+                                                                    style="background: #fff; padding: 30px 0px; width: 100%; margin: 0 auto; min-height: 500px; font-family: 'Noto Sans', sans-serif; font-size: 13px; color: #000; line-height: 1.4;">
 
+                                                                    <div class="row mb-4 mx-0" style="border: 1px solid #dddadaff; border-radius: 5px; padding: 3px; line-height: 1.3;">
                                                                         <div class="col-md-8">
-                                                                            <p class="mb-1"><strong>Name<span
-                                                                                        style="margin-right: 30px;"></span>:</strong>
+                                                                            <p class="mb-0"><strong>Name<span style="margin-right: 30px;"></span>:</strong>
                                                                                 <?php echo $patientDetails[0]['firstName'] ?>
                                                                                 <?php echo $patientDetails[0]['lastName'] ?>
                                                                             </p>
-                                                                            <p class="mb-1"><strong>Age & Sex:</strong>
+                                                                            <p class="mb-0"><strong>Age & Sex:</strong>
                                                                                 <?php echo $patientDetails[0]['age'] ?> Year(s) /
                                                                                 <?php echo $patientDetails[0]['gender'] ?>
                                                                             </p>
-                                                                            <p class="mb-1"><strong>Patient ID<span
-                                                                                        style="margin-right: 3px;"></span>:</strong>
+                                                                            <p class="mb-0"><strong>Patient ID<span style="margin-right: 3px;"></span>:</strong>
                                                                                 <?php echo $patientDetails[0]['patientId'] ?>
                                                                             </p>
                                                                         </div>
 
                                                                         <div class="col-md-4">
-                                                                            <div
-                                                                                style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                                                                                <p class="mb-1"
-                                                                                    style="margin: 0; text-align: right;">
-                                                                                    <strong>Date<span
-                                                                                            style="margin-right: 15px;"></span>:</strong>
-                                                                                    <?php ?>
-                                                                                    <?= date('d M Y', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
-                                                                                </p>
-
-                                                                                <?php ?>
-                                                                                <p class="mb-1"
-                                                                                    style="margin: 0; text-align: right;">
-                                                                                    <strong>Time<span
-                                                                                            style="margin-right: 14px;"></span>:</strong>
-                                                                                    <?= date('h:i A', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
-                                                                                </p>
-
-                                                                                <p class="mb-1"
-                                                                                    style="margin: 0; text-align: right;">
-                                                                                    <strong>Mobile:</strong>
-                                                                                    <?php echo $patientDetails[0]['mobileNumber'] ?>
-                                                                                </p>
+                                                                            <div style="display: flex; justify-content: flex-end;">
+                                                                                
+                                                                                <div style="text-align: left;">
+                                                                                    <div class="mb-0" style="white-space: nowrap;">
+                                                                                        <strong>Date:</strong>
+                                                                                        <span><?= date('d M Y', strtotime($consultation['consult_date'])) ?></span>
+                                                                                        <span style="margin: 0 5px;">|</span>
+                                                                                        <span><?= date('h:i A', strtotime($consultation['consult_time'])) ?></span>
+                                                                                    </div>
+                                                                                    <div class="mb-0">
+                                                                                        <strong>Mobile:</strong>
+                                                                                        <span><?= htmlspecialchars($patientDetails[0]['mobileNumber'] ?? '-') ?></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                
                                                                             </div>
                                                                         </div>
-
                                                                     </div>
-                                                                    <div style="height: 2em;"></div>
 
                                                                     <?php if (!empty($consultation['symptoms'])): ?>
-                                                                        <div class="mb-3">
-                                                                            <p><strong>Symptoms:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['symptoms'] as $symptom): ?>
-                                                                                    <li>
-                                                                                        <?= $symptom['symptom_name'] ?>
-                                                                                        <?php
-                                                                                        $details = [];
-                                                                                        if (!empty($symptom['since']))
-                                                                                            $details[] = $symptom['since'];
-                                                                                        if (!empty($symptom['severity']))
-                                                                                            $details[] = $symptom['severity'];
-                                                                                        if (!empty($symptom['note']))
-                                                                                            $details[] = $symptom['note'];
-                                                                                        if (!empty($details)) {
-                                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                    <div class="mb-0 px-2"> <p class="mb-0">
+                                                                            <strong>Symptoms:</strong>
+                                                                            <span>
+                                                                                <?php
+                                                                                        $items = [];
+                                                                                        foreach ($consultation['symptoms'] as $symptom) {
+                                                                                            $name = trim($symptom['symptom_name']);
+                                                                                            $details = [];
+                                                                                            if (!empty($symptom['since']))    $details[] = "since " . trim($symptom['since']);
+                                                                                            if (!empty($symptom['severity'])) $details[] = trim($symptom['severity']);
+                                                                                            if (!empty($details)) {
+                                                                                                $items[] = $name . " (" . implode(', ', $details) . ")";
+                                                                                            } else {
+                                                                                                $items[] = $name;
+                                                                                            }
                                                                                         }
+                                                                                        echo implode(', ', $items) . '.';
                                                                                         ?>
-                                                                                    </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
-                                                                        </div>
+                                                                            </span>
+                                                                        </p>
+                                                                    </div>
                                                                     <?php endif; ?>
 
                                                                     <?php if (!empty($consultation['diagnosis'])): ?>
-                                                                        <div class="mb-3">
-                                                                            <p><strong>Diagnosis:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
-                                                                                    <li>
-                                                                                        <?= $diagnosis['diagnosis_name'] ?>
-                                                                                        <?php
-                                                                                        $details = [];
-                                                                                        if (!empty($diagnosis['since']))
-                                                                                            $details[] = $diagnosis['since'];
-                                                                                        if (!empty($diagnosis['severity']))
-                                                                                            $details[] = $diagnosis['severity'];
-                                                                                        if (!empty($diagnosis['note']))
-                                                                                            $details[] = $diagnosis['note'];
-                                                                                        if (!empty($details)) {
-                                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                    <div class="mb-1 px-2">
+                                                                        <p class="mb-0">
+                                                                            <strong>Diagnosis:</strong>
+                                                                            <span>
+                                                                                <?php
+                                                                                        $items = [];
+                                                                                        foreach ($consultation['diagnosis'] as $diagnosis) {
+                                                                                            $name = trim($diagnosis['diagnosis_name']);
+                                                                                            $details = [];
+                                                                                            if (!empty($diagnosis['since']))    $details[] = "since " . trim($diagnosis['since']);
+                                                                                            if (!empty($diagnosis['severity'])) $details[] = trim($diagnosis['severity']);
+                                                                                            if (!empty($details)) {
+                                                                                                $items[] = $name . " (" . implode(', ', $details) . ")";
+                                                                                            } else {
+                                                                                                $items[] = $name;
+                                                                                            }
                                                                                         }
+                                                                                        echo implode(', ', $items) . '.';
                                                                                         ?>
-                                                                                    </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
-                                                                        </div>
+                                                                            </span>
+                                                                        </p>
+                                                                    </div>
                                                                     <?php endif; ?>
 
-                                                                    <!-- ====== Medicines ====== -->
                                                                     <?php if (!empty($consultation['medicines'])): ?>
-                                                                        <p><strong>Medicines:</strong></p>
-                                                                        <table
-                                                                            style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
-                                                                            class="mb-3">
-                                                                            <thead>
-                                                                                <!-- First header row -->
-                                                                                <tr>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                                        S.No</th>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                                        Name</th>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                                        Qty</th>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 0 2px 0 2px;  text-align: center;">
-                                                                                        Food Timing</th>
+                                                                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-top: 15px;" class="mb-3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th rowspan="2" style="border: 1px solid #000; padding: 6px; text-align: center; width: 25px;">Rx
+                                                                                </th>
+                                                                                <th rowspan="2" style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px;">Name</th>
+                                                                                <th rowspan="2" style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px;">Qty
+                                                                                </th>
+                                                                                <th rowspan="2" style="border: 1px solid #000; padding: 6px; text-align: center;">Food <br>
+                                                                                    Timing</th>
+                                                                                <th colspan="4" style="border: 1px solid #000; padding: 6px; text-align: center;">Frequency</th>
+                                                                                <th rowspan="2" style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px;">Notes</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th style="border: 1px solid #000; padding: 6px; text-align: center;">Mrn</th>
+                                                                                <th style="border: 1px solid #000; padding: 6px; text-align: center;">Aft</th>
+                                                                                <th style="border: 1px solid #000; padding: 6px; text-align: center;">Eve</th>
+                                                                                <th style="border: 1px solid #000; padding: 6px; text-align: center;">Ngt</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                            <?php
+                                                                                    $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
+                                                                                    $timingParts = preg_split('/\s*-\s*/', $timingString);
+                                                                                    $timingParts = array_pad($timingParts, 4, '0');
+                                                                                    list($morning, $afternoon, $evening, $night) = $timingParts;
+                                                                                    ?>
+                                                                            <tr>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= $index + 1 ?>
+                                                                                </td>
 
-                                                                                    <th colspan="4"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Frequency</th>
+                                                                               <td style="border: 1px solid #000; padding: 6px;">
+                                                                                 <div style="display: flex; flex-direction: column; justify-content: center;">
+                                                                                    
+                                                                                    <div style="display: flex; flex-direction: row; align-items: baseline;">
+                                                                                        <?php if (!empty($medicine['category'])): ?>
+                                                                                            <span style="font-size: 10px; color: #555; margin-right: 6px;">
+                                                                                                <?= htmlspecialchars($medicine['category']) ?>
+                                                                                            </span>
+                                                                                        <?php endif; ?>
 
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                                        Notes</th>
-                                                                                </tr>
+                                                                                        <strong style="font-size: 13px; line-height: 1.1;">
+                                                                                            <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                        </strong>
+                                                                                    </div>
+                                                                                    <?php if (!empty($medicine['composition_name'])): ?>
+                                                                                        <span style="font-size: 11px; font-style: italic; color: #444; line-height: 1; margin-top: 2px;">
+                                                                                            <?= htmlspecialchars($medicine['composition_name']) ?>
+                                                                                        </span>
+                                                                                    <?php endif; ?>
 
-                                                                                <tr>
-                                                                                    <th
-                                                                                        style="border: 1px solid #000; padding: 3px; text-align: center;">
-                                                                                        Mrn</th>
-                                                                                    <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Aft</th>
-                                                                                    <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Eve</th>
-                                                                                    <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Ngt</th>
-                                                                                </tr>
-                                                                            </thead>
+                                                                                 </div>
+                                                                                </td>
 
-                                                                            <tbody>
-                                                                                <?php if (!empty($consultation['medicines'])): ?>
-                                                                                    <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
-                                                                                        <?php
-                                                                                        // Safely split timing into 4 parts
-                                                                                        $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
-                                                                                        $timingParts = preg_split('/\s*-\s*/', $timingString);
-                                                                                        $timingParts = array_pad($timingParts, 4, '0'); // ensure 4 values
-                                                                                        list($morning, $afternoon, $evening, $night) = $timingParts;
-                                                                                        ?>
-                                                                                        <tr>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= $index + 1 . '.' ?>
-                                                                                            </td>
-                                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                <?php if (!empty($medicine['medicine_name'])): ?>
-                                                                                                    <?php if (!empty($medicine['category'])): ?>
-                                                                                                        <small style="font-size:12px;"
-                                                                                                            class="text-muted"><?= htmlspecialchars($medicine['category']) ?></small><br>
-                                                                                                    <?php endif; ?>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                </td>
+                                                                                
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                </td>
 
-                                                                                                    <strong>.
-                                                                                                        <?= htmlspecialchars($medicine['medicine_name']) ?></strong>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?php if($morning !== '0' && $morning !== '-'): echo $morning; else: echo '-'; endif; ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?php if($afternoon !== '0' && $afternoon !== '-'): echo $afternoon; else: echo '-'; endif; ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?php if($evening !== '0' && $evening !== '-'): echo $evening; else: echo '-'; endif; ?>
+                                                                                </td>
+                                                                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                    <?php if($night !== '0' && $night !== '-'): echo $night; else: echo '-'; endif; ?>
+                                                                                </td>
 
-                                                                                                    <span><?php if (!empty($medicine['composition_name'])): ?></span>
-                                                                                                        <br><small
-                                                                                                            style="font-style:italic; font-size:13px;"
-                                                                                                            class="text-muted"><?= htmlspecialchars($medicine['composition_name']) ?></small>
-                                                                                                    <?php endif; ?>
+                                                                                <td style="border: 1px solid #000;padding: 6px; ">
+                                                                                    <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <?php endforeach; ?>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <?php endif; ?>
 
-                                                                                                <?php else: ?>
-                                                                                                    -
-                                                                                                <?php endif; ?>
-                                                                                            </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
-                                                                                            </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
-                                                                                            </td>
-
-                                                                                            <!-- Frequency split -->
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
-                                                                                                <?php
-                                                                                                if ($morning !== '0' && $morning !== '' && $morning !== '-') {
-                                                                                                    // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
-                                                                                                    $parts = preg_split('/(\d+)/', $morning, -1, PREG_SPLIT_DELIM_CAPTURE);
-                                                                                                    $number = $parts[1] ?? $morning;  // the digits
-                                                                                                    $unit = trim(str_replace($number, '', $morning)); // everything else (ml, tab, etc.)
-                                                                        
-                                                                                                    echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
-                                                                                                    if ($unit) {
-                                                                                                        echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
-                                                                                                    }
-                                                                                                } else {
-                                                                                                    echo '-';
-                                                                                                }
-                                                                                                ?>
-                                                                                            </td>
-
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
-                                                                                                <?php
-                                                                                                if ($afternoon !== '0' && $afternoon !== '' && $afternoon !== '-') {
-                                                                                                    // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
-                                                                                                    $parts = preg_split('/(\d+)/', $afternoon, -1, PREG_SPLIT_DELIM_CAPTURE);
-                                                                                                    $number = $parts[1] ?? $afternoon;  // the digits
-                                                                                                    $unit = trim(str_replace($number, '', $afternoon)); // everything else (ml, tab, etc.)
-                                                                        
-                                                                                                    echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
-                                                                                                    if ($unit) {
-                                                                                                        echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
-                                                                                                    }
-                                                                                                } else {
-                                                                                                    echo '-';
-                                                                                                }
-                                                                                                ?>
-                                                                                            </td>
-
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
-                                                                                                <?php
-                                                                                                if ($evening !== '0' && $evening !== '' && $evening !== '-') {
-                                                                                                    // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
-                                                                                                    $parts = preg_split('/(\d+)/', $evening, -1, PREG_SPLIT_DELIM_CAPTURE);
-                                                                                                    $number = $parts[1] ?? $evening;  // the digits
-                                                                                                    $unit = trim(str_replace($number, '', $evening)); // everything else (ml, tab, etc.)
-                                                                        
-                                                                                                    echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
-                                                                                                    if ($unit) {
-                                                                                                        echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
-                                                                                                    }
-                                                                                                } else {
-                                                                                                    echo '-';
-                                                                                                }
-                                                                                                ?>
-                                                                                            </td>
-
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
-                                                                                                <?php
-                                                                                                if ($night !== '0' && $night !== '' && $night !== '-') {
-                                                                                                    // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
-                                                                                                    $parts = preg_split('/(\d+)/', $night, -1, PREG_SPLIT_DELIM_CAPTURE);
-                                                                                                    $number = $parts[1] ?? $night;  // the digits
-                                                                                                    $unit = trim(str_replace($number, '', $night)); // everything else (ml, tab, etc.)
-                                                                        
-                                                                                                    echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
-                                                                                                    if ($unit) {
-                                                                                                        echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
-                                                                                                    }
-                                                                                                } else {
-                                                                                                    echo '-';
-                                                                                                }
-                                                                                                ?>
-                                                                                            </td>
-
-                                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    <?php endforeach; ?>
-                                                                                <?php else: ?>
-                                                                                    <tr>
-                                                                                        <td colspan="9"
-                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                            No medicines found.
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                <?php endif; ?>
-                                                                            </tbody>
-                                                                        </table>
-
+                                                                    <?php if (!empty($consultation['instructions'])): ?>
+                                                                    <div class="mb-3 px-2">
+                                                                        <p class="mb-1"><strong>Instructions:</strong></p>
+                                                                        <ul style="margin-top: 0; padding-left: 20px; margin-bottom: 5px;">
+                                                                            <?php foreach ($consultation['instructions'] as $ins): ?>
+                                                                            <li><?= $ins['instruction_name'] ?></li>
+                                                                            <?php endforeach; ?>
+                                                                        </ul>
+                                                                    </div>
                                                                     <?php endif; ?>
 
                                                                     <?php if (!empty($consultation['next_follow_up'])): ?>
-                                                                        <div class="mt-3">
-                                                                            <p><strong>Next Follow-Up Date:</strong></p>
-                                                                            <ul>
-                                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
-                                                                                </li>
-                                                                            </ul>
-                                                                        </div>
+                                                                    <div class="mt-3 px-2">
+                                                                        <p style="margin: 0;">
+                                                                            <strong>Next Follow-Up Date:</strong>
+                                                                            <span
+                                                                                style="margin-left: 5px;"><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?></span>
+                                                                        </p>
+                                                                    </div>
                                                                     <?php endif; ?>
+
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer">
+                                                        </div>
+
+                                                        <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-dismiss="modal">Close</button>
 
@@ -6154,98 +6047,216 @@
     </script>
 
     <!-- Consultation - PDF Download Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const downloadButtons = document.querySelectorAll('.download-pdf-btn');
 
-            const downloadButtons = document.querySelectorAll('.download-pdf-btn');
+        downloadButtons.forEach(button => {
+            const originalButtonHtml = button.innerHTML;
 
-            // Add a click listener to EACH button
-            downloadButtons.forEach(button => {
+            button.addEventListener('click', async function(event) {
+                // 1. Lock Button
+                button.disabled = true;
+                button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
-                // 1. Store the button's original content (the icon)
-                const originalButtonHtml = button.innerHTML;
+                const contentId = event.currentTarget.getAttribute('data-content-id');
+                const fileName = event.currentTarget.getAttribute('data-filename');
+                const sourceElement = document.getElementById(contentId);
 
-                button.addEventListener('click', function (event) {
+                if (!sourceElement) {
+                    resetButton(button, originalButtonHtml);
+                    return;
+                }
 
-                    // 2. IMMEDIATELY disable the button and show a spinner
-                    button.disabled = true;
-                    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
-                    const contentId = event.currentTarget.getAttribute('data-content-id');
-                    const fileName = event.currentTarget.getAttribute('data-filename');
-                    // Find the correct content div to print
-                    const contentToDownload = document.getElementById(contentId);
+                try {
+                    // 2. GENERATE PAGES (Using Strict Measurement)
+                    const pages = await generateVirtualPages(sourceElement);
 
-                    if (contentToDownload) {
+                    // 3. CONVERT TO PDF
+                    const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth(); // 210mm
+                    
+                    for (let i = 0; i < pages.length; i++) {
+                        const page = pages[i];
 
-                        // Temporarily remove shadow class for clean PDF
-                        contentToDownload.classList.add('no-shadow-for-pdf');
+                        // We MUST append to body for html2canvas to see it
+                        document.body.appendChild(page);
 
-                        html2canvas(contentToDownload, {
-                            scale: 2,
-                            backgroundColor: '#ffffff'
-                        }).then((canvas) => {
-
-                            // Add shadow back right after screenshot
-                            contentToDownload.classList.remove('no-shadow-for-pdf');
-
-                            const imgData = canvas.toDataURL('image/png');
-                            const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-
-                            const pdfWidth = pdf.internal.pageSize.getWidth();
-                            const pdfHeight = pdf.internal.pageSize.getHeight();
-                            const contentWidth = canvas.width;
-                            const contentHeight = canvas.height;
-
-                            const ratio = contentWidth / pdfWidth;
-                            const imgHeight = contentHeight / ratio;
-                            const finalImgWidth = pdfWidth - 20; // 10mm margin
-                            const finalImgHeight = imgHeight;
-
-                            pdf.addImage(imgData, 'PNG', 10, 10, finalImgWidth, finalImgHeight);
-
-                            // 3. Save the PDF
-                            pdf.save(fileName);
-
-                            // 4. Find the modal this button is inside of
-                            const modalElement = button.closest('.modal');
-                            if (modalElement) {
-                                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-
-                                // 5. Add a one-time event listener to reset the button AFTER the modal is hidden
-                                modalElement.addEventListener('hidden.bs.modal', () => {
-                                    button.disabled = false;
-                                    button.innerHTML = originalButtonHtml;
-                                }, {
-                                    once: true
-                                }); // {once: true} is important!
-
-                                // 6. Close the modal
-                                modalInstance.hide();
-
-                            } else {
-                                // Failsafe in case modal isn't found
-                                button.disabled = false;
-                                button.innerHTML = originalButtonHtml;
-                            }
-
-                        }).catch(err => {
-                            // Failsafe if PDF generation fails
-                            console.error('PDF download error:', err);
-                            contentToDownload.classList.remove('no-shadow-for-pdf');
-                            button.disabled = false;
-                            button.innerHTML = originalButtonHtml;
+                        const canvas = await html2canvas(page, {
+                            scale: 1,
+                            backgroundColor: '#ffffff',
+                            logging: false,
+                            useCORS: true
                         });
 
-                    } else {
-                        console.error('Could not find content to download:', contentId);
-                        // Failsafe if content isn't found
-                        button.disabled = false;
-                        button.innerHTML = originalButtonHtml;
+                        // Cleanup DOM immediately
+                        document.body.removeChild(page);
+
+                        const imgData = canvas.toDataURL('image/png');
+
+                        if (i > 0) pdf.addPage();
+
+                        const imgProps = pdf.getImageProperties(imgData);
+                        const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                        
+                        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
                     }
-                });
+
+                    pdf.save(fileName);
+                    resetButton(button, originalButtonHtml);
+
+                } catch (err) {
+                    console.error('PDF Error:', err);
+                    resetButton(button, originalButtonHtml);
+                }
             });
         });
-    </script>
+
+        function resetButton(btn, originalHtml) {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+            const modalElement = btn.closest('.modal');
+            if (modalElement) {
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) modalInstance.hide();
+            }
+        }
+
+        // --- CORE LOGIC: STRICT MEASUREMENT PAGINATION ---
+        async function generateVirtualPages(source) {
+            const pages = [];
+            
+            // A4 Size Config
+            const PAGE_WIDTH = 794;  // Standard A4 Web Width (px)
+            const PAGE_HEIGHT = 1123; // Standard A4 Web Height (px)
+            const MARGIN = 40;
+            
+            // STRICT LIMIT: We stop filling the page at 900px to guarantee no overflow
+            const CONTENT_LIMIT = 1010;
+
+            // Helper: Create a blank Page
+            function createNewPage() {
+                const div = document.createElement('div');
+                div.style.width = `${PAGE_WIDTH}px`;
+                div.style.height = `${PAGE_HEIGHT}px`;
+                div.style.position = 'fixed'; // Fixed ensures it renders for measurement
+                div.style.left = '-10000px'; // But hide it offscreen
+                div.style.top = '0';
+                div.style.backgroundColor = '#fff';
+                div.style.padding = `${MARGIN}px`;
+                div.style.boxSizing = 'border-box';
+                div.style.fontFamily = "'Noto Sans', sans-serif";
+                div.style.color = '#000';
+                return div;
+            }
+
+            // 1. Prepare Source
+            const tempContainer = document.createElement('div');
+            tempContainer.style.width = `${PAGE_WIDTH}px`;
+            tempContainer.innerHTML = source.innerHTML;
+            
+            const children = Array.from(tempContainer.children);
+
+            let currentPage = createNewPage();
+            document.body.appendChild(currentPage); // Append immediately to measure height
+            
+            let currentHeight = 0;
+
+            // Helper: Start a new page
+            function addNewPage() {
+                // Remove current page from DOM (we'll re-add it later for screenshot)
+                document.body.removeChild(currentPage);
+                pages.push(currentPage);
+
+                currentPage = createNewPage();
+                document.body.appendChild(currentPage);
+                currentHeight = 0;
+            }
+
+            // 2. Iterate Blocks
+            for (let child of children) {
+                const isTable = child.tagName === 'TABLE';
+
+                if (isTable) {
+                    // === TABLE LOGIC ===
+                    const thead = child.querySelector('thead');
+                    const tbody = child.querySelector('tbody');
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+                    // Setup Table on Current Page
+                    let currentTable = child.cloneNode(false);
+                    currentTable.style.marginTop = '0';
+                    currentTable.style.marginBottom = '0';
+                    currentTable.appendChild(thead.cloneNode(true));
+                    let currentTbody = document.createElement('tbody');
+                    currentTable.appendChild(currentTbody);
+
+                    currentPage.appendChild(currentTable);
+                    
+                    // Measure Header
+                    // Since it's in the DOM, offsetHeight is accurate
+                    const headerHeight = thead.offsetHeight || 50; 
+                    currentHeight += headerHeight;
+
+                    // Loop Rows
+                    for (let row of rows) {
+                        currentTbody.appendChild(row);
+                        const rowHeight = row.offsetHeight || 30;
+
+                        // Check Limit
+                        if (currentHeight + rowHeight > CONTENT_LIMIT) {
+                            // OVERFLOW!
+                            currentTbody.removeChild(row); // Remove from here
+
+                            // Save Page
+                            addNewPage();
+
+                            // Start New Table on New Page
+                            currentTable = child.cloneNode(false);
+                            currentTable.style.marginTop = '0';
+                            currentTable.style.marginBottom = '0';
+                            currentTable.appendChild(thead.cloneNode(true)); // Header Again
+                            currentTbody = document.createElement('tbody');
+                            currentTable.appendChild(currentTbody);
+
+                            currentPage.appendChild(currentTable);
+                            currentHeight += headerHeight; // Header uses space
+
+                            // Add Row to New Page
+                            currentTbody.appendChild(row);
+                            currentHeight += rowHeight;
+                        } else {
+                            // Fits fine
+                            currentHeight += rowHeight;
+                        }
+                    }
+                } else {
+                    // === NORMAL BLOCK LOGIC ===
+                    currentPage.appendChild(child);
+                    const blockHeight = child.offsetHeight;
+
+                    if (currentHeight + blockHeight > CONTENT_LIMIT) {
+                        currentPage.removeChild(child);
+                        addNewPage();
+                        currentPage.appendChild(child);
+                        currentHeight = blockHeight;
+                    } else {
+                        currentHeight += blockHeight;
+                    }
+                }
+            }
+
+            // Push Final Page
+            if (document.body.contains(currentPage)) {
+                document.body.removeChild(currentPage);
+            }
+            pages.push(currentPage);
+
+            return pages;
+        }
+    });
+</script>
+
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

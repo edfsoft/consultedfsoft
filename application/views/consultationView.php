@@ -273,6 +273,31 @@
         #timingOptions .form-check {
             width: 48%;
         }
+
+        /*  Print consultaion */
+        @media print {
+            @page {
+                margin: 40px 15px 40px 15px;
+                size: auto;
+            }
+
+            body {
+                margin: 0px !important;
+                padding: 0px !important;
+                -webkit-print-color-adjust: exact;
+            }
+
+            tr {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            #consultationDetails<?= $consultation['id'] ?> {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
     </style>
 </head>
 
@@ -547,7 +572,7 @@
                                                                             Quantity</th>
                                                                         <th rowspan="2"
                                                                             style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                            Food Timing</th>
+                                                                            Food <br> Timing</th>
 
                                                                         <!-- Frequency spanning four columns -->
                                                                         <th colspan="4"
@@ -562,16 +587,16 @@
                                                                     <!-- Second header row for sub-columns -->
                                                                     <tr>
                                                                         <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            style="border: 1px solid #000; padding: 10px; text-align: center;">
                                                                             Morning</th>
                                                                         <th
                                                                             style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                             Afternoon</th>
                                                                         <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                            Evevning</th>
+                                                                            style="border: 1px solid #000; padding: 10px; text-align: center;">
+                                                                            Evening</th>
                                                                         <th
-                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                            style="border: 1px solid #000; padding: 0 16px 0 16px; text-align: center;">
                                                                             Night</th>
                                                                     </tr>
                                                                 </thead>
@@ -594,10 +619,11 @@
                                                                                 <td style="border: 1px solid #000; padding: 6px;">
                                                                                     <?php if (!empty($medicine['medicine_name'])): ?>
                                                                                         <?php if (!empty($medicine['category'])): ?>
-                                                                                            <small
-                                                                                                class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small>
+                                                                                            <small style="font-size:12px;"
+                                                                                                class="text-muted"><?= htmlspecialchars($medicine['category']) ?></small>
                                                                                         <?php endif; ?>
-                                                                                        <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                        <strong>
+                                                                                            <?= htmlspecialchars($medicine['medicine_name']) ?></strong>
                                                                                     <?php else: ?>
                                                                                         -
                                                                                     <?php endif; ?>
@@ -613,20 +639,79 @@
 
                                                                                 <!-- Frequency split -->
                                                                                 <td
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                    <?php
+                                                                                    if ($morning !== '0' && $morning !== '' && $morning !== '-') {
+                                                                                        // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                        $parts = preg_split('/(\d+)/', $morning, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                        $number = $parts[1] ?? $morning;  // the digits
+                                                                                        $unit = trim(str_replace($number, '', $morning)); // everything else (ml, tab, etc.)
+                                                            
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        if ($unit) {
+                                                                                            echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo '-';
+                                                                                    }
+                                                                                    ?>
                                                                                 </td>
+
                                                                                 <td
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                    <?php
+                                                                                    if ($afternoon !== '0' && $afternoon !== '' && $afternoon !== '-') {
+                                                                                        // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                        $parts = preg_split('/(\d+)/', $afternoon, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                        $number = $parts[1] ?? $afternoon;  // the digits
+                                                                                        $unit = trim(str_replace($number, '', $afternoon)); // everything else (ml, tab, etc.)
+                                                            
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        if ($unit) {
+                                                                                            echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo '-';
+                                                                                    }
+                                                                                    ?>
                                                                                 </td>
+
                                                                                 <td
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                    <?php
+                                                                                    if ($evening !== '0' && $evening !== '' && $evening !== '-') {
+                                                                                        // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                        $parts = preg_split('/(\d+)/', $evening, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                        $number = $parts[1] ?? $evening;  // the digits
+                                                                                        $unit = trim(str_replace($number, '', $evening)); // everything else (ml, tab, etc.)
+                                                            
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        if ($unit) {
+                                                                                            echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo '-';
+                                                                                    }
+                                                                                    ?>
                                                                                 </td>
+
                                                                                 <td
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-family: Arial, sans-serif;">
+                                                                                    <?php
+                                                                                    if ($night !== '0' && $night !== '' && $night !== '-') {
+                                                                                        // Split number and unit (e.g., "1 ml" → number = 1, unit = ml)
+                                                                                        $parts = preg_split('/(\d+)/', $night, -1, PREG_SPLIT_DELIM_CAPTURE);
+                                                                                        $number = $parts[1] ?? $night;  // the digits
+                                                                                        $unit = trim(str_replace($number, '', $night)); // everything else (ml, tab, etc.)
+                                                            
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        if ($unit) {
+                                                                                            echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo '-';
+                                                                                    }
+                                                                                    ?>
                                                                                 </td>
 
                                                                                 <td style="border: 1px solid #000; padding: 6px;">
@@ -696,7 +781,8 @@
                                                         <?php endif; ?>
                                                     </div>
                                                 </div>
-                                                <!-- Preview Page to Download Consultation -->
+
+                                                <!-- preview for consultaion model  -->
                                                 <div class="modal fade" id="consultationModal<?= $consultation['id'] ?>"
                                                     tabindex="-1" aria-labelledby="consultationModalLabel<?= $consultation['id'] ?>"
                                                     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -704,15 +790,7 @@
                                                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                         <div class="modal-content">
 
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
-                                                                    id="consultationModalLabel<?= $consultation['id'] ?>">
-                                                                    <p style="font-size: 16px; font-weight: 700; margin-bottom: 0;">
-                                                                        <?php echo $patientDetails[0]['firstName'] ?>
-                                                                        <?php echo $patientDetails[0]['lastName'] ?> |
-                                                                        <?php echo $patientDetails[0]['patientId'] ?>
-                                                                    </p>
-                                                                </h5>
+                                                            <div class="modal-header" style="border-bottom: none;">
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                     aria-label="Close"></button>
                                                             </div>
@@ -720,140 +798,127 @@
                                                             <div class="modal-body" style="background-color: #f8f9fa;">
 
                                                                 <div id="consultationDetails<?= $consultation['id'] ?>"
-                                                                    style="background: #fff; border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0,0,0,0.1); padding: 20px; width: 100%; margin: 0 auto; min-height: 500px; padding-top: 100px;">
-                                                                    <div class="row mb-3">
+                                                                    style="background: #fff; padding: 10px; width: 100%; margin: 0 auto; min-height: 500px; font-family: 'Noto Sans', sans-serif; font-size: 13px; color: #000; line-height: 1.4; box-sizing: border-box;">
 
-                                                                        <div class="col-md-8">
-                                                                            <p class="mb-1"><strong>Name<span
+                                                                    <div class="mb-4"
+                                                                        style="border: 1px solid #cec8c8ff; border-radius: 5px; padding: 5px; width: 100%; box-sizing: border-box; display: flex; justify-content: space-between; align-items: flex-start;">
+
+                                                                        <div style="width: 65%;">
+                                                                            <p class="mb-0"><strong>Name<span
                                                                                         style="margin-right: 30px;"></span>:</strong>
                                                                                 <?php echo $patientDetails[0]['firstName'] ?>
                                                                                 <?php echo $patientDetails[0]['lastName'] ?>
                                                                             </p>
-                                                                            <p class="mb-1"><strong>Age & Sex:</strong>
+                                                                            <p class="mb-0"><strong>Age & Sex:</strong>
                                                                                 <?php echo $patientDetails[0]['age'] ?> Year(s) /
                                                                                 <?php echo $patientDetails[0]['gender'] ?>
                                                                             </p>
-                                                                            <p class="mb-1"><strong>Patient ID<span
+                                                                            <p class="mb-0"><strong>Patient ID<span
                                                                                         style="margin-right: 3px;"></span>:</strong>
                                                                                 <?php echo $patientDetails[0]['patientId'] ?>
                                                                             </p>
                                                                         </div>
 
                                                                         <div class="col-md-4">
-                                                                           <div
-                                                                                style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
-                                                                                <p class="mb-1"
-                                                                                    style="margin: 0; text-align: right;">
-                                                                                    <strong>Date<span
-                                                                                            style="margin-right: px;"></span>:</strong>
-                                                                                    <?php // Changed format to only show Date ?>
-                                                                                    <?= date('d M Y', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
-                                                                                </p>
-
-                                                                                <?php ?>
-                                                                                <p class="mb-1"
-                                                                                    style="margin: 0; text-align: right;">
-                                                                                    <strong>Time<span
-                                                                                            style="margin-right: 14px;"></span>:</strong>
-                                                                                    <?= date('h:i A', strtotime($consultation['consult_date'] . ' ' . $consultation['consult_time'])) ?>
-                                                                                </p>
-
-                                                                                <p class="mb-1"
-                                                                                    style="margin: 0; text-align: right;">
-                                                                                    <strong>Mobile:</strong>
-                                                                                    <?php echo $patientDetails[0]['mobileNumber'] ?>
-                                                                                </p>
+                                                                            <div style="display: flex; justify-content: flex-end;">
+                                                                                <div style="text-align: left;">
+                                                                                    <div class="mb-0" style="white-space: nowrap;">
+                                                                                        <strong>Date:</strong>
+                                                                                        <span><?= date('d M Y', strtotime($consultation['consult_date'])) ?></span>
+                                                                                        <span style="margin: 0 5px;">|</span>
+                                                                                        <span><?= date('h:i A', strtotime($consultation['consult_time'])) ?></span>
+                                                                                    </div>
+                                                                                    <div class="mb-0">
+                                                                                        <strong>Mobile:</strong>
+                                                                                        <span><?= htmlspecialchars($patientDetails[0]['mobileNumber'] ?? '-') ?></span>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-
                                                                     </div>
-                                                                    <div style="height: 2em;"></div>
+
 
                                                                     <?php if (!empty($consultation['symptoms'])): ?>
-                                                                        <div class="mb-3">
-                                                                            <p><strong>Symptoms:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['symptoms'] as $symptom): ?>
-                                                                                    <li>
-                                                                                        <?= $symptom['symptom_name'] ?>
-                                                                                        <?php
+                                                                        <div class="mb-0 px-2">
+                                                                            <p class="mb-0">
+                                                                                <strong>Symptoms:</strong>
+                                                                                <span>
+                                                                                    <?php
+                                                                                    $items = [];
+                                                                                    foreach ($consultation['symptoms'] as $symptom) {
+                                                                                        $name = trim($symptom['symptom_name']);
                                                                                         $details = [];
                                                                                         if (!empty($symptom['since']))
-                                                                                            $details[] = $symptom['since'];
+                                                                                            $details[] = "since " . trim($symptom['since']);
                                                                                         if (!empty($symptom['severity']))
-                                                                                            $details[] = $symptom['severity'];
-                                                                                        if (!empty($symptom['note']))
-                                                                                            $details[] = $symptom['note'];
+                                                                                            $details[] = trim($symptom['severity']);
                                                                                         if (!empty($details)) {
-                                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                                            $items[] = $name . " (" . implode(', ', $details) . ")";
+                                                                                        } else {
+                                                                                            $items[] = $name;
                                                                                         }
-                                                                                        ?>
-                                                                                    </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
+                                                                                    }
+                                                                                    echo implode(', ', $items) . '.';
+                                                                                    ?>
+                                                                                </span>
+                                                                            </p>
                                                                         </div>
                                                                     <?php endif; ?>
-
                                                                     <?php if (!empty($consultation['diagnosis'])): ?>
-                                                                        <div class="mb-3">
-                                                                            <p><strong>Diagnosis:</strong></p>
-                                                                            <ul>
-                                                                                <?php foreach ($consultation['diagnosis'] as $diagnosis): ?>
-                                                                                    <li>
-                                                                                        <?= $diagnosis['diagnosis_name'] ?>
-                                                                                        <?php
+                                                                        <div class="mb-1 px-2">
+                                                                            <p class="mb-0">
+                                                                                <strong>Diagnosis:</strong>
+                                                                                <span>
+                                                                                    <?php
+                                                                                    $items = [];
+                                                                                    foreach ($consultation['diagnosis'] as $diagnosis) {
+                                                                                        $name = trim($diagnosis['diagnosis_name']);
                                                                                         $details = [];
                                                                                         if (!empty($diagnosis['since']))
-                                                                                            $details[] = $diagnosis['since'];
+                                                                                            $details[] = "since " . trim($diagnosis['since']);
                                                                                         if (!empty($diagnosis['severity']))
-                                                                                            $details[] = $diagnosis['severity'];
-                                                                                        if (!empty($diagnosis['note']))
-                                                                                            $details[] = $diagnosis['note'];
+                                                                                            $details[] = trim($diagnosis['severity']);
                                                                                         if (!empty($details)) {
-                                                                                            echo ' (' . implode(', ', $details) . ')';
+                                                                                            $items[] = $name . " (" . implode(', ', $details) . ")";
+                                                                                        } else {
+                                                                                            $items[] = $name;
                                                                                         }
-                                                                                        ?>
-                                                                                    </li>
-                                                                                <?php endforeach; ?>
-                                                                            </ul>
+                                                                                    }
+                                                                                    echo implode(', ', $items) . '.';
+                                                                                    ?>
+                                                                                </span>
+                                                                            </p>
                                                                         </div>
                                                                     <?php endif; ?>
-
-                                                                    <!-- ====== Medicines ====== -->
                                                                     <?php if (!empty($consultation['medicines'])): ?>
-                                                                        <p><strong>Medicines:</strong></p>
                                                                         <table
-                                                                            style="width: 100%; border-collapse: collapse; border: 1px solid #000;"
+                                                                            style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-top: 15px;"
                                                                             class="mb-3">
                                                                             <thead>
-                                                                                <!-- First header row -->
                                                                                 <tr>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                                        S.No</th>
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 25px;">
+                                                                                        Rx</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px;">
                                                                                         Name</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px;">
                                                                                         Qty</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
-                                                                                        Food Timing</th>
-
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        Food <br> Timing</th>
                                                                                     <th colspan="4"
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                         Frequency</th>
-
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px;  text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px;">
                                                                                         Notes</th>
                                                                                 </tr>
-
                                                                                 <tr>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Morn</th>
+                                                                                        Mrn</th>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
                                                                                         Aft</th>
@@ -862,110 +927,134 @@
                                                                                         Eve</th>
                                                                                     <th
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Night</th>
+                                                                                        Ngt</th>
                                                                                 </tr>
                                                                             </thead>
-
                                                                             <tbody>
-                                                                                <?php if (!empty($consultation['medicines'])): ?>
-                                                                                    <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
-                                                                                        <?php
-                                                                                        // Safely split timing into 4 parts
-                                                                                        $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
-                                                                                        $timingParts = preg_split('/\s*-\s*/', $timingString);
-                                                                                        $timingParts = array_pad($timingParts, 4, '0'); // ensure 4 values
-                                                                                        list($morning, $afternoon, $evening, $night) = $timingParts;
-                                                                                        ?>
-                                                                                        <tr>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= $index + 1 . '.' ?>
-                                                                                            </td>
-                                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                <?php if (!empty($medicine['medicine_name'])): ?>
-                                                                                                    <?php if (!empty($medicine['category'])): ?>
-                                                                                                        <small
-                                                                                                            class="text-muted">(<?= htmlspecialchars($medicine['category']) ?>)</small><br>
-                                                                                                    <?php endif; ?>
-
-                                                                                                    <?= htmlspecialchars($medicine['medicine_name']) ?>
-
-                                                                                                    <?php if (!empty($medicine['composition_name'])): ?>
-                                                                                                        <br><small
-                                                                                                            class="text-muted">(<?= htmlspecialchars($medicine['composition_name']) ?>)</small>
-                                                                                                    <?php endif; ?>
-
-                                                                                                <?php else: ?>
-                                                                                                    -
-                                                                                                <?php endif; ?>
-                                                                                            </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
-                                                                                            </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
-                                                                                            </td>
-
-                                                                                            <!-- Frequency split -->
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($morning !== '0' ? $morning : '-') ?>
-                                                                                            </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($afternoon !== '0' ? $afternoon : '-') ?>
-                                                                                            </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($evening !== '0' ? $evening : '-') ?>
-                                                                                            </td>
-                                                                                            <td
-                                                                                                style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                                <?= htmlspecialchars($night !== '0' ? $night : '-') ?>
-                                                                                            </td>
-
-                                                                                            <td style="border: 1px solid #000; padding: 6px;">
-                                                                                                <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    <?php endforeach; ?>
-                                                                                <?php else: ?>
+                                                                                <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
+                                                                                    <?php
+                                                                                    $timingString = isset($medicine['timing']) ? trim($medicine['timing']) : '0-0-0-0';
+                                                                                    $timingParts = preg_split('/\s*-\s*/', $timingString);
+                                                                                    $timingParts = array_pad($timingParts, 4, '0');
+                                                                                    list($morning, $afternoon, $evening, $night) = $timingParts;
+                                                                                    ?>
                                                                                     <tr>
-                                                                                        <td colspan="9"
+                                                                                        <td
                                                                                             style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                            No medicines found.
+                                                                                            <?= $index + 1 ?>
+                                                                                        </td>
+
+                                                                                        <td style="border: 1px solid #000; padding: 6px;">
+                                                                                            <div
+                                                                                                style="display: flex; flex-direction: column; justify-content: center;">
+                                                                                                <div
+                                                                                                    style="display: flex; flex-direction: row; align-items: baseline;">
+                                                                                                    <?php if (!empty($medicine['category'])): ?>
+                                                                                                        <span
+                                                                                                            style="font-size: 10px; color: #555; margin-right: 6px;">
+                                                                                                            <?= htmlspecialchars($medicine['category']) ?>
+                                                                                                        </span>
+                                                                                                    <?php endif; ?>
+
+                                                                                                    <strong
+                                                                                                        style="font-size: 13px; line-height: 1.1;">
+                                                                                                        <?= htmlspecialchars($medicine['medicine_name']) ?>
+                                                                                                    </strong>
+                                                                                                </div>
+                                                                                                <?php if (!empty($medicine['composition_name'])): ?>
+                                                                                                    <span
+                                                                                                        style="font-size: 11px; font-style: italic; color: #444; line-height: 1; margin-top: 2px;">
+                                                                                                        <?= htmlspecialchars($medicine['composition_name']) ?>
+                                                                                                    </span>
+                                                                                                <?php endif; ?>
+                                                                                            </div>
+                                                                                        </td>
+
+                                                                                        <td
+                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                        </td>
+                                                                                        <td
+                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                        </td>
+                                                                                        <td
+                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <?php if ($morning !== '0' && $morning !== '-'):
+                                                                                                echo $morning;
+                                                                                            else:
+                                                                                                echo '-';
+                                                                                            endif; ?>
+                                                                                        </td>
+                                                                                        <td
+                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <?php if ($afternoon !== '0' && $afternoon !== '-'):
+                                                                                                echo $afternoon;
+                                                                                            else:
+                                                                                                echo '-';
+                                                                                            endif; ?>
+                                                                                        </td>
+                                                                                        <td
+                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <?php if ($evening !== '0' && $evening !== '-'):
+                                                                                                echo $evening;
+                                                                                            else:
+                                                                                                echo '-';
+                                                                                            endif; ?>
+                                                                                        </td>
+                                                                                        <td
+                                                                                            style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                            <?php if ($night !== '0' && $night !== '-'):
+                                                                                                echo $night;
+                                                                                            else:
+                                                                                                echo '-';
+                                                                                            endif; ?>
+                                                                                        </td>
+                                                                                        <td
+                                                                                            style="border: 1px solid #000; padding: 6px;line-height: 1.2;font-size: 14px;">
+                                                                                            <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
                                                                                         </td>
                                                                                     </tr>
-                                                                                <?php endif; ?>
+                                                                                <?php endforeach; ?>
                                                                             </tbody>
                                                                         </table>
-
                                                                     <?php endif; ?>
-
-                                                                    <?php if (!empty($consultation['next_follow_up'])): ?>
-                                                                        <div class="mt-3">
-                                                                            <p><strong>Next Follow-Up Date:</strong></p>
-                                                                            <ul>
-                                                                                <li><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?>
-                                                                                </li>
+                                                                    <?php if (!empty($consultation['instructions'])): ?>
+                                                                        <div class="mb-3 px-2">
+                                                                            <p class="mb-1"><strong>Instructions:</strong></p>
+                                                                            <ul
+                                                                                style="margin-top: 0; padding-left: 20px; margin-bottom: 5px;">
+                                                                                <?php foreach ($consultation['instructions'] as $ins): ?>
+                                                                                    <li><?= $ins['instruction_name'] ?></li>
+                                                                                <?php endforeach; ?>
                                                                             </ul>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                    <?php if (!empty($consultation['next_follow_up'])): ?>
+                                                                        <div class="mt-3 px-2">
+                                                                            <p style="margin: 0;">
+                                                                                <strong>Next Follow-Up Date:</strong>
+                                                                                <span
+                                                                                    style="margin-left: 5px;"><?= date("d M Y", strtotime($consultation['next_follow_up'])) ?></span>
+                                                                            </p>
                                                                         </div>
                                                                     <?php endif; ?>
                                                                 </div>
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Close</button>
 
-                                                                <button type="button" class="btn btn-primary download-pdf-btn"
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary download-pdf-btn"
+                                                                    style="padding: 2px 4px; width:45px; height:45px;"
                                                                     data-content-id="consultationDetails<?= $consultation['id'] ?>"
                                                                     data-filename="Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>.pdf">
                                                                     <i class="bi bi-download"></i>
                                                                 </button>
+                                                                <button type="button" class="btn btn-primary btn-sm"
+                                                                    style="padding: 2px 4px; width:45px; height:45px;"
+                                                                    onclick="printDiv('consultationDetails<?= $consultation['id'] ?>', 'Consultation_<?= $patientDetails[0]['patientId'] ?>_<?= $consultation['id'] ?>')">
+                                                                    <i class="bi bi-printer"></i>
+                                                                </button>
                                                             </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1043,45 +1132,6 @@
                                         </div>
                                         <div class="d-md-flex mb-3">
                                             <div class="col-md-4">
-                                                <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                        name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5">
-                                                    <p class="mx-2 my-2">%</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
-                                                    <p class="mx-2 my-2">%</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                                </label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientPulseRate" name="patientPulseRate" placeholder="E.g. 75"
-                                                        step="1" min="0">
-                                                    <p class="mx-2 my-2">/min</p>
-                                                </div>
-                                                <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                            </div>
-                                            <div class="col-md-2 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                                </label>
-                                                <div class="d-flex">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
-                                                        step="0.01" placeholder="E.g. 98.6">
-                                                    <p class="mx-2 my-2">°F</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-md-flex mb-3">
-                                            <div class="col-md-4">
                                                 <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                                     (Fasting)</label>
                                                 <div class="d-flex me-4">
@@ -1107,6 +1157,45 @@
                                                     <input type="number" class="form-control fieldStyle" id="randomBsugar"
                                                         name="randomBsugar" step="0.1" min="0" placeholder="E.g. 125">
                                                     <p class="mx-2 my-2">mg/dL</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-md-flex mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
+                                                    <p class="mx-2 my-2">%</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientPulseRate" name="patientPulseRate" placeholder="E.g. 75"
+                                                        step="1" min="0">
+                                                    <p class="mx-2 my-2">/min</p>
+                                                </div>
+                                                <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
+                                                        step="0.01" placeholder="E.g. 98.6">
+                                                    <p class="mx-2 my-2">°F</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                        name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5">
+                                                    <p class="mx-2 my-2">%</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1571,48 +1660,6 @@
                                 </div>
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
-                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                        </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
-                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
-                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
-                                            <p class="mx-2 my-2">/min</p>
-                                        </div>
-                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                    </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                placeholder="E.g. 98.6"
-                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                            <p class="mx-2 my-2">°F</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
                                         <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
@@ -1641,6 +1688,49 @@
                                                 value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
                                 </div>
@@ -2077,48 +2167,6 @@
                                 </div>
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
-                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                        </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
-                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
-                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
-                                            <p class="mx-2 my-2">/min</p>
-                                        </div>
-                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                    </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                placeholder="E.g. 98.6"
-                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                            <p class="mx-2 my-2">°F</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
                                         <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
@@ -2147,6 +2195,48 @@
                                                 value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
                                 </div>
@@ -2700,18 +2790,20 @@
                                 class="text-danger">*</span></label>
                         <select id="newMedicineCategory" class="form-select" required>
                             <option value="">Select Category</option>
-                            <option value="TAB">Tablet</option>
-                            <option value="CAP">Capsule</option>
-                            <option value="SYR">Syrup</option>
-                            <option value="INJ">Injection</option>
+                            <option value="TABLET">Tablet</option>
+                            <option value="CAPSULE">Capsule</option>
+                            <option value="SYRUP">Syrup</option>
+                            <option value="INJECTION">Injection</option>
                             <option value="DROPS">Drops</option>
-                            <option value="OINT">Ointment</option>
+                            <option value="OINTMENT">Ointment</option>
                             <option value="CREAM">Cream</option>
                             <option value="GEL">Gel</option>
                             <option value="SPRAY">Spray</option>
-                            <option value="POW">Powder</option>
-                            <option value="SUSP">Suppository</option>
+                            <option value="POWDER">Powder</option>
+                            <option value="SUPPOSITORY">Suppository</option>
                             <option value="INSULIN">Insulin</option>
+                            <option value="OIL">Oil</option>
+                            <option value="NEEDLE">Needle</option>
                         </select>
                     </div>
                     <div class="modal-footer">
@@ -2742,12 +2834,31 @@
 
                     <div class="modal-body" style="font-family: Poppins, sans-serif;">
                         <div class="mb-4">
-                            <label class="form-label fw-semibold">Quantity</label>
+
                             <div class="d-flex align-items-center gap-2">
-                                <input type="number" id="medicineQuantity" min="0" class="form-control w-25"
-                                    placeholder="Enter quantity">
+                                <div>
+                                    <label class="form-label fw-semibold">Quantity</label>
+                                    <input type="number" id="medicineQuantity" min="0" class="form-control w-100"
+                                        placeholder="Enter quantity">
+                                </div>
+                                <div class="mb-4" style="position: relative; left: 200px;">
+                                    <label class="form-label fw-semibold">Food Timing</label>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="foodTiming"
+                                                value="Before" id="beforeFood">
+                                            <label class="form-check-label" for="beforeFood">Before Food</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="foodTiming" value="After"
+                                                id="afterFood">
+                                            <label class="form-check-label" for="afterFood">After Food</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                         <div class="mb-4">
                             <label class="form-label fw-semibold">Timing</label>
 
@@ -2758,12 +2869,11 @@
                                     <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
                                     <select id="morningUnit" class="form-select w-25" disabled>
+                                        <option value=""></option>
                                         <option value="mg">mg</option>
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
-                                        <option value="tab">tab</option>
-                                        <option value="cap">cap</option>
                                     </select>
                                 </div>
 
@@ -2773,12 +2883,11 @@
                                     <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
                                     <select id="afternoonUnit" class="form-select w-25" disabled>
+                                        <option value=""></option>
                                         <option value="mg">mg</option>
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
-                                        <option value="tab">tab</option>
-                                        <option value="cap">cap</option>
                                     </select>
                                 </div>
 
@@ -2788,12 +2897,11 @@
                                     <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
                                     <select id="eveningUnit" class="form-select w-25" disabled>
+                                        <option value=""></option>
                                         <option value="mg">mg</option>
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
-                                        <option value="tab">tab</option>
-                                        <option value="cap">cap</option>
                                     </select>
                                 </div>
 
@@ -2803,40 +2911,14 @@
                                     <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5"
                                         disabled placeholder="Qty">
                                     <select id="nightUnit" class="form-select w-25" disabled>
+                                        <option value=""></option>
                                         <option value="mg">mg</option>
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
-                                        <option value="tab">tab</option>
-                                        <option value="cap">cap</option>
                                     </select>
                                 </div>
 
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Food Timing</label>
-                            <div class="d-flex flex-wrap gap-3 mt-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="foodTiming" value="Before Food"
-                                        id="beforeFood">
-                                    <label class="form-check-label" for="beforeFood">Before Food</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="foodTiming" value="After Food"
-                                        id="afterFood">
-                                    <label class="form-check-label" for="afterFood">After Food</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="foodTiming" value="Empty Stomach"
-                                        id="emptyStomach">
-                                    <label class="form-check-label" for="emptyStomach">Empty Stomach</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="foodTiming" value="Bedtime"
-                                        id="bedtime">
-                                    <label class="form-check-label" for="bedtime">Bedtime</label>
-                                </div>
                             </div>
                         </div>
 
@@ -5068,345 +5150,359 @@
     </script>
 
     <!-- Upload attachments script -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const isEditPage = !!document.getElementById('fileList');
-        const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
-        const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
-        const isFollowup = !!document.getElementById('followupPreviewModal');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const isEditPage = !!document.getElementById('fileList');
+            const isDashboardPage = !isEditPage && !!document.querySelector('.openAttachment[data-context="dashboard"]');
+            const isNewConsultation = !!document.getElementById('newConsultationPreviewModal');
+            const isFollowup = !!document.getElementById('followupPreviewModal');
 
-        console.log('Page context:', {
-            isEditPage,
-            isDashboardPage,
-            isNewConsultation,
-            isFollowup
-        });
-
-        // === Find Containers for Class-based Elements ===
-        const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
-        const followupContainer = isFollowup ? document.querySelector('[data-page="followup"]') : null;
-
-        // === Remove conflicting modals (Unchanged Logic) ===
-        if (isEditPage) {
-            ['attachmentModal', 'newConsultationPreviewModal', 'followupPreviewModal', 'dashboardPreviewModal'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.remove();
+            console.log('Page context:', {
+                isEditPage,
+                isDashboardPage,
+                isNewConsultation,
+                isFollowup
             });
-        }
 
-        // === DOM Elements Initialization ===
-        const editElements = {
-            fileInput: document.getElementById("fileInput"),
-            submitFileInput: document.getElementById("submitFileInput"),
-            addBtn: document.getElementById("addFileBtn"),
-            fileList: document.getElementById("fileList"),
-            fileError: document.getElementById("fileError"),
-            removedFilesInput: document.getElementById("removedFiles"),
-            dropZone: document.getElementById("dropZone"),
-            imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), {
-                backdrop: 'static',
-                keyboard: false
-            }) : null,
-            editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), {
-                backdrop: 'static',
-                keyboard: true
-            }) : null,
-            previewContent: document.getElementById('filePreviewContent'),
-            modalTitle: document.getElementById('editPreviewModalLabel'),
-            prevBtn: document.getElementById('prevFile'),
-            nextBtn: document.getElementById('nextFile')
-        };
+            // === Find Containers for Class-based Elements ===
+            const newConsultationContainer = isNewConsultation ? document.querySelector('[data-page="new"]') : null;
+            const followupContainer = isFollowup ? document.querySelector('[data-page="followup"]') : null;
 
-        const newConsultationElements = isNewConsultation && newConsultationContainer ? {
-            previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), {
-                backdrop: 'static',
-                keyboard: true
-            }),
-            image: document.getElementById('newConsultationImage'),
-            pdf: document.getElementById('newConsultationPDF'),
-            modalTitle: document.getElementById('newConsultationPreviewModalLabel'),
-            prevBtn: document.getElementById('prevNewConsultation'),
-            nextBtn: document.getElementById('nextNewConsultation'),
-            fileInput: newConsultationContainer.querySelector(".fileInput"),
-            submitFileInput: newConsultationContainer.querySelector(".submitFileInput"),
-            addBtn: newConsultationContainer.querySelector(".addFileBtn"),
-            fileList: newConsultationContainer.querySelector(".fileList"),
-            fileError: newConsultationContainer.querySelector(".fileError"),
-            dropZone: newConsultationContainer.querySelector(".dropZone"),
-        } : {};
-
-        const followupElements = isFollowup && followupContainer ? {
-            previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), {
-                backdrop: 'static',
-                keyboard: true
-            }),
-            image: document.getElementById('followupImage'),
-            pdf: document.getElementById('followupPDF'),
-            modalTitle: document.getElementById('followupPreviewModalLabel'),
-            prevBtn: document.getElementById('prevFollowup'),
-            nextBtn: document.getElementById('nextFollowup'),
-            fileInput: followupContainer.querySelector(".fileInput"),
-            submitFileInput: followupContainer.querySelector(".submitFileInput"),
-            addBtn: followupContainer.querySelector(".addFileBtn"),
-            fileList: followupContainer.querySelector(".fileList"),
-            fileError: followupContainer.querySelector(".fileError"),
-            dropZone: followupContainer.querySelector(".dropZone"),
-        } : {};
-
-        const dashboardElements = isDashboardPage ? {
-            previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), {
-                backdrop: 'static',
-                keyboard: true
-            }),
-            image: document.getElementById('attachmentImage'),
-            pdf: document.getElementById('attachmentPDF'),
-            modalTitle: document.getElementById('dashboardPreviewModalLabel'),
-            prevBtn: document.getElementById('prevAttachment'),
-            nextBtn: document.getElementById('nextAttachment')
-        } : {};
-
-        const MAX_FILES = 10;
-        let cropper;
-        let newFiles = [];
-        let existingFiles = [];
-        let removedFiles = [];
-        let currentRotationAngle = 0;
-        let originalDataURL = null;
-        let currentImageBlob = null;
-        let currentIndex = -1;
-        let currentFiles = [];
-        let currentZoom = 1.0;
-        const ZOOM_STEP = 0.2;
-        let isDragging = false;
-        let startX, startY, scrollLeft, scrollTop;
-
-        const BASE_FILE_URL = '<?php echo base_url('uploads/consultations/'); ?>';
-
-        function getCurrentElements() {
-            if (isNewConsultation) return newConsultationElements;
-            if (isFollowup) return followupElements;
-            return editElements;
-        }
-
-        if (isEditPage && editElements.fileList) {
-            try {
-                existingFiles = <?php echo json_encode($attachments ?? []); ?>;
-            } catch (e) {
-                console.error('Error parsing existingFiles:', e);
-                existingFiles = [];
+            // === Remove conflicting modals (Unchanged Logic) ===
+            if (isEditPage) {
+                ['attachmentModal', 'newConsultationPreviewModal', 'followupPreviewModal', 'dashboardPreviewModal'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.remove();
+                });
             }
 
-            existingFiles = existingFiles.map(file => {
-                const fileName = file.file_name || file.name || 'Unknown';
-                const extension = fileName.split('.').pop().toLowerCase();
-                const mimeType = file.mime_type || getMimeType(extension);
-                const url = file.url || (file.file_path ? BASE_FILE_URL + 
-                encodeURIComponent(file.file_path) : BASE_FILE_URL + encodeURIComponent(fileName));
-                return {
-                    file_name: fileName,
-                    ext: extension,
-                    mime_type: mimeType,
-                    url,
-                    size: file.size || 0
-                };
-            });
-
-            renderFileList();
-        }
-        if (isNewConsultation || isFollowup) {
-            renderFileList();
-        }
-
-
-        function getMimeType(ext) {
-            const map = {
-                'jpg': 'image/jpeg',
-                'jpeg': 'image/jpeg',
-                'png': 'image/png',
-                'pdf': 'application/pdf',
-                'doc': 'application/msword',
-                'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            // === DOM Elements Initialization ===
+            const editElements = {
+                fileInput: document.getElementById("fileInput"),
+                submitFileInput: document.getElementById("submitFileInput"),
+                addBtn: document.getElementById("addFileBtn"),
+                fileList: document.getElementById("fileList"),
+                fileError: document.getElementById("fileError"),
+                removedFilesInput: document.getElementById("removedFiles"),
+                dropZone: document.getElementById("dropZone"),
+                imageEditModal: document.getElementById('imageEditModal') ? new bootstrap.Modal(document.getElementById('imageEditModal'), {
+                    backdrop: 'static',
+                    keyboard: false
+                }) : null,
+                editPreviewModal: document.getElementById('editPreviewModal') ? new bootstrap.Modal(document.getElementById('editPreviewModal'), {
+                    backdrop: 'static',
+                    keyboard: true
+                }) : null,
+                previewContent: document.getElementById('filePreviewContent'),
+                modalTitle: document.getElementById('editPreviewModalLabel'),
+                prevBtn: document.getElementById('prevFile'),
+                nextBtn: document.getElementById('nextFile')
             };
-            return map[ext] || 'application/octet-stream';
-        }
 
+            const newConsultationElements = isNewConsultation && newConsultationContainer ? {
+                previewModal: new bootstrap.Modal(document.getElementById('newConsultationPreviewModal'), {
+                    backdrop: 'static',
+                    keyboard: true
+                }),
+                image: document.getElementById('newConsultationImage'),
+                pdf: document.getElementById('newConsultationPDF'),
+                modalTitle: document.getElementById('newConsultationPreviewModalLabel'),
+                prevBtn: document.getElementById('prevNewConsultation'),
+                nextBtn: document.getElementById('nextNewConsultation'),
+                fileInput: newConsultationContainer.querySelector(".fileInput"),
+                submitFileInput: newConsultationContainer.querySelector(".submitFileInput"),
+                addBtn: newConsultationContainer.querySelector(".addFileBtn"),
+                fileList: newConsultationContainer.querySelector(".fileList"),
+                fileError: newConsultationContainer.querySelector(".fileError"),
+                dropZone: newConsultationContainer.querySelector(".dropZone"),
+            } : {};
 
-        const currentElements = getCurrentElements();
-        const dropZone = currentElements.dropZone;
+            const followupElements = isFollowup && followupContainer ? {
+                previewModal: new bootstrap.Modal(document.getElementById('followupPreviewModal'), {
+                    backdrop: 'static',
+                    keyboard: true
+                }),
+                image: document.getElementById('followupImage'),
+                pdf: document.getElementById('followupPDF'),
+                modalTitle: document.getElementById('followupPreviewModalLabel'),
+                prevBtn: document.getElementById('prevFollowup'),
+                nextBtn: document.getElementById('nextFollowup'),
+                fileInput: followupContainer.querySelector(".fileInput"),
+                submitFileInput: followupContainer.querySelector(".submitFileInput"),
+                addBtn: followupContainer.querySelector(".addFileBtn"),
+                fileList: followupContainer.querySelector(".fileList"),
+                fileError: followupContainer.querySelector(".fileError"),
+                dropZone: followupContainer.querySelector(".dropZone"),
+            } : {};
 
-        if (dropZone) {
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
-                dropZone.addEventListener(ev, preventDefaults, false);
-                document.body.addEventListener(ev, preventDefaults, false);
-            });
-            ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => highlight(dropZone), false));
-            ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => unhighlight(dropZone), false));
-            dropZone.addEventListener('drop', async e => {
-                unhighlight(dropZone);
-                await processNewFiles(Array.from(e.dataTransfer.files));
-            });
-        }
+            const dashboardElements = isDashboardPage ? {
+                previewModal: new bootstrap.Modal(document.getElementById('dashboardPreviewModal'), {
+                    backdrop: 'static',
+                    keyboard: true
+                }),
+                image: document.getElementById('attachmentImage'),
+                pdf: document.getElementById('attachmentPDF'),
+                modalTitle: document.getElementById('dashboardPreviewModalLabel'),
+                prevBtn: document.getElementById('prevAttachment'),
+                nextBtn: document.getElementById('nextAttachment')
+            } : {};
 
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+            const MAX_FILES = 10;
+            let cropper;
+            let newFiles = [];
+            let existingFiles = [];
+            let removedFiles = [];
+            let currentRotationAngle = 0;
+            let originalDataURL = null;
+            let currentImageBlob = null;
+            let currentIndex = -1;
+            let currentFiles = [];
+            let currentZoom = 1.0;
+            const ZOOM_STEP = 0.2;
+            let isDragging = false;
+            let startX, startY, scrollLeft, scrollTop;
 
-        function highlight(el) {
-            el.style.borderColor = '#00ad8e';
-            el.style.backgroundColor = '#f2ebebff';
-        }
+            const BASE_FILE_URL = '<?php echo base_url('uploads/consultations/'); ?>';
 
-        function unhighlight(el) {
-            el.style.borderColor = '#ccc';
-            el.style.backgroundColor = 'transparent';
-        }
-
-        async function processNewFiles(files) {
-            const currentElements = getCurrentElements();
-            if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
-            currentElements.fileError.textContent = "";
-            if (!files.length) return;
-
-            const allowedTypes = (currentElements.fileInput?.getAttribute('accept') || '').split(',').map(t => t.trim()).filter(t => t);
-            for (let file of files) {
-                const ext = file.name.split('.').pop().toLowerCase();
-                const type = file.type || getMimeType(ext);
-
-                if (allowedTypes.length && !allowedTypes.includes(type) && !allowedTypes.some(t => file.name.endsWith(t.replace('.', '')))) {
-                    currentElements.fileError.textContent = `File type not allowed: ${file.name}`;
-                    continue;
-                }
-                if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                    currentElements.fileError.textContent = `Max ${MAX_FILES} files allowed.`;
-                    break;
-                }
-                if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === file.name && f.size === file.size)) {
-                    currentElements.fileError.textContent = `File "${file.name}" already uploaded.`;
-                    continue;
-                }
-
-                if (['image/jpeg', 'image/jpg', 'image/png'].includes(type) && editElements.imageEditModal) {
-                    const edited = await editImage(file);
-                    if (edited) newFiles.push({
-                        name: edited.name,
-                        file: edited,
-                        type: edited.type,
-                        ext,
-                        url: null,
-                        size: edited.size
-                    });
-                } else {
-                    newFiles.push({
-                        name: file.name,
-                        file,
-                        type,
-                        ext,
-                        url: null,
-                        size: file.size
-                    });
-                }
+            function getCurrentElements() {
+                if (isNewConsultation) return newConsultationElements;
+                if (isFollowup) return followupElements;
+                return editElements;
             }
-            renderFileList();
-            updateSubmitFileInput();
-        }
 
-        function editImage(file) {
-            return new Promise(resolve => {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const dataURL = e.target.result;
-                    const img = document.getElementById('editor-image');
-                    const canvas = document.getElementById('editor-canvas');
-                    if (cropper) cropper.destroy();
-                    currentRotationAngle = 0;
-                    originalDataURL = dataURL;
-                    currentImageBlob = file;
-                    img.src = dataURL;
-                    img.style.display = 'block';
-                    canvas.style.display = 'none';
-                    editElements.imageEditModal.show();
-                    cropper = new Cropper(img, {
-                        aspectRatio: NaN,
-                        viewMode: 1,
-                        autoCropArea: 1,
-                        responsive: true,
-                        scalable: true,
-                        zoomable: true,
-                        minContainerWidth: 600,
-                        minContainerHeight: 600
-                    });
+            if (isEditPage && editElements.fileList) {
+                try {
+                    existingFiles = <?php echo json_encode($attachments ?? []); ?>;
+                } catch (e) {
+                    console.error('Error parsing existingFiles:', e);
+                    existingFiles = [];
+                }
 
-                    const escapeHandler = ev => ev.key === 'Escape' && editElements.imageEditModal.hide();
-                    document.addEventListener('keydown', escapeHandler);
-                    editElements.imageEditModal._element.addEventListener('hidden.bs.modal', () => {
-                        document.removeEventListener('keydown', escapeHandler);
-                        resolve(null);
-                        cleanup();
-                    }, {
-                        once: true
-                    });
+                existingFiles = existingFiles.map(file => {
+                    const fileName = file.file_name || file.name || 'Unknown';
+                    const extension = fileName.split('.').pop().toLowerCase();
+                    const mimeType = file.mime_type || getMimeType(extension);
+                    const url = file.url || (file.file_path ? BASE_FILE_URL +
+                        encodeURIComponent(file.file_path) : BASE_FILE_URL + encodeURIComponent(fileName));
+                    return {
+                        file_name: fileName,
+                        ext: extension,
+                        mime_type: mimeType,
+                        url,
+                        size: file.size || 0
+                    };
+                });
 
-                    document.getElementById('crop-btn').onclick = () => {
+                renderFileList();
+            }
+            if (isNewConsultation || isFollowup) {
+                renderFileList();
+            }
+
+
+            function getMimeType(ext) {
+                const map = {
+                    'jpg': 'image/jpeg',
+                    'jpeg': 'image/jpeg',
+                    'png': 'image/png',
+                    'pdf': 'application/pdf',
+                    'doc': 'application/msword',
+                    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                };
+                return map[ext] || 'application/octet-stream';
+            }
+
+
+            const currentElements = getCurrentElements();
+            const dropZone = currentElements.dropZone;
+
+            if (dropZone) {
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev => {
+                    dropZone.addEventListener(ev, preventDefaults, false);
+                    document.body.addEventListener(ev, preventDefaults, false);
+                });
+                ['dragenter', 'dragover'].forEach(ev => dropZone.addEventListener(ev, () => highlight(dropZone), false));
+                ['dragleave', 'drop'].forEach(ev => dropZone.addEventListener(ev, () => unhighlight(dropZone), false));
+                dropZone.addEventListener('drop', async e => {
+                    unhighlight(dropZone);
+                    await processNewFiles(Array.from(e.dataTransfer.files));
+                });
+            }
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight(el) {
+                el.style.borderColor = '#00ad8e';
+                el.style.backgroundColor = '#f2ebebff';
+            }
+
+            function unhighlight(el) {
+                el.style.borderColor = '#ccc';
+                el.style.backgroundColor = 'transparent';
+            }
+
+            async function processNewFiles(files) {
+                const currentElements = getCurrentElements();
+                if (!currentElements.fileError) currentElements.fileError = document.getElementById('fileError');
+                currentElements.fileError.textContent = "";
+                if (!files.length) return;
+
+                const allowedTypes = (currentElements.fileInput?.getAttribute('accept') || '').split(',').map(t => t.trim()).filter(t => t);
+                for (let file of files) {
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    const type = file.type || getMimeType(ext);
+
+                    if (allowedTypes.length && !allowedTypes.includes(type) && !allowedTypes.some(t => file.name.endsWith(t.replace('.', '')))) {
+                        currentElements.fileError.textContent = `File type not allowed: ${file.name}`;
+                        continue;
+                    }
+                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                        currentElements.fileError.textContent = `Max ${MAX_FILES} files allowed.`;
+                        break;
+                    }
+                    if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === file.name && f.size === file.size)) {
+                        currentElements.fileError.textContent = `File "${file.name}" already uploaded.`;
+                        continue;
+                    }
+
+                    if (['image/jpeg', 'image/jpg', 'image/png'].includes(type) && editElements.imageEditModal) {
+                        const edited = await editImage(file);
+                        if (edited) newFiles.push({
+                            name: edited.name,
+                            file: edited,
+                            type: edited.type,
+                            ext,
+                            url: null,
+                            size: edited.size
+                        });
+                    } else {
+                        newFiles.push({
+                            name: file.name,
+                            file,
+                            type,
+                            ext,
+                            url: null,
+                            size: file.size
+                        });
+                    }
+                }
+                renderFileList();
+                updateSubmitFileInput();
+            }
+
+            function editImage(file) {
+                return new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const dataURL = e.target.result;
+                        const img = document.getElementById('editor-image');
+                        const canvas = document.getElementById('editor-canvas');
+                        if (cropper) cropper.destroy();
+                        currentRotationAngle = 0;
+                        originalDataURL = dataURL;
+                        currentImageBlob = file;
+                        img.src = dataURL;
                         img.style.display = 'block';
                         canvas.style.display = 'none';
-                        if (!cropper) cropper = new Cropper(img, {
+                        editElements.imageEditModal.show();
+                        cropper = new Cropper(img, {
+                            aspectRatio: NaN,
                             viewMode: 1,
-                            dragMode: 'crop',
-                            autoCrop: false,
-                            movable: false,
-                            zoomable: false,
-                            scalable: false
+                            autoCropArea: 1,
+                            responsive: true,
+                            scalable: true,
+                            zoomable: true,
+                            minContainerWidth: 600,
+                            minContainerHeight: 600
                         });
-                        cropper.setDragMode('crop');
-                    };
 
-                    document.getElementById('rotate-btn').onclick = () => {
-                        if (!originalDataURL) return;
-                        currentRotationAngle = (currentRotationAngle + 90) % 360;
-                        const imgObj = new Image();
-                        imgObj.src = originalDataURL;
-                        imgObj.onload = () => {
-                            const tempCanvas = document.createElement('canvas'),
-                                ctx = tempCanvas.getContext('2d');
-                            const angleRad = currentRotationAngle * Math.PI / 180;
-                            const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
-                            const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
-                            tempCanvas.width = w;
-                            tempCanvas.height = h;
-                            ctx.translate(w / 2, h / 2);
-                            ctx.rotate(angleRad);
-                            ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
-                            tempCanvas.toBlob(blob => {
-                                currentImageBlob = new File([blob], file.name, {
-                                    type: file.type
-                                });
-                                const url = URL.createObjectURL(currentImageBlob);
-                                img.src = url;
-                                if (cropper) cropper.destroy();
-                                cropper = new Cropper(img, {
-                                    aspectRatio: NaN,
-                                    viewMode: 1,
-                                    autoCropArea: 1,
-                                    responsive: true,
-                                    scalable: true,
-                                    zoomable: true,
-                                    minContainerWidth: 600,
-                                    minContainerHeight: 600
-                                });
-                            }, file.type, 1);
+                        const escapeHandler = ev => ev.key === 'Escape' && editElements.imageEditModal.hide();
+                        document.addEventListener('keydown', escapeHandler);
+                        editElements.imageEditModal._element.addEventListener('hidden.bs.modal', () => {
+                            document.removeEventListener('keydown', escapeHandler);
+                            resolve(null);
+                            cleanup();
+                        }, {
+                            once: true
+                        });
+
+                        document.getElementById('crop-btn').onclick = () => {
+                            img.style.display = 'block';
+                            canvas.style.display = 'none';
+                            if (!cropper) cropper = new Cropper(img, {
+                                viewMode: 1,
+                                dragMode: 'crop',
+                                autoCrop: false,
+                                movable: false,
+                                zoomable: false,
+                                scalable: false
+                            });
+                            cropper.setDragMode('crop');
                         };
-                    };
 
-                    const saveBtn = document.getElementById('saveEditedImage');
-                    const saveHandler = () => {
-                        if (cropper) {
-                            cropper.getCroppedCanvas({
-                                fillColor: file.type.includes('png') ? 'transparent' : '#ffffff'
-                            }).toBlob(blob => {
-                                const edited = new File([blob], file.name, {
+                        document.getElementById('rotate-btn').onclick = () => {
+                            if (!originalDataURL) return;
+                            currentRotationAngle = (currentRotationAngle + 90) % 360;
+                            const imgObj = new Image();
+                            imgObj.src = originalDataURL;
+                            imgObj.onload = () => {
+                                const tempCanvas = document.createElement('canvas'),
+                                    ctx = tempCanvas.getContext('2d');
+                                const angleRad = currentRotationAngle * Math.PI / 180;
+                                const isSwapped = currentRotationAngle === 90 || currentRotationAngle === 270;
+                                const [w, h] = isSwapped ? [imgObj.naturalHeight * 0.5, imgObj.naturalWidth * 0.5] : [imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5];
+                                tempCanvas.width = w;
+                                tempCanvas.height = h;
+                                ctx.translate(w / 2, h / 2);
+                                ctx.rotate(angleRad);
+                                ctx.drawImage(imgObj, -imgObj.naturalWidth * 0.25, -imgObj.naturalHeight * 0.25, imgObj.naturalWidth * 0.5, imgObj.naturalHeight * 0.5);
+                                tempCanvas.toBlob(blob => {
+                                    currentImageBlob = new File([blob], file.name, {
+                                        type: file.type
+                                    });
+                                    const url = URL.createObjectURL(currentImageBlob);
+                                    img.src = url;
+                                    if (cropper) cropper.destroy();
+                                    cropper = new Cropper(img, {
+                                        aspectRatio: NaN,
+                                        viewMode: 1,
+                                        autoCropArea: 1,
+                                        responsive: true,
+                                        scalable: true,
+                                        zoomable: true,
+                                        minContainerWidth: 600,
+                                        minContainerHeight: 600
+                                    });
+                                }, file.type, 1);
+                            };
+                        };
+
+                        const saveBtn = document.getElementById('saveEditedImage');
+                        const saveHandler = () => {
+                            if (cropper) {
+                                cropper.getCroppedCanvas({
+                                    fillColor: file.type.includes('png') ? 'transparent' : '#ffffff'
+                                }).toBlob(blob => {
+                                    const edited = new File([blob], file.name, {
+                                        type: file.type
+                                    });
+                                    const errorElement = getCurrentElements().fileError; // Use context-aware error element
+                                    if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
+                                        errorElement.textContent = `File "${edited.name}" already uploaded.`;
+                                        resolve(null);
+                                        cleanup();
+                                    } else {
+                                        resolve(edited);
+                                        cleanup();
+                                    }
+                                }, file.type, 1);
+                            } else {
+                                const edited = currentImageBlob ? new File([currentImageBlob], file.name, {
                                     type: file.type
-                                });
+                                }) : file;
                                 const errorElement = getCurrentElements().fileError; // Use context-aware error element
                                 if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
                                     errorElement.textContent = `File "${edited.name}" already uploaded.`;
@@ -5416,492 +5512,478 @@
                                     resolve(edited);
                                     cleanup();
                                 }
-                            }, file.type, 1);
-                        } else {
-                            const edited = currentImageBlob ? new File([currentImageBlob], file.name, {
-                                type: file.type
-                            }) : file;
-                            const errorElement = getCurrentElements().fileError; // Use context-aware error element
-                            if ([...newFiles, ...existingFiles].some(f => (f.name || f.file_name) === edited.name && f.size === edited.size)) {
-                                errorElement.textContent = `File "${edited.name}" already uploaded.`;
-                                resolve(null);
-                                cleanup();
-                            } else {
-                                resolve(edited);
-                                cleanup();
                             }
+                        };
+                        saveBtn.addEventListener('click', saveHandler, {
+                            once: true
+                        });
+
+                        function cleanup() {
+                            editElements.imageEditModal.hide();
+                            if (cropper) {
+                                cropper.destroy();
+                                cropper = null;
+                            }
+                            img.src = '';
+                            img.style.display = 'none';
+                            canvas.style.display = 'none';
+                            currentRotationAngle = 0;
+                            originalDataURL = null;
+                            currentImageBlob = null;
+                            const newBtn = saveBtn.cloneNode(true);
+                            saveBtn.parentNode.replaceChild(newBtn, saveBtn);
                         }
                     };
-                    saveBtn.addEventListener('click', saveHandler, {
-                        once: true
-                    });
+                    reader.readAsDataURL(file);
+                });
+            }
 
-                    function cleanup() {
-                        editElements.imageEditModal.hide();
-                        if (cropper) {
-                            cropper.destroy();
-                            cropper = null;
+            if (isEditPage || isNewConsultation || isFollowup) {
+                const elements = getCurrentElements();
+
+                if (elements.addBtn) {
+                    elements.addBtn.addEventListener("click", () => {
+                        if (newFiles.length + existingFiles.length >= MAX_FILES) {
+                            elements.fileError.textContent = `Maximum ${MAX_FILES} files allowed.`;
+                            return;
                         }
-                        img.src = '';
-                        img.style.display = 'none';
-                        canvas.style.display = 'none';
-                        currentRotationAngle = 0;
-                        originalDataURL = null;
-                        currentImageBlob = null;
-                        const newBtn = saveBtn.cloneNode(true);
-                        saveBtn.parentNode.replaceChild(newBtn, saveBtn);
-                    }
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        if (isEditPage || isNewConsultation || isFollowup) {
-            const elements = getCurrentElements();
-
-            if (elements.addBtn) {
-                elements.addBtn.addEventListener("click", () => {
-                    if (newFiles.length + existingFiles.length >= MAX_FILES) {
-                        elements.fileError.textContent = `Maximum ${MAX_FILES} files allowed.`;
-                        return;
-                    }
-                    elements.fileInput.click();
-                });
-            }
-            if (elements.fileInput) {
-                elements.fileInput.addEventListener("change", async () => {
-                    if (elements.fileInput.files.length) {
-                        await processNewFiles(Array.from(elements.fileInput.files));
-                        elements.fileInput.value = "";
-                    }
-                });
-            }
-        }
-
-
-        function renderFileList() {
-            const currentElements = getCurrentElements();
-            if (!currentElements.fileList) return;
-            currentElements.fileList.innerHTML = "";
-            const context = isEditPage ? "edit" : isNewConsultation ? "new" : "followup";
-
-            if (!existingFiles.length && !newFiles.length) {
-                currentElements.fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
-                return;
-            }
-
-            const ul = document.createElement("ul");
-            ul.style.paddingLeft = "1.2rem";
-            [...existingFiles, ...newFiles].forEach((file, i) => {
-                const isExisting = isEditPage && i < existingFiles.length;
-                const fileIndexInArray = isExisting ? i : i - existingFiles.length;
-
-                const li = document.createElement("li");
-                li.style.marginBottom = "6px";
-                const link = document.createElement("a");
-                link.href = "javascript:void(0);";
-                link.textContent = isExisting ? file.file_name : file.name;
-                link.className = "openAttachment";
-                link.style.color = "#007bff";
-                link.style.textDecoration = "underline";
-                link.style.cursor = "pointer";
-                link.setAttribute("data-file", isExisting ? file.url : (file.file ? file.name : ''));
-                link.setAttribute("data-ext", isExisting ? file.ext : file.ext);
-                link.setAttribute("data-context", context);
-                link.setAttribute("data-is-existing", isExisting.toString());
-                link.setAttribute("data-file-index", fileIndexInArray.toString());
-
-                const removeBtn = document.createElement("button");
-                removeBtn.type = "button";
-                removeBtn.textContent = "✕";
-                removeBtn.className = "btn btn-sm btn-danger";
-                removeBtn.style.marginLeft = "8px";
-                removeBtn.onclick = () => {
-                    if (isExisting) {
-                        removedFiles.push(file.file_name);
-                        existingFiles.splice(fileIndexInArray, 1);
-                        if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles);
-                    } else newFiles.splice(fileIndexInArray, 1);
-                    renderFileList();
-                    updateSubmitFileInput();
-                };
-                li.appendChild(link);
-                li.appendChild(removeBtn);
-                ul.appendChild(li);
-            });
-            currentElements.fileList.appendChild(ul);
-        }
-
-        function updateSubmitFileInput() {
-            const currentElements = getCurrentElements();
-            if (!currentElements.submitFileInput) return;
-            const dt = new DataTransfer();
-            newFiles.forEach(f => dt.items.add(f.file));
-            currentElements.submitFileInput.files = dt.files;
-        }
-
-        function showPreview(file, isExisting, index, context) {
-            const fileName = isExisting ? file.file_name : file.name;
-            const fileType = isExisting ? (file.mime_type || getMimeType(file.ext)) : file.type;
-            const url = isExisting ? file.url : URL.createObjectURL(file.file);
-
-            let elements, showModal, updateNav;
-            if (context === 'edit' && editElements.editPreviewModal) {
-                elements = editElements;
-                showModal = () => editElements.editPreviewModal.show();
-                updateNav = updateEditNavigation;
-                elements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
-                elements.previewContent.innerHTML = '';
-            } else if (context === 'new' && newConsultationElements.previewModal) {
-                elements = newConsultationElements;
-                showModal = () => elements.previewModal.show();
-                updateNav = () => updateNavButtons(elements, index);
-                elements.modalTitle.textContent = `New Consultation Attachment Preview - ${fileName}`;
-                elements.image.classList.add('d-none');
-                elements.pdf.classList.add('d-none');
-            } else if (context === 'followup' && followupElements.previewModal) {
-                elements = followupElements;
-                showModal = () => elements.previewModal.show();
-                updateNav = () => updateNavButtons(elements, index);
-                elements.modalTitle.textContent = `Follow-up Attachment Preview - ${fileName}`;
-                elements.image.classList.add('d-none');
-                elements.pdf.classList.add('d-none');
-            } else if (context === 'dashboard' && dashboardElements.previewModal) {
-                elements = dashboardElements;
-                showModal = () => elements.previewModal.show();
-                updateNav = () => updateNavButtons(elements, index);
-                elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
-                elements.image.classList.add('d-none');
-                elements.pdf.classList.add('d-none');
-
-                document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
-
-                const toolbar = document.getElementById('attachment-toolbar');
-                const downloadBtn = document.getElementById('downloadAttachmentBtn');
-                const attachmentImage = document.getElementById('attachmentImage');
-
-                toolbar.style.display = 'none';
-
-                currentZoom = 1.0;
-                attachmentImage.style.transform = `scale(${currentZoom})`;
-
-                let hasDownloaded = false; // Restrict multi download
-                const patientId = document.getElementById('patientId').value;
-                const newFileName = fileName.replace(/^[^_]+/, `attachment_${patientId}`);
-                downloadBtn.onclick = () => {
-                    if (hasDownloaded) return;  // Stop further clicks
-                    hasDownloaded = true;
-
-                    const tempLink = document.createElement('a');
-                    tempLink.href = url;
-                    tempLink.download = newFileName;
-                    document.body.appendChild(tempLink);
-                    tempLink.click();
-                    document.body.removeChild(tempLink);
-                };
-
-                if (fileType.includes('image')) {
-                    toolbar.style.display = 'flex';
-                    document.getElementById('zoomOutBtn').disabled = true;
-                    document.getElementById('zoomInBtn').disabled = false;
-                    attachmentImage.style.cursor = 'grab';
-                } else {
-                    attachmentImage.style.cursor = 'default';
+                        elements.fileInput.click();
+                    });
                 }
-            } else return;
-
-            currentIndex = index;
-
-            const display = () => {
-                if (fileType.includes('image')) {
-                    if (context === 'edit') {
-                        const img = document.createElement('img');
-                        img.src = url;
-                        img.style.maxWidth = '100%';
-                        img.maxHeight = '70vh';
-                        elements.previewContent.appendChild(img);
-                    } else {
-                        elements.image.src = url;
-                        elements.image.classList.remove('d-none');
-                    }
-                } else if (fileType === 'application/pdf') {
-                    if (context === 'edit') {
-                        const embed = document.createElement('embed');
-                        embed.src = url;
-                        embed.style.width = '100%';
-                        embed.style.height = '70vh';
-                        elements.previewContent.appendChild(embed);
-                    } else {
-                        elements.pdf.src = url;
-                        elements.pdf.classList.remove('d-none');
-                    }
-                } else {
-                    const p = document.createElement('p');
-                    p.textContent = `Preview not available for ${fileName}.`;
-                    p.style.textAlign = 'center';
-
-                    if (context === 'dashboard') {
-                        elements.image.classList.add('d-none');
-                        elements.pdf.classList.add('d-none');
-                        p.id = 'no-preview-message';
-                        document.getElementById('attachment-content-wrapper').appendChild(p);
-                    } else if (context === 'edit') {
-                        elements.previewContent.appendChild(p);
-                    } else {
-                        elements.image.classList.remove('d-none');
-                        elements.image.alt = p.textContent;
-                    }
+                if (elements.fileInput) {
+                    elements.fileInput.addEventListener("change", async () => {
+                        if (elements.fileInput.files.length) {
+                            await processNewFiles(Array.from(elements.fileInput.files));
+                            elements.fileInput.value = "";
+                        }
+                    });
                 }
-                updateNav(index);
-                showModal();
-            };
-
-            if (isExisting && context !== 'edit') {
-                fetch(url, {
-                    method: 'HEAD'
-                }).then(r => r.ok ? display() : fail()).catch(fail);
-            } else display();
-
-            function fail() {
-                const p = document.createElement('p');
-                p.textContent = `Cannot access ${fileName}.`;
-                p.style.textAlign = 'center';
-                context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
-                updateNav(index);
-                showModal();
             }
 
-            elements.previewModal._element.addEventListener('hidden.bs.modal', () => {
-                if (!isExisting && url.startsWith('blob:')) URL.revokeObjectURL(url);
-                if (context === 'edit') elements.previewContent.innerHTML = '';
-                else {
-                    elements.image.src = '';
-                    elements.pdf.src = '';
+
+            function renderFileList() {
+                const currentElements = getCurrentElements();
+                if (!currentElements.fileList) return;
+                currentElements.fileList.innerHTML = "";
+                const context = isEditPage ? "edit" : isNewConsultation ? "new" : "followup";
+
+                if (!existingFiles.length && !newFiles.length) {
+                    currentElements.fileList.innerHTML = '<small class="text-muted">No files selected.</small>';
+                    return;
+                }
+
+                const ul = document.createElement("ul");
+                ul.style.paddingLeft = "1.2rem";
+                [...existingFiles, ...newFiles].forEach((file, i) => {
+                    const isExisting = isEditPage && i < existingFiles.length;
+                    const fileIndexInArray = isExisting ? i : i - existingFiles.length;
+
+                    const li = document.createElement("li");
+                    li.style.marginBottom = "6px";
+                    const link = document.createElement("a");
+                    link.href = "javascript:void(0);";
+                    link.textContent = isExisting ? file.file_name : file.name;
+                    link.className = "openAttachment";
+                    link.style.color = "#007bff";
+                    link.style.textDecoration = "underline";
+                    link.style.cursor = "pointer";
+                    link.setAttribute("data-file", isExisting ? file.url : (file.file ? file.name : ''));
+                    link.setAttribute("data-ext", isExisting ? file.ext : file.ext);
+                    link.setAttribute("data-context", context);
+                    link.setAttribute("data-is-existing", isExisting.toString());
+                    link.setAttribute("data-file-index", fileIndexInArray.toString());
+
+                    const removeBtn = document.createElement("button");
+                    removeBtn.type = "button";
+                    removeBtn.textContent = "✕";
+                    removeBtn.className = "btn btn-sm btn-danger";
+                    removeBtn.style.marginLeft = "8px";
+                    removeBtn.onclick = () => {
+                        if (isExisting) {
+                            removedFiles.push(file.file_name);
+                            existingFiles.splice(fileIndexInArray, 1);
+                            if (currentElements.removedFilesInput) currentElements.removedFilesInput.value = JSON.stringify(removedFiles);
+                        } else newFiles.splice(fileIndexInArray, 1);
+                        renderFileList();
+                        updateSubmitFileInput();
+                    };
+                    li.appendChild(link);
+                    li.appendChild(removeBtn);
+                    ul.appendChild(li);
+                });
+                currentElements.fileList.appendChild(ul);
+            }
+
+            function updateSubmitFileInput() {
+                const currentElements = getCurrentElements();
+                if (!currentElements.submitFileInput) return;
+                const dt = new DataTransfer();
+                newFiles.forEach(f => dt.items.add(f.file));
+                currentElements.submitFileInput.files = dt.files;
+            }
+
+            function showPreview(file, isExisting, index, context) {
+                const fileName = isExisting ? file.file_name : file.name;
+                const fileType = isExisting ? (file.mime_type || getMimeType(file.ext)) : file.type;
+                const url = isExisting ? file.url : URL.createObjectURL(file.file);
+
+                let elements, showModal, updateNav;
+                if (context === 'edit' && editElements.editPreviewModal) {
+                    elements = editElements;
+                    showModal = () => editElements.editPreviewModal.show();
+                    updateNav = updateEditNavigation;
+                    elements.modalTitle.textContent = `Attachment Preview - ${fileName}`;
+                    elements.previewContent.innerHTML = '';
+                } else if (context === 'new' && newConsultationElements.previewModal) {
+                    elements = newConsultationElements;
+                    showModal = () => elements.previewModal.show();
+                    updateNav = () => updateNavButtons(elements, index);
+                    elements.modalTitle.textContent = `New Consultation Attachment Preview - ${fileName}`;
                     elements.image.classList.add('d-none');
                     elements.pdf.classList.add('d-none');
+                } else if (context === 'followup' && followupElements.previewModal) {
+                    elements = followupElements;
+                    showModal = () => elements.previewModal.show();
+                    updateNav = () => updateNavButtons(elements, index);
+                    elements.modalTitle.textContent = `Follow-up Attachment Preview - ${fileName}`;
+                    elements.image.classList.add('d-none');
+                    elements.pdf.classList.add('d-none');
+                } else if (context === 'dashboard' && dashboardElements.previewModal) {
+                    elements = dashboardElements;
+                    showModal = () => elements.previewModal.show();
+                    updateNav = () => updateNavButtons(elements, index);
+                    elements.modalTitle.textContent = `Attachment Preview in Dashboard - ${fileName}`;
+                    elements.image.classList.add('d-none');
+                    elements.pdf.classList.add('d-none');
+
+                    document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+
+                    const toolbar = document.getElementById('attachment-toolbar');
+                    const downloadBtn = document.getElementById('downloadAttachmentBtn');
+                    const attachmentImage = document.getElementById('attachmentImage');
+
+                    toolbar.style.display = 'none';
+
+                    currentZoom = 1.0;
+                    attachmentImage.style.transform = `scale(${currentZoom})`;
+
+                    let hasDownloaded = false; // Restrict multi download
+                    const patientId = document.getElementById('patientId').value;
+                    const newFileName = fileName.replace(/^[^_]+/, `attachment_${patientId}`);
+                    downloadBtn.onclick = () => {
+                        if (hasDownloaded) return;  // Stop further clicks
+                        hasDownloaded = true;
+
+                        const tempLink = document.createElement('a');
+                        tempLink.href = url;
+                        tempLink.download = newFileName;
+                        document.body.appendChild(tempLink);
+                        tempLink.click();
+                        document.body.removeChild(tempLink);
+                    };
+
+                    if (fileType.includes('image')) {
+                        toolbar.style.display = 'flex';
+                        document.getElementById('zoomOutBtn').disabled = true;
+                        document.getElementById('zoomInBtn').disabled = false;
+                        attachmentImage.style.cursor = 'grab';
+                    } else {
+                        attachmentImage.style.cursor = 'default';
+                    }
+                } else return;
+
+                currentIndex = index;
+
+                const display = () => {
+                    if (fileType.includes('image')) {
+                        if (context === 'edit') {
+                            const img = document.createElement('img');
+                            img.src = url;
+                            img.style.maxWidth = '100%';
+                            img.maxHeight = '70vh';
+                            elements.previewContent.appendChild(img);
+                        } else {
+                            elements.image.src = url;
+                            elements.image.classList.remove('d-none');
+                        }
+                    } else if (fileType === 'application/pdf') {
+                        if (context === 'edit') {
+                            const embed = document.createElement('embed');
+                            embed.src = url;
+                            embed.style.width = '100%';
+                            embed.style.height = '70vh';
+                            elements.previewContent.appendChild(embed);
+                        } else {
+                            elements.pdf.src = url;
+                            elements.pdf.classList.remove('d-none');
+                        }
+                    } else {
+                        const p = document.createElement('p');
+                        p.textContent = `Preview not available for ${fileName}.`;
+                        p.style.textAlign = 'center';
+
+                        if (context === 'dashboard') {
+                            elements.image.classList.add('d-none');
+                            elements.pdf.classList.add('d-none');
+                            p.id = 'no-preview-message';
+                            document.getElementById('attachment-content-wrapper').appendChild(p);
+                        } else if (context === 'edit') {
+                            elements.previewContent.appendChild(p);
+                        } else {
+                            elements.image.classList.remove('d-none');
+                            elements.image.alt = p.textContent;
+                        }
+                    }
+                    updateNav(index);
+                    showModal();
+                };
+
+                if (isExisting && context !== 'edit') {
+                    fetch(url, {
+                        method: 'HEAD'
+                    }).then(r => r.ok ? display() : fail()).catch(fail);
+                } else display();
+
+                function fail() {
+                    const p = document.createElement('p');
+                    p.textContent = `Cannot access ${fileName}.`;
+                    p.style.textAlign = 'center';
+                    context === 'edit' ? elements.previewContent.appendChild(p) : elements.image.classList.remove('d-none'), elements.image.alt = p.textContent;
+                    updateNav(index);
+                    showModal();
                 }
-                currentIndex = -1;
-                currentFiles = [];
+
+                elements.previewModal._element.addEventListener('hidden.bs.modal', () => {
+                    if (!isExisting && url.startsWith('blob:')) URL.revokeObjectURL(url);
+                    if (context === 'edit') elements.previewContent.innerHTML = '';
+                    else {
+                        elements.image.src = '';
+                        elements.pdf.src = '';
+                        elements.image.classList.add('d-none');
+                        elements.pdf.classList.add('d-none');
+                    }
+                    currentIndex = -1;
+                    currentFiles = [];
+
+                    if (context === 'dashboard') {
+                        document.getElementById('attachmentImage').style.cursor = 'default';
+                        document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
+                        document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+                    }
+                }, {
+                    once: true
+                });
+            }
+
+            function updateEditNavigation(index) {
+                editElements.prevBtn.disabled = index === 0;
+                editElements.nextBtn.disabled = index === currentFiles.length - 1;
+                editElements.prevBtn.classList.toggle('disabled', index === 0);
+                editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+            }
+
+            function updateNavButtons(el, index) {
+                el.prevBtn.disabled = index === 0;
+                el.nextBtn.disabled = index === currentFiles.length - 1;
+                el.prevBtn.classList.toggle('disabled', index === 0);
+                el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
+            }
+
+            document.removeEventListener('click', handleAttachmentClick);
+
+            function handleAttachmentClick(e) {
+                const link = e.target.closest('.openAttachment');
+                if (!link) return;
+                e.preventDefault();
+                e.stopPropagation();
+
+                const context = link.getAttribute('data-context');
+                const fileName = link.textContent.trim();
+
+                let allRelevantLinks = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
+                currentFiles = allRelevantLinks;
 
                 if (context === 'dashboard') {
-                    document.getElementById('attachmentImage').style.cursor = 'default';
-                    document.getElementById('attachment-content-wrapper').scrollTo(0, 0); // Reset scroll position
-                    document.getElementById('attachment-content-wrapper')?.querySelector('#no-preview-message')?.remove();
+                    const match = fileName.match(/_(\d+)_/);
+                    const consultationId = match ? match[1] : null;
+
+                    if (consultationId) {
+                        const filterPattern = new RegExp(`_${consultationId}_`);
+                        currentFiles = allRelevantLinks.filter(fileLink =>
+                            filterPattern.test(fileLink.textContent.trim())
+                        );
+                    } else {
+                        currentFiles = [link];
+                    }
                 }
-            }, {
-                once: true
-            });
-        }
 
-        function updateEditNavigation(index) {
-            editElements.prevBtn.disabled = index === 0;
-            editElements.nextBtn.disabled = index === currentFiles.length - 1;
-            editElements.prevBtn.classList.toggle('disabled', index === 0);
-            editElements.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
-        }
+                const index = currentFiles.indexOf(link);
+                if (index === -1) return;
 
-        function updateNavButtons(el, index) {
-            el.prevBtn.disabled = index === 0;
-            el.nextBtn.disabled = index === currentFiles.length - 1;
-            el.prevBtn.classList.toggle('disabled', index === 0);
-            el.nextBtn.classList.toggle('disabled', index === currentFiles.length - 1);
-        }
+                if (['new', 'edit', 'followup'].includes(context)) {
+                    const isExisting = link.getAttribute('data-is-existing') === "true";
+                    const fileIndexInArray = parseInt(link.getAttribute('data-file-index'), 10);
 
-        document.removeEventListener('click', handleAttachmentClick);
+                    let file = null;
+                    if (isExisting) {
+                        file = existingFiles[fileIndexInArray];
+                    } else {
+                        file = newFiles[fileIndexInArray];
+                    }
 
-        function handleAttachmentClick(e) {
-            const link = e.target.closest('.openAttachment');
-            if (!link) return;
-            e.preventDefault();
-            e.stopPropagation();
+                    if (file) showPreview(file, isExisting, index, context);
+                    else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
 
-            const context = link.getAttribute('data-context');
-            const fileName = link.textContent.trim();
-
-            let allRelevantLinks = Array.from(document.querySelectorAll(`.openAttachment[data-context="${context}"]`));
-            currentFiles = allRelevantLinks;
-
-            if (context === 'dashboard') {
-                const match = fileName.match(/_(\d+)_/);
-                const consultationId = match ? match[1] : null;
-
-                if (consultationId) {
-                    const filterPattern = new RegExp(`_${consultationId}_`);
-                    currentFiles = allRelevantLinks.filter(fileLink =>
-                        filterPattern.test(fileLink.textContent.trim())
-                    );
-                } else {
-                    currentFiles = [link];
+                } else if (context === 'dashboard') {
+                    showPreview({
+                        url: link.getAttribute('data-file'),
+                        ext: link.getAttribute('data-ext'),
+                        file_name: fileName
+                    }, true, index, 'dashboard');
                 }
             }
+            document.addEventListener('click', handleAttachmentClick);
 
-            const index = currentFiles.indexOf(link);
-            if (index === -1) return;
-
-            if (['new', 'edit', 'followup'].includes(context)) {
-                const isExisting = link.getAttribute('data-is-existing') === "true";
-                const fileIndexInArray = parseInt(link.getAttribute('data-file-index'), 10);
-
-                let file = null;
-                if (isExisting) {
-                    file = existingFiles[fileIndexInArray];
-                } else {
-                    file = newFiles[fileIndexInArray];
-                }
-
-                if (file) showPreview(file, isExisting, index, context);
-                else console.error(`File not found for context ${context} at index ${fileIndexInArray}`);
-
-            } else if (context === 'dashboard') {
-                showPreview({
-                    url: link.getAttribute('data-file'),
-                    ext: link.getAttribute('data-ext'),
-                    file_name: fileName
-                }, true, index, 'dashboard');
+            function setupNav(prevBtn, nextBtn, context) {
+                if (!prevBtn || !nextBtn) return;
+                prevBtn.onclick = () => {
+                    if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context);
+                };
+                nextBtn.onclick = () => {
+                    if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context);
+                };
+                [prevBtn, nextBtn].forEach(btn => {
+                    btn.addEventListener("mouseenter", () => btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer');
+                    btn.addEventListener("mouseleave", () => btn.style.cursor = '');
+                });
             }
-        }
-        document.addEventListener('click', handleAttachmentClick);
 
-        function setupNav(prevBtn, nextBtn, context) {
-            if (!prevBtn || !nextBtn) return;
-            prevBtn.onclick = () => {
-                if (!prevBtn.disabled && currentIndex > 0) navigate(currentIndex - 1, context);
-            };
-            nextBtn.onclick = () => {
-                if (!nextBtn.disabled && currentIndex < currentFiles.length - 1) navigate(currentIndex + 1, context);
-            };
-            [prevBtn, nextBtn].forEach(btn => {
-                btn.addEventListener("mouseenter", () => btn.style.cursor = btn.disabled ? 'not-allowed' : 'pointer');
-                btn.addEventListener("mouseleave", () => btn.style.cursor = '');
-            });
-        }
+            function navigate(index, context) {
+                const link = currentFiles[index];
+                link.click();
+            }
 
-        function navigate(index, context) {
-            const link = currentFiles[index];
-            link.click();
-        }
+            setupNav(editElements.prevBtn, editElements.nextBtn, 'edit');
+            if (newConsultationElements.prevBtn) setupNav(newConsultationElements.prevBtn, newConsultationElements.nextBtn, 'new');
+            if (followupElements.prevBtn) setupNav(followupElements.prevBtn, followupElements.nextBtn, 'followup');
+            if (dashboardElements.prevBtn) setupNav(dashboardElements.prevBtn, dashboardElements.nextBtn, 'dashboard');
 
-        setupNav(editElements.prevBtn, editElements.nextBtn, 'edit');
-        if (newConsultationElements.prevBtn) setupNav(newConsultationElements.prevBtn, newConsultationElements.nextBtn, 'new');
-        if (followupElements.prevBtn) setupNav(followupElements.prevBtn, followupElements.nextBtn, 'followup');
-        if (dashboardElements.prevBtn) setupNav(dashboardElements.prevBtn, dashboardElements.nextBtn, 'dashboard');
+            // === Dashboard Zoom & Pan (double-tap + hold ONLY) ===
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const attachmentImage = document.getElementById('attachmentImage');
+            const contentWrapper = document.getElementById('attachment-content-wrapper');
 
-        // === Dashboard Zoom & Pan (double-tap + hold ONLY) ===
-        const zoomInBtn = document.getElementById('zoomInBtn');
-        const zoomOutBtn = document.getElementById('zoomOutBtn');
-        const attachmentImage = document.getElementById('attachmentImage');
-        const contentWrapper = document.getElementById('attachment-content-wrapper');
+            if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
 
-        if (zoomInBtn && zoomOutBtn && attachmentImage && contentWrapper) {
+                zoomInBtn.addEventListener('click', () => {
+                    if (attachmentImage.classList.contains('d-none')) return;
+                    currentZoom = Math.min(currentZoom + ZOOM_STEP, 3.0);
+                    attachmentImage.style.transform = `scale(${currentZoom})`;
+                    zoomOutBtn.disabled = false;
+                    if (currentZoom >= 3.0) zoomInBtn.disabled = true;
+                    if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+                });
 
-            zoomInBtn.addEventListener('click', () => {
-                if (attachmentImage.classList.contains('d-none')) return;
-                currentZoom = Math.min(currentZoom + ZOOM_STEP, 3.0);
-                attachmentImage.style.transform = `scale(${currentZoom})`;
-                zoomOutBtn.disabled = false;
-                if (currentZoom >= 3.0) zoomInBtn.disabled = true;
-                if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
-            });
+                zoomOutBtn.addEventListener('click', () => {
+                    if (attachmentImage.classList.contains('d-none')) return;
+                    currentZoom = Math.max(currentZoom - ZOOM_STEP, 1.0);
+                    attachmentImage.style.transform = `scale(${currentZoom})`;
+                    zoomInBtn.disabled = false;
+                    if (currentZoom <= 1.0) {
+                        zoomOutBtn.disabled = true;
+                        contentWrapper.scrollTo(0, 0);
+                        attachmentImage.style.cursor = 'default';
+                    } else {
+                        attachmentImage.style.cursor = 'grab';
+                    }
+                });
 
-            zoomOutBtn.addEventListener('click', () => {
-                if (attachmentImage.classList.contains('d-none')) return;
-                currentZoom = Math.max(currentZoom - ZOOM_STEP, 1.0);
-                attachmentImage.style.transform = `scale(${currentZoom})`;
-                zoomInBtn.disabled = false;
-                if (currentZoom <= 1.0) {
-                    zoomOutBtn.disabled = true;
-                    contentWrapper.scrollTo(0, 0);
-                    attachmentImage.style.cursor = 'default';
-                } else {
-                    attachmentImage.style.cursor = 'grab';
-                }
-            });
+                attachmentImage.setAttribute('draggable', 'false');
+                attachmentImage.addEventListener('dragstart', e => e.preventDefault());
 
-            attachmentImage.setAttribute('draggable', 'false');
-            attachmentImage.addEventListener('dragstart', e => e.preventDefault());
+                // CSS – allow only panning, block everything else
+                attachmentImage.style.touchAction = 'pan-x pan-y';
+                attachmentImage.style.userSelect = 'none';
 
-            // CSS – allow only panning, block everything else
-            attachmentImage.style.touchAction = 'pan-x pan-y';
-            attachmentImage.style.userSelect = 'none';
+                let isDragging = false;
+                let startX, startY, scrollLeft, scrollTop;
 
-            let isDragging = false;
-            let startX, startY, scrollLeft, scrollTop;
+                const startDrag = (clientX, clientY) => {
+                    if (attachmentImage.classList.contains('d-none') || currentZoom <= 1.0) return;
 
-            const startDrag = (clientX, clientY) => {
-                if (attachmentImage.classList.contains('d-none') || currentZoom <= 1.0) return;
+                    isDragging = true;
+                    attachmentImage.style.cursor = 'grabbing';
 
-                isDragging = true;
-                attachmentImage.style.cursor = 'grabbing';
+                    startX = clientX - contentWrapper.offsetLeft;
+                    startY = clientY - contentWrapper.offsetTop;
+                    scrollLeft = contentWrapper.scrollLeft;
+                    scrollTop = contentWrapper.scrollTop;
 
-                startX = clientX - contentWrapper.offsetLeft;
-                startY = clientY - contentWrapper.offsetTop;
-                scrollLeft = contentWrapper.scrollLeft;
-                scrollTop = contentWrapper.scrollTop;
+                    contentWrapper.style.userSelect = 'none';
+                };
 
-                contentWrapper.style.userSelect = 'none';
-            };
+                const moveDrag = (clientX, clientY) => {
+                    if (!isDragging) return;
+                    const x = clientX - contentWrapper.offsetLeft;
+                    const y = clientY - contentWrapper.offsetTop;
+                    const walkX = x - startX;
+                    const walkY = y - startY;
 
-            const moveDrag = (clientX, clientY) => {
-                if (!isDragging) return;
-                const x = clientX - contentWrapper.offsetLeft;
-                const y = clientY - contentWrapper.offsetTop;
-                const walkX = x - startX;
-                const walkY = y - startY;
+                    contentWrapper.scrollLeft = scrollLeft - walkX;
+                    contentWrapper.scrollTop = scrollTop - walkY;
+                };
 
-                contentWrapper.scrollLeft = scrollLeft - walkX;
-                contentWrapper.scrollTop = scrollTop - walkY;
-            };
+                const stopDrag = () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
+                    contentWrapper.style.userSelect = '';
+                };
 
-            const stopDrag = () => {
-                if (!isDragging) return;
-                isDragging = false;
-                if (currentZoom > 1.0) attachmentImage.style.cursor = 'grab';
-                contentWrapper.style.userSelect = '';
-            };
-
-            contentWrapper.addEventListener('mousedown', e => startDrag(e.pageX, e.pageY));
-            contentWrapper.addEventListener('mousemove', e => moveDrag(e.pageX, e.pageY));
-            document.addEventListener('mouseup', stopDrag);
-            contentWrapper.addEventListener('mouseleave', stopDrag);
+                contentWrapper.addEventListener('mousedown', e => startDrag(e.pageX, e.pageY));
+                contentWrapper.addEventListener('mousemove', e => moveDrag(e.pageX, e.pageY));
+                document.addEventListener('mouseup', stopDrag);
+                contentWrapper.addEventListener('mouseleave', stopDrag);
 
 
-            let lastTap = 0;
-            let tapTimeout = null;
+                let lastTap = 0;
+                let tapTimeout = null;
 
-            contentWrapper.addEventListener('touchstart', e => {
-                const now = Date.now();
-                const TAP_DELAY = 300;
-                const DOUBLE_TAP_THRESHOLD = 500;
+                contentWrapper.addEventListener('touchstart', e => {
+                    const now = Date.now();
+                    const TAP_DELAY = 300;
+                    const DOUBLE_TAP_THRESHOLD = 500;
 
-                if (now - lastTap < TAP_DELAY) {
-                    // ---- DOUBLE TAP DETECTED ----
-                    clearTimeout(tapTimeout);
+                    if (now - lastTap < TAP_DELAY) {
+                        // ---- DOUBLE TAP DETECTED ----
+                        clearTimeout(tapTimeout);
+                        e.preventDefault();
+
+                        tapTimeout = setTimeout(() => {
+                            if (e.touches.length === 1) {
+                                const touch = e.touches[0];
+                                startDrag(touch.pageX, touch.pageY);
+                            }
+                        }, 150);
+                    } else {
+                        lastTap = now;
+                        tapTimeout = setTimeout(() => { }, DOUBLE_TAP_THRESHOLD);
+                    }
+                });
+
+                contentWrapper.addEventListener('touchmove', e => {
+                    if (!isDragging) return;
                     e.preventDefault();
+                    const touch = e.touches[0];
+                    moveDrag(touch.pageX, touch.pageY);
+                });
 
-                    tapTimeout = setTimeout(() => {
-                        if (e.touches.length === 1) {
-                            const touch = e.touches[0];
-                            startDrag(touch.pageX, touch.pageY);
-                        }
-                    }, 150);
-                } else {
-                    lastTap = now;
-                    tapTimeout = setTimeout(() => {}, DOUBLE_TAP_THRESHOLD);
-                }
-            });
-
-            contentWrapper.addEventListener('touchmove', e => {
-                if (!isDragging) return;
-                e.preventDefault();
-                const touch = e.touches[0];
-                moveDrag(touch.pageX, touch.pageY);
-            });
-
-            contentWrapper.addEventListener('touchend', stopDrag);
-            contentWrapper.addEventListener('touchcancel', stopDrag);
-        }
-    });
-</script>
+                contentWrapper.addEventListener('touchend', stopDrag);
+                contentWrapper.addEventListener('touchcancel', stopDrag);
+            }
+        });
+    </script>
 
     <!-- Delete Consultation Script -->
     <script>
@@ -5937,12 +6019,30 @@
     <!-- Toggle visibility and icon for all fields in consultation page -->
     <script>
         document.querySelectorAll('.toggle-label').forEach(label => {
-            label.addEventListener('click', () => {
+            label.addEventListener('click', function (e) {
                 const container = label.nextElementSibling;
                 const icon = label.querySelector('.toggle-icon');
+                const isOpening = !container.classList.contains('show');
 
-                container.classList.toggle('show');
-                icon.textContent = container.classList.contains('show') ? '-' : '+';
+                if (isOpening) {
+                    document.querySelectorAll('.field-container.collapse').forEach(otherContainer => {
+                        if (otherContainer !== container && otherContainer.classList.contains('show')) {
+                            otherContainer.classList.remove('show');
+                            const otherLabel = otherContainer.previousElementSibling;
+                            if (otherLabel) {
+                                const otherIcon = otherLabel.querySelector('.toggle-icon');
+                                if (otherIcon) otherIcon.textContent = '+';
+                            }
+                        }
+                    });
+                }
+                if (isOpening) {
+                    container.classList.add('show');
+                    icon.textContent = '-';
+                } else {
+                    container.classList.remove('show');
+                    icon.textContent = '+';
+                }
             });
         });
     </script>
@@ -6043,99 +6143,210 @@
     <!-- Consultation - PDF Download Script -->
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-
-            // Find ALL download buttons (by class)
             const downloadButtons = document.querySelectorAll('.download-pdf-btn');
 
-            // Add a click listener to EACH button
             downloadButtons.forEach(button => {
-
-                // 1. Store the button's original content (the icon)
                 const originalButtonHtml = button.innerHTML;
 
-                button.addEventListener('click', function (event) {
-
-                    // 2. IMMEDIATELY disable the button and show a spinner
+                button.addEventListener('click', async function (event) {
                     button.disabled = true;
-                    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> loading..`;
+                    button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
 
-                    // Get the specific content ID from this button's data-attribute
                     const contentId = event.currentTarget.getAttribute('data-content-id');
-                    // Get the filename from this button's data-attribute
                     const fileName = event.currentTarget.getAttribute('data-filename');
-                    // Find the correct content div to print
-                    const contentToDownload = document.getElementById(contentId);
+                    const sourceElement = document.getElementById(contentId);
 
-                    if (contentToDownload) {
+                    if (!sourceElement) {
+                        resetButton(button, originalButtonHtml);
+                        return;
+                    }
 
-                        // Temporarily remove shadow class for clean PDF
-                        contentToDownload.classList.add('no-shadow-for-pdf');
+                    try {
+                        const pages = await generateVirtualPages(sourceElement);
 
-                        html2canvas(contentToDownload, {
-                            scale: 2,
-                            backgroundColor: '#ffffff'
-                        }).then((canvas) => {
+                        const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+                        const pdfWidth = pdf.internal.pageSize.getWidth();
 
-                            // Add shadow back right after screenshot
-                            contentToDownload.classList.remove('no-shadow-for-pdf');
+                        for (let i = 0; i < pages.length; i++) {
+                            const page = pages[i];
+
+                            document.body.appendChild(page);
+
+                            const canvas = await html2canvas(page, {
+                                scale: 1,
+                                backgroundColor: '#ffffff',
+                                logging: false,
+                                useCORS: true
+                            });
+
+                            document.body.removeChild(page);
 
                             const imgData = canvas.toDataURL('image/png');
-                            const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
 
-                            const pdfWidth = pdf.internal.pageSize.getWidth();
-                            const pdfHeight = pdf.internal.pageSize.getHeight();
-                            const contentWidth = canvas.width;
-                            const contentHeight = canvas.height;
+                            if (i > 0) pdf.addPage();
 
-                            const ratio = contentWidth / pdfWidth;
-                            const imgHeight = contentHeight / ratio;
-                            const finalImgWidth = pdfWidth - 20; // 10mm margin
-                            const finalImgHeight = imgHeight;
+                            const imgProps = pdf.getImageProperties(imgData);
+                            const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-                            pdf.addImage(imgData, 'PNG', 10, 10, finalImgWidth, finalImgHeight);
+                            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight);
+                        }
 
-                            // 3. Save the PDF
-                            pdf.save(fileName);
+                        pdf.save(fileName);
+                        resetButton(button, originalButtonHtml);
 
-                            // 4. Find the modal this button is inside of
-                            const modalElement = button.closest('.modal');
-                            if (modalElement) {
-                                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-
-                                // 5. Add a one-time event listener to reset the button AFTER the modal is hidden
-                                modalElement.addEventListener('hidden.bs.modal', () => {
-                                    button.disabled = false;
-                                    button.innerHTML = originalButtonHtml;
-                                }, {
-                                    once: true
-                                }); // {once: true} is important!
-
-                                // 6. Close the modal
-                                modalInstance.hide();
-
-                            } else {
-                                // Failsafe in case modal isn't found
-                                button.disabled = false;
-                                button.innerHTML = originalButtonHtml;
-                            }
-
-                        }).catch(err => {
-                            // Failsafe if PDF generation fails
-                            console.error('PDF download error:', err);
-                            contentToDownload.classList.remove('no-shadow-for-pdf');
-                            button.disabled = false;
-                            button.innerHTML = originalButtonHtml;
-                        });
-
-                    } else {
-                        console.error('Could not find content to download:', contentId);
-                        // Failsafe if content isn't found
-                        button.disabled = false;
-                        button.innerHTML = originalButtonHtml;
+                    } catch (err) {
+                        console.error('PDF Error:', err);
+                        resetButton(button, originalButtonHtml);
                     }
                 });
             });
+
+            function resetButton(btn, originalHtml) {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+                const modalElement = btn.closest('.modal');
+                if (modalElement) {
+                    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                    if (modalInstance) modalInstance.hide();
+                }
+            }
+
+            async function generateVirtualPages(source) {
+                const pages = [];
+
+                const PAGE_WIDTH = 794;  // Standard A4 Web Width (px)
+                const PAGE_HEIGHT = 1122; // Standard A4 Web Height (px)
+                const MARGIN = 30;
+
+                const CONTENT_LIMIT = 1010;
+
+                function createNewPage() {
+                    const div = document.createElement('div');
+                    div.style.width = `${PAGE_WIDTH}px`;
+                    div.style.height = `${PAGE_HEIGHT}px`;
+                    div.style.position = 'fixed';
+                    div.style.left = '-10000px';
+                    div.style.top = '0';
+                    div.style.backgroundColor = '#fff';
+                    div.style.padding = `${MARGIN}px`;
+                    div.style.boxSizing = 'border-box';
+                    div.style.fontFamily = "'Noto Sans', sans-serif";
+                    div.style.color = '#000';
+                    return div;
+                }
+
+                const tempContainer = document.createElement('div');
+                tempContainer.style.width = `${PAGE_WIDTH}px`;
+                tempContainer.innerHTML = source.innerHTML;
+
+                const children = Array.from(tempContainer.children);
+
+                let currentPage = createNewPage();
+                document.body.appendChild(currentPage);
+
+                let currentHeight = 0;
+
+                function addNewPage() {
+                    document.body.removeChild(currentPage);
+                    pages.push(currentPage);
+
+                    currentPage = createNewPage();
+                    document.body.appendChild(currentPage);
+                    currentHeight = 0;
+                }
+
+                for (let child of children) {
+                    const isTable = child.tagName === 'TABLE';
+
+                    if (isTable) {
+                        const thead = child.querySelector('thead');
+                        const tbody = child.querySelector('tbody');
+                        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+                        let currentTable = child.cloneNode(false);
+                        currentTable.style.marginTop = '0';
+                        currentTable.style.marginBottom = '0';
+                        currentTable.appendChild(thead.cloneNode(true));
+                        let currentTbody = document.createElement('tbody');
+                        currentTable.appendChild(currentTbody);
+
+                        currentPage.appendChild(currentTable);
+
+                        const headerHeight = thead.offsetHeight || 50;
+                        currentHeight += headerHeight;
+
+                        for (let row of rows) {
+                            currentTbody.appendChild(row);
+                            const rowHeight = row.offsetHeight || 30;
+
+                            if (currentHeight + rowHeight > CONTENT_LIMIT) {
+                                currentTbody.removeChild(row); // Remove from here
+
+                                addNewPage();
+
+                                currentTable = child.cloneNode(false);
+                                currentTable.style.marginTop = '0';
+                                currentTable.style.marginBottom = '0';
+                                currentTable.appendChild(thead.cloneNode(true)); // Header Again
+                                currentTbody = document.createElement('tbody');
+                                currentTable.appendChild(currentTbody);
+
+                                currentPage.appendChild(currentTable);
+                                currentHeight += headerHeight; // Header uses space
+
+                                // Add Row to New Page
+                                currentTbody.appendChild(row);
+                                currentHeight += rowHeight;
+                            } else {
+                                // Fits fine
+                                currentHeight += rowHeight;
+                            }
+                        }
+                    } else {
+                        currentPage.appendChild(child);
+                        const blockHeight = child.offsetHeight;
+
+                        if (currentHeight + blockHeight > CONTENT_LIMIT) {
+                            currentPage.removeChild(child);
+                            addNewPage();
+                            currentPage.appendChild(child);
+                            currentHeight = blockHeight;
+                        } else {
+                            currentHeight += blockHeight;
+                        }
+                    }
+                }
+
+                if (document.body.contains(currentPage)) {
+                    document.body.removeChild(currentPage);
+                }
+                pages.push(currentPage);
+
+                return pages;
+            }
         });
+    </script>
+
+    <!-- To print consultation -->
+    <script>
+        function printDiv(divId, title) {
+            var printContents = document.getElementById(divId).outerHTML;
+            var originalContents = document.body.innerHTML;
+            var originalTitle = document.title;
+
+            document.body.innerHTML = printContents;
+
+            if (title) {
+                document.title = title;
+            }
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+            document.title = originalTitle;
+
+            window.location.reload();
+        }
     </script>
 
     <!-- Common Script -->

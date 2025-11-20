@@ -543,7 +543,28 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    public function getFollowUpAppointments()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
 
+        $date = $this->input->get('date'); // e.g., 17-Oct-2025
+
+        $data = $this->HcpModel->getFollowUpAppointments($hcpIdDb, $date);
+
+        // Format time to 12-hour (e.g., 02:50 PM)
+        foreach ($data as &$row) {
+            $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
 
 
 }

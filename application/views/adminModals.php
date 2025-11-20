@@ -68,18 +68,20 @@
                             class="text-danger">*</span></label>
                     <select name="medicineCategory" id="medicineCategory" class="form-select" required>
                         <option value="">Select Category</option>
-                        <option value="TAB">Tablet</option>
-                        <option value="CAP">Capsule</option>
-                        <option value="SYR">Syrup</option>
-                        <option value="INJ">Injection</option>
+                        <option value="TABLET">Tablet</option>
+                        <option value="CAPSULE">Capsule</option>
+                        <option value="SYRUP">Syrup</option>
+                        <option value="INJECTION">Injection</option>
                         <option value="DROPS">Drops</option>
-                        <option value="OINT">Ointment</option>
+                        <option value="OINTMENT">Ointment</option>
                         <option value="CREAM">Cream</option>
                         <option value="GEL">Gel</option>
                         <option value="SPRAY">Spray</option>
-                        <option value="POW">Powder</option>
-                        <option value="SUSP">Suppository</option>
+                        <option value="POWDER">Powder</option>
+                        <option value="SUSPPOSITORY">Suppository</option>
                         <option value="INSULIN">Insulin</option>
+                        <option value="Oil">Oil</option>
+                        <option value="NEEDLE">Needle</option>
                     </select>
 
                     <button type="submit" id="medicineSubmit" class="btn text-light float-end mt-3"
@@ -213,7 +215,7 @@
         const universalForm = document.getElementById('universalAddForm');
 
         if (universalForm) {
-            universalForm.addEventListener('submit', function(e) {
+            universalForm.addEventListener('submit', function (e) {
                 // Find the submit button inside this specific form
                 const submitButton = universalForm.querySelector('button[type="submit"]');
 
@@ -290,7 +292,7 @@
                 advice: 'Advice Name'
             };
             // This is your existing listener that OPENS the modal
-            document.body.addEventListener('click', function(e) {
+            document.body.addEventListener('click', function (e) {
                 const btn = e.target.closest('.edit-btn');
                 if (!btn) return;
                 // resetting the modal's button before it's shown.
@@ -319,7 +321,7 @@
             });
             const editForm = document.getElementById('editCommonForm');
             if (editForm) {
-                editForm.addEventListener('submit', function(e) {
+                editForm.addEventListener('submit', function (e) {
                     const submitButton = editForm.querySelector('button[type="submit"]');
                     if (submitButton) {
                         // If button is already disabled, stop this duplicate submission
@@ -337,52 +339,6 @@
         }
     }, 50);
 </script>
-
-<!-- Patient Attachment Display Modal -->
-<div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
-    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                    id="dashboardPreviewModalLabel">
-                    Attachment Preview
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body text-center position-relative p-0">
-                <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
-                    style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
-                    <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled><b
-                            style="font-size:1.2rem;">-</b></button>
-                    <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled><b
-                            style="font-size:1.2rem;">+</b></button>
-                    <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
-                            class="bi bi-download"></i></button>
-                </div>
-
-                <button id="prevAttachment"
-                    class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                    style="font-size:1.5rem;" disabled><b>&lt;</b></button>
-                <button id="nextAttachment"
-                    class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                    style="font-size:1.5rem;" disabled><b>&gt;</b></button>
-
-                <div class="preview-area">
-                    <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
-                        style="transform-origin:top left;transition:transform .2s ease-out;">
-                    <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;"
-                        frameborder="0"></iframe>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Log out confirmation -->
 <div class="modal fade" id="confirmLogout" tabindex="-1" aria-labelledby="confirmLogoutLabel" aria-hidden="true"

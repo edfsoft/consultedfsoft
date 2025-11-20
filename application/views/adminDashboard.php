@@ -239,10 +239,12 @@
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">S.NO</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">NAME</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24"
+                                                    class="text-start">NAME</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">MOBILE
                                                     NUMBER</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">SPECIALIST
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24"
+                                                    class="text-start">SPECIALIST
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">STATUS
                                                 </th>
@@ -340,9 +342,9 @@
                                 ccRow.innerHTML = `
                 <td class="pt-3">${start + index + 1}.</td>
                 <td style="font-size: 16px;" class="pt-3">${value.ccId}</td>
-                <td style="font-size: 16px" class="pt-3">${value.doctorName}</td>
+                <td style="font-size: 16px; text-align:left" class="pt-3">${value.doctorName}</td>
                 <td style="font-size: 16px" class="pt-3">${value.doctorMobile}</td>
-                <td style="font-size: 16px" class="pt-3">${value.specialization}</td>
+                <td style="font-size: 16px; text-align:left" class="pt-3">${value.specialization}</td>
                 <td style="font-size: 16px" class="pt-3">
                     ${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}
                 </td>
@@ -799,9 +801,11 @@
                                                         <tr>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">NAME
+                                                            </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">
+                                                                SPECIALIST</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                         </tr>
@@ -897,9 +901,9 @@
                                             hcpRow.innerHTML = `
                 <td class="pt-3">${start + index + 1}.</td>
                 <td style="font-size: 16px" class="pt-3">${hcp.hcpId}</td>
-                <td style="font-size: 16px" class="pt-3">${hcp.hcpName}</td>
+                <td style="font-size: 16px; text-align:left" class="pt-3">${hcp.hcpName}</td>
                 <td style="font-size: 16px" class="pt-3">${hcp.hcpMobile}</td>
-                <td style="font-size: 16px" class="pt-3">${hcp.hcpSpecialization}</td>
+                <td style="font-size: 16px; text-align:left" class="pt-3">${hcp.hcpSpecialization}</td>
                 <td style="font-size: 16px" class="pt-3">
                     ${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}
                 </td>
@@ -1298,7 +1302,8 @@
                                                                     <tr>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT ID</th>
-                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT NAME</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">
+                                                                            PATIENT NAME</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">GENDER</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">AGE</th>
@@ -1409,9 +1414,9 @@
                                                         patientRow.innerHTML = `
                 <td class="pt-3">${start + index + 1}.</td>
                 <td style="font-size: 16px" class="pt-3">${patient.patientId}</td>
-                <td style="font-size: 16px" class="pt-3">${patient.firstName} ${patient.lastName}</td>
+                <td style="font-size: 16px; text-align:left" class="pt-3">${patient.firstName} ${patient.lastName}</td>
                 <td style="font-size: 16px" class="pt-3">${patient.mobileNumber}</td>
-                <td style="font-size: 16px" class="pt-3">${patient.gender}</td>
+                <td style="font-size: 16px text-align:left" class="pt-3">${patient.gender}</td>
                 <td style="font-size: 16px" class="pt-3">${patient.age}</td>
                 <td style="font-size: 16px" class="pt-3">
                     <a href="${baseUrl}Edfadmin/hcpDetails/${patient.patientHcpDbId}" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">${patient.patientHcp}</a>
@@ -1951,14 +1956,14 @@
                                                         </div>
                                                         <div class="card-body p-2 p-sm-4">
                                                             <div class="table-responsive">
-                                                                <table class="table table-hover text-center" id="specializationTable">
+                                                                <table class="table table-hover" style="position:rel" id="specializationTable">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                            <th scope="col" class="col-3" style="font-size: 16px; font-weight: 500;">S.NO
                                                                             </th>
-                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                            <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">
                                                                                 SPECIALIZATION NAME</th>
-                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                            <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">ACTION
                                                                             </th>
                                                                         </tr>
                                                                     </thead>
@@ -2181,7 +2186,7 @@
                                                                 const specializationRow = document.createElement('tr');
                                                                 specializationRow.innerHTML = `
                                                 <td class="pt-3">${start + index + 1}.</td>
-                                                <td style="font-size: 16px" class="pt-3">${specialization.specializationName}</td>
+                                                <td style="font-size: 16px; text-align:left" class="pt-3">${specialization.specializationName}</td>
                                                 <td class="d-flex d-md-block">
                                                     <button class="btn btn-secondary me-2 edit-btn" 
                                                         data-bs-toggle="modal" 
@@ -2301,14 +2306,14 @@
                                                             </div>
                                                             <div class="card-body p-2 p-sm-4">
                                                                 <div class="table-responsive">
-                                                                    <table class="table table-hover text-center" id="symptomsTable">
+                                                                    <table class="table table-hover" id="symptomsTable">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                <th scope="col" class="col-3" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                 </th>
-                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">
                                                                                     SYMPTOMS NAME</th>
-                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                 </th>
                                                                             </tr>
                                                                         </thead>
@@ -2390,7 +2395,7 @@
                                                                     const symptomRow = document.createElement('tr');
                                                                     symptomRow.innerHTML = `
                                                                     <td class="pt-3">${start + index + 1}.</td>
-                                                                    <td style="font-size: 16px" class="pt-3">${symptom.symptomsName}</td>
+                                                                    <td style="font-size: 16px; text-align:left;" class="pt-3">${symptom.symptomsName}</td>
                                                                     <td class="d-flex d-md-block">
                                                                             <button class="btn btn-secondary me-2 edit-btn"
                                                                             data-bs-toggle="modal"
@@ -2494,14 +2499,14 @@
                                                                 </div>
                                                                 <div class="card-body p-2 p-sm-4">
                                                                     <div class="table-responsive">
-                                                                        <table class="table table-hover text-center" id="findingssTable">
+                                                                        <table class="table table-hover" id="findingssTable">
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                    <th scope="col" class="col-3" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                     </th>
-                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                    <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">
                                                                                         FINDINGS NAME</th>
-                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                    <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                     </th>
                                                                                 </tr>
                                                                             </thead>
@@ -2583,7 +2588,7 @@
                                                                         const findingRow = document.createElement('tr');
                                                                         findingRow.innerHTML = `
                                                                 <td class="pt-3">${start + index + 1}.</td>
-                                                                <td style="font-size: 16px" class="pt-3">${finding.findingsName}</td>
+                                                                <td style="font-size: 16px; text-align:left;" class="pt-3">${finding.findingsName}</td>
                                                                 <td class="d-flex d-md-block">
                                                                 <button class="btn btn-secondary me-2 edit-btn"
                                                                     data-bs-toggle="modal"
@@ -2688,14 +2693,14 @@
                                                                     </div>
                                                                     <div class="card-body p-2 p-sm-4">
                                                                         <div class="table-responsive">
-                                                                            <table class="table table-hover text-center" id="diagnosisTable">
+                                                                            <table class="table table-hover" id="diagnosisTable">
                                                                                 <thead>
                                                                                     <tr>
-                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                        <th scope="col" class="col-3" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                         </th>
-                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                        <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">
                                                                                             DIAGNOSIS NAME</th>
-                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                        <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                         </th>
                                                                                     </tr>
                                                                                 </thead>
@@ -2777,7 +2782,7 @@
                                                                             const diagnosisRow = document.createElement('tr');
                                                                             diagnosisRow.innerHTML = `
                                                                             <td class="pt-3">${start + index + 1}.</td>
-                                                                            <td style="font-size: 16px" class="pt-3">${diagnosis.diagnosisName}</td>
+                                                                            <td style="font-size: 16px; text-align:left" class="pt-3">${diagnosis.diagnosisName}</td>
                                                                             <td class="d-flex d-md-block">
                                                                             <button class="btn btn-secondary me-2 edit-btn"
                                                                                     data-bs-toggle="modal"
@@ -2885,14 +2890,14 @@
                                                                         </div>
                                                                         <div class="card-body p-2 p-sm-4">
                                                                             <div class="table-responsive">
-                                                                                <table class="table table-hover text-center" id="investigationTable">
+                                                                                <table class="table table-hover " id="investigationTable">
                                                                                     <thead>
                                                                                         <tr>
-                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                            <th scope="col" class="col-3" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                             </th>
-                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                            <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">
                                                                                                 INVESTIGATION NAME</th>
-                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                            <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                             </th>
                                                                                         </tr>
                                                                                     </thead>
@@ -2974,7 +2979,7 @@
                                                                                 const investigationRow = document.createElement('tr');
                                                                                 investigationRow.innerHTML = `
                                                                                     <td class="pt-3">${start + index + 1}.</td>
-                                                                                    <td style="font-size: 16px" class="pt-3">${investigation.investigationsName}</td>
+                                                                                    <td style="font-size: 16px; text-align:left" class="pt-3">${investigation.investigationsName}</td>
                                                                                     <td class="d-flex d-md-block">
                                                                                     <button class="btn btn-secondary me-2 edit-btn"
                                                                                             data-bs-toggle="modal"
@@ -3079,14 +3084,14 @@
                                                                             </div>
                                                                             <div class="card-body p-2 p-sm-4">
                                                                                 <div class="table-responsive">
-                                                                                    <table class="table table-hover text-center" id="instructionTable">
+                                                                                    <table class="table table-hover " id="instructionTable">
                                                                                         <thead>
                                                                                             <tr>
-                                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                                <th scope="col" class="col-3" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                 </th>
-                                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                                <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">
                                                                                                     INSTRUCTION NAME</th>
-                                                                                                <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                                <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                                 </th>
                                                                                             </tr>
                                                                                         </thead>
@@ -3168,7 +3173,7 @@
                                                                                     const instructionRow = document.createElement('tr');
                                                                                     instructionRow.innerHTML = `
                                                                                         <td class="pt-3">${start + index + 1}.</td>
-                                                                                        <td style="font-size: 16px" class="pt-3">${instruction.instructionsName}</td>
+                                                                                        <td style="font-size: 16px; text-align:left;" class="pt-3">${instruction.instructionsName}</td>
                                                                                         <td class="d-flex d-md-block">
                                                                                         <button class="btn btn-secondary me-2 edit-btn"
                                                                                                 data-bs-toggle="modal"
@@ -3273,14 +3278,14 @@
                                                                                 </div>
                                                                                 <div class="card-body p-2 p-sm-4">
                                                                                     <div class="table-responsive">
-                                                                                        <table class="table table-hover text-center" id="procedureTable">
+                                                                                        <table class="table table-hover" id="procedureTable">
                                                                                             <thead>
                                                                                                 <tr>
-                                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                                    <th scope="col" class="col-3" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                     </th>
-                                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                                    <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">
                                                                                                         PROCEDURE NAME</th>
-                                                                                                    <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                                    <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                                     </th>
                                                                                                 </tr>
                                                                                             </thead>
@@ -3362,7 +3367,7 @@
                                                                                         const procedureRow = document.createElement('tr');
                                                                                         procedureRow.innerHTML = `
                                                                                             <td class="pt-3">${start + index + 1}.</td>
-                                                                                            <td style="font-size: 16px" class="pt-3">${procedure.proceduresName}</td>
+                                                                                            <td style="font-size: 16px; text-align:left;" class="pt-3">${procedure.proceduresName}</td>
                                                                                             <td class="d-flex d-md-block">
                                                                                             <button class="btn btn-secondary me-2 edit-btn"
                                                                                                     data-bs-toggle="modal"
@@ -3469,14 +3474,14 @@
                                                                                     </div>
                                                                                     <div class="card-body p-2 p-sm-4">
                                                                                         <div class="table-responsive">
-                                                                                            <table class="table table-hover text-center" id="adviceTable">
+                                                                                            <table class="table table-hover" id="adviceTable">
                                                                                                 <thead>
                                                                                                     <tr>
-                                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
+                                                                                                        <th scope="col" class="col-3" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                         </th>
-                                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">
+                                                                                                        <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">
                                                                                                             ADVICE NAME</th>
-                                                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION
+                                                                                                        <th scope="col" class="col-6" style="font-size: 16px; font-weight: 500;">ACTION
                                                                                                         </th>
                                                                                                     </tr>
                                                                                                 </thead>
@@ -3558,7 +3563,7 @@
                                                                                             const adviceRow = document.createElement('tr');
                                                                                             adviceRow.innerHTML = `
                                                                                             <td class="pt-3">${start + index + 1}.</td>
-                                                                                            <td style="font-size: 16px" class="pt-3">${advice.adviceName}</td>
+                                                                                            <td style="font-size: 16px;text-align:left;" class="pt-3">${advice.adviceName}</td>
                                                                                             <td class="d-flex d-md-block">
                                                                                             <button class="btn btn-secondary me-2 edit-btn"
                                                                                                     data-bs-toggle="modal"
@@ -3729,7 +3734,11 @@
 
                                                                                         filteredMedicinesList = medicinesList.filter((medicine) => {
                                                                                             const medicineName = medicine.medicineName || '';
-                                                                                            return medicineName.toLowerCase().includes(searchTerm);
+                                                                                            const categoryName = medicine.category || '';
+                                                                                            const matchesSearch =
+                                                                                                medicineName.toLowerCase().includes(searchTerm) ||
+                                                                                                categoryName.toLowerCase().includes(searchTerm);
+                                                                                            return matchesSearch;
                                                                                         });
 
                                                                                         displayMedicinesPage(1);
@@ -3957,6 +3966,7 @@
         <?php } ?>
     </script>
 
+
     <!-- Script to display patient attachments in modal -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -3977,6 +3987,9 @@
             let currentAttachments = [];
             let currentIdx = -1;
 
+            // Track downloaded files in this modal session
+            const downloadedFiles = new Map(); // url → true
+
             // CLICK ON ANY FILE → BUILD ATTACHMENTS FROM ITS GROUP
             document.querySelectorAll('.openAttachment').forEach(link => {
                 link.addEventListener('click', function (e) {
@@ -3986,40 +3999,35 @@
                         this.closest('div');
 
                     if (!consultationContainer) return;
-                    // === 2. Build attachments ONLY from this container ===
+
                     const linksInGroup = consultationContainer.querySelectorAll('.openAttachment');
                     currentAttachments = [];
                     linksInGroup.forEach((l, idx) => {
                         const url = l.dataset.file;
                         const ext = l.dataset.ext.toLowerCase();
                         const fileName = l.textContent.trim() || url.split('/').pop().split('?')[0];
-                        currentAttachments.push({
-                            url,
-                            ext,
-                            fileName,
-                            link: l,
-                            index: idx
-                        });
+                        currentAttachments.push({ url, ext, fileName, link: l, index: idx });
                     });
-                    // === 3. Find current file index ===
+
                     const clickedUrl = this.dataset.file;
                     currentIdx = currentAttachments.findIndex(a => a.url === clickedUrl);
                     if (currentIdx === -1) return;
-                    // === 4. Show file and open modal ===
+
                     showFile(currentAttachments[currentIdx]);
                     modal.show();
                 });
             });
 
             function showFile(fileObj) {
+                // Reset display
                 imgEl.classList.add('d-none');
                 pdfEl.classList.add('d-none');
                 if (messageEl) messageEl.remove();
                 imgEl.src = '';
                 pdfEl.src = '';
                 toolbarEl.style.display = 'none';
-                zoomInBtn.disabled = false;
-                zoomOutBtn.disabled = false;
+
+                // Show file
                 if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'].includes(fileObj.ext)) {
                     imgEl.src = fileObj.url;
                     imgEl.classList.remove('d-none');
@@ -4034,16 +4042,12 @@
                     messageEl = document.createElement('div');
                     messageEl.className = 'd-flex align-items-center justify-content-center h-100 text-muted position-absolute top-0 start-0 w-100 bg-white';
                     messageEl.style.zIndex = '5';
-                    messageEl.innerHTML = `
-                <p class="mb-0 fs-5">
-                    Preview not available for <strong>${fileObj.fileName}</strong>
-                </p>
-            `;
+                    messageEl.innerHTML = `<p class="mb-0 fs-5">Preview not available for <strong>${fileObj.fileName}</strong></p>`;
                     previewArea.appendChild(messageEl);
                     toolbarEl.style.display = 'flex';
                 }
 
-                // Navigation (only within current group)
+                // Navigation
                 prevBtn.disabled = (currentIdx === 0);
                 nextBtn.disabled = (currentIdx === currentAttachments.length - 1);
 
@@ -4054,18 +4058,48 @@
                     if (currentIdx < currentAttachments.length - 1) showFile(currentAttachments[++currentIdx]);
                 };
 
-                // Download
+                // DOWNLOAD: One-time per file
+                const isDownloaded = downloadedFiles.has(fileObj.url);
+                downloadBtn.disabled = isDownloaded;
+                downloadBtn.innerHTML = isDownloaded
+                    ? '<i class="bi bi-check2"></i>'
+                    : '<i class="bi bi-download"></i>';
+                downloadBtn.title = isDownloaded ? "Downloaded" : "";
+
                 downloadBtn.onclick = (e) => {
                     e.preventDefault();
                     e.stopPropagation();
+
+                    if (isDownloaded) return;
+
+                    // Mark as downloaded
+                    downloadedFiles.set(fileObj.url, true);
+
+                    // Update button
+                    downloadBtn.disabled = true;
+                    downloadBtn.innerHTML = '<i class="bi bi-check2"></i>';
+                    downloadBtn.title = "Downloaded";
+
+                    // Get patient ID from DOM
+                    const patientIdP = document.querySelector('p[style*="font-weight:600"]');
+                    const patientId = patientIdP ? patientIdP.textContent.trim() : 'unknown';
+
+                    // New filename
+                    const newFileName = fileObj.fileName.replace(/^[^_]+/, `attachment_${patientId}`);
+
                     const a = document.createElement('a');
                     a.href = fileObj.url;
-                    a.download = '';
+                    a.download = newFileName;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
                 };
+
+                // ZOOM BUTTONS: ALWAYS ENABLED WHEN FILE IS PREVIEWED
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
             }
+
             // ZOOM FUNCTIONS
             let imgScale = 1;
             const SCALE_STEP = 0.2;
@@ -4103,7 +4137,7 @@
                 };
             }
 
-            // CLEANUP
+            // RESET ON MODAL CLOSE
             modalEl.addEventListener('hidden.bs.modal', function () {
                 imgEl.src = '';
                 pdfEl.src = '';
@@ -4114,10 +4148,16 @@
                 toolbarEl.style.display = 'none';
                 currentAttachments = [];
                 currentIdx = -1;
+
+                // Reset download tracking
+                downloadedFiles.clear();
+
+                // Re-enable zoom buttons
+                zoomInBtn.disabled = false;
+                zoomOutBtn.disabled = false;
             });
         });
     </script>
-
 
     <!-- Patient Attachment Display Dashboard Modal -->
     <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
@@ -4164,6 +4204,8 @@
             </div>
         </div>
     </div>
+
+
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 

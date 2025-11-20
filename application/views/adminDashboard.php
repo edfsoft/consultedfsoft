@@ -239,10 +239,12 @@
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">S.NO</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">NAME</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24"
+                                                    class="text-start">NAME</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">MOBILE
                                                     NUMBER</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">SPECIALIST
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24"
+                                                    class="text-start">SPECIALIST
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">STATUS
                                                 </th>
@@ -799,9 +801,11 @@
                                                         <tr>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">NAME</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">NAME
+                                                            </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">SPECIALIST</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">
+                                                                SPECIALIST</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                         </tr>
@@ -1298,7 +1302,8 @@
                                                                     <tr>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT ID</th>
-                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT NAME</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">
+                                                                            PATIENT NAME</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">GENDER</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">AGE</th>
@@ -3729,7 +3734,11 @@
 
                                                                                         filteredMedicinesList = medicinesList.filter((medicine) => {
                                                                                             const medicineName = medicine.medicineName || '';
-                                                                                            return medicineName.toLowerCase().includes(searchTerm);
+                                                                                            const categoryName = medicine.category || '';
+                                                                                            const matchesSearch =
+                                                                                                medicineName.toLowerCase().includes(searchTerm) ||
+                                                                                                categoryName.toLowerCase().includes(searchTerm);
+                                                                                            return matchesSearch;
                                                                                         });
 
                                                                                         displayMedicinesPage(1);

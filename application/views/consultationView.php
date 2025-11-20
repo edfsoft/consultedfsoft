@@ -1132,45 +1132,6 @@
                                         </div>
                                         <div class="d-md-flex mb-3">
                                             <div class="col-md-4">
-                                                <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                        name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5">
-                                                    <p class="mx-2 my-2">%</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
-                                                    <p class="mx-2 my-2">%</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                                </label>
-                                                <div class="d-flex me-4">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientPulseRate" name="patientPulseRate" placeholder="E.g. 75"
-                                                        step="1" min="0">
-                                                    <p class="mx-2 my-2">/min</p>
-                                                </div>
-                                                <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                            </div>
-                                            <div class="col-md-2 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                                </label>
-                                                <div class="d-flex">
-                                                    <input type="number" class="form-control fieldStyle"
-                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
-                                                        step="0.01" placeholder="E.g. 98.6">
-                                                    <p class="mx-2 my-2">°F</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-md-flex mb-3">
-                                            <div class="col-md-4">
                                                 <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                                     (Fasting)</label>
                                                 <div class="d-flex me-4">
@@ -1196,6 +1157,45 @@
                                                     <input type="number" class="form-control fieldStyle" id="randomBsugar"
                                                         name="randomBsugar" step="0.1" min="0" placeholder="E.g. 125">
                                                     <p class="mx-2 my-2">mg/dL</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-md-flex mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                        name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98">
+                                                    <p class="mx-2 my-2">%</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientPulseRate" name="patientPulseRate" placeholder="E.g. 75"
+                                                        step="1" min="0">
+                                                    <p class="mx-2 my-2">/min</p>
+                                                </div>
+                                                <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle"
+                                                        id="patientTemperature" name="patientTemperature" step="0.1" min="0"
+                                                        step="0.01" placeholder="E.g. 98.6">
+                                                    <p class="mx-2 my-2">°F</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                                <div class="d-flex">
+                                                    <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                        name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5">
+                                                    <p class="mx-2 my-2">%</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1660,48 +1660,6 @@
                                 </div>
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
-                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                        </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
-                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
-                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
-                                            <p class="mx-2 my-2">/min</p>
-                                        </div>
-                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                    </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                placeholder="E.g. 98.6"
-                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                            <p class="mx-2 my-2">°F</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
                                         <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
@@ -1730,6 +1688,49 @@
                                                 value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
                                 </div>
@@ -2166,48 +2167,6 @@
                                 </div>
                                 <div class="d-md-flex mb-3">
                                     <div class="col-md-4">
-                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
-                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
-                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
-                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
-                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
-                                            <p class="mx-2 my-2">%</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
-                                        </label>
-                                        <div class="d-flex me-4">
-                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
-                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
-                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
-                                            <p class="mx-2 my-2">/min</p>
-                                        </div>
-                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
-                                    </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
-                                        </label>
-                                        <div class="d-flex">
-                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
-                                                name="patientTemperature" step="0.1" min="0" step="0.01"
-                                                placeholder="E.g. 98.6"
-                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
-                                            <p class="mx-2 my-2">°F</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
                                         <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
@@ -2236,6 +2195,48 @@
                                                 value="<?= isset($vitals['blood_sugar_random']) ? $vitals['blood_sugar_random'] : '' ?>"
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-md-flex mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientSpo2"
+                                                name="patientSpo2" step="0.1" min="0" placeholder="E.g. 98"
+                                                value="<?= isset($vitals['spo2_percent']) ? $vitals['spo2_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientPulseRate"
+                                                name="patientPulseRate" placeholder="E.g. 75" step="1" min="0"
+                                                value="<?= isset($vitals['pulse_rate']) ? $vitals['pulse_rate'] : '' ?>">
+                                            <p class="mx-2 my-2">/min</p>
+                                        </div>
+                                        <div id="patientPulseRate_err" class="text-danger pt-1"></div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientTemperature">Temperature
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="patientTemperature"
+                                                name="patientTemperature" step="0.1" min="0" step="0.01"
+                                                placeholder="E.g. 98.6"
+                                                value="<?= isset($vitals['temperature_f']) ? $vitals['temperature_f'] : '' ?>">
+                                            <p class="mx-2 my-2">°F</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
+                                        <div class="d-flex">
+                                            <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
+                                                name="patientsHbA1c" step="0.1" min="0" placeholder="E.g. 5.5"
+                                                value="<?= isset($vitals['HbA1c_percent']) ? $vitals['HbA1c_percent'] : '' ?>">
+                                            <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
                                 </div>

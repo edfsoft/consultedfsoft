@@ -521,7 +521,7 @@
                 <td>${row.mobileNumber}</td>
                 <td>${row.symptoms || '-'}</td>
                 <td>
-                    <a href="<?= base_url('Healthcareprovider/patientdetails/') ?>${row.consultationPatientId}" 
+                    <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}" 
                        class="btn btn-sm btn-dark">View</a>
                 </td>
             `;

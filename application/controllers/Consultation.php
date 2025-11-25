@@ -84,7 +84,7 @@ class Consultation extends CI_Controller
         }
     }
 
-    public function addInstruction()
+    /* public function addInstruction()
     {
         $name = $this->input->post('name', true);
         if (!$name) {
@@ -101,7 +101,7 @@ class Consultation extends CI_Controller
             "name" => $name
         ]);
     }
-
+ */
     /* public function addProcedure()
     {
         $name = $this->input->post('name', true);
@@ -123,7 +123,7 @@ class Consultation extends CI_Controller
     }
  */
     // Add new medicine from consultation page
-    public function addNewMedicines()
+    /* public function addNewMedicines()
     {
         $data = json_decode($this->input->raw_input_stream, true);
 
@@ -159,7 +159,7 @@ class Consultation extends CI_Controller
                 ]));
         }
     }
-
+ */
     // Follow up Consultation view page
     public function followupConsultation($consultation_id)
     {
@@ -864,6 +864,128 @@ class Consultation extends CI_Controller
         $id = $this->input->post('id');
         
         if($this->ConsultModel->deleteAdvice($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    // Instructions in Consultation form
+    public function addInstruction()
+    {
+        $name = $this->input->post('name', true);
+        if (!$name) {
+            echo json_encode(["status" => "error", "message" => "Name required"]);
+            return;
+        }
+
+        $id = $this->ConsultModel->insertNewInstruction($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save']);
+        }
+    }
+
+    public function editInstructionItem() {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+        
+        if($this->ConsultModel->updateInstructionName($id, $name)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function deleteInstructionItem() {
+        $id = $this->input->post('id');
+        
+        if($this->ConsultModel->deleteInstruction($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+
+    //Medicine for consultation form
+    public function addNewMedicines()
+    {
+        // Check if JSON or POST
+        $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
+        $data = json_decode($stream_clean, true);
+        
+        if(!$data) {
+            // Fallback to standard POST for Universal Modal
+            $name = $this->input->post('name');
+            $composition = $this->input->post('composition');
+            $category = $this->input->post('category');
+        } else {
+            $name = $data['medicineName'] ?? '';
+            $composition = $data['compositionName'] ?? '';
+            $category = $data['category'] ?? '';
+        }
+
+        if (!$name) {
+             // Output JSON error
+             echo json_encode(['status' => 'error', 'message' => 'Name required']);
+             return;
+        }
+
+        $id = $this->ConsultModel->insertNewMedicineMaster($name, $composition, $category);
+
+        if ($id) {
+            echo json_encode([
+                'status' => 'success', // Changed to string 'success' to match other scripts
+                'id' => $id,
+                'medicineName' => $name,
+                'compositionName' => $composition,
+                'category' => $category
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save']);
+        }
+    }
+
+    public function editMedicineItem() {
+        // 1. Get Raw Input (JSON) because JS sends JSON
+        $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
+        $request = json_decode($stream_clean, true);
+
+        // 2. Check if JSON decoded successfully, otherwise fallback to POST
+        if (!empty($request)) {
+            $id = $request['id'] ?? null;
+            $name = $request['medicineName'] ?? null; // JS sends 'medicineName'
+            $composition = $request['compositionName'] ?? null; // JS sends 'compositionName'
+            $category = $request['category'] ?? null;
+        } else {
+            // Fallback for standard POST forms
+            $id = $this->input->post('id');
+            $name = $this->input->post('medicineName') ?: $this->input->post('name');
+            $composition = $this->input->post('compositionName') ?: $this->input->post('composition');
+            $category = $this->input->post('category');
+        }
+        
+        // 3. Validate
+        if (!$id || !$name) {
+            echo json_encode(['status' => 'error', 'message' => 'Missing ID or Name']);
+            return;
+        }
+
+        // 4. Call Model
+        if ($this->ConsultModel->updateMedicineMaster($id, $name, $composition, $category)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Database update failed']);
+        }
+    }
+    
+    public function deleteMedicineItem() {
+        $id = $this->input->post('id');
+        
+        if($this->ConsultModel->deleteMedicineMaster($id)) {
             echo json_encode(['status' => 'success']);
         } else {
             echo json_encode(['status' => 'error']);

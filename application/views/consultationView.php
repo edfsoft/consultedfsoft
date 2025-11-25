@@ -1483,14 +1483,14 @@
 </div>
                                         </div>
 
-                                        <div class="mb-3">
+                                        <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
-                                                data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                                data-bs-toggle="collapse" data-bs-target="#medicinesCol">
                                                 <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
-                                            <div class="collapse field-container mt-2" id="medicinesCol">
+                                            <div class="collapse field-container mt-2" id="medicinesCollapse">
                                             <div id="medicinesWrapper">
                                                 <div id="medicinesList" class="mb-2"></div> 
 
@@ -1512,6 +1512,41 @@
                                         </div>
                                     </div>
                                         <input type="hidden" name="medicinesJson" id="medicinesJson">
+ -->
+
+<div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+        style="background-color: rgb(206, 206, 206);" role="button"
+        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+        <span class="toggle-icon">+</span>
+    </div>
+    <div class="collapse field-container mt-2" id="medicinesCollapse">
+        <div id="medicinesWrapper">
+            <div id="medicinesList" class="mb-2"></div>
+
+            <div class="mb-3 position-relative">
+                <div class="input-group mb-2">
+                    <div class="tags-input flex-grow-1" id="medicinesInput">
+                        <input type="text" class="form-control border-0 shadow-none" 
+                               id="medicinesSearchInput" 
+                               placeholder="Search or type to add..." />
+                    </div>
+                    
+                    <button type="button" class="btn btn-outline-secondary" 
+                            id="clearMedicineSearch" 
+                            style="display: none;">✖</button>
+                    
+                    <button type="button" class="btn btn-outline-primary" 
+                            id="medicinesAddBtn" 
+                            style="display: none;">+ Add</button>
+                </div>
+                <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="medicinesJson" id="medicinesJson">
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -1573,7 +1608,7 @@
                                                         Instructions</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
-                                            <div class="collapse field-container mt-2">
+                                      <!--       <div class="collapse field-container mt-2">
                                                 <div class="mb-3">
                                                     <div class="input-group mb-2">
                                                         <input type="text" class="form-control" id="instructionSearch"
@@ -1600,8 +1635,28 @@
                                                     <?php endif; ?>
                                                 </div>
                                             </div>
+                                        </div> -->
+
+    <div class="collapse field-container mt-2">
+        <div id="instructionWrapper">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" id="instructionSearch"
+                    placeholder="Search Instructions">
+                
+                <button type="button" class="btn btn-outline-secondary"
+                    id="clearInstructionSearch" style="display: none;">✖</button>
+                
+                <button type="button" class="btn btn-outline-primary"
+                    id="addInstructionBtn" style="display: none;">+ Add</button>
+            </div>
+
+            <div id="instructionList" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+                </div>
+        </div>
+    </div>
+</div>
                                         </div>
-                                    </div>
+                                    
 
                                     <!-- <div class="form-group pb-3">
                                         <label class="form-label fieldLabel">Attachments</label>
@@ -1613,8 +1668,9 @@
                                         </button>
                                         <div id="fileList" style="margin-top: 0.5rem;"></div>
                                         <div id="fileError" class="text-danger pt-1"></div> 
-                                    </div> --><!-- This code is common for all 3 new, edi and followup -->
+                                    </div> -->
 
+                                    <!-- This code is common for all 3 new, edi and followup -->
                                     <div class="form-group pb-3" data-page="new">
                                         <label class="form-label fieldLabel">Attachments</label>
                                         <button type="button" class="addFileBtn btn text-light float-end mb-2"
@@ -2136,31 +2192,67 @@
 </div>
                                 </div>
 
-                                <div class="mb-3">
+                                <!-- <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button"
-                                        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCol">
                                         <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="medicinesCollapse">
                                         <div id="medicinesWrapper">
-                                            <div class="input-group mb-2 position-relative">
+                                            <div id="medicinesList" class="mt-2"></div>
+                                            <div class="input-group mb-3 position-relative">
                                                 <div class="tags-input flex-grow-1" id="medicinesInput">
                                                     <input type="text" class="form-control" id="medicinesSearchInput"
                                                         placeholder="Search or type to add..." />
-                                                </div>
+                                                </div> -->
                                                 <!-- <button type="button" class="btn btn-outline-secondary"
                                                     id="clearMedicineSearch">✖</button> -->
-                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                <!-- <button type="button" class="btn btn-outline-primary d-none"
                                                     id="medicinesAddBtn">+ Add</button>
                                             </div>
                                             <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                            <div id="medicinesList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <input type="hidden" name="medicinesJson" id="medicinesJson">
+                                <input type="hidden" name="medicinesJson" id="medicinesJson">-->
+
+<div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+        style="background-color: rgb(206, 206, 206);" role="button"
+        data-bs-toggle="collapse" data-bs-target="#medicinesCol">
+        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+        <span class="toggle-icon">+</span>
+    </div>
+    <div class="collapse field-container mt-2" id="medicinesCollapse">
+        <div id="medicinesWrapper">
+            <div id="medicinesList" class="mb-2"></div>
+
+            <div class="mb-3 position-relative">
+                <div class="input-group mb-2">
+                    <div class="tags-input flex-grow-1" id="medicinesInput">
+                        <input type="text" class="form-control border-0 shadow-none" 
+                               id="medicinesSearchInput" 
+                               placeholder="Search or type to add..." />
+                    </div>
+                    
+                    <button type="button" class="btn btn-outline-secondary" 
+                            id="clearMedicineSearch" 
+                            style="display: none;">✖</button>
+                    
+                    <button type="button" class="btn btn-outline-primary" 
+                            id="medicinesAddBtn" 
+                            style="display: none;">+ Add</button>
+                </div>
+                
+                <div class="suggestions-box" id="medicinesSuggestionsBox" 
+                     style="position: relative; margin-bottom: 15px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="medicinesJson" id="medicinesJson">
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -2688,7 +2780,7 @@
                                         <span class="toggle-icon">+</span>
                                     </div>
 
-<!--                                     <div class="collapse field-container mt-2">
+                                    <!-- <div class="collapse field-container mt-2">
                                         <div class="input-group mb-2">
                                             <input type="text" class="form-control" id="procedureSearch"
                                                 placeholder="Search Instructions">
@@ -2734,31 +2826,68 @@
                                 </div>
 
                                 <!-- Medicine section -->
-                                <div class="mb-3">
+                               <!--  <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button"
-                                        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCol">
                                         <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="medicinesCollapse">
                                         <div id="medicinesWrapper">
+                                            <div id="medicinesList" class="mt-2"></div>
                                             <div class="input-group mb-2 position-relative">
                                                 <div class="tags-input flex-grow-1" id="medicinesInput">
                                                     <input type="text" class="form-control" id="medicinesSearchInput"
                                                         placeholder="Search or type to add..." />
-                                                </div>
+                                                </div> -->
                                                 <!-- <button type="button" class="btn btn-outline-secondary"
                                                     id="clearMedicineSearch">✖</button> -->
-                                                <button type="button" class="btn btn-outline-primary d-none"
+                                                <!-- <button type="button" class="btn btn-outline-primary d-none"
                                                     id="medicinesAddBtn">+ Add</button>
                                             </div>
                                             <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                            <div id="medicinesList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <input type="hidden" name="medicinesJson" id="medicinesJson">
+ -->
+
+ <div class="mb-3">
+    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+        style="background-color: rgb(206, 206, 206);" role="button"
+        data-bs-toggle="collapse" data-bs-target="#medicinesCol">
+        <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
+        <span class="toggle-icon">+</span>
+    </div>
+    <div class="collapse field-container mt-2" id="medicinesCollapse">
+        <div id="medicinesWrapper">
+            <div id="medicinesList" class="mb-2"></div>
+
+            <div class="mb-3 position-relative">
+                <div class="input-group mb-2">
+                    <div class="tags-input flex-grow-1" id="medicinesInput">
+                        <input type="text" class="form-control border-0 shadow-none" 
+                               id="medicinesSearchInput" 
+                               placeholder="Search or type to add..." />
+                    </div>
+                    
+                    <button type="button" class="btn btn-outline-secondary" 
+                            id="clearMedicineSearch" 
+                            style="display: none;">✖</button>
+                    
+                    <button type="button" class="btn btn-outline-primary" 
+                            id="medicinesAddBtn" 
+                            style="display: none;">+ Add</button>
+                </div>
+                
+                <div class="suggestions-box" id="medicinesSuggestionsBox" 
+                     style="position: relative; margin-bottom: 15px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="medicinesJson" id="medicinesJson">
 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -3160,7 +3289,7 @@
         </div>
 
         <!-- Add-new-medicine modal  -->
-        <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+        <!-- <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
             data-bs-keyboard="false">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
@@ -3207,7 +3336,69 @@
                 </div>
             </div>
         </div>
+ -->
 
+      <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <form id="addMedicineMasterForm" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="addMedicineModalTitle" style="font-family: Poppins, sans-serif;">Add New Medicine</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <label for="newMedicineName" class="form-label fieldLabel pb-2">Medicine Name <span class="text-danger">*</span></label>
+                <input type="text" id="newMedicineName" class="form-control" placeholder="E.g. Dolo 650" required>
+
+                <label for="newMedicineComposition" class="form-label fieldLabel pb-2 mt-2">Composition Name</label>
+                <input type="text" id="newMedicineComposition" class="form-control" placeholder="E.g. Paracetamol">
+
+                <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category <span class="text-danger">*</span></label>
+                <select id="newMedicineCategory" class="form-select" required>
+                    <option value="">Select Category</option>
+                    <option value="TABLET">Tablet</option>
+                    <option value="CAPSULE">Capsule</option>
+                    <option value="SYRUP">Syrup</option>
+                    <option value="INJECTION">Injection</option>
+                    <option value="DROPS">Drops</option>
+                    <option value="OINTMENT">Ointment</option>
+                    <option value="CREAM">Cream</option>
+                    <option value="GEL">Gel</option>
+                    <option value="SPRAY">Spray</option>
+                    <option value="POWDER">Powder</option>
+                    <option value="SUPPOSITORY">Suppository</option>
+                    <option value="INSULIN">Insulin</option>
+                    <option value="OIL">Oil</option>
+                    <option value="NEEDLE">Needle</option>
+                </select>
+                
+                <input type="hidden" id="editMedicineMasterId" value="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="addMedicineConfirmBtn" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteMedicineMasterModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="delMedNameDisplay"></strong>?</p>
+                <input type="hidden" id="delMedId" value="">
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="finalDeleteMedBtn" class="btn text-light" style="background-color: #2b353bf5;">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
         <!-- Medicine Modal -->
         <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -3809,458 +4000,442 @@
 
     <!-- New Symptoms model save script -->
     <script>
-    // 1. Load List Safely from PHP
-    let symptomsList = <?php echo (isset($symptomsList) && !empty($symptomsList)) ? json_encode($symptomsList) : '[]'; ?>;
+        // 1. Load List Safely from PHP
+        let symptomsList = <?php echo (isset($symptomsList) && !empty($symptomsList)) ? json_encode($symptomsList) : '[]'; ?>;
 
-    document.addEventListener("DOMContentLoaded", function() {
-        // --- DOM ELEMENTS (Specific to Symptoms) ---
-        const symptomsInput = document.getElementById("symptomsSearchInput");
-        const symptomsSuggestionsBox = document.getElementById("symptomsSuggestionsBox");
-        const addSymptomBtn = document.getElementById("addSymptomBtn");
-        const clearSymptomSearch = document.getElementById("clearSymptomSearch");
-        const symptomsTagContainer = document.getElementById("symptomsInput");
-        
-        // New List Container (Above search box)
-        const symptomsListContainer = document.getElementById("symptomsList");
+        document.addEventListener("DOMContentLoaded", function() {
+            // --- DOM ELEMENTS (Specific to Symptoms) ---
+            const symptomsInput = document.getElementById("symptomsSearchInput");
+            const symptomsSuggestionsBox = document.getElementById("symptomsSuggestionsBox");
+            const addSymptomBtn = document.getElementById("addSymptomBtn");
+            const clearSymptomSearch = document.getElementById("clearSymptomSearch");
+            const symptomsTagContainer = document.getElementById("symptomsInput");
+            
+            // New List Container (Above search box)
+            const symptomsListContainer = document.getElementById("symptomsList");
 
-        // --- UNIVERSAL MODAL ELEMENTS ---
-        const universalAddModalEl = document.getElementById("universalAddMasterModal");
-        const universalAddModal = new bootstrap.Modal(universalAddModalEl);
-        const universalForm = document.getElementById("universalAddMasterForm");
-        const universalTitle = document.getElementById("universalMasterTitle");
-        const universalLabel = document.getElementById("universalMasterLabel");
-        const universalInput = document.getElementById("universalMasterInput");
-        const universalId = document.getElementById("universalMasterId");
-        const universalType = document.getElementById("universalMasterType");
+            // --- UNIVERSAL MODAL ELEMENTS ---
+            const universalAddModalEl = document.getElementById("universalAddMasterModal");
+            const universalAddModal = new bootstrap.Modal(universalAddModalEl);
+            const universalForm = document.getElementById("universalAddMasterForm");
+            const universalTitle = document.getElementById("universalMasterTitle");
+            const universalLabel = document.getElementById("universalMasterLabel");
+            const universalInput = document.getElementById("universalMasterInput");
+            const universalId = document.getElementById("universalMasterId");
+            const universalType = document.getElementById("universalMasterType");
 
-        const universalDeleteModalEl = document.getElementById("universalDeleteModal");
-        const universalDeleteModal = new bootstrap.Modal(universalDeleteModalEl);
-        const universalDeleteName = document.getElementById("universalDeleteNameDisplay");
-        const universalDeleteId = document.getElementById("universalDeleteId");
-        const universalDeleteType = document.getElementById("universalDeleteType");
-        const universalDeleteBtn = document.getElementById("universalDeleteBtn");
+            const universalDeleteModalEl = document.getElementById("universalDeleteModal");
+            const universalDeleteModal = new bootstrap.Modal(universalDeleteModalEl);
+            const universalDeleteName = document.getElementById("universalDeleteNameDisplay");
+            const universalDeleteId = document.getElementById("universalDeleteId");
+            const universalDeleteType = document.getElementById("universalDeleteType");
+            const universalDeleteBtn = document.getElementById("universalDeleteBtn");
 
-        // --- DETAILED MODAL ELEMENTS (Specific to Symptoms) ---
-        const symptomsModalEl = document.getElementById("symptomsModal");
-        const symptomsModal = new bootstrap.Modal(symptomsModalEl);
-        const symptomNote = document.getElementById("symptomNote");
-        const symptomSince = document.getElementById("symptomSince");
-        const symptomSeverity = document.getElementById("symptomSeverity");
-        const symptomsModalTitle = document.getElementById("symptomsModalTitle");
+            // --- DETAILED MODAL ELEMENTS (Specific to Symptoms) ---
+            const symptomsModalEl = document.getElementById("symptomsModal");
+            const symptomsModal = new bootstrap.Modal(symptomsModalEl);
+            const symptomNote = document.getElementById("symptomNote");
+            const symptomSince = document.getElementById("symptomSince");
+            const symptomSeverity = document.getElementById("symptomSeverity");
+            const symptomsModalTitle = document.getElementById("symptomsModalTitle");
 
-        // Variables
-        let selectedSymptoms = [];
-        let pendingSymptom = "";
-        let editingSymptomTag = null;
+            // Variables
+            let selectedSymptoms = [];
+            let pendingSymptom = "";
+            let editingSymptomTag = null;
 
-        // ============================================================
-        // FIX: Force Close for Universal Modals
-        // ============================================================
-        
-        // 1. Add/Edit Modal Close Buttons (Cancel + X)
-        const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
-        addModalCloseBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault(); // Stop any default behavior
-                universalAddModal.hide(); // Force Bootstrap to hide it
-                
-                // Optional: Reset form
-                if(universalForm) universalForm.reset();
+            // FIX: Force Close for Universal Modals
+            // 1. Add/Edit Modal Close Buttons (Cancel + X)
+            const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            addModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Stop any default behavior
+                    universalAddModal.hide(); // Force Bootstrap to hide it
+                    
+                    // Optional: Reset form
+                    if(universalForm) universalForm.reset();
+                });
             });
-        });
 
-        // 2. Delete Modal Close Buttons (Cancel + X)
-        const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
-        deleteModalCloseBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                universalDeleteModal.hide(); // Force Bootstrap to hide it
+            // 2. Delete Modal Close Buttons (Cancel + X)
+            const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            deleteModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                });
             });
-        });
 
-        // ============================================================
-        // 1. RENDER SUGGESTIONS
-        // ============================================================
-        function renderSymptomsSuggestions() {
-            if (!symptomsInput) return;
-            const query = symptomsInput.value.trim().toLowerCase();
-            symptomsSuggestionsBox.innerHTML = "";
+            // 1. RENDER SUGGESTIONS
+            function renderSymptomsSuggestions() {
+                if (!symptomsInput) return;
+                const query = symptomsInput.value.trim().toLowerCase();
+                symptomsSuggestionsBox.innerHTML = "";
 
-            // Toggle Buttons
-            if (query.length > 0) {
-                if (clearSymptomSearch) clearSymptomSearch.style.display = 'block';
-            } else {
-                if (clearSymptomSearch) clearSymptomSearch.style.display = 'none';
-                if (addSymptomBtn) addSymptomBtn.style.display = 'none';
-            }
-
-            const filtered = symptomsList.filter(s => s.symptomsName.toLowerCase().includes(query));
-
-            // Logic: "No result found" vs "List"
-            if (filtered.length === 0 && query !== "") {
-                if (addSymptomBtn) addSymptomBtn.style.display = 'block';
-                
-                if (symptomsSuggestionsBox) {
-                    symptomsSuggestionsBox.style.display = 'block';
-                    const noResultDiv = document.createElement("div");
-                    noResultDiv.className = "p-2 text-muted";
-                    noResultDiv.style.fontSize = "0.9rem";
-                    noResultDiv.textContent = "No result found on search – Add new";
-                    symptomsSuggestionsBox.appendChild(noResultDiv);
-                }
-            } else {
-                if (addSymptomBtn) addSymptomBtn.style.display = 'none';
-                
-                if (symptomsSuggestionsBox && query !== "") {
-                    filtered.forEach(item => {
-                        const div = document.createElement("div");
-                        div.className = "d-flex justify-content-between align-items-center p-2 border-bottom";
-                        div.style.cursor = "pointer";
-
-                        // A. Symptom Name (Click to Add)
-                        const spanName = document.createElement("span");
-                        spanName.textContent = item.symptomsName;
-                        spanName.className = "flex-grow-1";
-                        spanName.onclick = (e) => {
-                            e.stopPropagation();
-                            openSymptomModal(item.symptomsName);
-                            clearSearch();
-                        };
-                        div.appendChild(spanName);
-
-                        // B. Action Icons (Only if Creator)
-                        if (item.is_mine == true || item.is_mine == "true") {
-                            const actionDiv = document.createElement("div");
-                            actionDiv.className = "d-flex align-items-center";
-
-                            // Edit Icon
-                            const editIcon = document.createElement("i");
-                            editIcon.className = "bi bi-pen action-icon edit"; // Custom CSS class
-                            editIcon.title = "Edit";
-                            editIcon.onclick = (e) => {
-                                e.stopPropagation();
-                                openEditModal(item.id, item.symptomsName);
-                            };
-
-                            // Delete Icon
-                            const deleteIcon = document.createElement("i");
-                            deleteIcon.className = "bi bi-trash action-icon delete"; // Custom CSS class
-                            deleteIcon.title = "Delete";
-                            deleteIcon.onclick = (e) => {
-                                e.stopPropagation();
-                                openDeleteModal(item.id, item.symptomsName);
-                            };
-
-                            actionDiv.appendChild(editIcon);
-                            actionDiv.appendChild(deleteIcon);
-                            div.appendChild(actionDiv);
-                        }
-                        
-                        // Fallback row click
-                        div.onclick = () => {
-                            openSymptomModal(item.symptomsName);
-                            clearSearch();
-                        };
-
-                        symptomsSuggestionsBox.appendChild(div);
-                    });
-                    symptomsSuggestionsBox.style.display = "block";
+                // Toggle Buttons
+                if (query.length > 0) {
+                    if (clearSymptomSearch) clearSymptomSearch.style.display = 'block';
                 } else {
-                    symptomsSuggestionsBox.style.display = "none";
+                    if (clearSymptomSearch) clearSymptomSearch.style.display = 'none';
+                    if (addSymptomBtn) addSymptomBtn.style.display = 'none';
+                }
+
+                const filtered = symptomsList.filter(s => s.symptomsName.toLowerCase().includes(query));
+
+                // Logic: "No result found" vs "List"
+                if (filtered.length === 0 && query !== "") {
+                    if (addSymptomBtn) addSymptomBtn.style.display = 'block';
+                    
+                    if (symptomsSuggestionsBox) {
+                        symptomsSuggestionsBox.style.display = 'block';
+                        const noResultDiv = document.createElement("div");
+                        noResultDiv.className = "p-2 text-muted";
+                        noResultDiv.style.fontSize = "0.9rem";
+                        noResultDiv.textContent = "No result found on search – Add new";
+                        symptomsSuggestionsBox.appendChild(noResultDiv);
+                    }
+                } else {
+                    if (addSymptomBtn) addSymptomBtn.style.display = 'none';
+                    
+                    if (symptomsSuggestionsBox && query !== "") {
+                        filtered.forEach(item => {
+                            const div = document.createElement("div");
+                            div.className = "d-flex justify-content-between align-items-center p-2 border-bottom";
+                            div.style.cursor = "pointer";
+
+                            // A. Symptom Name (Click to Add)
+                            const spanName = document.createElement("span");
+                            spanName.textContent = item.symptomsName;
+                            spanName.className = "flex-grow-1";
+                            spanName.onclick = (e) => {
+                                e.stopPropagation();
+                                openSymptomModal(item.symptomsName);
+                                clearSearch();
+                            };
+                            div.appendChild(spanName);
+
+                            // B. Action Icons (Only if Creator)
+                            if (item.is_mine == true || item.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center";
+
+                                // Edit Icon
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit"; // Custom CSS class
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openEditModal(item.id, item.symptomsName);
+                                };
+
+                                // Delete Icon
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete"; // Custom CSS class
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openDeleteModal(item.id, item.symptomsName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                div.appendChild(actionDiv);
+                            }
+                            
+                            // Fallback row click
+                            div.onclick = () => {
+                                openSymptomModal(item.symptomsName);
+                                clearSearch();
+                            };
+
+                            symptomsSuggestionsBox.appendChild(div);
+                        });
+                        symptomsSuggestionsBox.style.display = "block";
+                    } else {
+                        symptomsSuggestionsBox.style.display = "none";
+                    }
                 }
             }
-        }
 
-        function clearSearch() {
-            if (symptomsInput) {
-                symptomsInput.value = "";
-                symptomsInput.focus();
-            }
-            if (symptomsSuggestionsBox) symptomsSuggestionsBox.style.display = "none";
-            if (clearSymptomSearch) clearSymptomSearch.style.display = "none";
-            if (addSymptomBtn) addSymptomBtn.style.display = "none";
-        }
-
-        // ============================================================
-        // 2. DETAILED MODAL LOGIC (Notes, Severity)
-        // ============================================================
-        window.openSymptomModal = function(tagName, existing = null, tagEl = null) {
-            pendingSymptom = tagName;
-            editingSymptomTag = tagEl;
-
-            if (symptomsModalTitle) symptomsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            if (symptomNote) symptomNote.value = existing?.note || "";
-            if (symptomSince) symptomSince.value = existing?.since || "";
-            if (symptomSeverity) symptomSeverity.value = existing?.severity || "";
-
-            symptomsModal.show();
-            setTimeout(() => { if(symptomNote) symptomNote.focus(); }, 500);
-        }
-
-        window.saveSymptomModal = function() {
-            const note = symptomNote ? symptomNote.value.trim() : "";
-            const since = symptomSince ? symptomSince.value.trim() : "";
-            const severity = symptomSeverity ? symptomSeverity.value : "";
-
-            if (!pendingSymptom) return;
-
-            const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
-
-            if (editingSymptomTag && existingIndex !== -1) {
-                let existingId = selectedSymptoms[existingIndex].id || "new";
-                selectedSymptoms[existingIndex] = { id: existingId, symptom: pendingSymptom, note, since, severity };
-                updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
-                editingSymptomTag.setAttribute("data-id", existingId);
-            } else {
-                const data = { id: "new", symptom: pendingSymptom, note, since, severity };
-                selectedSymptoms.push(data);
-                addSymptomTag(data);
+            function clearSearch() {
+                if (symptomsInput) {
+                    symptomsInput.value = "";
+                    symptomsInput.focus();
+                }
+                if (symptomsSuggestionsBox) symptomsSuggestionsBox.style.display = "none";
+                if (clearSymptomSearch) clearSymptomSearch.style.display = "none";
+                if (addSymptomBtn) addSymptomBtn.style.display = "none";
             }
 
-            symptomsModal.hide();
-            pendingSymptom = "";
-            editingSymptomTag = null;
-            updateHiddenInput();
-        }
+            // 2. DETAILED MODAL LOGIC (Notes, Severity)
+            window.openSymptomModal = function(tagName, existing = null, tagEl = null) {
+                pendingSymptom = tagName;
+                editingSymptomTag = tagEl;
 
-        // ============================================================
-        // 3. UNIVERSAL MASTER MODAL (ADD / EDIT) HANDLERS
-        // ============================================================
-        
-        // Open for ADD
-        if (addSymptomBtn) {
-            addSymptomBtn.addEventListener('click', () => {
-                // Setup Universal Modal for Symptoms
-                universalTitle.textContent = "Add New Symptom";
+                if (symptomsModalTitle) symptomsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+                if (symptomNote) symptomNote.value = existing?.note || "";
+                if (symptomSince) symptomSince.value = existing?.since || "";
+                if (symptomSeverity) symptomSeverity.value = existing?.severity || "";
+
+                symptomsModal.show();
+                setTimeout(() => { if(symptomNote) symptomNote.focus(); }, 500);
+            }
+
+            window.saveSymptomModal = function() {
+                const note = symptomNote ? symptomNote.value.trim() : "";
+                const since = symptomSince ? symptomSince.value.trim() : "";
+                const severity = symptomSeverity ? symptomSeverity.value : "";
+
+                if (!pendingSymptom) return;
+
+                const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
+
+                if (editingSymptomTag && existingIndex !== -1) {
+                    let existingId = selectedSymptoms[existingIndex].id || "new";
+                    selectedSymptoms[existingIndex] = { id: existingId, symptom: pendingSymptom, note, since, severity };
+                    updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
+                    editingSymptomTag.setAttribute("data-id", existingId);
+                } else {
+                    const data = { id: "new", symptom: pendingSymptom, note, since, severity };
+                    selectedSymptoms.push(data);
+                    addSymptomTag(data);
+                }
+
+                symptomsModal.hide();
+                pendingSymptom = "";
+                editingSymptomTag = null;
+                updateHiddenInput();
+            }
+
+            // 3. UNIVERSAL MASTER MODAL (ADD / EDIT) HANDLERS
+            // Open for ADD
+            if (addSymptomBtn) {
+                addSymptomBtn.addEventListener('click', () => {
+                    // Setup Universal Modal for Symptoms
+                    universalTitle.textContent = "Add New Symptom";
+                    universalLabel.innerHTML = 'Symptom Name <span class="text-danger">*</span>';
+                    universalInput.value = symptomsInput.value.trim();
+                    universalId.value = ""; 
+                    universalType.value = "symptom"; // <--- FLAG: Identified as Symptom Action
+
+                    universalAddModal.show();
+                    setTimeout(() => universalInput.focus(), 500);
+                });
+            }
+
+            // Open for EDIT
+            function openEditModal(id, name) {
+                universalTitle.textContent = "Edit Symptom";
                 universalLabel.innerHTML = 'Symptom Name <span class="text-danger">*</span>';
-                universalInput.value = symptomsInput.value.trim();
-                universalId.value = ""; 
-                universalType.value = "symptom"; // <--- FLAG: Identified as Symptom Action
+                universalInput.value = name;
+                universalId.value = id;
+                universalType.value = "symptom"; // <--- FLAG
 
                 universalAddModal.show();
                 setTimeout(() => universalInput.focus(), 500);
-            });
-        }
+            }
 
-        // Open for EDIT
-        function openEditModal(id, name) {
-            universalTitle.textContent = "Edit Symptom";
-            universalLabel.innerHTML = 'Symptom Name <span class="text-danger">*</span>';
-            universalInput.value = name;
-            universalId.value = id;
-            universalType.value = "symptom"; // <--- FLAG
+            // GLOBAL FORM SUBMIT HANDLER (Filters by universalType)
+            if (universalForm) {
+                universalForm.addEventListener('submit', (e) => {
+                    // IMPORTANT: Only run if this is a SYMPTOM action
+                    if (universalType.value !== 'symptom') return;
 
-            universalAddModal.show();
-            setTimeout(() => universalInput.focus(), 500);
-        }
+                    e.preventDefault();
+                    const name = universalInput.value.trim();
+                    const id = universalId.value;
 
-        // GLOBAL FORM SUBMIT HANDLER (Filters by universalType)
-        if (universalForm) {
-            universalForm.addEventListener('submit', (e) => {
-                // IMPORTANT: Only run if this is a SYMPTOM action
-                if (universalType.value !== 'symptom') return;
+                    if (!name) return;
 
-                e.preventDefault();
-                const name = universalInput.value.trim();
-                const id = universalId.value;
+                    // Choose URL based on ID existence
+                    const url = id ? "<?= site_url('Consultation/editSymptomItem') ?>" : "<?= site_url('Consultation/addSymptom') ?>";
+                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
 
-                if (!name) return;
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: body
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            if (id) {
+                                // Edit Logic
+                                const index = symptomsList.findIndex(s => s.id == id);
+                                if (index !== -1) symptomsList[index].symptomsName = name;
+                                universalAddModal.hide();
+                                clearSearch();
+                            } else {
+                                // Add Logic
+                                symptomsList.push({
+                                    id: data.id,
+                                    symptomsName: name,
+                                    is_mine: true
+                                });
+                                universalAddModal.hide();
+                                clearSearch();
+                                // Auto-open Detail Modal
+                                setTimeout(() => openSymptomModal(name), 300);
+                            }
+                        } else {
+                            alert("Operation failed");
+                        }
+                    });
+                });
+            }
 
-                // Choose URL based on ID existence
-                const url = id ? "<?= site_url('Consultation/editSymptomItem') ?>" : "<?= site_url('Consultation/addSymptom') ?>";
-                const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+            // 4. UNIVERSAL DELETE MODAL HANDLERS
+            function openDeleteModal(id, name) {
+                universalDeleteName.textContent = name;
+                universalDeleteId.value = id;
+                universalDeleteType.value = "symptom"; // <--- FLAG
+                universalDeleteModal.show();
+            }
 
-                fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: body
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        if (id) {
-                            // Edit Logic
-                            const index = symptomsList.findIndex(s => s.id == id);
-                            if (index !== -1) symptomsList[index].symptomsName = name;
-                            universalAddModal.hide();
+            if (universalDeleteBtn) {
+                universalDeleteBtn.addEventListener('click', () => {
+                    // IMPORTANT: Only run if this is a SYMPTOM action
+                    if (universalDeleteType.value !== 'symptom') return;
+
+                    const id = universalDeleteId.value;
+                    fetch("<?= site_url('Consultation/deleteSymptomItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.status === 'success') {
+                            symptomsList = symptomsList.filter(s => s.id != id);
+                            universalDeleteModal.hide();
+                            renderSymptomsSuggestions();
+                        }
+                    });
+                });
+            }
+
+            // 5. KEYBOARD & INPUT EVENTS
+            if (symptomsInput) {
+                symptomsInput.addEventListener("input", renderSymptomsSuggestions);
+                symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
+                
+                // Enter Key on Search
+                symptomsInput.addEventListener("keydown", e => {
+                    if (e.key === "Enter" && symptomsInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const val = symptomsInput.value.trim();
+                        const exists = symptomsList.some(s => s.symptomsName.toLowerCase() === val.toLowerCase());
+
+                        if (exists) {
+                            openSymptomModal(val); 
                             clearSearch();
                         } else {
-                            // Add Logic
-                            symptomsList.push({
-                                id: data.id,
-                                symptomsName: name,
-                                is_mine: true
-                            });
-                            universalAddModal.hide();
-                            clearSearch();
-                            // Auto-open Detail Modal
-                            setTimeout(() => openSymptomModal(name), 300);
+                            if (addSymptomBtn) addSymptomBtn.click();
                         }
-                    } else {
-                        alert("Operation failed");
                     }
                 });
-            });
-        }
-
-        // ============================================================
-        // 4. UNIVERSAL DELETE MODAL HANDLERS
-        // ============================================================
-        function openDeleteModal(id, name) {
-            universalDeleteName.textContent = name;
-            universalDeleteId.value = id;
-            universalDeleteType.value = "symptom"; // <--- FLAG
-            universalDeleteModal.show();
-        }
-
-        if (universalDeleteBtn) {
-            universalDeleteBtn.addEventListener('click', () => {
-                // IMPORTANT: Only run if this is a SYMPTOM action
-                if (universalDeleteType.value !== 'symptom') return;
-
-                const id = universalDeleteId.value;
-                fetch("<?= site_url('Consultation/deleteSymptomItem') ?>", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `id=${id}`
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === 'success') {
-                        symptomsList = symptomsList.filter(s => s.id != id);
-                        universalDeleteModal.hide();
-                        renderSymptomsSuggestions();
-                    }
-                });
-            });
-        }
-
-        // ============================================================
-        // 5. KEYBOARD & INPUT EVENTS
-        // ============================================================
-        if (symptomsInput) {
-            symptomsInput.addEventListener("input", renderSymptomsSuggestions);
-            symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
-            
-            // Enter Key on Search
-            symptomsInput.addEventListener("keydown", e => {
-                if (e.key === "Enter" && symptomsInput.value.trim() !== "") {
-                    e.preventDefault();
-                    const val = symptomsInput.value.trim();
-                    const exists = symptomsList.some(s => s.symptomsName.toLowerCase() === val.toLowerCase());
-
-                    if (exists) {
-                        openSymptomModal(val); 
-                        clearSearch();
-                    } else {
-                        if (addSymptomBtn) addSymptomBtn.click();
-                    }
-                }
-            });
-        }
-
-        // Enter Key on Detailed Modal (Save)
-        if (symptomsModalEl) {
-            symptomsModalEl.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    saveSymptomModal();
-                }
-            });
-        }
-
-        if (clearSymptomSearch) {
-            clearSymptomSearch.addEventListener("click", clearSearch);
-        }
-        
-        // Click Outside
-        document.addEventListener("click", (e) => {
-            if (symptomsTagContainer && !symptomsTagContainer.contains(e.target) && 
-                addSymptomBtn && !addSymptomBtn.contains(e.target)) {
-                if (symptomsSuggestionsBox) symptomsSuggestionsBox.style.display = "none";
             }
-        });
 
-        // ============================================================
-        // 6. HELPER FUNCTIONS (Tag Management)
-        // ============================================================
-        function addSymptomTag(data) {
-    const tag = document.createElement("span");
-    tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-    tag.style.cursor = "pointer";
-    tag.setAttribute("data-id", data.id || "new");
+            // Enter Key on Detailed Modal (Save)
+            if (symptomsModalEl) {
+                symptomsModalEl.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveSymptomModal();
+                    }
+                });
+            }
 
-    const textSpan = document.createElement("span");
-    tag.appendChild(textSpan);
-
-    const removeBtn = document.createElement("button");
-    removeBtn.type = "button";
-    removeBtn.className = "text-light ms-2";
-    removeBtn.innerHTML = "&times;";
-    removeBtn.style.fontSize = "1rem";
-    removeBtn.style.border = "none";
-    removeBtn.style.background = "transparent";
-    
-    removeBtn.onclick = (e) => {
-        e.stopPropagation();
-        tag.remove();
-        selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
-        updateHiddenInput();
-    };
-
-    tag.appendChild(removeBtn);
-    updateSymptomTagDisplay(tag, data);
-    tag.onclick = () => openSymptomModal(data.symptom, data, tag);
-
-    // --- UPDATED INSERTION LOGIC ---
-    // Target the top container specifically
-    const listContainer = document.getElementById('symptomsList');
-    
-    if (listContainer) {
-        listContainer.appendChild(tag); // Add to the list at the top
-    } else {
-        // Fallback if the list container is missing
-        const wrapper = document.querySelector('#symptomsWrapper .mb-3');
-        if (wrapper) {
-            wrapper.insertAdjacentElement('beforebegin', tag);
-        } else if (symptomsTagContainer) {
-            symptomsTagContainer.parentElement.insertBefore(tag, symptomsTagContainer.parentElement.firstChild);
-        }
-    }
-}
-
-        function updateSymptomTagDisplay(tagEl, data) {
-            const textParts = [data.symptom];
-            const details = [];
-            if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
-            if (details.length > 0) textParts.push(`(${details.join(", ")})`);
-            tagEl.firstChild.textContent = textParts.join(" "); 
-        }
-
-        function updateHiddenInput() {
-            const hiddenInput = document.getElementById("symptomsJson");
-            if (hiddenInput) hiddenInput.value = JSON.stringify(selectedSymptoms);
-        }
-
-        // --- INITIAL RENDER (Preload from Database) ---
-        const preloadSymptoms = <?php echo (isset($symptoms) && !empty($symptoms)) ? json_encode($symptoms) : '[]'; ?>;
-        if (preloadSymptoms.length > 0) {
-            preloadSymptoms.forEach(item => {
-                const data = {
-                    id: item.id || "",
-                    symptom: item.symptom_name,
-                    note: item.note || "",
-                    since: item.since || "",
-                    severity: item.severity || ""
-                };
-                selectedSymptoms.push(data);
-                addSymptomTag(data);
+            if (clearSymptomSearch) {
+                clearSymptomSearch.addEventListener("click", clearSearch);
+            }
+            
+            // Click Outside
+            document.addEventListener("click", (e) => {
+                if (symptomsTagContainer && !symptomsTagContainer.contains(e.target) && 
+                    addSymptomBtn && !addSymptomBtn.contains(e.target)) {
+                    if (symptomsSuggestionsBox) symptomsSuggestionsBox.style.display = "none";
+                }
             });
+
+            // 6. HELPER FUNCTIONS (Tag Management)
+            function addSymptomTag(data) {
+        const tag = document.createElement("span");
+        tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+        tag.style.cursor = "pointer";
+        tag.setAttribute("data-id", data.id || "new");
+
+        const textSpan = document.createElement("span");
+        tag.appendChild(textSpan);
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "text-light ms-2";
+        removeBtn.innerHTML = "&times;";
+        removeBtn.style.fontSize = "1rem";
+        removeBtn.style.border = "none";
+        removeBtn.style.background = "transparent";
+        
+        removeBtn.onclick = (e) => {
+            e.stopPropagation();
+            tag.remove();
+            selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
             updateHiddenInput();
+        };
+
+        tag.appendChild(removeBtn);
+        updateSymptomTagDisplay(tag, data);
+        tag.onclick = () => openSymptomModal(data.symptom, data, tag);
+
+        // --- UPDATED INSERTION LOGIC ---
+        // Target the top container specifically
+        const listContainer = document.getElementById('symptomsList');
+        
+        if (listContainer) {
+            listContainer.appendChild(tag); // Add to the list at the top
+        } else {
+            // Fallback if the list container is missing
+            const wrapper = document.querySelector('#symptomsWrapper .mb-3');
+            if (wrapper) {
+                wrapper.insertAdjacentElement('beforebegin', tag);
+            } else if (symptomsTagContainer) {
+                symptomsTagContainer.parentElement.insertBefore(tag, symptomsTagContainer.parentElement.firstChild);
+            }
         }
-    });
+        }
+
+                function updateSymptomTagDisplay(tagEl, data) {
+                    const textParts = [data.symptom];
+                    const details = [];
+                    if (data.note) details.push(`Note: ${data.note}`);
+                    if (data.since) details.push(`Since: ${data.since}`);
+                    if (data.severity) details.push(`Severity: ${data.severity}`);
+                    if (details.length > 0) textParts.push(`(${details.join(", ")})`);
+                    tagEl.firstChild.textContent = textParts.join(" "); 
+                }
+
+                function updateHiddenInput() {
+                    const hiddenInput = document.getElementById("symptomsJson");
+                    if (hiddenInput) hiddenInput.value = JSON.stringify(selectedSymptoms);
+                }
+
+                // --- INITIAL RENDER (Preload from Database) ---
+                const preloadSymptoms = <?php echo (isset($symptoms) && !empty($symptoms)) ? json_encode($symptoms) : '[]'; ?>;
+                if (preloadSymptoms.length > 0) {
+                    preloadSymptoms.forEach(item => {
+                        const data = {
+                            id: item.id || "",
+                            symptom: item.symptom_name,
+                            note: item.note || "",
+                            since: item.since || "",
+                            severity: item.severity || ""
+                        };
+                        selectedSymptoms.push(data);
+                        addSymptomTag(data);
+                    });
+                    updateHiddenInput();
+                }
+            });
     </script>
 
     <!-- old Finding Modal Script -->
@@ -5214,8 +5389,7 @@
         });
     </script> -->
 
-    <!--new Diagnosis save script -->
-    
+    <!--new Diagnosis Model and save script -->
     <script>
                 // 1. Load List Safely
             let diagnosisList = <?php echo (isset($diagnosisList) && !empty($diagnosisList)) ? json_encode($diagnosisList) : '[]'; ?>;
@@ -5906,7 +6080,6 @@
             });
         });
     </script> -->
-
     <!-- new Investigation save script -->
     <script>
         // 1. Load List Safely
@@ -5949,10 +6122,7 @@
             let pendingInvestigation = "";
             let editingInvestigationTag = null;
 
-            // ============================================================
             // FIX: Force Close for Universal Modals
-            // ============================================================
-            
             // 1. Add/Edit Modal Close Buttons (Cancel + X)
             const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             addModalCloseBtns.forEach(btn => {
@@ -5973,9 +6143,7 @@
                     universalDeleteModal.hide(); // Force Bootstrap to hide it
                 });
             });
-            // ============================================================
             // 1. RENDER SUGGESTIONS
-            // ============================================================
             function renderInvestigationsSuggestions() {
                 if (!investigationsInput) return;
                 const query = investigationsInput.value.trim().toLowerCase();
@@ -6073,9 +6241,7 @@
                 if(addInvestigationBtn) addInvestigationBtn.style.display = "none";
             }
 
-            // ============================================================
             // 2. DETAILED MODAL LOGIC (Patient Specific)
-            // ============================================================
             window.openInvestigationModal = function(tagName, existing = null, tagEl = null) {
                 pendingInvestigation = tagName;
                 editingInvestigationTag = tagEl;
@@ -6111,10 +6277,7 @@
                 updateInvestigationHiddenInput();
             }
 
-            // ============================================================
             // 3. UNIVERSAL ADD / EDIT HANDLERS
-            // ============================================================
-            
             // Open Add
             if (addInvestigationBtn) {
                 addInvestigationBtn.addEventListener('click', () => {
@@ -6189,10 +6352,7 @@
                 });
             }
 
-            // ============================================================
             // 4. UNIVERSAL DELETE HANDLERS
-            // ============================================================
-            
             function openUniversalDelete(type, id, name) {
                 universalDeleteName.textContent = name;
                 universalDeleteId.value = id;
@@ -6222,9 +6382,7 @@
                 });
             }
 
-            // ============================================================
             // 5. KEYBOARD & INPUT EVENTS
-            // ============================================================
             if (investigationsInput) {
                 investigationsInput.addEventListener("input", renderInvestigationsSuggestions);
                 investigationsInput.addEventListener("focus", renderInvestigationsSuggestions);
@@ -6265,9 +6423,7 @@
                 }
             });
 
-            // ============================================================
             // 6. HELPERS
-            // ============================================================
             function addInvestigationTag(data) {
                 const tag = document.createElement("span");
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
@@ -6334,8 +6490,8 @@
         });
     </script>
 
-    <!-- Instruction Search Button -->
-    <script>
+    <!-- old Instruction Search Button -->
+    <!-- <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const searchInput = document.getElementById('instructionSearch');
                 const clearBtn = document.getElementById('clearInstructionSearch');
@@ -6479,6 +6635,325 @@
                 sortList();
                 filter();
             });
+    </script> -->
+     <!-- New Instruction Search Button -->
+    <script>
+            // 1. Load Lists
+            let instructionsList = <?php echo (isset($instructionsList) && !empty($instructionsList)) ? json_encode($instructionsList) : '[]'; ?>;
+            // Pre-checked items
+            let savedInstructions = <?php echo (isset($instructions) && !empty($instructions)) ? json_encode($instructions) : '[]'; ?>; 
+
+            // 2. Initialize Set
+            let selectedInstructionSet = new Set();
+            const normIns = s => (s || '').toLowerCase().trim();
+            
+            if (Array.isArray(savedInstructions)) {
+                savedInstructions.forEach(i => {
+                    let name = i.instruction_name || i; 
+                    selectedInstructionSet.add(normIns(name));
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                // Elements
+                const searchInput = document.getElementById('instructionSearch');
+                const clearBtn = document.getElementById('clearInstructionSearch');
+                const addBtn = document.getElementById('addInstruction') || document.getElementById('addInstructionBtn'); 
+                const list = document.getElementById('instructionList');
+
+                // Universal Modals
+                const uAddModalEl = document.getElementById("universalAddMasterModal");
+                const uAddModal = new bootstrap.Modal(uAddModalEl);
+                const uAddForm = document.getElementById("universalAddMasterForm");
+                const uTitle = document.getElementById("universalMasterTitle");
+                const uLabel = document.getElementById("universalMasterLabel");
+                const uInput = document.getElementById("universalMasterInput");
+                const uId = document.getElementById("universalMasterId");
+                const uType = document.getElementById("universalMasterType");
+
+                const uDelModalEl = document.getElementById("universalDeleteModal");
+                const uDelModal = new bootstrap.Modal(uDelModalEl);
+                const uDelName = document.getElementById("universalDeleteNameDisplay");
+                const uDelId = document.getElementById("universalDeleteId");
+                const uDelType = document.getElementById("universalDeleteType");
+                const uDelBtn = document.getElementById("universalDeleteBtn");
+
+                // FIX: FORCE CLOSE HANDLERS (Solves the Cancel Button Issue)
+                // 1. Add/Edit Modal (Cancel + X)
+                uAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        uAddModal.hide();
+                        if(uAddForm) uAddForm.reset();
+                    });
+                });
+
+                // 2. Delete Modal (Cancel + X)
+                uDelModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        uDelModal.hide();
+                    });
+                });
+
+                // 1. DOM SORTING
+                function sortList() {
+                    const items = Array.from(list.querySelectorAll('.instruction-item'));
+                    const selected = items.filter(i => i.querySelector('input').checked);
+                    const unselected = items.filter(i => !i.querySelector('input').checked);
+
+                    items.forEach(i => i.remove());
+                    selected.forEach(i => list.appendChild(i));
+                    unselected.forEach(i => list.appendChild(i));
+                }
+
+                // 2. RENDER LIST
+                function renderList() {
+                    const q = normIns(searchInput.value);
+                    list.innerHTML = '';
+                    
+                    // Toggle Buttons
+                    if (q.length > 0) {
+                        clearBtn.style.display = 'block';
+                    } else {
+                        clearBtn.style.display = 'none';
+                        if(addBtn) addBtn.style.display = 'none';
+                    }
+
+                    let filtered = instructionsList.filter(i => normIns(i.instructionsName).includes(q));
+
+                    // Sorting: Checked items top
+                    filtered.sort((a, b) => {
+                        const aSelected = selectedInstructionSet.has(normIns(a.instructionsName));
+                        const bSelected = selectedInstructionSet.has(normIns(b.instructionsName));
+                        
+                        if (aSelected && !bSelected) return -1;
+                        if (!aSelected && bSelected) return 1;
+                        return 0;
+                    });
+
+                    if (filtered.length === 0 && q !== "") {
+                        if(addBtn) addBtn.style.display = 'block';
+                        
+                        const noResultDiv = document.createElement("div");
+                        noResultDiv.className = "text-muted p-2";
+                        noResultDiv.textContent = "No result found – Add new";
+                        list.appendChild(noResultDiv);
+                    } else {
+                        if(addBtn) addBtn.style.display = 'none';
+                        
+                        filtered.forEach(ins => {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'form-check instruction-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
+                            
+                            // Left Side
+                            const leftDiv = document.createElement('div');
+                            leftDiv.className = 'd-flex align-items-center flex-grow-1';
+
+                            const checkbox = document.createElement('input');
+                            checkbox.className = 'form-check-input mt-0';
+                            checkbox.type = 'checkbox';
+                            checkbox.name = 'instructions[]';
+                            checkbox.value = ins.instructionsName;
+                            checkbox.id = `ins${ins.id}`;
+                            
+                            if (selectedInstructionSet.has(normIns(ins.instructionsName))) {
+                                checkbox.checked = true;
+                            }
+
+                            checkbox.addEventListener('change', (e) => {
+                                if (e.target.checked) {
+                                    selectedInstructionSet.add(normIns(ins.instructionsName));
+                                } else {
+                                    selectedInstructionSet.delete(normIns(ins.instructionsName));
+                                }
+                            });
+
+                            const label = document.createElement('label');
+                            label.className = 'form-check-label ms-2';
+                            label.htmlFor = `ins${ins.id}`;
+                            label.textContent = ins.instructionsName;
+                            label.style.cursor = 'pointer';
+                            label.style.width = '100%';
+
+                            leftDiv.appendChild(checkbox);
+                            leftDiv.appendChild(label);
+                            wrapper.appendChild(leftDiv);
+
+                            // Right Side: Icons
+                            if (ins.is_mine == true || ins.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center gap-2";
+                                
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit"; 
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.preventDefault();
+                                    openUniversalEdit('instruction', ins.id, ins.instructionsName);
+                                };
+
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete"; 
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.preventDefault();
+                                    openUniversalDelete('instruction', ins.id, ins.instructionsName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                wrapper.appendChild(actionDiv);
+                            }
+
+                            list.appendChild(wrapper);
+                        });
+                    }
+                }
+
+                // --- LISTEN FOR CHECKS (Triggers Sort) ---
+                list.addEventListener('change', (e) => {
+                    if (e.target.matches('input[type="checkbox"]')) {
+                        sortList();
+                    }
+                });
+
+                // --- HANDLERS ---
+
+                if (addBtn) {
+                    addBtn.addEventListener('click', () => {
+                        uTitle.textContent = "Add New Instruction";
+                        uLabel.innerHTML = 'Instruction Name <span class="text-danger">*</span>';
+                        uInput.value = searchInput.value.trim();
+                        uId.value = "";
+                        uType.value = "instruction"; 
+                        uAddModal.show();
+                        setTimeout(() => uInput.focus(), 500);
+                    });
+                }
+
+                function openUniversalEdit(type, id, name) {
+                    uTitle.textContent = "Edit Instruction";
+                    uLabel.innerHTML = 'Instruction Name <span class="text-danger">*</span>';
+                    uInput.value = name;
+                    uId.value = id;
+                    uType.value = "instruction"; 
+                    uAddModal.show();
+                    setTimeout(() => uInput.focus(), 500);
+                }
+
+                function openUniversalDelete(type, id, name) {
+                    uDelName.textContent = name;
+                    uDelId.value = id;
+                    uDelType.value = "instruction"; 
+                    uDelModal.show();
+                }
+
+                // Handle Form Submit
+                if(uAddForm) {
+                    uAddForm.addEventListener('submit', (e) => {
+                        if (uType.value !== 'instruction') return; 
+                        e.preventDefault();
+
+                        const name = uInput.value.trim();
+                        const id = uId.value;
+                        if (!name) return;
+
+                        const url = id ? "<?= site_url('Consultation/editInstructionItem') ?>" : "<?= site_url('Consultation/addInstruction') ?>";
+                        const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                        fetch(url, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                            body: body
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                if (id) {
+                                    // Edit Logic with Selection Update
+                                    const index = instructionsList.findIndex(i => i.id == id);
+                                    if (index !== -1) {
+                                        const oldName = instructionsList[index].instructionsName;
+                                        instructionsList[index].instructionsName = name;
+                                        
+                                        if (selectedInstructionSet.has(normIns(oldName))) {
+                                            selectedInstructionSet.delete(normIns(oldName));
+                                            selectedInstructionSet.add(normIns(name));
+                                        }
+                                    }
+                                } else {
+                                    // Add
+                                    instructionsList.push({
+                                        id: data.id,
+                                        instructionsName: name,
+                                        is_mine: true
+                                    });
+                                    selectedInstructionSet.add(normIns(name)); // Auto-select
+                                }
+                                uAddModal.hide();
+                                searchInput.value = ""; 
+                                renderList();
+                            } else {
+                                alert("Operation failed");
+                            }
+                        });
+                    });
+                }
+
+                // Handle Delete
+                if(uDelBtn) {
+                    uDelBtn.addEventListener('click', () => {
+                        if (uDelType.value !== 'instruction') return;
+
+                        const id = uDelId.value;
+                        fetch("<?= site_url('Consultation/deleteInstructionItem') ?>", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                            body: `id=${id}`
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data.status === 'success') {
+                                const item = instructionsList.find(i => i.id == id);
+                                if(item) selectedInstructionSet.delete(normIns(item.instructionsName));
+
+                                instructionsList = instructionsList.filter(i => i.id != id);
+                                uDelModal.hide();
+                                renderList();
+                            }
+                        });
+                    });
+                }
+
+                // --- EVENTS ---
+                if(searchInput) {
+                    searchInput.addEventListener('input', renderList);
+                    
+                    searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === "Enter" && searchInput.value.trim() !== "") {
+                            e.preventDefault();
+                            const q = normIns(searchInput.value);
+                            const exists = instructionsList.some(i => normIns(i.instructionsName) === q);
+                            
+                            if (!exists) {
+                                if(addBtn) addBtn.click();
+                            }
+                        }
+                    });
+                }
+
+                if(clearBtn) {
+                    clearBtn.addEventListener('click', () => {
+                        searchInput.value = '';
+                        renderList();
+                        searchInput.focus();
+                    });
+                }
+
+                // Initial Render
+                renderList();
+            });
     </script>
 
     <!-- old Procedure Search Button -->
@@ -6621,312 +7096,329 @@
             filter();
         });
     </script> -->
-
     <!-- New Procedure Search Button -->
     <script>
-    // 1. Load Lists
-    let proceduresList = <?php echo (isset($proceduresList) && !empty($proceduresList)) ? json_encode($proceduresList) : '[]'; ?>;
-    
-    // 2. Pre-checked items (Convert to a Set for fast lookup)
-    let savedProcedures = <?php echo (isset($procedures) && !empty($procedures)) ? json_encode($procedures) : '[]'; ?>;
-    
-    // 3. Initialize Set
-    let selectedSet = new Set();
-    const norm = s => (s || '').toLowerCase().trim();
-    
-    if (Array.isArray(savedProcedures)) {
-        savedProcedures.forEach(p => {
-            let name = p.procedure_name || p;
-            selectedSet.add(norm(name));
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- ELEMENTS ---
-        const searchInput = document.getElementById('procedureSearch');
-        const clearBtn = document.getElementById('clearProcedureSearch');
-        const addBtn = document.getElementById('addProcedure') || document.getElementById('addProcedureBtn');
-        const list = document.getElementById('procedureList');
-
-        // --- UNIVERSAL MODALS ---
-        const uAddModal = new bootstrap.Modal(document.getElementById("universalAddMasterModal"));
-        const uAddForm = document.getElementById("universalAddMasterForm");
-        const uTitle = document.getElementById("universalMasterTitle");
-        const uLabel = document.getElementById("universalMasterLabel");
-        const uInput = document.getElementById("universalMasterInput");
-        const uId = document.getElementById("universalMasterId");
-        const uType = document.getElementById("universalMasterType");
-
-        const uDelModal = new bootstrap.Modal(document.getElementById("universalDeleteModal"));
-        const uDelName = document.getElementById("universalDeleteNameDisplay");
-        const uDelId = document.getElementById("universalDeleteId");
-        const uDelType = document.getElementById("universalDeleteType");
-        const uDelBtn = document.getElementById("universalDeleteBtn");
-
-        // ============================================================
-        // 1. DOM SORTING
-        // ============================================================
-        function sortList() {
-            const items = Array.from(list.querySelectorAll('.procedure-item'));
-            const selected = items.filter(i => i.querySelector('input').checked);
-            const unselected = items.filter(i => !i.querySelector('input').checked);
-
-            items.forEach(i => i.remove());
-            selected.forEach(i => list.appendChild(i));
-            unselected.forEach(i => list.appendChild(i));
-        }
-
-        // ============================================================
-        // 2. RENDER LIST
-        // ============================================================
-        function renderList() {
-            const q = norm(searchInput.value);
-            list.innerHTML = '';
+            // 1. Load Lists
+            let proceduresList = <?php echo (isset($proceduresList) && !empty($proceduresList)) ? json_encode($proceduresList) : '[]'; ?>;
             
-            // Toggle Buttons
-            if (q.length > 0) {
-                clearBtn.style.display = 'block';
-            } else {
-                clearBtn.style.display = 'none';
-                if(addBtn) addBtn.style.display = 'none';
+            // 2. Pre-checked items
+            let savedProcedures = <?php echo (isset($procedures) && !empty($procedures)) ? json_encode($procedures) : '[]'; ?>;
+            
+            // 3. Initialize Set
+            let selectedSet = new Set();
+            const norm = s => (s || '').toLowerCase().trim();
+            
+            if (Array.isArray(savedProcedures)) {
+                savedProcedures.forEach(p => {
+                    let name = p.procedure_name || p;
+                    selectedSet.add(norm(name));
+                });
             }
 
-            let filtered = proceduresList.filter(p => norm(p.proceduresName).includes(q));
+            document.addEventListener('DOMContentLoaded', () => {
+                // --- ELEMENTS ---
+                const searchInput = document.getElementById('procedureSearch');
+                const clearBtn = document.getElementById('clearProcedureSearch');
+                const addBtn = document.getElementById('addProcedure') || document.getElementById('addProcedureBtn');
+                const list = document.getElementById('procedureList');
 
-            // Sort: Checked items top
-            filtered.sort((a, b) => {
-                const aSelected = selectedSet.has(norm(a.proceduresName));
-                const bSelected = selectedSet.has(norm(b.proceduresName));
-                
-                if (aSelected && !bSelected) return -1;
-                if (!aSelected && bSelected) return 1;
-                return 0;
-            });
+                // --- UNIVERSAL MODALS ---
+                // 1. Add/Edit Modal
+                const uAddModalEl = document.getElementById("universalAddMasterModal");
+                const uAddModal = new bootstrap.Modal(uAddModalEl);
+                const uAddForm = document.getElementById("universalAddMasterForm");
+                const uTitle = document.getElementById("universalMasterTitle");
+                const uLabel = document.getElementById("universalMasterLabel");
+                const uInput = document.getElementById("universalMasterInput");
+                const uId = document.getElementById("universalMasterId");
+                const uType = document.getElementById("universalMasterType");
 
-            if (filtered.length === 0 && q !== "") {
-                if(addBtn) addBtn.style.display = 'block';
-                
-                const noResultDiv = document.createElement("div");
-                noResultDiv.className = "text-muted p-2";
-                noResultDiv.textContent = "No result found – Add new";
-                list.appendChild(noResultDiv);
-            } else {
-                if(addBtn) addBtn.style.display = 'none';
-                
-                filtered.forEach(pro => {
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'form-check procedure-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
+                // 2. Delete Modal
+                const uDelModalEl = document.getElementById("universalDeleteModal");
+                const uDelModal = new bootstrap.Modal(uDelModalEl);
+                const uDelName = document.getElementById("universalDeleteNameDisplay");
+                const uDelId = document.getElementById("universalDeleteId");
+                const uDelType = document.getElementById("universalDeleteType");
+                const uDelBtn = document.getElementById("universalDeleteBtn");
+
+                // FIX: FORCE CLOSE HANDLERS (Solves the Cancel Button Issue)
+                // 1. Add/Edit Modal (Cancel + X)
+                uAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        uAddModal.hide();
+                        if(uAddForm) uAddForm.reset();
+                    });
+                });
+
+                // 2. Delete Modal (Cancel + X)
+                uDelModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        uDelModal.hide();
+                    });
+                });
+
+                // 1. DOM SORTING
+                function sortList() {
+                    const items = Array.from(list.querySelectorAll('.procedure-item'));
+                    const selected = items.filter(i => i.querySelector('input').checked);
+                    const unselected = items.filter(i => !i.querySelector('input').checked);
+
+                    items.forEach(i => i.remove());
+                    selected.forEach(i => list.appendChild(i));
+                    unselected.forEach(i => list.appendChild(i));
+                }
+
+                // 2. RENDER LIST
+                function renderList() {
+                    const q = norm(searchInput.value);
+                    list.innerHTML = '';
                     
-                    // Left Side
-                    const leftDiv = document.createElement('div');
-                    leftDiv.className = 'd-flex align-items-center flex-grow-1';
-
-                    const checkbox = document.createElement('input');
-                    checkbox.className = 'form-check-input mt-0';
-                    checkbox.type = 'checkbox';
-                    checkbox.name = 'procedures[]';
-                    checkbox.value = pro.proceduresName;
-                    checkbox.id = `pro${pro.id}`;
-                    
-                    if (selectedSet.has(norm(pro.proceduresName))) {
-                        checkbox.checked = true;
+                    // Toggle Buttons
+                    if (q.length > 0) {
+                        clearBtn.style.display = 'block';
+                    } else {
+                        clearBtn.style.display = 'none';
+                        if(addBtn) addBtn.style.display = 'none';
                     }
 
-                    checkbox.addEventListener('change', (e) => {
-                        if (e.target.checked) {
-                            selectedSet.add(norm(pro.proceduresName));
-                        } else {
-                            selectedSet.delete(norm(pro.proceduresName));
-                        }
+                    let filtered = proceduresList.filter(p => norm(p.proceduresName).includes(q));
+
+                    // Sort: Checked items top
+                    filtered.sort((a, b) => {
+                        const aSelected = selectedSet.has(norm(a.proceduresName));
+                        const bSelected = selectedSet.has(norm(b.proceduresName));
+                        
+                        if (aSelected && !bSelected) return -1;
+                        if (!aSelected && bSelected) return 1;
+                        return 0;
                     });
 
-                    const label = document.createElement('label');
-                    label.className = 'form-check-label ms-2';
-                    label.htmlFor = `pro${pro.id}`;
-                    label.textContent = pro.proceduresName;
-                    label.style.cursor = 'pointer';
-                    label.style.width = '100%';
-
-                    leftDiv.appendChild(checkbox);
-                    leftDiv.appendChild(label);
-                    wrapper.appendChild(leftDiv);
-
-                    // Right Side: Icons
-                    if (pro.is_mine == true || pro.is_mine == "true") {
-                        const actionDiv = document.createElement("div");
-                        actionDiv.className = "d-flex align-items-center gap-2";
+                    if (filtered.length === 0 && q !== "") {
+                        if(addBtn) addBtn.style.display = 'block';
                         
-                        const editIcon = document.createElement("i");
-                        editIcon.className = "bi bi-pen action-icon edit"; 
-                        editIcon.title = "Edit";
-                        editIcon.onclick = (e) => {
-                            e.preventDefault();
-                            openUniversalEdit('procedure', pro.id, pro.proceduresName);
-                        };
-
-                        const deleteIcon = document.createElement("i");
-                        deleteIcon.className = "bi bi-trash action-icon delete"; 
-                        deleteIcon.title = "Delete";
-                        deleteIcon.onclick = (e) => {
-                            e.preventDefault();
-                            openUniversalDelete('procedure', pro.id, pro.proceduresName);
-                        };
-
-                        actionDiv.appendChild(editIcon);
-                        actionDiv.appendChild(deleteIcon);
-                        wrapper.appendChild(actionDiv);
-                    }
-
-                    list.appendChild(wrapper);
-                });
-            }
-        }
-
-        // --- LISTEN FOR CHECKS (Triggers Sort) ---
-        list.addEventListener('change', (e) => {
-             if (e.target.matches('input[type="checkbox"]')) {
-                 sortList();
-             }
-        });
-
-        // --- HANDLERS ---
-
-        if (addBtn) {
-            addBtn.addEventListener('click', () => {
-                uTitle.textContent = "Add New Procedure";
-                uLabel.innerHTML = 'Procedure Name <span class="text-danger">*</span>';
-                uInput.value = searchInput.value.trim();
-                uId.value = "";
-                uType.value = "procedure"; // FLAG
-                uAddModal.show();
-                setTimeout(() => uInput.focus(), 500);
-            });
-        }
-
-        function openUniversalEdit(type, id, name) {
-            uTitle.textContent = "Edit Procedure";
-            uLabel.innerHTML = 'Procedure Name <span class="text-danger">*</span>';
-            uInput.value = name;
-            uId.value = id;
-            uType.value = "procedure"; 
-            uAddModal.show();
-            setTimeout(() => uInput.focus(), 500);
-        }
-
-        function openUniversalDelete(type, id, name) {
-            uDelName.textContent = name;
-            uDelId.value = id;
-            uDelType.value = "procedure"; 
-            uDelModal.show();
-        }
-
-        // Handle Form Submit
-        if(uAddForm) {
-            uAddForm.addEventListener('submit', (e) => {
-                if (uType.value !== 'procedure') return; 
-                e.preventDefault();
-
-                const name = uInput.value.trim();
-                const id = uId.value;
-                if (!name) return;
-
-                const url = id ? "<?= site_url('Consultation/editProcedureItem') ?>" : "<?= site_url('Consultation/addProcedure') ?>";
-                const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
-
-                fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: body
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        if (id) {
-                            // --- FIX: Update Selection Set if Name Changed ---
-                            const index = proceduresList.findIndex(p => p.id == id);
-                            if (index !== -1) {
-                                const oldName = proceduresList[index].proceduresName; // Capture Old
-                                proceduresList[index].proceduresName = name; // Update List
-                                
-                                // Update Set
-                                if (selectedSet.has(norm(oldName))) {
-                                    selectedSet.delete(norm(oldName));
-                                    selectedSet.add(norm(name));
-                                }
-                            }
-                        } else {
-                            // Add
-                            proceduresList.push({
-                                id: data.id,
-                                proceduresName: name,
-                                is_mine: true
-                            });
-                            selectedSet.add(norm(name)); // Auto-select
-                        }
-                        uAddModal.hide();
-                        searchInput.value = ""; 
-                        renderList();
+                        const noResultDiv = document.createElement("div");
+                        noResultDiv.className = "text-muted p-2";
+                        noResultDiv.textContent = "No result found – Add new";
+                        list.appendChild(noResultDiv);
                     } else {
-                        alert("Operation failed");
-                    }
-                });
-            });
-        }
+                        if(addBtn) addBtn.style.display = 'none';
+                        
+                        filtered.forEach(pro => {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'form-check procedure-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
+                            
+                            // Left Side
+                            const leftDiv = document.createElement('div');
+                            leftDiv.className = 'd-flex align-items-center flex-grow-1';
 
-        // Handle Delete
-        if(uDelBtn) {
-            uDelBtn.addEventListener('click', () => {
-                if (uDelType.value !== 'procedure') return;
+                            const checkbox = document.createElement('input');
+                            checkbox.className = 'form-check-input mt-0';
+                            checkbox.type = 'checkbox';
+                            checkbox.name = 'procedures[]';
+                            checkbox.value = pro.proceduresName;
+                            checkbox.id = `pro${pro.id}`;
+                            
+                            if (selectedSet.has(norm(pro.proceduresName))) {
+                                checkbox.checked = true;
+                            }
 
-                const id = uDelId.value;
-                fetch("<?= site_url('Consultation/deleteProcedureItem') ?>", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `id=${id}`
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === 'success') {
-                        const item = proceduresList.find(p => p.id == id);
-                        if(item) selectedSet.delete(norm(item.proceduresName));
+                            checkbox.addEventListener('change', (e) => {
+                                if (e.target.checked) {
+                                    selectedSet.add(norm(pro.proceduresName));
+                                } else {
+                                    selectedSet.delete(norm(pro.proceduresName));
+                                }
+                            });
 
-                        proceduresList = proceduresList.filter(p => p.id != id);
-                        uDelModal.hide();
-                        renderList();
-                    }
-                });
-            });
-        }
+                            const label = document.createElement('label');
+                            label.className = 'form-check-label ms-2';
+                            label.htmlFor = `pro${pro.id}`;
+                            label.textContent = pro.proceduresName;
+                            label.style.cursor = 'pointer';
+                            label.style.width = '100%';
 
-        // --- EVENTS ---
-        if(searchInput) {
-            searchInput.addEventListener('input', renderList);
-            
-            searchInput.addEventListener('keydown', (e) => {
-                if (e.key === "Enter" && searchInput.value.trim() !== "") {
-                    e.preventDefault();
-                    const q = norm(searchInput.value);
-                    const exists = proceduresList.some(p => norm(p.proceduresName) === q);
-                    
-                    if (!exists) {
-                        if(addBtn) addBtn.click();
+                            leftDiv.appendChild(checkbox);
+                            leftDiv.appendChild(label);
+                            wrapper.appendChild(leftDiv);
+
+                            // Right Side: Icons
+                            if (pro.is_mine == true || pro.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center gap-2";
+                                
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit"; 
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.preventDefault();
+                                    openUniversalEdit('procedure', pro.id, pro.proceduresName);
+                                };
+
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete"; 
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.preventDefault();
+                                    openUniversalDelete('procedure', pro.id, pro.proceduresName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                wrapper.appendChild(actionDiv);
+                            }
+
+                            list.appendChild(wrapper);
+                        });
                     }
                 }
-            });
-        }
 
-        if(clearBtn) {
-            clearBtn.addEventListener('click', () => {
-                searchInput.value = '';
+                // --- LISTEN FOR CHECKS ---
+                list.addEventListener('change', (e) => {
+                    if (e.target.matches('input[type="checkbox"]')) {
+                        sortList();
+                    }
+                });
+
+                // --- HANDLERS ---
+
+                if (addBtn) {
+                    addBtn.addEventListener('click', () => {
+                        uTitle.textContent = "Add New Procedure";
+                        uLabel.innerHTML = 'Procedure Name <span class="text-danger">*</span>';
+                        uInput.value = searchInput.value.trim();
+                        uId.value = "";
+                        uType.value = "procedure"; // FLAG
+                        uAddModal.show();
+                        setTimeout(() => uInput.focus(), 500);
+                    });
+                }
+
+                function openUniversalEdit(type, id, name) {
+                    uTitle.textContent = "Edit Procedure";
+                    uLabel.innerHTML = 'Procedure Name <span class="text-danger">*</span>';
+                    uInput.value = name;
+                    uId.value = id;
+                    uType.value = "procedure"; 
+                    uAddModal.show();
+                    setTimeout(() => uInput.focus(), 500);
+                }
+
+                function openUniversalDelete(type, id, name) {
+                    uDelName.textContent = name;
+                    uDelId.value = id;
+                    uDelType.value = "procedure"; 
+                    uDelModal.show();
+                }
+
+                // Handle Form Submit
+                if(uAddForm) {
+                    uAddForm.addEventListener('submit', (e) => {
+                        if (uType.value !== 'procedure') return; 
+                        e.preventDefault();
+
+                        const name = uInput.value.trim();
+                        const id = uId.value;
+                        if (!name) return;
+
+                        const url = id ? "<?= site_url('Consultation/editProcedureItem') ?>" : "<?= site_url('Consultation/addProcedure') ?>";
+                        const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                        fetch(url, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                            body: body
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                if (id) {
+                                    // Edit Logic
+                                    const index = proceduresList.findIndex(p => p.id == id);
+                                    if (index !== -1) {
+                                        const oldName = proceduresList[index].proceduresName;
+                                        proceduresList[index].proceduresName = name;
+                                        
+                                        // Update Set if name changed
+                                        if (selectedSet.has(norm(oldName))) {
+                                            selectedSet.delete(norm(oldName));
+                                            selectedSet.add(norm(name));
+                                        }
+                                    }
+                                } else {
+                                    // Add Logic
+                                    proceduresList.push({
+                                        id: data.id,
+                                        proceduresName: name,
+                                        is_mine: true
+                                    });
+                                    selectedSet.add(norm(name)); // Auto-select
+                                }
+                                uAddModal.hide();
+                                searchInput.value = ""; 
+                                renderList();
+                            } else {
+                                alert("Operation failed");
+                            }
+                        });
+                    });
+                }
+
+                // Handle Delete
+                if(uDelBtn) {
+                    uDelBtn.addEventListener('click', () => {
+                        if (uDelType.value !== 'procedure') return;
+
+                        const id = uDelId.value;
+                        fetch("<?= site_url('Consultation/deleteProcedureItem') ?>", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                            body: `id=${id}`
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data.status === 'success') {
+                                const item = proceduresList.find(p => p.id == id);
+                                if(item) selectedSet.delete(norm(item.proceduresName));
+
+                                proceduresList = proceduresList.filter(p => p.id != id);
+                                uDelModal.hide();
+                                renderList();
+                            }
+                        });
+                    });
+                }
+
+                // --- EVENTS ---
+                if(searchInput) {
+                    searchInput.addEventListener('input', renderList);
+                    
+                    searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === "Enter" && searchInput.value.trim() !== "") {
+                            e.preventDefault();
+                            const q = norm(searchInput.value);
+                            const exists = proceduresList.some(p => norm(p.proceduresName) === q);
+                            
+                            if (!exists) {
+                                if(addBtn) addBtn.click();
+                            }
+                        }
+                    });
+                }
+
+                if(clearBtn) {
+                    clearBtn.addEventListener('click', () => {
+                        searchInput.value = '';
+                        renderList();
+                        searchInput.focus();
+                    });
+                }
+
+                // Initial Render
                 renderList();
-                searchInput.focus();
             });
-        }
-
-        // Initial Render
-        renderList();
-    });
-</script>
+    </script>
 
     <!-- old Advice search and add script -->
     <!-- <script>
@@ -7057,319 +7549,316 @@
         });
     </script> -->
     <!-- new Advice search and add script -->
-<script>
-    // 1. Load List
-    let advicesList = <?php echo (isset($advicesList) && !empty($advicesList)) ? json_encode($advicesList) : '[]'; ?>;
-    // Pre-checked items
-    let savedAdvices = <?php echo (isset($advices) && !empty($advices)) ? json_encode($advices) : '[]'; ?>; 
+    <script>
+            // 1. Load List
+            let advicesList = <?php echo (isset($advicesList) && !empty($advicesList)) ? json_encode($advicesList) : '[]'; ?>;
+            // Pre-checked items
+            let savedAdvices = <?php echo (isset($advices) && !empty($advices)) ? json_encode($advices) : '[]'; ?>; 
 
-    // 2. Initialize Set
-    let selectedAdviceSet = new Set();
-    const normAdv = s => (s || '').toLowerCase().trim();
-    
-    if (Array.isArray(savedAdvices)) {
-        savedAdvices.forEach(a => {
-            let name = a.advice_name || a; 
-            selectedAdviceSet.add(normAdv(name));
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // Elements
-        const searchInput = document.getElementById('adviceSearch');
-        const clearBtn = document.getElementById('clearAdviceSearch');
-        const addBtn = document.getElementById('addAdviceBtn');
-        const list = document.getElementById('adviceList');
-
-        // Universal Modals
-        const uAddModal = new bootstrap.Modal(document.getElementById("universalAddMasterModal"));
-        const uAddForm = document.getElementById("universalAddMasterForm");
-        const uTitle = document.getElementById("universalMasterTitle");
-        const uLabel = document.getElementById("universalMasterLabel");
-        const uInput = document.getElementById("universalMasterInput");
-        const uId = document.getElementById("universalMasterId");
-        const uType = document.getElementById("universalMasterType");
-
-        const uDelModal = new bootstrap.Modal(document.getElementById("universalDeleteModal"));
-        const uDelName = document.getElementById("universalDeleteNameDisplay");
-        const uDelId = document.getElementById("universalDeleteId");
-        const uDelType = document.getElementById("universalDeleteType");
-        const uDelBtn = document.getElementById("universalDeleteBtn");
-
-        // ============================================================
-        // 1. DOM SORTING
-        // ============================================================
-        function sortList() {
-            const items = Array.from(list.querySelectorAll('.advice-item'));
-            const selected = items.filter(i => i.querySelector('input').checked);
-            const unselected = items.filter(i => !i.querySelector('input').checked);
-
-            items.forEach(i => i.remove());
-            selected.forEach(i => list.appendChild(i));
-            unselected.forEach(i => list.appendChild(i));
-        }
-
-        // ============================================================
-        // 2. RENDER LIST
-        // ============================================================
-        function renderList() {
-            const q = normAdv(searchInput.value);
-            list.innerHTML = '';
+            // 2. Initialize Set
+            let selectedAdviceSet = new Set();
+            const normAdv = s => (s || '').toLowerCase().trim();
             
-            // Toggle Buttons
-            if (q.length > 0) {
-                clearBtn.style.display = 'block';
-            } else {
-                clearBtn.style.display = 'none';
-                if(addBtn) addBtn.style.display = 'none';
+            if (Array.isArray(savedAdvices)) {
+                savedAdvices.forEach(a => {
+                    let name = a.advice_name || a; 
+                    selectedAdviceSet.add(normAdv(name));
+                });
             }
 
-            let filtered = advicesList.filter(a => normAdv(a.adviceName).includes(q));
+            document.addEventListener('DOMContentLoaded', () => {
+                // Elements
+                const searchInput = document.getElementById('adviceSearch');
+                const clearBtn = document.getElementById('clearAdviceSearch');
+                const addBtn = document.getElementById('addAdviceBtn');
+                const list = document.getElementById('adviceList');
 
-            // Sorting: Checked items top
-            filtered.sort((a, b) => {
-                const aSelected = selectedAdviceSet.has(normAdv(a.adviceName));
-                const bSelected = selectedAdviceSet.has(normAdv(b.adviceName));
-                
-                if (aSelected && !bSelected) return -1;
-                if (!aSelected && bSelected) return 1;
-                return 0;
-            });
+                // Universal Modals
+                const uAddModal = new bootstrap.Modal(document.getElementById("universalAddMasterModal"));
+                const uAddForm = document.getElementById("universalAddMasterForm");
+                const uTitle = document.getElementById("universalMasterTitle");
+                const uLabel = document.getElementById("universalMasterLabel");
+                const uInput = document.getElementById("universalMasterInput");
+                const uId = document.getElementById("universalMasterId");
+                const uType = document.getElementById("universalMasterType");
 
-            let hasContent = false;
+                const uDelModal = new bootstrap.Modal(document.getElementById("universalDeleteModal"));
+                const uDelName = document.getElementById("universalDeleteNameDisplay");
+                const uDelId = document.getElementById("universalDeleteId");
+                const uDelType = document.getElementById("universalDeleteType");
+                const uDelBtn = document.getElementById("universalDeleteBtn");
 
-            if (filtered.length === 0 && q !== "") {
-                if(addBtn) addBtn.style.display = 'block';
-                
-                const noResultDiv = document.createElement("div");
-                noResultDiv.className = "text-muted p-2";
-                noResultDiv.textContent = "No result found – Add new";
-                list.appendChild(noResultDiv);
-                hasContent = true;
-            } else {
-                if(addBtn) addBtn.style.display = 'none';
-                
-                if (filtered.length > 0) {
-                    hasContent = true;
-                    filtered.forEach(adv => {
-                        const wrapper = document.createElement('div');
-                        wrapper.className = 'form-check advice-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
+                // 1. DOM SORTING
+                function sortList() {
+                    const items = Array.from(list.querySelectorAll('.advice-item'));
+                    const selected = items.filter(i => i.querySelector('input').checked);
+                    const unselected = items.filter(i => !i.querySelector('input').checked);
+
+                    items.forEach(i => i.remove());
+                    selected.forEach(i => list.appendChild(i));
+                    unselected.forEach(i => list.appendChild(i));
+                }
+
+                // 2. RENDER LIST
+                function renderList() {
+                    const q = normAdv(searchInput.value);
+                    list.innerHTML = '';
+                    
+                    // Toggle Buttons
+                    if (q.length > 0) {
+                        clearBtn.style.display = 'block';
+                    } else {
+                        clearBtn.style.display = 'none';
+                        if(addBtn) addBtn.style.display = 'none';
+                    }
+
+                    let filtered = advicesList.filter(a => normAdv(a.adviceName).includes(q));
+
+                    // Sorting: Checked items top
+                    filtered.sort((a, b) => {
+                        const aSelected = selectedAdviceSet.has(normAdv(a.adviceName));
+                        const bSelected = selectedAdviceSet.has(normAdv(b.adviceName));
                         
-                        // Left Side
-                        const leftDiv = document.createElement('div');
-                        leftDiv.className = 'd-flex align-items-center flex-grow-1';
+                        if (aSelected && !bSelected) return -1;
+                        if (!aSelected && bSelected) return 1;
+                        return 0;
+                    });
 
-                        const checkbox = document.createElement('input');
-                        checkbox.className = 'form-check-input mt-0';
-                        checkbox.type = 'checkbox';
-                        checkbox.name = 'advices[]';
-                        checkbox.value = adv.adviceName;
-                        checkbox.id = `adv${adv.id}`;
+                    let hasContent = false;
+
+                    if (filtered.length === 0 && q !== "") {
+                        if(addBtn) addBtn.style.display = 'block';
                         
-                        // Check if in Set
-                        if (selectedAdviceSet.has(normAdv(adv.adviceName))) {
-                            checkbox.checked = true;
+                        const noResultDiv = document.createElement("div");
+                        noResultDiv.className = "text-muted p-2";
+                        noResultDiv.textContent = "No result found – Add new";
+                        list.appendChild(noResultDiv);
+                        hasContent = true;
+                    } else {
+                        if(addBtn) addBtn.style.display = 'none';
+                        
+                        if (filtered.length > 0) {
+                            hasContent = true;
+                            filtered.forEach(adv => {
+                                const wrapper = document.createElement('div');
+                                wrapper.className = 'form-check advice-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
+                                
+                                // Left Side
+                                const leftDiv = document.createElement('div');
+                                leftDiv.className = 'd-flex align-items-center flex-grow-1';
+
+                                const checkbox = document.createElement('input');
+                                checkbox.className = 'form-check-input mt-0';
+                                checkbox.type = 'checkbox';
+                                checkbox.name = 'advices[]';
+                                checkbox.value = adv.adviceName;
+                                checkbox.id = `adv${adv.id}`;
+                                
+                                // Check if in Set
+                                if (selectedAdviceSet.has(normAdv(adv.adviceName))) {
+                                    checkbox.checked = true;
+                                }
+
+                                checkbox.addEventListener('change', (e) => {
+                                    if (e.target.checked) {
+                                        selectedAdviceSet.add(normAdv(adv.adviceName));
+                                    } else {
+                                        selectedAdviceSet.delete(normAdv(adv.adviceName));
+                                    }
+                                });
+
+                                const label = document.createElement('label');
+                                label.className = 'form-check-label ms-2';
+                                label.htmlFor = `adv${adv.id}`;
+                                label.textContent = adv.adviceName;
+                                label.style.cursor = 'pointer';
+                                label.style.width = '100%';
+
+                                leftDiv.appendChild(checkbox);
+                                leftDiv.appendChild(label);
+                                wrapper.appendChild(leftDiv);
+
+                                // Right Side: Icons
+                                if (adv.is_mine == true || adv.is_mine == "true") {
+                                    const actionDiv = document.createElement("div");
+                                    actionDiv.className = "d-flex align-items-center gap-2";
+                                    
+                                    const editIcon = document.createElement("i");
+                                    editIcon.className = "bi bi-pen action-icon edit"; 
+                                    editIcon.title = "Edit";
+                                    editIcon.onclick = (e) => {
+                                        e.preventDefault();
+                                        openUniversalEdit('advice', adv.id, adv.adviceName);
+                                    };
+
+                                    const deleteIcon = document.createElement("i");
+                                    deleteIcon.className = "bi bi-trash action-icon delete"; 
+                                    deleteIcon.title = "Delete";
+                                    deleteIcon.onclick = (e) => {
+                                        e.preventDefault();
+                                        openUniversalDelete('advice', adv.id, adv.adviceName);
+                                    };
+
+                                    actionDiv.appendChild(editIcon);
+                                    actionDiv.appendChild(deleteIcon);
+                                    wrapper.appendChild(actionDiv);
+                                }
+
+                                list.appendChild(wrapper);
+                            });
                         }
+                    }
 
-                        checkbox.addEventListener('change', (e) => {
-                            if (e.target.checked) {
-                                selectedAdviceSet.add(normAdv(adv.adviceName));
-                            } else {
-                                selectedAdviceSet.delete(normAdv(adv.adviceName));
-                            }
-                        });
+                    list.style.display = hasContent ? 'block' : 'none';
+                }
 
-                        const label = document.createElement('label');
-                        label.className = 'form-check-label ms-2';
-                        label.htmlFor = `adv${adv.id}`;
-                        label.textContent = adv.adviceName;
-                        label.style.cursor = 'pointer';
-                        label.style.width = '100%';
+                // --- LISTEN FOR CHECKS (Triggers Sort) ---
+                list.addEventListener('change', (e) => {
+                    if (e.target.matches('input[type="checkbox"]')) {
+                        sortList();
+                    }
+                });
 
-                        leftDiv.appendChild(checkbox);
-                        leftDiv.appendChild(label);
-                        wrapper.appendChild(leftDiv);
-
-                        // Right Side: Icons
-                        if (adv.is_mine == true || adv.is_mine == "true") {
-                            const actionDiv = document.createElement("div");
-                            actionDiv.className = "d-flex align-items-center gap-2";
-                            
-                            const editIcon = document.createElement("i");
-                            editIcon.className = "bi bi-pen action-icon edit"; 
-                            editIcon.title = "Edit";
-                            editIcon.onclick = (e) => {
-                                e.preventDefault();
-                                openUniversalEdit('advice', adv.id, adv.adviceName);
-                            };
-
-                            const deleteIcon = document.createElement("i");
-                            deleteIcon.className = "bi bi-trash action-icon delete"; 
-                            deleteIcon.title = "Delete";
-                            deleteIcon.onclick = (e) => {
-                                e.preventDefault();
-                                openUniversalDelete('advice', adv.id, adv.adviceName);
-                            };
-
-                            actionDiv.appendChild(editIcon);
-                            actionDiv.appendChild(deleteIcon);
-                            wrapper.appendChild(actionDiv);
-                        }
-
-                        list.appendChild(wrapper);
+                // --- HANDLERS ---
+                if (addBtn) {
+                    addBtn.addEventListener('click', () => {
+                        uTitle.textContent = "Add New Advice";
+                        uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
+                        uInput.value = searchInput.value.trim();
+                        uId.value = "";
+                        uType.value = "advice"; // FLAG
+                        uAddModal.show();
+                        setTimeout(() => uInput.focus(), 500);
                     });
                 }
-            }
 
-            list.style.display = hasContent ? 'block' : 'none';
-        }
-
-        // --- LISTEN FOR CHECKS (Triggers Sort) ---
-        list.addEventListener('change', (e) => {
-             if (e.target.matches('input[type="checkbox"]')) {
-                 sortList();
-             }
-        });
-
-        // --- HANDLERS ---
-        if (addBtn) {
-            addBtn.addEventListener('click', () => {
-                uTitle.textContent = "Add New Advice";
-                uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
-                uInput.value = searchInput.value.trim();
-                uId.value = "";
-                uType.value = "advice"; // FLAG
-                uAddModal.show();
-                setTimeout(() => uInput.focus(), 500);
-            });
-        }
-
-        function openUniversalEdit(type, id, name) {
-            uTitle.textContent = "Edit Advice";
-            uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
-            uInput.value = name;
-            uId.value = id;
-            uType.value = "advice"; 
-            uAddModal.show();
-            setTimeout(() => uInput.focus(), 500);
-        }
-
-        function openUniversalDelete(type, id, name) {
-            uDelName.textContent = name;
-            uDelId.value = id;
-            uDelType.value = "advice"; 
-            uDelModal.show();
-        }
-
-        // Handle Form Submit
-        if(uAddForm) {
-            uAddForm.addEventListener('submit', (e) => {
-                if (uType.value !== 'advice') return; 
-                e.preventDefault();
-
-                const name = uInput.value.trim();
-                const id = uId.value;
-                if (!name) return;
-
-                const url = id ? "<?= site_url('Consultation/editAdviceItem') ?>" : "<?= site_url('Consultation/addAdviceMaster') ?>";
-                const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
-
-                fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: body
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        if (id) {
-                            // --- FIX: Update Selection Set if Name Changed ---
-                            const index = advicesList.findIndex(a => a.id == id);
-                            if (index !== -1) {
-                                const oldName = advicesList[index].adviceName; // Capture Old
-                                advicesList[index].adviceName = name; // Update List
-                                
-                                // Update Set
-                                if (selectedAdviceSet.has(normAdv(oldName))) {
-                                    selectedAdviceSet.delete(normAdv(oldName));
-                                    selectedAdviceSet.add(normAdv(name));
-                                }
-                            }
-                        } else {
-                            // Add
-                            advicesList.push({
-                                id: data.id,
-                                adviceName: name,
-                                is_mine: true
-                            });
-                            selectedAdviceSet.add(normAdv(name)); // Auto-select
-                        }
-                        uAddModal.hide();
-                        searchInput.value = ""; 
-                        renderList();
-                    } else {
-                        alert("Operation failed");
-                    }
-                });
-            });
-        }
-
-        // Handle Delete
-        if(uDelBtn) {
-            uDelBtn.addEventListener('click', () => {
-                if (uDelType.value !== 'advice') return;
-
-                const id = uDelId.value;
-                fetch("<?= site_url('Consultation/deleteAdviceItem') ?>", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: `id=${id}`
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === 'success') {
-                        const item = advicesList.find(a => a.id == id);
-                        if(item) selectedAdviceSet.delete(normAdv(item.adviceName));
-
-                        advicesList = advicesList.filter(a => a.id != id);
-                        uDelModal.hide();
-                        renderList();
-                    }
-                });
-            });
-        }
-
-        // --- EVENTS ---
-        if(searchInput) {
-            searchInput.addEventListener('input', renderList);
-            
-            searchInput.addEventListener('keydown', (e) => {
-                if (e.key === "Enter" && searchInput.value.trim() !== "") {
-                    e.preventDefault();
-                    const q = normAdv(searchInput.value);
-                    const exists = advicesList.some(a => normAdv(a.adviceName) === q);
-                    
-                    if (!exists) {
-                        if(addBtn) addBtn.click();
-                    }
+                function openUniversalEdit(type, id, name) {
+                    uTitle.textContent = "Edit Advice";
+                    uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
+                    uInput.value = name;
+                    uId.value = id;
+                    uType.value = "advice"; 
+                    uAddModal.show();
+                    setTimeout(() => uInput.focus(), 500);
                 }
-            });
-        }
 
-        if(clearBtn) {
-            clearBtn.addEventListener('click', () => {
-                searchInput.value = '';
+                function openUniversalDelete(type, id, name) {
+                    uDelName.textContent = name;
+                    uDelId.value = id;
+                    uDelType.value = "advice"; 
+                    uDelModal.show();
+                }
+
+                // Handle Form Submit
+                if(uAddForm) {
+                    uAddForm.addEventListener('submit', (e) => {
+                        if (uType.value !== 'advice') return; 
+                        e.preventDefault();
+
+                        const name = uInput.value.trim();
+                        const id = uId.value;
+                        if (!name) return;
+
+                        const url = id ? "<?= site_url('Consultation/editAdviceItem') ?>" : "<?= site_url('Consultation/addAdviceMaster') ?>";
+                        const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                        fetch(url, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                            body: body
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                if (id) {
+                                    // --- FIX: Update Selection Set if Name Changed ---
+                                    const index = advicesList.findIndex(a => a.id == id);
+                                    if (index !== -1) {
+                                        const oldName = advicesList[index].adviceName; // Capture Old
+                                        advicesList[index].adviceName = name; // Update List
+                                        
+                                        // Update Set
+                                        if (selectedAdviceSet.has(normAdv(oldName))) {
+                                            selectedAdviceSet.delete(normAdv(oldName));
+                                            selectedAdviceSet.add(normAdv(name));
+                                        }
+                                    }
+                                } else {
+                                    // Add
+                                    advicesList.push({
+                                        id: data.id,
+                                        adviceName: name,
+                                        is_mine: true
+                                    });
+                                    selectedAdviceSet.add(normAdv(name)); // Auto-select
+                                }
+                                uAddModal.hide();
+                                searchInput.value = ""; 
+                                renderList();
+                            } else {
+                                alert("Operation failed");
+                            }
+                        });
+                    });
+                }
+
+                // Handle Delete
+                if(uDelBtn) {
+                    uDelBtn.addEventListener('click', () => {
+                        if (uDelType.value !== 'advice') return;
+
+                        const id = uDelId.value;
+                        fetch("<?= site_url('Consultation/deleteAdviceItem') ?>", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                            body: `id=${id}`
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data.status === 'success') {
+                                const item = advicesList.find(a => a.id == id);
+                                if(item) selectedAdviceSet.delete(normAdv(item.adviceName));
+
+                                advicesList = advicesList.filter(a => a.id != id);
+                                uDelModal.hide();
+                                renderList();
+                            }
+                        });
+                    });
+                }
+
+                // --- EVENTS ---
+                if(searchInput) {
+                    searchInput.addEventListener('input', renderList);
+                    
+                    searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === "Enter" && searchInput.value.trim() !== "") {
+                            e.preventDefault();
+                            const q = normAdv(searchInput.value);
+                            const exists = advicesList.some(a => normAdv(a.adviceName) === q);
+                            
+                            if (!exists) {
+                                if(addBtn) addBtn.click();
+                            }
+                        }
+                    });
+                }
+
+                if(clearBtn) {
+                    clearBtn.addEventListener('click', () => {
+                        searchInput.value = '';
+                        renderList();
+                        searchInput.focus();
+                    });
+                }
+
+                // Initial Render
                 renderList();
-                searchInput.focus();
             });
-        }
+    </script>
 
-        // Initial Render
-        renderList();
-    });
-</script>
-    <!-- Medicine Modal Script -->
-    <script>
+    <!-- old Medicine Modal Script -->
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Data
             const medicinesData = <?php echo json_encode($medicinesList); ?> || [];
@@ -7830,8 +8319,548 @@
                 updateMedicinesHiddenInput();
             }
         });
-    </script>
+    </script> -->
+    <!-- New Medicine Modal Script -->
+        <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 1. Load Lists
+        let medicinesData = <?php echo json_encode($medicinesList); ?> || [];
+        const savedMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?> || [];
 
+        // --- DOM REFS ---
+        const medicinesInput = document.getElementById("medicinesSearchInput");
+        const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
+        const medicinesTagContainer = document.getElementById("medicinesInput");
+        const medicinesListContainer = document.getElementById("medicinesList");
+        const addBtn = document.getElementById("medicinesAddBtn");
+        const clearBtn = document.getElementById("clearMedicineSearch");
+
+        // --- MODALS ---
+        const medicinesModalEl = document.getElementById("medicinesModal");
+        const medicinesModal = new bootstrap.Modal(medicinesModalEl);
+        const medicinesModalTitle = document.getElementById("medicinesModalTitle");
+        const medicineCompositionText = document.getElementById("medicineCompositionText");
+        const medicineCategoryText = document.getElementById("medicineCategoryText");
+        const medicineQuantity = document.getElementById("medicineQuantity");
+        const medicineNotes = document.getElementById("medicineNotes");
+
+        // Master Modal
+        const addMedMasterModalEl = document.getElementById("addMedicineModal");
+        const addMedMasterModal = new bootstrap.Modal(addMedMasterModalEl);
+        const addMedMasterForm = document.getElementById("addMedicineMasterForm");
+        const medMasterTitle = document.getElementById("addMedicineModalTitle");
+        const newMedName = document.getElementById("newMedicineName");
+        const newMedComp = document.getElementById("newMedicineComposition");
+        const newMedCat = document.getElementById("newMedicineCategory");
+        const editMedId = document.getElementById("editMedicineMasterId");
+        const addMedicineConfirmBtn = document.getElementById("addMedicineConfirmBtn");
+
+        // Delete Modal
+        const delMedModalEl = document.getElementById("deleteMedicineMasterModal");
+        const delMedModal = new bootstrap.Modal(delMedModalEl);
+        const delMedName = document.getElementById("delMedNameDisplay");
+        const delMedId = document.getElementById("delMedId");
+        const finalDeleteMedBtn = document.getElementById("finalDeleteMedBtn");
+
+        const slots = ["morning", "afternoon", "evening", "night"];
+        let selectedMedicines = [];
+        let pendingMedicineName = "";
+        let editingMedicineTag = null;
+
+        // ============================================================
+        // FORCE CLOSE HANDLERS
+        // ============================================================
+        addMedMasterModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+            btn.addEventListener('click', (e) => { e.preventDefault(); addMedMasterModal.hide(); });
+        });
+        delMedModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+            btn.addEventListener('click', (e) => { e.preventDefault(); delMedModal.hide(); });
+        });
+
+        // ============================================================
+        // 1. RENDER SUGGESTIONS
+        // ============================================================
+        function renderMedicinesSuggestions() {
+            if (!medicinesInput) return;
+            const query = medicinesInput.value.trim().toLowerCase();
+            medicinesSuggestionsBox.innerHTML = "";
+
+            if (query.length > 0) {
+                if(clearBtn) clearBtn.style.display = 'block';
+            } else {
+                if(clearBtn) clearBtn.style.display = 'none';
+                if(addBtn) addBtn.style.display = 'none';
+            }
+
+            const filtered = medicinesData.filter(m => m.medicineName.toLowerCase().includes(query));
+
+            if (filtered.length === 0 && query !== "") {
+                if(addBtn) addBtn.style.display = 'block';
+                if (medicinesSuggestionsBox) {
+                    medicinesSuggestionsBox.style.display = 'block';
+                    const div = document.createElement("div");
+                    div.className = "p-2 text-muted";
+                    div.style.cursor = "pointer";
+                    div.innerHTML = `No match found - <span class="text-primary">Add new</span>`;
+                    div.onclick = () => {
+                        openAddMedicineMaster(medicinesInput.value);
+                        clearSearch();
+                    };
+                    medicinesSuggestionsBox.appendChild(div);
+                }
+            } else {
+                if(addBtn) addBtn.style.display = 'none';
+                if (medicinesSuggestionsBox && query !== "") {
+                    filtered.forEach(item => {
+                        const div = document.createElement("div");
+                        div.className = "d-flex justify-content-between align-items-center p-2 border-bottom";
+                        div.style.cursor = "pointer";
+
+                        // Name
+                        const spanName = document.createElement("span");
+                        spanName.textContent = item.medicineName;
+                        spanName.className = "flex-grow-1";
+                        spanName.onclick = (e) => {
+                            e.stopPropagation();
+                            openMedicineModal(item.medicineName);
+                            clearSearch();
+                        };
+                        div.appendChild(spanName);
+
+                        // Icons
+                        if (item.is_mine == true || item.is_mine == "true") {
+                            const actionDiv = document.createElement("div");
+                            actionDiv.className = "d-flex align-items-center gap-2";
+
+                            const editIcon = document.createElement("i");
+                            editIcon.className = "bi bi-pen action-icon edit"; 
+                            editIcon.onclick = (e) => {
+                                e.stopPropagation();
+                                openEditMedicineMaster(item);
+                            };
+
+                            const deleteIcon = document.createElement("i");
+                            deleteIcon.className = "bi bi-trash action-icon delete"; 
+                            deleteIcon.onclick = (e) => {
+                                e.stopPropagation();
+                                openDeleteMedicine(item.id, item.medicineName);
+                            };
+
+                            actionDiv.appendChild(editIcon);
+                            actionDiv.appendChild(deleteIcon);
+                            div.appendChild(actionDiv);
+                        }
+
+                        div.onclick = () => {
+                            openMedicineModal(item.medicineName);
+                            clearSearch();
+                        };
+                        medicinesSuggestionsBox.appendChild(div);
+                    });
+                    medicinesSuggestionsBox.style.display = "block";
+                } else {
+                    medicinesSuggestionsBox.style.display = "none";
+                }
+            }
+        }
+
+        function clearSearch() {
+            medicinesInput.value = "";
+            medicinesSuggestionsBox.style.display = "none";
+            if(clearBtn) clearBtn.style.display = "none";
+            if(addBtn) addBtn.style.display = "none";
+            medicinesInput.focus();
+        }
+
+        // ============================================================
+        // 2. MASTER ADD / EDIT
+        // ============================================================
+        if(addBtn) {
+            addBtn.addEventListener('click', () => {
+                openAddMedicineMaster(medicinesInput.value);
+            });
+        }
+
+        function openAddMedicineMaster(prefillName) {
+            medMasterTitle.textContent = "Add New Medicine";
+            newMedName.value = prefillName || "";
+            newMedComp.value = "";
+            newMedCat.value = "";
+            editMedId.value = ""; 
+            addMedMasterModal.show();
+            setTimeout(() => newMedName.focus(), 200);
+        }
+
+        function openEditMedicineMaster(item) {
+            medMasterTitle.textContent = "Edit Medicine";
+            newMedName.value = item.medicineName;
+            newMedComp.value = item.compositionName || "";
+            newMedCat.value = item.category || "";
+            editMedId.value = item.id;
+            addMedMasterModal.show();
+            setTimeout(() => newMedName.focus(), 200);
+        }
+
+        addMedicineConfirmBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const name = newMedName.value.trim();
+            const comp = newMedComp.value.trim();
+            const cat = newMedCat.value;
+            const id = editMedId.value;
+
+            if (!name || !cat) {
+                alert('Please fill Name and Category fields.');
+                return;
+            }
+
+            const url = id ? "<?= site_url('Consultation/editMedicineItem') ?>" : "<?= site_url('Consultation/addNewMedicines') ?>";
+            const payload = { medicineName: name, compositionName: comp, category: cat };
+            if(id) payload.id = id;
+
+            try {
+                addMedicineConfirmBtn.disabled = true;
+                addMedicineConfirmBtn.textContent = 'Saving...';
+
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (data.status === 'success' || data.status === true) {
+                    if(id) {
+                        const index = medicinesData.findIndex(m => m.id == id);
+                        if(index !== -1) {
+                            medicinesData[index].medicineName = name;
+                            medicinesData[index].compositionName = comp;
+                            medicinesData[index].category = cat;
+                        }
+                        addMedMasterModal.hide();
+                        clearSearch();
+                    } else {
+                        const newObj = {
+                            id: data.id || data.data.id,
+                            medicineName: name,
+                            compositionName: comp,
+                            category: cat,
+                            is_mine: true
+                        };
+                        medicinesData.push(newObj);
+                        addMedMasterModal.hide();
+                        clearSearch();
+                        setTimeout(() => openMedicineModal(name), 300);
+                    }
+                } else {
+                    alert(data.message || "Failed to save.");
+                }
+            } catch (err) { console.error(err); } 
+            finally {
+                addMedicineConfirmBtn.disabled = false;
+                addMedicineConfirmBtn.textContent = 'Save';
+            }
+        });
+
+        // ============================================================
+        // 3. DELETE LOGIC
+        // ============================================================
+        function openDeleteMedicine(id, name) {
+            delMedName.textContent = name;
+            delMedId.value = id;
+            delMedModal.show();
+        }
+
+        finalDeleteMedBtn.addEventListener('click', () => {
+            const id = delMedId.value;
+            fetch("<?= site_url('Consultation/deleteMedicineItem') ?>", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `id=${id}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    const idx = medicinesData.findIndex(m => m.id == id);
+                    if(idx !== -1) medicinesData.splice(idx, 1);
+                    delMedModal.hide();
+                    renderMedicinesSuggestions();
+                } else {
+                    alert("Failed to delete.");
+                }
+            });
+        });
+
+        // ============================================================
+        // 4. DETAILED MODAL & EVENTS
+        // ============================================================
+        if(medicinesInput){
+            medicinesInput.addEventListener("input", renderMedicinesSuggestions);
+            medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
+            medicinesInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
+                    e.preventDefault();
+                    const q = medicinesInput.value.trim().toLowerCase();
+                    const found = medicinesData.find(m => m.medicineName.toLowerCase() === q);
+                    if (found) {
+                        openMedicineModal(found.medicineName);
+                        clearSearch();
+                    } else {
+                        openAddMedicineMaster(medicinesInput.value);
+                    }
+                }
+            });
+        }
+        
+        if(medicinesModalEl) {
+            medicinesModalEl.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') { e.preventDefault(); saveMedicineModal(); }
+            });
+        }
+        if(clearBtn) clearBtn.addEventListener("click", clearSearch);
+
+        document.addEventListener("click", (e) => {
+            if (medicinesTagContainer && !medicinesTagContainer.contains(e.target) && 
+                addBtn && !addBtn.contains(e.target)) {
+                if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
+            }
+        });
+
+        // ============================================================
+        // 5. TIMING CHECKBOX LISTENERS (The Fix)
+        // ============================================================
+        function forEachSlot(cb) {
+            slots.forEach(slot => {
+                const check = document.getElementById(`${slot}Check`);
+                const qty = document.getElementById(`${slot}Qty`);
+                const unit = document.getElementById(`${slot}Unit`);
+                if (check && qty && unit) cb(check, qty, unit);
+            });
+        }
+
+        // Initialize listeners to toggle enable/disable state
+        forEachSlot((check, qty, unit) => {
+            check.addEventListener("change", () => {
+                if (check.checked) {
+                    qty.disabled = false;
+                    unit.disabled = false;
+                    if (!qty.value) qty.value = 1; // Default to 1
+                } else {
+                    qty.disabled = true;
+                    unit.disabled = true;
+                    qty.value = "";
+                    unit.value = "";
+                }
+            });
+            
+            // Optional: Blur Qty if unchecked (safety)
+            qty.addEventListener("focus", () => {
+                if (!check.checked) qty.blur();
+            });
+        });
+
+        function buildTimingString() {
+            const parts = [];
+            forEachSlot((check, qty, unit) => {
+                if (check && check.checked && qty && qty.value) {
+                    const u = unit && unit.value ? unit.value : "";
+                    const qtyVal = String(qty.value);
+                    parts.push(u ? `${qtyVal} ${u}` : `${qtyVal}`);
+                } else {
+                    parts.push("0");
+                }
+            });
+            return parts.join("-");
+        }
+
+        function applyTimingString(timingStr) {
+            const parts = String(timingStr || "0-0-0-0").split("-");
+            slots.forEach((slot, i) => {
+                const check = document.getElementById(`${slot}Check`);
+                const qty = document.getElementById(`${slot}Qty`);
+                const unit = document.getElementById(`${slot}Unit`);
+                if (!check) return;
+                
+                const v = parts[i] ?? "0";
+                if (v !== "0") {
+                    check.checked = true;
+                    qty.disabled = false;
+                    unit.disabled = false;
+                    
+                    // Try to separate number and unit (e.g., "0.5 ml")
+                    const matches = String(v).match(/^([\d.]+)\s*(.*)$/);
+                    if (matches) {
+                        qty.value = matches[1];
+                        if(matches[2]) unit.value = matches[2];
+                    } else {
+                        qty.value = v;
+                    }
+                } else {
+                    check.checked = false;
+                    qty.value = "";
+                    unit.value = "";
+                    qty.disabled = true;
+                    unit.disabled = true;
+                }
+            });
+        }
+
+        function toDbShape(row) {
+             if (!row) return null;
+             return {
+                id: row.id ?? row.medicine_id ?? "",
+                consultation_id: row.consultation_id ?? "",
+                medicine_name: row.medicine_name ?? row.medicine ?? row.medicineBrand ?? "",
+                quantity: row.quantity ?? "",
+                unit: row.unit ?? "",
+                timing: row.timing ?? "0-0-0-0",
+                food_timing: row.food_timing ?? "",
+                notes: row.notes ?? "",
+                composition: row.compositionName ?? row.composition ?? "",
+                category: row.category ?? row.medicineCategory ?? ""
+            };
+        }
+
+        // Open Detailed Modal
+        window.openMedicineModal = function (name, existing = null, tagEl = null) {
+            pendingMedicineName = name;
+            editingMedicineTag = tagEl;
+
+            const medData = medicinesData.find(m => m.medicineName === name);
+            medicinesModalTitle.textContent = existing ? `Edit: ${name}` : `Details for: ${name}`;
+            
+            if (medData) {
+                medicineCompositionText.textContent = medData.compositionName || "";
+                medicineCategoryText.textContent = medData.category || "";
+            } else if(existing) {
+                medicineCompositionText.textContent = existing.composition || "";
+                medicineCategoryText.textContent = existing.category || "";
+            }
+
+            medicineQuantity.value = "";
+            medicineNotes.value = "";
+            
+            // Reset Timing Inputs
+            forEachSlot((check, qty, unit) => {
+                check.checked = false;
+                qty.value = "";
+                qty.disabled = true;
+                unit.value = "";
+                unit.disabled = true;
+            });
+            document.querySelectorAll('input[name="foodTiming"]').forEach(r => r.checked = false);
+
+            const row = toDbShape(existing);
+            if (row) {
+                medicineQuantity.value = row.quantity || "";
+                medicineNotes.value = row.notes || "";
+                applyTimingString(row.timing);
+                document.querySelectorAll('input[name="foodTiming"]').forEach(r => {
+                    r.checked = (r.value === (row.food_timing || ""));
+                });
+            } else {
+                // If it's a new medicine from master list, no timing set yet
+                applyTimingString("0-0-0-0");
+            }
+            
+            medicinesModal.show();
+            setTimeout(() => medicineQuantity.focus(), 500);
+        };
+
+        // Save Detailed Modal
+        window.saveMedicineModal = function () {
+            const quantity = (medicineQuantity.value || "").trim();
+            const notes = (medicineNotes.value || "").trim();
+            const timing = buildTimingString();
+            const food_timing = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
+
+            if (!pendingMedicineName) return;
+            
+            const existingIndex = selectedMedicines.findIndex(m => m.medicine_name === pendingMedicineName);
+            const resolvedId = (existingIndex !== -1 && selectedMedicines[existingIndex]?.id) ? selectedMedicines[existingIndex].id : "new";
+            
+            // Fetch master details to store in object (optional but good for display consistency)
+            const medData = medicinesData.find(m => m.medicineName === pendingMedicineName);
+            const composition = medData?.compositionName || "";
+            const category = medData?.category || "";
+
+            const data = {
+                id: resolvedId,
+                medicine_name: pendingMedicineName,
+                quantity,
+                timing,
+                food_timing,
+                notes,
+                composition,
+                category
+            };
+
+            if (editingMedicineTag) {
+                if (existingIndex !== -1) {
+                     if(selectedMedicines[existingIndex].consultation_id) 
+                        data.consultation_id = selectedMedicines[existingIndex].consultation_id;
+                     selectedMedicines[existingIndex] = data;
+                }
+                updateMedicineTagDisplay(editingMedicineTag, data);
+                editingMedicineTag.setAttribute("data-id", data.id);
+            } else {
+                selectedMedicines.push(data);
+                addMedicineTag(data);
+            }
+            updateMedicinesHiddenInput();
+            medicinesModal.hide();
+        };
+
+        function addMedicineTag(row) {
+            const tag = document.createElement("span");
+            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+            tag.style.cursor = "pointer";
+            tag.setAttribute("data-id", row.id || "new");
+            
+            updateMedicineTagDisplay(tag, row);
+            tag.onclick = () => openMedicineModal(row.medicine_name, row, tag);
+
+            if (medicinesListContainer) {
+                medicinesListContainer.appendChild(tag);
+            } else {
+                medicinesTagContainer.appendChild(tag);
+            }
+        }
+
+        function updateMedicineTagDisplay(tagEl, row) {
+             // Simple display with remove button
+             tagEl.innerHTML = `${row.medicine_name} <button class="text-light ms-2" style="border:none;background:transparent;font-size:1rem;">&times;</button>`;
+             tagEl.querySelector('button').onclick = (e) => {
+                 e.stopPropagation();
+                 tagEl.remove();
+                 selectedMedicines = selectedMedicines.filter(s => s.medicine_name !== row.medicine_name);
+                 updateMedicinesHiddenInput();
+             };
+        }
+
+        function updateMedicinesHiddenInput() {
+            let hidden = document.getElementById("medicinesJson");
+            if (!hidden) {
+                hidden = document.createElement("input");
+                hidden.type = "hidden";
+                hidden.id = "medicinesJson";
+                hidden.name = "medicinesJson";
+                const form = medicinesModalEl.closest("form") || document.querySelector("form");
+                (form || document.body).appendChild(hidden);
+            }
+            hidden.value = JSON.stringify(selectedMedicines);
+        }
+
+        // Initial Load
+        if (Array.isArray(savedMedicines) && savedMedicines.length) {
+            savedMedicines.forEach(m => {
+                const row = toDbShape(m);
+                selectedMedicines.push(row);
+                addMedicineTag(row);
+            });
+            updateMedicinesHiddenInput();
+        }
+    });
+</script>
     <!-- Upload attachments script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {

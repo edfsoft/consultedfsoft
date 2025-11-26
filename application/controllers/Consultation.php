@@ -911,77 +911,74 @@ class Consultation extends CI_Controller
 
 
     //Medicine for consultation form
-    public function addNewMedicines()
+   public function addNewMedicines()
     {
         // Check if JSON or POST
         $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
-        $data = json_decode($stream_clean, true);
+$data = json_decode($stream_clean, true);
         
         if(!$data) {
             // Fallback to standard POST for Universal Modal
             $name = $this->input->post('name');
-            $composition = $this->input->post('composition');
+$composition = $this->input->post('composition');
             $category = $this->input->post('category');
         } else {
-            $name = $data['medicineName'] ?? '';
+            $name = $data['medicineName'] ??
+'';
             $composition = $data['compositionName'] ?? '';
             $category = $data['category'] ?? '';
-        }
+}
 
         if (!$name) {
              // Output JSON error
              echo json_encode(['status' => 'error', 'message' => 'Name required']);
-             return;
+return;
         }
 
+        // Passes name, and potentially empty strings for composition and category.
         $id = $this->ConsultModel->insertNewMedicineMaster($name, $composition, $category);
-
-        if ($id) {
+if ($id) {
             echo json_encode([
                 'status' => 'success', // Changed to string 'success' to match other scripts
                 'id' => $id,
                 'medicineName' => $name,
-                'compositionName' => $composition,
-                'category' => $category
+                // Note: compositionName and category might be empty string here, 
+                // but the DB value is converted to 'Nill' in the Model.
+                'compositionName' => $composition, 
+    
+            'category' => $category
             ]);
-        } else {
+} else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to save']);
-        }
+}
     }
 
     public function editMedicineItem() {
-        // 1. Get Raw Input (JSON) because JS sends JSON
+        // --- MODIFICATION START (Retrieve JSON body, assuming AJAX POST from script) ---
         $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
-        $request = json_decode($stream_clean, true);
+        $data = json_decode($stream_clean, true);
 
-        // 2. Check if JSON decoded successfully, otherwise fallback to POST
-        if (!empty($request)) {
-            $id = $request['id'] ?? null;
-            $name = $request['medicineName'] ?? null; // JS sends 'medicineName'
-            $composition = $request['compositionName'] ?? null; // JS sends 'compositionName'
-            $category = $request['category'] ?? null;
+        if ($data) {
+            $id = $data['id'] ?? null;
+            $name = $data['medicineName'] ?? null;
+            $composition = $data['compositionName'] ?? null;
+            $category = $data['category'] ?? null;
         } else {
-            // Fallback for standard POST forms
+            // Fallback to standard POST for non-JSON requests
             $id = $this->input->post('id');
-            $name = $this->input->post('medicineName') ?: $this->input->post('name');
-            $composition = $this->input->post('compositionName') ?: $this->input->post('composition');
+          $name = $this->input->post('name');
+            $composition = $this->input->post('composition');
             $category = $this->input->post('category');
         }
         
-        // 3. Validate
-        if (!$id || !$name) {
-            echo json_encode(['status' => 'error', 'message' => 'Missing ID or Name']);
-            return;
-        }
-
-        // 4. Call Model
-        if ($this->ConsultModel->updateMedicineMaster($id, $name, $composition, $category)) {
+        // Passes name, and potentially empty strings for composition and category.
+        if($this->ConsultModel->updateMedicineMaster($id, $name, $composition, $category)) {
             echo json_encode(['status' => 'success']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Database update failed']);
-        }
+} else {
+            echo json_encode(['status' => 'error']);
+}
     }
-    
+     
     public function deleteMedicineItem() {
         $id = $this->input->post('id');
         

@@ -59,14 +59,13 @@
                     <input type="text" name="medicineName" id="medicineName" class="form-control"
                         placeholder="E.g. Dolo 650" required>
 
-                    <label for="medicineComposition" class="form-label pb-2 mt-2">Composition <span
-                            class="text-danger">*</span></label>
+                    <label for="medicineComposition" class="form-label pb-2 mt-2">Composition</label>
                     <input type="text" name="medicineComposition" id="medicineComposition" class="form-control"
-                        placeholder="E.g. Paracetamol" required>
+                        placeholder="E.g. Paracetamol">
 
-                    <label for="medicineCategory" class="form-label pb-2 mt-2">Category <span
-                            class="text-danger">*</span></label>
-                    <select name="medicineCategory" id="medicineCategory" class="form-select" required>
+                    <label for="medicineCategory" class="form-label pb-2 mt-2">Category</label>
+                    <select name="medicineCategory" id="medicineCategory" class="form-select">
+                        <option value="">Not Selected</option>
                         <option value="">Select Category</option>
                         <option value="TABLET">Tablet</option>
                         <option value="CAPSULE">Capsule</option>

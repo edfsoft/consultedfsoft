@@ -1086,39 +1086,52 @@ class ConsultModel extends CI_Model
     // 2. Insert New Master Medicine
     public function insertNewMedicineMaster($name, $composition, $category)
     {
-        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ?
+$_SESSION['hcpIdDb'] : 0;
         $creator = 'admin';
 
         if ($hcpIdDb > 0) {
             $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
-            if ($user) {
+if ($user) {
                 $creator = $user['hcpId'];
-            }
+}
         }
+        
+        // --- MODIFICATION START ---
+        // Set default value to 'Nill' if fields are empty or null
+        $finalComposition = empty($composition) ? 'Nill' : $composition;
+        $finalCategory = empty($category) ? 'Nill' : $category;
 
         $data = [
             'medicineName' => $name,
-            'compositionName' => $composition,
-            'category' => $category,
+            'compositionName' => $finalComposition, // Use modified variable
+            'category' => $finalCategory,           // Use modified variable
             'created_by' => $creator,
             'activeStatus' => '0' // Assuming you added activeStatus column, else remove this
-        ];
+   
+     ];
         
         $this->db->insert('medicines_list', $data);
         return $this->db->insert_id();
-    }
+}
 
     // 3. Update Master Medicine
     public function updateMedicineMaster($id, $name, $composition, $category) {
         $this->db->where('id', $id);
-        $data = [
-            'medicineName' => $name,
-            'compositionName' => $composition,
-            'category' => $category
-        ];
-        return $this->db->update('medicines_list', $data);
-    }
 
+        // --- MODIFICATION START ---
+        // Set default value to 'Nill' if fields are empty or null for update
+        $finalComposition = empty($composition) ? 'Nill' : $composition;
+        $finalCategory = empty($category) ? 'Nill' : $category;
+
+$data = [
+            'medicineName' => $name,
+            'compositionName' => $finalComposition, // Use modified variable
+            'category' => $finalCategory            // Use modified variable
+        ];
+return $this->db->update('medicines_list', $data);
+    }
+    
     // 4. Delete Master Medicine (Hard Delete or Soft Delete based on your preference)
     public function deleteMedicineMaster($id) {
         $this->db->where('id', $id);

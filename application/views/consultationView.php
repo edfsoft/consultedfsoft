@@ -276,38 +276,31 @@
         }
 
         /* --- For Action icons in suggestion Box --- */
-        .action-icon {
-            width: 45px;
-            height: 40px;
-            border-radius: 20%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-        /* Edit Icon Styles */
-        .action-icon.edit {
-            border: 1px solid #1a1918ff;
-            color: #121516ff;
-            margin-right: 10px;
-        }
-        /* Edit Hover Effect */
-        .action-icon.edit:hover {
-            background-color: #173236ff;
-            color: #c7bbbbff;
-        }
-        /* Delete Icon Styles */
-        .action-icon.delete {
-            border: 1px solid #1e2122ff;
-            color: #d63e4eff;
-        }
-        /* Delete Hover Effect */
-        .action-icon.delete:hover {
-            background-color: #ee4051ff;
-            color: #fff;
-        }
+        /* --- Action icons in suggestion box (Icon only) --- */
+.action-icon {
+    display: inline-flex;          /* icon only */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.8rem;            /* adjust icon size if needed */
+    padding: 3px;                 /* small compact click area */
+    transition: all 0.2s ease;
+    border: 1px solid transparent; /* no border initially */
+}
+
+.action-icon.delete {
+    color: #d63e4eff;
+}
+/* optional spacing between icons */
+.action-icon.edit {
+    margin-right: 10px;
+}
+
+/* --- Hover effect: show black border outline only --- */
+.action-icon:hover {
+    border: 1px solid #000;       /* black outline on hover */
+    border-radius: 20%;           /* curve only on hover */
+}
 
         /*  Print consultaion page format*/
         @media print {
@@ -2262,7 +2255,7 @@
                                         <span class="toggle-icon">+</span>
                                     </div>
 
-                                    <div class="collapse field-container mt-2">
+                                    <!-- <div class="collapse field-container mt-2">
                                         <div class="input-group mb-2">
                                             <input type="text" class="form-control" id="adviceSearch"
                                                 placeholder="Search Advice">
@@ -2284,8 +2277,28 @@
                                                     </div>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
-                                        </div>
-                                    </div>
+                                        </div> 
+                                        </div>-->
+
+<div class="collapse field-container mt-2">
+    <div id="adviceWrapper">
+        <div class="input-group mb-2">
+            <input type="text" class="form-control" id="adviceSearch" placeholder="Search Advice">
+            
+            <button type="button" class="btn btn-outline-secondary" 
+                    id="clearAdviceSearch" 
+                    style="display: none;">✖</button>
+            
+            <button type="button" class="btn btn-outline-primary" 
+                    id="addAdviceBtn" 
+                    style="display: none;">+ Add</button>
+        </div>
+
+        <div id="adviceList" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+            </div>
+    </div>
+</div>
+                                    
                                 </div>
 
                                 <div class="mb-3">
@@ -2295,7 +2308,7 @@
                                                 Instructions</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
-                                    <div class="collapse field-container mt-2">
+                                    <!-- <div class="collapse field-container mt-2">
                                         <div class="mb-3">
                                             <div class="input-group mb-2">
                                                 <input type="text" class="form-control" id="instructionSearch"
@@ -2321,8 +2334,25 @@
                                             <?php endif; ?>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
+    <div class="collapse field-container mt-2">
+        <div id="instructionWrapper">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" id="instructionSearch"
+                    placeholder="Search Instructions">
+                
+                <button type="button" class="btn btn-outline-secondary"
+                    id="clearInstructionSearch" style="display: none;">✖</button>
+                
+                <button type="button" class="btn btn-outline-primary"
+                    id="addInstructionBtn" style="display: none;">+ Add</button>
+            </div>
 
+            <div id="instructionList" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+                </div>
+        </div>
+    </div>
+</div>
                             </div>
 
                             <div class="form-group pb-3" data-page="followup">
@@ -2897,7 +2927,7 @@
                                         <span class="toggle-icon">+</span>
                                     </div>
 
-                                    <div class="collapse field-container mt-2">
+                                    <!-- div class="collapse field-container mt-2">
                                         <div class="input-group mb-2">
                                             <input type="text" class="form-control" id="adviceSearch"
                                                 placeholder="Search Advice">
@@ -2920,7 +2950,25 @@
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
                                         </div>
-                                    </div>
+                                    </div> -->
+<div class="collapse field-container mt-2">
+    <div id="adviceWrapper">
+        <div class="input-group mb-2">
+            <input type="text" class="form-control" id="adviceSearch" placeholder="Search Advice">
+            
+            <button type="button" class="btn btn-outline-secondary" 
+                    id="clearAdviceSearch" 
+                    style="display: none;">✖</button>
+            
+            <button type="button" class="btn btn-outline-primary" 
+                    id="addAdviceBtn" 
+                    style="display: none;">+ Add</button>
+        </div>
+
+        <div id="adviceList" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+            </div>
+    </div>
+</div>
                                 </div>
 
                                 <div class="mb-3">
@@ -2930,7 +2978,7 @@
                                                 Instructions</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
-                                    <div class="collapse field-container mt-2">
+                                    <!-- <div class="collapse field-container mt-2">
                                         <div class="mb-3">
                                             <div class="input-group mb-2">
                                                 <input type="text" class="form-control" id="instructionSearch"
@@ -2956,7 +3004,25 @@
                                             <?php endif; ?>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
+    <div class="collapse field-container mt-2">
+        <div id="instructionWrapper">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" id="instructionSearch"
+                    placeholder="Search Instructions">
+                
+                <button type="button" class="btn btn-outline-secondary"
+                    id="clearInstructionSearch" style="display: none;">✖</button>
+                
+                <button type="button" class="btn btn-outline-primary"
+                    id="addInstructionBtn" style="display: none;">+ Add</button>
+            </div>
+
+            <div id="instructionList" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+                </div>
+        </div>
+    </div>
+</div>
                             </div>
 
                             <div class="form-group pb-3 " data-page="edit" id="editFileSection">
@@ -3288,7 +3354,7 @@
             </div>
         </div>
 
-        <!-- Add-new-medicine modal  -->
+        <!-- old Add-new-medicine modal  -->
         <!-- <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
             data-bs-keyboard="false">
             <div class="modal-dialog modal-md">
@@ -3338,6 +3404,7 @@
         </div>
  -->
 
+ <!-- New Add-new-medicine modal  -->
       <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-md">
         <form id="addMedicineMasterForm" class="modal-content">
@@ -3352,8 +3419,9 @@
                 <label for="newMedicineComposition" class="form-label fieldLabel pb-2 mt-2">Composition Name</label>
                 <input type="text" id="newMedicineComposition" class="form-control" placeholder="E.g. Paracetamol">
 
-                <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category <span class="text-danger">*</span></label>
-                <select id="newMedicineCategory" class="form-select" required>
+                <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category</label>
+                <select id="newMedicineCategory" class="form-select">
+                    <option value="">Not selected</option>
                     <option value="">Select Category</option>
                     <option value="TABLET">Tablet</option>
                     <option value="CAPSULE">Capsule</option>
@@ -3381,6 +3449,7 @@
     </div>
 </div>
 
+<!-- Delete Medicine -->
 <div class="modal fade" id="deleteMedicineMasterModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -3576,6 +3645,7 @@
             </div>
         </div>
 
+       <!--  Add/Edit Model for symptoms, findings, --> 
 <div class="modal fade" id="universalAddMasterModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <form id="universalAddMasterForm" class="modal-content">
@@ -4100,8 +4170,17 @@
                     if (symptomsSuggestionsBox && query !== "") {
                         filtered.forEach(item => {
                             const div = document.createElement("div");
-                            div.className = "d-flex justify-content-between align-items-center p-2 border-bottom";
+                            div.className = "d-flex justify-content-between align-items-center border-bottom";
                             div.style.cursor = "pointer";
+                            div.style.padding = "1px 6px";
+
+                            div.addEventListener("mouseenter", () => {
+                            div.style.backgroundColor = "#8db8afff";
+                            });
+
+                            div.addEventListener("mouseleave", () => {
+                                div.style.backgroundColor = "transparent";
+                            });
 
                             // A. Symptom Name (Click to Add)
                             const spanName = document.createElement("span");
@@ -4765,8 +4844,17 @@
                         if (suggestionsBox && query !== "") {
                             filtered.forEach(item => {
                                 const div = document.createElement("div");
-                                div.className = "d-flex justify-content-between align-items-center p-2 border-bottom";
+                                div.className = "d-flex justify-content-between align-items-center border-bottom";
                                 div.style.cursor = "pointer";
+                                div.style.padding = "1px 6px";
+
+                                div.addEventListener("mouseenter", () => {
+                                div.style.backgroundColor = "#8db8afff";
+                                });
+
+                                div.addEventListener("mouseleave", () => {
+                                    div.style.backgroundColor = "transparent";
+                                });
 
                                 // A. Name
                                 const spanName = document.createElement("span");
@@ -5488,8 +5576,17 @@
                         if (suggestionsBox && query !== "") {
                             filtered.forEach(item => {
                                 const div = document.createElement("div");
-                                div.className = "d-flex justify-content-between align-items-center p-2 border-bottom";
+                                div.className = "d-flex justify-content-between align-items-center border-bottom";
                                 div.style.cursor = "pointer";
+                                div.style.padding = "1px 6px";
+
+                                div.addEventListener("mouseenter", () => {
+                                div.style.backgroundColor = "#8db8afff";
+                                });
+
+                                div.addEventListener("mouseleave", () => {
+                                    div.style.backgroundColor = "transparent";
+                                });
 
                                 // A. Name
                                 const spanName = document.createElement("span");
@@ -6176,8 +6273,17 @@
                     if (suggestionsBox && query !== "") {
                         filtered.forEach(item => {
                             const div = document.createElement("div");
-                            div.className = "d-flex justify-content-between align-items-center p-2 border-bottom";
+                            div.className = "d-flex justify-content-between align-items-center border-bottom";
                             div.style.cursor = "pointer";
+                            div.style.padding = "1px 6px";
+
+                            div.addEventListener("mouseenter", () => {
+                            div.style.backgroundColor = "#8db8afff";
+                            });
+
+                            div.addEventListener("mouseleave", () => {
+                                div.style.backgroundColor = "transparent";
+                            });
 
                             // A. Name
                             const spanName = document.createElement("span");
@@ -6746,6 +6852,12 @@
                             const wrapper = document.createElement('div');
                             wrapper.className = 'form-check instruction-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
                             
+                            wrapper.addEventListener("mouseenter", () => {
+                            wrapper.style.backgroundColor = "#8db8afff";
+                            });
+                            wrapper.addEventListener("mouseleave", () => {
+                                wrapper.style.backgroundColor = "transparent";
+                            });
                             // Left Side
                             const leftDiv = document.createElement('div');
                             leftDiv.className = 'd-flex align-items-center flex-grow-1';
@@ -7209,6 +7321,13 @@
                             const wrapper = document.createElement('div');
                             wrapper.className = 'form-check procedure-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
                             
+                            wrapper.addEventListener("mouseenter", () => {
+                            wrapper.style.backgroundColor = "#8db8afff";
+                            });
+                            wrapper.addEventListener("mouseleave", () => {
+                            wrapper.style.backgroundColor = "transparent";
+                            });
+
                             // Left Side
                             const leftDiv = document.createElement('div');
                             leftDiv.className = 'd-flex align-items-center flex-grow-1';
@@ -7642,7 +7761,12 @@
                             filtered.forEach(adv => {
                                 const wrapper = document.createElement('div');
                                 wrapper.className = 'form-check advice-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
-                                
+                                wrapper.addEventListener("mouseenter", () => {
+                                wrapper.style.backgroundColor = "#8db8afff";
+                                });
+                                wrapper.addEventListener("mouseleave", () => {
+                                    wrapper.style.backgroundColor = "transparent";
+                                });
                                 // Left Side
                                 const leftDiv = document.createElement('div');
                                 leftDiv.className = 'd-flex align-items-center flex-grow-1';
@@ -8321,546 +8445,545 @@
         });
     </script> -->
     <!-- New Medicine Modal Script -->
-        <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // 1. Load Lists
-        let medicinesData = <?php echo json_encode($medicinesList); ?> || [];
-        const savedMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?> || [];
+     <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // 1. Load Lists
+                let medicinesData = <?php echo json_encode($medicinesList); ?> || [];
+                const savedMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?> || [];
 
-        // --- DOM REFS ---
-        const medicinesInput = document.getElementById("medicinesSearchInput");
-        const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
-        const medicinesTagContainer = document.getElementById("medicinesInput");
-        const medicinesListContainer = document.getElementById("medicinesList");
-        const addBtn = document.getElementById("medicinesAddBtn");
-        const clearBtn = document.getElementById("clearMedicineSearch");
+                // --- DOM REFS ---
+                const medicinesInput = document.getElementById("medicinesSearchInput");
+                const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
+                const medicinesTagContainer = document.getElementById("medicinesInput");
+                const medicinesListContainer = document.getElementById("medicinesList");
 
-        // --- MODALS ---
-        const medicinesModalEl = document.getElementById("medicinesModal");
-        const medicinesModal = new bootstrap.Modal(medicinesModalEl);
-        const medicinesModalTitle = document.getElementById("medicinesModalTitle");
-        const medicineCompositionText = document.getElementById("medicineCompositionText");
-        const medicineCategoryText = document.getElementById("medicineCategoryText");
-        const medicineQuantity = document.getElementById("medicineQuantity");
-        const medicineNotes = document.getElementById("medicineNotes");
+                const addBtn = document.getElementById("medicinesAddBtn");
+                const clearBtn = document.getElementById("clearMedicineSearch");
 
-        // Master Modal
-        const addMedMasterModalEl = document.getElementById("addMedicineModal");
-        const addMedMasterModal = new bootstrap.Modal(addMedMasterModalEl);
-        const addMedMasterForm = document.getElementById("addMedicineMasterForm");
-        const medMasterTitle = document.getElementById("addMedicineModalTitle");
-        const newMedName = document.getElementById("newMedicineName");
-        const newMedComp = document.getElementById("newMedicineComposition");
-        const newMedCat = document.getElementById("newMedicineCategory");
-        const editMedId = document.getElementById("editMedicineMasterId");
-        const addMedicineConfirmBtn = document.getElementById("addMedicineConfirmBtn");
+                // --- MODALS ---
+                const medicinesModalEl = document.getElementById("medicinesModal");
+                const medicinesModal = new bootstrap.Modal(medicinesModalEl);
+                const medicinesModalTitle = document.getElementById("medicinesModalTitle");
+                const medicineCompositionText = document.getElementById("medicineCompositionText");
+                const medicineCategoryText = document.getElementById("medicineCategoryText");
+                const medicineQuantity = document.getElementById("medicineQuantity");
+                const medicineNotes = document.getElementById("medicineNotes");
 
-        // Delete Modal
-        const delMedModalEl = document.getElementById("deleteMedicineMasterModal");
-        const delMedModal = new bootstrap.Modal(delMedModalEl);
-        const delMedName = document.getElementById("delMedNameDisplay");
-        const delMedId = document.getElementById("delMedId");
-        const finalDeleteMedBtn = document.getElementById("finalDeleteMedBtn");
+                // Master Modal
+                const addMedMasterModalEl = document.getElementById("addMedicineModal");
+                const addMedMasterModal = new bootstrap.Modal(addMedMasterModalEl);
+                const addMedMasterForm = document.getElementById("addMedicineMasterForm");
+                const medMasterTitle = document.getElementById("addMedicineModalTitle");
+                const newMedName = document.getElementById("newMedicineName");
+                const newMedComp = document.getElementById("newMedicineComposition");
+                const newMedCat = document.getElementById("newMedicineCategory");
+                const editMedId = document.getElementById("editMedicineMasterId");
+                const addMedicineConfirmBtn = document.getElementById("addMedicineConfirmBtn");
 
-        const slots = ["morning", "afternoon", "evening", "night"];
-        let selectedMedicines = [];
-        let pendingMedicineName = "";
-        let editingMedicineTag = null;
+                // Delete Modal
+                const delMedModalEl = document.getElementById("deleteMedicineMasterModal");
+                const delMedModal = new bootstrap.Modal(delMedModalEl);
+                const delMedName = document.getElementById("delMedNameDisplay");
+                const delMedId = document.getElementById("delMedId");
+                const finalDeleteMedBtn = document.getElementById("finalDeleteMedBtn");
 
-        // ============================================================
-        // FORCE CLOSE HANDLERS
-        // ============================================================
-        addMedMasterModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
-            btn.addEventListener('click', (e) => { e.preventDefault(); addMedMasterModal.hide(); });
-        });
-        delMedModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
-            btn.addEventListener('click', (e) => { e.preventDefault(); delMedModal.hide(); });
-        });
+                const slots = ["morning", "afternoon", "evening", "night"];
+                let selectedMedicines = [];
+                let pendingMedicineName = "";
+                let editingMedicineTag = null;
 
-        // ============================================================
-        // 1. RENDER SUGGESTIONS
-        // ============================================================
-        function renderMedicinesSuggestions() {
-            if (!medicinesInput) return;
-            const query = medicinesInput.value.trim().toLowerCase();
-            medicinesSuggestionsBox.innerHTML = "";
+                // --- FORCE CLOSE HANDLERS ---
+                addMedMasterModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => { e.preventDefault(); addMedMasterModal.hide(); });
+                });
+                delMedModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => { e.preventDefault(); delMedModal.hide(); });
+                });
 
-            if (query.length > 0) {
-                if(clearBtn) clearBtn.style.display = 'block';
-            } else {
-                if(clearBtn) clearBtn.style.display = 'none';
-                if(addBtn) addBtn.style.display = 'none';
-            }
+                // 1. RENDER SUGGESTIONS (Updated to show Category)
+                function renderMedicinesSuggestions() {
+                    if (!medicinesInput) return;
+                    const query = medicinesInput.value.trim().toLowerCase();
+                    medicinesSuggestionsBox.innerHTML = "";
 
-            const filtered = medicinesData.filter(m => m.medicineName.toLowerCase().includes(query));
+                    if (query.length > 0) {
+                        if(clearBtn) clearBtn.style.display = 'block';
+                    } else {
+                        if(clearBtn) clearBtn.style.display = 'none';
+                        if(addBtn) addBtn.style.display = 'none';
+                    }
 
-            if (filtered.length === 0 && query !== "") {
-                if(addBtn) addBtn.style.display = 'block';
-                if (medicinesSuggestionsBox) {
-                    medicinesSuggestionsBox.style.display = 'block';
-                    const div = document.createElement("div");
-                    div.className = "p-2 text-muted";
-                    div.style.cursor = "pointer";
-                    div.innerHTML = `No match found - <span class="text-primary">Add new</span>`;
-                    div.onclick = () => {
-                        openAddMedicineMaster(medicinesInput.value);
-                        clearSearch();
-                    };
-                    medicinesSuggestionsBox.appendChild(div);
-                }
-            } else {
-                if(addBtn) addBtn.style.display = 'none';
-                if (medicinesSuggestionsBox && query !== "") {
-                    filtered.forEach(item => {
-                        const div = document.createElement("div");
-                        div.className = "d-flex justify-content-between align-items-center p-2 border-bottom";
-                        div.style.cursor = "pointer";
+                    const filtered = medicinesData.filter(m => m.medicineName.toLowerCase().includes(query));
 
-                        // Name
-                        const spanName = document.createElement("span");
-                        spanName.textContent = item.medicineName;
-                        spanName.className = "flex-grow-1";
-                        spanName.onclick = (e) => {
-                            e.stopPropagation();
-                            openMedicineModal(item.medicineName);
-                            clearSearch();
-                        };
-                        div.appendChild(spanName);
-
-                        // Icons
-                        if (item.is_mine == true || item.is_mine == "true") {
-                            const actionDiv = document.createElement("div");
-                            actionDiv.className = "d-flex align-items-center gap-2";
-
-                            const editIcon = document.createElement("i");
-                            editIcon.className = "bi bi-pen action-icon edit"; 
-                            editIcon.onclick = (e) => {
-                                e.stopPropagation();
-                                openEditMedicineMaster(item);
+                    if (filtered.length === 0 && query !== "") {
+                        if(addBtn) addBtn.style.display = 'block';
+                        if (medicinesSuggestionsBox) {
+                            medicinesSuggestionsBox.style.display = 'block';
+                            const div = document.createElement("div");
+                            div.className = "p-2 text-muted";
+                            div.style.cursor = "pointer";
+                            div.innerHTML = `No match found - <span class="text-primary">Add new</span>`;
+                            div.onclick = () => {
+                                openAddMedicineMaster(medicinesInput.value);
+                                clearSearch();
                             };
-
-                            const deleteIcon = document.createElement("i");
-                            deleteIcon.className = "bi bi-trash action-icon delete"; 
-                            deleteIcon.onclick = (e) => {
-                                e.stopPropagation();
-                                openDeleteMedicine(item.id, item.medicineName);
-                            };
-
-                            actionDiv.appendChild(editIcon);
-                            actionDiv.appendChild(deleteIcon);
-                            div.appendChild(actionDiv);
+                            medicinesSuggestionsBox.appendChild(div);
                         }
+                    } else {
+                        if(addBtn) addBtn.style.display = 'none';
 
-                        div.onclick = () => {
-                            openMedicineModal(item.medicineName);
-                            clearSearch();
-                        };
-                        medicinesSuggestionsBox.appendChild(div);
-                    });
-                    medicinesSuggestionsBox.style.display = "block";
-                } else {
+                        if (medicinesSuggestionsBox && query !== "") {
+                            filtered.forEach(item => {
+                                const div = document.createElement("div");
+                                div.className = "d-flex justify-content-between align-items-center border-bottom";
+                                div.style.cursor = "pointer";
+                                div.style.padding = "1px 6px";
+
+                                div.addEventListener("mouseenter", () => { div.style.backgroundColor = "#8db8afff"; });
+                                div.addEventListener("mouseleave", () => { div.style.backgroundColor = "transparent"; });
+
+                                // --- NAME DISPLAY (Updated) ---
+                                const spanName = document.createElement("span");
+                                spanName.className = "flex-grow-1";
+                                
+                                // Add Category if it exists
+                                const categoryHtml = item.category ? `<small class="text-muted me-2" style="font-size:0.75em;">${item.category}</small>` : '';
+                                spanName.innerHTML = `${categoryHtml}<strong>${item.medicineName}</strong>`;
+
+                                spanName.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openMedicineModal(item.medicineName);
+                                    clearSearch();
+                                };
+                                div.appendChild(spanName);
+
+                                // Icons
+                                if (item.is_mine == true || item.is_mine == "true") {
+                                    const actionDiv = document.createElement("div");
+                                    actionDiv.className = "d-flex align-items-center gap-2";
+
+                                    const editIcon = document.createElement("i");
+                                    editIcon.className = "bi bi-pen action-icon edit"; 
+                                    editIcon.onclick = (e) => {
+                                        e.stopPropagation();
+                                        openEditMedicineMaster(item);
+                                    };
+
+                                    const deleteIcon = document.createElement("i");
+                                    deleteIcon.className = "bi bi-trash action-icon delete"; 
+                                    deleteIcon.onclick = (e) => {
+                                        e.stopPropagation();
+                                        openDeleteMedicine(item.id, item.medicineName);
+                                    };
+
+                                    actionDiv.appendChild(editIcon);
+                                    actionDiv.appendChild(deleteIcon);
+                                    div.appendChild(actionDiv);
+                                }
+
+                                div.onclick = () => {
+                                    openMedicineModal(item.medicineName);
+                                    clearSearch();
+                                };
+                                medicinesSuggestionsBox.appendChild(div);
+                            });
+                            medicinesSuggestionsBox.style.display = "block";
+                        } else {
+                            medicinesSuggestionsBox.style.display = "none";
+                        }
+                    }
+                }
+
+                function clearSearch() {
+                    medicinesInput.value = "";
                     medicinesSuggestionsBox.style.display = "none";
+                    if(clearBtn) clearBtn.style.display = "none";
+                    if(addBtn) addBtn.style.display = "none";
+                    medicinesInput.focus();
                 }
-            }
-        }
 
-        function clearSearch() {
-            medicinesInput.value = "";
-            medicinesSuggestionsBox.style.display = "none";
-            if(clearBtn) clearBtn.style.display = "none";
-            if(addBtn) addBtn.style.display = "none";
-            medicinesInput.focus();
-        }
-
-        // ============================================================
-        // 2. MASTER ADD / EDIT
-        // ============================================================
-        if(addBtn) {
-            addBtn.addEventListener('click', () => {
-                openAddMedicineMaster(medicinesInput.value);
-            });
-        }
-
-        function openAddMedicineMaster(prefillName) {
-            medMasterTitle.textContent = "Add New Medicine";
-            newMedName.value = prefillName || "";
-            newMedComp.value = "";
-            newMedCat.value = "";
-            editMedId.value = ""; 
-            addMedMasterModal.show();
-            setTimeout(() => newMedName.focus(), 200);
-        }
-
-        function openEditMedicineMaster(item) {
-            medMasterTitle.textContent = "Edit Medicine";
-            newMedName.value = item.medicineName;
-            newMedComp.value = item.compositionName || "";
-            newMedCat.value = item.category || "";
-            editMedId.value = item.id;
-            addMedMasterModal.show();
-            setTimeout(() => newMedName.focus(), 200);
-        }
-
-        addMedicineConfirmBtn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const name = newMedName.value.trim();
-            const comp = newMedComp.value.trim();
-            const cat = newMedCat.value;
-            const id = editMedId.value;
-
-            if (!name || !cat) {
-                alert('Please fill Name and Category fields.');
-                return;
-            }
-
-            const url = id ? "<?= site_url('Consultation/editMedicineItem') ?>" : "<?= site_url('Consultation/addNewMedicines') ?>";
-            const payload = { medicineName: name, compositionName: comp, category: cat };
-            if(id) payload.id = id;
-
-            try {
-                addMedicineConfirmBtn.disabled = true;
-                addMedicineConfirmBtn.textContent = 'Saving...';
-
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-
-                if (data.status === 'success' || data.status === true) {
-                    if(id) {
-                        const index = medicinesData.findIndex(m => m.id == id);
-                        if(index !== -1) {
-                            medicinesData[index].medicineName = name;
-                            medicinesData[index].compositionName = comp;
-                            medicinesData[index].category = cat;
-                        }
-                        addMedMasterModal.hide();
-                        clearSearch();
-                    } else {
-                        const newObj = {
-                            id: data.id || data.data.id,
-                            medicineName: name,
-                            compositionName: comp,
-                            category: cat,
-                            is_mine: true
-                        };
-                        medicinesData.push(newObj);
-                        addMedMasterModal.hide();
-                        clearSearch();
-                        setTimeout(() => openMedicineModal(name), 300);
-                    }
-                } else {
-                    alert(data.message || "Failed to save.");
-                }
-            } catch (err) { console.error(err); } 
-            finally {
-                addMedicineConfirmBtn.disabled = false;
-                addMedicineConfirmBtn.textContent = 'Save';
-            }
-        });
-
-        // ============================================================
-        // 3. DELETE LOGIC
-        // ============================================================
-        function openDeleteMedicine(id, name) {
-            delMedName.textContent = name;
-            delMedId.value = id;
-            delMedModal.show();
-        }
-
-        finalDeleteMedBtn.addEventListener('click', () => {
-            const id = delMedId.value;
-            fetch("<?= site_url('Consultation/deleteMedicineItem') ?>", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `id=${id}`
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === 'success') {
-                    const idx = medicinesData.findIndex(m => m.id == id);
-                    if(idx !== -1) medicinesData.splice(idx, 1);
-                    delMedModal.hide();
-                    renderMedicinesSuggestions();
-                } else {
-                    alert("Failed to delete.");
-                }
-            });
-        });
-
-        // ============================================================
-        // 4. DETAILED MODAL & EVENTS
-        // ============================================================
-        if(medicinesInput){
-            medicinesInput.addEventListener("input", renderMedicinesSuggestions);
-            medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
-            medicinesInput.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
-                    e.preventDefault();
-                    const q = medicinesInput.value.trim().toLowerCase();
-                    const found = medicinesData.find(m => m.medicineName.toLowerCase() === q);
-                    if (found) {
-                        openMedicineModal(found.medicineName);
-                        clearSearch();
-                    } else {
+                // 2. MASTER ADD / EDIT
+                if(addBtn) {
+                    addBtn.addEventListener('click', () => {
                         openAddMedicineMaster(medicinesInput.value);
-                    }
+                    });
                 }
-            });
-        }
-        
-        if(medicinesModalEl) {
-            medicinesModalEl.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') { e.preventDefault(); saveMedicineModal(); }
-            });
-        }
-        if(clearBtn) clearBtn.addEventListener("click", clearSearch);
 
-        document.addEventListener("click", (e) => {
-            if (medicinesTagContainer && !medicinesTagContainer.contains(e.target) && 
-                addBtn && !addBtn.contains(e.target)) {
-                if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
-            }
-        });
-
-        // ============================================================
-        // 5. TIMING CHECKBOX LISTENERS (The Fix)
-        // ============================================================
-        function forEachSlot(cb) {
-            slots.forEach(slot => {
-                const check = document.getElementById(`${slot}Check`);
-                const qty = document.getElementById(`${slot}Qty`);
-                const unit = document.getElementById(`${slot}Unit`);
-                if (check && qty && unit) cb(check, qty, unit);
-            });
-        }
-
-        // Initialize listeners to toggle enable/disable state
-        forEachSlot((check, qty, unit) => {
-            check.addEventListener("change", () => {
-                if (check.checked) {
-                    qty.disabled = false;
-                    unit.disabled = false;
-                    if (!qty.value) qty.value = 1; // Default to 1
-                } else {
-                    qty.disabled = true;
-                    unit.disabled = true;
-                    qty.value = "";
-                    unit.value = "";
+                function openAddMedicineMaster(prefillName) {
+                    medMasterTitle.textContent = "Add New Medicine";
+                    newMedName.value = prefillName || "";
+                    newMedComp.value = "";
+                    newMedCat.value = "";
+                    editMedId.value = ""; 
+                    addMedMasterModal.show();
+                    setTimeout(() => newMedName.focus(), 200);
                 }
-            });
-            
-            // Optional: Blur Qty if unchecked (safety)
-            qty.addEventListener("focus", () => {
-                if (!check.checked) qty.blur();
-            });
-        });
 
-        function buildTimingString() {
-            const parts = [];
-            forEachSlot((check, qty, unit) => {
-                if (check && check.checked && qty && qty.value) {
-                    const u = unit && unit.value ? unit.value : "";
-                    const qtyVal = String(qty.value);
-                    parts.push(u ? `${qtyVal} ${u}` : `${qtyVal}`);
-                } else {
-                    parts.push("0");
+                function openEditMedicineMaster(item) {
+                    medMasterTitle.textContent = "Edit Medicine";
+                    newMedName.value = item.medicineName;
+                    newMedComp.value = item.compositionName || "";
+                    newMedCat.value = item.category || "";
+                    editMedId.value = item.id;
+                    addMedMasterModal.show();
+                    setTimeout(() => newMedName.focus(), 200);
                 }
-            });
-            return parts.join("-");
-        }
 
-        function applyTimingString(timingStr) {
-            const parts = String(timingStr || "0-0-0-0").split("-");
-            slots.forEach((slot, i) => {
-                const check = document.getElementById(`${slot}Check`);
-                const qty = document.getElementById(`${slot}Qty`);
-                const unit = document.getElementById(`${slot}Unit`);
-                if (!check) return;
-                
-                const v = parts[i] ?? "0";
-                if (v !== "0") {
-                    check.checked = true;
-                    qty.disabled = false;
-                    unit.disabled = false;
+                // Confirm Save (Handles both Add and Edit)
+                addMedicineConfirmBtn.addEventListener('click', async (e) => {
+                    e.preventDefault(); // STOP Form Submission
                     
-                    // Try to separate number and unit (e.g., "0.5 ml")
-                    const matches = String(v).match(/^([\d.]+)\s*(.*)$/);
-                    if (matches) {
-                        qty.value = matches[1];
-                        if(matches[2]) unit.value = matches[2];
-                    } else {
-                        qty.value = v;
+                    const name = newMedName.value.trim();
+                    // Get values. They can be empty.
+                    const comp = newMedComp.value.trim(); 
+                    const cat = newMedCat.value; 
+                    const id = editMedId.value;
+
+                    // FIX: Only Medicine Name is required now
+                    if (!name) {
+                        alert('Please enter Medicine Name.');
+                        return;
                     }
-                } else {
-                    check.checked = false;
-                    qty.value = "";
-                    unit.value = "";
-                    qty.disabled = true;
-                    unit.disabled = true;
-                }
-            });
-        }
 
-        function toDbShape(row) {
-             if (!row) return null;
-             return {
-                id: row.id ?? row.medicine_id ?? "",
-                consultation_id: row.consultation_id ?? "",
-                medicine_name: row.medicine_name ?? row.medicine ?? row.medicineBrand ?? "",
-                quantity: row.quantity ?? "",
-                unit: row.unit ?? "",
-                timing: row.timing ?? "0-0-0-0",
-                food_timing: row.food_timing ?? "",
-                notes: row.notes ?? "",
-                composition: row.compositionName ?? row.composition ?? "",
-                category: row.category ?? row.medicineCategory ?? ""
-            };
-        }
+                    const url = id ? "<?= site_url('Consultation/editMedicineItem') ?>" : "<?= site_url('Consultation/addNewMedicines') ?>";
+                    
+                    const payload = {
+                        medicineName: name,
+                        // These are intentionally passed as empty strings if blank
+                        compositionName: comp, 
+                        category: cat
+                    };
+                    if(id) payload.id = id;
 
-        // Open Detailed Modal
-        window.openMedicineModal = function (name, existing = null, tagEl = null) {
-            pendingMedicineName = name;
-            editingMedicineTag = tagEl;
+                    try {
+                        addMedicineConfirmBtn.disabled = true;
+                        addMedicineConfirmBtn.textContent = 'Saving...';
 
-            const medData = medicinesData.find(m => m.medicineName === name);
-            medicinesModalTitle.textContent = existing ? `Edit: ${name}` : `Details for: ${name}`;
-            
-            if (medData) {
-                medicineCompositionText.textContent = medData.compositionName || "";
-                medicineCategoryText.textContent = medData.category || "";
-            } else if(existing) {
-                medicineCompositionText.textContent = existing.composition || "";
-                medicineCategoryText.textContent = existing.category || "";
-            }
+                        const res = await fetch(url, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const data = await res.json();
 
-            medicineQuantity.value = "";
-            medicineNotes.value = "";
-            
-            // Reset Timing Inputs
-            forEachSlot((check, qty, unit) => {
-                check.checked = false;
-                qty.value = "";
-                qty.disabled = true;
-                unit.value = "";
-                unit.disabled = true;
-            });
-            document.querySelectorAll('input[name="foodTiming"]').forEach(r => r.checked = false);
+                        if (data.status === 'success' || data.status === true) {
+                            // Reflect local data changes (backend converts empty to "Nill")
+                            const finalComp = comp || "Nill";
+                            const finalCat = cat || "Nill";
 
-            const row = toDbShape(existing);
-            if (row) {
-                medicineQuantity.value = row.quantity || "";
-                medicineNotes.value = row.notes || "";
-                applyTimingString(row.timing);
-                document.querySelectorAll('input[name="foodTiming"]').forEach(r => {
-                    r.checked = (r.value === (row.food_timing || ""));
+                            if(id) {
+                                // Edit: Update Local Data
+                                const index = medicinesData.findIndex(m => m.id == id);
+                                if (index !== -1) {
+                                    medicinesData[index].medicineName = name;
+                                    medicinesData[index].compositionName = finalComp;
+                                    medicinesData[index].category = finalCat;
+                                }
+                                addMedMasterModal.hide();
+                                clearSearch();
+                            } else {
+                                // Add: Push to List & Open Details
+                                const newObj = {
+                                    id: data.id || data.data.id,
+                                    medicineName: name,
+                                    compositionName: finalComp,
+                                    category: finalCat,
+                                    is_mine: true
+                                };
+                                medicinesData.push(newObj);
+                                addMedMasterModal.hide();
+                                clearSearch();
+                                // Workflow: Immediately open Prescription Modal
+                                setTimeout(() => openMedicineModal(name), 300);
+                            }
+                        } else {
+                            alert(data.message || "Failed to save.");
+                        }
+                    } catch (err) {
+                        console.error(err);
+                    } finally {
+                        addMedicineConfirmBtn.disabled = false;
+                        addMedicineConfirmBtn.textContent = 'Save';
+                    }
                 });
-            } else {
-                // If it's a new medicine from master list, no timing set yet
-                applyTimingString("0-0-0-0");
-            }
-            
-            medicinesModal.show();
-            setTimeout(() => medicineQuantity.focus(), 500);
-        };
 
-        // Save Detailed Modal
-        window.saveMedicineModal = function () {
-            const quantity = (medicineQuantity.value || "").trim();
-            const notes = (medicineNotes.value || "").trim();
-            const timing = buildTimingString();
-            const food_timing = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
-
-            if (!pendingMedicineName) return;
-            
-            const existingIndex = selectedMedicines.findIndex(m => m.medicine_name === pendingMedicineName);
-            const resolvedId = (existingIndex !== -1 && selectedMedicines[existingIndex]?.id) ? selectedMedicines[existingIndex].id : "new";
-            
-            // Fetch master details to store in object (optional but good for display consistency)
-            const medData = medicinesData.find(m => m.medicineName === pendingMedicineName);
-            const composition = medData?.compositionName || "";
-            const category = medData?.category || "";
-
-            const data = {
-                id: resolvedId,
-                medicine_name: pendingMedicineName,
-                quantity,
-                timing,
-                food_timing,
-                notes,
-                composition,
-                category
-            };
-
-            if (editingMedicineTag) {
-                if (existingIndex !== -1) {
-                     if(selectedMedicines[existingIndex].consultation_id) 
-                        data.consultation_id = selectedMedicines[existingIndex].consultation_id;
-                     selectedMedicines[existingIndex] = data;
+                // 3. DELETE LOGIC
+                function openDeleteMedicine(id, name) {
+                    delMedName.textContent = name;
+                    delMedId.value = id;
+                    delMedModal.show();
                 }
-                updateMedicineTagDisplay(editingMedicineTag, data);
-                editingMedicineTag.setAttribute("data-id", data.id);
-            } else {
-                selectedMedicines.push(data);
-                addMedicineTag(data);
-            }
-            updateMedicinesHiddenInput();
-            medicinesModal.hide();
-        };
 
-        function addMedicineTag(row) {
-            const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-            tag.style.cursor = "pointer";
-            tag.setAttribute("data-id", row.id || "new");
-            
-            updateMedicineTagDisplay(tag, row);
-            tag.onclick = () => openMedicineModal(row.medicine_name, row, tag);
+                finalDeleteMedBtn.addEventListener('click', () => {
+                    const id = delMedId.value;
+                    fetch("<?= site_url('Consultation/deleteMedicineItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.status === 'success') {
+                            const idx = medicinesData.findIndex(m => m.id == id);
+                            if(idx !== -1) medicinesData.splice(idx, 1);
+                            delMedModal.hide();
+                            renderMedicinesSuggestions();
+                        } else {
+                            alert("Failed to delete.");
+                        }
+                    });
+                });
 
-            if (medicinesListContainer) {
-                medicinesListContainer.appendChild(tag);
-            } else {
-                medicinesTagContainer.appendChild(tag);
-            }
-        }
+                // 4. DETAILED MODAL & EVENTS
+                if(medicinesInput){
+                    medicinesInput.addEventListener("input", renderMedicinesSuggestions);
+                    medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
+                    medicinesInput.addEventListener("keydown", (e) => {
+                        if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
+                            e.preventDefault();
+                            const q = medicinesInput.value.trim().toLowerCase();
+                            const found = medicinesData.find(m => m.medicineName.toLowerCase() === q);
+                            if (found) {
+                                openMedicineModal(found.medicineName);
+                                clearSearch();
+                            } else {
+                                openAddMedicineMaster(medicinesInput.value);
+                            }
+                        }
+                    });
+                }
+                
+                if(medicinesModalEl) {
+                    medicinesModalEl.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') { e.preventDefault(); saveMedicineModal(); }
+                    });
+                }
+                if(clearBtn) clearBtn.addEventListener("click", clearSearch);
 
-        function updateMedicineTagDisplay(tagEl, row) {
-             // Simple display with remove button
-             tagEl.innerHTML = `${row.medicine_name} <button class="text-light ms-2" style="border:none;background:transparent;font-size:1rem;">&times;</button>`;
-             tagEl.querySelector('button').onclick = (e) => {
-                 e.stopPropagation();
-                 tagEl.remove();
-                 selectedMedicines = selectedMedicines.filter(s => s.medicine_name !== row.medicine_name);
-                 updateMedicinesHiddenInput();
-             };
-        }
+                document.addEventListener("click", (e) => {
+                    if (medicinesTagContainer && !medicinesTagContainer.contains(e.target) && 
+                        addBtn && !addBtn.contains(e.target)) {
+                        if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
+                    }
+                });
 
-        function updateMedicinesHiddenInput() {
-            let hidden = document.getElementById("medicinesJson");
-            if (!hidden) {
-                hidden = document.createElement("input");
-                hidden.type = "hidden";
-                hidden.id = "medicinesJson";
-                hidden.name = "medicinesJson";
-                const form = medicinesModalEl.closest("form") || document.querySelector("form");
-                (form || document.body).appendChild(hidden);
-            }
-            hidden.value = JSON.stringify(selectedMedicines);
-        }
+                // 5. TIMING CHECKBOX LISTENERS (The Fix)
+                function forEachSlot(cb) {
+                    slots.forEach(slot => {
+                        const check = document.getElementById(`${slot}Check`);
+                        const qty = document.getElementById(`${slot}Qty`);
+                        const unit = document.getElementById(`${slot}Unit`);
+                        if (check && qty && unit) cb(check, qty, unit);
+                    });
+                }
 
-        // Initial Load
-        if (Array.isArray(savedMedicines) && savedMedicines.length) {
-            savedMedicines.forEach(m => {
-                const row = toDbShape(m);
-                selectedMedicines.push(row);
-                addMedicineTag(row);
+                forEachSlot((check, qty, unit) => {
+                    check.addEventListener("change", () => {
+                        if (check.checked) {
+                            qty.disabled = false;
+                            unit.disabled = false;
+                            if (!qty.value) qty.value = 1; 
+                        } else {
+                            qty.disabled = true;
+                            unit.disabled = true;
+                            qty.value = "";
+                            unit.value = "";
+                        }
+                    });
+                    qty.addEventListener("focus", () => {
+                        if (!check.checked) qty.blur();
+                    });
+                });
+
+                function buildTimingString() {
+                    const parts = [];
+                    forEachSlot((check, qty, unit) => {
+                        if (check && check.checked && qty && qty.value) {
+                            const u = unit && unit.value ? unit.value : "";
+                            const qtyVal = String(qty.value);
+                            parts.push(u ? `${qtyVal} ${u}` : `${qtyVal}`);
+                        } else {
+                            parts.push("0");
+                        }
+                    });
+                    return parts.join("-");
+                }
+
+                function applyTimingString(timingStr) {
+                    const parts = String(timingStr || "0-0-0-0").split("-");
+                    slots.forEach((slot, i) => {
+                        const check = document.getElementById(`${slot}Check`);
+                        const qty = document.getElementById(`${slot}Qty`);
+                        const unit = document.getElementById(`${slot}Unit`);
+                        if (!check) return;
+                        
+                        const v = parts[i] ?? "0";
+                        if (v !== "0") {
+                            check.checked = true;
+                            qty.disabled = false;
+                            unit.disabled = false;
+                            const matches = String(v).match(/^([\d.]+)\s*(.*)$/);
+                            if (matches) {
+                                qty.value = matches[1];
+                                if(matches[2]) unit.value = matches[2];
+                            } else {
+                                qty.value = v;
+                            }
+                        } else {
+                            check.checked = false;
+                            qty.value = "";
+                            unit.value = "";
+                            qty.disabled = true;
+                            unit.disabled = true;
+                        }
+                    });
+                }
+
+                function toDbShape(row) {
+                    if (!row) return null;
+                    return {
+                        id: row.id ?? row.medicine_id ?? "",
+                        consultation_id: row.consultation_id ?? "",
+                        medicine_name: row.medicine_name ?? row.medicine ?? row.medicineBrand ?? "",
+                        quantity: row.quantity ?? "",
+                        unit: row.unit ?? "",
+                        timing: row.timing ?? "0-0-0-0",
+                        food_timing: row.food_timing ?? "",
+                        notes: row.notes ?? "",
+                        composition: row.compositionName ?? row.composition ?? "",
+                        category: row.category ?? row.medicineCategory ?? ""
+                    };
+                }
+
+                window.openMedicineModal = function (name, existing = null, tagEl = null) {
+                    pendingMedicineName = name;
+                    editingMedicineTag = tagEl;
+
+                    const medData = medicinesData.find(m => m.medicineName === name);
+                    medicinesModalTitle.textContent = existing ? `Edit: ${name}` : `Details for: ${name}`;
+                    
+                    if (medData) {
+                        medicineCompositionText.textContent = medData.compositionName || "";
+                        medicineCategoryText.textContent = medData.category || "";
+                    } else if(existing) {
+                        medicineCompositionText.textContent = existing.composition || "";
+                        medicineCategoryText.textContent = existing.category || "";
+                    }
+
+                    medicineQuantity.value = "";
+                    medicineNotes.value = "";
+                    slots.forEach(slot => {
+                        const check = document.getElementById(`${slot}Check`);
+                        if (check) { check.checked = false; }
+                    });
+                    document.querySelectorAll('input[name="foodTiming"]').forEach(r => r.checked = false);
+
+                    const row = toDbShape(existing);
+                    if (row) {
+                        medicineQuantity.value = row.quantity || "";
+                        medicineNotes.value = row.notes || "";
+                        applyTimingString(row.timing);
+                        document.querySelectorAll('input[name="foodTiming"]').forEach(r => {
+                            r.checked = (r.value === (row.food_timing || ""));
+                        });
+                    } else {
+                        applyTimingString("0-0-0-0");
+                    }
+                    
+                    medicinesModal.show();
+                    setTimeout(() => medicineQuantity.focus(), 500);
+                };
+
+                window.saveMedicineModal = function () {
+                    const quantity = (medicineQuantity.value || "").trim();
+                    const notes = (medicineNotes.value || "").trim();
+                    const timing = buildTimingString();
+                    const food_timing = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
+
+                    if (!pendingMedicineName) return;
+                    
+                    const existingIndex = selectedMedicines.findIndex(m => m.medicine_name === pendingMedicineName);
+                    const medData = medicinesData.find(m => m.medicineName === pendingMedicineName);
+                    const composition = medData?.compositionName || "";
+                    const category = medData?.category || "";
+
+                    const data = {
+                        id: (existingIndex !== -1 && selectedMedicines[existingIndex]?.id) ? selectedMedicines[existingIndex].id : "new",
+                        medicine_name: pendingMedicineName,
+                        quantity,
+                        timing,
+                        food_timing,
+                        notes,
+                        composition,
+                        category
+                    };
+
+                    if (editingMedicineTag) {
+                        if (existingIndex !== -1) {
+                            if(selectedMedicines[existingIndex].consultation_id) 
+                                data.consultation_id = selectedMedicines[existingIndex].consultation_id;
+                            selectedMedicines[existingIndex] = data;
+                        }
+                        updateMedicineTagDisplay(editingMedicineTag, data);
+                        editingMedicineTag.setAttribute("data-id", data.id);
+                    } else {
+                        selectedMedicines.push(data);
+                        addMedicineTag(data);
+                    }
+                    updateMedicinesHiddenInput();
+                    medicinesModal.hide();
+                };
+
+                function addMedicineTag(row) {
+                    const tag = document.createElement("span");
+                    tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+                    tag.style.cursor = "pointer";
+                    tag.setAttribute("data-id", row.id || "new");
+                    
+                    updateMedicineTagDisplay(tag, row);
+                    tag.onclick = () => openMedicineModal(row.medicine_name, row, tag);
+
+                    if (medicinesListContainer) {
+                        medicinesListContainer.appendChild(tag);
+                    } else {
+                        medicinesTagContainer.appendChild(tag);
+                    }
+                }
+
+                function updateMedicineTagDisplay(tagEl, row) {
+                    tagEl.innerHTML = `${row.medicine_name} <button class="text-light ms-2" style="border:none;background:transparent;font-size:1rem;">&times;</button>`;
+                    tagEl.querySelector('button').onclick = (e) => {
+                        e.stopPropagation();
+                        tagEl.remove();
+                        selectedMedicines = selectedMedicines.filter(s => s.medicine_name !== row.medicine_name);
+                        updateMedicinesHiddenInput();
+                    };
+                }
+
+                function updateMedicinesHiddenInput() {
+                    let hidden = document.getElementById("medicinesJson");
+                    if (!hidden) {
+                        hidden = document.createElement("input");
+                        hidden.type = "hidden";
+                        hidden.id = "medicinesJson";
+                        hidden.name = "medicinesJson";
+                        const form = medicinesModalEl.closest("form") || document.querySelector("form");
+                        (form || document.body).appendChild(hidden);
+                    }
+                    hidden.value = JSON.stringify(selectedMedicines);
+                }
+
+                // Initial Load
+                if (Array.isArray(savedMedicines) && savedMedicines.length) {
+                    savedMedicines.forEach(m => {
+                        const row = toDbShape(m);
+                        selectedMedicines.push(row);
+                        addMedicineTag(row);
+                    });
+                    updateMedicinesHiddenInput();
+                }
             });
-            updateMedicinesHiddenInput();
-        }
-    });
-</script>
+    </script>
     <!-- Upload attachments script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {

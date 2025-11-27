@@ -3864,16 +3864,22 @@
                                                                                             submitButton.disabled = false;
                                                                                             submitButton.innerHTML = 'Update';
                                                                                         }
-                                                                                        // Set up the modal for "Edit" mode
+
                                                                                         modalLabel.innerText = "Edit Medicine";
                                                                                         form.action = "<?php echo base_url('Edfadmin/saveMedicine'); ?>";
-                                                                                        submitButton.innerHTML = "Update"; // Also set it here to be safe
 
-                                                                                        // Set the form fields
                                                                                         document.getElementById('medicineId').value = medicine.id;
                                                                                         document.getElementById('medicineName').value = medicine.name;
-                                                                                        document.getElementById('medicineComposition').value = medicine.composition;
-                                                                                        document.getElementById('medicineCategory').value = medicine.category;
+
+                                                                                        let compValue = medicine.composition;
+
+                                                                                        document.getElementById('medicineComposition').value = compValue;
+
+                                                                                        let catValue = medicine.category;
+                                                                                        if (catValue === "Nil" || !catValue) {
+                                                                                            catValue = ""; // This selects <option value="">Select Category</option>
+                                                                                        }
+                                                                                        document.getElementById('medicineCategory').value = catValue;
 
                                                                                         // Show the modal
                                                                                         var myModal = new bootstrap.Modal(document.getElementById('medicineModal'));

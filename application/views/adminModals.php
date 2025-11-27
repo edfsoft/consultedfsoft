@@ -65,7 +65,6 @@
 
                     <label for="medicineCategory" class="form-label pb-2 mt-2">Category</label>
                     <select name="medicineCategory" id="medicineCategory" class="form-select">
-                        <option value="">Not Selected</option>
                         <option value="">Select Category</option>
                         <option value="TABLET">Tablet</option>
                         <option value="CAPSULE">Capsule</option>

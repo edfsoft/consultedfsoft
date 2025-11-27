@@ -170,20 +170,14 @@ class AdminModel extends CI_Model
     {
         $post = $this->input->post(null, true);
 
+        $finalComposition = empty($post['medicineComposition']) ? 'Nil' : $post['medicineComposition'];
+        $finalCategory = empty($post['medicineCategory']) ? 'Nil' : $post['medicineCategory'];
 
-        $finalComposition = empty($post['medicineComposition']) ? 'Nill' : $post['medicineComposition'];
-        $finalCategory = empty($post['medicineCategory']) ? 'Nill' : $post['medicineCategory'];
-        
         $data = [
             'medicineName' => $post['medicineName'],
-            'compositionName' => $finalComposition, // Use modified variable
-            'category' => $finalCategory];
-            
-        /* $data = [
-            'medicineName' => $post['medicineName'],
-            'compositionName' => $post['medicineComposition'],
-            'category' => $post['medicineCategory']
-        ]; */
+            'compositionName' => $finalComposition,
+            'category' => $finalCategory
+        ];
 
         if (!empty($post['medicineId'])) {
             $this->db->where('id', $post['medicineId']);

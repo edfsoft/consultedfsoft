@@ -36,130 +36,6 @@ class Consultation extends CI_Controller
         }
     }
 
-    public function addSymptom()
-    {
-        $name = $this->input->post('name', true);
-        $id = $this->ConsultModel->insertNewSymptoms($name);
-
-        if ($id) {
-            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
-        }
-    }
-
-    public function addFinding()
-    {
-        $name = $this->input->post('name', true);
-        $id = $this->ConsultModel->insertNewFindings($name);
-
-        if ($id) {
-            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
-        }
-    }
-
-    public function addDiagnosis()
-    {
-        $name = $this->input->post('name', true);
-        $id = $this->ConsultModel->insertNewDiagnosis($name);
-
-        if ($id) {
-            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
-        }
-    }
-
-    public function addInvestigation()
-    {
-        $name = $this->input->post('name', true);
-        $id = $this->ConsultModel->insertNewInvestigations($name);
-
-        if ($id) {
-            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
-        }
-    }
-
-    public function addInstruction()
-    {
-        $name = $this->input->post('name', true);
-        if (!$name) {
-            echo json_encode(["status" => "error", "message" => "Instruction name required"]);
-            return;
-        }
-        $data = ["instructionsName" => $name];
-        $this->db->insert("instructions_list", $data);
-        $id = $this->db->insert_id();
-
-        echo json_encode([
-            "status" => "success",
-            "id" => $id,
-            "name" => $name
-        ]);
-    }
-
-    public function addProcedure()
-    {
-        $name = $this->input->post('name', true);
-
-        if (!$name) {
-            echo json_encode(["status" => "error", "message" => "Procedure name required"]);
-            return;
-        }
-
-        $data = ["proceduresName" => $name];
-        $this->db->insert("procedures_list", $data);
-        $id = $this->db->insert_id();
-
-        echo json_encode([
-            "status" => "success",
-            "id" => $id,
-            "name" => $name
-        ]);
-    }
-
-    // Add new medicine from consultation page
-    public function addNewMedicines()
-    {
-        $data = json_decode($this->input->raw_input_stream, true);
-
-        $medicineName = trim($data['medicineName'] ?? '');
-        $compositionName = trim($data['compositionName'] ?? '');
-        $category = trim($data['category'] ?? '');
-
-        $insertData = [
-            'medicineName' => $medicineName,
-            'compositionName' => $compositionName,
-            'category' => $category,
-        ];
-
-        $insert = $this->db->insert('medicines_list', $insertData);
-
-        if ($insert) {
-            $insertData['id'] = $this->db->insert_id();
-
-            return $this->output
-                ->set_content_type('application/json')
-                ->set_output(json_encode([
-                    'status' => true,
-                    'message' => 'Medicine added successfully.',
-                    'data' => $insertData
-                ]));
-        } else {
-            return $this->output
-                ->set_status_header(500)
-                ->set_content_type('application/json')
-                ->set_output(json_encode([
-                    'status' => false,
-                    'message' => 'Failed to save medicine. Please try again.'
-                ]));
-        }
-    }
-
     // Follow up Consultation view page
     public function followupConsultation($consultation_id)
     {
@@ -700,7 +576,357 @@ class Consultation extends CI_Controller
         redirect('Consultation/consultation/' . $patientId);
     }
 
+    /* symptoms for consultaion form */
+    public function addSymptom()
+    {
+        $name = $this->input->post('name', true);
+        $id = $this->ConsultModel->insertNewSymptoms($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
+        }
+    }
+
+    public function editSymptomItem()
+    {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+        $hcpId = $_SESSION['hcpIdDb'];
+
+        if ($this->ConsultModel->updateSymptomName($id, $name, $hcpId)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Permission denied']);
+        }
+    }
+
+    public function deleteSymptomItem()
+    {
+        $id = $this->input->post('id');
+        $hcpId = $_SESSION['hcpIdDb']; // Get from session
+
+        if ($this->ConsultModel->deleteSymptom($id, $hcpId)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Permission denied']);
+        }
+    }
+
+    /* Finding in consultation form */
+    public function addFinding()
+    {
+        $name = $this->input->post('name', true);
+        $id = $this->ConsultModel->insertNewFindings($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
+        }
+    }
+
+    public function editFindingItem()
+    {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+
+        if ($this->ConsultModel->updateFindingName($id, $name)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function deleteFindingItem()
+    {
+        $id = $this->input->post('id');
+
+        if ($this->ConsultModel->deleteFinding($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    /* Diagnosis in consultation form */
+    public function addDiagnosis()
+    {
+        $name = $this->input->post('name', true);
+        $id = $this->ConsultModel->insertNewDiagnosis($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
+        }
+    }
+
+    public function editDiagnosisItem()
+    {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+
+        if ($this->ConsultModel->updateDiagnosisName($id, $name)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function deleteDiagnosisItem()
+    {
+        $id = $this->input->post('id');
+
+        if ($this->ConsultModel->deleteDiagnosis($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    /* Investigation in consultation form */
+    public function addInvestigation()
+    {
+        $name = $this->input->post('name', true);
+        $id = $this->ConsultModel->insertNewInvestigations($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save symptom']);
+        }
+    }
+
+    public function editInvestigationItem()
+    {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+
+        if ($this->ConsultModel->updateInvestigationName($id, $name)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function deleteInvestigationItem()
+    {
+        $id = $this->input->post('id');
+
+        if ($this->ConsultModel->deleteInvestigation($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
 
 
+    // Procedures in consultation form
+    public function addProcedure()
+    {
+        $name = $this->input->post('name', true);
+        if (!$name) {
+            echo json_encode(["status" => "error", "message" => "Name required"]);
+            return;
+        }
+
+        $id = $this->ConsultModel->insertNewProcedures($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save']);
+        }
+    }
+
+    public function editProcedureItem()
+    {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+
+        if ($this->ConsultModel->updateProcedureName($id, $name)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function deleteProcedureItem()
+    {
+        $id = $this->input->post('id');
+
+        if ($this->ConsultModel->deleteProcedure($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+
+    // Advice  in consultion form
+    public function addAdviceMaster()
+    {
+        $name = $this->input->post('name', true);
+        if (!$name) {
+            echo json_encode(["status" => "error", "message" => "Name required"]);
+            return;
+        }
+
+        $id = $this->ConsultModel->insertNewAdvice($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save']);
+        }
+    }
+
+    public function editAdviceItem()
+    {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+
+        if ($this->ConsultModel->updateAdviceName($id, $name)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function deleteAdviceItem()
+    {
+        $id = $this->input->post('id');
+
+        if ($this->ConsultModel->deleteAdvice($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    // Instructions in Consultation form
+    public function addInstruction()
+    {
+        $name = $this->input->post('name', true);
+        if (!$name) {
+            echo json_encode(["status" => "error", "message" => "Name required"]);
+            return;
+        }
+
+        $id = $this->ConsultModel->insertNewInstruction($name);
+
+        if ($id) {
+            echo json_encode(['status' => 'success', 'id' => $id, 'name' => $name]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save']);
+        }
+    }
+
+    public function editInstructionItem()
+    {
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+
+        if ($this->ConsultModel->updateInstructionName($id, $name)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function deleteInstructionItem()
+    {
+        $id = $this->input->post('id');
+
+        if ($this->ConsultModel->deleteInstruction($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+
+    //Medicine for consultation form
+    public function addNewMedicines()
+    {
+        // Check if JSON or POST
+        $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
+        $data = json_decode($stream_clean, true);
+
+        if (!$data) {
+            // Fallback to standard POST for Universal Modal
+            $name = $this->input->post('name');
+            $composition = $this->input->post('composition');
+            $category = $this->input->post('category');
+        } else {
+            $name = $data['medicineName'] ??
+                '';
+            $composition = $data['compositionName'] ?? '';
+            $category = $data['category'] ?? '';
+        }
+
+        if (!$name) {
+            // Output JSON error
+            echo json_encode(['status' => 'error', 'message' => 'Name required']);
+            return;
+        }
+
+        // Passes name, and potentially empty strings for composition and category.
+        $id = $this->ConsultModel->insertNewMedicineMaster($name, $composition, $category);
+        if ($id) {
+            echo json_encode([
+                'status' => 'success', // Changed to string 'success' to match other scripts
+                'id' => $id,
+                'medicineName' => $name,
+                // Note: compositionName and category might be empty string here, 
+                // but the DB value is converted to 'Nill' in the Model.
+                'compositionName' => $composition,
+
+                'category' => $category
+            ]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save']);
+        }
+    }
+
+    public function editMedicineItem()
+    {
+        // --- MODIFICATION START (Retrieve JSON body, assuming AJAX POST from script) ---
+        $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
+        $data = json_decode($stream_clean, true);
+
+        if ($data) {
+            $id = $data['id'] ?? null;
+            $name = $data['medicineName'] ?? null;
+            $composition = $data['compositionName'] ?? null;
+            $category = $data['category'] ?? null;
+        } else {
+            // Fallback to standard POST for non-JSON requests
+            $id = $this->input->post('id');
+            $name = $this->input->post('name');
+            $composition = $this->input->post('composition');
+            $category = $this->input->post('category');
+        }
+
+        // Passes name, and potentially empty strings for composition and category.
+        if ($this->ConsultModel->updateMedicineMaster($id, $name, $composition, $category)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
+
+    public function deleteMedicineItem()
+    {
+        $id = $this->input->post('id');
+
+        if ($this->ConsultModel->deleteMedicineMaster($id)) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error']);
+        }
+    }
 
 }

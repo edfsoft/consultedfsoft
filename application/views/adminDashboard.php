@@ -3672,7 +3672,7 @@
                                                                                                         <tr>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                             </th>
-                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">MEDICINE
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;width: 35%;">MEDICINE
                                                                                                                 NAME</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
                                                                                                                 COMPOSITION</th>
@@ -3766,7 +3766,7 @@
                         <td class="pt-3">${start + index + 1}.</td>
                         <td style="font-size: 16px" class="pt-3">${medicine.category} - ${medicine.medicineName}</td>
                         <td style="font-size: 16px" class="pt-3">${medicine.compositionName}</td>
-                        <td class="d-flex d-md-block">
+                        <td class="text-nowrap align-middle">
                             <button class="btn btn-secondary edit-btn" data-id="${medicine.id}"
                                 data-name="${medicine.medicineName}" data-composition="${medicine.compositionName}"
                                  data-category="${medicine.category}"><i class="bi bi-pen"></i></button>
@@ -3864,16 +3864,24 @@
                                                                                             submitButton.disabled = false;
                                                                                             submitButton.innerHTML = 'Update';
                                                                                         }
-                                                                                        // Set up the modal for "Edit" mode
+
                                                                                         modalLabel.innerText = "Edit Medicine";
                                                                                         form.action = "<?php echo base_url('Edfadmin/saveMedicine'); ?>";
-                                                                                        submitButton.innerHTML = "Update"; // Also set it here to be safe
 
-                                                                                        // Set the form fields
                                                                                         document.getElementById('medicineId').value = medicine.id;
                                                                                         document.getElementById('medicineName').value = medicine.name;
-                                                                                        document.getElementById('medicineComposition').value = medicine.composition;
-                                                                                        document.getElementById('medicineCategory').value = medicine.category;
+
+                                                                                        let compValue = medicine.composition;
+                                                                                        if (compValue === "Nil") { //block Nil
+                                                                                            compValue = "";
+                                                                                        }
+                                                                                        document.getElementById('medicineComposition').value = compValue;
+
+                                                                                        let catValue = medicine.category;
+                                                                                        if (catValue === "Nil" || !catValue) {
+                                                                                            catValue = ""; // This selects <option value="">Select Category</option>
+                                                                                        }
+                                                                                        document.getElementById('medicineCategory').value = catValue;
 
                                                                                         // Show the modal
                                                                                         var myModal = new bootstrap.Modal(document.getElementById('medicineModal'));
@@ -3919,7 +3927,8 @@
                                                                                                     // This prevents the disable action from cancelling the submit
                                                                                                     setTimeout(function () {
                                                                                                         submitButton.disabled = true;
-                                                                                                        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${loadingText}`;
+                                                                                                        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm"
+                                                                                                         role="status" aria-hidden="true"></span> ${loadingText}`;
                                                                                                     }, 0);
                                                                                                 }
                                                                                             });

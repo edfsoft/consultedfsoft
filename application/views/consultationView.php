@@ -18,7 +18,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
+    <!-- Drad and drop -->
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
     <!-- cropper CND -->
@@ -55,14 +55,15 @@
         }
 
         .suggestions-box {
-            border: 1px solid #ced4da;
+            border: 1px solid #b6e1fdff;
+            border-radius: 5px;
             max-height: 200px;
             overflow-y: auto;
             display: none;
-            position: absolute;
-            background: white;
+            position: relative;
+            background: #f3f5f8ff;
             width: 100%;
-            z-index: 1050;
+            z-index: 900;
         }
 
         .suggestions-box div {
@@ -71,7 +72,7 @@
         }
 
         .suggestions-box div:hover {
-            background-color: #f8f9fa;
+            background-color: #dae9f8ff;
         }
 
         #consultationTabs {
@@ -274,7 +275,33 @@
             width: 48%;
         }
 
-        /*  Print consultaion */
+        /* --- For Action icons in suggestion Box --- */
+        /* --- Action icons in suggestion box (Icon only) --- */
+        .action-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 3px;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .action-icon.delete {
+            color: #d63e4eff;
+        }
+
+        .action-icon.edit {
+            margin-right: 10px;
+        }
+
+        .action-icon:hover {
+            border: 1px solid #000;
+            border-radius: 20%;
+        }
+
+        /*  Print consultaion page format*/
         @media print {
             @page {
                 margin: 40px 15px 40px 15px;
@@ -392,11 +419,6 @@
                                                                 <?= date('d M Y', strtotime($consultation['consult_date'])) . " - " . date('h:i A', strtotime($consultation['consult_time'])) ?>
                                                             </h5>
                                                             <div class="mt-md-3 mb-4 mb-md-0">
-                                                                <!--     <button class="btn btn-secondary"
-                                                                    onclick="downloadConsultationPDF(<?= $consultation['id'] ?>)">
-                                                                    <i class="bi bi-download"></i>
-                                                                </button> -->
-
                                                                 <button type="button" class="btn btn-secondary"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#consultationModal<?= $consultation['id'] ?>">
@@ -790,22 +812,38 @@
                                                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                         <div class="modal-content">
 
-                                                            <div class="modal-header" style="border-bottom: none;">
+                                                            <div class="modal-header"
+                                                                style="border-bottom: none;display: flex;justify-content: flex-end;">
+                                                                <div class="mb-2 px-2" style="text-align: right; font-size: 13px;"
+                                                                    data-consultation-id="<?= $consultation['id'] ?>">
+                                                                    <label style="margin-right: 15px;">
+                                                                        <input type="radio"
+                                                                            name="language_select_<?= $consultation['id'] ?>"
+                                                                            value="english" id="lang-en-<?= $consultation['id'] ?>"
+                                                                            checked>
+                                                                        English
+                                                                    </label>
+                                                                    <label>
+                                                                        <input type="radio"
+                                                                            name="language_select_<?= $consultation['id'] ?>"
+                                                                            value="tamil" id="lang-ta-<?= $consultation['id'] ?>">
+                                                                        தமிழ் (Tamil)
+                                                                    </label>
+                                                                </div>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                                     aria-label="Close"></button>
                                                             </div>
 
-                                                            <div class="modal-body" style="background-color: #f8f9fa;">
-
+                                                            <div class="modal-body" style="background-color: #ffffffff;">
                                                                 <div id="consultationDetails<?= $consultation['id'] ?>"
-                                                                    style="background: #fff; padding: 10px; width: 100%; margin: 0 auto; min-height: 500px; font-family: 'Noto Sans', sans-serif; font-size: 13px; color: #000; line-height: 1.4; box-sizing: border-box;">
+                                                                    style="background: #fff; padding: 1px; width: 100%; margin: 0 auto; min-height: 500px; font-family: 'Noto Sans', sans-serif; font-size: 13px; color: #000; line-height: 1.4; box-sizing: border-box;">
 
-                                                                    <div class="mb-4"
+                                                                    <div class="mb-2"
                                                                         style="border: 1px solid #cec8c8ff; border-radius: 5px; padding: 5px; width: 100%; box-sizing: border-box; display: flex; justify-content: space-between; align-items: flex-start;">
 
                                                                         <div style="width: 65%;">
                                                                             <p class="mb-0"><strong>Name<span
-                                                                                        style="margin-right: 30px;"></span>:</strong>
+                                                                                        style="margin-right: 28px;"></span>:</strong>
                                                                                 <?php echo $patientDetails[0]['firstName'] ?>
                                                                                 <?php echo $patientDetails[0]['lastName'] ?>
                                                                             </p>
@@ -900,36 +938,39 @@
                                                                                         style="border: 1px solid #000; padding: 6px; text-align: center; width: 25px;">
                                                                                         Rx</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
                                                                                         Name</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px; font-size:14px; font-weight: bold;">
                                                                                         Qty</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
                                                                                         Food <br> Timing</th>
                                                                                     <th colspan="4"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
                                                                                         Frequency</th>
                                                                                     <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
                                                                                         Notes</th>
                                                                                 </tr>
+
                                                                                 <tr>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
                                                                                         Mrn</th>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
                                                                                         Aft</th>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
                                                                                         Eve</th>
                                                                                     <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
                                                                                         Ngt</th>
                                                                                 </tr>
                                                                             </thead>
+
+
                                                                             <tbody>
                                                                                 <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
                                                                                     <?php
@@ -1011,7 +1052,7 @@
                                                                                             endif; ?>
                                                                                         </td>
                                                                                         <td
-                                                                                            style="border: 1px solid #000; padding: 6px;line-height: 1.2;font-size: 14px;">
+                                                                                            style="border: 1px solid #000; padding: 6px; line-height: 1.2; font-size: 14px; text-align: <?= !empty($medicine['notes']) ? 'left' : 'center' ?>;">
                                                                                             <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
                                                                                         </td>
                                                                                     </tr>
@@ -1039,6 +1080,23 @@
                                                                             </p>
                                                                         </div>
                                                                     <?php endif; ?>
+
+                                                                    <div class="mt-4 px-2"
+                                                                        style="display: flex; justify-content: flex-end; margin-top: 40px; margin-bottom: 20px;">
+                                                                        <div style="text-align: center; width: auto;">
+
+                                                                            <img src="<?= base_url('assets/Signature.jpeg') ?>"
+                                                                                alt="Doctor's Signature"
+                                                                                style="height: 60px; width: auto; display: block; margin-right: 30px;">
+
+                                                                            <div style="text-align: left; margin-top: 5px;">
+                                                                                <p
+                                                                                    style="margin: 0; font-weight: bold; font-size: 14px;">
+                                                                                    Dr. A. S. Senthilvelu</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
 
@@ -1212,16 +1270,23 @@
                                             </div>
                                             <div class="collapse field-container mt-2" id="symptomsCollapse">
                                                 <div id="symptomsWrapper">
+                                                    <div id="symptomsList" class="mt-2"></div>
                                                     <div class="mb-3 position-relative">
-                                                        <div class="tags-input" id="symptomsInput">
-                                                            <input type="text"
-                                                                class="form-control border-0 p-0 m-0 shadow-none"
-                                                                id="symptomsSearchInput"
-                                                                placeholder="Search or type to add..." />
+                                                        <div class="input-group mb-2">
+                                                            <div class="tags-input flex-grow-1" id="symptomsInput">
+                                                                <input type="text" class="form-control border-0 shadow-none"
+                                                                    id="symptomsSearchInput"
+                                                                    placeholder="Search or type to add..." />
+                                                            </div>
+
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                id="clearSymptomSearch" style="display: none;">✖</button>
+
+                                                            <button type="button" class="btn btn-outline-primary"
+                                                                id="addSymptomBtn" style="display: none;">+ Add</button>
                                                         </div>
                                                         <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
                                                     </div>
-                                                    <div id="symptomsList" class="mt-2"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1236,15 +1301,26 @@
                                             </div>
                                             <div class="collapse field-container mt-2" id="findingsCollapse">
                                                 <div id="findingsWrapper">
-                                                    <div class="mb-3 position-relative">
-                                                        <div class="tags-input" id="findingsInput">
-                                                            <input type="text"
-                                                                class="form-control border-0 p-0 m-0 shadow-none"
-                                                                id="searchInput" placeholder="Search or type to add..." />
-                                                        </div>
-                                                        <div class="suggestions-box" id="suggestionsBox"></div>
-                                                    </div>
                                                     <div id="findingsList" class="mt-2"></div>
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="input-group mb-2">
+                                                            <div class="tags-input flex-grow-1" id="findingsInput">
+                                                                <input type="text" class="form-control border-0 shadow-none"
+                                                                    id="searchInput"
+                                                                    placeholder="Search or type to add..." />
+                                                            </div>
+
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                id="clearFindingSearch" style="display: none;">✖</button>
+
+                                                            <button type="button" class="btn btn-outline-primary"
+                                                                id="addFindingBtn" style="display: none;">+ Add</button>
+                                                        </div>
+
+                                                        <div class="suggestions-box" id="suggestionsBox"
+                                                            style="position: relative; margin-bottom: 15px;"></div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1259,13 +1335,26 @@
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2" id="diagnosisCollapse">
-                                                <div class="mb-3 position-relative">
-                                                    <div class="tags-input" id="diagnosisInputBox">
-                                                        <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                            id="diagnosisInput"
-                                                            placeholder="Search or type to add diagnosis..." />
+                                                <div id="diagnosisWrapper">
+                                                    <div id="diagnosisList" class="mt-2"></div>
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="input-group mb-2">
+                                                            <div class="tags-input flex-grow-1" id="diagnosisInputBox">
+                                                                <input type="text" class="form-control border-0 shadow-none"
+                                                                    id="diagnosisInput"
+                                                                    placeholder="Search or type to add diagnosis..." />
+                                                            </div>
+
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                id="clearDiagnosisSearch" style="display: none;">✖</button>
+
+                                                            <button type="button" class="btn btn-outline-primary"
+                                                                id="addDiagnosisBtn" style="display: none;">+ Add</button>
+                                                        </div>
+
+                                                        <div class="suggestions-box" id="diagnosisSuggestionsBox"
+                                                            style="position: relative; margin-bottom: 15px;"></div>
                                                     </div>
-                                                    <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1281,17 +1370,27 @@
                                             </div>
                                             <div class="collapse field-container mt-2" id="investigationsCollapse">
                                                 <div id="investigationsWrapper">
+                                                    <div id="investigationsList" class="mb-2"></div>
                                                     <div class="mb-3 position-relative">
-                                                        <div class="tags-input" id="investigationsInput">
-                                                            <input type="text"
-                                                                class="form-control border-0 p-0 m-0 shadow-none"
-                                                                id="investigationsSearchInput"
-                                                                placeholder="Search or type to add..." />
+                                                        <div class="input-group mb-2">
+                                                            <div class="tags-input flex-grow-1" id="investigationsInput">
+                                                                <input type="text" class="form-control border-0 shadow-none"
+                                                                    id="investigationsSearchInput"
+                                                                    placeholder="Search or type to add..." />
+                                                            </div>
+
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                id="clearInvestigationSearch"
+                                                                style="display: none;">✖</button>
+
+                                                            <button type="button" class="btn btn-outline-primary"
+                                                                id="addInvestigationBtn" style="display: none;">+
+                                                                Add</button>
                                                         </div>
-                                                        <div class="suggestions-box" id="investigationsSuggestionsBox">
-                                                        </div>
+
+                                                        <div class="suggestions-box" id="investigationsSuggestionsBox"
+                                                            style="position: relative; margin-bottom: 15px;"></div>
                                                     </div>
-                                                    <div id="investigationsList" class="mt-2"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1304,29 +1403,22 @@
                                                         Procedures</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
-
                                             <div class="collapse field-container mt-2">
-                                                <div class="input-group mb-2">
-                                                    <input type="text" class="form-control" id="procedureSearch"
-                                                        placeholder="Search Instructions">
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearProcedureSearch">✖</button>
-                                                    <button type="button" class="btn btn-outline-primary d-none"
-                                                        id="addProcedure">+ Add</button>
-                                                </div>
-                                                <div id="procedureList">
-                                                    <?php if (!empty($proceduresList)): ?>
-                                                        <?php foreach ($proceduresList as $pro): ?>
-                                                            <div class="form-check procedure-item">
-                                                                <input class="form-check-input" type="checkbox" name="procedures[]"
-                                                                    value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
-                                                                    id="pro<?php echo $pro['id']; ?>">
-                                                                <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
-                                                                    <?php echo htmlspecialchars($pro['proceduresName']); ?>
-                                                                </label>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    <?php endif; ?>
+                                                <div id="proceduresWrapper">
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" class="form-control" id="procedureSearch"
+                                                            placeholder="Search Procedures">
+
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearProcedureSearch" style="display: none;">✖</button>
+
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            id="addProcedureBtn" style="display: none;">+ Add</button>
+                                                    </div>
+
+                                                    <div id="procedureList" class="mt-2"
+                                                        style="max-height: 200px; overflow-y: auto;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1334,25 +1426,30 @@
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button"
-                                                data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                                data-bs-toggle="collapse" data-bs-target="#medicinesCol">
                                                 <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2" id="medicinesCollapse">
                                                 <div id="medicinesWrapper">
-                                                    <div class="input-group mb-2 position-relative">
-                                                        <div class="tags-input flex-grow-1" id="medicinesInput">
-                                                            <input type="text" class="form-control"
-                                                                id="medicinesSearchInput"
-                                                                placeholder="Search or type to add..." />
+                                                    <div id="medicinesList" class="mb-2"></div>
+
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="input-group mb-2">
+                                                            <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                                <input type="text" class="form-control border-0 shadow-none"
+                                                                    id="medicinesSearchInput"
+                                                                    placeholder="Search or type to add..." />
+                                                            </div>
+
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                id="clearMedicineSearch" style="display: none;">✖</button>
+
+                                                            <button type="button" class="btn btn-outline-primary"
+                                                                id="medicinesAddBtn" style="display: none;">+ Add</button>
                                                         </div>
-                                                        <!-- <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearMedicineSearch">✖</button> -->
-                                                        <button type="button" class="btn btn-outline-primary d-none"
-                                                            id="medicinesAddBtn">+ Add</button>
+                                                        <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
                                                     </div>
-                                                    <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                                    <div id="medicinesList" class="mt-2"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1367,27 +1464,21 @@
                                             </div>
 
                                             <div class="collapse field-container mt-2">
-                                                <div class="input-group mb-2">
-                                                    <input type="text" class="form-control" id="adviceSearch"
-                                                        placeholder="Search Advice">
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearAdviceSearch">✖</button>
-                                                    <button type="button" class="btn btn-outline-primary d-none"
-                                                        id="addAdvice">+ Add here</button>
-                                                </div>
-                                                <div id="adviceList">
-                                                    <?php if (!empty($advicesList)): ?>
-                                                        <?php foreach ($advicesList as $adv): ?>
-                                                            <div class="form-check advice-item">
-                                                                <input class="form-check-input" type="checkbox" name="advices[]"
-                                                                    value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
-                                                                    id="adv<?php echo $adv['id']; ?>">
-                                                                <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
-                                                                    <?php echo htmlspecialchars($adv['adviceName']); ?>
-                                                                </label>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    <?php endif; ?>
+                                                <div id="adviceWrapper">
+                                                    <div class="input-group mb-2">
+                                                        <input type="text" class="form-control" id="adviceSearch"
+                                                            placeholder="Search Advice">
+
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearAdviceSearch" style="display: none;">✖</button>
+
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            id="addAdviceBtn" style="display: none;">+ Add</button>
+                                                    </div>
+
+                                                    <div id="adviceList" class="mt-2"
+                                                        style="max-height: 200px; overflow-y: auto;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1400,47 +1491,27 @@
                                                 <span class="toggle-icon">+</span>
                                             </div>
                                             <div class="collapse field-container mt-2">
-                                                <div class="mb-3">
+                                                <div id="instructionWrapper">
                                                     <div class="input-group mb-2">
                                                         <input type="text" class="form-control" id="instructionSearch"
                                                             placeholder="Search Instructions">
+
                                                         <button type="button" class="btn btn-outline-secondary"
-                                                            id="clearInstructionSearch">✖</button>
-                                                        <button type="button" class="btn btn-outline-primary d-none"
-                                                            id="addInstruction">+ Add</button>
+                                                            id="clearInstructionSearch" style="display: none;">✖</button>
+
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            id="addInstructionBtn" style="display: none;">+ Add</button>
                                                     </div>
-                                                </div>
-                                                <div id="instructionList">
-                                                    <?php if (!empty($instructionsList)): ?>
-                                                        <?php foreach ($instructionsList as $ins): ?>
-                                                            <div class="form-check instruction-item">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    name="instructions[]"
-                                                                    value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                                    id="ins<?php echo $ins['id']; ?>">
-                                                                <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                                    <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                                </label>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    <?php endif; ?>
+
+                                                    <div id="instructionList" class="mt-2"
+                                                        style="max-height: 200px; overflow-y: auto;">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- <div class="form-group pb-3">
-                                        <label class="form-label fieldLabel">Attachments</label>
-                                        <input type="file" id="fileInput" name="consultationFiles[]" class="d-none"
-                                            accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" multiple>
-                                        <button type="button" id="addFileBtn" class="btn text-light float-end mb-2"
-                                            style="background-color: #00ad8e;">
-                                            + Add File
-                                        </button>
-                                        <div id="fileList" style="margin-top: 0.5rem;"></div>
-                                        <div id="fileError" class="text-danger pt-1"></div> 
-                                    </div> --><!-- This code is common for all 3 new, edi and followup -->
-
+                                    <!-- This code is common for all 3 new, edit and followup -->
                                     <div class="form-group pb-3" data-page="new">
                                         <label class="form-label fieldLabel">Attachments</label>
                                         <button type="button" class="addFileBtn btn text-light float-end mb-2"
@@ -1745,14 +1816,24 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="symptomsCollapse">
                                         <div id="symptomsWrapper">
+                                            <div id="symptomsList" class="mb-2"></div>
                                             <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="symptomsInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="symptomsSearchInput" placeholder="Search or type to add..." />
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="symptomsInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="symptomsSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearSymptomSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary" id="addSymptomBtn"
+                                                        style="display: none;">+ Add</button>
                                                 </div>
-                                                <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
+                                                <div class="suggestions-box" id="symptomsSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
-                                            <div id="symptomsList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1767,15 +1848,25 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="findingsCollapse">
                                         <div id="findingsWrapper">
-                                            <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="findingsInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="searchInput" placeholder="Search or type to add..." />
+                                            <div id="findingsWrapper">
+                                                <div id="findingsList" class="mb-2"></div>
+                                                <div class="mb-3 position-relative">
+                                                    <div class="input-group mb-2">
+                                                        <div class="tags-input flex-grow-1" id="findingsInput">
+                                                            <input type="text" class="form-control border-0 shadow-none"
+                                                                id="searchInput" placeholder="Search or type to add..." />
+                                                        </div>
+
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearFindingSearch" style="display: none;">✖</button>
+
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            id="addFindingBtn" style="display: none;">+ Add</button>
+                                                    </div>
+                                                    <div class="suggestions-box" id="suggestionsBox"
+                                                        style="position: relative; margin-bottom: 15px;"></div>
                                                 </div>
-                                                <div class="suggestions-box" id="suggestionsBox"></div>
                                             </div>
-                                            <div id="findingsList" class="mt-2"></div>
-                                            <!-- Display added findings -->
                                         </div>
                                     </div>
                                 </div>
@@ -1790,12 +1881,25 @@
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="diagnosisCollapse">
-                                        <div class="mb-3 position-relative">
-                                            <div class="tags-input" id="diagnosisInputBox">
-                                                <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                    id="diagnosisInput" placeholder="Search or type to add diagnosis..." />
+                                        <div id="diagnosisWrapper">
+                                            <div id="diagnosisList" class="mb-2"></div>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="diagnosisInputBox">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="diagnosisInput"
+                                                            placeholder="Search or type to add diagnosis..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearDiagnosisSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addDiagnosisBtn" style="display: none;">+ Add</button>
+                                                </div>
+                                                <div class="suggestions-box" id="diagnosisSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
-                                            <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1811,13 +1915,25 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="investigationsCollapse">
                                         <div id="investigationsWrapper">
-                                            <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="investigationsInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="investigationsSearchInput"
-                                                        placeholder="Search or type to add..." />
+                                            <div id="investigationsWrapper">
+                                                <div id="investigationsList" class="mb-2"></div>
+                                                <div class="mb-3 position-relative">
+                                                    <div class="input-group mb-2">
+                                                        <div class="tags-input flex-grow-1" id="investigationsInput">
+                                                            <input type="text" class="form-control border-0 shadow-none"
+                                                                id="investigationsSearchInput"
+                                                                placeholder="Search or type to add..." />
+                                                        </div>
+
+                                                        <button type="button" class="btn btn-outline-secondary"
+                                                            id="clearInvestigationSearch" style="display: none;">✖</button>
+
+                                                        <button type="button" class="btn btn-outline-primary"
+                                                            id="addInvestigationBtn" style="display: none;">+ Add</button>
+                                                    </div>
+                                                    <div class="suggestions-box" id="investigationsSuggestionsBox"
+                                                        style="position: relative; margin-bottom: 15px;"></div>
                                                 </div>
-                                                <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
                                             </div>
                                             <div id="investigationsList" class="mt-2"></div>
                                         </div>
@@ -1832,54 +1948,54 @@
                                                 Procedures</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
-
                                     <div class="collapse field-container mt-2">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="procedureSearch"
-                                                placeholder="Search Instructions">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearProcedureSearch">✖</button>
-                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
-                                                Add</button>
-                                        </div>
-                                        <div id="procedureList">
-                                            <?php if (!empty($proceduresList)): ?>
-                                                <?php foreach ($proceduresList as $pro): ?>
-                                                    <div class="form-check procedure-item">
-                                                        <input class="form-check-input" type="checkbox" name="procedures[]"
-                                                            value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
-                                                            id="pro<?php echo $pro['id']; ?>">
-                                                        <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
-                                                            <?php echo htmlspecialchars($pro['proceduresName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                        <div id="proceduresWrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="procedureSearch"
+                                                    placeholder="Search Procedures">
+
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearProcedureSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addProcedureBtn"
+                                                    style="display: none;">+ Add</button>
+                                            </div>
+
+                                            <div id="procedureList" class="mt-2"
+                                                style="max-height: 200px; overflow-y: auto;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button"
-                                        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCol">
                                         <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="medicinesCollapse">
                                         <div id="medicinesWrapper">
-                                            <div class="input-group mb-2 position-relative">
-                                                <div class="tags-input flex-grow-1" id="medicinesInput">
-                                                    <input type="text" class="form-control" id="medicinesSearchInput"
-                                                        placeholder="Search or type to add..." />
+                                            <div id="medicinesList" class="mb-2"></div>
+
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="medicinesSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearMedicineSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="medicinesAddBtn" style="display: none;">+ Add</button>
                                                 </div>
-                                                <!-- <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearMedicineSearch">✖</button> -->
-                                                <button type="button" class="btn btn-outline-primary d-none"
-                                                    id="medicinesAddBtn">+ Add</button>
+
+                                                <div class="suggestions-box" id="medicinesSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
-                                            <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                            <div id="medicinesList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1894,29 +2010,23 @@
                                     </div>
 
                                     <div class="collapse field-container mt-2">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="adviceSearch"
-                                                placeholder="Search Advice">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearAdviceSearch">✖</button>
-                                            <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
-                                                Add here</button>
-                                        </div>
-                                        <div id="adviceList">
-                                            <?php if (!empty($advicesList)): ?>
-                                                <?php foreach ($advicesList as $adv): ?>
-                                                    <div class="form-check advice-item">
-                                                        <input class="form-check-input" type="checkbox" name="advices[]"
-                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
-                                                            id="adv<?php echo $adv['id']; ?>">
-                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
-                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                        <div id="adviceWrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="adviceSearch"
+                                                    placeholder="Search Advice">
+
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearAdviceSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
+                                                    style="display: none;">+ Add</button>
+                                            </div>
+
+                                            <div id="adviceList" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <div class="mb-3">
@@ -1927,33 +2037,24 @@
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
+                                        <div id="instructionWrapper">
                                             <div class="input-group mb-2">
                                                 <input type="text" class="form-control" id="instructionSearch"
                                                     placeholder="Search Instructions">
+
                                                 <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearInstructionSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none"
-                                                    id="addInstruction">+ Add</button>
+                                                    id="clearInstructionSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addInstructionBtn"
+                                                    style="display: none;">+ Add</button>
                                             </div>
-                                        </div>
-                                        <div id="instructionList">
-                                            <?php if (!empty($instructionsList)): ?>
-                                                <?php foreach ($instructionsList as $ins): ?>
-                                                    <div class="form-check instruction-item">
-                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                            id="ins<?php echo $ins['id']; ?>">
-                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+
+                                            <div id="instructionList" class="mt-2"
+                                                style="max-height: 200px; overflow-y: auto;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
 
                             <div class="form-group pb-3" data-page="followup">
@@ -2251,14 +2352,24 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="symptomsCollapse">
                                         <div id="symptomsWrapper">
+                                            <div id="symptomsList" class="mb-2"></div>
                                             <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="symptomsInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="symptomsSearchInput" placeholder="Search or type to add..." />
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="symptomsInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="symptomsSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearSymptomSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary" id="addSymptomBtn"
+                                                        style="display: none;">+ Add</button>
                                                 </div>
-                                                <div class="suggestions-box" id="symptomsSuggestionsBox"></div>
+                                                <div class="suggestions-box" id="symptomsSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
-                                            <div id="symptomsList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2273,15 +2384,25 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="findingsCollapse">
                                         <div id="findingsWrapper">
+                                            <div id="findingsList" class="mb-2"></div>
                                             <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="findingsInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="searchInput" placeholder="Search or type to add..." />
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="findingsInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="searchInput" placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearFindingSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary" id="addFindingBtn"
+                                                        style="display: none;">+ Add</button>
                                                 </div>
-                                                <div class="suggestions-box" id="suggestionsBox"></div>
+                                                <div class="suggestions-box" id="suggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
-                                            <div id="findingsList" class="mt-2"></div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <input type="hidden" name="findingsJson" id="findingsJson">
@@ -2294,12 +2415,25 @@
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="diagnosisCollapse">
-                                        <div class="mb-3 position-relative">
-                                            <div class="tags-input" id="diagnosisInputBox">
-                                                <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                    id="diagnosisInput" placeholder="Search or type to add diagnosis..." />
+                                        <div id="diagnosisWrapper">
+                                            <div id="diagnosisList" class="mb-2"></div>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="diagnosisInputBox">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="diagnosisInput"
+                                                            placeholder="Search or type to add diagnosis..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearDiagnosisSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addDiagnosisBtn" style="display: none;">+ Add</button>
+                                                </div>
+                                                <div class="suggestions-box" id="diagnosisSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
-                                            <div class="suggestions-box" id="diagnosisSuggestionsBox"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2315,15 +2449,24 @@
                                     </div>
                                     <div class="collapse field-container mt-2" id="investigationsCollapse">
                                         <div id="investigationsWrapper">
+                                            <div id="investigationsList" class="mb-2"></div>
                                             <div class="mb-3 position-relative">
-                                                <div class="tags-input" id="investigationsInput">
-                                                    <input type="text" class="form-control border-0 p-0 m-0 shadow-none"
-                                                        id="investigationsSearchInput"
-                                                        placeholder="Search or type to add..." />
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="investigationsInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="investigationsSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearInvestigationSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addInvestigationBtn" style="display: none;">+ Add</button>
                                                 </div>
-                                                <div class="suggestions-box" id="investigationsSuggestionsBox"></div>
+                                                <div class="suggestions-box" id="investigationsSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
-                                            <div id="investigationsList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2336,55 +2479,54 @@
                                                 Procedures</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
-
                                     <div class="collapse field-container mt-2">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="procedureSearch"
-                                                placeholder="Search Instructions">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearProcedureSearch">✖</button>
-                                            <button type="button" class="btn btn-outline-primary d-none" id="addProcedure">+
-                                                Add</button>
-                                        </div>
-                                        <div id="procedureList">
-                                            <?php if (!empty($proceduresList)): ?>
-                                                <?php foreach ($proceduresList as $pro): ?>
-                                                    <div class="form-check procedure-item">
-                                                        <input class="form-check-input" type="checkbox" name="procedures[]"
-                                                            value="<?php echo htmlspecialchars($pro['proceduresName']); ?>"
-                                                            id="pro<?php echo $pro['id']; ?>">
-                                                        <label class="form-check-label" for="pro<?php echo $pro['id']; ?>">
-                                                            <?php echo htmlspecialchars($pro['proceduresName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                        <div id="proceduresWrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="procedureSearch"
+                                                    placeholder="Search Procedures">
+
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearProcedureSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addProcedureBtn"
+                                                    style="display: none;">+ Add</button>
+                                            </div>
+
+                                            <div id="procedureList" class="mt-2"
+                                                style="max-height: 200px; overflow-y: auto;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Medicine section -->
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button"
-                                        data-bs-toggle="collapse" data-bs-target="#medicinesCollapse">
+                                        data-bs-toggle="collapse" data-bs-target="#medicinesCol">
                                         <span><strong><i class="bi bi-capsule me-2"></i> Medicines</strong></span>
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2" id="medicinesCollapse">
                                         <div id="medicinesWrapper">
-                                            <div class="input-group mb-2 position-relative">
-                                                <div class="tags-input flex-grow-1" id="medicinesInput">
-                                                    <input type="text" class="form-control" id="medicinesSearchInput"
-                                                        placeholder="Search or type to add..." />
+                                            <div id="medicinesList" class="mb-2"></div>
+
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="medicinesInput">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="medicinesSearchInput"
+                                                            placeholder="Search or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearMedicineSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="medicinesAddBtn" style="display: none;">+ Add</button>
                                                 </div>
-                                                <!-- <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearMedicineSearch">✖</button> -->
-                                                <button type="button" class="btn btn-outline-primary d-none"
-                                                    id="medicinesAddBtn">+ Add</button>
+
+                                                <div class="suggestions-box" id="medicinesSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px;"></div>
                                             </div>
-                                            <div class="suggestions-box" id="medicinesSuggestionsBox"></div>
-                                            <div id="medicinesList" class="mt-2"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -2399,27 +2541,20 @@
                                     </div>
 
                                     <div class="collapse field-container mt-2">
-                                        <div class="input-group mb-2">
-                                            <input type="text" class="form-control" id="adviceSearch"
-                                                placeholder="Search Advice">
-                                            <button type="button" class="btn btn-outline-secondary"
-                                                id="clearAdviceSearch">✖</button>
-                                            <button type="button" class="btn btn-outline-primary d-none" id="addAdvice">+
-                                                Add here</button>
-                                        </div>
-                                        <div id="adviceList">
-                                            <?php if (!empty($advicesList)): ?>
-                                                <?php foreach ($advicesList as $adv): ?>
-                                                    <div class="form-check advice-item">
-                                                        <input class="form-check-input" type="checkbox" name="advices[]"
-                                                            value="<?php echo htmlspecialchars($adv['adviceName']); ?>"
-                                                            id="adv<?php echo $adv['id']; ?>">
-                                                        <label class="form-check-label" for="adv<?php echo $adv['id']; ?>">
-                                                            <?php echo htmlspecialchars($adv['adviceName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                        <div id="adviceWrapper">
+                                            <div class="input-group mb-2">
+                                                <input type="text" class="form-control" id="adviceSearch"
+                                                    placeholder="Search Advice">
+
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                    id="clearAdviceSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
+                                                    style="display: none;">+ Add</button>
+                                            </div>
+
+                                            <div id="adviceList" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2432,29 +2567,21 @@
                                         <span class="toggle-icon">+</span>
                                     </div>
                                     <div class="collapse field-container mt-2">
-                                        <div class="mb-3">
+                                        <div id="instructionWrapper">
                                             <div class="input-group mb-2">
                                                 <input type="text" class="form-control" id="instructionSearch"
                                                     placeholder="Search Instructions">
+
                                                 <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearInstructionSearch">✖</button>
-                                                <button type="button" class="btn btn-outline-primary d-none"
-                                                    id="addInstruction">+ Add</button>
+                                                    id="clearInstructionSearch" style="display: none;">✖</button>
+
+                                                <button type="button" class="btn btn-outline-primary" id="addInstructionBtn"
+                                                    style="display: none;">+ Add</button>
                                             </div>
-                                        </div>
-                                        <div id="instructionList">
-                                            <?php if (!empty($instructionsList)): ?>
-                                                <?php foreach ($instructionsList as $ins): ?>
-                                                    <div class="form-check instruction-item">
-                                                        <input class="form-check-input" type="checkbox" name="instructions[]"
-                                                            value="<?php echo htmlspecialchars($ins['instructionsName']); ?>"
-                                                            id="ins<?php echo $ins['id']; ?>">
-                                                        <label class="form-check-label" for="ins<?php echo $ins['id']; ?>">
-                                                            <?php echo htmlspecialchars($ins['instructionsName']); ?>
-                                                        </label>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+
+                                            <div id="instructionList" class="mt-2"
+                                                style="max-height: 200px; overflow-y: auto;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2574,6 +2701,7 @@
         <?php } ?>
 
         <!-- ******************************************************************************************************************************************** -->
+
         <!-- Symptoms Modal -->
         <div class="modal fade" id="symptomsModal" tabindex="-1" aria-labelledby="symptomsModalTitle" aria-hidden="true"
             data-bs-backdrop="static" data-bs-keyboard="false">
@@ -2766,13 +2894,14 @@
             </div>
         </div>
 
-        <!-- Add-new-medicine modal  -->
+        <!-- New Add-new-medicine modal  -->
         <div class="modal fade" id="addMedicineModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
             data-bs-keyboard="false">
             <div class="modal-dialog modal-md">
-                <div class="modal-content">
+                <form id="addMedicineMasterForm" class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-titlefw-medium" style="font-family: Poppins, sans-serif;">Add New Medicine</h5>
+                        <h5 class="modal-title fw-medium" id="addMedicineModalTitle"
+                            style="font-family: Poppins, sans-serif;">Add New Medicine</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -2781,14 +2910,13 @@
                         <input type="text" id="newMedicineName" class="form-control" placeholder="E.g. Dolo 650"
                             required>
 
-                        <label for="newMedicineComposition" class="form-label fieldLabel pb-2 mt-2">Composition Name
-                            <span class="text-danger">*</span></label>
+                        <label for="newMedicineComposition" class="form-label fieldLabel pb-2 mt-2">Composition
+                            Name</label>
                         <input type="text" id="newMedicineComposition" class="form-control"
-                            placeholder="E.g. Paracetamol" required>
+                            placeholder="E.g. Paracetamol">
 
-                        <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category <span
-                                class="text-danger">*</span></label>
-                        <select id="newMedicineCategory" class="form-select" required>
+                        <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category</label>
+                        <select id="newMedicineCategory" class="form-select">
                             <option value="">Select Category</option>
                             <option value="TABLET">Tablet</option>
                             <option value="CAPSULE">Capsule</option>
@@ -2805,16 +2933,39 @@
                             <option value="OIL">Oil</option>
                             <option value="NEEDLE">Needle</option>
                         </select>
+
+                        <input type="hidden" id="editMedicineMasterId" value="">
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button id="addMedicineConfirmBtn" class="btn text-light"
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="addMedicineConfirmBtn" class="btn text-light"
                             style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Delete Medicine -->
+        <div class="modal fade" id="deleteMedicineMasterModal" tabindex="-1" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete <strong id="delMedNameDisplay"></strong>?</p>
+                        <input type="hidden" id="delMedId" value="">
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="finalDeleteMedBtn" class="btn text-light"
+                            style="background-color: #2b353bf5;">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Medicine Modal -->
         <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -2992,6 +3143,55 @@
             </div>
         </div>
 
+        <!--  Add/Edit Model for all -->
+        <div class="modal fade" id="universalAddMasterModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <form id="universalAddMasterForm" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="universalMasterTitle"
+                            style="font-family: Poppins, sans-serif;">Add New Item</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="universalMasterInput" id="universalMasterLabel" class="form-label fieldLabel">Name
+                            <span class="text-danger">*</span></label>
+                        <input type="text" id="universalMasterInput" class="form-control" name="name"
+                            placeholder="Enter name" required>
+
+                        <input type="hidden" id="universalMasterId" value=""> <input type="hidden"
+                            id="universalMasterType" value="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn text-light" style="background-color: #00ad8e;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--  Delete Model for all -->
+        <div class="modal fade" id="universalDeleteModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete <strong id="universalDeleteNameDisplay"></strong>?</p>
+                        <input type="hidden" id="universalDeleteId" value="">
+                        <input type="hidden" id="universalDeleteType" value="">
+                    </div>
+                    <div class="modal-footer d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="universalDeleteBtn" class="btn text-light"
+                            style="background-color: #2b353bf5;">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
 
@@ -3104,217 +3304,417 @@
         });
     </script>
 
-    <!-- Symptoms Modal Script -->
+    <!-- New Symptoms model save script -->
     <script>
-        const symptomsList = <?php echo json_encode(array_column($symptomsList, 'symptomsName')); ?>;
+        let symptomsList = <?php echo (isset($symptomsList) && !empty($symptomsList)) ? json_encode($symptomsList) : '[]'; ?>;
 
-        const symptomsInput = document.getElementById("symptomsSearchInput");
-        const symptomsSuggestionsBox = document.getElementById("symptomsSuggestionsBox");
-        const symptomsTagContainer = document.getElementById("symptomsInput");
+        document.addEventListener("DOMContentLoaded", function () {
+            const symptomsInput = document.getElementById("symptomsSearchInput");
+            const symptomsSuggestionsBox = document.getElementById("symptomsSuggestionsBox");
+            const addSymptomBtn = document.getElementById("addSymptomBtn");
+            const clearSymptomSearch = document.getElementById("clearSymptomSearch");
+            const symptomsTagContainer = document.getElementById("symptomsInput");
 
-        const symptomsModal = new bootstrap.Modal(document.getElementById("symptomsModal"));
-        const symptomNote = document.getElementById("symptomNote");
-        const symptomSince = document.getElementById("symptomSince");
-        const symptomSeverity = document.getElementById("symptomSeverity");
-        const symptomsModalTitle = document.getElementById("symptomsModalTitle");
+            const symptomsListContainer = document.getElementById("symptomsList");
 
-        let selectedSymptoms = [];
-        let pendingSymptom = "";
-        let editingSymptomTag = null;
+            const universalAddModalEl = document.getElementById("universalAddMasterModal");
+            const universalAddModal = new bootstrap.Modal(universalAddModalEl);
+            const universalForm = document.getElementById("universalAddMasterForm");
+            const universalTitle = document.getElementById("universalMasterTitle");
+            const universalLabel = document.getElementById("universalMasterLabel");
+            const universalInput = document.getElementById("universalMasterInput");
+            const universalId = document.getElementById("universalMasterId");
+            const universalType = document.getElementById("universalMasterType");
 
-        function renderSymptomsSuggestions() {
-            const query = symptomsInput.value.trim();
-            const queryLower = query.toLowerCase();
-            symptomsSuggestionsBox.innerHTML = "";
+            const universalDeleteModalEl = document.getElementById("universalDeleteModal");
+            const universalDeleteModal = new bootstrap.Modal(universalDeleteModalEl);
+            const universalDeleteName = document.getElementById("universalDeleteNameDisplay");
+            const universalDeleteId = document.getElementById("universalDeleteId");
+            const universalDeleteType = document.getElementById("universalDeleteType");
+            const universalDeleteBtn = document.getElementById("universalDeleteBtn");
 
-            const filtered = symptomsList.filter(s =>
-                s.toLowerCase().includes(queryLower) &&
-                !selectedSymptoms.some(obj => obj.symptom === s)
-            );
+            const symptomsModalEl = document.getElementById("symptomsModal");
+            const symptomsModal = new bootstrap.Modal(symptomsModalEl);
+            const symptomNote = document.getElementById("symptomNote");
+            const symptomSince = document.getElementById("symptomSince");
+            const symptomSeverity = document.getElementById("symptomSeverity");
+            const symptomsModalTitle = document.getElementById("symptomsModalTitle");
 
-            if (filtered.length === 0 && query !== "") {
-                const customOption = document.createElement("div");
-                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                customOption.onclick = () => {
-                    openSymptomModal(query);
+            let selectedSymptoms = [];
+            let pendingSymptom = "";
+            let editingSymptomTag = null;
+
+            const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            addModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    universalAddModal.hide();
+
+                    if (universalForm) universalForm.reset();
+                });
+            });
+
+            const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            deleteModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                });
+            });
+
+            function renderSymptomsSuggestions() {
+                if (!symptomsInput) return;
+                const query = symptomsInput.value.trim().toLowerCase();
+                symptomsSuggestionsBox.innerHTML = "";
+
+                if (query.length > 0) {
+                    if (clearSymptomSearch) clearSymptomSearch.style.display = 'block';
+                } else {
+                    if (clearSymptomSearch) clearSymptomSearch.style.display = 'none';
+                    if (addSymptomBtn) addSymptomBtn.style.display = 'none';
+                }
+
+                const filtered = symptomsList.filter(s => s.symptomsName.toLowerCase().includes(query));
+
+                if (filtered.length === 0 && query !== "") {
+                    if (addSymptomBtn) addSymptomBtn.style.display = 'block';
+
+                    if (symptomsSuggestionsBox) {
+                        symptomsSuggestionsBox.style.display = 'block';
+                        const noResultDiv = document.createElement("div");
+                        noResultDiv.className = "p-2 text-muted";
+                        noResultDiv.style.fontSize = "0.9rem";
+                        noResultDiv.textContent = "No result found on search – Add new";
+                        symptomsSuggestionsBox.appendChild(noResultDiv);
+                    }
+                } else {
+                    if (addSymptomBtn) addSymptomBtn.style.display = 'none';
+
+                    if (symptomsSuggestionsBox && query !== "") {
+                        filtered.forEach(item => {
+                            const div = document.createElement("div");
+                            div.className = "d-flex justify-content-between align-items-center border-bottom";
+                            div.style.cursor = "pointer";
+                            div.style.padding = "1px 6px";
+
+                            div.addEventListener("mouseenter", () => {
+                                div.style.backgroundColor = "#8db8afff";
+                            });
+
+                            div.addEventListener("mouseleave", () => {
+                                div.style.backgroundColor = "transparent";
+                            });
+
+                            const spanName = document.createElement("span");
+                            spanName.textContent = item.symptomsName;
+                            spanName.className = "flex-grow-1";
+                            spanName.onclick = (e) => {
+                                e.stopPropagation();
+                                openSymptomModal(item.symptomsName);
+                                clearSearch();
+                            };
+                            div.appendChild(spanName);
+
+                            if (item.is_mine == true || item.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center";
+
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit"; // Custom CSS class
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openEditModal(item.id, item.symptomsName);
+                                };
+
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete"; // Custom CSS class
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openDeleteModal(item.id, item.symptomsName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                div.appendChild(actionDiv);
+                            }
+
+                            div.onclick = () => {
+                                openSymptomModal(item.symptomsName);
+                                clearSearch();
+                            };
+
+                            symptomsSuggestionsBox.appendChild(div);
+                        });
+                        symptomsSuggestionsBox.style.display = "block";
+                    } else {
+                        symptomsSuggestionsBox.style.display = "none";
+                    }
+                }
+            }
+
+            function clearSearch() {
+                if (symptomsInput) {
                     symptomsInput.value = "";
-                };
-                symptomsSuggestionsBox.appendChild(customOption);
-            } else {
-                filtered.forEach(item => {
-                    const div = document.createElement("div");
-                    div.textContent = item;
-                    div.onclick = () => {
-                        openSymptomModal(item);
-                        symptomsInput.value = "";
-                    };
-                    symptomsSuggestionsBox.appendChild(div);
+                    symptomsInput.focus();
+                }
+                if (symptomsSuggestionsBox) symptomsSuggestionsBox.style.display = "none";
+                if (clearSymptomSearch) clearSymptomSearch.style.display = "none";
+                if (addSymptomBtn) addSymptomBtn.style.display = "none";
+            }
+
+            window.openSymptomModal = function (tagName, existing = null, tagEl = null) {
+                pendingSymptom = tagName;
+                editingSymptomTag = tagEl;
+
+                if (symptomsModalTitle) symptomsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+                if (symptomNote) symptomNote.value = existing?.note || "";
+                if (symptomSince) symptomSince.value = existing?.since || "";
+                if (symptomSeverity) symptomSeverity.value = existing?.severity || "";
+
+                symptomsModal.show();
+                setTimeout(() => { if (symptomNote) symptomNote.focus(); }, 500);
+            }
+
+            window.saveSymptomModal = function () {
+                const note = symptomNote ? symptomNote.value.trim() : "";
+                const since = symptomSince ? symptomSince.value.trim() : "";
+                const severity = symptomSeverity ? symptomSeverity.value : "";
+
+                if (!pendingSymptom) return;
+
+                const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
+
+                if (editingSymptomTag && existingIndex !== -1) {
+                    let existingId = selectedSymptoms[existingIndex].id || "new";
+                    selectedSymptoms[existingIndex] = { id: existingId, symptom: pendingSymptom, note, since, severity };
+                    updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
+                    editingSymptomTag.setAttribute("data-id", existingId);
+                } else {
+                    const data = { id: "new", symptom: pendingSymptom, note, since, severity };
+                    selectedSymptoms.push(data);
+                    addSymptomTag(data);
+                }
+
+                symptomsModal.hide();
+                pendingSymptom = "";
+                editingSymptomTag = null;
+                updateHiddenInput();
+            }
+
+            if (addSymptomBtn) {
+                addSymptomBtn.addEventListener('click', () => {
+                    universalTitle.textContent = "Add New Symptom";
+                    universalLabel.innerHTML = 'Symptom Name <span class="text-danger">*</span>';
+                    universalInput.value = symptomsInput.value.trim();
+                    universalId.value = "";
+                    universalType.value = "symptom";
+
+                    universalAddModal.show();
+                    setTimeout(() => universalInput.focus(), 500);
                 });
             }
 
-            symptomsSuggestionsBox.style.display = "block";
-        }
+            function openEditModal(id, name) {
+                universalTitle.textContent = "Edit Symptom";
+                universalLabel.innerHTML = 'Symptom Name <span class="text-danger">*</span>';
+                universalInput.value = name;
+                universalId.value = id;
+                universalType.value = "symptom";
 
-        function openSymptomModal(tagName, existing = null, tagEl = null) {
-            pendingSymptom = tagName;
-            editingSymptomTag = tagEl;
+                universalAddModal.show();
+                setTimeout(() => universalInput.focus(), 500);
+            }
 
-            symptomsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            symptomNote.value = existing?.note || "";
-            symptomSince.value = existing?.since || "";
-            symptomSeverity.value = existing?.severity || "";
+            if (universalForm) {
+                universalForm.addEventListener('submit', (e) => {
+                    if (universalType.value !== 'symptom') return;
 
-            symptomsModal.show();
-        }
+                    e.preventDefault();
+                    const name = universalInput.value.trim();
+                    const id = universalId.value;
 
-        function saveSymptomModal() {
-            const note = symptomNote.value.trim();
-            const since = symptomSince.value.trim();
-            const severity = symptomSeverity.value;
+                    if (!name) return;
 
-            if (!pendingSymptom) return;
+                    const submitBtn = universalForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
 
-            const existingIndex = selectedSymptoms.findIndex(s => s.symptom === pendingSymptom);
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'saving...';
 
-            if (!symptomsList.includes(pendingSymptom)) {
-                fetch("<?= site_url('Consultation/addSymptom') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(pendingSymptom)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            symptomsList.push(pendingSymptom);
-                        } else {
-                            console.error("Error saving new symptom", data);
-                        }
+                    const url = id ? "<?= site_url('Consultation/editSymptomItem') ?>" : "<?= site_url('Consultation/addSymptom') ?>";
+                    const body = id ?
+                        `id=${id}&name=${encodeURIComponent(name)}` :
+                        `name=${encodeURIComponent(name)}`;
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: body
                     })
-                    .catch(err => console.error(err));
+                        .then(res => res.json())
+                        .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+
+                            if (data.status === 'success') {
+                                if (id) {
+                                    const index = symptomsList.findIndex(s => s.id == id);
+                                    if (index !== -1) symptomsList[index].symptomsName = name;
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                } else {
+                                    symptomsList.push({
+                                        id: data.id,
+                                        symptomsName: name,
+                                        is_mine: true
+                                    });
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                    setTimeout(() => openSymptomModal(name), 300);
+                                }
+                            } else {
+                                alert("Operation failed");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
+                });
             }
 
-            if (editingSymptomTag && existingIndex !== -1) {
-                let existingId = selectedSymptoms[existingIndex].id || "new";
-                selectedSymptoms[existingIndex] = {
-                    id: existingId,
-                    symptom: pendingSymptom,
-                    note,
-                    since,
-                    severity
+            function openDeleteModal(id, name) {
+                universalDeleteName.textContent = name;
+                universalDeleteId.value = id;
+                universalDeleteType.value = "symptom"; // <--- FLAG
+                universalDeleteModal.show();
+            }
+
+            if (universalDeleteBtn) {
+                universalDeleteBtn.addEventListener('click', () => {
+                    if (universalDeleteType.value !== 'symptom') return;
+
+                    const id = universalDeleteId.value;
+                    fetch("<?= site_url('Consultation/deleteSymptomItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                symptomsList = symptomsList.filter(s => s.id != id);
+                                universalDeleteModal.hide();
+                                renderSymptomsSuggestions();
+                            }
+                        });
+                });
+            }
+
+            if (symptomsInput) {
+                symptomsInput.addEventListener("input", renderSymptomsSuggestions);
+                symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
+
+                symptomsInput.addEventListener("keydown", e => {
+                    if (e.key === "Enter" && symptomsInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const val = symptomsInput.value.trim();
+                        const exists = symptomsList.some(s => s.symptomsName.toLowerCase() === val.toLowerCase());
+
+                        if (exists) {
+                            openSymptomModal(val);
+                            clearSearch();
+                        } else {
+                            if (addSymptomBtn) addSymptomBtn.click();
+                        }
+                    }
+                });
+            }
+
+            if (symptomsModalEl) {
+                symptomsModalEl.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveSymptomModal();
+                    }
+                });
+            }
+
+            if (clearSymptomSearch) {
+                clearSymptomSearch.addEventListener("click", clearSearch);
+            }
+
+            document.addEventListener("click", (e) => {
+                if (symptomsTagContainer && !symptomsTagContainer.contains(e.target) &&
+                    addSymptomBtn && !addSymptomBtn.contains(e.target)) {
+                    if (symptomsSuggestionsBox) symptomsSuggestionsBox.style.display = "none";
+                }
+            });
+
+            function addSymptomTag(data) {
+                const tag = document.createElement("span");
+                tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+                tag.style.cursor = "pointer";
+                tag.setAttribute("data-id", data.id || "new");
+
+                const textSpan = document.createElement("span");
+                tag.appendChild(textSpan);
+
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.className = "text-light ms-2";
+                removeBtn.innerHTML = "&times;";
+                removeBtn.style.fontSize = "1rem";
+                removeBtn.style.border = "none";
+                removeBtn.style.background = "transparent";
+
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    tag.remove();
+                    selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
+                    updateHiddenInput();
                 };
-                updateSymptomTagDisplay(editingSymptomTag, selectedSymptoms[existingIndex]);
-                editingSymptomTag.setAttribute("data-id", existingId);
-            } else {
-                const data = {
-                    id: "new",
-                    symptom: pendingSymptom,
-                    note,
-                    since,
-                    severity
-                };
-                selectedSymptoms.push(data);
-                addSymptomTag(data);
+
+                tag.appendChild(removeBtn);
+                updateSymptomTagDisplay(tag, data);
+                tag.onclick = () => openSymptomModal(data.symptom, data, tag);
+
+                const listContainer = document.getElementById('symptomsList');
+
+                if (listContainer) {
+                    listContainer.appendChild(tag);
+                } else {
+                    const wrapper = document.querySelector('#symptomsWrapper .mb-3');
+                    if (wrapper) {
+                        wrapper.insertAdjacentElement('beforebegin', tag);
+                    } else if (symptomsTagContainer) {
+                        symptomsTagContainer.parentElement.insertBefore(tag, symptomsTagContainer.parentElement.firstChild);
+                    }
+                }
             }
 
-            symptomsModal.hide();
-            pendingSymptom = "";
-            editingSymptomTag = null;
-            updateHiddenInput();
-        }
-
-        function addSymptomTag(data) {
-            const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-            tag.style.cursor = "pointer";
-
-            tag.setAttribute("data-id", data.id || "new");
-
-            const textSpan = document.createElement("span");
-            tag.appendChild(textSpan);
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tag.remove();
-                selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
-                updateHiddenInput();
-            };
-
-            tag.appendChild(removeBtn);
-
-            updateSymptomTagDisplay(tag, data);
-
-            tag.onclick = () => {
-                openSymptomModal(data.symptom, data, tag);
-            };
-
-            symptomsTagContainer.insertBefore(tag, symptomsInput);
-        }
-
-        function updateSymptomTagDisplay(tagEl, data) {
-            const textParts = [data.symptom];
-            const details = [];
-
-            if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
-
-            if (details.length > 0) {
-                textParts.push(`(${details.join(", ")})`);
+            function updateSymptomTagDisplay(tagEl, data) {
+                const textParts = [data.symptom];
+                const details = [];
+                if (data.note) details.push(`Note: ${data.note}`);
+                if (data.since) details.push(`Since: ${data.since}`);
+                if (data.severity) details.push(`Severity: ${data.severity}`);
+                if (details.length > 0) textParts.push(`(${details.join(", ")})`);
+                tagEl.firstChild.textContent = textParts.join(" ");
             }
 
-            tagEl.innerHTML = textParts.join(" ");
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tagEl.remove();
-                selectedSymptoms = selectedSymptoms.filter(s => s.symptom !== data.symptom);
-                updateHiddenInput();
-            };
-            tagEl.appendChild(removeBtn);
-            tagEl.setAttribute("data-id", data.id || "new");
-        }
-
-        function updateHiddenInput() {
-            document.getElementById("symptomsJson").value = JSON.stringify(selectedSymptoms);
-        }
-
-        symptomsInput.addEventListener("input", renderSymptomsSuggestions);
-        symptomsInput.addEventListener("focus", renderSymptomsSuggestions);
-        symptomsInput.addEventListener("keydown", e => {
-            if (e.key === "Enter" && symptomsInput.value.trim() !== "") {
-                e.preventDefault();
-                openSymptomModal(symptomsInput.value.trim());
-                symptomsInput.value = "";
+            function updateHiddenInput() {
+                const hiddenInput = document.getElementById("symptomsJson");
+                if (hiddenInput) hiddenInput.value = JSON.stringify(selectedSymptoms);
             }
-        });
 
-        document.addEventListener("click", (e) => {
-            if (!symptomsTagContainer.contains(e.target)) {
-                symptomsSuggestionsBox.style.display = "none";
-            }
-        });
-
-        renderSymptomsSuggestions();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const preloadSymptoms = <?php echo isset($symptoms) ? json_encode($symptoms) : '[]'; ?>;
-
+            const preloadSymptoms = <?php echo (isset($symptoms) && !empty($symptoms)) ? json_encode($symptoms) : '[]'; ?>;
             if (preloadSymptoms.length > 0) {
                 preloadSymptoms.forEach(item => {
                     const data = {
@@ -3332,288 +3732,429 @@
         });
     </script>
 
-    <!-- Symptoms save script -->
+    <!-- New Findings save script -->
     <script>
-        $(document).ready(function () {
-            function parseSymptomTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
+        // 1. Load List Safely
+        let findingsList = <?php echo (isset($findingsList) && !empty($findingsList)) ? json_encode($findingsList) : '[]'; ?>;
 
-                // Extract symptom and optional details
-                let match = text.match(/^(.+?)\s*\((.+)\)$/);
-                if (match) {
-                    let symptom = match[1].trim();
-                    let detailsStr = match[2].trim();
-                    let details = detailsStr.split(',').map(d => d.trim());
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- DOM ELEMENTS (Specific to Findings) ---
+            const findingsInput = document.getElementById("searchInput");
+            const suggestionsBox = document.getElementById("suggestionsBox");
+            const tagContainer = document.getElementById("findingsInput");
+            const addFindingBtn = document.getElementById("addFindingBtn");
+            const clearFindingSearch = document.getElementById("clearFindingSearch");
+            const findingsListContainer = document.getElementById("findingsList");
 
-                    let parsed = {
-                        symptom: symptom,
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
+            // --- UNIVERSAL MODAL ELEMENTS ---
+            const universalAddModalEl = document.getElementById("universalAddMasterModal");
+            const universalAddModal = new bootstrap.Modal(universalAddModalEl);
+            const universalForm = document.getElementById("universalAddMasterForm");
+            const universalTitle = document.getElementById("universalMasterTitle");
+            const universalLabel = document.getElementById("universalMasterLabel");
+            const universalInput = document.getElementById("universalMasterInput");
+            const universalId = document.getElementById("universalMasterId");
+            const universalType = document.getElementById("universalMasterType");
 
-                    details.forEach(detail => {
-                        let kv = detail.split(':').map(s => s.trim());
-                        if (kv.length === 2) {
-                            let key = kv[0].toLowerCase();
-                            let value = kv[1];
-                            if (key === 'note') parsed.note = value;
-                            else if (key === 'since') parsed.since = value;
-                            else if (key === 'severity') parsed.severity = value;
-                        }
-                    });
+            const universalDeleteModalEl = document.getElementById("universalDeleteModal");
+            const universalDeleteModal = new bootstrap.Modal(universalDeleteModalEl);
+            const universalDeleteName = document.getElementById("universalDeleteNameDisplay");
+            const universalDeleteId = document.getElementById("universalDeleteId");
+            const universalDeleteType = document.getElementById("universalDeleteType");
+            const universalDeleteBtn = document.getElementById("universalDeleteBtn");
 
-                    return parsed;
+            // --- DETAILED MODAL ELEMENTS (Specific to Findings) ---
+            // Your Findings modal is named "inputModal" in the HTML
+            const modalEl = document.getElementById("inputModal");
+            const modal = new bootstrap.Modal(modalEl);
+            const modalNote = document.getElementById("modalNote");
+            const modalSince = document.getElementById("modalSince");
+            const modalSeverity = document.getElementById("modalSeverity");
+            const modalTitle = document.getElementById("modalTitle");
+
+            // Variables
+            let selectedFindings = [];
+            let pendingTag = "";
+            let editingTagEl = null;
+
+            // 1. Add/Edit Modal Close Buttons (Cancel + X)
+            const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            addModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Stop any default behavior
+                    universalAddModal.hide(); // Force Bootstrap to hide it
+
+                    // Optional: Reset form
+                    if (universalForm) universalForm.reset();
+                });
+            });
+
+            // 2. Delete Modal Close Buttons (Cancel + X)
+            const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            deleteModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                });
+            });
+            //  RENDER SUGGESTIONS
+            function renderSuggestions() {
+                if (!findingsInput) return;
+                const query = findingsInput.value.trim().toLowerCase();
+                suggestionsBox.innerHTML = "";
+
+                // Toggle Buttons
+                if (query.length > 0) {
+                    if (clearFindingSearch) clearFindingSearch.style.display = 'block';
                 } else {
-                    return {
-                        symptom: text,
-                        note: '',
-                        since: '',
-                        severity: ''
-                    };
+                    if (clearFindingSearch) clearFindingSearch.style.display = 'none';
+                    if (addFindingBtn) addFindingBtn.style.display = 'none';
                 }
 
-                return null;
+                const filtered = findingsList.filter(f => f.findingsName.toLowerCase().includes(query));
+
+                if (filtered.length === 0 && query !== "") {
+                    // No Match -> Show Add Button
+                    if (addFindingBtn) addFindingBtn.style.display = 'block';
+
+                    if (suggestionsBox) {
+                        suggestionsBox.style.display = 'block';
+                        const noResultDiv = document.createElement("div");
+                        noResultDiv.className = "p-2 text-muted";
+                        noResultDiv.style.fontSize = "0.9rem";
+                        noResultDiv.textContent = "No result found on search – Add new";
+                        suggestionsBox.appendChild(noResultDiv);
+                    }
+                } else {
+                    if (addFindingBtn) addFindingBtn.style.display = 'none';
+
+                    if (suggestionsBox && query !== "") {
+                        filtered.forEach(item => {
+                            const div = document.createElement("div");
+                            div.className = "d-flex justify-content-between align-items-center border-bottom";
+                            div.style.cursor = "pointer";
+                            div.style.padding = "1px 6px";
+
+                            div.addEventListener("mouseenter", () => {
+                                div.style.backgroundColor = "#8db8afff";
+                            });
+
+                            div.addEventListener("mouseleave", () => {
+                                div.style.backgroundColor = "transparent";
+                            });
+
+                            // A. Name
+                            const spanName = document.createElement("span");
+                            spanName.textContent = item.findingsName;
+                            spanName.className = "flex-grow-1";
+                            spanName.onclick = (e) => {
+                                e.stopPropagation();
+                                openModal(item.findingsName);
+                                clearSearch();
+                            };
+                            div.appendChild(spanName);
+
+                            // B. Icons (Only if Creator)
+                            if (item.is_mine == true || item.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center";
+
+                                // Edit Icon
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit";
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openEditModal(item.id, item.findingsName);
+                                };
+
+                                // Delete Icon
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete";
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openDeleteModal(item.id, item.findingsName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                div.appendChild(actionDiv);
+                            }
+
+                            // Row Click
+                            div.onclick = () => {
+                                openModal(item.findingsName);
+                                clearSearch();
+                            };
+                            suggestionsBox.appendChild(div);
+                        });
+                        suggestionsBox.style.display = "block";
+                    } else {
+                        if (suggestionsBox) suggestionsBox.style.display = "none";
+                    }
+                }
             }
 
-            function updateSymptomsJson() {
-                let symptoms = [];
-                $('#symptomsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let symptom = parseSymptomTagText(tagText);
+            function clearSearch() {
+                if (findingsInput) {
+                    findingsInput.value = "";
+                    findingsInput.focus();
+                }
+                if (suggestionsBox) suggestionsBox.style.display = "none";
+                if (clearFindingSearch) clearFindingSearch.style.display = "none";
+                if (addFindingBtn) addFindingBtn.style.display = "none";
+            }
 
-                    if (symptom) {
-                        let symptomId = $(this).attr('data-id') || "new";
-                        symptom.id = symptomId;
-                        symptoms.push(symptom);
+            // 2. DETAILED MODAL LOGIC (Findings Details)
+            window.openModal = function (tagName, existing = null, tagEl = null) {
+                pendingTag = tagName;
+                editingTagEl = tagEl;
+
+                if (modalTitle) modalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
+                if (modalNote) modalNote.value = existing?.note || "";
+                if (modalSince) modalSince.value = existing?.since || "";
+                if (modalSeverity) modalSeverity.value = existing?.severity || "";
+
+                modal.show();
+                setTimeout(() => { if (modalNote) modalNote.focus(); }, 500);
+            }
+
+            window.saveModal = function () {
+                const note = modalNote ? modalNote.value.trim() : "";
+                const since = modalSince ? modalSince.value.trim() : "";
+                const severity = modalSeverity ? modalSeverity.value : "";
+
+                if (!pendingTag) return;
+
+                const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
+
+                if (editingTagEl && existingIndex !== -1) {
+                    let existingId = selectedFindings[existingIndex].id || "new";
+                    selectedFindings[existingIndex] = { id: existingId, finding: pendingTag, note, since, severity };
+                    updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
+                    editingTagEl.setAttribute("data-id", existingId);
+                } else {
+                    const data = { id: "new", finding: pendingTag, note, since, severity };
+                    selectedFindings.push(data);
+                    addTag(data);
+                }
+
+                modal.hide();
+                pendingTag = "";
+                editingTagEl = null;
+                updateHiddenInput();
+            }
+
+            // 3. UNIVERSAL MASTER MODAL (ADD / EDIT) HANDLERS
+            if (addFindingBtn) {
+                addFindingBtn.addEventListener('click', () => {
+                    universalTitle.textContent = "Add New Finding";
+                    universalLabel.innerHTML = 'Finding Name <span class="text-danger">*</span>';
+                    universalInput.value = findingsInput.value.trim();
+                    universalId.value = "";
+                    universalType.value = "finding"; // <--- FLAG: Identified as Finding
+
+                    universalAddModal.show();
+                    setTimeout(() => universalInput.focus(), 500);
+                });
+            }
+
+            function openEditModal(id, name) {
+                universalTitle.textContent = "Edit Finding";
+                universalLabel.innerHTML = 'Finding Name <span class="text-danger">*</span>';
+                universalInput.value = name;
+                universalId.value = id;
+                universalType.value = "finding"; // <--- FLAG
+
+                universalAddModal.show();
+                setTimeout(() => universalInput.focus(), 500);
+            }
+
+            // GLOBAL FORM SUBMIT HANDLER
+            if (universalForm) {
+                universalForm.addEventListener('submit', (e) => {
+                    if (universalType.value !== 'finding') return;
+
+                    e.preventDefault();
+
+                    // Validation
+                    const name = universalInput.value.trim();
+                    const id = universalId.value;
+                    if (!name) return;
+
+                    const submitBtn = universalForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
+                    const url = id ? "<?= site_url('Consultation/editFindingItem') ?>" : "<?= site_url('Consultation/addFinding') ?>";
+                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: body
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+
+                            if (data.status === 'success') {
+                                if (id) {
+                                    const index = findingsList.findIndex(f => f.id == id);
+                                    if (index !== -1) findingsList[index].findingsName = name;
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                } else {
+                                    findingsList.push({
+                                        id: data.id,
+                                        findingsName: name,
+                                        is_mine: true
+                                    });
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                    setTimeout(() => openModal(name), 300);
+                                }
+                            } else {
+                                alert("Operation failed");
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Fetch error:", err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
+                });
+            }
+
+            // 4. UNIVERSAL DELETE MODAL HANDLERS
+            function openDeleteModal(id, name) {
+                universalDeleteName.textContent = name;
+                universalDeleteId.value = id;
+                universalDeleteType.value = "finding"; // <--- FLAG
+                universalDeleteModal.show();
+            }
+
+            if (universalDeleteBtn) {
+                universalDeleteBtn.addEventListener('click', () => {
+                    if (universalDeleteType.value !== 'finding') return;
+
+                    const id = universalDeleteId.value;
+                    fetch("<?= site_url('Consultation/deleteFindingItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                findingsList = findingsList.filter(f => f.id != id);
+                                universalDeleteModal.hide();
+                                renderSuggestions();
+                            }
+                        });
+                });
+            }
+
+            // 5. KEYBOARD & INPUT EVENTS
+            if (findingsInput) {
+                findingsInput.addEventListener("input", renderSuggestions);
+                findingsInput.addEventListener("focus", renderSuggestions);
+
+                findingsInput.addEventListener("keydown", e => {
+                    if (e.key === "Enter" && findingsInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const val = findingsInput.value.trim();
+                        const exists = findingsList.some(f => f.findingsName.toLowerCase() === val.toLowerCase());
+
+                        if (exists) {
+                            openModal(val);
+                            clearSearch();
+                        } else {
+                            if (addFindingBtn) addFindingBtn.click();
+                        }
                     }
                 });
-                $('#symptomsJson').val(JSON.stringify(symptoms));
             }
 
-            const observer = new MutationObserver(updateSymptomsJson);
-            observer.observe(document.getElementById('symptomsInput'), {
-                childList: true,
-                subtree: true
-            });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateSymptomsJson();
-            });
-        });
-    </script>
-
-    <!-- Finding Modal Script -->
-    <script>
-        const findingsList = <?php echo json_encode(array_column($findingsList, 'findingsName')); ?>;
-
-        const findingsInput = document.getElementById("searchInput");
-        const suggestionsBox = document.getElementById("suggestionsBox");
-        const tagContainer = document.getElementById("findingsInput");
-
-        const modal = new bootstrap.Modal(document.getElementById("inputModal"));
-        const modalNote = document.getElementById("modalNote");
-        const modalSince = document.getElementById("modalSince");
-        const modalSeverity = document.getElementById("modalSeverity");
-        const modalTitle = document.getElementById("modalTitle");
-
-        let selectedFindings = [];
-        let pendingTag = "";
-        let editingTagEl = null;
-
-        function renderSuggestions() {
-            const query = findingsInput.value.trim();
-            const queryLower = query.toLowerCase();
-            suggestionsBox.innerHTML = "";
-
-            const filtered = findingsList.filter(f =>
-                f.toLowerCase().includes(queryLower) &&
-                !selectedFindings.some(obj => obj.finding === f)
-            );
-
-            if (filtered.length === 0 && query !== "") {
-                const customOption = document.createElement("div");
-                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                customOption.onclick = () => {
-                    openModal(query);
-                    findingsInput.value = "";
-                };
-                suggestionsBox.appendChild(customOption);
-            } else {
-                filtered.forEach(item => {
-                    const div = document.createElement("div");
-                    div.textContent = item;
-                    div.onclick = () => {
-                        openModal(item);
-                        findingsInput.value = "";
-                    };
-                    suggestionsBox.appendChild(div);
+            // Detailed Modal Enter Key
+            if (modalEl) {
+                modalEl.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveModal();
+                    }
                 });
             }
 
-            suggestionsBox.style.display = "block";
-        }
-
-        function openModal(tagName, existing = null, tagEl = null) {
-            pendingTag = tagName;
-            editingTagEl = tagEl;
-
-            modalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            modalNote.value = existing?.note || "";
-            modalSince.value = existing?.since || "";
-            modalSeverity.value = existing?.severity || "";
-
-            modal.show();
-        }
-
-        function saveModal() {
-            const note = modalNote.value.trim();
-            const since = modalSince.value.trim();
-            const severity = modalSeverity.value;
-
-            if (!pendingTag) return;
-
-            const existingIndex = selectedFindings.findIndex(f => f.finding === pendingTag);
-
-            if (!findingsList.includes(pendingTag)) {
-                fetch("<?= site_url('Consultation/addFinding') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(pendingTag)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            findingsList.push(pendingTag); // add to available list
-                        } else {
-                            console.error("Error saving new finding", data);
-                        }
-                    })
-                    .catch(err => console.error(err));
+            if (clearFindingSearch) {
+                clearFindingSearch.addEventListener("click", clearSearch);
             }
 
-            if (editingTagEl && existingIndex !== -1) {
-                let existingId = selectedFindings[existingIndex].id || "new";
-                selectedFindings[existingIndex] = {
-                    id: existingId,
-                    finding: pendingTag,
-                    note,
-                    since,
-                    severity
+            document.addEventListener("click", (e) => {
+                if (tagContainer && !tagContainer.contains(e.target) &&
+                    addFindingBtn && !addFindingBtn.contains(e.target)) {
+                    if (suggestionsBox) suggestionsBox.style.display = "none";
+                }
+            });
+
+            // 6. HELPERS\
+            function addTag(data) {
+                const tag = document.createElement("span");
+                tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+                tag.style.cursor = "pointer";
+                tag.setAttribute("data-id", data.id || "new");
+
+                const textSpan = document.createElement("span");
+                tag.appendChild(textSpan);
+
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.className = "text-light ms-2";
+                removeBtn.innerHTML = "&times;";
+                removeBtn.style.fontSize = "1rem";
+                removeBtn.style.border = "none";
+                removeBtn.style.background = "transparent";
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    tag.remove();
+                    selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
+                    updateHiddenInput();
                 };
-                updateTagDisplay(editingTagEl, selectedFindings[existingIndex]);
-                editingTagEl.setAttribute("data-id", existingId);
-            } else {
-                const data = {
-                    id: "new",
-                    finding: pendingTag,
-                    note,
-                    since,
-                    severity
-                };
-                selectedFindings.push(data);
-                addTag(data);
+
+                tag.appendChild(removeBtn);
+                updateTagDisplay(tag, data);
+                tag.onclick = () => openModal(data.finding, data, tag);
+
+                // Insert into Top List Container
+                if (findingsListContainer) {
+                    findingsListContainer.appendChild(tag);
+                } else if (tagContainer) {
+                    tagContainer.parentElement.insertBefore(tag, tagContainer.parentElement.firstChild);
+                }
             }
 
-            modal.hide();
-            pendingTag = "";
-            editingTagEl = null;
-            updateHiddenInput();
-        }
-
-        function addTag(data) {
-            const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-            tag.style.cursor = "pointer";
-
-            tag.setAttribute("data-id", data.id || "new");
-
-            const textSpan = document.createElement("span");
-            tag.appendChild(textSpan);
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tag.remove();
-                selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
-                updateHiddenInput();
-            };
-
-            tag.appendChild(removeBtn);
-
-            updateTagDisplay(tag, data);
-
-            tag.onclick = () => {
-                openModal(data.finding, data, tag);
-            };
-
-            tagContainer.insertBefore(tag, findingsInput);
-        }
-
-        function updateTagDisplay(tagEl, data) {
-            const textParts = [data.finding];
-            const details = [];
-
-            if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
-
-            if (details.length > 0) {
-                textParts.push(`(${details.join(", ")})`);
+            function updateTagDisplay(tagEl, data) {
+                const textParts = [data.finding];
+                const details = [];
+                if (data.note) details.push(`Note: ${data.note}`);
+                if (data.since) details.push(`Since: ${data.since}`);
+                if (data.severity) details.push(`Severity: ${data.severity}`);
+                if (details.length > 0) textParts.push(`(${details.join(", ")})`);
+                tagEl.firstChild.textContent = textParts.join(" ");
             }
 
-            tagEl.innerHTML = textParts.join(" ");
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tagEl.remove();
-                selectedFindings = selectedFindings.filter(f => f.finding !== data.finding);
-                updateHiddenInput();
-            };
-            tagEl.appendChild(removeBtn);
-            tagEl.setAttribute("data-id", data.id || "new");
-        }
-
-        function updateHiddenInput() {
-            document.getElementById("findingsJson").value = JSON.stringify(selectedFindings);
-        }
-
-        findingsInput.addEventListener("input", renderSuggestions);
-        findingsInput.addEventListener("focus", renderSuggestions);
-        findingsInput.addEventListener("keydown", e => {
-            if (e.key === "Enter" && findingsInput.value.trim() !== "") {
-                e.preventDefault();
-                openModal(findingsInput.value.trim());
-                findingsInput.value = "";
+            function updateHiddenInput() {
+                const hiddenInput = document.getElementById("findingsJson");
+                if (hiddenInput) hiddenInput.value = JSON.stringify(selectedFindings);
             }
-        });
 
-        document.addEventListener("click", (e) => {
-            if (!tagContainer.contains(e.target)) {
-                suggestionsBox.style.display = "none";
-            }
-        });
-
-        renderSuggestions();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const preloadFindings = <?php echo isset($findings) ? json_encode($findings) : '[]'; ?>;
-
+            // Initial Load
+            const preloadFindings = <?php echo (isset($findings) && !empty($findings)) ? json_encode($findings) : '[]'; ?>;
             if (preloadFindings.length > 0) {
                 preloadFindings.forEach(item => {
                     const data = {
@@ -3631,296 +4172,442 @@
         });
     </script>
 
-    <!-- Findings save script -->
+    <!--new Diagnosis Model and save script -->
     <script>
-        $(document).ready(function () {
-            function parseTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim(); // Remove remove button if any
+        // 1. Load List Safely
+        let diagnosisList = <?php echo (isset($diagnosisList) && !empty($diagnosisList)) ? json_encode($diagnosisList) : '[]'; ?>;
 
-                let finding, note = '',
-                    since = '',
-                    severity = '';
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- DOM ELEMENTS (Specific to Diagnosis) ---
+            const diagnosisInput = document.getElementById("diagnosisInput");
+            const suggestionsBox = document.getElementById("diagnosisSuggestionsBox");
+            const tagContainer = document.getElementById("diagnosisInputBox");
+            const addDiagnosisBtn = document.getElementById("addDiagnosisBtn");
+            const clearDiagnosisSearch = document.getElementById("clearDiagnosisSearch");
+            const diagnosisListContainer = document.getElementById("diagnosisList"); // Top list container
 
-                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+            // --- DETAILED MODAL ELEMENTS (Specific to Diagnosis) ---
+            const diagnosisModalEl = document.getElementById("diagnosisModal");
+            const diagnosisModal = new bootstrap.Modal(diagnosisModalEl);
+            const diagnosisNote = document.getElementById("diagnosisNote");
+            const diagnosisSince = document.getElementById("diagnosisSince");
+            const diagnosisSeverity = document.getElementById("diagnosisSeverity");
+            const diagnosisModalTitle = document.querySelector('#diagnosisModal .modal-title');
 
-                if (match) {
-                    finding = match[1].trim();
+            // --- UNIVERSAL MODAL REFERENCES ---
+            const universalAddModalEl = document.getElementById("universalAddMasterModal");
+            const universalAddModal = new bootstrap.Modal(universalAddModalEl);
+            const universalForm = document.getElementById("universalAddMasterForm");
+            const universalTitle = document.getElementById("universalMasterTitle");
+            const universalLabel = document.getElementById("universalMasterLabel");
+            const universalInput = document.getElementById("universalMasterInput");
+            const universalId = document.getElementById("universalMasterId");
+            const universalType = document.getElementById("universalMasterType");
 
-                    if (match[2]) {
-                        const details = match[2].split(', ').map(d => d.trim());
+            const universalDeleteModalEl = document.getElementById("universalDeleteModal");
+            const universalDeleteModal = new bootstrap.Modal(universalDeleteModalEl);
+            const universalDeleteName = document.getElementById("universalDeleteNameDisplay");
+            const universalDeleteId = document.getElementById("universalDeleteId");
+            const universalDeleteType = document.getElementById("universalDeleteType");
+            const universalDeleteBtn = document.getElementById("universalDeleteBtn");
 
-                        details.forEach(detail => {
-                            const [key, value] = detail.split(': ', 2);
-                            if (key === 'Note') note = value || '';
-                            else if (key === 'Since') since = value || '';
-                            else if (key === 'Severity') severity = value || '';
-                        });
-                    }
+            let selectedDiagnosis = [];
+            let pendingDiagnosis = "";
+            let editingDiagnosisTag = null;
+
+            // FIX: Force Close for Universal Modals
+            // 1. Add/Edit Modal Close Buttons (Cancel + X)
+            const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            addModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Stop any default behavior
+                    universalAddModal.hide(); // Force Bootstrap to hide it
+
+                    // Optional: Reset form
+                    if (universalForm) universalForm.reset();
+                });
+            });
+
+            // 2. Delete Modal Close Buttons (Cancel + X)
+            const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            deleteModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                });
+            });
+
+            // 1. RENDER SUGGESTIONS
+            function renderDiagnosisSuggestions() {
+                if (!diagnosisInput) return;
+                const query = diagnosisInput.value.trim().toLowerCase();
+                suggestionsBox.innerHTML = "";
+
+                // Toggle Buttons
+                if (query.length > 0) {
+                    if (clearDiagnosisSearch) clearDiagnosisSearch.style.display = 'block';
                 } else {
-                    finding = text;
+                    if (clearDiagnosisSearch) clearDiagnosisSearch.style.display = 'none';
+                    if (addDiagnosisBtn) addDiagnosisBtn.style.display = 'none';
                 }
 
-                return {
-                    finding,
-                    note,
-                    since,
-                    severity
-                };
+                const filtered = diagnosisList.filter(d => d.diagnosisName.toLowerCase().includes(query));
+
+                if (filtered.length === 0 && query !== "") {
+                    // No Match -> Show Add Button & "No result" message
+                    if (addDiagnosisBtn) addDiagnosisBtn.style.display = 'block';
+
+                    if (suggestionsBox) {
+                        suggestionsBox.style.display = 'block';
+                        const noResultDiv = document.createElement("div");
+                        noResultDiv.className = "p-2 text-muted";
+                        noResultDiv.style.fontSize = "0.9rem";
+                        noResultDiv.textContent = "No result found on search – Add new";
+                        suggestionsBox.appendChild(noResultDiv);
+                    }
+                } else {
+                    if (addDiagnosisBtn) addDiagnosisBtn.style.display = 'none';
+
+                    if (suggestionsBox && query !== "") {
+                        filtered.forEach(item => {
+                            const div = document.createElement("div");
+                            div.className = "d-flex justify-content-between align-items-center border-bottom";
+                            div.style.cursor = "pointer";
+                            div.style.padding = "1px 6px";
+
+                            div.addEventListener("mouseenter", () => {
+                                div.style.backgroundColor = "#8db8afff";
+                            });
+
+                            div.addEventListener("mouseleave", () => {
+                                div.style.backgroundColor = "transparent";
+                            });
+
+                            // A. Name
+                            const spanName = document.createElement("span");
+                            spanName.textContent = item.diagnosisName;
+                            spanName.className = "flex-grow-1";
+                            spanName.onclick = (e) => {
+                                e.stopPropagation();
+                                openDiagnosisModal(item.diagnosisName);
+                                clearSearch();
+                            };
+                            div.appendChild(spanName);
+
+                            // B. Icons (Only if Creator)
+                            if (item.is_mine == true || item.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center";
+
+                                // Edit Icon
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit";
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openUniversalEdit('diagnosis', item.id, item.diagnosisName);
+                                };
+
+                                // Delete Icon
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete";
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openUniversalDelete('diagnosis', item.id, item.diagnosisName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                div.appendChild(actionDiv);
+                            }
+
+                            // Row Click
+                            div.onclick = () => {
+                                openDiagnosisModal(item.diagnosisName);
+                                clearSearch();
+                            };
+                            suggestionsBox.appendChild(div);
+                        });
+                        suggestionsBox.style.display = "block";
+                    } else {
+                        if (suggestionsBox) suggestionsBox.style.display = "none";
+                    }
+                }
             }
 
-            function updateFindingsJson() {
-                let findings = [];
-                $('#findingsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let finding = parseTagText(tagText);
-                    if (finding) {
-                        let findingId = $(this).attr('data-id') || "new";
-                        finding.id = findingId;
-                        findings.push(finding);
+            function clearSearch() {
+                if (diagnosisInput) {
+                    diagnosisInput.value = "";
+                    diagnosisInput.focus();
+                }
+                if (suggestionsBox) suggestionsBox.style.display = "none";
+                if (clearDiagnosisSearch) clearDiagnosisSearch.style.display = "none";
+                if (addDiagnosisBtn) addDiagnosisBtn.style.display = "none";
+            }
+
+            // 2. DETAILED MODAL LOGIC
+            window.openDiagnosisModal = function (name, existing = null, tagEl = null) {
+                pendingDiagnosis = name;
+                editingDiagnosisTag = tagEl;
+
+                if (diagnosisModalTitle) diagnosisModalTitle.textContent = existing ? `Edit Diagnosis: ${name}` : `Diagnosis Details for: ${name}`;
+                if (diagnosisNote) diagnosisNote.value = existing?.note || "";
+                if (diagnosisSince) diagnosisSince.value = existing?.since || "";
+                if (diagnosisSeverity) diagnosisSeverity.value = existing?.severity || "";
+
+                diagnosisModal.show();
+                setTimeout(() => { if (diagnosisNote) diagnosisNote.focus(); }, 500);
+            }
+
+            window.saveDiagnosisModal = function () {
+                const note = diagnosisNote ? diagnosisNote.value.trim() : "";
+                const since = diagnosisSince ? diagnosisSince.value.trim() : "";
+                const severity = diagnosisSeverity ? diagnosisSeverity.value : "";
+
+                if (!pendingDiagnosis) return;
+
+                const existingIndex = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
+
+                if (editingDiagnosisTag && existingIndex !== -1) {
+                    let existingId = selectedDiagnosis[existingIndex].id || "new";
+                    selectedDiagnosis[existingIndex] = { id: existingId, name: pendingDiagnosis, note, since, severity };
+                    updateDiagnosisTag(editingDiagnosisTag, selectedDiagnosis[existingIndex]);
+                    editingDiagnosisTag.setAttribute("data-id", existingId);
+                } else {
+                    const data = { id: "new", name: pendingDiagnosis, note, since, severity };
+                    selectedDiagnosis.push(data);
+                    addDiagnosisTag(data);
+                }
+
+                diagnosisModal.hide();
+                pendingDiagnosis = "";
+                editingDiagnosisTag = null;
+                updateDiagnosisHidden();
+            }
+
+            // 3. UNIVERSAL ADD / EDIT HANDLERS
+            // Open Add
+            if (addDiagnosisBtn) {
+                addDiagnosisBtn.addEventListener('click', () => {
+                    universalTitle.textContent = "Add New Diagnosis";
+                    universalLabel.innerHTML = 'Diagnosis Name <span class="text-danger">*</span>';
+                    universalInput.value = diagnosisInput.value.trim();
+                    universalId.value = "";
+                    universalType.value = "diagnosis"; // <--- FLAG
+
+                    universalAddModal.show();
+                    setTimeout(() => universalInput.focus(), 500);
+                });
+            }
+
+            // Open Edit
+            function openUniversalEdit(type, id, name) {
+                universalTitle.textContent = "Edit Diagnosis";
+                universalLabel.innerHTML = 'Diagnosis Name <span class="text-danger">*</span>';
+                universalInput.value = name;
+                universalId.value = id;
+                universalType.value = "diagnosis"; // <--- FLAG
+
+                universalAddModal.show();
+                setTimeout(() => universalInput.focus(), 500);
+            }
+
+            // Global Form Submit (Filtered by Type)
+            if (universalForm) {
+                universalForm.addEventListener('submit', (e) => {
+                    if (universalType.value !== 'diagnosis') return; // [cite: 58]
+
+                    e.preventDefault();
+                    const name = universalInput.value.trim();
+                    const id = universalId.value;
+
+                    if (!name) return;
+
+                    // 1. SELECT BUTTON AND DISABLE IT
+                    const submitBtn = universalForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
+                    const url = id ? "<?= site_url('Consultation/editDiagnosisItem') ?>" : "<?= site_url('Consultation/addDiagnosis') ?>";
+                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: body
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            // 2. RE-ENABLE BUTTON ON RESPONSE
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+
+                            if (data.status === 'success') { // [cite: 61]
+                                if (id) {
+                                    // Edit Logic
+                                    const index = diagnosisList.findIndex(d => d.id == id);
+                                    if (index !== -1) diagnosisList[index].diagnosisName = name;
+                                    clearSearch();
+                                    universalAddModal.hide();
+                                } else {
+                                    // Add Logic
+                                    diagnosisList.push({
+                                        id: data.id,
+                                        diagnosisName: name,
+                                        is_mine: true
+                                    });
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                    // Open Detailed Modal
+                                    setTimeout(() => openDiagnosisModal(name), 300);
+                                }
+                            } else {
+                                alert("Operation failed");
+                            }
+                        })
+                        .catch(err => {
+                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
+                });
+            }
+
+            // 4. UNIVERSAL DELETE HANDLERS
+            function openUniversalDelete(type, id, name) {
+                universalDeleteName.textContent = name;
+                universalDeleteId.value = id;
+                universalDeleteType.value = "diagnosis"; // <--- FLAG
+                universalDeleteModal.show();
+            }
+
+            if (universalDeleteBtn) {
+                universalDeleteBtn.addEventListener('click', () => {
+                    // CHECK: Is this for Diagnosis?
+                    if (universalDeleteType.value !== 'diagnosis') return;
+
+                    const id = universalDeleteId.value;
+                    fetch("<?= site_url('Consultation/deleteDiagnosisItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                diagnosisList = diagnosisList.filter(d => d.id != id);
+                                universalDeleteModal.hide();
+                                renderDiagnosisSuggestions();
+                            }
+                        });
+                });
+            }
+
+            // 5. KEYBOARD & INPUT EVENTS
+            if (diagnosisInput) {
+                diagnosisInput.addEventListener("input", renderDiagnosisSuggestions);
+                diagnosisInput.addEventListener("focus", renderDiagnosisSuggestions);
+
+                diagnosisInput.addEventListener("keydown", e => {
+                    if (e.key === "Enter" && diagnosisInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const val = diagnosisInput.value.trim();
+                        const exists = diagnosisList.some(d => d.diagnosisName.toLowerCase() === val.toLowerCase());
+
+                        if (exists) {
+                            openDiagnosisModal(val);
+                            clearSearch();
+                        } else {
+                            if (addDiagnosisBtn) addDiagnosisBtn.click();
+                        }
                     }
                 });
-                $('#findingsJson').val(JSON.stringify(findings));
-                console.log('Findings JSON updated:', $('#findingsJson').val()); // Debug
             }
 
-            const observer = new MutationObserver(updateFindingsJson);
-            observer.observe(document.getElementById('findingsInput'), {
-                childList: true,
-                subtree: true
-            });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateFindingsJson(); // Ensure latest data
-                console.log('Form submitting with findingsJson:', $('#findingsJson').val()); // Debug
-            });
-        });
-    </script>
-
-    <!-- Diagonsis Modal Script -->
-    <script>
-        const diagnosisList = <?php echo json_encode(array_column($diagnosisList, 'diagnosisName')); ?>;
-
-        const diagnosisInput = document.getElementById("diagnosisInput");
-        const diagnosisSuggestionsBox = document.getElementById("diagnosisSuggestionsBox");
-        const diagnosisTagContainer = document.getElementById("diagnosisInputBox");
-
-        const diagnosisModal = new bootstrap.Modal(document.getElementById("diagnosisModal"));
-        const diagnosisNote = document.getElementById("diagnosisNote");
-        const diagnosisSince = document.getElementById("diagnosisSince");
-        const diagnosisSeverity = document.getElementById("diagnosisSeverity");
-        const diagnosisModalTitle = document.querySelector('#diagnosisModal .modal-title');
-
-        let selectedDiagnosis = [];
-        let pendingDiagnosis = "";
-        let editingDiagnosisTag = null;
-
-        function renderDiagnosisSuggestions() {
-            const query = diagnosisInput.value.trim();
-            const queryLower = query.toLowerCase();
-
-            diagnosisSuggestionsBox.innerHTML = "";
-
-            const filtered = diagnosisList.filter(d =>
-                d.toLowerCase().includes(queryLower) &&
-                !selectedDiagnosis.some(obj => obj.name === d)
-            );
-
-            if (filtered.length === 0 && query !== "") {
-                const customOption = document.createElement("div");
-                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                customOption.onclick = () => {
-                    openDiagnosisModal(query);
-                    diagnosisInput.value = "";
-                };
-                diagnosisSuggestionsBox.appendChild(customOption);
-            } else {
-                filtered.forEach(item => {
-                    const div = document.createElement("div");
-                    div.textContent = item;
-                    div.onclick = () => {
-                        openDiagnosisModal(item);
-                        diagnosisInput.value = "";
-                    };
-                    diagnosisSuggestionsBox.appendChild(div);
+            // Detailed Modal Enter Key
+            if (diagnosisModalEl) {
+                diagnosisModalEl.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveDiagnosisModal();
+                    }
                 });
             }
 
-            diagnosisSuggestionsBox.style.display = "block";
-        }
-
-        function openDiagnosisModal(name, existing = null, tagEl = null) {
-            pendingDiagnosis = name;
-            editingDiagnosisTag = tagEl;
-
-            diagnosisModalTitle.textContent = existing ?
-                `Edit Diagnosis: ${name}` :
-                `Diagnosis Details for: ${name}`;
-
-            diagnosisNote.value = existing?.note || "";
-            diagnosisSince.value = existing?.since || "";
-            diagnosisSeverity.value = existing?.severity || "";
-
-            diagnosisModal.show();
-        }
-
-        function saveDiagnosisModal() {
-            const note = diagnosisNote.value.trim();
-            const since = diagnosisSince.value.trim();
-            const severity = diagnosisSeverity.value;
-
-            if (!pendingDiagnosis) return;
-
-            if (!diagnosisList.includes(pendingDiagnosis)) {
-                fetch("<?= site_url('Consultation/addDiagnosis') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(pendingDiagnosis)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            diagnosisList.push(pendingDiagnosis);
-                        } else {
-                            console.error("Error saving new diagnosis", data);
-                        }
-                    })
-                    .catch(err => console.error(err));
+            if (clearDiagnosisSearch) {
+                clearDiagnosisSearch.addEventListener("click", clearSearch);
             }
 
-            const existingIndex = selectedDiagnosis.findIndex(d => d.name === pendingDiagnosis);
+            document.addEventListener("click", (e) => {
+                if (tagContainer && !tagContainer.contains(e.target) &&
+                    addDiagnosisBtn && !addDiagnosisBtn.contains(e.target)) {
+                    if (suggestionsBox) suggestionsBox.style.display = "none";
+                }
+            });
 
-            if (editingDiagnosisTag && existingIndex !== -1) {
-                // Update existing diagnosis
-                let existingId = selectedDiagnosis[existingIndex].id || "new";
-                selectedDiagnosis[existingIndex] = {
-                    id: existingId,
-                    name: pendingDiagnosis,
-                    note,
-                    since,
-                    severity
+            // 6. HELPERS
+            function addDiagnosisTag(data) {
+                const tag = document.createElement("span");
+                tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+                tag.style.cursor = "pointer";
+                tag.setAttribute("data-id", data.id || "new");
+
+                const textSpan = document.createElement("span");
+                tag.appendChild(textSpan);
+
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.className = "text-light ms-2";
+                removeBtn.innerHTML = "&times;";
+                removeBtn.style.fontSize = "1rem";
+                removeBtn.style.border = "none";
+                removeBtn.style.background = "transparent";
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    tag.remove();
+                    selectedDiagnosis = selectedDiagnosis.filter(d => d.name !== data.name);
+                    updateDiagnosisHidden();
                 };
-                updateDiagnosisTag(editingDiagnosisTag, selectedDiagnosis[existingIndex]);
-                editingDiagnosisTag.setAttribute("data-id", existingId);
-            } else {
-                // New diagnosis → id="new"
-                const data = {
-                    id: "new",
-                    name: pendingDiagnosis,
-                    note,
-                    since,
-                    severity
-                };
-                selectedDiagnosis.push(data);
-                addDiagnosisTag(data);
+
+                tag.appendChild(removeBtn);
+                updateDiagnosisTag(tag, data);
+                tag.onclick = () => openDiagnosisModal(data.name, data, tag);
+
+                // Insert into List Container (Top)
+                if (diagnosisListContainer) {
+                    diagnosisListContainer.appendChild(tag);
+                } else if (tagContainer) {
+                    // Fallback
+                    tagContainer.parentElement.insertBefore(tag, tagContainer.parentElement.firstChild);
+                }
             }
 
-            diagnosisModal.hide();
-            pendingDiagnosis = "";
-            editingDiagnosisTag = null;
-            updateDiagnosisHidden();
-        }
-
-        function addDiagnosisTag(data) {
-            const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-            tag.style.cursor = "pointer";
-
-            // Attach id to tag
-            tag.setAttribute("data-id", data.id || "new");
-
-            const textSpan = document.createElement("span");
-            tag.appendChild(textSpan);
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tag.remove();
-                selectedDiagnosis = selectedDiagnosis.filter(d => d.name !== data.name);
-                updateDiagnosisHidden();
-            };
-
-            tag.appendChild(removeBtn);
-
-            updateDiagnosisTag(tag, data);
-
-            // click = edit
-            tag.onclick = () => {
-                openDiagnosisModal(data.name, data, tag);
-            };
-
-            diagnosisTagContainer.insertBefore(tag, diagnosisInput);
-        }
-
-        function updateDiagnosisTag(tagEl, data) {
-            const textParts = [data.name];
-            const details = [];
-
-            if (data.note) details.push(`Note: ${data.note}`);
-            if (data.since) details.push(`Since: ${data.since}`);
-            if (data.severity) details.push(`Severity: ${data.severity}`);
-
-            if (details.length > 0) {
-                textParts.push(`(${details.join(", ")})`);
+            function updateDiagnosisTag(tagEl, data) {
+                const textParts = [data.name];
+                const details = [];
+                if (data.note) details.push(`Note: ${data.note}`);
+                if (data.since) details.push(`Since: ${data.since}`);
+                if (data.severity) details.push(`Severity: ${data.severity}`);
+                if (details.length > 0) textParts.push(`(${details.join(", ")})`);
+                tagEl.firstChild.textContent = textParts.join(" ");
             }
 
-            tagEl.innerHTML = textParts.join(" ");
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tagEl.remove();
-                selectedDiagnosis = selectedDiagnosis.filter(d => d.name !== data.name);
-                updateDiagnosisHidden();
-            };
-            tagEl.appendChild(removeBtn);
-            tagEl.setAttribute("data-id", data.id || "new");
-        }
-
-        function updateDiagnosisHidden() {
-            document.getElementById("diagnosisJson").value = JSON.stringify(selectedDiagnosis);
-        }
-
-        // Input events
-        diagnosisInput.addEventListener("input", renderDiagnosisSuggestions);
-        diagnosisInput.addEventListener("focus", renderDiagnosisSuggestions);
-        diagnosisInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" && diagnosisInput.value.trim()) {
-                e.preventDefault();
-                openDiagnosisModal(diagnosisInput.value.trim());
-                diagnosisInput.value = "";
+            function updateDiagnosisHidden() {
+                const hiddenInput = document.getElementById("diagnosisJson");
+                if (hiddenInput) hiddenInput.value = JSON.stringify(selectedDiagnosis);
             }
-        });
 
-        document.addEventListener("click", (e) => {
-            if (!diagnosisTagContainer.contains(e.target)) {
-                diagnosisSuggestionsBox.style.display = "none";
-            }
-        });
-
-        renderDiagnosisSuggestions();
-
-        // Preload existing diagnoses in edit mode
-        document.addEventListener("DOMContentLoaded", () => {
-            const preloadDiagnosis = <?php echo isset($diagnosis) ? json_encode($diagnosis) : '[]'; ?>;
-
+            // Initial Load
+            const preloadDiagnosis = <?php echo (isset($diagnosis) && !empty($diagnosis)) ? json_encode($diagnosis) : '[]'; ?>;
             if (preloadDiagnosis.length > 0) {
                 preloadDiagnosis.forEach(item => {
                     const data = {
-                        id: item.id || "", // Preserve diagnosis ID for edit mode
+                        id: item.id || "",
                         name: item.diagnosis_name,
                         note: item.note || "",
                         since: item.since || "",
@@ -3934,269 +4621,428 @@
         });
     </script>
 
-    <!-- Diagnosis save script -->
+    <!-- new Investigation save script -->
     <script>
-        $(document).ready(function () {
-            function parseDiagnosisTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
+        // 1. Load List Safely
+        let investigationsList = <?php echo (isset($investigationsList) && !empty($investigationsList)) ? json_encode($investigationsList) : '[]'; ?>;
 
-                let name, note = '',
-                    since = '',
-                    severity = '';
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- DOM ELEMENTS (Specific to Investigations) ---
+            const investigationsInput = document.getElementById("investigationsSearchInput");
+            const suggestionsBox = document.getElementById("investigationsSuggestionsBox");
+            const tagContainer = document.getElementById("investigationsInput"); // For click outside check
+            const addInvestigationBtn = document.getElementById("addInvestigationBtn");
+            const clearInvestigationSearch = document.getElementById("clearInvestigationSearch");
+            // Top list container
+            const investigationsListContainer = document.getElementById("investigationsList");
 
-                const match = text.match(/^(.+?)(?:\s*\((.*)\))?$/);
+            // --- DETAILED MODAL ELEMENTS (Specific to Investigations) ---
+            const investigationsModalEl = document.getElementById("investigationsModal");
+            const investigationsModal = new bootstrap.Modal(investigationsModalEl);
+            const investigationNote = document.getElementById("investigationNote");
+            const investigationsModalTitle = document.getElementById("investigationsModalTitle");
 
-                if (match) {
-                    name = match[1].trim();
+            // --- UNIVERSAL MODAL REFERENCES ---
+            const universalAddModalEl = document.getElementById("universalAddMasterModal");
+            const universalAddModal = new bootstrap.Modal(universalAddModalEl);
+            const universalForm = document.getElementById("universalAddMasterForm");
+            const universalTitle = document.getElementById("universalMasterTitle");
+            const universalLabel = document.getElementById("universalMasterLabel");
+            const universalInput = document.getElementById("universalMasterInput");
+            const universalId = document.getElementById("universalMasterId");
+            const universalType = document.getElementById("universalMasterType");
 
-                    if (match[2]) {
-                        const details = match[2].split(', ').map(d => d.trim());
+            const universalDeleteModalEl = document.getElementById("universalDeleteModal");
+            const universalDeleteModal = new bootstrap.Modal(universalDeleteModalEl);
+            const universalDeleteName = document.getElementById("universalDeleteNameDisplay");
+            const universalDeleteId = document.getElementById("universalDeleteId");
+            const universalDeleteType = document.getElementById("universalDeleteType");
+            const universalDeleteBtn = document.getElementById("universalDeleteBtn");
 
-                        details.forEach(detail => {
-                            const [key, value] = detail.split(': ', 2);
-                            if (key === 'Note') note = value || '';
-                            else if (key === 'Since') since = value || '';
-                            else if (key === 'Severity') severity = value || '';
-                        });
-                    }
+            let selectedInvestigations = [];
+            let pendingInvestigation = "";
+            let editingInvestigationTag = null;
+
+            // FIX: Force Close for Universal Modals
+            // 1. Add/Edit Modal Close Buttons (Cancel + X)
+            const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            addModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Stop any default behavior
+                    universalAddModal.hide(); // Force Bootstrap to hide it
+
+                    // Optional: Reset form
+                    if (universalForm) universalForm.reset();
+                });
+            });
+
+            // 2. Delete Modal Close Buttons (Cancel + X)
+            const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
+            deleteModalCloseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                });
+            });
+            // 1. RENDER SUGGESTIONS
+            function renderInvestigationsSuggestions() {
+                if (!investigationsInput) return;
+                const query = investigationsInput.value.trim().toLowerCase();
+                suggestionsBox.innerHTML = "";
+
+                // Toggle Buttons
+                if (query.length > 0) {
+                    if (clearInvestigationSearch) clearInvestigationSearch.style.display = 'block';
                 } else {
-                    name = text;
+                    if (clearInvestigationSearch) clearInvestigationSearch.style.display = 'none';
+                    if (addInvestigationBtn) addInvestigationBtn.style.display = 'none';
                 }
 
-                return {
-                    name,
-                    note,
-                    since,
-                    severity
-                };
+                const filtered = investigationsList.filter(i => i.investigationsName.toLowerCase().includes(query));
+
+                if (filtered.length === 0 && query !== "") {
+                    // No Match -> Show Add Button
+                    if (addInvestigationBtn) addInvestigationBtn.style.display = 'block';
+                    if (suggestionsBox) {
+                        suggestionsBox.style.display = 'block';
+                        const noResultDiv = document.createElement("div");
+                        noResultDiv.className = "p-2 text-muted";
+                        noResultDiv.style.fontSize = "0.9rem";
+                        noResultDiv.textContent = "No result found on search – Add new";
+                        suggestionsBox.appendChild(noResultDiv);
+                    }
+                } else {
+                    if (addInvestigationBtn) addInvestigationBtn.style.display = 'none';
+
+                    if (suggestionsBox && query !== "") {
+                        filtered.forEach(item => {
+                            const div = document.createElement("div");
+                            div.className = "d-flex justify-content-between align-items-center border-bottom";
+                            div.style.cursor = "pointer";
+                            div.style.padding = "1px 6px";
+
+                            div.addEventListener("mouseenter", () => {
+                                div.style.backgroundColor = "#8db8afff";
+                            });
+
+                            div.addEventListener("mouseleave", () => {
+                                div.style.backgroundColor = "transparent";
+                            });
+
+                            // A. Name
+                            const spanName = document.createElement("span");
+                            spanName.textContent = item.investigationsName;
+                            spanName.className = "flex-grow-1";
+                            spanName.onclick = (e) => {
+                                e.stopPropagation();
+                                openInvestigationModal(item.investigationsName);
+                                clearSearch();
+                            };
+                            div.appendChild(spanName);
+
+                            // B. Icons (Only if Creator)
+                            if (item.is_mine == true || item.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center";
+
+                                // Edit
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit";
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openUniversalEdit('investigation', item.id, item.investigationsName);
+                                };
+
+                                // Delete
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete";
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openUniversalDelete('investigation', item.id, item.investigationsName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                div.appendChild(actionDiv);
+                            }
+
+                            div.onclick = () => {
+                                openInvestigationModal(item.investigationsName);
+                                clearSearch();
+                            };
+                            suggestionsBox.appendChild(div);
+                        });
+                        suggestionsBox.style.display = "block";
+                    } else {
+                        if (suggestionsBox) suggestionsBox.style.display = "none";
+                    }
+                }
             }
 
-            function updateDiagnosisJson() {
-                let diagnoses = [];
-                $('#diagnosisInputBox > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim(); // Get text without child elements (e.g., remove button)
-                    let diagnosis = parseDiagnosisTagText(tagText);
-                    if (diagnosis) {
-                        let diagnosisId = $(this).attr('data-id') || "new"; // Read ID or mark as new
-                        diagnosis.id = diagnosisId;
-                        diagnoses.push(diagnosis);
+            function clearSearch() {
+                if (investigationsInput) {
+                    investigationsInput.value = "";
+                    investigationsInput.focus();
+                }
+                if (suggestionsBox) suggestionsBox.style.display = "none";
+                if (clearInvestigationSearch) clearInvestigationSearch.style.display = "none";
+                if (addInvestigationBtn) addInvestigationBtn.style.display = "none";
+            }
+
+            // 2. DETAILED MODAL LOGIC (Patient Specific)
+            window.openInvestigationModal = function (tagName, existing = null, tagEl = null) {
+                pendingInvestigation = tagName;
+                editingInvestigationTag = tagEl;
+
+                if (investigationsModalTitle) investigationsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Detail for: ${tagName}`;
+                if (investigationNote) investigationNote.value = existing?.note || "";
+
+                investigationsModal.show();
+                setTimeout(() => { if (investigationNote) investigationNote.focus(); }, 500);
+            }
+
+            window.saveInvestigationModal = function () {
+                const note = investigationNote ? investigationNote.value.trim() : "";
+
+                if (!pendingInvestigation) return;
+
+                const existingIndex = selectedInvestigations.findIndex(s => s.investigation === pendingInvestigation);
+
+                if (editingInvestigationTag && existingIndex !== -1) {
+                    let existingId = selectedInvestigations[existingIndex].id || "new";
+                    selectedInvestigations[existingIndex] = { id: existingId, investigation: pendingInvestigation, note };
+                    updateInvestigationTagDisplay(editingInvestigationTag, selectedInvestigations[existingIndex]);
+                    editingInvestigationTag.setAttribute("data-id", existingId);
+                } else {
+                    const data = { id: "new", investigation: pendingInvestigation, note };
+                    selectedInvestigations.push(data);
+                    addInvestigationTag(data);
+                }
+
+                investigationsModal.hide();
+                pendingInvestigation = "";
+                editingInvestigationTag = null;
+                updateInvestigationHiddenInput();
+            }
+
+            // 3. UNIVERSAL ADD / EDIT HANDLERS
+            // Open Add
+            if (addInvestigationBtn) {
+                addInvestigationBtn.addEventListener('click', () => {
+                    universalTitle.textContent = "Add New Investigation";
+                    universalLabel.innerHTML = 'Investigation Name <span class="text-danger">*</span>';
+                    universalInput.value = investigationsInput.value.trim();
+                    universalId.value = "";
+                    universalType.value = "investigation"; // <--- FLAG
+
+                    universalAddModal.show();
+                    setTimeout(() => universalInput.focus(), 500);
+                });
+            }
+
+            // Open Edit
+            function openUniversalEdit(type, id, name) {
+                universalTitle.textContent = "Edit Investigation";
+                universalLabel.innerHTML = 'Investigation Name <span class="text-danger">*</span>';
+                universalInput.value = name;
+                universalId.value = id;
+                universalType.value = "investigation"; // <--- FLAG
+
+                universalAddModal.show();
+                setTimeout(() => universalInput.focus(), 500);
+            }
+
+            // Global Form Submit (Filtered by Type)
+            // Global Form Submit (Filtered by Type)
+            if (universalForm) {
+                universalForm.addEventListener('submit', (e) => {
+                    // CHECK: Is this for Investigation?
+                    if (universalType.value !== 'investigation') return;
+
+                    e.preventDefault();
+                    const name = universalInput.value.trim();
+                    const id = universalId.value;
+
+                    if (!name) return;
+
+                    // 1. SELECT BUTTON AND DISABLE IT
+                    const submitBtn = universalForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
+                    const url = id ? "<?= site_url('Consultation/editInvestigationItem') ?>" : "<?= site_url('Consultation/addInvestigation') ?>";
+                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: body
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            // 2. RE-ENABLE BUTTON ON RESPONSE
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+
+                            if (data.status === 'success') {
+                                if (id) {
+                                    // Edit Logic
+                                    const index = investigationsList.findIndex(i => i.id == id);
+                                    if (index !== -1) investigationsList[index].investigationsName = name;
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                } else {
+                                    // Add Logic
+                                    investigationsList.push({
+                                        id: data.id,
+                                        investigationsName: name,
+                                        is_mine: true
+                                    });
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                    setTimeout(() => openInvestigationModal(name), 300);
+                                }
+                            } else {
+                                alert("Operation failed");
+                            }
+                        })
+                        .catch(err => {
+                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
+                });
+            }
+
+            // 4. UNIVERSAL DELETE HANDLERS
+            function openUniversalDelete(type, id, name) {
+                universalDeleteName.textContent = name;
+                universalDeleteId.value = id;
+                universalDeleteType.value = "investigation"; // <--- FLAG
+                universalDeleteModal.show();
+            }
+
+            if (universalDeleteBtn) {
+                universalDeleteBtn.addEventListener('click', () => {
+                    // CHECK: Is this for Investigation?
+                    if (universalDeleteType.value !== 'investigation') return;
+
+                    const id = universalDeleteId.value;
+                    fetch("<?= site_url('Consultation/deleteInvestigationItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                investigationsList = investigationsList.filter(i => i.id != id);
+                                universalDeleteModal.hide();
+                                renderInvestigationsSuggestions();
+                            }
+                        });
+                });
+            }
+
+            // 5. KEYBOARD & INPUT EVENTS
+            if (investigationsInput) {
+                investigationsInput.addEventListener("input", renderInvestigationsSuggestions);
+                investigationsInput.addEventListener("focus", renderInvestigationsSuggestions);
+
+                investigationsInput.addEventListener("keydown", e => {
+                    if (e.key === "Enter" && investigationsInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const val = investigationsInput.value.trim();
+                        const exists = investigationsList.some(i => i.investigationsName.toLowerCase() === val.toLowerCase());
+
+                        if (exists) {
+                            openInvestigationModal(val);
+                            clearSearch();
+                        } else {
+                            if (addInvestigationBtn) addInvestigationBtn.click();
+                        }
                     }
                 });
-                $('#diagnosisJson').val(JSON.stringify(diagnoses));
-                console.log('Diagnosis JSON updated:', $('#diagnosisJson').val()); // Debug
             }
 
-            const diagnosisObserver = new MutationObserver(updateDiagnosisJson);
-            diagnosisObserver.observe(document.getElementById('diagnosisInputBox'), {
-                childList: true,
-                subtree: true
-            });
-
-            $('#consultationForm').on('submit', function (e) {
-                updateDiagnosisJson(); // Ensure latest data
-                console.log('Form submitting with diagnosisJson:', $('#diagnosisJson').val()); // Debug
-            });
-        });
-    </script>
-
-    <!-- Investigation Search Button -->
-    <script>
-        const investigationsList = <?php echo json_encode(array_column($investigationsList, 'investigationsName')); ?>;
-
-        const investigationsInput = document.getElementById("investigationsSearchInput");
-        const investigationsSuggestionsBox = document.getElementById("investigationsSuggestionsBox");
-        const investigationsTagContainer = document.getElementById("investigationsInput");
-
-        const investigationsModal = new bootstrap.Modal(document.getElementById("investigationsModal"));
-        const investigationNote = document.getElementById("investigationNote");
-        const investigationsModalTitle = document.getElementById("investigationsModalTitle");
-
-        let selectedInvestigations = [];
-        let pendingInvestigation = "";
-        let editingInvestigationTag = null;
-
-        function renderInvestigationsSuggestions() {
-            const query = investigationsInput.value.trim();
-            const queryLower = query.toLowerCase();
-            investigationsSuggestionsBox.innerHTML = "";
-
-            const filtered = investigationsList.filter(s =>
-                s.toLowerCase().includes(queryLower) &&
-                !selectedInvestigations.some(obj => obj.investigation === s)
-            );
-
-            if (filtered.length === 0 && query !== "") {
-                const customOption = document.createElement("div");
-                customOption.innerHTML = `Add "<strong>${query}</strong>"`;
-                customOption.onclick = () => {
-                    openInvestigationModal(query);
-                    investigationsInput.value = "";
-                };
-                investigationsSuggestionsBox.appendChild(customOption);
-            } else {
-                filtered.forEach(item => {
-                    const div = document.createElement("div");
-                    div.textContent = item;
-                    div.onclick = () => {
-                        openInvestigationModal(item);
-                        investigationsInput.value = "";
-                    };
-                    investigationsSuggestionsBox.appendChild(div);
+            if (investigationsModalEl) {
+                investigationsModalEl.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveInvestigationModal();
+                    }
                 });
             }
 
-            investigationsSuggestionsBox.style.display = "block";
-        }
-
-        function openInvestigationModal(tagName, existing = null, tagEl = null) {
-            pendingInvestigation = tagName;
-            editingInvestigationTag = tagEl;
-
-            investigationsModalTitle.textContent = existing ? `Edit: ${tagName}` : `Details for: ${tagName}`;
-            investigationNote.value = existing?.note || "";
-
-            investigationsModal.show();
-        }
-
-        function saveInvestigationModal() {
-            const note = investigationNote.value.trim();
-
-            if (!pendingInvestigation) return;
-
-            const existingIndex = selectedInvestigations.findIndex(s => s.investigation === pendingInvestigation);
-
-            if (!investigationsList.includes(pendingInvestigation)) {
-                fetch("<?= site_url('Consultation/addInvestigation') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(pendingInvestigation)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            investigationsList.push(pendingInvestigation);
-                        } else {
-                            console.error("Error saving new investigation", data);
-                        }
-                    })
-                    .catch(err => console.error(err));
+            if (clearInvestigationSearch) {
+                clearInvestigationSearch.addEventListener("click", clearSearch);
             }
 
-            if (editingInvestigationTag && existingIndex !== -1) {
-                let existingId = selectedInvestigations[existingIndex].id || "new";
-                selectedInvestigations[existingIndex] = {
-                    id: existingId,
-                    investigation: pendingInvestigation,
-                    note
+            document.addEventListener("click", (e) => {
+                if (tagContainer && !tagContainer.contains(e.target) &&
+                    addInvestigationBtn && !addInvestigationBtn.contains(e.target)) {
+                    if (suggestionsBox) suggestionsBox.style.display = "none";
+                }
+            });
+
+            // 6. HELPERS
+            function addInvestigationTag(data) {
+                const tag = document.createElement("span");
+                tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
+                tag.style.cursor = "pointer";
+                tag.setAttribute("data-id", data.id || "new");
+
+                const textSpan = document.createElement("span");
+                tag.appendChild(textSpan);
+
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.className = "text-light ms-2";
+                removeBtn.innerHTML = "&times;";
+                removeBtn.style.fontSize = "1rem";
+                removeBtn.style.border = "none";
+                removeBtn.style.background = "transparent";
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    tag.remove();
+                    selectedInvestigations = selectedInvestigations.filter(s => s.investigation !== data.investigation);
+                    updateInvestigationHiddenInput();
                 };
-                updateInvestigationTagDisplay(editingInvestigationTag, selectedInvestigations[existingIndex]);
-                editingInvestigationTag.setAttribute("data-id", existingId);
-            } else {
-                const data = {
-                    id: "new",
-                    investigation: pendingInvestigation,
-                    note
-                };
-                selectedInvestigations.push(data);
-                addInvestigationTag(data);
+
+                tag.appendChild(removeBtn);
+                updateInvestigationTagDisplay(tag, data);
+                tag.onclick = () => openInvestigationModal(data.investigation, data, tag);
+
+                // Insert into List Container (Top)
+                if (investigationsListContainer) {
+                    investigationsListContainer.appendChild(tag);
+                } else if (tagContainer) {
+                    // Fallback
+                    tagContainer.parentElement.insertBefore(tag, tagContainer.parentElement.firstChild);
+                }
             }
 
-            investigationsModal.hide();
-            pendingInvestigation = "";
-            editingInvestigationTag = null;
-            updateInvestigationHiddenInput();
-        }
-
-        function addInvestigationTag(data) {
-            const tag = document.createElement("span");
-            tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-            tag.style.cursor = "pointer";
-            tag.setAttribute("data-id", data.id || "new");
-
-            const textSpan = document.createElement("span");
-            tag.appendChild(textSpan);
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tag.remove();
-                selectedInvestigations = selectedInvestigations.filter(s => s.investigation !== data.investigation);
-                updateInvestigationHiddenInput();
-            };
-
-            tag.appendChild(removeBtn);
-
-            updateInvestigationTagDisplay(tag, data);
-
-            tag.onclick = () => {
-                openInvestigationModal(data.investigation, data, tag);
-            };
-
-            investigationsTagContainer.insertBefore(tag, investigationsInput);
-        }
-
-        function updateInvestigationTagDisplay(tagEl, data) {
-            const textParts = [data.investigation];
-            const details = [];
-
-            if (data.note) details.push(`Note: ${data.note}`);
-
-            if (details.length > 0) {
-                textParts.push(`(${details.join(", ")})`);
+            function updateInvestigationTagDisplay(tagEl, data) {
+                const textParts = [data.investigation];
+                const details = [];
+                if (data.note) details.push(`Note: ${data.note}`);
+                if (details.length > 0) textParts.push(`(${details.join(", ")})`);
+                tagEl.firstChild.textContent = textParts.join(" ");
             }
 
-            tagEl.innerHTML = textParts.join(" ");
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.className = "text-light ms-2";
-            removeBtn.innerHTML = "&times;";
-            removeBtn.style.fontSize = "1rem";
-            removeBtn.style.border = "none";
-            removeBtn.style.background = "transparent";
-            removeBtn.onclick = (e) => {
-                e.stopPropagation();
-                tagEl.remove();
-                selectedInvestigations = selectedInvestigations.filter(s => s.investigation !== data.investigation);
-                updateInvestigationHiddenInput();
-            };
-            tagEl.appendChild(removeBtn);
-            tagEl.setAttribute("data-id", data.id || "new");
-        }
-
-        function updateInvestigationHiddenInput() {
-            document.getElementById("investigationsJson").value = JSON.stringify(selectedInvestigations);
-        }
-
-        investigationsInput.addEventListener("input", renderInvestigationsSuggestions);
-        investigationsInput.addEventListener("focus", renderInvestigationsSuggestions);
-        investigationsInput.addEventListener("keydown", e => {
-            if (e.key === "Enter" && investigationsInput.value.trim() !== "") {
-                e.preventDefault();
-                openInvestigationModal(investigationsInput.value.trim());
-                investigationsInput.value = "";
+            function updateInvestigationHiddenInput() {
+                const hiddenInput = document.getElementById("investigationsJson");
+                if (hiddenInput) hiddenInput.value = JSON.stringify(selectedInvestigations);
             }
-        });
 
-        document.addEventListener("click", (e) => {
-            if (!investigationsTagContainer.contains(e.target)) {
-                investigationsSuggestionsBox.style.display = "none";
-            }
-        });
-
-        renderInvestigationsSuggestions();
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const preloadInvestigations = <?php echo isset($investigations) ? json_encode($investigations) : '[]'; ?>;
-
+            // Initial Load
+            const preloadInvestigations = <?php echo (isset($investigations) && !empty($investigations)) ? json_encode($investigations) : '[]'; ?>;
             if (preloadInvestigations.length > 0) {
                 preloadInvestigations.forEach(item => {
                     const data = {
@@ -4212,591 +5058,1378 @@
         });
     </script>
 
-    <!-- Investigation save script -->
+    <!-- New Instruction Search Button -->
     <script>
-        $(document).ready(function () {
-            function parseInvestigationTagText(text) {
-                text = text.trim().replace(/&times;$/g, '').trim();
+        // 1. Load Lists
+        let instructionsList = <?php echo (isset($instructionsList) && !empty($instructionsList)) ? json_encode($instructionsList) : '[]'; ?>;
+        // Pre-checked items
+        let savedInstructions = <?php echo (isset($instructions) && !empty($instructions)) ? json_encode($instructions) : '[]'; ?>;
 
-                let match = text.match(/^(.+?)\s*\((.+)\)$/);
-                if (match) {
-                    let investigation = match[1].trim();
-                    let detailsStr = match[2].trim();
+        // 2. Initialize Set
+        let selectedInstructionSet = new Set();
+        const normIns = s => (s || '').toLowerCase().trim();
 
-                    let parsed = {
-                        investigation: investigation,
-                        note: ''
-                    };
-
-                    if (detailsStr.toLowerCase().startsWith("note:")) {
-                        parsed.note = detailsStr.split(":")[1].trim();
-                    }
-
-                    return parsed;
-                } else {
-                    return {
-                        investigation: text,
-                        note: ''
-                    };
-                }
-            }
-
-            function updateInvestigationsJson() {
-                let investigations = [];
-                $('#investigationsInput > span.bg-success').each(function () {
-                    let tagText = $(this).clone().children().remove().end().text().trim();
-                    let investigation = parseInvestigationTagText(tagText);
-
-                    if (investigation) {
-                        let investigationId = $(this).attr('data-id') || "new";
-                        investigation.id = investigationId;
-                        investigations.push(investigation);
-                    }
-                });
-                $('#investigationsJson').val(JSON.stringify(investigations));
-            }
-
-            const observer = new MutationObserver(updateInvestigationsJson);
-            observer.observe(document.getElementById('investigationsInput'), {
-                childList: true,
-                subtree: true
+        if (Array.isArray(savedInstructions)) {
+            savedInstructions.forEach(i => {
+                let name = i.instruction_name || i;
+                selectedInstructionSet.add(normIns(name));
             });
+        }
 
-            $('#consultationForm').on('submit', function () {
-                updateInvestigationsJson();
-            });
-        });
-    </script>
-
-    <!-- Instruction Search Button -->
-    <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Elements
             const searchInput = document.getElementById('instructionSearch');
             const clearBtn = document.getElementById('clearInstructionSearch');
-            const addBtn = document.getElementById('addInstruction');
+            const addBtn = document.getElementById('addInstruction') || document.getElementById('addInstructionBtn');
             const list = document.getElementById('instructionList');
-            const modalEl = document.getElementById('addInstructionModal');
-            const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
-            const newInstructionInput = document.getElementById('newInstructionName');
-            const addForm = document.getElementById('addInstructionForm');
 
-            const preloadInstructions = <?php echo isset($instructions) ? json_encode($instructions) : '[]'; ?>;
+            // Universal Modals
+            const uAddModalEl = document.getElementById("universalAddMasterModal");
+            const uAddModal = new bootstrap.Modal(uAddModalEl);
+            const uAddForm = document.getElementById("universalAddMasterForm");
+            const uTitle = document.getElementById("universalMasterTitle");
+            const uLabel = document.getElementById("universalMasterLabel");
+            const uInput = document.getElementById("universalMasterInput");
+            const uId = document.getElementById("universalMasterId");
+            const uType = document.getElementById("universalMasterType");
 
-            function norm(s) {
-                return (s || '').toLowerCase().trim();
-            }
+            const uDelModalEl = document.getElementById("universalDeleteModal");
+            const uDelModal = new bootstrap.Modal(uDelModalEl);
+            const uDelName = document.getElementById("universalDeleteNameDisplay");
+            const uDelId = document.getElementById("universalDeleteId");
+            const uDelType = document.getElementById("universalDeleteType");
+            const uDelBtn = document.getElementById("universalDeleteBtn");
 
+            // FIX: FORCE CLOSE HANDLERS (Solves the Cancel Button Issue)
+            // 1. Add/Edit Modal (Cancel + X)
+            uAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    uAddModal.hide();
+                    if (uAddForm) uAddForm.reset();
+                });
+            });
+
+            // 2. Delete Modal (Cancel + X)
+            uDelModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    uDelModal.hide();
+                });
+            });
+
+            // 1. DOM SORTING
             function sortList() {
                 const items = Array.from(list.querySelectorAll('.instruction-item'));
                 const selected = items.filter(i => i.querySelector('input').checked);
                 const unselected = items.filter(i => !i.querySelector('input').checked);
 
-                unselected.sort((a, b) => {
-                    const nameA = a.querySelector('label').textContent.trim().toLowerCase();
-                    const nameB = b.querySelector('label').textContent.trim().toLowerCase();
-                    return nameA.localeCompare(nameB);
-                });
-
-                list.innerHTML = '';
+                items.forEach(i => i.remove());
                 selected.forEach(i => list.appendChild(i));
                 unselected.forEach(i => list.appendChild(i));
             }
 
-            function filter() {
-                const q = norm(searchInput.value);
-                let matches = 0;
-                let hasVisible = false;
+            // 2. RENDER LIST
+            function renderList() {
+                const q = normIns(searchInput.value);
+                list.innerHTML = '';
 
-                list.querySelectorAll('.instruction-item').forEach(item => {
-                    const labelText = item.querySelector('label').textContent;
-                    const show = norm(labelText).includes(q) || q === '';
-                    item.classList.toggle('d-none', !show);
-                    if (show) matches++;
-                    if (show) hasVisible = true;
-                });
-
-                let noResultMsg = list.querySelector('.no-result');
-                if (!hasVisible) {
-                    if (!noResultMsg) {
-                        noResultMsg = document.createElement('div');
-                        noResultMsg.className = 'no-result text-muted mt-2';
-                        noResultMsg.textContent = 'No result found on search – Add new';
-                        list.appendChild(noResultMsg);
-                    }
-                } else if (noResultMsg) {
-                    noResultMsg.remove();
+                // Toggle Buttons
+                if (q.length > 0) {
+                    clearBtn.style.display = 'block';
+                } else {
+                    clearBtn.style.display = 'none';
+                    if (addBtn) addBtn.style.display = 'none';
                 }
 
-                addBtn.classList.toggle('d-none', !(q && matches === 0));
+                let filtered = instructionsList.filter(i => normIns(i.instructionsName).includes(q));
+
+                // Sorting: Checked items top
+                filtered.sort((a, b) => {
+                    const aSelected = selectedInstructionSet.has(normIns(a.instructionsName));
+                    const bSelected = selectedInstructionSet.has(normIns(b.instructionsName));
+
+                    if (aSelected && !bSelected) return -1;
+                    if (!aSelected && bSelected) return 1;
+                    return 0;
+                });
+
+                if (filtered.length === 0 && q !== "") {
+                    if (addBtn) addBtn.style.display = 'block';
+
+                    const noResultDiv = document.createElement("div");
+                    noResultDiv.className = "text-muted p-2";
+                    noResultDiv.textContent = "No result found – Add new";
+                    list.appendChild(noResultDiv);
+                } else {
+                    if (addBtn) addBtn.style.display = 'none';
+
+                    filtered.forEach(ins => {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'form-check instruction-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
+
+                        wrapper.addEventListener("mouseenter", () => {
+                            wrapper.style.backgroundColor = "#8db8afff";
+                        });
+                        wrapper.addEventListener("mouseleave", () => {
+                            wrapper.style.backgroundColor = "transparent";
+                        });
+                        // Left Side
+                        const leftDiv = document.createElement('div');
+                        leftDiv.className = 'd-flex align-items-center flex-grow-1';
+
+                        const checkbox = document.createElement('input');
+                        checkbox.className = 'form-check-input mt-0';
+                        checkbox.type = 'checkbox';
+                        checkbox.name = 'instructions[]';
+                        checkbox.value = ins.instructionsName;
+                        checkbox.id = `ins${ins.id}`;
+
+                        if (selectedInstructionSet.has(normIns(ins.instructionsName))) {
+                            checkbox.checked = true;
+                        }
+
+                        checkbox.addEventListener('change', (e) => {
+                            if (e.target.checked) {
+                                selectedInstructionSet.add(normIns(ins.instructionsName));
+                            } else {
+                                selectedInstructionSet.delete(normIns(ins.instructionsName));
+                            }
+                        });
+
+                        const label = document.createElement('label');
+                        label.className = 'form-check-label ms-2';
+                        label.htmlFor = `ins${ins.id}`;
+                        label.textContent = ins.instructionsName;
+                        label.style.cursor = 'pointer';
+                        label.style.width = '100%';
+
+                        leftDiv.appendChild(checkbox);
+                        leftDiv.appendChild(label);
+                        wrapper.appendChild(leftDiv);
+
+                        // Right Side: Icons
+                        if (ins.is_mine == true || ins.is_mine == "true") {
+                            const actionDiv = document.createElement("div");
+                            actionDiv.className = "d-flex align-items-center gap-2";
+
+                            const editIcon = document.createElement("i");
+                            editIcon.className = "bi bi-pen action-icon edit";
+                            editIcon.title = "Edit";
+                            editIcon.onclick = (e) => {
+                                e.preventDefault();
+                                openUniversalEdit('instruction', ins.id, ins.instructionsName);
+                            };
+
+                            const deleteIcon = document.createElement("i");
+                            deleteIcon.className = "bi bi-trash action-icon delete";
+                            deleteIcon.title = "Delete";
+                            deleteIcon.onclick = (e) => {
+                                e.preventDefault();
+                                openUniversalDelete('instruction', ins.id, ins.instructionsName);
+                            };
+
+                            actionDiv.appendChild(editIcon);
+                            actionDiv.appendChild(deleteIcon);
+                            wrapper.appendChild(actionDiv);
+                        }
+
+                        list.appendChild(wrapper);
+                    });
+                }
             }
 
-            function handleCheckChange(e) {
+            // --- LISTEN FOR CHECKS (Triggers Sort) ---
+            list.addEventListener('change', (e) => {
                 if (e.target.matches('input[type="checkbox"]')) {
                     sortList();
                 }
+            });
+
+            // --- HANDLERS ---
+
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    uTitle.textContent = "Add New Instruction";
+                    uLabel.innerHTML = 'Instruction Name <span class="text-danger">*</span>';
+                    uInput.value = searchInput.value.trim();
+                    uId.value = "";
+                    uType.value = "instruction";
+                    uAddModal.show();
+                    setTimeout(() => uInput.focus(), 500);
+                });
             }
 
-            searchInput.addEventListener('input', filter);
+            function openUniversalEdit(type, id, name) {
+                uTitle.textContent = "Edit Instruction";
+                uLabel.innerHTML = 'Instruction Name <span class="text-danger">*</span>';
+                uInput.value = name;
+                uId.value = id;
+                uType.value = "instruction";
+                uAddModal.show();
+                setTimeout(() => uInput.focus(), 500);
+            }
 
-            clearBtn.addEventListener('click', () => {
-                searchInput.value = '';
-                filter();
-                searchInput.focus();
-            });
+            function openUniversalDelete(type, id, name) {
+                uDelName.textContent = name;
+                uDelId.value = id;
+                uDelType.value = "instruction";
+                uDelModal.show();
+            }
 
-            addBtn.addEventListener('click', () => {
-                newInstructionInput.value = searchInput.value.trim();
-                if (modal) {
-                    modal.show();
-                } else {
-                    modalEl.classList.add('show');
-                    modalEl.style.display = 'block';
-                }
-            });
+            // Handle Form Submit
+            // Handle Form Submit
+            if (uAddForm) {
+                uAddForm.addEventListener('submit', (e) => {
+                    if (uType.value !== 'instruction') return;
+                    e.preventDefault();
 
-            addForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const name = newInstructionInput.value.trim();
-                if (!name) return;
+                    const name = uInput.value.trim();
+                    const id = uId.value;
+                    if (!name) return;
 
-                fetch("<?= site_url('Consultation/addInstruction') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(name)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'form-check instruction-item';
-                            wrapper.innerHTML = `
-                    <input class="form-check-input" type="checkbox" 
-                           name="instructions[]" 
-                           value="${data.name}" 
-                           id="ins${data.id}" checked>
-                    <label class="form-check-label" for="ins${data.id}">${data.name}</label>
-                `;
-                            list.prepend(wrapper);
+                    // 1. SELECT BUTTON AND DISABLE IT
+                    const submitBtn = uAddForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
 
-                            // Attach sorting behavior to new checkbox
-                            wrapper.querySelector('input').addEventListener('change', handleCheckChange);
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
 
-                            if (modal) {
-                                modal.hide();
-                            }
-                            searchInput.value = '';
-                            filter();
-                            sortList();
-                        } else {
-                            alert(data.message || "Error saving instruction");
-                        }
+                    const url = id ? "<?= site_url('Consultation/editInstructionItem') ?>" : "<?= site_url('Consultation/addInstruction') ?>";
+                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: body
                     })
-                    .catch(err => console.error(err));
-            });
+                        .then(res => res.json())
+                        .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
 
-            // 🧾 Preload instructions from database
-            if (Array.isArray(preloadInstructions)) {
-                preloadInstructions.forEach(ins => {
-                    const checkbox = list.querySelector(
-                        `input[type="checkbox"][value="${ins.instruction_name}"]`
-                    );
-                    if (checkbox) {
-                        checkbox.checked = true;
+                            if (data.status === 'success') {
+                                if (id) {
+                                    const index = instructionsList.findIndex(i => i.id == id);
+                                    if (index !== -1) {
+                                        const oldName = instructionsList[index].instructionsName;
+                                        instructionsList[index].instructionsName = name;
+
+                                        if (selectedInstructionSet.has(normIns(oldName))) {
+                                            selectedInstructionSet.delete(normIns(oldName));
+                                            selectedInstructionSet.add(normIns(name));
+                                        }
+                                    }
+                                } else {
+                                    instructionsList.push({
+                                        id: data.id,
+                                        instructionsName: name,
+                                        is_mine: true
+                                    });
+                                    selectedInstructionSet.add(normIns(name));
+                                }
+                                uAddModal.hide();
+                                searchInput.value = "";
+                                renderList();
+                            } else {
+                                alert("Operation failed");
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
+                });
+            }
+
+            // Handle Delete
+            if (uDelBtn) {
+                uDelBtn.addEventListener('click', () => {
+                    if (uDelType.value !== 'instruction') return;
+
+                    const id = uDelId.value;
+                    fetch("<?= site_url('Consultation/deleteInstructionItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                const item = instructionsList.find(i => i.id == id);
+                                if (item) selectedInstructionSet.delete(normIns(item.instructionsName));
+
+                                instructionsList = instructionsList.filter(i => i.id != id);
+                                uDelModal.hide();
+                                renderList();
+                            }
+                        });
+                });
+            }
+
+            // --- EVENTS ---
+            if (searchInput) {
+                searchInput.addEventListener('input', renderList);
+
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === "Enter" && searchInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const q = normIns(searchInput.value);
+                        const exists = instructionsList.some(i => normIns(i.instructionsName) === q);
+
+                        if (!exists) {
+                            if (addBtn) addBtn.click();
+                        }
                     }
                 });
             }
 
-            list.addEventListener('change', handleCheckChange);
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    renderList();
+                    searchInput.focus();
+                });
+            }
 
-            sortList();
-            filter();
+            // Initial Render
+            renderList();
         });
     </script>
 
-    <!-- Procedure Search Button -->
+    <!-- New Procedure Search Button -->
     <script>
+        // 1. Load Lists
+        let proceduresList = <?php echo (isset($proceduresList) && !empty($proceduresList)) ? json_encode($proceduresList) : '[]'; ?>;
+
+        // 2. Pre-checked items
+        let savedProcedures = <?php echo (isset($procedures) && !empty($procedures)) ? json_encode($procedures) : '[]'; ?>;
+
+        // 3. Initialize Set
+        let selectedSet = new Set();
+        const norm = s => (s || '').toLowerCase().trim();
+
+        if (Array.isArray(savedProcedures)) {
+            savedProcedures.forEach(p => {
+                let name = p.procedure_name || p;
+                selectedSet.add(norm(name));
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            // --- ELEMENTS ---
             const searchInput = document.getElementById('procedureSearch');
             const clearBtn = document.getElementById('clearProcedureSearch');
-            const addBtn = document.getElementById('addProcedure');
+            const addBtn = document.getElementById('addProcedure') || document.getElementById('addProcedureBtn');
             const list = document.getElementById('procedureList');
-            const modalEl = document.getElementById('addProcedureModal');
-            const modal = (window.bootstrap && bootstrap.Modal) ? new bootstrap.Modal(modalEl) : null;
-            const newProcedureInput = document.getElementById('newProcedureName');
-            const addForm = document.getElementById('addProcedureForm');
 
-            const preloadProcedures = <?php echo isset($procedures) ? json_encode($procedures) : '[]'; ?>;
+            // --- UNIVERSAL MODALS ---
+            // 1. Add/Edit Modal
+            const uAddModalEl = document.getElementById("universalAddMasterModal");
+            const uAddModal = new bootstrap.Modal(uAddModalEl);
+            const uAddForm = document.getElementById("universalAddMasterForm");
+            const uTitle = document.getElementById("universalMasterTitle");
+            const uLabel = document.getElementById("universalMasterLabel");
+            const uInput = document.getElementById("universalMasterInput");
+            const uId = document.getElementById("universalMasterId");
+            const uType = document.getElementById("universalMasterType");
 
-            function norm(s) {
-                return s.toLowerCase().trim();
-            }
+            // 2. Delete Modal
+            const uDelModalEl = document.getElementById("universalDeleteModal");
+            const uDelModal = new bootstrap.Modal(uDelModalEl);
+            const uDelName = document.getElementById("universalDeleteNameDisplay");
+            const uDelId = document.getElementById("universalDeleteId");
+            const uDelType = document.getElementById("universalDeleteType");
+            const uDelBtn = document.getElementById("universalDeleteBtn");
 
+            // FIX: FORCE CLOSE HANDLERS (Solves the Cancel Button Issue)
+            // 1. Add/Edit Modal (Cancel + X)
+            uAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    uAddModal.hide();
+                    if (uAddForm) uAddForm.reset();
+                });
+            });
+
+            // 2. Delete Modal (Cancel + X)
+            uDelModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    uDelModal.hide();
+                });
+            });
+
+            // 1. DOM SORTING
             function sortList() {
                 const items = Array.from(list.querySelectorAll('.procedure-item'));
                 const selected = items.filter(i => i.querySelector('input').checked);
                 const unselected = items.filter(i => !i.querySelector('input').checked);
 
-                unselected.sort((a, b) => {
-                    const nameA = a.querySelector('label').textContent.trim().toLowerCase();
-                    const nameB = b.querySelector('label').textContent.trim().toLowerCase();
-                    return nameA.localeCompare(nameB);
-                });
-
-                list.innerHTML = '';
+                items.forEach(i => i.remove());
                 selected.forEach(i => list.appendChild(i));
                 unselected.forEach(i => list.appendChild(i));
             }
 
-            function filter() {
+            // 2. RENDER LIST
+            function renderList() {
                 const q = norm(searchInput.value);
-                let matches = 0;
-                let hasVisible = false;
+                list.innerHTML = '';
 
-                list.querySelectorAll('.procedure-item').forEach(item => {
-                    const labelText = item.querySelector('label').textContent;
-                    const show = norm(labelText).includes(q) || q === '';
-                    item.classList.toggle('d-none', !show);
-                    if (show) matches++;
-                    if (show) hasVisible = true;
-                });
-
-                let noResultMsg = list.querySelector('.no-result');
-                if (!hasVisible) {
-                    if (!noResultMsg) {
-                        noResultMsg = document.createElement('div');
-                        noResultMsg.className = 'no-result text-muted mt-2';
-                        noResultMsg.textContent = 'No result found on search – Add new';
-                        list.appendChild(noResultMsg);
-                    }
-                } else if (noResultMsg) {
-                    noResultMsg.remove();
+                // Toggle Buttons
+                if (q.length > 0) {
+                    clearBtn.style.display = 'block';
+                } else {
+                    clearBtn.style.display = 'none';
+                    if (addBtn) addBtn.style.display = 'none';
                 }
 
-                addBtn.classList.toggle('d-none', !(q && matches === 0));
+                let filtered = proceduresList.filter(p => norm(p.proceduresName).includes(q));
+
+                // Sort: Checked items top
+                filtered.sort((a, b) => {
+                    const aSelected = selectedSet.has(norm(a.proceduresName));
+                    const bSelected = selectedSet.has(norm(b.proceduresName));
+
+                    if (aSelected && !bSelected) return -1;
+                    if (!aSelected && bSelected) return 1;
+                    return 0;
+                });
+
+                if (filtered.length === 0 && q !== "") {
+                    if (addBtn) addBtn.style.display = 'block';
+
+                    const noResultDiv = document.createElement("div");
+                    noResultDiv.className = "text-muted p-2";
+                    noResultDiv.textContent = "No result found – Add new";
+                    list.appendChild(noResultDiv);
+                } else {
+                    if (addBtn) addBtn.style.display = 'none';
+
+                    filtered.forEach(pro => {
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'form-check procedure-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
+
+                        wrapper.addEventListener("mouseenter", () => {
+                            wrapper.style.backgroundColor = "#8db8afff";
+                        });
+                        wrapper.addEventListener("mouseleave", () => {
+                            wrapper.style.backgroundColor = "transparent";
+                        });
+
+                        // Left Side
+                        const leftDiv = document.createElement('div');
+                        leftDiv.className = 'd-flex align-items-center flex-grow-1';
+
+                        const checkbox = document.createElement('input');
+                        checkbox.className = 'form-check-input mt-0';
+                        checkbox.type = 'checkbox';
+                        checkbox.name = 'procedures[]';
+                        checkbox.value = pro.proceduresName;
+                        checkbox.id = `pro${pro.id}`;
+
+                        if (selectedSet.has(norm(pro.proceduresName))) {
+                            checkbox.checked = true;
+                        }
+
+                        checkbox.addEventListener('change', (e) => {
+                            if (e.target.checked) {
+                                selectedSet.add(norm(pro.proceduresName));
+                            } else {
+                                selectedSet.delete(norm(pro.proceduresName));
+                            }
+                        });
+
+                        const label = document.createElement('label');
+                        label.className = 'form-check-label ms-2';
+                        label.htmlFor = `pro${pro.id}`;
+                        label.textContent = pro.proceduresName;
+                        label.style.cursor = 'pointer';
+                        label.style.width = '100%';
+
+                        leftDiv.appendChild(checkbox);
+                        leftDiv.appendChild(label);
+                        wrapper.appendChild(leftDiv);
+
+                        // Right Side: Icons
+                        if (pro.is_mine == true || pro.is_mine == "true") {
+                            const actionDiv = document.createElement("div");
+                            actionDiv.className = "d-flex align-items-center gap-2";
+
+                            const editIcon = document.createElement("i");
+                            editIcon.className = "bi bi-pen action-icon edit";
+                            editIcon.title = "Edit";
+                            editIcon.onclick = (e) => {
+                                e.preventDefault();
+                                openUniversalEdit('procedure', pro.id, pro.proceduresName);
+                            };
+
+                            const deleteIcon = document.createElement("i");
+                            deleteIcon.className = "bi bi-trash action-icon delete";
+                            deleteIcon.title = "Delete";
+                            deleteIcon.onclick = (e) => {
+                                e.preventDefault();
+                                openUniversalDelete('procedure', pro.id, pro.proceduresName);
+                            };
+
+                            actionDiv.appendChild(editIcon);
+                            actionDiv.appendChild(deleteIcon);
+                            wrapper.appendChild(actionDiv);
+                        }
+
+                        list.appendChild(wrapper);
+                    });
+                }
             }
 
-            function handleCheckChange(e) {
+            // --- LISTEN FOR CHECKS ---
+            list.addEventListener('change', (e) => {
                 if (e.target.matches('input[type="checkbox"]')) {
                     sortList();
                 }
-            }
-
-            searchInput.addEventListener('input', filter);
-
-            clearBtn.addEventListener('click', () => {
-                searchInput.value = '';
-                filter();
-                searchInput.focus();
             });
 
-            addBtn.addEventListener('click', () => {
-                newProcedureInput.value = searchInput.value.trim();
-                if (modal) {
-                    modal.show();
-                } else {
-                    modalEl.classList.add('show');
-                    modalEl.style.display = 'block';
-                }
-            });
+            // --- HANDLERS ---
 
-            addForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const name = newProcedureInput.value.trim();
-                if (!name) return;
-
-                fetch("<?= site_url('Consultation/addProcedure') ?>", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body: "name=" + encodeURIComponent(name)
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'form-check procedure-item';
-                            wrapper.innerHTML = `
-                    <input class="form-check-input" type="checkbox" 
-                           name="procedures[]" 
-                           value="${data.name}" 
-                           id="pro${data.id}" checked>
-                    <label class="form-check-label" for="pro${data.id}">${data.name}</label>
-                `;
-                            list.prepend(wrapper);
-
-                            if (modal) {
-                                modal.hide();
-                            }
-                            searchInput.value = '';
-                            filter();
-                        } else {
-                            alert(data.message || "Error saving procedure");
-                        }
-                    })
-                    .catch(err => console.error(err));
-            });
-
-            if (Array.isArray(preloadProcedures)) {
-                preloadProcedures.forEach(pro => {
-                    const checkbox = list.querySelector(
-                        `input[type="checkbox"][value="${pro.procedure_name}"]`
-                    );
-                    if (checkbox) checkbox.checked = true;
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    uTitle.textContent = "Add New Procedure";
+                    uLabel.innerHTML = 'Procedure Name <span class="text-danger">*</span>';
+                    uInput.value = searchInput.value.trim();
+                    uId.value = "";
+                    uType.value = "procedure"; // FLAG
+                    uAddModal.show();
+                    setTimeout(() => uInput.focus(), 500);
                 });
             }
 
-            list.addEventListener('change', handleCheckChange);
+            function openUniversalEdit(type, id, name) {
+                uTitle.textContent = "Edit Procedure";
+                uLabel.innerHTML = 'Procedure Name <span class="text-danger">*</span>';
+                uInput.value = name;
+                uId.value = id;
+                uType.value = "procedure";
+                uAddModal.show();
+                setTimeout(() => uInput.focus(), 500);
+            }
 
-            // Initial sort and filter
-            sortList();
-            filter();
+            function openUniversalDelete(type, id, name) {
+                uDelName.textContent = name;
+                uDelId.value = id;
+                uDelType.value = "procedure";
+                uDelModal.show();
+            }
+
+            // Handle Form Submit
+            if (uAddForm) {
+                uAddForm.addEventListener('submit', (e) => {
+                    if (uType.value !== 'procedure') return;
+                    e.preventDefault();
+
+                    const name = uInput.value.trim();
+                    const id = uId.value;
+                    if (!name) return;
+
+                    // 1. SELECT BUTTON AND DISABLE IT
+                    const submitBtn = uAddForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
+                    const url = id ? "<?= site_url('Consultation/editProcedureItem') ?>" : "<?= site_url('Consultation/addProcedure') ?>";
+                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: body
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            // 2. RE-ENABLE BUTTON ON RESPONSE
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+
+                            if (data.status === 'success') {
+                                if (id) {
+                                    // Edit Logic
+                                    const index = proceduresList.findIndex(p => p.id == id);
+                                    if (index !== -1) {
+                                        const oldName = proceduresList[index].proceduresName;
+                                        proceduresList[index].proceduresName = name;
+
+                                        // Update Set if name changed
+                                        if (selectedSet.has(norm(oldName))) {
+                                            selectedSet.delete(norm(oldName));
+                                            selectedSet.add(norm(name));
+                                        }
+                                    }
+                                } else {
+                                    // Add Logic
+                                    proceduresList.push({
+                                        id: data.id,
+                                        proceduresName: name,
+                                        is_mine: true
+                                    });
+                                    selectedSet.add(norm(name)); // Auto-select
+                                }
+                                uAddModal.hide();
+                                searchInput.value = "";
+                                renderList();
+                            } else {
+                                alert("Operation failed");
+                            }
+                        })
+                        .catch(err => {
+                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
+                });
+            }
+
+            // Handle Delete
+            if (uDelBtn) {
+                uDelBtn.addEventListener('click', () => {
+                    if (uDelType.value !== 'procedure') return;
+
+                    const id = uDelId.value;
+                    fetch("<?= site_url('Consultation/deleteProcedureItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                const item = proceduresList.find(p => p.id == id);
+                                if (item) selectedSet.delete(norm(item.proceduresName));
+
+                                proceduresList = proceduresList.filter(p => p.id != id);
+                                uDelModal.hide();
+                                renderList();
+                            }
+                        });
+                });
+            }
+
+            // --- EVENTS ---
+            if (searchInput) {
+                searchInput.addEventListener('input', renderList);
+
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === "Enter" && searchInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const q = norm(searchInput.value);
+                        const exists = proceduresList.some(p => norm(p.proceduresName) === q);
+
+                        if (!exists) {
+                            if (addBtn) addBtn.click();
+                        }
+                    }
+                });
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    renderList();
+                    searchInput.focus();
+                });
+            }
+
+            // Initial Render
+            renderList();
         });
     </script>
 
-    <!-- Advice search and add script -->
+    <!-- new Advice search and add script -->
     <script>
+        // 1. Load List
+        let advicesList = <?php echo (isset($advicesList) && !empty($advicesList)) ? json_encode($advicesList) : '[]'; ?>;
+        // Pre-checked items
+        let savedAdvices = <?php echo (isset($advices) && !empty($advices)) ? json_encode($advices) : '[]'; ?>;
+
+        // 2. Initialize Set
+        let selectedAdviceSet = new Set();
+        const normAdv = s => (s || '').toLowerCase().trim();
+
+        if (Array.isArray(savedAdvices)) {
+            savedAdvices.forEach(a => {
+                let name = a.advice_name || a;
+                selectedAdviceSet.add(normAdv(name));
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            const adviceSearch = document.getElementById('adviceSearch');
-            const clearAdviceSearch = document.getElementById('clearAdviceSearch');
-            const addAdvice = document.getElementById('addAdvice');
-            const adviceList = document.getElementById('adviceList');
+            // Elements
+            const searchInput = document.getElementById('adviceSearch');
+            const clearBtn = document.getElementById('clearAdviceSearch');
+            const addBtn = document.getElementById('addAdviceBtn');
+            const list = document.getElementById('adviceList');
 
-            const preloadAdvices = <?php echo isset($advices) ? json_encode($advices) : '[]'; ?>;
+            // Universal Modals
+            const uAddModal = new bootstrap.Modal(document.getElementById("universalAddMasterModal"));
+            const uAddForm = document.getElementById("universalAddMasterForm");
+            const uTitle = document.getElementById("universalMasterTitle");
+            const uLabel = document.getElementById("universalMasterLabel");
+            const uInput = document.getElementById("universalMasterInput");
+            const uId = document.getElementById("universalMasterId");
+            const uType = document.getElementById("universalMasterType");
 
-            function norm(s) {
-                return (s || '').toLowerCase().trim();
-            }
+            const uDelModal = new bootstrap.Modal(document.getElementById("universalDeleteModal"));
+            const uDelName = document.getElementById("universalDeleteNameDisplay");
+            const uDelId = document.getElementById("universalDeleteId");
+            const uDelType = document.getElementById("universalDeleteType");
+            const uDelBtn = document.getElementById("universalDeleteBtn");
 
+            // 1. DOM SORTING
             function sortList() {
-                const items = Array.from(adviceList.querySelectorAll('.advice-item'));
+                const items = Array.from(list.querySelectorAll('.advice-item'));
                 const selected = items.filter(i => i.querySelector('input').checked);
                 const unselected = items.filter(i => !i.querySelector('input').checked);
 
-                unselected.sort((a, b) => {
-                    const nameA = a.querySelector('label').textContent.trim().toLowerCase();
-                    const nameB = b.querySelector('label').textContent.trim().toLowerCase();
-                    return nameA.localeCompare(nameB);
-                });
-
-                adviceList.innerHTML = '';
-                selected.forEach(i => adviceList.appendChild(i));
-                unselected.forEach(i => adviceList.appendChild(i));
+                items.forEach(i => i.remove());
+                selected.forEach(i => list.appendChild(i));
+                unselected.forEach(i => list.appendChild(i));
             }
 
-            function filter() {
-                const q = norm(adviceSearch.value);
-                let matches = 0;
-                let hasVisible = false;
+            // 2. RENDER LIST
+            function renderList() {
+                const q = normAdv(searchInput.value);
+                list.innerHTML = '';
 
-                adviceList.querySelectorAll('.advice-item').forEach(item => {
-                    const labelText = item.querySelector('label').textContent;
-                    const show = norm(labelText).includes(q) || q === '';
-                    item.classList.toggle('d-none', !show);
-                    if (show) matches++;
-                    if (show) hasVisible = true;
-                });
-
-                let noResultMsg = adviceList.querySelector('.no-result');
-                if (!hasVisible) {
-                    if (!noResultMsg) {
-                        noResultMsg = document.createElement('div');
-                        noResultMsg.className = 'no-result text-muted mt-2';
-                        noResultMsg.textContent = 'No results found. You can add new advice for this consultation only.';
-                        adviceList.appendChild(noResultMsg);
-                    }
-                } else if (noResultMsg) {
-                    noResultMsg.remove();
+                // Toggle Buttons
+                if (q.length > 0) {
+                    clearBtn.style.display = 'block';
+                } else {
+                    clearBtn.style.display = 'none';
+                    if (addBtn) addBtn.style.display = 'none';
                 }
 
-                addAdvice.classList.toggle('d-none', !(q && matches === 0));
+                let filtered = advicesList.filter(a => normAdv(a.adviceName).includes(q));
+
+                // Sorting: Checked items top
+                filtered.sort((a, b) => {
+                    const aSelected = selectedAdviceSet.has(normAdv(a.adviceName));
+                    const bSelected = selectedAdviceSet.has(normAdv(b.adviceName));
+
+                    if (aSelected && !bSelected) return -1;
+                    if (!aSelected && bSelected) return 1;
+                    return 0;
+                });
+
+                let hasContent = false;
+
+                if (filtered.length === 0 && q !== "") {
+                    if (addBtn) addBtn.style.display = 'block';
+
+                    const noResultDiv = document.createElement("div");
+                    noResultDiv.className = "text-muted p-2";
+                    noResultDiv.textContent = "No result found – Add new";
+                    list.appendChild(noResultDiv);
+                    hasContent = true;
+                } else {
+                    if (addBtn) addBtn.style.display = 'none';
+
+                    if (filtered.length > 0) {
+                        hasContent = true;
+                        filtered.forEach(adv => {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'form-check advice-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
+                            wrapper.addEventListener("mouseenter", () => {
+                                wrapper.style.backgroundColor = "#8db8afff";
+                            });
+                            wrapper.addEventListener("mouseleave", () => {
+                                wrapper.style.backgroundColor = "transparent";
+                            });
+                            // Left Side
+                            const leftDiv = document.createElement('div');
+                            leftDiv.className = 'd-flex align-items-center flex-grow-1';
+
+                            const checkbox = document.createElement('input');
+                            checkbox.className = 'form-check-input mt-0';
+                            checkbox.type = 'checkbox';
+                            checkbox.name = 'advices[]';
+                            checkbox.value = adv.adviceName;
+                            checkbox.id = `adv${adv.id}`;
+
+                            // Check if in Set
+                            if (selectedAdviceSet.has(normAdv(adv.adviceName))) {
+                                checkbox.checked = true;
+                            }
+
+                            checkbox.addEventListener('change', (e) => {
+                                if (e.target.checked) {
+                                    selectedAdviceSet.add(normAdv(adv.adviceName));
+                                } else {
+                                    selectedAdviceSet.delete(normAdv(adv.adviceName));
+                                }
+                            });
+
+                            const label = document.createElement('label');
+                            label.className = 'form-check-label ms-2';
+                            label.htmlFor = `adv${adv.id}`;
+                            label.textContent = adv.adviceName;
+                            label.style.cursor = 'pointer';
+                            label.style.width = '100%';
+
+                            leftDiv.appendChild(checkbox);
+                            leftDiv.appendChild(label);
+                            wrapper.appendChild(leftDiv);
+
+                            // Right Side: Icons
+                            if (adv.is_mine == true || adv.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center gap-2";
+
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit";
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.preventDefault();
+                                    openUniversalEdit('advice', adv.id, adv.adviceName);
+                                };
+
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete";
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.preventDefault();
+                                    openUniversalDelete('advice', adv.id, adv.adviceName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                wrapper.appendChild(actionDiv);
+                            }
+
+                            list.appendChild(wrapper);
+                        });
+                    }
+                }
+
+                list.style.display = hasContent ? 'block' : 'none';
             }
 
-            function handleCheckChange(e) {
+            // --- LISTEN FOR CHECKS (Triggers Sort) ---
+            list.addEventListener('change', (e) => {
                 if (e.target.matches('input[type="checkbox"]')) {
                     sortList();
                 }
+            });
+
+            // --- HANDLERS ---
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    uTitle.textContent = "Add New Advice";
+                    uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
+                    uInput.value = searchInput.value.trim();
+                    uId.value = "";
+                    uType.value = "advice"; // FLAG
+                    uAddModal.show();
+                    setTimeout(() => uInput.focus(), 500);
+                });
             }
 
-            clearAdviceSearch.addEventListener('click', () => {
-                adviceSearch.value = '';
-                filter();
-                adviceSearch.focus();
-            });
+            function openUniversalEdit(type, id, name) {
+                uTitle.textContent = "Edit Advice";
+                uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
+                uInput.value = name;
+                uId.value = id;
+                uType.value = "advice";
+                uAddModal.show();
+                setTimeout(() => uInput.focus(), 500);
+            }
 
-            addAdvice.addEventListener('click', () => {
-                const newAdvice = adviceSearch.value.trim();
-                if (!newAdvice) return;
+            function openUniversalDelete(type, id, name) {
+                uDelName.textContent = name;
+                uDelId.value = id;
+                uDelType.value = "advice";
+                uDelModal.show();
+            }
 
-                const id = 'adv-' + Date.now();
-                const div = document.createElement('div');
-                div.className = 'form-check advice-item';
-                div.innerHTML = `
-            <input class="form-check-input" type="checkbox" 
-                   name="advices[]" 
-                   value="${newAdvice}" 
-                   id="${id}" checked>
-            <label class="form-check-label" for="${id}">${newAdvice}</label>
-        `;
-                adviceList.prepend(div);
+            // Handle Form Submit
+            if (uAddForm) {
+                uAddForm.addEventListener('submit', (e) => {
+                    if (uType.value !== 'advice') return;
+                    e.preventDefault();
 
-                div.querySelector('input').addEventListener('change', handleCheckChange);
+                    const name = uInput.value.trim();
+                    const id = uId.value;
+                    if (!name) return;
 
-                adviceSearch.value = '';
-                filter();
-                sortList();
-            });
+                    const submitBtn = uAddForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
 
-            if (Array.isArray(preloadAdvices)) {
-                preloadAdvices.forEach(adv => {
-                    const dbName = norm(adv.advice_name || adv);
-                    let matched = false;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
 
-                    adviceList.querySelectorAll('.advice-item input[type="checkbox"]').forEach(cb => {
-                        if (norm(cb.value) === dbName) {
-                            cb.checked = true;
-                            matched = true;
+                    const url = id ? "<?= site_url('Consultation/editAdviceItem') ?>" : "<?= site_url('Consultation/addAdviceMaster') ?>";
+                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: body
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+
+                            if (data.status === 'success') {
+                                if (id) {
+                                    const index = advicesList.findIndex(a => a.id == id);
+                                    if (index !== -1) {
+                                        const oldName = advicesList[index].adviceName;
+                                        advicesList[index].adviceName = name;
+
+                                        if (selectedAdviceSet.has(normAdv(oldName))) {
+                                            selectedAdviceSet.delete(normAdv(oldName));
+                                            selectedAdviceSet.add(normAdv(name));
+                                        }
+                                    }
+                                } else {
+                                    advicesList.push({
+                                        id: data.id,
+                                        adviceName: name,
+                                        is_mine: true
+                                    });
+                                    selectedAdviceSet.add(normAdv(name));
+                                }
+                                uAddModal.hide();
+                                searchInput.value = "";
+                                renderList();
+                            } else {
+                                alert("Operation failed");
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
+                });
+            }
+
+            // Handle Delete
+            if (uDelBtn) {
+                uDelBtn.addEventListener('click', () => {
+                    if (uDelType.value !== 'advice') return;
+
+                    const id = uDelId.value;
+                    fetch("<?= site_url('Consultation/deleteAdviceItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                const item = advicesList.find(a => a.id == id);
+                                if (item) selectedAdviceSet.delete(normAdv(item.adviceName));
+
+                                advicesList = advicesList.filter(a => a.id != id);
+                                uDelModal.hide();
+                                renderList();
+                            }
+                        });
+                });
+            }
+
+            // --- EVENTS ---
+            if (searchInput) {
+                searchInput.addEventListener('input', renderList);
+
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === "Enter" && searchInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const q = normAdv(searchInput.value);
+                        const exists = advicesList.some(a => normAdv(a.adviceName) === q);
+
+                        if (!exists) {
+                            if (addBtn) addBtn.click();
                         }
-                    });
-
-                    if (!matched && dbName) {
-                        const id = 'adv-pre-' + Date.now();
-                        const div = document.createElement('div');
-                        div.className = 'form-check advice-item';
-                        div.innerHTML = `
-                    <input class="form-check-input" type="checkbox" 
-                           name="advices[]" 
-                           value="${adv.advice_name || adv}" 
-                           id="${id}" checked>
-                    <label class="form-check-label" for="${id}">${adv.advice_name || adv}</label>
-                `;
-                        adviceList.prepend(div);
                     }
                 });
             }
 
-            adviceSearch.addEventListener('input', filter);
-            adviceList.addEventListener('change', handleCheckChange);
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    renderList();
+                    searchInput.focus();
+                });
+            }
 
-            sortList();
-            filter();
+            // Initial Render
+            renderList();
         });
     </script>
 
-    <!-- Medicine Modal Script -->
+    <!-- New Medicine Modal Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // server-provided arrays
-            const medicinesData = <?php echo json_encode($medicinesList); ?> || [];
-            const medicinesList = medicinesData.map(m => m.medicineName);
+            // 1. Load Lists
+            let medicinesData = <?php echo json_encode($medicinesList); ?> || [];
+            const savedMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?> || [];
 
-            const medicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?> || [];
-
-            // DOM refs
+            // --- DOM REFS ---
             const medicinesInput = document.getElementById("medicinesSearchInput");
             const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
             const medicinesTagContainer = document.getElementById("medicinesInput");
+            const medicinesListContainer = document.getElementById("medicinesList");
 
-            // ✅ Create wrapper for input + clear + add buttons
-            if (medicinesInput) {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'input-group mb-2';
+            const addBtn = document.getElementById("medicinesAddBtn");
+            const clearBtn = document.getElementById("clearMedicineSearch");
 
-                medicinesInput.classList.add('form-control');
-                medicinesInput.classList.remove('border-0', 'p-0', 'm-0', 'shadow-none');
-
-                // Move existing input into wrapper
-                medicinesInput.parentElement.insertBefore(wrapper, medicinesInput);
-                wrapper.appendChild(medicinesInput);
-
-                // ❌ Clear button
-                const clearBtn = document.createElement('button');
-                clearBtn.type = 'button';
-                clearBtn.id = 'clearMedicineSearch';
-                clearBtn.className = 'btn btn-outline-secondary';
-                clearBtn.textContent = '✖';
-                clearBtn.style.display = 'none';
-                wrapper.appendChild(clearBtn);
-
-                // ➕ Add button
-                const addButton = document.createElement('button');
-                addButton.type = 'button';
-                addButton.id = 'medicinesAddBtn';
-                addButton.className = 'btn btn-outline-primary';
-                addButton.textContent = '+ Add';
-                addButton.style.display = 'none';
-                wrapper.appendChild(addButton);
-
-                // Event for clear button
-                clearBtn.addEventListener('click', () => {
-                    medicinesInput.value = "";
-                    clearBtn.style.display = "none";
-                    addButton.style.display = "none";
-                    if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
-                    medicinesInput.focus();
-                });
-
-                // make them available globally for rest of script
-                window.addButton = addButton;
-                window.clearBtn = clearBtn;
-            }
-
-            const addButton = window.addButton;
-            const clearBtn = window.clearBtn;
-
+            // --- MODALS ---
             const medicinesModalEl = document.getElementById("medicinesModal");
             const medicinesModal = new bootstrap.Modal(medicinesModalEl);
-
-            const addMedicineModalEl = document.getElementById("addMedicineModal");
-            const addMedicineModal = new bootstrap.Modal(addMedicineModalEl);
-
             const medicinesModalTitle = document.getElementById("medicinesModalTitle");
             const medicineCompositionText = document.getElementById("medicineCompositionText");
             const medicineCategoryText = document.getElementById("medicineCategoryText");
             const medicineQuantity = document.getElementById("medicineQuantity");
             const medicineNotes = document.getElementById("medicineNotes");
 
-            const newMedicineNameInput = document.getElementById('newMedicineName');
-            const newMedicineCompositionInput = document.getElementById('newMedicineComposition');
-            const newMedicineCategorySelect = document.getElementById('newMedicineCategory');
-            const addMedicineConfirmBtn = document.getElementById('addMedicineConfirmBtn');
+            // Master Modal
+            const addMedMasterModalEl = document.getElementById("addMedicineModal");
+            const addMedMasterModal = new bootstrap.Modal(addMedMasterModalEl);
+            const addMedMasterForm = document.getElementById("addMedicineMasterForm");
+            const medMasterTitle = document.getElementById("addMedicineModalTitle");
+            const newMedName = document.getElementById("newMedicineName");
+            const newMedComp = document.getElementById("newMedicineComposition");
+            const newMedCat = document.getElementById("newMedicineCategory");
+            const editMedId = document.getElementById("editMedicineMasterId");
+            const addMedicineConfirmBtn = document.getElementById("addMedicineConfirmBtn");
+
+            // Delete Modal
+            const delMedModalEl = document.getElementById("deleteMedicineMasterModal");
+            const delMedModal = new bootstrap.Modal(delMedModalEl);
+            const delMedName = document.getElementById("delMedNameDisplay");
+            const delMedId = document.getElementById("delMedId");
+            const finalDeleteMedBtn = document.getElementById("finalDeleteMedBtn");
 
             const slots = ["morning", "afternoon", "evening", "night"];
-
             let selectedMedicines = [];
             let pendingMedicineName = "";
             let editingMedicineTag = null;
 
-            function forEachSlot(cb) {
-                slots.forEach(slot => cb(
-                    slot,
-                    document.getElementById(`${slot}Check`),
-                    document.getElementById(`${slot}Qty`),
-                    document.getElementById(`${slot}Unit`)
-                ));
+            // --- FORCE CLOSE HANDLERS ---
+            addMedMasterModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.preventDefault(); addMedMasterModal.hide(); });
+            });
+            delMedModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.preventDefault(); delMedModal.hide(); });
+            });
+
+            // 1. RENDER SUGGESTIONS (Updated to show Category)
+            function renderMedicinesSuggestions() {
+                if (!medicinesInput) return;
+                const query = medicinesInput.value.trim().toLowerCase();
+                medicinesSuggestionsBox.innerHTML = "";
+
+                if (query.length > 0) {
+                    if (clearBtn) clearBtn.style.display = 'block';
+                } else {
+                    if (clearBtn) clearBtn.style.display = 'none';
+                    if (addBtn) addBtn.style.display = 'none';
+                }
+
+                const filtered = medicinesData.filter(m => m.medicineName.toLowerCase().includes(query));
+
+                if (filtered.length === 0 && query !== "") {
+                    if (addBtn) addBtn.style.display = 'block';
+                    if (medicinesSuggestionsBox) {
+                        medicinesSuggestionsBox.style.display = 'block';
+                        const div = document.createElement("div");
+                        div.className = "p-2 text-muted";
+                        div.style.cursor = "pointer";
+                        div.innerHTML = `No match found - <span class="text-primary">Add new</span>`;
+                        div.onclick = () => {
+                            openAddMedicineMaster(medicinesInput.value);
+                            clearSearch();
+                        };
+                        medicinesSuggestionsBox.appendChild(div);
+                    }
+                } else {
+                    if (addBtn) addBtn.style.display = 'none';
+
+                    if (medicinesSuggestionsBox && query !== "") {
+                        filtered.forEach(item => {
+                            const div = document.createElement("div");
+                            div.className = "d-flex justify-content-between align-items-center border-bottom";
+                            div.style.cursor = "pointer";
+                            div.style.padding = "1px 6px";
+
+                            div.addEventListener("mouseenter", () => { div.style.backgroundColor = "#8db8afff"; });
+                            div.addEventListener("mouseleave", () => { div.style.backgroundColor = "transparent"; });
+
+                            // --- NAME DISPLAY (Updated) ---
+                            const spanName = document.createElement("span");
+                            spanName.className = "flex-grow-1";
+
+                            // Add Category if it exists
+                            const categoryHtml = item.category ? `<small class="text-muted me-2" style="font-size:0.75em;">${item.category}</small>` : '';
+                            spanName.innerHTML = `${categoryHtml}<strong>${item.medicineName}</strong>`;
+
+                            spanName.onclick = (e) => {
+                                e.stopPropagation();
+                                openMedicineModal(item.medicineName);
+                                clearSearch();
+                            };
+                            div.appendChild(spanName);
+
+                            // Icons
+                            if (item.is_mine == true || item.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center gap-2";
+
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit";
+                                editIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openEditMedicineMaster(item);
+                                };
+
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openDeleteMedicine(item.id, item.medicineName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                div.appendChild(actionDiv);
+                            }
+
+                            div.onclick = () => {
+                                openMedicineModal(item.medicineName);
+                                clearSearch();
+                            };
+                            medicinesSuggestionsBox.appendChild(div);
+                        });
+                        medicinesSuggestionsBox.style.display = "block";
+                    } else {
+                        medicinesSuggestionsBox.style.display = "none";
+                    }
+                }
             }
 
-            function toDbShape(row) {
-                if (!row) return null;
-                return {
-                    id: row.id ?? row.medicine_id ?? row.MedicineID ?? "",
-                    consultation_id: row.consultation_id ?? row.consultationId ?? undefined,
-                    medicine_name: row.medicine_name ?? row.medicine ?? row.medicineBrand ?? "",
-                    quantity: row.quantity ?? "",
-                    unit: row.unit ?? "",
-                    timing: row.timing ?? row.timingString ?? "0-0-0-0",
-                    food_timing: row.food_timing ?? row.foodTiming ?? "",
-                    notes: row.notes ?? "",
-                    composition: row.compositionName ?? row.composition ?? "",
-                    category: row.category ?? row.medicineCategory ?? ""
-                };
+            function clearSearch() {
+                medicinesInput.value = "";
+                medicinesSuggestionsBox.style.display = "none";
+                if (clearBtn) clearBtn.style.display = "none";
+                if (addBtn) addBtn.style.display = "none";
+                medicinesInput.focus();
             }
+
+            // 2. MASTER ADD / EDIT
+            if (addBtn) {
+                addBtn.addEventListener('click', () => {
+                    openAddMedicineMaster(medicinesInput.value);
+                });
+            }
+
+            function openAddMedicineMaster(prefillName) {
+                medMasterTitle.textContent = "Add New Medicine";
+                newMedName.value = prefillName || "";
+                newMedComp.value = "";
+                newMedCat.value = "";
+                editMedId.value = "";
+                addMedMasterModal.show();
+                setTimeout(() => newMedName.focus(), 200);
+            }
+
+            function openEditMedicineMaster(item) {
+                if (!addMedMasterModal) return;
+
+                medMasterTitle.textContent = "Edit Medicine";
+                newMedName.value = item.medicineName;
+
+                newMedComp.value = (item.compositionName === "Nil" || !item.compositionName) ? "" : item.compositionName;
+
+                if (item.category === "Nil" || !item.category) {
+                    newMedCat.value = "";
+                } else {
+                    newMedCat.value = item.category;
+                }
+
+                editMedId.value = item.id;
+                addMedMasterModal.show();
+                setTimeout(() => newMedName.focus(), 200);
+            }
+
+            // Confirm Save (Handles both Add and Edit)
+            addMedicineConfirmBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+
+                const name = newMedName.value.trim();
+                const comp = newMedComp.value.trim();
+                const cat = newMedCat.value;
+                const id = editMedId.value;
+
+                if (!name) {
+                    alert('Please enter Medicine Name.');
+                    return;
+                }
+
+                const url = id ? "<?= site_url('Consultation/editMedicineItem') ?>" : "<?= site_url('Consultation/addNewMedicines') ?>";
+
+                const payload = {
+                    medicineName: name,
+                    compositionName: comp,
+                    category: cat
+                };
+                if (id) payload.id = id;
+
+                try {
+                    addMedicineConfirmBtn.disabled = true;
+                    addMedicineConfirmBtn.textContent = 'Saving...';
+
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const data = await res.json();
+
+                    if (data.status === 'success' || data.status === true) {
+                        const finalComp = comp || "Nil";
+                        const finalCat = cat || "Nil";
+
+                        if (id) {
+                            const index = medicinesData.findIndex(m => m.id == id);
+                            if (index !== -1) {
+                                medicinesData[index].medicineName = name;
+                                medicinesData[index].compositionName = finalComp;
+                                medicinesData[index].category = finalCat;
+                            }
+                            addMedMasterModal.hide();
+                            clearSearch();
+                        } else {
+                            const newObj = {
+                                id: data.id || data.data.id,
+                                medicineName: name,
+                                compositionName: finalComp,
+                                category: finalCat,
+                                is_mine: true
+                            };
+                            medicinesData.push(newObj);
+                            addMedMasterModal.hide();
+                            clearSearch();
+                            setTimeout(() => openMedicineModal(name), 300);
+                        }
+                    } else {
+                        alert(data.message || "Failed to save.");
+                    }
+                } catch (err) {
+                    console.error(err);
+                } finally {
+                    addMedicineConfirmBtn.disabled = false;
+                    addMedicineConfirmBtn.textContent = 'Save';
+                }
+            });
+
+            // 3. DELETE LOGIC
+            function openDeleteMedicine(id, name) {
+                delMedName.textContent = name;
+                delMedId.value = id;
+                delMedModal.show();
+            }
+
+            finalDeleteMedBtn.addEventListener('click', () => {
+                const id = delMedId.value;
+                fetch("<?= site_url('Consultation/deleteMedicineItem') ?>", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `id=${id}`
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            const idx = medicinesData.findIndex(m => m.id == id);
+                            if (idx !== -1) medicinesData.splice(idx, 1);
+                            delMedModal.hide();
+                            renderMedicinesSuggestions();
+                        } else {
+                            alert("Failed to delete.");
+                        }
+                    });
+            });
+
+            // 4. DETAILED MODAL & EVENTS
+            if (medicinesInput) {
+                medicinesInput.addEventListener("input", renderMedicinesSuggestions);
+                medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
+                medicinesInput.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
+                        e.preventDefault();
+                        const q = medicinesInput.value.trim().toLowerCase();
+                        const found = medicinesData.find(m => m.medicineName.toLowerCase() === q);
+                        if (found) {
+                            openMedicineModal(found.medicineName);
+                            clearSearch();
+                        } else {
+                            openAddMedicineMaster(medicinesInput.value);
+                        }
+                    }
+                });
+            }
+
+            if (medicinesModalEl) {
+                medicinesModalEl.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') { e.preventDefault(); saveMedicineModal(); }
+                });
+            }
+            if (clearBtn) clearBtn.addEventListener("click", clearSearch);
+
+            document.addEventListener("click", (e) => {
+                if (medicinesTagContainer && !medicinesTagContainer.contains(e.target) &&
+                    addBtn && !addBtn.contains(e.target)) {
+                    if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
+                }
+            });
+
+            // 5. TIMING CHECKBOX LISTENERS (The Fix)
+            function forEachSlot(cb) {
+                slots.forEach(slot => {
+                    const check = document.getElementById(`${slot}Check`);
+                    const qty = document.getElementById(`${slot}Qty`);
+                    const unit = document.getElementById(`${slot}Unit`);
+                    if (check && qty && unit) cb(check, qty, unit);
+                });
+            }
+
+            forEachSlot((check, qty, unit) => {
+                check.addEventListener("change", () => {
+                    if (check.checked) {
+                        qty.disabled = false;
+                        unit.disabled = false;
+                        if (!qty.value) qty.value = 1;
+                    } else {
+                        qty.disabled = true;
+                        unit.disabled = true;
+                        qty.value = "";
+                        unit.value = "";
+                    }
+                });
+                qty.addEventListener("focus", () => {
+                    if (!check.checked) qty.blur();
+                });
+            });
 
             function buildTimingString() {
                 const parts = [];
-                forEachSlot((slot, check, qty, unit) => {
+                forEachSlot((check, qty, unit) => {
                     if (check && check.checked && qty && qty.value) {
                         const u = unit && unit.value ? unit.value : "";
                         const qtyVal = String(qty.value);
@@ -4814,7 +6447,8 @@
                     const check = document.getElementById(`${slot}Check`);
                     const qty = document.getElementById(`${slot}Qty`);
                     const unit = document.getElementById(`${slot}Unit`);
-                    if (!check || !qty || !unit) return;
+                    if (!check) return;
+
                     const v = parts[i] ?? "0";
                     if (v !== "0") {
                         check.checked = true;
@@ -4823,204 +6457,56 @@
                         const matches = String(v).match(/^([\d.]+)\s*(.*)$/);
                         if (matches) {
                             qty.value = matches[1];
-                            unit.value = matches[2] || unit.value;
+                            if (matches[2]) unit.value = matches[2];
                         } else {
                             qty.value = v;
                         }
                     } else {
                         check.checked = false;
                         qty.value = "";
+                        unit.value = "";
                         qty.disabled = true;
                         unit.disabled = true;
                     }
                 });
             }
 
-            // initialize slot listeners
-            forEachSlot((slot, check, qty, unit) => {
-                if (!check || !qty || !unit) return;
-                qty.disabled = true;
-                unit.disabled = true;
-                check.addEventListener("change", () => {
-                    if (check.checked) {
-                        qty.disabled = false;
-                        unit.disabled = false;
-                        if (!qty.value) qty.value = 1;
-                    } else {
-                        qty.value = "";
-                        qty.disabled = true;
-                        unit.disabled = true;
-                    }
-                });
-                qty.addEventListener("focus", () => {
-                    if (!check.checked) qty.blur();
-                });
-            });
-
-            // render suggestions
-            function renderMedicinesSuggestions() {
-                if (!medicinesInput || !medicinesSuggestionsBox) return;
-
-                const query = medicinesInput.value.trim().toLowerCase();
-                medicinesSuggestionsBox.innerHTML = "";
-
-                // show clear button when typing
-                if (clearBtn) clearBtn.style.display = query ? 'inline-block' : 'none';
-
-                const filtered = medicinesList.filter(m =>
-                    m.toLowerCase().includes(query) &&
-                    !selectedMedicines.some(obj => obj.medicine_name === m)
-                );
-
-                // ✅ Show "+ Add" button ONLY when no matches found
-                if (addButton) {
-                    addButton.style.display = (query && filtered.length === 0) ? "inline-block" : "none";
-                }
-
-                if (filtered.length === 0 && query !== "") {
-                    const div = document.createElement("div");
-                    div.innerHTML = `Add "<strong>${medicinesInput.value}</strong>"`;
-                    div.onclick = () => {
-                        openAddMedicineModal(medicinesInput.value);
-                        medicinesInput.value = "";
-                        medicinesSuggestionsBox.style.display = "none";
-                        if (addButton) addButton.style.display = "none";
-                    };
-                    medicinesSuggestionsBox.appendChild(div);
-                } else {
-                    filtered.forEach(item => {
-                        const div = document.createElement("div");
-                        div.textContent = item;
-                        div.onclick = () => {
-                            openMedicineModal(item);
-                            medicinesInput.value = "";
-                            medicinesSuggestionsBox.style.display = "none";
-                        };
-                        medicinesSuggestionsBox.appendChild(div);
-                    });
-                }
-                medicinesSuggestionsBox.style.display = "block";
+            function toDbShape(row) {
+                if (!row) return null;
+                return {
+                    id: row.id ?? row.medicine_id ?? "",
+                    consultation_id: row.consultation_id ?? "",
+                    medicine_name: row.medicine_name ?? row.medicine ?? row.medicineBrand ?? "",
+                    quantity: row.quantity ?? "",
+                    unit: row.unit ?? "",
+                    timing: row.timing ?? "0-0-0-0",
+                    food_timing: row.food_timing ?? "",
+                    notes: row.notes ?? "",
+                    composition: row.compositionName ?? row.composition ?? "",
+                    category: row.category ?? row.medicineCategory ?? ""
+                };
             }
 
-            if (medicinesInput) {
-                medicinesInput.addEventListener("input", renderMedicinesSuggestions);
-                medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
-                medicinesInput.addEventListener("keydown", (e) => {
-                    if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
-                        e.preventDefault();
-                        const q = medicinesInput.value.trim();
-                        const found = medicinesList.find(m => m.toLowerCase() === q.toLowerCase());
-                        if (found) {
-                            openMedicineModal(found);
-                        } else {
-                            openAddMedicineModal(q);
-                        }
-                        medicinesInput.value = "";
-                        medicinesSuggestionsBox.style.display = "none";
-                        if (addButton) addButton.style.display = "none";
-                        if (clearBtn) clearBtn.style.display = "none";
-                    }
-                });
-                document.addEventListener("click", (e) => {
-                    if (!medicinesTagContainer?.contains(e.target) && !medicinesInput?.contains(e.target)) {
-                        if (medicinesSuggestionsBox) medicinesSuggestionsBox.style.display = "none";
-                    }
-                });
-            }
-
-            // Click on dynamic ADD button
-            if (addButton) {
-                addButton.addEventListener('click', () => {
-                    const q = medicinesInput.value.trim();
-                    openAddMedicineModal(q);
-                    medicinesInput.value = "";
-                    medicinesSuggestionsBox && (medicinesSuggestionsBox.style.display = "none");
-                    addButton.style.display = 'none';
-                    if (clearBtn) clearBtn.style.display = 'none';
-                });
-            }
-
-            function openAddMedicineModal(prefillName = "") {
-                newMedicineNameInput.value = prefillName || "";
-                newMedicineCompositionInput.value = "";
-                newMedicineCategorySelect.value = "";
-                addMedicineModal.show();
-                setTimeout(() => newMedicineNameInput.focus(), 200);
-            }
-
-            addMedicineConfirmBtn.addEventListener('click', async () => {
-                const name = (newMedicineNameInput.value || "").trim();
-                const composition = (newMedicineCompositionInput.value || "").trim();
-                const category = (newMedicineCategorySelect.value || "").trim();
-
-                if (!name || !composition || !category) {
-                    alert('Please fill all fields.');
-                    return;
-                }
-
-                try {
-                    addMedicineConfirmBtn.disabled = true;
-                    addMedicineConfirmBtn.textContent = 'Adding...';
-
-                    const payload = {
-                        medicineName: name,
-                        compositionName: composition,
-                        category
-                    };
-
-                    const res = await fetch('<?= site_url('Consultation/addNewMedicines') ?>', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!res.ok) throw new Error('Failed to add medicine');
-                    const saved = await res.json();
-
-                    const savedObj = {
-                        id: saved.id ?? saved.medicine_id ?? "new-" + Date.now(),
-                        medicineName: saved.medicineName ?? saved.medicine_name ?? name,
-                        compositionName: saved.compositionName ?? saved.composition ?? composition,
-                        category: saved.category ?? category
-                    };
-
-                    medicinesData.push(savedObj);
-                    medicinesList.push(savedObj.medicineName);
-
-                    addMedicineModal.hide();
-                    openMedicineModal(savedObj.medicineName);
-                } catch (err) {
-                    console.error(err);
-                    alert('Could not add medicine. Check console for details.');
-                } finally {
-                    addMedicineConfirmBtn.disabled = false;
-                    addMedicineConfirmBtn.textContent = 'Add & Open';
-                }
-            });
-
-            // --- existing open/save/tag logic unchanged ---
             window.openMedicineModal = function (name, existing = null, tagEl = null) {
                 pendingMedicineName = name;
                 editingMedicineTag = tagEl;
 
-                const medData = medicinesData.find(m => (m.medicineName || m.medicine_name) === name);
+                const medData = medicinesData.find(m => m.medicineName === name);
                 medicinesModalTitle.textContent = existing ? `Edit: ${name}` : `Details for: ${name}`;
-                medicineCompositionText.textContent = medData ? (medData.compositionName || medData.composition || "(No composition available)") : "(No composition available)";
-                medicineCategoryText.textContent = medData ? `Category: ${medData.category || medData.medicineCategory || ""}` : "(No category)";
+
+                if (medData) {
+                    medicineCompositionText.textContent = medData.compositionName || "";
+                    medicineCategoryText.textContent = medData.category || "";
+                } else if (existing) {
+                    medicineCompositionText.textContent = existing.composition || "";
+                    medicineCategoryText.textContent = existing.category || "";
+                }
 
                 medicineQuantity.value = "";
                 medicineNotes.value = "";
                 slots.forEach(slot => {
                     const check = document.getElementById(`${slot}Check`);
-                    const qty = document.getElementById(`${slot}Qty`);
-                    const unit = document.getElementById(`${slot}Unit`);
-                    if (!check || !qty || !unit) return;
-                    check.checked = false;
-                    qty.value = "";
-                    qty.disabled = true;
-                    unit.disabled = true;
+                    if (check) { check.checked = false; }
                 });
                 document.querySelectorAll('input[name="foodTiming"]').forEach(r => r.checked = false);
 
@@ -5032,13 +6518,12 @@
                     document.querySelectorAll('input[name="foodTiming"]').forEach(r => {
                         r.checked = (r.value === (row.food_timing || ""));
                     });
-                } else if (medData) {
-                    applyTimingString(medData.timing ?? "0-0-0-0");
                 } else {
                     applyTimingString("0-0-0-0");
                 }
 
                 medicinesModal.show();
+                setTimeout(() => medicineQuantity.focus(), 500);
             };
 
             window.saveMedicineModal = function () {
@@ -5050,15 +6535,12 @@
                 if (!pendingMedicineName) return;
 
                 const existingIndex = selectedMedicines.findIndex(m => m.medicine_name === pendingMedicineName);
-                const resolvedId = (existingIndex !== -1 && selectedMedicines[existingIndex]?.id) ?
-                    selectedMedicines[existingIndex].id : "new";
-
-                const medData = medicinesData.find(m => (m.medicineName || m.medicine_name) === pendingMedicineName);
-                const composition = medData?.compositionName ?? medData?.composition ?? "";
-                const category = medData?.category ?? medData?.medicineCategory ?? "";
+                const medData = medicinesData.find(m => m.medicineName === pendingMedicineName);
+                const composition = medData?.compositionName || "";
+                const category = medData?.category || "";
 
                 const data = {
-                    id: resolvedId,
+                    id: (existingIndex !== -1 && selectedMedicines[existingIndex]?.id) ? selectedMedicines[existingIndex].id : "new",
                     medicine_name: pendingMedicineName,
                     quantity,
                     timing,
@@ -5068,61 +6550,52 @@
                     category
                 };
 
-                if (editingMedicineTag && existingIndex !== -1) {
-                    if (selectedMedicines[existingIndex].consultation_id) {
-                        data.consultation_id = selectedMedicines[existingIndex].consultation_id;
+                if (editingMedicineTag) {
+                    if (existingIndex !== -1) {
+                        if (selectedMedicines[existingIndex].consultation_id)
+                            data.consultation_id = selectedMedicines[existingIndex].consultation_id;
+                        selectedMedicines[existingIndex] = data;
                     }
-                    selectedMedicines[existingIndex] = data;
                     updateMedicineTagDisplay(editingMedicineTag, data);
-                    editingMedicineTag.setAttribute("data-id", data.id || "new");
+                    editingMedicineTag.setAttribute("data-id", data.id);
                 } else {
                     selectedMedicines.push(data);
                     addMedicineTag(data);
                 }
-
                 updateMedicinesHiddenInput();
                 medicinesModal.hide();
-                pendingMedicineName = "";
-                editingMedicineTag = null;
             };
 
             function addMedicineTag(row) {
-                if (!medicinesTagContainer) return;
                 const tag = document.createElement("span");
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
                 tag.style.cursor = "pointer";
                 tag.setAttribute("data-id", row.id || "new");
+
                 updateMedicineTagDisplay(tag, row);
                 tag.onclick = () => openMedicineModal(row.medicine_name, row, tag);
-                if (medicinesInput && medicinesInput.parentElement === medicinesTagContainer) {
-                    medicinesTagContainer.insertBefore(tag, medicinesInput);
+
+                if (medicinesListContainer) {
+                    medicinesListContainer.appendChild(tag);
                 } else {
                     medicinesTagContainer.appendChild(tag);
                 }
             }
 
             function updateMedicineTagDisplay(tagEl, row) {
-                const qtyText = row.quantity ? `${row.quantity}`.trim() : "0";
-                const timingText = row.timing || "0-0-0-0";
-                const comp = row.composition ? ` | ${row.composition}` : "";
-                const cat = row.category ? ` | ${row.category}` : "";
-                tagEl.innerHTML = `${row.medicine_name}${comp}${cat} (Qty: ${qtyText}, Timing: ${timingText})`;
-                tagEl.setAttribute("data-id", row.id || "new");
+                const categoryDisplay = (row.category && row.category !== 'Nil')
+                    ? `<span style="font-size: 0.85em; opacity: 0.9; margin-right: 5px;">${row.category}</span>`
+                    : '';
 
-                const removeBtn = document.createElement("button");
-                removeBtn.type = "button";
-                removeBtn.className = "text-light ms-2";
-                removeBtn.style.border = "none";
-                removeBtn.style.background = "transparent";
-                removeBtn.style.fontSize = "1rem";
-                removeBtn.innerHTML = "&times;";
-                removeBtn.onclick = (e) => {
+                tagEl.innerHTML = `${categoryDisplay}<b>${row.medicine_name}</b> 
+                        <button class="text-light ms-2" style="border:none;background:transparent;font-size:1rem;">&times;</button>`;
+
+                tagEl.querySelector('button').onclick = (e) => {
                     e.stopPropagation();
                     tagEl.remove();
                     selectedMedicines = selectedMedicines.filter(s => s.medicine_name !== row.medicine_name);
                     updateMedicinesHiddenInput();
                 };
-                tagEl.appendChild(removeBtn);
             }
 
             function updateMedicinesHiddenInput() {
@@ -5138,8 +6611,9 @@
                 hidden.value = JSON.stringify(selectedMedicines);
             }
 
-            if (Array.isArray(medicines) && medicines.length) {
-                medicines.forEach(m => {
+            // Initial Load
+            if (Array.isArray(savedMedicines) && savedMedicines.length) {
+                savedMedicines.forEach(m => {
                     const row = toDbShape(m);
                     selectedMedicines.push(row);
                     addMedicineTag(row);
@@ -6349,6 +7823,104 @@
         }
     </script>
 
+    <!-- script to Translate table in preview -->
+    <script>
+        const translationMap = {
+            'Name': 'மருந்து',
+            'Qty': 'அளவு',
+            'Food <br> Timing': 'உணவுக்கு',
+            'Frequency': 'வேளை',
+            'Notes': 'குறிப்புகள்',
+            'Mrn': 'காலை',
+            'Aft': 'மதியம்',
+            'Eve': 'மாலை',
+            'Ngt': 'இரவு',
+
+            'Before': 'முன்',
+            'After': 'பின்',
+            'before': 'முன்',
+            'after': 'பின்'
+        };
+
+        const reverseTranslationMap = {
+            'மருந்து': 'Name',
+            'அளவு': 'Qty',
+            'உணவுக்கு': 'Food <br> Timing',
+            'வேளை': 'Frequency',
+            'குறிப்புகள்': 'Notes',
+            'காலை': 'Mrn',
+            'மதியம்': 'Aft',
+            'மாலை': 'Eve',
+            'இரவு': 'Ngt',
+
+            'முன்': 'Before',
+            'பின்': 'After'
+        };
+
+        function updateTableHeadings(consultationId, language) {
+            const tableContainer = document.getElementById('consultationDetails' + consultationId);
+            if (!tableContainer) return;
+
+            const tableElement = tableContainer.querySelector('table');
+            if (!tableElement) return;
+
+            const map = (language === 'tamil') ? translationMap : reverseTranslationMap;
+
+            const theads = tableElement.querySelectorAll('thead th');
+            theads.forEach(th => {
+                let originalText = th.innerHTML;
+                let cleanText = originalText.replace(/<br\s*\/?>/gi, ' <br> ').replace(/\s+/g, ' ').trim();
+
+                if (map[cleanText]) {
+                    th.innerHTML = map[cleanText];
+                }
+            });
+
+            const rows = tableElement.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                if (cells.length > 3) {
+                    const timingCell = cells[3];
+                    const currentText = timingCell.textContent.trim();
+
+                    if (map[currentText]) {
+                        timingCell.textContent = map[currentText];
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('input[name^="language_select_"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        const language = e.target.value;
+                        const parentDiv = e.target.closest('div[data-consultation-id]');
+                        if (parentDiv) {
+                            const consultationId = parentDiv.getAttribute('data-consultation-id');
+                            updateTableHeadings(consultationId, language);
+                        }
+                    }
+                });
+            });
+
+            const consultationModals = document.querySelectorAll('[id^="consultationModal"]');
+
+            consultationModals.forEach(modal => {
+                modal.addEventListener('show.bs.modal', function () {
+                    const consultationId = this.id.replace('consultationModal', '');
+
+                    const englishRadio = document.getElementById('lang-en-' + consultationId);
+                    if (englishRadio) {
+                        englishRadio.checked = true;
+                    }
+
+                    updateTableHeadings(consultationId, 'english');
+                });
+            });
+        });
+    </script>
+
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>
 
@@ -6369,6 +7941,7 @@
     <!-- Fabric.js and Cropper.js JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
 </body>
 
 </html>

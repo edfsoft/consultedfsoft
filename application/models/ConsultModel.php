@@ -13,86 +13,6 @@ class ConsultModel extends CI_Model
         return $select->result_array();
     }
 
-    public function getSymptoms()
-    {
-        $details = "SELECT * FROM `symptoms_list` WHERE `activeStatus` = '0' ORDER BY `symptomsName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function getFindings()
-    {
-        $details = "SELECT * FROM `findings_list` WHERE `activeStatus` = '0' ORDER BY `findingsName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function getDiagnosis()
-    {
-        $details = "SELECT * FROM `diagnosis_list` WHERE `activeStatus` = '0' ORDER BY `diagnosisName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function getInvestigations()
-    {
-        $details = "SELECT * FROM `investigations_list` WHERE `activeStatus` = '0' ORDER BY `investigationsName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function getInstructions()
-    {
-        $details = "SELECT * FROM `instructions_list` WHERE `activeStatus` = '0' ORDER BY `instructionsName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function getProcedures()
-    {
-        $details = "SELECT * FROM `procedures_list` WHERE `activeStatus` = '0' ORDER BY `proceduresName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function getMedicines()
-    {
-        $details = "SELECT * FROM `medicines_list` ORDER BY `medicineName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function getAdvices()
-    {
-        $details = "SELECT * FROM `advices_list` WHERE `activeStatus` = '0' ORDER BY `adviceName` ";
-        $select = $this->db->query($details);
-        return $select->result_array();
-    }
-
-    public function insertNewSymptoms($name)
-    {
-        $this->db->insert('symptoms_list', ['symptomsName' => $name]);
-        return $this->db->insert_id();
-    }
-
-    public function insertNewFindings($name)
-    {
-        $this->db->insert('findings_list', ['findingsName' => $name]);
-        return $this->db->insert_id();
-    }
-
-    public function insertNewDiagnosis($name)
-    {
-        $this->db->insert('diagnosis_list', ['diagnosisName' => $name]);
-        return $this->db->insert_id();
-    }
-
-    public function insertNewInvestigations($name)
-    {
-        $this->db->insert('investigations_list', ['investigationsName' => $name]);
-        return $this->db->insert_id();
-    }
-
     // Save Consultation
     public function save_consultation()
     {
@@ -582,5 +502,528 @@ class ConsultModel extends CI_Model
 
 
 
+    /* Symptoms in consultaion form */
+    public function getSymptoms()
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $myHcpIdString = '';
 
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $myHcpIdString = $user['hcpId'];
+            }
+        }
+
+        $this->db->select('*');
+        $this->db->from('symptoms_list');
+        $this->db->where('activeStatus', '0');
+        $this->db->order_by('symptomsName', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        foreach ($result as &$row) {
+            if (!empty($myHcpIdString) && isset($row['created_by']) && $row['created_by'] === $myHcpIdString) {
+                $row['is_mine'] = true;
+            } else {
+                $row['is_mine'] = false;
+            }
+        }
+        return $result;
+    }
+
+    public function insertNewSymptoms($name)
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $creator = 'admin';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $creator = $user['hcpId'];
+            }
+        }
+
+        $data = [
+            'symptomsName' => $name,
+            'created_by' => $creator,
+            'activeStatus' => '0'
+        ];
+
+        $this->db->insert('symptoms_list', $data);
+        return $this->db->insert_id();
+    }
+
+    public function updateSymptomName($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('symptoms_list', ['symptomsName' => $name]);
+    }
+
+    public function deleteSymptom($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('symptoms_list');
+    }
+
+    //findings in consultaion form
+    public function getFindings()
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $myHcpIdString = '';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $myHcpIdString = $user['hcpId'];
+            }
+        }
+
+        $this->db->select('*');
+        $this->db->from('findings_list');
+        $this->db->where('activeStatus', '0');
+        $this->db->order_by('findingsName', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        foreach ($result as &$row) {
+            if (!empty($myHcpIdString) && isset($row['created_by']) && $row['created_by'] === $myHcpIdString) {
+                $row['is_mine'] = true;
+            } else {
+                $row['is_mine'] = false;
+            }
+        }
+        return $result;
+    }
+
+    public function insertNewFindings($name)
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $creator = 'admin';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $creator = $user['hcpId'];
+            }
+        }
+
+        $data = [
+            'findingsName' => $name,
+            'created_by' => $creator,
+            'activeStatus' => '0'
+        ];
+        $this->db->insert('findings_list', $data);
+        return $this->db->insert_id();
+    }
+
+    public function updateFindingName($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('findings_list', ['findingsName' => $name]);
+    }
+
+    public function deleteFinding($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('findings_list');
+    }
+
+    public function getDiagnosis()
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $myHcpIdString = '';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $myHcpIdString = $user['hcpId'];
+            }
+        }
+
+        $this->db->select('*');
+        $this->db->from('diagnosis_list');
+        $this->db->where('activeStatus', '0');
+        $this->db->order_by('diagnosisName', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        foreach ($result as &$row) {
+            if (!empty($myHcpIdString) && isset($row['created_by']) && $row['created_by'] === $myHcpIdString) {
+                $row['is_mine'] = true;
+            } else {
+                $row['is_mine'] = false;
+            }
+        }
+        return $result;
+    }
+
+
+    /* Diagnosis in consultation form */
+    public function insertNewDiagnosis($name)
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $creator = 'admin';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $creator = $user['hcpId'];
+            }
+        }
+
+        $data = [
+            'diagnosisName' => $name,
+            'created_by' => $creator,
+            'activeStatus' => '0'
+        ];
+        $this->db->insert('diagnosis_list', $data);
+        return $this->db->insert_id();
+    }
+
+    public function updateDiagnosisName($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('diagnosis_list', ['diagnosisName' => $name]);
+    }
+
+    public function deleteDiagnosis($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('diagnosis_list');
+    }
+
+    public function getInvestigations()
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $myHcpIdString = '';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $myHcpIdString = $user['hcpId'];
+            }
+        }
+
+        $this->db->select('*');
+        $this->db->from('investigations_list');
+        $this->db->where('activeStatus', '0');
+        $this->db->order_by('investigationsName', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        foreach ($result as &$row) {
+            if (!empty($myHcpIdString) && isset($row['created_by']) && $row['created_by'] === $myHcpIdString) {
+                $row['is_mine'] = true;
+            } else {
+                $row['is_mine'] = false;
+            }
+        }
+        return $result;
+    }
+
+    public function insertNewInvestigations($name)
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $creator = 'admin';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $creator = $user['hcpId'];
+            }
+        }
+
+        $data = [
+            'investigationsName' => $name,
+            'created_by' => $creator,
+            'activeStatus' => '0'
+        ];
+        $this->db->insert('investigations_list', $data);
+        return $this->db->insert_id();
+    }
+
+    public function updateInvestigationName($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('investigations_list', ['investigationsName' => $name]);
+    }
+
+    public function deleteInvestigation($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('investigations_list');
+    }
+
+    /* Procedures in consultation form */
+    public function getProcedures()
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $myHcpIdString = '';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $myHcpIdString = $user['hcpId'];
+            }
+        }
+
+        $this->db->select('*');
+        $this->db->from('procedures_list');
+        $this->db->where('activeStatus', '0');
+        $this->db->order_by('proceduresName', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        foreach ($result as &$row) {
+            if (!empty($myHcpIdString) && isset($row['created_by']) && $row['created_by'] === $myHcpIdString) {
+                $row['is_mine'] = true;
+            } else {
+                $row['is_mine'] = false;
+            }
+        }
+        return $result;
+    }
+
+    public function insertNewProcedures($name)
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $creator = 'admin';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $creator = $user['hcpId'];
+            }
+        }
+
+        $data = [
+            'proceduresName' => $name,
+            'created_by' => $creator,
+            'activeStatus' => '0'
+        ];
+        $this->db->insert('procedures_list', $data);
+        return $this->db->insert_id();
+    }
+
+    public function updateProcedureName($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('procedures_list', ['proceduresName' => $name]);
+    }
+
+    public function deleteProcedure($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('procedures_list');
+    }
+
+    // Advice in consultation form
+    public function getAdvices()
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $myHcpIdString = '';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $myHcpIdString = $user['hcpId'];
+            }
+        }
+
+        $this->db->select('*');
+        $this->db->from('advices_list');
+        $this->db->where('activeStatus', '0');
+        $this->db->order_by('adviceName', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        foreach ($result as &$row) {
+            if (!empty($myHcpIdString) && isset($row['created_by']) && $row['created_by'] === $myHcpIdString) {
+                $row['is_mine'] = true;
+            } else {
+                $row['is_mine'] = false;
+            }
+        }
+        return $result;
+    }
+
+    public function insertNewAdvice($name)
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $creator = 'admin';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $creator = $user['hcpId'];
+            }
+        }
+
+        $data = [
+            'adviceName' => $name,
+            'created_by' => $creator,
+            'activeStatus' => '0'
+        ];
+        $this->db->insert('advices_list', $data);
+        return $this->db->insert_id();
+    }
+
+    public function updateAdviceName($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('advices_list', ['adviceName' => $name]);
+    }
+
+    public function deleteAdvice($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('advices_list');
+    }
+
+
+
+    //Instruction in consultation page
+    public function getInstructions()
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $myHcpIdString = '';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $myHcpIdString = $user['hcpId'];
+            }
+        }
+
+        $this->db->select('*');
+        $this->db->from('instructions_list');
+        $this->db->where('activeStatus', '0');
+        $this->db->order_by('instructionsName', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        foreach ($result as &$row) {
+            if (!empty($myHcpIdString) && isset($row['created_by']) && $row['created_by'] === $myHcpIdString) {
+                $row['is_mine'] = true;
+            } else {
+                $row['is_mine'] = false;
+            }
+        }
+        return $result;
+    }
+
+    public function insertNewInstruction($name)
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $creator = 'admin';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $creator = $user['hcpId'];
+            }
+        }
+
+        $data = [
+            'instructionsName' => $name,
+            'created_by' => $creator,
+            'activeStatus' => '0'
+        ];
+        $this->db->insert('instructions_list', $data);
+        return $this->db->insert_id();
+    }
+
+    public function updateInstructionName($id, $name)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('instructions_list', ['instructionsName' => $name]);
+    }
+
+    public function deleteInstruction($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('instructions_list');
+    }
+
+
+
+    //Medicine for consultaion form
+    public function getMedicines()
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ? $_SESSION['hcpIdDb'] : 0;
+        $myHcpIdString = '';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $myHcpIdString = $user['hcpId'];
+            }
+        }
+
+        $this->db->select('*');
+        $this->db->from('medicines_list');
+        $this->db->order_by('medicineName', 'ASC');
+        $query = $this->db->get();
+        $result = $query->result_array();
+
+        foreach ($result as &$row) {
+            if (!empty($myHcpIdString) && isset($row['created_by']) && $row['created_by'] === $myHcpIdString) {
+                $row['is_mine'] = true;
+            } else {
+                $row['is_mine'] = false;
+            }
+        }
+        return $result;
+    }
+
+    public function insertNewMedicineMaster($name, $composition, $category)
+    {
+        $hcpIdDb = isset($_SESSION['hcpIdDb']) ?
+            $_SESSION['hcpIdDb'] : 0;
+        $creator = 'admin';
+
+        if ($hcpIdDb > 0) {
+            $user = $this->db->get_where('hcp_details', ['id' => $hcpIdDb])->row_array();
+            if ($user) {
+                $creator = $user['hcpId'];
+            }
+        }
+
+        $finalComposition = empty($composition) ? 'Nil' : $composition;
+        $finalCategory = empty($category) ? 'Nil' : $category;
+
+        $data = [
+            'medicineName' => $name,
+            'compositionName' => $finalComposition,
+            'category' => $finalCategory,
+            'created_by' => $creator,
+            'activeStatus' => '0'
+
+        ];
+
+        $this->db->insert('medicines_list', $data);
+        return $this->db->insert_id();
+    }
+
+    public function updateMedicineMaster($id, $name, $composition, $category)
+    {
+        $this->db->where('id', $id);
+
+        $finalComposition = empty($composition) ? 'Nil' : $composition;
+        $finalCategory = empty($category) ? 'Nil' : $category;
+
+        $data = [
+            'medicineName' => $name,
+            'compositionName' => $finalComposition,
+            'category' => $finalCategory
+        ];
+        return $this->db->update('medicines_list', $data);
+    }
+
+    public function deleteMedicineMaster($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('medicines_list');
+    }
 }

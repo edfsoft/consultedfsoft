@@ -232,7 +232,7 @@ class HcpModel extends CI_Model
         return $post['patientIdDb'];
     }
 
-    public function generatePatientId($dbid)
+    /* public function generatePatientId($dbid)
     {
         $latest_customer_id = $this->getlastPatientId();
         $last_four_digits = substr($latest_customer_id, -6);
@@ -260,6 +260,49 @@ class HcpModel extends CI_Model
         } else {
             return 'EDF000000';
         }
+    } */
+
+    public function generatePatientId($dbid)
+    {
+        $next_number = $this->getFirstAvailableId();
+
+        $incremented_id = str_pad($next_number, 6, '0', STR_PAD_LEFT);
+        $generate_id = "EDF{$incremented_id}";
+
+        $insert = array(
+            'patientId' => $generate_id
+        );
+
+        $this->db->where('id', $dbid);
+        $this->db->update('patient_details', $insert);
+
+        return $generate_id;
+    }
+
+    public function getFirstAvailableId()
+    {
+        $this->db->select('patientId');
+        $query = $this->db->get('patient_details');
+        $existing_numbers = [];
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $num = (int) substr($row->patientId, 3);
+                $existing_numbers[] = $num;
+            }
+
+            sort($existing_numbers);
+        }
+
+        $expected = 1;
+        foreach ($existing_numbers as $num) {
+            if ($num == $expected) {
+                $expected++;
+            } else if ($num > $expected) {
+                return $expected;
+            }
+        }
+
+        return $expected;
     }
 
     public function getPatientDetails($id)

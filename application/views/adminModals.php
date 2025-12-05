@@ -1,43 +1,3 @@
-<!-- Universal Delete confirmation Modal -->
-<div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true"
-    data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">
-                    Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p id="deleteItemMessage">Are you sure you want to delete <strong id="deleteItemName"></strong>?</p>
-            </div>
-            <div class="modal-footer d-flex justify-content-end">
-                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                <a id="deleteConfirmButton" href="#" style="background-color: #2b353bf5;"
-                    class="btn text-light">Delete</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Universal Delete confirmation Script  -->
-<script>
-    document.addEventListener("click", (event) => {
-        const deleteButton = event.target.closest(".delete-btn");
-        if (!deleteButton) return;
-
-        const id = deleteButton.dataset.id;
-        const type = deleteButton.dataset.type;
-        const name = deleteButton.dataset.name;
-
-        const baseUrl = "<?= base_url(); ?>";
-        const deleteUrl = `${baseUrl}Edfadmin/deleteItem/${type}/${id}`;
-
-        document.getElementById("deleteItemName").textContent = name;
-        document.getElementById("deleteConfirmButton").href = deleteUrl;
-    });
-</script>
-
 <!-- Add and Edit medicine modal -->
 <div class="modal fade" id="medicineModal" tabindex="-1" role="dialog" aria-labelledby="medicineModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -59,14 +19,12 @@
                     <input type="text" name="medicineName" id="medicineName" class="form-control"
                         placeholder="E.g. Dolo 650" required>
 
-                    <label for="medicineComposition" class="form-label pb-2 mt-2">Composition <span
-                            class="text-danger">*</span></label>
+                    <label for="medicineComposition" class="form-label pb-2 mt-2">Composition</label>
                     <input type="text" name="medicineComposition" id="medicineComposition" class="form-control"
-                        placeholder="E.g. Paracetamol" required>
+                        placeholder="E.g. Paracetamol">
 
-                    <label for="medicineCategory" class="form-label pb-2 mt-2">Category <span
-                            class="text-danger">*</span></label>
-                    <select name="medicineCategory" id="medicineCategory" class="form-select" required>
+                    <label for="medicineCategory" class="form-label pb-2 mt-2">Category</label>
+                    <select name="medicineCategory" id="medicineCategory" class="form-select">
                         <option value="">Select Category</option>
                         <option value="TABLET">Tablet</option>
                         <option value="CAPSULE">Capsule</option>
@@ -338,6 +296,45 @@
             console.log('Universal Edit Modal: Ready (with n-click fix)');
         }
     }, 50);
+</script>
+
+<!-- Universal Delete confirmation Modal -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">
+                    Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteItemMessage">Are you sure you want to delete <strong id="deleteItemName"></strong>?</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <a id="deleteConfirmButton" href="#" style="background-color: #2b353bf5;"
+                    class="btn text-light">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Universal Delete confirmation Script  -->
+<script>
+    document.addEventListener("click", (event) => {
+        const deleteButton = event.target.closest(".delete-btn");
+        if (!deleteButton) return;
+
+        const id = deleteButton.dataset.id;
+        const type = deleteButton.dataset.type;
+        const name = deleteButton.dataset.name;
+
+        const baseUrl = "<?= base_url(); ?>";
+        const deleteUrl = `${baseUrl}Edfadmin/deleteItem/${type}/${id}`;
+
+        document.getElementById("deleteItemName").textContent = name;
+        document.getElementById("deleteConfirmButton").href = deleteUrl;
+    });
 </script>
 
 <!-- Log out confirmation -->

@@ -55,15 +55,15 @@
         }
 
         .suggestions-box {
-            border: 1px solid #e9eceeff;
+            border: 1px solid #b6e1fdff;
             border-radius: 5px;
             max-height: 200px;
             overflow-y: auto;
             display: none;
             position: relative;
-            background: #f8fbffff;
+            background: #f3f5f8ff;
             width: 100%;
-            z-index: 1050;
+            z-index: 900;
         }
 
         .suggestions-box div {
@@ -812,22 +812,34 @@
                                                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                         <div class="modal-content">
 
-                                                            <div class="modal-header" style="border-bottom: none;">
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                    aria-label="Close"></button>
+                                                        <div class="modal-header" style="border-bottom: none;display: flex;justify-content: flex-end;">
+                                                            <div class="mb-2 px-2" style="text-align: right; font-size: 13px;" 
+                                                                data-consultation-id="<?= $consultation['id'] ?>"> 
+                                                                <label style="margin-right: 15px;">
+                                                                    <input type="radio" name="language_select_<?= $consultation['id'] ?>" 
+                                                                    value="english" id="lang-en-<?= $consultation['id'] ?>" checked>
+                                                                    English
+                                                                </label>
+                                                                <label>
+                                                                    <input type="radio" name="language_select_<?= $consultation['id'] ?>" 
+                                                                    value="tamil" id="lang-ta-<?= $consultation['id'] ?>">
+                                                                    தமிழ் (Tamil)
+                                                                </label>
                                                             </div>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
 
-                                                            <div class="modal-body" style="background-color: #f8f9fa;">
-
+                                                            <div class="modal-body" style="background-color: #ffffffff;">
                                                                 <div id="consultationDetails<?= $consultation['id'] ?>"
-                                                                    style="background: #fff; padding: 10px; width: 100%; margin: 0 auto; min-height: 500px; font-family: 'Noto Sans', sans-serif; font-size: 13px; color: #000; line-height: 1.4; box-sizing: border-box;">
+                                                                    style="background: #fff; padding: 1px; width: 100%; margin: 0 auto; min-height: 500px; font-family: 'Noto Sans', sans-serif; font-size: 13px; color: #000; line-height: 1.4; box-sizing: border-box;">
 
-                                                                    <div class="mb-4"
+                                                                    <div class="mb-2"
                                                                         style="border: 1px solid #cec8c8ff; border-radius: 5px; padding: 5px; width: 100%; box-sizing: border-box; display: flex; justify-content: space-between; align-items: flex-start;">
 
                                                                         <div style="width: 65%;">
                                                                             <p class="mb-0"><strong>Name<span
-                                                                                        style="margin-right: 30px;"></span>:</strong>
+                                                                                        style="margin-right: 28px;"></span>:</strong>
                                                                                 <?php echo $patientDetails[0]['firstName'] ?>
                                                                                 <?php echo $patientDetails[0]['lastName'] ?>
                                                                             </p>
@@ -916,42 +928,45 @@
                                                                         <table
                                                                             style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-top: 15px;"
                                                                             class="mb-3">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 25px;">
-                                                                                        Rx</th>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px;">
-                                                                                        Name</th>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px;">
-                                                                                        Qty</th>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Food <br> Timing</th>
-                                                                                    <th colspan="4"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Frequency</th>
-                                                                                    <th rowspan="2"
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px;">
-                                                                                        Notes</th>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Mrn</th>
-                                                                                    <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Aft</th>
-                                                                                    <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Eve</th>
-                                                                                    <th
-                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                        Ngt</th>
+                                                                         <thead>
+                                                                            <tr>
+                                                                                <th rowspan="2"
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; width: 25px;">
+                                                                                    Rx</th>
+                                                                                <th rowspan="2"
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
+                                                                                    Name</th>
+                                                                                <th rowspan="2"
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px; font-size:14px; font-weight: bold;">
+                                                                                    Qty</th>
+                                                                                <th rowspan="2"
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
+                                                                                    Food <br> Timing</th>
+                                                                                <th colspan="4"
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
+                                                                                    Frequency</th>
+                                                                                <th rowspan="2"
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
+                                                                                    Notes</th>
+                                                                            </tr>
+
+                                                                            <tr>
+                                                                                <th
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                    Mrn</th>
+                                                                                <th
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                    Aft</th>
+                                                                                <th
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                    Eve</th>
+                                                                                <th
+                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                    Ngt</th>
                                                                                 </tr>
                                                                             </thead>
+
+                                                                            
                                                                             <tbody>
                                                                                 <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
                                                                                     <?php
@@ -1032,8 +1047,7 @@
                                                                                                 echo '-';
                                                                                             endif; ?>
                                                                                         </td>
-                                                                                        <td
-                                                                                            style="border: 1px solid #000; padding: 6px;line-height: 1.2;font-size: 14px;">
+                                                                                        <td style="border: 1px solid #000; padding: 6px; line-height: 1.2; font-size: 14px; text-align: <?= !empty($medicine['notes']) ? 'left' : 'center' ?>;">
                                                                                             <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
                                                                                         </td>
                                                                                     </tr>
@@ -1061,6 +1075,20 @@
                                                                             </p>
                                                                         </div>
                                                                     <?php endif; ?>
+
+<div class="mt-4 px-2" style="display: flex; justify-content: flex-end; margin-top: 40px; margin-bottom: 20px;">
+    <div style="text-align: center; width: auto;">
+        
+        <img src="<?= base_url('assets/Signature.jpeg') ?>" 
+             alt="Doctor's Signature" 
+             style="height: 60px; width: auto; display: block; margin-right: 30px;">
+        
+        <div style="text-align: left; margin-top: 5px;">
+             <p style="margin: 0; font-weight: bold; font-size: 14px;">Dr. A. S. Senthilvelu</p>
+        </div>
+    </div>
+</div>
+
                                                                 </div>
                                                             </div>
 
@@ -3150,7 +3178,7 @@
                     <div class="modal-footer d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" id="universalDeleteBtn" class="btn text-light"
-                            style="background-color: #2b353bf5;">Delete</button>
+                        style="background-color: #2b353bf5;">Delete</button>
                     </div>
                 </div>
             </div>
@@ -3501,16 +3529,29 @@
 
                     if (!name) return;
 
+                    const submitBtn = universalForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'saving...';
+
                     const url = id ? "<?= site_url('Consultation/editSymptomItem') ?>" : "<?= site_url('Consultation/addSymptom') ?>";
-                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
+                    const body = id ?
+                        `id=${id}&name=${encodeURIComponent(name)}` :
+                        `name=${encodeURIComponent(name)}`;
 
                     fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: body
-                    })
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded"
+                            },
+                            body: body
+                        })
                         .then(res => res.json())
                         .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+
                             if (data.status === 'success') {
                                 if (id) {
                                     const index = symptomsList.findIndex(s => s.id == id);
@@ -3530,6 +3571,12 @@
                             } else {
                                 alert("Operation failed");
                             }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
                         });
                 });
             }
@@ -3919,14 +3966,20 @@
             // GLOBAL FORM SUBMIT HANDLER
             if (universalForm) {
                 universalForm.addEventListener('submit', (e) => {
-                    // IMPORTANT: Only run if this is a FINDING action
                     if (universalType.value !== 'finding') return;
 
                     e.preventDefault();
+                    
+                    // Validation
                     const name = universalInput.value.trim();
                     const id = universalId.value;
-
                     if (!name) return;
+
+                    const submitBtn = universalForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent; 
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
 
                     const url = id ? "<?= site_url('Consultation/editFindingItem') ?>" : "<?= site_url('Consultation/addFinding') ?>";
                     const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
@@ -3936,31 +3989,37 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                if (id) {
-                                    // Edit Logic
-                                    const index = findingsList.findIndex(f => f.id == id);
-                                    if (index !== -1) findingsList[index].findingsName = name;
-                                    universalAddModal.hide();
-                                    clearSearch();
-                                } else {
-                                    // Add Logic
-                                    findingsList.push({
-                                        id: data.id,
-                                        findingsName: name,
-                                        is_mine: true
-                                    });
-                                    universalAddModal.hide();
-                                    clearSearch();
-                                    // Auto-open Detail Modal
-                                    setTimeout(() => openModal(name), 300);
-                                }
+                    .then(res => res.json())
+                    .then(data => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+
+                        if (data.status === 'success') {
+                            if (id) {
+                                const index = findingsList.findIndex(f => f.id == id);
+                                if (index !== -1) findingsList[index].findingsName = name;
+                                universalAddModal.hide();
+                                clearSearch();
                             } else {
-                                alert("Operation failed");
+                                findingsList.push({
+                                    id: data.id,
+                                    findingsName: name,
+                                    is_mine: true
+                                });
+                                universalAddModal.hide();
+                                clearSearch();
+                                setTimeout(() => openModal(name), 300);
                             }
-                        });
+                        } else {
+                            alert("Operation failed");
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Fetch error:", err);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        alert("An error occurred. Please try again.");
+                    });
                 });
             }
 
@@ -3974,7 +4033,6 @@
 
             if (universalDeleteBtn) {
                 universalDeleteBtn.addEventListener('click', () => {
-                    // IMPORTANT: Only run if this is a FINDING action
                     if (universalDeleteType.value !== 'finding') return;
 
                     const id = universalDeleteId.value;
@@ -4350,14 +4408,20 @@
             // Global Form Submit (Filtered by Type)
             if (universalForm) {
                 universalForm.addEventListener('submit', (e) => {
-                    // CHECK: Is this for Diagnosis?
-                    if (universalType.value !== 'diagnosis') return;
+                    if (universalType.value !== 'diagnosis') return; // [cite: 58]
 
                     e.preventDefault();
                     const name = universalInput.value.trim();
                     const id = universalId.value;
 
                     if (!name) return;
+
+                    // 1. SELECT BUTTON AND DISABLE IT
+                    const submitBtn = universalForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
 
                     const url = id ? "<?= site_url('Consultation/editDiagnosisItem') ?>" : "<?= site_url('Consultation/addDiagnosis') ?>";
                     const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
@@ -4367,31 +4431,42 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                if (id) {
-                                    // Edit Logic
-                                    const index = diagnosisList.findIndex(d => d.id == id);
-                                    if (index !== -1) diagnosisList[index].diagnosisName = name;
-                                    universalAddModal.hide();
-                                    clearSearch();
-                                } else {
-                                    // Add Logic
-                                    diagnosisList.push({
-                                        id: data.id,
-                                        diagnosisName: name,
-                                        is_mine: true
-                                    });
-                                    universalAddModal.hide();
-                                    clearSearch();
-                                    // Open Detailed Modal
-                                    setTimeout(() => openDiagnosisModal(name), 300);
-                                }
+                    .then(res => res.json())
+                    .then(data => {
+                        // 2. RE-ENABLE BUTTON ON RESPONSE
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+
+                        if (data.status === 'success') { // [cite: 61]
+                            if (id) {
+                                // Edit Logic
+                                const index = diagnosisList.findIndex(d => d.id == id);
+                                if (index !== -1) diagnosisList[index].diagnosisName = name; 
+                                clearSearch();
+                                universalAddModal.hide();
                             } else {
-                                alert("Operation failed");
+                                // Add Logic
+                                diagnosisList.push({
+                                    id: data.id,
+                                    diagnosisName: name,
+                                    is_mine: true
+                                });
+                                universalAddModal.hide();
+                                clearSearch();
+                                // Open Detailed Modal
+                                setTimeout(() => openDiagnosisModal(name), 300);
                             }
-                        });
+                        } else {
+                            alert("Operation failed");
+                        }
+                    })
+                    .catch(err => {
+                        // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                        console.error(err);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        alert("An error occurred. Please try again.");
+                    });
                 });
             }
 
@@ -4772,6 +4847,7 @@
             }
 
             // Global Form Submit (Filtered by Type)
+            // Global Form Submit (Filtered by Type)
             if (universalForm) {
                 universalForm.addEventListener('submit', (e) => {
                     // CHECK: Is this for Investigation?
@@ -4783,6 +4859,13 @@
 
                     if (!name) return;
 
+                    // 1. SELECT BUTTON AND DISABLE IT
+                    const submitBtn = universalForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
                     const url = id ? "<?= site_url('Consultation/editInvestigationItem') ?>" : "<?= site_url('Consultation/addInvestigation') ?>";
                     const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
 
@@ -4791,31 +4874,41 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                if (id) {
-                                    // Edit Logic
-                                    const index = investigationsList.findIndex(i => i.id == id);
-                                    if (index !== -1) investigationsList[index].investigationsName = name;
-                                    universalAddModal.hide();
-                                    clearSearch();
-                                } else {
-                                    // Add Logic
-                                    investigationsList.push({
-                                        id: data.id,
-                                        investigationsName: name,
-                                        is_mine: true
-                                    });
-                                    universalAddModal.hide();
-                                    clearSearch();
-                                    // Open Detailed Modal
-                                    setTimeout(() => openInvestigationModal(name), 300);
-                                }
+                    .then(res => res.json())
+                    .then(data => {
+                        // 2. RE-ENABLE BUTTON ON RESPONSE
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+
+                        if (data.status === 'success') {
+                            if (id) {
+                                // Edit Logic
+                                const index = investigationsList.findIndex(i => i.id == id);
+                                if (index !== -1) investigationsList[index].investigationsName = name;
+                                universalAddModal.hide();
+                                clearSearch();
                             } else {
-                                alert("Operation failed");
+                                // Add Logic
+                                investigationsList.push({
+                                    id: data.id,
+                                    investigationsName: name,
+                                    is_mine: true
+                                });
+                                universalAddModal.hide();
+                                clearSearch();
+                                setTimeout(() => openInvestigationModal(name), 300);
                             }
-                        });
+                        } else {
+                            alert("Operation failed");
+                        }
+                    })
+                    .catch(err => {
+                        // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                        console.error(err);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        alert("An error occurred. Please try again.");
+                    });
                 });
             }
 
@@ -5177,6 +5270,7 @@
             }
 
             // Handle Form Submit
+            // Handle Form Submit
             if (uAddForm) {
                 uAddForm.addEventListener('submit', (e) => {
                     if (uType.value !== 'instruction') return;
@@ -5186,6 +5280,13 @@
                     const id = uId.value;
                     if (!name) return;
 
+                    // 1. SELECT BUTTON AND DISABLE IT
+                    const submitBtn = uAddForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
                     const url = id ? "<?= site_url('Consultation/editInstructionItem') ?>" : "<?= site_url('Consultation/addInstruction') ?>";
                     const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
 
@@ -5194,37 +5295,44 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                if (id) {
-                                    // Edit Logic with Selection Update
-                                    const index = instructionsList.findIndex(i => i.id == id);
-                                    if (index !== -1) {
-                                        const oldName = instructionsList[index].instructionsName;
-                                        instructionsList[index].instructionsName = name;
+                    .then(res => res.json())
+                    .then(data => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
 
-                                        if (selectedInstructionSet.has(normIns(oldName))) {
-                                            selectedInstructionSet.delete(normIns(oldName));
-                                            selectedInstructionSet.add(normIns(name));
-                                        }
+                        if (data.status === 'success') {
+                            if (id) {
+                                const index = instructionsList.findIndex(i => i.id == id);
+                                if (index !== -1) {
+                                    const oldName = instructionsList[index].instructionsName;
+                                    instructionsList[index].instructionsName = name;
+
+                                    if (selectedInstructionSet.has(normIns(oldName))) {
+                                        selectedInstructionSet.delete(normIns(oldName));
+                                        selectedInstructionSet.add(normIns(name));
                                     }
-                                } else {
-                                    // Add
-                                    instructionsList.push({
-                                        id: data.id,
-                                        instructionsName: name,
-                                        is_mine: true
-                                    });
-                                    selectedInstructionSet.add(normIns(name)); // Auto-select
                                 }
-                                uAddModal.hide();
-                                searchInput.value = "";
-                                renderList();
                             } else {
-                                alert("Operation failed");
+                                instructionsList.push({
+                                    id: data.id,
+                                    instructionsName: name,
+                                    is_mine: true
+                                });
+                                selectedInstructionSet.add(normIns(name));
                             }
-                        });
+                            uAddModal.hide();
+                            searchInput.value = "";
+                            renderList();
+                        } else {
+                            alert("Operation failed");
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        alert("An error occurred. Please try again.");
+                    });
                 });
             }
 
@@ -5516,6 +5624,13 @@
                     const id = uId.value;
                     if (!name) return;
 
+                    // 1. SELECT BUTTON AND DISABLE IT
+                    const submitBtn = uAddForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
                     const url = id ? "<?= site_url('Consultation/editProcedureItem') ?>" : "<?= site_url('Consultation/addProcedure') ?>";
                     const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
 
@@ -5524,38 +5639,49 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                if (id) {
-                                    // Edit Logic
-                                    const index = proceduresList.findIndex(p => p.id == id);
-                                    if (index !== -1) {
-                                        const oldName = proceduresList[index].proceduresName;
-                                        proceduresList[index].proceduresName = name;
+                    .then(res => res.json())
+                    .then(data => {
+                        // 2. RE-ENABLE BUTTON ON RESPONSE
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
 
-                                        // Update Set if name changed
-                                        if (selectedSet.has(norm(oldName))) {
-                                            selectedSet.delete(norm(oldName));
-                                            selectedSet.add(norm(name));
-                                        }
+                        if (data.status === 'success') {
+                            if (id) {
+                                // Edit Logic
+                                const index = proceduresList.findIndex(p => p.id == id);
+                                if (index !== -1) {
+                                    const oldName = proceduresList[index].proceduresName;
+                                    proceduresList[index].proceduresName = name;
+
+                                    // Update Set if name changed
+                                    if (selectedSet.has(norm(oldName))) {
+                                        selectedSet.delete(norm(oldName));
+                                        selectedSet.add(norm(name));
                                     }
-                                } else {
-                                    // Add Logic
-                                    proceduresList.push({
-                                        id: data.id,
-                                        proceduresName: name,
-                                        is_mine: true
-                                    });
-                                    selectedSet.add(norm(name)); // Auto-select
                                 }
-                                uAddModal.hide();
-                                searchInput.value = "";
-                                renderList();
                             } else {
-                                alert("Operation failed");
+                                // Add Logic
+                                proceduresList.push({
+                                    id: data.id,
+                                    proceduresName: name,
+                                    is_mine: true
+                                });
+                                selectedSet.add(norm(name)); // Auto-select
                             }
-                        });
+                            uAddModal.hide();
+                            searchInput.value = "";
+                            renderList();
+                        } else {
+                            alert("Operation failed");
+                        }
+                    })
+                    .catch(err => {
+                        // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                        console.error(err);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        alert("An error occurred. Please try again.");
+                    });
                 });
             }
 
@@ -5830,6 +5956,12 @@
                     const id = uId.value;
                     if (!name) return;
 
+                    const submitBtn = uAddForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+                    
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
                     const url = id ? "<?= site_url('Consultation/editAdviceItem') ?>" : "<?= site_url('Consultation/addAdviceMaster') ?>";
                     const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
 
@@ -5838,38 +5970,44 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                if (id) {
-                                    // --- FIX: Update Selection Set if Name Changed ---
-                                    const index = advicesList.findIndex(a => a.id == id);
-                                    if (index !== -1) {
-                                        const oldName = advicesList[index].adviceName; // Capture Old
-                                        advicesList[index].adviceName = name; // Update List
+                    .then(res => res.json())
+                    .then(data => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
 
-                                        // Update Set
-                                        if (selectedAdviceSet.has(normAdv(oldName))) {
-                                            selectedAdviceSet.delete(normAdv(oldName));
-                                            selectedAdviceSet.add(normAdv(name));
-                                        }
+                        if (data.status === 'success') {
+                            if (id) {
+                                const index = advicesList.findIndex(a => a.id == id);
+                                if (index !== -1) {
+                                    const oldName = advicesList[index].adviceName;
+                                    advicesList[index].adviceName = name;
+
+                                    if (selectedAdviceSet.has(normAdv(oldName))) {
+                                        selectedAdviceSet.delete(normAdv(oldName));
+                                        selectedAdviceSet.add(normAdv(name));
                                     }
-                                } else {
-                                    // Add
-                                    advicesList.push({
-                                        id: data.id,
-                                        adviceName: name,
-                                        is_mine: true
-                                    });
-                                    selectedAdviceSet.add(normAdv(name)); // Auto-select
                                 }
-                                uAddModal.hide();
-                                searchInput.value = "";
-                                renderList();
                             } else {
-                                alert("Operation failed");
+                                advicesList.push({
+                                    id: data.id,
+                                    adviceName: name,
+                                    is_mine: true
+                                });
+                                selectedAdviceSet.add(normAdv(name));
                             }
-                        });
+                            uAddModal.hide();
+                            searchInput.value = "";
+                            renderList();
+                        } else {
+                            alert("Operation failed");
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        alert("An error occurred. Please try again.");
+                    });
                 });
             }
 
@@ -6104,26 +6242,33 @@
             }
 
             function openEditMedicineMaster(item) {
-                medMasterTitle.textContent = "Edit Medicine";
-                newMedName.value = item.medicineName;
-                newMedComp.value = item.compositionName || "";
-                newMedCat.value = item.category || "";
-                editMedId.value = item.id;
-                addMedMasterModal.show();
-                setTimeout(() => newMedName.focus(), 200);
+            if (!addMedMasterModal) return;
+
+            medMasterTitle.textContent = "Edit Medicine";
+            newMedName.value = item.medicineName;
+            
+            newMedComp.value = (item.compositionName === "Nil" || !item.compositionName) ? "" : item.compositionName;
+            
+            if (item.category === "Nil" || !item.category) {
+                newMedCat.value = "";
+            } else {
+                newMedCat.value = item.category;
             }
+
+            editMedId.value = item.id;
+            addMedMasterModal.show();
+            setTimeout(() => newMedName.focus(), 200);
+        }
 
             // Confirm Save (Handles both Add and Edit)
             addMedicineConfirmBtn.addEventListener('click', async (e) => {
-                e.preventDefault(); // STOP Form Submission
+                e.preventDefault();
 
                 const name = newMedName.value.trim();
-                // Get values. They can be empty.
                 const comp = newMedComp.value.trim();
                 const cat = newMedCat.value;
                 const id = editMedId.value;
 
-                // FIX: Only Medicine Name is required now
                 if (!name) {
                     alert('Please enter Medicine Name.');
                     return;
@@ -6133,7 +6278,6 @@
 
                 const payload = {
                     medicineName: name,
-                    // These are intentionally passed as empty strings if blank
                     compositionName: comp,
                     category: cat
                 };
@@ -6151,12 +6295,10 @@
                     const data = await res.json();
 
                     if (data.status === 'success' || data.status === true) {
-                        // Reflect local data changes (backend converts empty to "Nill")
                         const finalComp = comp || "Nil";
                         const finalCat = cat || "Nil";
 
                         if (id) {
-                            // Edit: Update Local Data
                             const index = medicinesData.findIndex(m => m.id == id);
                             if (index !== -1) {
                                 medicinesData[index].medicineName = name;
@@ -6166,7 +6308,6 @@
                             addMedMasterModal.hide();
                             clearSearch();
                         } else {
-                            // Add: Push to List & Open Details
                             const newObj = {
                                 id: data.id || data.data.id,
                                 medicineName: name,
@@ -6177,7 +6318,6 @@
                             medicinesData.push(newObj);
                             addMedMasterModal.hide();
                             clearSearch();
-                            // Workflow: Immediately open Prescription Modal
                             setTimeout(() => openMedicineModal(name), 300);
                         }
                     } else {
@@ -6474,6 +6614,7 @@
             }
         });
     </script>
+    
     <!-- Upload attachments script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -7672,6 +7813,104 @@
 
             window.location.reload();
         }
+    </script>
+
+    <!-- script to Translate table in preview -->
+    <script>
+        const translationMap = {
+            'Name': 'மருந்து',
+            'Qty': 'அளவு',
+            'Food <br> Timing': 'உணவுக்கு',
+            'Frequency': 'வேளை',
+            'Notes': 'குறிப்புகள்',
+            'Mrn': 'காலை',
+            'Aft': 'மதியம்',
+            'Eve': 'மாலை',
+            'Ngt': 'இரவு',
+
+            'Before': 'முன்',
+            'After': 'பின்',
+            'before': 'முன்',
+            'after': 'பின்'
+        };
+
+        const reverseTranslationMap = {
+            'மருந்து': 'Name',
+            'அளவு': 'Qty',
+            'உணவுக்கு': 'Food <br> Timing',
+            'வேளை': 'Frequency',
+            'குறிப்புகள்': 'Notes',
+            'காலை': 'Mrn',
+            'மதியம்': 'Aft',
+            'மாலை': 'Eve',
+            'இரவு': 'Ngt',
+
+            'முன்': 'Before',
+            'பின்': 'After'
+        };
+
+        function updateTableHeadings(consultationId, language) {
+            const tableContainer = document.getElementById('consultationDetails' + consultationId);
+            if (!tableContainer) return;
+
+            const tableElement = tableContainer.querySelector('table');
+            if (!tableElement) return;
+
+            const map = (language === 'tamil') ? translationMap : reverseTranslationMap;
+
+            const theads = tableElement.querySelectorAll('thead th');
+            theads.forEach(th => {
+                let originalText = th.innerHTML;
+                let cleanText = originalText.replace(/<br\s*\/?>/gi, ' <br> ').replace(/\s+/g, ' ').trim();
+
+                if (map[cleanText]) {
+                    th.innerHTML = map[cleanText];
+                }
+            });
+
+            const rows = tableElement.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                if (cells.length > 3) {
+                    const timingCell = cells[3];
+                    const currentText = timingCell.textContent.trim();
+
+                    if (map[currentText]) {
+                        timingCell.textContent = map[currentText];
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('input[name^="language_select_"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        const language = e.target.value;
+                        const parentDiv = e.target.closest('div[data-consultation-id]');
+                        if (parentDiv) {
+                            const consultationId = parentDiv.getAttribute('data-consultation-id');
+                            updateTableHeadings(consultationId, language);
+                        }
+                    }
+                });
+            });
+
+            const consultationModals = document.querySelectorAll('[id^="consultationModal"]');
+            
+            consultationModals.forEach(modal => {
+                modal.addEventListener('show.bs.modal', function () {
+                    const consultationId = this.id.replace('consultationModal', '');
+                    
+                    const englishRadio = document.getElementById('lang-en-' + consultationId);
+                    if (englishRadio) {
+                        englishRadio.checked = true;
+                    }
+                    
+                    updateTableHeadings(consultationId, 'english');
+                });
+            });
+        });
     </script>
 
     <!-- Common Script -->

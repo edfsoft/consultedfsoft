@@ -435,10 +435,10 @@
                                     <thead>
                                         <tr style="color: #000; font-weight: 700;">
                                             <th>S.No</th>
-                                            <th>Consuled Date & Time</th>
-                                            <th>Patient Name</th>
-                                            <th>Patient ID</th>
-                                            <th>Mobile Number</th>
+                                            <th style="text-align:center">Consulted Date & Time</th>
+                                            <th >Patient Name</th>
+                                            <th style="text-align:top">Patient ID</th>
+                                            <th >Mobile Number</th>
                                             <th>Symptoms</th>
                                             <th>Action</th>
                                         </tr>
@@ -511,10 +511,10 @@
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
                 <td>${i + 1}</td>
-                <td>
+                <td style="text-align:center">
                     
                     <strong>${formatConsultDate(row.consult_date)}</strong>
-                    ${row.time_12hr}<br>
+                    <br>${row.time_12hr}<br>
                 </td>
                 <td>${row.patientName}</td>
                 <td>${row.patientId}</td>
@@ -972,29 +972,30 @@
                                                         </button>
                                             <?php endforeach; ?>
                                                 </div>
+                                                    <div class="form-group py-3">
+                                                        <label class="form-label" for="appReason">Patient's Complaint / Symptoms</label>
+                                                        
+                                                        <input type="text" id="appReason" name="appReason" readonly class="form-control" hidden>
+                                                        
+                                                        <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer"></div>
 
-                                                <div class="form-group py-3">
-                                                    <label class="form-label" for="appReason">Patient's Complaint / Symptoms<!-- <span
-                                                            class="text-danger">*</span> --></label>
-                                                    <input type="text" id="appReason" name="appReason" readonly class="form-control"
-                                                        hidden>
-                                                    <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer">
+                                                        <input type="text" id="symptomSearchInput" class="form-control mb-1" 
+                                                            placeholder="Type to search symptoms..." autocomplete="off">
+
+                                                        <select class="form-select" id="multiSelectSymptoms" style="overflow-y: auto;">
+                                                            <option value="" selected disabled>Select Symptoms</option>
+                                                            <?php
+                                                                $count = 0;
+                                                                foreach ($symptomsList as $key => $value) {
+                                                                    $count++;
+                                                            ?>
+                                                                <option value="<?php echo $value['symptomsName'] ?>">
+                                                                    <?php echo $count . '. ' . $value['symptomsName'] ?>
+                                                                </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <div id="appReason_err" class="text-danger pt-1"></div>
                                                     </div>
-                                                    <select class="form-select" id="multiSelectSymptoms">
-                                                        <option value="" selected disabled>Select Symptoms</option>
-                                                    <?php
-                                                    $count = 0;
-                                                    foreach ($symptomsList as $key => $value) {
-                                                        $count++;
-                                                        ?>
-                                                            <option value="<?php echo $value['symptomsName'] ?>">
-                                                        <?php echo $count . '. ' . $value['symptomsName'] ?>
-                                                            </option>
-
-                                                <?php } ?>
-                                                    </select>
-                                                    <div id="appReason_err" class="text-danger pt-1"></div>
-                                                </div>
                                                 <!-- Payment -->
                                                 <div class="form-group pb-3">
                                                     <label class="form-label" for="pay">Payment <span
@@ -1036,8 +1037,10 @@
                                     </div>
                                     <div class="form-group pb-2">
                                         <label>Mobile <span class="text-danger">*</span></label>
-                                        <input type="text" name="newMobile" id="newMobile" class="form-control">
+                                        <input type="text" name="newMobile" id="newMobile" class="form-control"
+                                         maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                         <div id="newMobile_err" class="text-danger"></div>
+                                        <div id="newMobileDuplicate_err" class="text-danger"></div>
                                     </div>
                                     <div class="form-group pb-2">
                                         <label>Email</label>
@@ -1368,120 +1371,149 @@
 
                     <!-- Add to db and validation -->
                     <script>
-                        function saveNewPatient() {
-                            // Clear all errors and status
-                            document.getElementById("newFirstName_err").innerHTML = "";
-                            document.getElementById("newLastName_err").innerHTML = "";
-                            document.getElementById("newMobile_err").innerHTML = "";
-                            document.getElementById("newEmail_err").innerHTML = "";
-                            document.getElementById("newGender_err").innerHTML = "";
-                            document.getElementById("newAge_err").innerHTML = "";
-                            document.getElementById("newPatientStatus").innerHTML = "";
+    // 1. Add Listener to clear duplicate error when typing
+    document.addEventListener("DOMContentLoaded", function() {
+        const newMobileInput = document.getElementById("newMobile");
+        if (newMobileInput) {
+            newMobileInput.addEventListener("input", function() {
+                document.getElementById("newMobileDuplicate_err").innerHTML = "";
+            });
+        }
+    });
 
-                            const firstName = document.getElementById("newFirstName").value.trim();
-                            const lastName = document.getElementById("newLastName").value.trim();
-                            const mobile = document.getElementById("newMobile").value.trim();
-                            const email = document.getElementById("newEmail").value.trim();
-                            const gender = document.getElementById("newGender").value;
-                            const age = document.getElementById("newAge").value.trim();
+    // 2. Updated save function with Duplicate Check
+    async function saveNewPatient() {
+        // Clear all errors and status
+        document.getElementById("newFirstName_err").innerHTML = "";
+        document.getElementById("newLastName_err").innerHTML = "";
+        document.getElementById("newMobile_err").innerHTML = "";
+        document.getElementById("newMobileDuplicate_err").innerHTML = ""; // Clear duplicate error
+        document.getElementById("newEmail_err").innerHTML = "";
+        document.getElementById("newGender_err").innerHTML = "";
+        document.getElementById("newAge_err").innerHTML = "";
+        document.getElementById("newPatientStatus").innerHTML = "";
 
-                            let isValid = true;
+        const firstName = document.getElementById("newFirstName").value.trim();
+        const lastName = document.getElementById("newLastName").value.trim();
+        const mobile = document.getElementById("newMobile").value.trim();
+        const email = document.getElementById("newEmail").value.trim();
+        const gender = document.getElementById("newGender").value;
+        const age = document.getElementById("newAge").value.trim();
 
-                            // Validation
-                            if (firstName === "") {
-                                document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
-                                isValid = false;
-                            } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
-                                document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
-                                isValid = false;
-                            }
+        let isValid = true;
 
-                            if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
-                                document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
-                                isValid = false;
-                            }
+        // --- Client Side Validation ---
+        if (firstName === "") {
+            document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
+            isValid = false;
+        } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+            document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
+            isValid = false;
+        }
 
-                            if (mobile === "") {
-                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
-                                isValid = false;
-                            } else if (!/^\d{10}$/.test(mobile)) {
-                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
-                                isValid = false;
-                            }
+        if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
+            document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
+            isValid = false;
+        }
 
-                            if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                                document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
-                                isValid = false;
-                            }
+        if (mobile === "") {
+            document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
+            isValid = false;
+        } else if (!/^\d{10}$/.test(mobile)) {
+            document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
+            isValid = false;
+        }
 
-                            if (gender === "") {
-                                document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
-                                isValid = false;
-                            }
+        if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
+            isValid = false;
+        }
 
-                            if (age === "") {
-                                document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
-                                isValid = false;
-                            } else if (isNaN(age) || age < 2 || age > 120) {
-                                document.getElementById("newAge_err").innerHTML = "Age must be a number between 2 and 120.";
-                                isValid = false;
-                            }
+        if (gender === "") {
+            document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
+            isValid = false;
+        }
 
-                            if (isValid) {
-                                fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        firstName,
-                                        lastName,
-                                        mobile,
-                                        email,
-                                        gender,
-                                        age
-                                    })
-                                })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.success) {
-                                            // Success message
-                                            document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
-                                            document.getElementById("newPatientStatus").className = "text-success mt-2";
+        if (age === "") {
+            document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
+            isValid = false;
+        } else if (isNaN(age) || age < 1 || age > 120) {
+            document.getElementById("newAge_err").innerHTML = "Age must be a number between 1 and 120.";
+            isValid = false;
+        }
 
-                                            // Store patient data in hidden field for modal close handler
-                                            const patientData = {
-                                                patientId: data.patientId,
-                                                id: data.id,
-                                                firstName: data.firstName,
-                                                lastName: data.lastName || ''
-                                            };
-                                            document.getElementById("newPatientResult").value = JSON.stringify(patientData);
+        // --- Server Side Check & Save ---
+        if (isValid) {
+            try {
+                // Step A: Check for Duplicate Mobile
+                const checkFormData = new URLSearchParams();
+                checkFormData.append('field', 'mobileNumber');
+                checkFormData.append('value', mobile);
+                checkFormData.append('table', 'patient_details');
 
-                                            // Clear form
-                                            document.getElementById("newFirstName").value = "";
-                                            document.getElementById("newLastName").value = "";
-                                            document.getElementById("newMobile").value = "";
-                                            document.getElementById("newEmail").value = "";
-                                            document.getElementById("newGender").value = "";
-                                            document.getElementById("newAge").value = "";
+                const checkResponse = await fetch('<?= base_url("Healthcareprovider/check_duplicate_field") ?>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: checkFormData
+                });
 
-                                            // Close modal
-                                            const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
-                                            modal.hide();
-                                        } else {
-                                            document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
-                                            document.getElementById("newPatientStatus").className = "text-danger mt-2";
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Error:', error);
-                                        document.getElementById("newPatientStatus").innerHTML = "An error occurred while saving the patient.";
-                                        document.getElementById("newPatientStatus").className = "text-danger mt-2";
-                                    });
-                            }
-                        }
-                    </script>
+                const checkData = await checkResponse.json();
+
+                if (checkData.exists) {
+                    // STOP: Mobile number exists
+                    document.getElementById("newMobileDuplicate_err").innerHTML = "Mobile number already added.";
+                    return; 
+                }
+
+                // Step B: If Unique, Proceed to Save
+                const saveResponse = await fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstName, lastName, mobile, email, gender, age
+                    })
+                });
+
+                const data = await saveResponse.json();
+
+                if (data.success) {
+                    // Success message
+                    document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
+                    document.getElementById("newPatientStatus").className = "text-success mt-2";
+
+                    // Store patient data in hidden field for modal close handler
+                    const patientData = {
+                        patientId: data.patientId,
+                        id: data.id,
+                        firstName: data.firstName,
+                        lastName: data.lastName || ''
+                    };
+                    document.getElementById("newPatientResult").value = JSON.stringify(patientData);
+
+                    // Clear form
+                    document.getElementById("newFirstName").value = "";
+                    document.getElementById("newLastName").value = "";
+                    document.getElementById("newMobile").value = "";
+                    document.getElementById("newEmail").value = "";
+                    document.getElementById("newGender").value = "";
+                    document.getElementById("newAge").value = "";
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
+                    modal.hide();
+                } else {
+                    document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
+                    document.getElementById("newPatientStatus").className = "text-danger mt-2";
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById("newPatientStatus").innerHTML = "An error occurred.";
+                document.getElementById("newPatientStatus").className = "text-danger mt-2";
+            }
+        }
+    }
+</script>
 
                     <!-- Appointment booking -->
                     <script>
@@ -1655,48 +1687,140 @@
                             const multiSelect = document.getElementById("multiSelectSymptoms");
                             const selectedValuesInput = document.getElementById("appReason");
                             const selectedValuesContainer = document.getElementById("selectedValuesContainer");
+                            const symptomSearchInput = document.getElementById("symptomSearchInput");
 
+                            // 1. Store original options on load
+                            let originalOptions = Array.from(multiSelect.options);
                             let selectedValues = new Set();
 
+                            // 2. Search & "Auto-Open" Logic
+                            if (symptomSearchInput) {
+                                symptomSearchInput.addEventListener("input", function() {
+                                    const term = this.value.toLowerCase().trim();
+                                    
+                                    // Reset Dropdown content
+                                    multiSelect.innerHTML = '';
+                                    
+                                    // Always add the placeholder first
+                                    multiSelect.appendChild(originalOptions[0]);
+
+                                    if (term.length > 0) {
+                                        let matchCount = 0;
+                                        const MAX_RESULTS = 5; // Limit to Top 5
+
+                                        // Filter and add matches
+                                        for (let i = 1; i < originalOptions.length; i++) {
+                                            if (matchCount >= MAX_RESULTS) break; // Stop after 5
+
+                                            const option = originalOptions[i];
+                                            if (option.textContent.toLowerCase().includes(term)) {
+                                                multiSelect.appendChild(option.cloneNode(true));
+                                                matchCount++;
+                                            }
+                                        }
+
+                                        // "Open" the dropdown by setting size
+                                        if (matchCount > 0) {
+                                            multiSelect.size = matchCount + 1; // +1 for placeholder/header
+                                        } else {
+                                            // Show "No results" option if empty
+                                            const noRes = document.createElement('option');
+                                            noRes.textContent = "— No symptoms found —";
+                                            noRes.disabled = true;
+                                            multiSelect.appendChild(noRes);
+                                            multiSelect.size = 2;
+                                        }
+                                    } else {
+                                        // If search is empty, collapse and show defaults
+                                        originalOptions.forEach(opt => multiSelect.appendChild(opt.cloneNode(true)));
+                                        multiSelect.size = 1; // Close dropdown
+                                    }
+                                });
+
+                                // Close dropdown (collapse) when clicking away
+                                symptomSearchInput.addEventListener("blur", function() {
+                                    // Small delay to allow 'click' on an option to register first
+                                    setTimeout(() => {
+                                        multiSelect.size = 1;
+                                    }, 200);
+                                });
+                                
+                                // Open dropdown if user clicks the search box
+                                symptomSearchInput.addEventListener("click", function() {
+                                    if(this.value.length > 0) {
+                                        // Trigger input event to re-expand if there is text
+                                        this.dispatchEvent(new Event('input'));
+                                    }
+                                });
+                            }
+
+                            // 3. Handle Selection (Clicking an option)
+                            multiSelect.addEventListener("change", () => {
+                                const selectedOptions = Array.from(multiSelect.selectedOptions);
+                                
+                                selectedOptions.forEach(option => {
+                                    if (option.value === "") return; // Ignore placeholder
+
+                                    // Add to Set
+                                    selectedValues.add(option.value);
+
+                                    // Mark original option as selected visually (add checkmark logic)
+                                    originalOptions.forEach(origOpt => {
+                                        if (origOpt.value === option.value) {
+                                            if (!origOpt.textContent.includes('✓')) {
+                                                origOpt.textContent = origOpt.textContent + ' ✓';
+                                            }
+                                        }
+                                    });
+                                });
+
+                                updateSelectedValues();
+
+                                // RESET After selection:
+                                symptomSearchInput.value = '';        // Clear search text
+                                multiSelect.innerHTML = '';           // Clear filtered list
+                                originalOptions.forEach(opt => multiSelect.appendChild(opt.cloneNode(true))); // Restore full list
+                                multiSelect.value = "";               // Reset selection to placeholder
+                                multiSelect.size = 1;                 // Close dropdown
+                            });
+
+                            // 4. Update Badge Display
                             const updateSelectedValues = () => {
                                 selectedValuesContainer.innerHTML = '';
                                 selectedValues.forEach(value => {
                                     const span = document.createElement('span');
-                                    span.classList.add('badge', 'bg-secondary', 'me-2', 'd-inline-flex', 'align-items-center');
+                                    span.classList.add('badge', 'bg-secondary', 'me-2', 'mb-1', 'd-inline-flex', 'align-items-center', 'p-2');
                                     span.textContent = value;
+
                                     const button = document.createElement('button');
                                     button.innerHTML = '&times;';
                                     button.classList.add('btn-close', 'btn-close-white', 'ms-2');
+                                    
+                                    // Remove Badge Logic
                                     button.addEventListener('click', () => {
                                         selectedValues.delete(value);
                                         updateSelectedValues();
-                                        Array.from(multiSelect.options).forEach(option => {
-                                            if (option.value === value) {
-                                                option.classList.remove('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
-                                                option.selected = false;
-                                                option.textContent = option.textContent.replace(' ✓', '').trim();
+
+                                        // Remove checkmark from original list
+                                        originalOptions.forEach(origOpt => {
+                                            if (origOpt.value === value) {
+                                                origOpt.textContent = origOpt.textContent.replace(' ✓', '').trim();
                                             }
                                         });
+                                        
+                                        // Refresh current dropdown view
+                                        multiSelect.innerHTML = '';
+                                        originalOptions.forEach(opt => multiSelect.appendChild(opt.cloneNode(true)));
+                                        multiSelect.value = "";
                                     });
+
                                     span.appendChild(button);
                                     selectedValuesContainer.appendChild(span);
                                 });
 
+                                // Update Hidden Input for Database Save
                                 selectedValuesInput.value = Array.from(selectedValues).join(", ");
                             };
-
-                            multiSelect.addEventListener("change", () => {
-                                const selectedOptions = Array.from(multiSelect.selectedOptions);
-                                selectedOptions.forEach(option => {
-                                    selectedValues.add(option.value);
-                                    option.classList.add('text-secondary', 'fw-bold', 'd-flex', 'justify-content-between', 'align-items-center');
-                                    if (!option.innerHTML.includes('✓')) {
-                                        option.innerHTML = `<span> ${option.textContent.trim()} <span class="ms-5">✓</span></span >`;
-
-                                    }
-                                });
-                                updateSelectedValues();
-                            });
                         });
                     </script>
 

@@ -3672,7 +3672,7 @@
                                                                                                         <tr>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO
                                                                                                             </th>
-                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">MEDICINE
+                                                                                                            <th scope="col" style="font-size: 16px; font-weight: 500;width: 35%;">MEDICINE
                                                                                                                 NAME</th>
                                                                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">
                                                                                                                 COMPOSITION</th>
@@ -3766,7 +3766,7 @@
                         <td class="pt-3">${start + index + 1}.</td>
                         <td style="font-size: 16px" class="pt-3">${medicine.category} - ${medicine.medicineName}</td>
                         <td style="font-size: 16px" class="pt-3">${medicine.compositionName}</td>
-                        <td class="d-flex d-md-block">
+                        <td class="text-nowrap align-middle">
                             <button class="btn btn-secondary edit-btn" data-id="${medicine.id}"
                                 data-name="${medicine.medicineName}" data-composition="${medicine.compositionName}"
                                  data-category="${medicine.category}"><i class="bi bi-pen"></i></button>
@@ -3872,7 +3872,9 @@
                                                                                         document.getElementById('medicineName').value = medicine.name;
 
                                                                                         let compValue = medicine.composition;
-
+                                                                                        if(compValue === "Nil"){ //block Nil
+                                                                                            compValue = "";
+                                                                                        }
                                                                                         document.getElementById('medicineComposition').value = compValue;
 
                                                                                         let catValue = medicine.category;
@@ -3925,7 +3927,8 @@
                                                                                                     // This prevents the disable action from cancelling the submit
                                                                                                     setTimeout(function () {
                                                                                                         submitButton.disabled = true;
-                                                                                                        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${loadingText}`;
+                                                                                                        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm"
+                                                                                                         role="status" aria-hidden="true"></span> ${loadingText}`;
                                                                                                     }, 0);
                                                                                                 }
                                                                                             });

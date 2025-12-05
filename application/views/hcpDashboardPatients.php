@@ -321,7 +321,7 @@
                         <div class="card-body px-md-4 pb-4">
                             <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>" name="patientDetails"
                                 id="patientDetails" enctype="multipart/form-data" method="POST"
-                                oninput="validatePatientDetails()" onsubmit="return validatePatientDetails()">
+                                oninput="validatePatientDetails()" onsubmit="return submitPatientDetails(event)">
                                 <div class="position-relative">
                                     <img id="previewImage" src="<?= base_url('assets/BlankProfileCircle.png') ?>"
                                         alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
@@ -361,6 +361,7 @@
                                         <input type="text" class="form-control" id="patientMobile" name="patientMobile"
                                             maxlength="10" placeholder="E.g. 9638527410">
                                         <small id="patientMobile_err" class="text-danger pt-1"></small>
+                                        <small id="duplicateMobile_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
                                         <label class="form-label" for="patientAltMobile">Alternate Moblie
@@ -500,38 +501,74 @@
                     </div>
                 </section>
 
-                <!-- Check Mobile Number already exist or not -->
-                <script>
-                    function checkDuplicateField(field, value, callback) {
-                        $.post("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
-                            field: "mobileNumber",
-                            value: value,
-                            table: "patient_details"
-                        }, function (response) {
-                            let res = JSON.parse(response);
-                            callback(res.exists);
-                        }).fail(() => {
-                            callback(false);
-                        });
+        <!-- Check Mobile Number already exist or not -->
+        <script>
+            function checkDuplicateField(field, value, callback) {
+                const formData = new URLSearchParams();
+                formData.append('field', 'mobileNumber');
+                formData.append('value', value);
+                formData.append('table', 'patient_details');
+
+                fetch("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    callback(data.exists);
+                })
+                .catch(error => {
+                    console.error('Error checking duplicate:', error);
+                    callback(false);
+                });
+            }
+
+            function submitPatientDetails(event) {
+                event.preventDefault();
+
+                if (!validatePatientDetails()) {
+                    return false;
+                }
+
+                const mobileInput = document.getElementById("patientMobile");
+                const errorElement = document.getElementById("duplicateMobile_err");
+                const form = document.getElementById("patientDetails");
+                
+                errorElement.textContent = "";
+
+                // Check server for duplicate
+                checkDuplicateField("mobile", mobileInput.value, function(exists) {
+                    if (exists) {
+                        // IF DUPLICATE: Show error message
+                        errorElement.textContent = "Mobile number already added";
+                        
+                        // Show the modal
+                        const modalElement = document.getElementById('duplicateMobileModal');
+                        const modal = new bootstrap.Modal(modalElement);
+                        modal.show();
+                    } else {
+                        form.submit();
                     }
+                });
+            }
 
-                    $(document).ready(function () {
-                        $("#patientMobile").on("keyup", function () {
-                            let mobile = $(this).val();
+            document.addEventListener("DOMContentLoaded", function() {
+                const mobileInput = document.getElementById("patientMobile");
+                const duplicateError = document.getElementById("duplicateMobile_err");
 
-                            if (mobile.length === 10) {
-                                $("#patientMobile_err").html("");
-
-                                checkDuplicateField("mobile", mobile, function (exists) {
-                                    if (exists) {
-                                        $("#duplicateMobileModal").modal("show");
-                                    }
-                                });
-                            }
-                        });
+                if (mobileInput) {
+                    mobileInput.addEventListener("input", function() {
+                        if (duplicateError) {
+                            duplicateError.textContent = "";
+                        }
                     });
-                </script>
-
+                }
+            });
+        </script>
+        
             <?php
         } else if ($method == "patientDetailsFormUpdate") {
             ?>
@@ -990,7 +1027,7 @@
 
             // === AGE ===
             if (age === "") {
-                document.getElementById("patientAge_err").innerHTML = "Please enter an age edit";
+                document.getElementById("patientAge_err").innerHTML = "Please enter an age";
                 isValid = false;
             } else if (parseInt(age) > 120 || parseInt(age) < 1) {
                 document.getElementById("patientAge_err").innerHTML = "Please enter a valid age (1-120)";

@@ -812,23 +812,27 @@
                                                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                                         <div class="modal-content">
 
-                                                        <div class="modal-header" style="border-bottom: none;display: flex;justify-content: flex-end;">
-                                                            <div class="mb-2 px-2" style="text-align: right; font-size: 13px;" 
-                                                                data-consultation-id="<?= $consultation['id'] ?>"> 
-                                                                <label style="margin-right: 15px;">
-                                                                    <input type="radio" name="language_select_<?= $consultation['id'] ?>" 
-                                                                    value="english" id="lang-en-<?= $consultation['id'] ?>" checked>
-                                                                    English
-                                                                </label>
-                                                                <label>
-                                                                    <input type="radio" name="language_select_<?= $consultation['id'] ?>" 
-                                                                    value="tamil" id="lang-ta-<?= $consultation['id'] ?>">
-                                                                    தமிழ் (Tamil)
-                                                                </label>
+                                                            <div class="modal-header"
+                                                                style="border-bottom: none;display: flex;justify-content: flex-end;">
+                                                                <div class="mb-2 px-2" style="text-align: right; font-size: 13px;"
+                                                                    data-consultation-id="<?= $consultation['id'] ?>">
+                                                                    <label style="margin-right: 15px;">
+                                                                        <input type="radio"
+                                                                            name="language_select_<?= $consultation['id'] ?>"
+                                                                            value="english" id="lang-en-<?= $consultation['id'] ?>"
+                                                                            checked>
+                                                                        English
+                                                                    </label>
+                                                                    <label>
+                                                                        <input type="radio"
+                                                                            name="language_select_<?= $consultation['id'] ?>"
+                                                                            value="tamil" id="lang-ta-<?= $consultation['id'] ?>">
+                                                                        தமிழ் (Tamil)
+                                                                    </label>
+                                                                </div>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                    aria-label="Close"></button>
                                                             </div>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
 
                                                             <div class="modal-body" style="background-color: #ffffffff;">
                                                                 <div id="consultationDetails<?= $consultation['id'] ?>"
@@ -928,45 +932,45 @@
                                                                         <table
                                                                             style="width: 100%; border-collapse: collapse; border: 1px solid #000; margin-top: 15px;"
                                                                             class="mb-3">
-                                                                         <thead>
-                                                                            <tr>
-                                                                                <th rowspan="2"
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; width: 25px;">
-                                                                                    Rx</th>
-                                                                                <th rowspan="2"
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
-                                                                                    Name</th>
-                                                                                <th rowspan="2"
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px; font-size:14px; font-weight: bold;">
-                                                                                    Qty</th>
-                                                                                <th rowspan="2"
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
-                                                                                    Food <br> Timing</th>
-                                                                                <th colspan="4"
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
-                                                                                    Frequency</th>
-                                                                                <th rowspan="2"
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
-                                                                                    Notes</th>
-                                                                            </tr>
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 25px;">
+                                                                                        Rx</th>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
+                                                                                        Name</th>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 35px; font-size:14px; font-weight: bold;">
+                                                                                        Qty</th>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
+                                                                                        Food <br> Timing</th>
+                                                                                    <th colspan="4"
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:14px; font-weight: bold;">
+                                                                                        Frequency</th>
+                                                                                    <th rowspan="2"
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; width: 200px; font-size:14px; font-weight: bold;">
+                                                                                        Notes</th>
+                                                                                </tr>
 
-                                                                            <tr>
-                                                                                <th
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
-                                                                                    Mrn</th>
-                                                                                <th
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
-                                                                                    Aft</th>
-                                                                                <th
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
-                                                                                    Eve</th>
-                                                                                <th
-                                                                                    style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
-                                                                                    Ngt</th>
+                                                                                <tr>
+                                                                                    <th
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                        Mrn</th>
+                                                                                    <th
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                        Aft</th>
+                                                                                    <th
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                        Eve</th>
+                                                                                    <th
+                                                                                        style="border: 1px solid #000; padding: 6px; text-align: center; font-size:13px; font-weight: bold;">
+                                                                                        Ngt</th>
                                                                                 </tr>
                                                                             </thead>
 
-                                                                            
+
                                                                             <tbody>
                                                                                 <?php foreach ($consultation['medicines'] as $index => $medicine): ?>
                                                                                     <?php
@@ -1047,7 +1051,8 @@
                                                                                                 echo '-';
                                                                                             endif; ?>
                                                                                         </td>
-                                                                                        <td style="border: 1px solid #000; padding: 6px; line-height: 1.2; font-size: 14px; text-align: <?= !empty($medicine['notes']) ? 'left' : 'center' ?>;">
+                                                                                        <td
+                                                                                            style="border: 1px solid #000; padding: 6px; line-height: 1.2; font-size: 14px; text-align: <?= !empty($medicine['notes']) ? 'left' : 'center' ?>;">
                                                                                             <?= !empty($medicine['notes']) ? htmlspecialchars($medicine['notes']) : '-' ?>
                                                                                         </td>
                                                                                     </tr>
@@ -1076,18 +1081,21 @@
                                                                         </div>
                                                                     <?php endif; ?>
 
-<div class="mt-4 px-2" style="display: flex; justify-content: flex-end; margin-top: 40px; margin-bottom: 20px;">
-    <div style="text-align: center; width: auto;">
-        
-        <img src="<?= base_url('assets/Signature.jpeg') ?>" 
-             alt="Doctor's Signature" 
-             style="height: 60px; width: auto; display: block; margin-right: 30px;">
-        
-        <div style="text-align: left; margin-top: 5px;">
-             <p style="margin: 0; font-weight: bold; font-size: 14px;">Dr. A. S. Senthilvelu</p>
-        </div>
-    </div>
-</div>
+                                                                    <div class="mt-4 px-2"
+                                                                        style="display: flex; justify-content: flex-end; margin-top: 40px; margin-bottom: 20px;">
+                                                                        <div style="text-align: center; width: auto;">
+
+                                                                            <img src="<?= base_url('assets/Signature.jpeg') ?>"
+                                                                                alt="Doctor's Signature"
+                                                                                style="height: 60px; width: auto; display: block; margin-right: 30px;">
+
+                                                                            <div style="text-align: left; margin-top: 5px;">
+                                                                                <p
+                                                                                    style="margin: 0; font-weight: bold; font-size: 14px;">
+                                                                                    Dr. A. S. Senthilvelu</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
                                                                 </div>
                                                             </div>
@@ -3178,7 +3186,7 @@
                     <div class="modal-footer d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" id="universalDeleteBtn" class="btn text-light"
-                        style="background-color: #2b353bf5;">Delete</button>
+                            style="background-color: #2b353bf5;">Delete</button>
                     </div>
                 </div>
             </div>
@@ -3531,7 +3539,7 @@
 
                     const submitBtn = universalForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
-                    
+
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'saving...';
 
@@ -3541,12 +3549,12 @@
                         `name=${encodeURIComponent(name)}`;
 
                     fetch(url, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/x-www-form-urlencoded"
-                            },
-                            body: body
-                        })
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: body
+                    })
                         .then(res => res.json())
                         .then(data => {
                             submitBtn.disabled = false;
@@ -3969,15 +3977,15 @@
                     if (universalType.value !== 'finding') return;
 
                     e.preventDefault();
-                    
+
                     // Validation
                     const name = universalInput.value.trim();
                     const id = universalId.value;
                     if (!name) return;
 
                     const submitBtn = universalForm.querySelector('button[type="submit"]');
-                    const originalBtnText = submitBtn.textContent; 
-                    
+                    const originalBtnText = submitBtn.textContent;
+
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Saving...';
 
@@ -3989,37 +3997,37 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
+                        .then(res => res.json())
+                        .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
 
-                        if (data.status === 'success') {
-                            if (id) {
-                                const index = findingsList.findIndex(f => f.id == id);
-                                if (index !== -1) findingsList[index].findingsName = name;
-                                universalAddModal.hide();
-                                clearSearch();
+                            if (data.status === 'success') {
+                                if (id) {
+                                    const index = findingsList.findIndex(f => f.id == id);
+                                    if (index !== -1) findingsList[index].findingsName = name;
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                } else {
+                                    findingsList.push({
+                                        id: data.id,
+                                        findingsName: name,
+                                        is_mine: true
+                                    });
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                    setTimeout(() => openModal(name), 300);
+                                }
                             } else {
-                                findingsList.push({
-                                    id: data.id,
-                                    findingsName: name,
-                                    is_mine: true
-                                });
-                                universalAddModal.hide();
-                                clearSearch();
-                                setTimeout(() => openModal(name), 300);
+                                alert("Operation failed");
                             }
-                        } else {
-                            alert("Operation failed");
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Fetch error:", err);
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
-                        alert("An error occurred. Please try again.");
-                    });
+                        })
+                        .catch(err => {
+                            console.error("Fetch error:", err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
                 });
             }
 
@@ -4419,7 +4427,7 @@
                     // 1. SELECT BUTTON AND DISABLE IT
                     const submitBtn = universalForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
-                    
+
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Saving...';
 
@@ -4431,42 +4439,42 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        // 2. RE-ENABLE BUTTON ON RESPONSE
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
+                        .then(res => res.json())
+                        .then(data => {
+                            // 2. RE-ENABLE BUTTON ON RESPONSE
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
 
-                        if (data.status === 'success') { // [cite: 61]
-                            if (id) {
-                                // Edit Logic
-                                const index = diagnosisList.findIndex(d => d.id == id);
-                                if (index !== -1) diagnosisList[index].diagnosisName = name; 
-                                clearSearch();
-                                universalAddModal.hide();
+                            if (data.status === 'success') { // [cite: 61]
+                                if (id) {
+                                    // Edit Logic
+                                    const index = diagnosisList.findIndex(d => d.id == id);
+                                    if (index !== -1) diagnosisList[index].diagnosisName = name;
+                                    clearSearch();
+                                    universalAddModal.hide();
+                                } else {
+                                    // Add Logic
+                                    diagnosisList.push({
+                                        id: data.id,
+                                        diagnosisName: name,
+                                        is_mine: true
+                                    });
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                    // Open Detailed Modal
+                                    setTimeout(() => openDiagnosisModal(name), 300);
+                                }
                             } else {
-                                // Add Logic
-                                diagnosisList.push({
-                                    id: data.id,
-                                    diagnosisName: name,
-                                    is_mine: true
-                                });
-                                universalAddModal.hide();
-                                clearSearch();
-                                // Open Detailed Modal
-                                setTimeout(() => openDiagnosisModal(name), 300);
+                                alert("Operation failed");
                             }
-                        } else {
-                            alert("Operation failed");
-                        }
-                    })
-                    .catch(err => {
-                        // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
-                        console.error(err);
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
-                        alert("An error occurred. Please try again.");
-                    });
+                        })
+                        .catch(err => {
+                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
                 });
             }
 
@@ -4862,7 +4870,7 @@
                     // 1. SELECT BUTTON AND DISABLE IT
                     const submitBtn = universalForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
-                    
+
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Saving...';
 
@@ -4874,41 +4882,41 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        // 2. RE-ENABLE BUTTON ON RESPONSE
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
+                        .then(res => res.json())
+                        .then(data => {
+                            // 2. RE-ENABLE BUTTON ON RESPONSE
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
 
-                        if (data.status === 'success') {
-                            if (id) {
-                                // Edit Logic
-                                const index = investigationsList.findIndex(i => i.id == id);
-                                if (index !== -1) investigationsList[index].investigationsName = name;
-                                universalAddModal.hide();
-                                clearSearch();
+                            if (data.status === 'success') {
+                                if (id) {
+                                    // Edit Logic
+                                    const index = investigationsList.findIndex(i => i.id == id);
+                                    if (index !== -1) investigationsList[index].investigationsName = name;
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                } else {
+                                    // Add Logic
+                                    investigationsList.push({
+                                        id: data.id,
+                                        investigationsName: name,
+                                        is_mine: true
+                                    });
+                                    universalAddModal.hide();
+                                    clearSearch();
+                                    setTimeout(() => openInvestigationModal(name), 300);
+                                }
                             } else {
-                                // Add Logic
-                                investigationsList.push({
-                                    id: data.id,
-                                    investigationsName: name,
-                                    is_mine: true
-                                });
-                                universalAddModal.hide();
-                                clearSearch();
-                                setTimeout(() => openInvestigationModal(name), 300);
+                                alert("Operation failed");
                             }
-                        } else {
-                            alert("Operation failed");
-                        }
-                    })
-                    .catch(err => {
-                        // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
-                        console.error(err);
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
-                        alert("An error occurred. Please try again.");
-                    });
+                        })
+                        .catch(err => {
+                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
                 });
             }
 
@@ -5283,7 +5291,7 @@
                     // 1. SELECT BUTTON AND DISABLE IT
                     const submitBtn = uAddForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
-                    
+
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Saving...';
 
@@ -5295,44 +5303,44 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
+                        .then(res => res.json())
+                        .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
 
-                        if (data.status === 'success') {
-                            if (id) {
-                                const index = instructionsList.findIndex(i => i.id == id);
-                                if (index !== -1) {
-                                    const oldName = instructionsList[index].instructionsName;
-                                    instructionsList[index].instructionsName = name;
+                            if (data.status === 'success') {
+                                if (id) {
+                                    const index = instructionsList.findIndex(i => i.id == id);
+                                    if (index !== -1) {
+                                        const oldName = instructionsList[index].instructionsName;
+                                        instructionsList[index].instructionsName = name;
 
-                                    if (selectedInstructionSet.has(normIns(oldName))) {
-                                        selectedInstructionSet.delete(normIns(oldName));
-                                        selectedInstructionSet.add(normIns(name));
+                                        if (selectedInstructionSet.has(normIns(oldName))) {
+                                            selectedInstructionSet.delete(normIns(oldName));
+                                            selectedInstructionSet.add(normIns(name));
+                                        }
                                     }
+                                } else {
+                                    instructionsList.push({
+                                        id: data.id,
+                                        instructionsName: name,
+                                        is_mine: true
+                                    });
+                                    selectedInstructionSet.add(normIns(name));
                                 }
+                                uAddModal.hide();
+                                searchInput.value = "";
+                                renderList();
                             } else {
-                                instructionsList.push({
-                                    id: data.id,
-                                    instructionsName: name,
-                                    is_mine: true
-                                });
-                                selectedInstructionSet.add(normIns(name));
+                                alert("Operation failed");
                             }
-                            uAddModal.hide();
-                            searchInput.value = "";
-                            renderList();
-                        } else {
-                            alert("Operation failed");
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
-                        alert("An error occurred. Please try again.");
-                    });
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
                 });
             }
 
@@ -5627,7 +5635,7 @@
                     // 1. SELECT BUTTON AND DISABLE IT
                     const submitBtn = uAddForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
-                    
+
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Saving...';
 
@@ -5639,49 +5647,49 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        // 2. RE-ENABLE BUTTON ON RESPONSE
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
+                        .then(res => res.json())
+                        .then(data => {
+                            // 2. RE-ENABLE BUTTON ON RESPONSE
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
 
-                        if (data.status === 'success') {
-                            if (id) {
-                                // Edit Logic
-                                const index = proceduresList.findIndex(p => p.id == id);
-                                if (index !== -1) {
-                                    const oldName = proceduresList[index].proceduresName;
-                                    proceduresList[index].proceduresName = name;
+                            if (data.status === 'success') {
+                                if (id) {
+                                    // Edit Logic
+                                    const index = proceduresList.findIndex(p => p.id == id);
+                                    if (index !== -1) {
+                                        const oldName = proceduresList[index].proceduresName;
+                                        proceduresList[index].proceduresName = name;
 
-                                    // Update Set if name changed
-                                    if (selectedSet.has(norm(oldName))) {
-                                        selectedSet.delete(norm(oldName));
-                                        selectedSet.add(norm(name));
+                                        // Update Set if name changed
+                                        if (selectedSet.has(norm(oldName))) {
+                                            selectedSet.delete(norm(oldName));
+                                            selectedSet.add(norm(name));
+                                        }
                                     }
+                                } else {
+                                    // Add Logic
+                                    proceduresList.push({
+                                        id: data.id,
+                                        proceduresName: name,
+                                        is_mine: true
+                                    });
+                                    selectedSet.add(norm(name)); // Auto-select
                                 }
+                                uAddModal.hide();
+                                searchInput.value = "";
+                                renderList();
                             } else {
-                                // Add Logic
-                                proceduresList.push({
-                                    id: data.id,
-                                    proceduresName: name,
-                                    is_mine: true
-                                });
-                                selectedSet.add(norm(name)); // Auto-select
+                                alert("Operation failed");
                             }
-                            uAddModal.hide();
-                            searchInput.value = "";
-                            renderList();
-                        } else {
-                            alert("Operation failed");
-                        }
-                    })
-                    .catch(err => {
-                        // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
-                        console.error(err);
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
-                        alert("An error occurred. Please try again.");
-                    });
+                        })
+                        .catch(err => {
+                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
                 });
             }
 
@@ -5958,7 +5966,7 @@
 
                     const submitBtn = uAddForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
-                    
+
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Saving...';
 
@@ -5970,44 +5978,44 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
+                        .then(res => res.json())
+                        .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
 
-                        if (data.status === 'success') {
-                            if (id) {
-                                const index = advicesList.findIndex(a => a.id == id);
-                                if (index !== -1) {
-                                    const oldName = advicesList[index].adviceName;
-                                    advicesList[index].adviceName = name;
+                            if (data.status === 'success') {
+                                if (id) {
+                                    const index = advicesList.findIndex(a => a.id == id);
+                                    if (index !== -1) {
+                                        const oldName = advicesList[index].adviceName;
+                                        advicesList[index].adviceName = name;
 
-                                    if (selectedAdviceSet.has(normAdv(oldName))) {
-                                        selectedAdviceSet.delete(normAdv(oldName));
-                                        selectedAdviceSet.add(normAdv(name));
+                                        if (selectedAdviceSet.has(normAdv(oldName))) {
+                                            selectedAdviceSet.delete(normAdv(oldName));
+                                            selectedAdviceSet.add(normAdv(name));
+                                        }
                                     }
+                                } else {
+                                    advicesList.push({
+                                        id: data.id,
+                                        adviceName: name,
+                                        is_mine: true
+                                    });
+                                    selectedAdviceSet.add(normAdv(name));
                                 }
+                                uAddModal.hide();
+                                searchInput.value = "";
+                                renderList();
                             } else {
-                                advicesList.push({
-                                    id: data.id,
-                                    adviceName: name,
-                                    is_mine: true
-                                });
-                                selectedAdviceSet.add(normAdv(name));
+                                alert("Operation failed");
                             }
-                            uAddModal.hide();
-                            searchInput.value = "";
-                            renderList();
-                        } else {
-                            alert("Operation failed");
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
-                        alert("An error occurred. Please try again.");
-                    });
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
                 });
             }
 
@@ -6242,23 +6250,23 @@
             }
 
             function openEditMedicineMaster(item) {
-            if (!addMedMasterModal) return;
+                if (!addMedMasterModal) return;
 
-            medMasterTitle.textContent = "Edit Medicine";
-            newMedName.value = item.medicineName;
-            
-            newMedComp.value = (item.compositionName === "Nil" || !item.compositionName) ? "" : item.compositionName;
-            
-            if (item.category === "Nil" || !item.category) {
-                newMedCat.value = "";
-            } else {
-                newMedCat.value = item.category;
+                medMasterTitle.textContent = "Edit Medicine";
+                newMedName.value = item.medicineName;
+
+                newMedComp.value = (item.compositionName === "Nil" || !item.compositionName) ? "" : item.compositionName;
+
+                if (item.category === "Nil" || !item.category) {
+                    newMedCat.value = "";
+                } else {
+                    newMedCat.value = item.category;
+                }
+
+                editMedId.value = item.id;
+                addMedMasterModal.show();
+                setTimeout(() => newMedName.focus(), 200);
             }
-
-            editMedId.value = item.id;
-            addMedMasterModal.show();
-            setTimeout(() => newMedName.focus(), 200);
-        }
 
             // Confirm Save (Handles both Add and Edit)
             addMedicineConfirmBtn.addEventListener('click', async (e) => {
@@ -6614,7 +6622,7 @@
             }
         });
     </script>
-    
+
     <!-- Upload attachments script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -7897,16 +7905,16 @@
             });
 
             const consultationModals = document.querySelectorAll('[id^="consultationModal"]');
-            
+
             consultationModals.forEach(modal => {
                 modal.addEventListener('show.bs.modal', function () {
                     const consultationId = this.id.replace('consultationModal', '');
-                    
+
                     const englishRadio = document.getElementById('lang-en-' + consultationId);
                     if (englishRadio) {
                         englishRadio.checked = true;
                     }
-                    
+
                     updateTableHeadings(consultationId, 'english');
                 });
             });

@@ -501,74 +501,70 @@
                     </div>
                 </section>
 
-        <!-- Check Mobile Number already exist or not -->
-        <script>
-            function checkDuplicateField(field, value, callback) {
-                const formData = new URLSearchParams();
-                formData.append('field', 'mobileNumber');
-                formData.append('value', value);
-                formData.append('table', 'patient_details');
+                <!-- Check Mobile Number already exist or not -->
+                <script>
+                    function checkDuplicateField(field, value, callback) {
+                        const formData = new URLSearchParams();
+                        formData.append('field', 'mobileNumber');
+                        formData.append('value', value);
+                        formData.append('table', 'patient_details');
 
-                fetch("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    callback(data.exists);
-                })
-                .catch(error => {
-                    console.error('Error checking duplicate:', error);
-                    callback(false);
-                });
-            }
-
-            function submitPatientDetails(event) {
-                event.preventDefault();
-
-                if (!validatePatientDetails()) {
-                    return false;
-                }
-
-                const mobileInput = document.getElementById("patientMobile");
-                const errorElement = document.getElementById("duplicateMobile_err");
-                const form = document.getElementById("patientDetails");
-                
-                errorElement.textContent = "";
-
-                // Check server for duplicate
-                checkDuplicateField("mobile", mobileInput.value, function(exists) {
-                    if (exists) {
-                        // IF DUPLICATE: Show error message
-                        errorElement.textContent = "Mobile number already added";
-                        
-                        // Show the modal
-                        const modalElement = document.getElementById('duplicateMobileModal');
-                        const modal = new bootstrap.Modal(modalElement);
-                        modal.show();
-                    } else {
-                        form.submit();
+                        fetch("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                callback(data.exists);
+                            })
+                            .catch(error => {
+                                console.error('Error checking duplicate:', error);
+                                callback(false);
+                            });
                     }
-                });
-            }
 
-            document.addEventListener("DOMContentLoaded", function() {
-                const mobileInput = document.getElementById("patientMobile");
-                const duplicateError = document.getElementById("duplicateMobile_err");
+                    function submitPatientDetails(event) {
+                        event.preventDefault();
 
-                if (mobileInput) {
-                    mobileInput.addEventListener("input", function() {
-                        if (duplicateError) {
-                            duplicateError.textContent = "";
+                        if (!validatePatientDetails()) {
+                            return false;
+                        }
+
+                        const mobileInput = document.getElementById("patientMobile");
+                        const errorElement = document.getElementById("duplicateMobile_err");
+                        const form = document.getElementById("patientDetails");
+
+                        errorElement.textContent = "";
+
+                        checkDuplicateField("mobile", mobileInput.value, function (exists) {
+                            if (exists) {
+                                errorElement.textContent = "Mobile number already added";
+                                const modalElement = document.getElementById('duplicateMobileModal');
+                                const modal = new bootstrap.Modal(modalElement);
+                                modal.show();
+                            } else {
+                                form.submit();
+                            }
+                        });
+                    }
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const mobileInput = document.getElementById("patientMobile");
+                        const duplicateError = document.getElementById("duplicateMobile_err");
+
+                        if (mobileInput) {
+                            mobileInput.addEventListener("input", function () {
+                                if (duplicateError) {
+                                    duplicateError.textContent = "";
+                                }
+                            });
                         }
                     });
-                }
-            });
-        </script>
-        
+                </script>
+
             <?php
         } else if ($method == "patientDetailsFormUpdate") {
             ?>

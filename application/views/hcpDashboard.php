@@ -85,7 +85,7 @@
             </script>
         <?php } ?>
 
-        <!--         <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const modalEl = document.getElementById('todaysAppointmentsModal');
                 if (modalEl) {
@@ -93,8 +93,7 @@
                     myModal.show();
                 }
             });
-        </script>
- -->
+        </script> -->
         <?php if ($this->session->flashdata('showSuccessMessage')) { ?>
             <div id="display_message"
                 style="position: absolute;top: 2px;left: 50%;transform: translateX(-50%);background-color: #d4edda;color: #155724;padding: 20px 30px;border: 1px solid #c3e6cb;border-radius: 5px;text-align: center;z-index: 9999;">
@@ -436,9 +435,9 @@
                                         <tr style="color: #000; font-weight: 700;">
                                             <th>S.No</th>
                                             <th style="text-align:center">Consulted Date & Time</th>
-                                            <th >Patient Name</th>
+                                            <th>Patient Name</th>
                                             <th style="text-align:top">Patient ID</th>
-                                            <th >Mobile Number</th>
+                                            <th>Mobile Number</th>
                                             <th>Symptoms</th>
                                             <th>Action</th>
                                         </tr>
@@ -808,30 +807,10 @@
                                             name="patientDetails" onsubmit="return validateAppointment()"
                                             oninput="clearErrorAppointment()">
                                             <div>
-                                                <!-- Old Id select -->
-                                                <!-- <div class="form-group pb-2">
-                                                    <label class="form-label" for="patientId">Patient Id <span
-                                                            class="text-danger">*</span></label>
-                                                    <select class="form-select" name="patientId" id="patientId">
-                                                        <option value="">Select Patient Id</option>
-                                                    <?php
-                                                    foreach ($patientsId as $key => $value) {
-                                                        ?>
-                                                            <option value="<?php echo $value['patientId'] . '|' . $value['id'] ?>">
-                                                        <?php echo $value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName'] ?>
-                                                            </option>
-                                                    <?php } ?>
-                                                        <option value="new">+ Add New Patient</option>
-                                                    </select>
-                                                    <div id="patientId_err" class="text-danger pt-1"></div>
-                                                </div> -->
-                                                <!-- Old Id select End -->
                                                 <div class="form-group pb-2">
                                                     <label class="form-label" for="patientId">
                                                         Patient Id <span class="text-danger">*</span>
                                                     </label>
-
-                                                    <!-- Search + Add button on the SAME line -->
                                                     <div class="input-group mb-1">
                                                         <input type="text" class="form-control"
                                                             placeholder="Search patient Id / Name" id="patientSearch"
@@ -844,7 +823,6 @@
                                                             <i class="bi bi-plus-lg me-1"></i> Add Patient
                                                         </button>
                                                     </div>
-                                                    <!-- SELECT – we give it a data-attribute so JS can find the original options -->
                                                     <select class="form-select" name="patientId" id="patientId">
                                                 <?php foreach ($patientsId as $value): ?>
                                                             <option
@@ -856,22 +834,6 @@
                                                     <div id="patientId_err" class="text-danger pt-1"></div>
                                                 </div>
 
-                                                <!-- Add New patient -->
-                                                <!-- <div id="newPatientFields" class="border p-3 mt-2 rounded d-none bg-light">
-                                                    <h6>Add New Patient</h6>
-                                                    <div class="form-group pb-2">
-                                                        <label>First Name <span class="text-danger">*</span></label>
-                                                        <input type="text" name="newFirstName" id="newFirstName"
-                                                            class="form-control">
-                                                    </div>
-                                                    <div class="form-group pb-2">
-                                                        <label>Mobile <span class="text-danger">*</span></label>
-                                                        <input type="text" name="newMobile" id="newMobile" class="form-control">
-                                                    </div>
-                                                    <button type="button" class="btn btn-sm btn-success mt-2"
-                                                        onclick="saveNewPatient()">Save Patient</button>
-                                                    <div id="newPatientStatus" class="text-success mt-2"></div>
-                                                </div> -->
                                                 <div class="form-group pb-3">
                                                     <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                             class="text-danger">*</span></label>
@@ -972,30 +934,32 @@
                                                         </button>
                                             <?php endforeach; ?>
                                                 </div>
-                                                    <div class="form-group py-3">
-                                                        <label class="form-label" for="appReason">Patient's Complaint / Symptoms</label>
-                                                        
-                                                        <input type="text" id="appReason" name="appReason" readonly class="form-control" hidden>
-                                                        
-                                                        <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer"></div>
+                                                <div class="form-group py-3">
+                                                    <label class="form-label" for="appReason">Patient's Complaint / Symptoms</label>
 
-                                                        <input type="text" id="symptomSearchInput" class="form-control mb-1" 
-                                                            placeholder="Type to search symptoms..." autocomplete="off">
+                                                    <input type="text" id="appReason" name="appReason" readonly class="form-control"
+                                                        hidden>
 
-                                                        <select class="form-select" id="multiSelectSymptoms" style="overflow-y: auto;">
-                                                            <option value="" selected disabled>Select Symptoms</option>
-                                                            <?php
-                                                                $count = 0;
-                                                                foreach ($symptomsList as $key => $value) {
-                                                                    $count++;
-                                                            ?>
-                                                                <option value="<?php echo $value['symptomsName'] ?>">
-                                                                    <?php echo $count . '. ' . $value['symptomsName'] ?>
-                                                                </option>
-                                                            <?php } ?>
-                                                        </select>
-                                                        <div id="appReason_err" class="text-danger pt-1"></div>
+                                                    <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer">
                                                     </div>
+
+                                                    <input type="text" id="symptomSearchInput" class="form-control mb-1"
+                                                        placeholder="Type to search symptoms..." autocomplete="off">
+
+                                                    <select class="form-select" id="multiSelectSymptoms" style="overflow-y: auto;">
+                                                        <option value="" selected disabled>Select Symptoms</option>
+                                                    <?php
+                                                    $count = 0;
+                                                    foreach ($symptomsList as $key => $value) {
+                                                        $count++;
+                                                        ?>
+                                                            <option value="<?php echo $value['symptomsName'] ?>">
+                                                        <?php echo $count . '. ' . $value['symptomsName'] ?>
+                                                            </option>
+                                                <?php } ?>
+                                                    </select>
+                                                    <div id="appReason_err" class="text-danger pt-1"></div>
+                                                </div>
                                                 <!-- Payment -->
                                                 <div class="form-group pb-3">
                                                     <label class="form-label" for="pay">Payment <span
@@ -1037,8 +1001,8 @@
                                     </div>
                                     <div class="form-group pb-2">
                                         <label>Mobile <span class="text-danger">*</span></label>
-                                        <input type="text" name="newMobile" id="newMobile" class="form-control"
-                                         maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                        <input type="text" name="newMobile" id="newMobile" class="form-control" maxlength="10"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                         <div id="newMobile_err" class="text-danger"></div>
                                         <div id="newMobileDuplicate_err" class="text-danger"></div>
                                     </div>
@@ -1072,27 +1036,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Open Modal and Close Modal -->
-                    <!--  <script>
-                        let patientDropdown = document.getElementById('patientId');
-
-                        patientDropdown.addEventListener('change', function () {
-                            if (this.value === 'new') {
-                                showNewPatientModal();
-                            }
-                        });
-
-                        function showNewPatientModal() {
-                            const modal = new bootstrap.Modal(document.getElementById('newPatientModal'));
-                            modal.show();
-                        }
-
-                        document.getElementById('newPatientModal').addEventListener('hidden.bs.modal', function () {
-                            document.getElementById('patientId').value = '';
-                        });
-                    </script> -->
-
+                    <!-- Add New patient -->
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
                             const select = document.getElementById('patientId');
@@ -1101,7 +1045,6 @@
                             let originalOptions = Array.from(select.options);
 
                             select.value = "";
-                            // 1. Live search filter
                             searchInput.addEventListener('input', function () {
                                 const term = this.value.toLowerCase().trim();
 
@@ -1128,7 +1071,6 @@
                                 }
                             });
 
-                            // 4. When user picks a patient → clear search box
                             select.addEventListener('change', function () {
                                 if (this.value) {
                                     searchInput.value = '';
@@ -1136,14 +1078,12 @@
                                 select.size = 1;
                             });
 
-                            // 4. +Add button → open modal
                             addBtn.addEventListener('click', function () {
                                 showNewPatientModal();
                                 searchInput.value = '';
                                 select.value = '';
                             });
 
-                            // 5. FIXED: When modal closes → Add & Select new patient
                             document.getElementById('newPatientModal').addEventListener('hidden.bs.modal', function () {
                                 const resultInput = document.getElementById('newPatientResult');
                                 if (resultInput && resultInput.value) {
@@ -1155,19 +1095,16 @@
                             });
                         });
 
-                        // Open modal
                         function showNewPatientModal() {
                             const modal = new bootstrap.Modal(document.getElementById('newPatientModal'));
                             modal.show();
                         }
 
-                        // Add new patient to dropdown and SELECT it
                         function addPatientToSelectAndSelect(patient) {
                             const select = document.getElementById('patientId');
                             const value = patient.patientId + '|' + patient.id;
                             const text = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
 
-                            // Avoid duplicate
                             let exists = false;
                             for (let opt of select.options) {
                                 if (opt.value === value) {
@@ -1188,7 +1125,7 @@
                         }
                     </script>
 
-                    <!--  Referal Id Search Area -->
+                    <!-- Patient Id and Doctor Id Search Area -->
                     <script>
                         let newPatientModalInstance;
 
@@ -1204,19 +1141,16 @@
                             let originalOptions = Array.from(selectElement.options);
                             const MAX_DISPLAY_COUNT = 5;
 
-                            // Ensure the placeholder is selected on form initialization
                             selectElement.value = "";
                             searchInputElement.addEventListener('input', function () {
                                 const term = this.value.toLowerCase().trim();
 
-                                // Open/Close the dropdown based on search term length
                                 if (term.length > 0) {
                                     selectElement.size = 6;
                                 } else {
                                     selectElement.size = 1;
                                 }
 
-                                // Reset the dropdown content with the placeholder
                                 selectElement.innerHTML = `<option value="">${placeholderText}</option>`;
                                 let matches = 0;
                                 let count = 0;
@@ -1224,7 +1158,6 @@
                                 originalOptions.forEach(opt => {
                                     if (opt.value === '') return;
 
-                                    // Stop adding options once the limit is reached
                                     if (count >= MAX_DISPLAY_COUNT) return;
 
                                     if (opt.textContent.toLowerCase().includes(term)) {
@@ -1238,7 +1171,6 @@
                                     selectElement.size = Math.min(matches + 1, MAX_DISPLAY_COUNT + 1);
                                 }
 
-                                // Show "No result" message
                                 if (matches === 0 && term !== '') {
                                     const no = document.createElement('option');
                                     no.disabled = true;
@@ -1248,14 +1180,12 @@
                                 }
                             });
 
-                            // 2. Click search → open dropdown
                             searchInputElement.addEventListener('click', function () {
                                 selectElement.size = 6;
                                 this.focus();
                                 this._ignoreBlur = true;
                             });
 
-                            // 3. Click away → close dropdown
                             searchInputElement.addEventListener('blur', function () {
                                 if (this._ignoreBlur) {
                                     this._ignoreBlur = false;
@@ -1264,7 +1194,6 @@
                                 setTimeout(() => selectElement.size = 1, 100);
                             });
 
-                            // 4. When user picks an item → clear search box
                             selectElement.addEventListener('change', function () {
                                 if (this.value) {
                                     searchInputElement.value = '';
@@ -1278,7 +1207,6 @@
                             };
                         }
 
-                        // Open modal (Assumes bootstrap is loaded)
                         function showNewPatientModal() {
                             if (newPatientModalInstance) {
                                 newPatientModalInstance.show();
@@ -1286,12 +1214,10 @@
                                 console.error('New Patient Modal instance not initialized.');
                             }
                         }
-                        // Add new patient to dropdown and SELECT it
                         function addPatientToSelectAndSelect(patient, selectElement, originalOptionsRef) {
                             const value = patient.patientId + '|' + patient.id;
                             const text = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
 
-                            // Avoid duplicate
                             let exists = false;
                             for (let opt of selectElement.options) {
                                 if (opt.value === value) {
@@ -1301,7 +1227,7 @@
                             }
 
                             if (!exists) {
-                                const option = new Option(text, value, true, true); // selected
+                                const option = new Option(text, value, true, true);
                                 selectElement.add(option);
                                 if (originalOptionsRef) {
                                     originalOptionsRef.splice(0, originalOptionsRef.length, ...Array.from(selectElement.options));
@@ -1313,7 +1239,6 @@
                             selectElement.dispatchEvent(new Event('change'));
                         }
 
-                        // Main DOMContentLoaded logic
                         document.addEventListener('DOMContentLoaded', function () {
                             const patientElements = setupSearchDropdown(
                                 'patientId',
@@ -1324,7 +1249,6 @@
                             let originalOptions = patientElements.originalOptions;
                             const select = patientElements.selectElement;
 
-                            // Set up Referral Doctor Search
                             setupSearchDropdown(
                                 'referalDoctor',
                                 'referralDoctorSearch',
@@ -1339,7 +1263,6 @@
                             const searchInput = document.getElementById('patientSearch');
                             const addBtn = document.getElementById('addPatientBtn');
 
-                            // 5. +Add button → open modal
                             if (addBtn) {
                                 addBtn.addEventListener('click', function () {
                                     showNewPatientModal();
@@ -1348,7 +1271,6 @@
                                 });
                             }
 
-                            // 6. FIXED: When modal closes → Add & Select new patient
                             if (newPatientModalElement) {
                                 newPatientModalElement.addEventListener('hidden.bs.modal', function () {
                                     const resultInput = document.getElementById('newPatientResult');
@@ -1368,152 +1290,139 @@
                         });
                     </script>
 
-
                     <!-- Add to db and validation -->
                     <script>
-    // 1. Add Listener to clear duplicate error when typing
-    document.addEventListener("DOMContentLoaded", function() {
-        const newMobileInput = document.getElementById("newMobile");
-        if (newMobileInput) {
-            newMobileInput.addEventListener("input", function() {
-                document.getElementById("newMobileDuplicate_err").innerHTML = "";
-            });
-        }
-    });
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const newMobileInput = document.getElementById("newMobile");
+                            if (newMobileInput) {
+                                newMobileInput.addEventListener("input", function () {
+                                    document.getElementById("newMobileDuplicate_err").innerHTML = "";
+                                });
+                            }
+                        });
 
-    // 2. Updated save function with Duplicate Check
-    async function saveNewPatient() {
-        // Clear all errors and status
-        document.getElementById("newFirstName_err").innerHTML = "";
-        document.getElementById("newLastName_err").innerHTML = "";
-        document.getElementById("newMobile_err").innerHTML = "";
-        document.getElementById("newMobileDuplicate_err").innerHTML = ""; // Clear duplicate error
-        document.getElementById("newEmail_err").innerHTML = "";
-        document.getElementById("newGender_err").innerHTML = "";
-        document.getElementById("newAge_err").innerHTML = "";
-        document.getElementById("newPatientStatus").innerHTML = "";
+                        async function saveNewPatient() {
+                            document.getElementById("newFirstName_err").innerHTML = "";
+                            document.getElementById("newLastName_err").innerHTML = "";
+                            document.getElementById("newMobile_err").innerHTML = "";
+                            document.getElementById("newMobileDuplicate_err").innerHTML = "";
+                            document.getElementById("newEmail_err").innerHTML = "";
+                            document.getElementById("newGender_err").innerHTML = "";
+                            document.getElementById("newAge_err").innerHTML = "";
+                            document.getElementById("newPatientStatus").innerHTML = "";
 
-        const firstName = document.getElementById("newFirstName").value.trim();
-        const lastName = document.getElementById("newLastName").value.trim();
-        const mobile = document.getElementById("newMobile").value.trim();
-        const email = document.getElementById("newEmail").value.trim();
-        const gender = document.getElementById("newGender").value;
-        const age = document.getElementById("newAge").value.trim();
+                            const firstName = document.getElementById("newFirstName").value.trim();
+                            const lastName = document.getElementById("newLastName").value.trim();
+                            const mobile = document.getElementById("newMobile").value.trim();
+                            const email = document.getElementById("newEmail").value.trim();
+                            const gender = document.getElementById("newGender").value;
+                            const age = document.getElementById("newAge").value.trim();
 
-        let isValid = true;
+                            let isValid = true;
 
-        // --- Client Side Validation ---
-        if (firstName === "") {
-            document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
-            isValid = false;
-        } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
-            document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
-            isValid = false;
-        }
+                            if (firstName === "") {
+                                document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
+                                isValid = false;
+                            } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+                                document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
+                                isValid = false;
+                            }
 
-        if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
-            document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
-            isValid = false;
-        }
+                            if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
+                                document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
+                                isValid = false;
+                            }
 
-        if (mobile === "") {
-            document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
-            isValid = false;
-        } else if (!/^\d{10}$/.test(mobile)) {
-            document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
-            isValid = false;
-        }
+                            if (mobile === "") {
+                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
+                                isValid = false;
+                            } else if (!/^\d{10}$/.test(mobile)) {
+                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
+                                isValid = false;
+                            }
 
-        if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
-            isValid = false;
-        }
+                            if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
+                                isValid = false;
+                            }
 
-        if (gender === "") {
-            document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
-            isValid = false;
-        }
+                            if (gender === "") {
+                                document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
+                                isValid = false;
+                            }
 
-        if (age === "") {
-            document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
-            isValid = false;
-        } else if (isNaN(age) || age < 1 || age > 120) {
-            document.getElementById("newAge_err").innerHTML = "Age must be a number between 1 and 120.";
-            isValid = false;
-        }
+                            if (age === "") {
+                                document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
+                                isValid = false;
+                            } else if (isNaN(age) || age < 1 || age > 120) {
+                                document.getElementById("newAge_err").innerHTML = "Age must be a number between 1 and 120.";
+                                isValid = false;
+                            }
 
-        // --- Server Side Check & Save ---
-        if (isValid) {
-            try {
-                // Step A: Check for Duplicate Mobile
-                const checkFormData = new URLSearchParams();
-                checkFormData.append('field', 'mobileNumber');
-                checkFormData.append('value', mobile);
-                checkFormData.append('table', 'patient_details');
+                            if (isValid) {
+                                try {
+                                    const checkFormData = new URLSearchParams();
+                                    checkFormData.append('field', 'mobileNumber');
+                                    checkFormData.append('value', mobile);
+                                    checkFormData.append('table', 'patient_details');
 
-                const checkResponse = await fetch('<?= base_url("Healthcareprovider/check_duplicate_field") ?>', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: checkFormData
-                });
+                                    const checkResponse = await fetch('<?= base_url("Healthcareprovider/check_duplicate_field") ?>', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                        body: checkFormData
+                                    });
 
-                const checkData = await checkResponse.json();
+                                    const checkData = await checkResponse.json();
 
-                if (checkData.exists) {
-                    // STOP: Mobile number exists
-                    document.getElementById("newMobileDuplicate_err").innerHTML = "Mobile number already added.";
-                    return; 
-                }
+                                    if (checkData.exists) {
+                                        document.getElementById("newMobileDuplicate_err").innerHTML = "Mobile number already added.";
+                                        return;
+                                    }
 
-                // Step B: If Unique, Proceed to Save
-                const saveResponse = await fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        firstName, lastName, mobile, email, gender, age
-                    })
-                });
+                                    const saveResponse = await fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            firstName, lastName, mobile, email, gender, age
+                                        })
+                                    });
 
-                const data = await saveResponse.json();
+                                    const data = await saveResponse.json();
 
-                if (data.success) {
-                    // Success message
-                    document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
-                    document.getElementById("newPatientStatus").className = "text-success mt-2";
+                                    if (data.success) {
+                                        document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
+                                        document.getElementById("newPatientStatus").className = "text-success mt-2";
 
-                    // Store patient data in hidden field for modal close handler
-                    const patientData = {
-                        patientId: data.patientId,
-                        id: data.id,
-                        firstName: data.firstName,
-                        lastName: data.lastName || ''
-                    };
-                    document.getElementById("newPatientResult").value = JSON.stringify(patientData);
+                                        const patientData = {
+                                            patientId: data.patientId,
+                                            id: data.id,
+                                            firstName: data.firstName,
+                                            lastName: data.lastName || ''
+                                        };
+                                        document.getElementById("newPatientResult").value = JSON.stringify(patientData);
 
-                    // Clear form
-                    document.getElementById("newFirstName").value = "";
-                    document.getElementById("newLastName").value = "";
-                    document.getElementById("newMobile").value = "";
-                    document.getElementById("newEmail").value = "";
-                    document.getElementById("newGender").value = "";
-                    document.getElementById("newAge").value = "";
-                    
-                    // Close modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
-                    modal.hide();
-                } else {
-                    document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
-                    document.getElementById("newPatientStatus").className = "text-danger mt-2";
-                }
+                                        document.getElementById("newFirstName").value = "";
+                                        document.getElementById("newLastName").value = "";
+                                        document.getElementById("newMobile").value = "";
+                                        document.getElementById("newEmail").value = "";
+                                        document.getElementById("newGender").value = "";
+                                        document.getElementById("newAge").value = "";
 
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById("newPatientStatus").innerHTML = "An error occurred.";
-                document.getElementById("newPatientStatus").className = "text-danger mt-2";
-            }
-        }
-    }
-</script>
+                                        const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
+                                        modal.hide();
+                                    } else {
+                                        document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
+                                        document.getElementById("newPatientStatus").className = "text-danger mt-2";
+                                    }
+
+                                } catch (error) {
+                                    console.error('Error:', error);
+                                    document.getElementById("newPatientStatus").innerHTML = "An error occurred.";
+                                    document.getElementById("newPatientStatus").className = "text-danger mt-2";
+                                }
+                            }
+                        }
+                    </script>
 
                     <!-- Appointment booking -->
                     <script>
@@ -1681,7 +1590,7 @@
                             displayTime();
                         });
                     </script>
-
+                    <!-- Symptoms search and select -->
                     <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             const multiSelect = document.getElementById("multiSelectSymptoms");
@@ -1689,28 +1598,23 @@
                             const selectedValuesContainer = document.getElementById("selectedValuesContainer");
                             const symptomSearchInput = document.getElementById("symptomSearchInput");
 
-                            // 1. Store original options on load
                             let originalOptions = Array.from(multiSelect.options);
                             let selectedValues = new Set();
 
-                            // 2. Search & "Auto-Open" Logic
                             if (symptomSearchInput) {
-                                symptomSearchInput.addEventListener("input", function() {
+                                symptomSearchInput.addEventListener("input", function () {
                                     const term = this.value.toLowerCase().trim();
-                                    
-                                    // Reset Dropdown content
+
                                     multiSelect.innerHTML = '';
-                                    
-                                    // Always add the placeholder first
+
                                     multiSelect.appendChild(originalOptions[0]);
 
                                     if (term.length > 0) {
                                         let matchCount = 0;
-                                        const MAX_RESULTS = 5; // Limit to Top 5
+                                        const MAX_RESULTS = 5;
 
-                                        // Filter and add matches
                                         for (let i = 1; i < originalOptions.length; i++) {
-                                            if (matchCount >= MAX_RESULTS) break; // Stop after 5
+                                            if (matchCount >= MAX_RESULTS) break;
 
                                             const option = originalOptions[i];
                                             if (option.textContent.toLowerCase().includes(term)) {
@@ -1719,11 +1623,9 @@
                                             }
                                         }
 
-                                        // "Open" the dropdown by setting size
                                         if (matchCount > 0) {
-                                            multiSelect.size = matchCount + 1; // +1 for placeholder/header
+                                            multiSelect.size = matchCount + 1;
                                         } else {
-                                            // Show "No results" option if empty
                                             const noRes = document.createElement('option');
                                             noRes.textContent = "— No symptoms found —";
                                             noRes.disabled = true;
@@ -1731,40 +1633,32 @@
                                             multiSelect.size = 2;
                                         }
                                     } else {
-                                        // If search is empty, collapse and show defaults
                                         originalOptions.forEach(opt => multiSelect.appendChild(opt.cloneNode(true)));
                                         multiSelect.size = 1; // Close dropdown
                                     }
                                 });
 
-                                // Close dropdown (collapse) when clicking away
-                                symptomSearchInput.addEventListener("blur", function() {
-                                    // Small delay to allow 'click' on an option to register first
+                                symptomSearchInput.addEventListener("blur", function () {
                                     setTimeout(() => {
                                         multiSelect.size = 1;
                                     }, 200);
                                 });
-                                
-                                // Open dropdown if user clicks the search box
-                                symptomSearchInput.addEventListener("click", function() {
-                                    if(this.value.length > 0) {
-                                        // Trigger input event to re-expand if there is text
+
+                                symptomSearchInput.addEventListener("click", function () {
+                                    if (this.value.length > 0) {
                                         this.dispatchEvent(new Event('input'));
                                     }
                                 });
                             }
 
-                            // 3. Handle Selection (Clicking an option)
                             multiSelect.addEventListener("change", () => {
                                 const selectedOptions = Array.from(multiSelect.selectedOptions);
-                                
-                                selectedOptions.forEach(option => {
-                                    if (option.value === "") return; // Ignore placeholder
 
-                                    // Add to Set
+                                selectedOptions.forEach(option => {
+                                    if (option.value === "") return;
+
                                     selectedValues.add(option.value);
 
-                                    // Mark original option as selected visually (add checkmark logic)
                                     originalOptions.forEach(origOpt => {
                                         if (origOpt.value === option.value) {
                                             if (!origOpt.textContent.includes('✓')) {
@@ -1776,15 +1670,13 @@
 
                                 updateSelectedValues();
 
-                                // RESET After selection:
-                                symptomSearchInput.value = '';        // Clear search text
-                                multiSelect.innerHTML = '';           // Clear filtered list
-                                originalOptions.forEach(opt => multiSelect.appendChild(opt.cloneNode(true))); // Restore full list
-                                multiSelect.value = "";               // Reset selection to placeholder
-                                multiSelect.size = 1;                 // Close dropdown
+                                symptomSearchInput.value = '';
+                                multiSelect.innerHTML = '';
+                                originalOptions.forEach(opt => multiSelect.appendChild(opt.cloneNode(true)));
+                                multiSelect.value = "";
+                                multiSelect.size = 1;
                             });
 
-                            // 4. Update Badge Display
                             const updateSelectedValues = () => {
                                 selectedValuesContainer.innerHTML = '';
                                 selectedValues.forEach(value => {
@@ -1795,20 +1687,17 @@
                                     const button = document.createElement('button');
                                     button.innerHTML = '&times;';
                                     button.classList.add('btn-close', 'btn-close-white', 'ms-2');
-                                    
-                                    // Remove Badge Logic
+
                                     button.addEventListener('click', () => {
                                         selectedValues.delete(value);
                                         updateSelectedValues();
 
-                                        // Remove checkmark from original list
                                         originalOptions.forEach(origOpt => {
                                             if (origOpt.value === value) {
                                                 origOpt.textContent = origOpt.textContent.replace(' ✓', '').trim();
                                             }
                                         });
-                                        
-                                        // Refresh current dropdown view
+
                                         multiSelect.innerHTML = '';
                                         originalOptions.forEach(opt => multiSelect.appendChild(opt.cloneNode(true)));
                                         multiSelect.value = "";
@@ -1818,12 +1707,12 @@
                                     selectedValuesContainer.appendChild(span);
                                 });
 
-                                // Update Hidden Input for Database Save
                                 selectedValuesInput.value = Array.from(selectedValues).join(", ");
                             };
                         });
                     </script>
 
+                    <!-- Appoinmtent form validation -->
                     <script>
                         function clearErrorAppointment() {
                             var patientId = document.getElementById("patientId").value;
@@ -2839,9 +2728,10 @@
                                                                 name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
                                                                 onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="">
                                                                 <div class="position-relative">
-                                                                    <img id="previewImage" src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
-                                                                        ? base_url('uploads/' . $value['hcpPhoto'])
-                                                                        : base_url('assets/img/BlankProfileCircle.png') ?>"
+                                                                    <img id="previewImage"
+                                                                        src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
+                                                                            ? base_url('uploads/' . $value['hcpPhoto'])
+                                                                            : base_url('assets/img/BlankProfileCircle.png') ?>"
                                                                         alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
                                                                         style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
                                                                         onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">

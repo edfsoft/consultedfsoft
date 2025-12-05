@@ -260,23 +260,19 @@ class HcpModel extends CI_Model
         } else {
             return 'EDF000000';
         }
-    }
- */
+    } */
 
     public function generatePatientId($dbid)
     {
-        // 1. Get the first available number (filling gaps)
         $next_number = $this->getFirstAvailableId();
 
-        // 2. Format it with leading zeros (e.g., 5 -> "000005")
         $incremented_id = str_pad($next_number, 6, '0', STR_PAD_LEFT);
         $generate_id = "EDF{$incremented_id}";
 
-        // 3. Update the specific row
         $insert = array(
             'patientId' => $generate_id
         );
-        
+
         $this->db->where('id', $dbid);
         $this->db->update('patient_details', $insert);
 
@@ -285,39 +281,27 @@ class HcpModel extends CI_Model
 
     public function getFirstAvailableId()
     {
-        // 1. Select ALL patient IDs
         $this->db->select('patientId');
         $query = $this->db->get('patient_details');
-
-        // 2. Extract numeric parts into an array
         $existing_numbers = [];
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
-                // Remove "EDF" (first 3 chars) and convert to Integer
-                // Example: "EDF000002" becomes 2
                 $num = (int) substr($row->patientId, 3);
                 $existing_numbers[] = $num;
             }
-            
-            // 3. Sort numbers in ascending order (1, 2, 4, 5...)
+
             sort($existing_numbers);
         }
 
-        // 4. Find the first missing number
         $expected = 1;
         foreach ($existing_numbers as $num) {
             if ($num == $expected) {
-                // If we found the number we expected, increment expectation
                 $expected++;
             } else if ($num > $expected) {
-                // If the number we found is higher than expected,
-                // it means $expected is missing! We found our gap.
                 return $expected;
             }
-            // If duplicate numbers exist, loop continues safely
         }
 
-        // 5. If no gaps found, return the next highest number
         return $expected;
     }
 

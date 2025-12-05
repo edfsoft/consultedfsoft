@@ -3872,7 +3872,7 @@
                                                                                         document.getElementById('medicineName').value = medicine.name;
 
                                                                                         let compValue = medicine.composition;
-                                                                                        if(compValue === "Nil"){ //block Nil
+                                                                                        if (compValue === "Nil") { //block Nil
                                                                                             compValue = "";
                                                                                         }
                                                                                         document.getElementById('medicineComposition').value = compValue;

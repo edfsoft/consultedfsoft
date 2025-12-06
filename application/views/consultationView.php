@@ -3358,7 +3358,7 @@
             deleteModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                    universalDeleteModal.hide(); 
                 });
             });
 
@@ -3420,7 +3420,7 @@
                                 actionDiv.className = "d-flex align-items-center";
 
                                 const editIcon = document.createElement("i");
-                                editIcon.className = "bi bi-pen action-icon edit"; // Custom CSS class
+                                editIcon.className = "bi bi-pen action-icon edit"; 
                                 editIcon.title = "Edit";
                                 editIcon.onclick = (e) => {
                                     e.stopPropagation();
@@ -3428,7 +3428,7 @@
                                 };
 
                                 const deleteIcon = document.createElement("i");
-                                deleteIcon.className = "bi bi-trash action-icon delete"; // Custom CSS class
+                                deleteIcon.className = "bi bi-trash action-icon delete"; 
                                 deleteIcon.title = "Delete";
                                 deleteIcon.onclick = (e) => {
                                     e.stopPropagation();
@@ -3592,7 +3592,7 @@
             function openDeleteModal(id, name) {
                 universalDeleteName.textContent = name;
                 universalDeleteId.value = id;
-                universalDeleteType.value = "symptom"; // <--- FLAG
+                universalDeleteType.value = "symptom"; 
                 universalDeleteModal.show();
             }
 
@@ -3734,11 +3734,9 @@
 
     <!-- New Findings save script -->
     <script>
-        // 1. Load List Safely
         let findingsList = <?php echo (isset($findingsList) && !empty($findingsList)) ? json_encode($findingsList) : '[]'; ?>;
 
         document.addEventListener("DOMContentLoaded", function () {
-            // --- DOM ELEMENTS (Specific to Findings) ---
             const findingsInput = document.getElementById("searchInput");
             const suggestionsBox = document.getElementById("suggestionsBox");
             const tagContainer = document.getElementById("findingsInput");
@@ -3746,7 +3744,6 @@
             const clearFindingSearch = document.getElementById("clearFindingSearch");
             const findingsListContainer = document.getElementById("findingsList");
 
-            // --- UNIVERSAL MODAL ELEMENTS ---
             const universalAddModalEl = document.getElementById("universalAddMasterModal");
             const universalAddModal = new bootstrap.Modal(universalAddModalEl);
             const universalForm = document.getElementById("universalAddMasterForm");
@@ -3763,8 +3760,6 @@
             const universalDeleteType = document.getElementById("universalDeleteType");
             const universalDeleteBtn = document.getElementById("universalDeleteBtn");
 
-            // --- DETAILED MODAL ELEMENTS (Specific to Findings) ---
-            // Your Findings modal is named "inputModal" in the HTML
             const modalEl = document.getElementById("inputModal");
             const modal = new bootstrap.Modal(modalEl);
             const modalNote = document.getElementById("modalNote");
@@ -3772,38 +3767,32 @@
             const modalSeverity = document.getElementById("modalSeverity");
             const modalTitle = document.getElementById("modalTitle");
 
-            // Variables
             let selectedFindings = [];
             let pendingTag = "";
             let editingTagEl = null;
 
-            // 1. Add/Edit Modal Close Buttons (Cancel + X)
             const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             addModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault(); // Stop any default behavior
-                    universalAddModal.hide(); // Force Bootstrap to hide it
+                    e.preventDefault(); 
+                    universalAddModal.hide(); 
 
-                    // Optional: Reset form
                     if (universalForm) universalForm.reset();
                 });
             });
 
-            // 2. Delete Modal Close Buttons (Cancel + X)
             const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             deleteModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                    universalDeleteModal.hide(); 
                 });
             });
-            //  RENDER SUGGESTIONS
             function renderSuggestions() {
                 if (!findingsInput) return;
                 const query = findingsInput.value.trim().toLowerCase();
                 suggestionsBox.innerHTML = "";
 
-                // Toggle Buttons
                 if (query.length > 0) {
                     if (clearFindingSearch) clearFindingSearch.style.display = 'block';
                 } else {
@@ -3814,7 +3803,6 @@
                 const filtered = findingsList.filter(f => f.findingsName.toLowerCase().includes(query));
 
                 if (filtered.length === 0 && query !== "") {
-                    // No Match -> Show Add Button
                     if (addFindingBtn) addFindingBtn.style.display = 'block';
 
                     if (suggestionsBox) {
@@ -3843,7 +3831,6 @@
                                 div.style.backgroundColor = "transparent";
                             });
 
-                            // A. Name
                             const spanName = document.createElement("span");
                             spanName.textContent = item.findingsName;
                             spanName.className = "flex-grow-1";
@@ -3854,12 +3841,10 @@
                             };
                             div.appendChild(spanName);
 
-                            // B. Icons (Only if Creator)
                             if (item.is_mine == true || item.is_mine == "true") {
                                 const actionDiv = document.createElement("div");
                                 actionDiv.className = "d-flex align-items-center";
 
-                                // Edit Icon
                                 const editIcon = document.createElement("i");
                                 editIcon.className = "bi bi-pen action-icon edit";
                                 editIcon.title = "Edit";
@@ -3868,7 +3853,6 @@
                                     openEditModal(item.id, item.findingsName);
                                 };
 
-                                // Delete Icon
                                 const deleteIcon = document.createElement("i");
                                 deleteIcon.className = "bi bi-trash action-icon delete";
                                 deleteIcon.title = "Delete";
@@ -3882,7 +3866,6 @@
                                 div.appendChild(actionDiv);
                             }
 
-                            // Row Click
                             div.onclick = () => {
                                 openModal(item.findingsName);
                                 clearSearch();
@@ -3906,7 +3889,6 @@
                 if (addFindingBtn) addFindingBtn.style.display = "none";
             }
 
-            // 2. DETAILED MODAL LOGIC (Findings Details)
             window.openModal = function (tagName, existing = null, tagEl = null) {
                 pendingTag = tagName;
                 editingTagEl = tagEl;
@@ -3946,14 +3928,13 @@
                 updateHiddenInput();
             }
 
-            // 3. UNIVERSAL MASTER MODAL (ADD / EDIT) HANDLERS
             if (addFindingBtn) {
                 addFindingBtn.addEventListener('click', () => {
                     universalTitle.textContent = "Add New Finding";
                     universalLabel.innerHTML = 'Finding Name <span class="text-danger">*</span>';
                     universalInput.value = findingsInput.value.trim();
                     universalId.value = "";
-                    universalType.value = "finding"; // <--- FLAG: Identified as Finding
+                    universalType.value = "finding";
 
                     universalAddModal.show();
                     setTimeout(() => universalInput.focus(), 500);
@@ -3965,20 +3946,18 @@
                 universalLabel.innerHTML = 'Finding Name <span class="text-danger">*</span>';
                 universalInput.value = name;
                 universalId.value = id;
-                universalType.value = "finding"; // <--- FLAG
+                universalType.value = "finding"; 
 
                 universalAddModal.show();
                 setTimeout(() => universalInput.focus(), 500);
             }
 
-            // GLOBAL FORM SUBMIT HANDLER
             if (universalForm) {
                 universalForm.addEventListener('submit', (e) => {
                     if (universalType.value !== 'finding') return;
 
                     e.preventDefault();
 
-                    // Validation
                     const name = universalInput.value.trim();
                     const id = universalId.value;
                     if (!name) return;
@@ -4031,11 +4010,10 @@
                 });
             }
 
-            // 4. UNIVERSAL DELETE MODAL HANDLERS
             function openDeleteModal(id, name) {
                 universalDeleteName.textContent = name;
                 universalDeleteId.value = id;
-                universalDeleteType.value = "finding"; // <--- FLAG
+                universalDeleteType.value = "finding"; 
                 universalDeleteModal.show();
             }
 
@@ -4060,7 +4038,6 @@
                 });
             }
 
-            // 5. KEYBOARD & INPUT EVENTS
             if (findingsInput) {
                 findingsInput.addEventListener("input", renderSuggestions);
                 findingsInput.addEventListener("focus", renderSuggestions);
@@ -4081,7 +4058,6 @@
                 });
             }
 
-            // Detailed Modal Enter Key
             if (modalEl) {
                 modalEl.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter') {
@@ -4102,7 +4078,6 @@
                 }
             });
 
-            // 6. HELPERS\
             function addTag(data) {
                 const tag = document.createElement("span");
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
@@ -4130,7 +4105,6 @@
                 updateTagDisplay(tag, data);
                 tag.onclick = () => openModal(data.finding, data, tag);
 
-                // Insert into Top List Container
                 if (findingsListContainer) {
                     findingsListContainer.appendChild(tag);
                 } else if (tagContainer) {
@@ -4153,7 +4127,6 @@
                 if (hiddenInput) hiddenInput.value = JSON.stringify(selectedFindings);
             }
 
-            // Initial Load
             const preloadFindings = <?php echo (isset($findings) && !empty($findings)) ? json_encode($findings) : '[]'; ?>;
             if (preloadFindings.length > 0) {
                 preloadFindings.forEach(item => {
@@ -4174,19 +4147,16 @@
 
     <!--new Diagnosis Model and save script -->
     <script>
-        // 1. Load List Safely
         let diagnosisList = <?php echo (isset($diagnosisList) && !empty($diagnosisList)) ? json_encode($diagnosisList) : '[]'; ?>;
 
         document.addEventListener("DOMContentLoaded", function () {
-            // --- DOM ELEMENTS (Specific to Diagnosis) ---
             const diagnosisInput = document.getElementById("diagnosisInput");
             const suggestionsBox = document.getElementById("diagnosisSuggestionsBox");
             const tagContainer = document.getElementById("diagnosisInputBox");
             const addDiagnosisBtn = document.getElementById("addDiagnosisBtn");
             const clearDiagnosisSearch = document.getElementById("clearDiagnosisSearch");
-            const diagnosisListContainer = document.getElementById("diagnosisList"); // Top list container
+            const diagnosisListContainer = document.getElementById("diagnosisList");
 
-            // --- DETAILED MODAL ELEMENTS (Specific to Diagnosis) ---
             const diagnosisModalEl = document.getElementById("diagnosisModal");
             const diagnosisModal = new bootstrap.Modal(diagnosisModalEl);
             const diagnosisNote = document.getElementById("diagnosisNote");
@@ -4194,7 +4164,6 @@
             const diagnosisSeverity = document.getElementById("diagnosisSeverity");
             const diagnosisModalTitle = document.querySelector('#diagnosisModal .modal-title');
 
-            // --- UNIVERSAL MODAL REFERENCES ---
             const universalAddModalEl = document.getElementById("universalAddMasterModal");
             const universalAddModal = new bootstrap.Modal(universalAddModalEl);
             const universalForm = document.getElementById("universalAddMasterForm");
@@ -4215,35 +4184,29 @@
             let pendingDiagnosis = "";
             let editingDiagnosisTag = null;
 
-            // FIX: Force Close for Universal Modals
-            // 1. Add/Edit Modal Close Buttons (Cancel + X)
             const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             addModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault(); // Stop any default behavior
-                    universalAddModal.hide(); // Force Bootstrap to hide it
+                    e.preventDefault(); 
+                    universalAddModal.hide();
 
-                    // Optional: Reset form
                     if (universalForm) universalForm.reset();
                 });
             });
 
-            // 2. Delete Modal Close Buttons (Cancel + X)
             const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             deleteModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                    universalDeleteModal.hide(); 
                 });
             });
 
-            // 1. RENDER SUGGESTIONS
             function renderDiagnosisSuggestions() {
                 if (!diagnosisInput) return;
                 const query = diagnosisInput.value.trim().toLowerCase();
                 suggestionsBox.innerHTML = "";
 
-                // Toggle Buttons
                 if (query.length > 0) {
                     if (clearDiagnosisSearch) clearDiagnosisSearch.style.display = 'block';
                 } else {
@@ -4254,7 +4217,6 @@
                 const filtered = diagnosisList.filter(d => d.diagnosisName.toLowerCase().includes(query));
 
                 if (filtered.length === 0 && query !== "") {
-                    // No Match -> Show Add Button & "No result" message
                     if (addDiagnosisBtn) addDiagnosisBtn.style.display = 'block';
 
                     if (suggestionsBox) {
@@ -4283,7 +4245,6 @@
                                 div.style.backgroundColor = "transparent";
                             });
 
-                            // A. Name
                             const spanName = document.createElement("span");
                             spanName.textContent = item.diagnosisName;
                             spanName.className = "flex-grow-1";
@@ -4294,12 +4255,10 @@
                             };
                             div.appendChild(spanName);
 
-                            // B. Icons (Only if Creator)
                             if (item.is_mine == true || item.is_mine == "true") {
                                 const actionDiv = document.createElement("div");
                                 actionDiv.className = "d-flex align-items-center";
 
-                                // Edit Icon
                                 const editIcon = document.createElement("i");
                                 editIcon.className = "bi bi-pen action-icon edit";
                                 editIcon.title = "Edit";
@@ -4308,7 +4267,6 @@
                                     openUniversalEdit('diagnosis', item.id, item.diagnosisName);
                                 };
 
-                                // Delete Icon
                                 const deleteIcon = document.createElement("i");
                                 deleteIcon.className = "bi bi-trash action-icon delete";
                                 deleteIcon.title = "Delete";
@@ -4322,7 +4280,6 @@
                                 div.appendChild(actionDiv);
                             }
 
-                            // Row Click
                             div.onclick = () => {
                                 openDiagnosisModal(item.diagnosisName);
                                 clearSearch();
@@ -4346,7 +4303,6 @@
                 if (addDiagnosisBtn) addDiagnosisBtn.style.display = "none";
             }
 
-            // 2. DETAILED MODAL LOGIC
             window.openDiagnosisModal = function (name, existing = null, tagEl = null) {
                 pendingDiagnosis = name;
                 editingDiagnosisTag = tagEl;
@@ -4386,37 +4342,33 @@
                 updateDiagnosisHidden();
             }
 
-            // 3. UNIVERSAL ADD / EDIT HANDLERS
-            // Open Add
             if (addDiagnosisBtn) {
                 addDiagnosisBtn.addEventListener('click', () => {
                     universalTitle.textContent = "Add New Diagnosis";
                     universalLabel.innerHTML = 'Diagnosis Name <span class="text-danger">*</span>';
                     universalInput.value = diagnosisInput.value.trim();
                     universalId.value = "";
-                    universalType.value = "diagnosis"; // <--- FLAG
+                    universalType.value = "diagnosis";
 
                     universalAddModal.show();
                     setTimeout(() => universalInput.focus(), 500);
                 });
             }
 
-            // Open Edit
             function openUniversalEdit(type, id, name) {
                 universalTitle.textContent = "Edit Diagnosis";
                 universalLabel.innerHTML = 'Diagnosis Name <span class="text-danger">*</span>';
                 universalInput.value = name;
                 universalId.value = id;
-                universalType.value = "diagnosis"; // <--- FLAG
+                universalType.value = "diagnosis"; 
 
                 universalAddModal.show();
                 setTimeout(() => universalInput.focus(), 500);
             }
 
-            // Global Form Submit (Filtered by Type)
             if (universalForm) {
                 universalForm.addEventListener('submit', (e) => {
-                    if (universalType.value !== 'diagnosis') return; // [cite: 58]
+                    if (universalType.value !== 'diagnosis') return;
 
                     e.preventDefault();
                     const name = universalInput.value.trim();
@@ -4424,7 +4376,6 @@
 
                     if (!name) return;
 
-                    // 1. SELECT BUTTON AND DISABLE IT
                     const submitBtn = universalForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
 
@@ -4441,19 +4392,16 @@
                     })
                         .then(res => res.json())
                         .then(data => {
-                            // 2. RE-ENABLE BUTTON ON RESPONSE
                             submitBtn.disabled = false;
                             submitBtn.textContent = originalBtnText;
 
-                            if (data.status === 'success') { // [cite: 61]
+                            if (data.status === 'success') {
                                 if (id) {
-                                    // Edit Logic
                                     const index = diagnosisList.findIndex(d => d.id == id);
                                     if (index !== -1) diagnosisList[index].diagnosisName = name;
                                     clearSearch();
                                     universalAddModal.hide();
                                 } else {
-                                    // Add Logic
                                     diagnosisList.push({
                                         id: data.id,
                                         diagnosisName: name,
@@ -4461,7 +4409,6 @@
                                     });
                                     universalAddModal.hide();
                                     clearSearch();
-                                    // Open Detailed Modal
                                     setTimeout(() => openDiagnosisModal(name), 300);
                                 }
                             } else {
@@ -4469,7 +4416,6 @@
                             }
                         })
                         .catch(err => {
-                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
                             console.error(err);
                             submitBtn.disabled = false;
                             submitBtn.textContent = originalBtnText;
@@ -4478,17 +4424,15 @@
                 });
             }
 
-            // 4. UNIVERSAL DELETE HANDLERS
             function openUniversalDelete(type, id, name) {
                 universalDeleteName.textContent = name;
                 universalDeleteId.value = id;
-                universalDeleteType.value = "diagnosis"; // <--- FLAG
+                universalDeleteType.value = "diagnosis";
                 universalDeleteModal.show();
             }
 
             if (universalDeleteBtn) {
                 universalDeleteBtn.addEventListener('click', () => {
-                    // CHECK: Is this for Diagnosis?
                     if (universalDeleteType.value !== 'diagnosis') return;
 
                     const id = universalDeleteId.value;
@@ -4508,7 +4452,6 @@
                 });
             }
 
-            // 5. KEYBOARD & INPUT EVENTS
             if (diagnosisInput) {
                 diagnosisInput.addEventListener("input", renderDiagnosisSuggestions);
                 diagnosisInput.addEventListener("focus", renderDiagnosisSuggestions);
@@ -4529,7 +4472,6 @@
                 });
             }
 
-            // Detailed Modal Enter Key
             if (diagnosisModalEl) {
                 diagnosisModalEl.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter') {
@@ -4550,7 +4492,6 @@
                 }
             });
 
-            // 6. HELPERS
             function addDiagnosisTag(data) {
                 const tag = document.createElement("span");
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
@@ -4578,11 +4519,9 @@
                 updateDiagnosisTag(tag, data);
                 tag.onclick = () => openDiagnosisModal(data.name, data, tag);
 
-                // Insert into List Container (Top)
                 if (diagnosisListContainer) {
                     diagnosisListContainer.appendChild(tag);
                 } else if (tagContainer) {
-                    // Fallback
                     tagContainer.parentElement.insertBefore(tag, tagContainer.parentElement.firstChild);
                 }
             }
@@ -4602,7 +4541,6 @@
                 if (hiddenInput) hiddenInput.value = JSON.stringify(selectedDiagnosis);
             }
 
-            // Initial Load
             const preloadDiagnosis = <?php echo (isset($diagnosis) && !empty($diagnosis)) ? json_encode($diagnosis) : '[]'; ?>;
             if (preloadDiagnosis.length > 0) {
                 preloadDiagnosis.forEach(item => {
@@ -4623,26 +4561,21 @@
 
     <!-- new Investigation save script -->
     <script>
-        // 1. Load List Safely
         let investigationsList = <?php echo (isset($investigationsList) && !empty($investigationsList)) ? json_encode($investigationsList) : '[]'; ?>;
 
         document.addEventListener("DOMContentLoaded", function () {
-            // --- DOM ELEMENTS (Specific to Investigations) ---
             const investigationsInput = document.getElementById("investigationsSearchInput");
             const suggestionsBox = document.getElementById("investigationsSuggestionsBox");
-            const tagContainer = document.getElementById("investigationsInput"); // For click outside check
+            const tagContainer = document.getElementById("investigationsInput");
             const addInvestigationBtn = document.getElementById("addInvestigationBtn");
             const clearInvestigationSearch = document.getElementById("clearInvestigationSearch");
-            // Top list container
             const investigationsListContainer = document.getElementById("investigationsList");
 
-            // --- DETAILED MODAL ELEMENTS (Specific to Investigations) ---
             const investigationsModalEl = document.getElementById("investigationsModal");
             const investigationsModal = new bootstrap.Modal(investigationsModalEl);
             const investigationNote = document.getElementById("investigationNote");
             const investigationsModalTitle = document.getElementById("investigationsModalTitle");
 
-            // --- UNIVERSAL MODAL REFERENCES ---
             const universalAddModalEl = document.getElementById("universalAddMasterModal");
             const universalAddModal = new bootstrap.Modal(universalAddModalEl);
             const universalForm = document.getElementById("universalAddMasterForm");
@@ -4663,34 +4596,28 @@
             let pendingInvestigation = "";
             let editingInvestigationTag = null;
 
-            // FIX: Force Close for Universal Modals
-            // 1. Add/Edit Modal Close Buttons (Cancel + X)
             const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             addModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault(); // Stop any default behavior
-                    universalAddModal.hide(); // Force Bootstrap to hide it
+                    e.preventDefault(); 
+                    universalAddModal.hide(); 
 
-                    // Optional: Reset form
                     if (universalForm) universalForm.reset();
                 });
             });
 
-            // 2. Delete Modal Close Buttons (Cancel + X)
             const deleteModalCloseBtns = universalDeleteModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             deleteModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    universalDeleteModal.hide(); // Force Bootstrap to hide it
+                    universalDeleteModal.hide();
                 });
             });
-            // 1. RENDER SUGGESTIONS
             function renderInvestigationsSuggestions() {
                 if (!investigationsInput) return;
                 const query = investigationsInput.value.trim().toLowerCase();
                 suggestionsBox.innerHTML = "";
 
-                // Toggle Buttons
                 if (query.length > 0) {
                     if (clearInvestigationSearch) clearInvestigationSearch.style.display = 'block';
                 } else {
@@ -4701,7 +4628,6 @@
                 const filtered = investigationsList.filter(i => i.investigationsName.toLowerCase().includes(query));
 
                 if (filtered.length === 0 && query !== "") {
-                    // No Match -> Show Add Button
                     if (addInvestigationBtn) addInvestigationBtn.style.display = 'block';
                     if (suggestionsBox) {
                         suggestionsBox.style.display = 'block';
@@ -4729,7 +4655,6 @@
                                 div.style.backgroundColor = "transparent";
                             });
 
-                            // A. Name
                             const spanName = document.createElement("span");
                             spanName.textContent = item.investigationsName;
                             spanName.className = "flex-grow-1";
@@ -4740,12 +4665,10 @@
                             };
                             div.appendChild(spanName);
 
-                            // B. Icons (Only if Creator)
                             if (item.is_mine == true || item.is_mine == "true") {
                                 const actionDiv = document.createElement("div");
                                 actionDiv.className = "d-flex align-items-center";
 
-                                // Edit
                                 const editIcon = document.createElement("i");
                                 editIcon.className = "bi bi-pen action-icon edit";
                                 editIcon.title = "Edit";
@@ -4754,7 +4677,6 @@
                                     openUniversalEdit('investigation', item.id, item.investigationsName);
                                 };
 
-                                // Delete
                                 const deleteIcon = document.createElement("i");
                                 deleteIcon.className = "bi bi-trash action-icon delete";
                                 deleteIcon.title = "Delete";
@@ -4791,7 +4713,6 @@
                 if (addInvestigationBtn) addInvestigationBtn.style.display = "none";
             }
 
-            // 2. DETAILED MODAL LOGIC (Patient Specific)
             window.openInvestigationModal = function (tagName, existing = null, tagEl = null) {
                 pendingInvestigation = tagName;
                 editingInvestigationTag = tagEl;
@@ -4827,8 +4748,6 @@
                 updateInvestigationHiddenInput();
             }
 
-            // 3. UNIVERSAL ADD / EDIT HANDLERS
-            // Open Add
             if (addInvestigationBtn) {
                 addInvestigationBtn.addEventListener('click', () => {
                     universalTitle.textContent = "Add New Investigation";
@@ -4842,23 +4761,19 @@
                 });
             }
 
-            // Open Edit
             function openUniversalEdit(type, id, name) {
                 universalTitle.textContent = "Edit Investigation";
                 universalLabel.innerHTML = 'Investigation Name <span class="text-danger">*</span>';
                 universalInput.value = name;
                 universalId.value = id;
-                universalType.value = "investigation"; // <--- FLAG
+                universalType.value = "investigation"; 
 
                 universalAddModal.show();
                 setTimeout(() => universalInput.focus(), 500);
             }
 
-            // Global Form Submit (Filtered by Type)
-            // Global Form Submit (Filtered by Type)
             if (universalForm) {
                 universalForm.addEventListener('submit', (e) => {
-                    // CHECK: Is this for Investigation?
                     if (universalType.value !== 'investigation') return;
 
                     e.preventDefault();
@@ -4867,7 +4782,6 @@
 
                     if (!name) return;
 
-                    // 1. SELECT BUTTON AND DISABLE IT
                     const submitBtn = universalForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
 
@@ -4884,19 +4798,16 @@
                     })
                         .then(res => res.json())
                         .then(data => {
-                            // 2. RE-ENABLE BUTTON ON RESPONSE
                             submitBtn.disabled = false;
                             submitBtn.textContent = originalBtnText;
 
                             if (data.status === 'success') {
                                 if (id) {
-                                    // Edit Logic
                                     const index = investigationsList.findIndex(i => i.id == id);
                                     if (index !== -1) investigationsList[index].investigationsName = name;
                                     universalAddModal.hide();
                                     clearSearch();
                                 } else {
-                                    // Add Logic
                                     investigationsList.push({
                                         id: data.id,
                                         investigationsName: name,
@@ -4911,7 +4822,6 @@
                             }
                         })
                         .catch(err => {
-                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
                             console.error(err);
                             submitBtn.disabled = false;
                             submitBtn.textContent = originalBtnText;
@@ -4920,7 +4830,6 @@
                 });
             }
 
-            // 4. UNIVERSAL DELETE HANDLERS
             function openUniversalDelete(type, id, name) {
                 universalDeleteName.textContent = name;
                 universalDeleteId.value = id;
@@ -4930,7 +4839,6 @@
 
             if (universalDeleteBtn) {
                 universalDeleteBtn.addEventListener('click', () => {
-                    // CHECK: Is this for Investigation?
                     if (universalDeleteType.value !== 'investigation') return;
 
                     const id = universalDeleteId.value;
@@ -4950,7 +4858,6 @@
                 });
             }
 
-            // 5. KEYBOARD & INPUT EVENTS
             if (investigationsInput) {
                 investigationsInput.addEventListener("input", renderInvestigationsSuggestions);
                 investigationsInput.addEventListener("focus", renderInvestigationsSuggestions);
@@ -4991,7 +4898,6 @@
                 }
             });
 
-            // 6. HELPERS
             function addInvestigationTag(data) {
                 const tag = document.createElement("span");
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
@@ -5019,11 +4925,9 @@
                 updateInvestigationTagDisplay(tag, data);
                 tag.onclick = () => openInvestigationModal(data.investigation, data, tag);
 
-                // Insert into List Container (Top)
                 if (investigationsListContainer) {
                     investigationsListContainer.appendChild(tag);
                 } else if (tagContainer) {
-                    // Fallback
                     tagContainer.parentElement.insertBefore(tag, tagContainer.parentElement.firstChild);
                 }
             }
@@ -5041,7 +4945,6 @@
                 if (hiddenInput) hiddenInput.value = JSON.stringify(selectedInvestigations);
             }
 
-            // Initial Load
             const preloadInvestigations = <?php echo (isset($investigations) && !empty($investigations)) ? json_encode($investigations) : '[]'; ?>;
             if (preloadInvestigations.length > 0) {
                 preloadInvestigations.forEach(item => {
@@ -5060,12 +4963,9 @@
 
     <!-- New Instruction Search Button -->
     <script>
-        // 1. Load Lists
         let instructionsList = <?php echo (isset($instructionsList) && !empty($instructionsList)) ? json_encode($instructionsList) : '[]'; ?>;
-        // Pre-checked items
         let savedInstructions = <?php echo (isset($instructions) && !empty($instructions)) ? json_encode($instructions) : '[]'; ?>;
 
-        // 2. Initialize Set
         let selectedInstructionSet = new Set();
         const normIns = s => (s || '').toLowerCase().trim();
 
@@ -5077,13 +4977,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Elements
             const searchInput = document.getElementById('instructionSearch');
             const clearBtn = document.getElementById('clearInstructionSearch');
             const addBtn = document.getElementById('addInstruction') || document.getElementById('addInstructionBtn');
             const list = document.getElementById('instructionList');
 
-            // Universal Modals
             const uAddModalEl = document.getElementById("universalAddMasterModal");
             const uAddModal = new bootstrap.Modal(uAddModalEl);
             const uAddForm = document.getElementById("universalAddMasterForm");
@@ -5100,8 +4998,6 @@
             const uDelType = document.getElementById("universalDeleteType");
             const uDelBtn = document.getElementById("universalDeleteBtn");
 
-            // FIX: FORCE CLOSE HANDLERS (Solves the Cancel Button Issue)
-            // 1. Add/Edit Modal (Cancel + X)
             uAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -5110,7 +5006,6 @@
                 });
             });
 
-            // 2. Delete Modal (Cancel + X)
             uDelModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -5118,7 +5013,6 @@
                 });
             });
 
-            // 1. DOM SORTING
             function sortList() {
                 const items = Array.from(list.querySelectorAll('.instruction-item'));
                 const selected = items.filter(i => i.querySelector('input').checked);
@@ -5129,12 +5023,10 @@
                 unselected.forEach(i => list.appendChild(i));
             }
 
-            // 2. RENDER LIST
             function renderList() {
                 const q = normIns(searchInput.value);
                 list.innerHTML = '';
 
-                // Toggle Buttons
                 if (q.length > 0) {
                     clearBtn.style.display = 'block';
                 } else {
@@ -5144,7 +5036,6 @@
 
                 let filtered = instructionsList.filter(i => normIns(i.instructionsName).includes(q));
 
-                // Sorting: Checked items top
                 filtered.sort((a, b) => {
                     const aSelected = selectedInstructionSet.has(normIns(a.instructionsName));
                     const bSelected = selectedInstructionSet.has(normIns(b.instructionsName));
@@ -5208,7 +5099,6 @@
                         leftDiv.appendChild(label);
                         wrapper.appendChild(leftDiv);
 
-                        // Right Side: Icons
                         if (ins.is_mine == true || ins.is_mine == "true") {
                             const actionDiv = document.createElement("div");
                             actionDiv.className = "d-flex align-items-center gap-2";
@@ -5239,14 +5129,12 @@
                 }
             }
 
-            // --- LISTEN FOR CHECKS (Triggers Sort) ---
             list.addEventListener('change', (e) => {
                 if (e.target.matches('input[type="checkbox"]')) {
                     sortList();
                 }
             });
 
-            // --- HANDLERS ---
 
             if (addBtn) {
                 addBtn.addEventListener('click', () => {
@@ -5277,8 +5165,6 @@
                 uDelModal.show();
             }
 
-            // Handle Form Submit
-            // Handle Form Submit
             if (uAddForm) {
                 uAddForm.addEventListener('submit', (e) => {
                     if (uType.value !== 'instruction') return;
@@ -5288,7 +5174,6 @@
                     const id = uId.value;
                     if (!name) return;
 
-                    // 1. SELECT BUTTON AND DISABLE IT
                     const submitBtn = uAddForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
 
@@ -5344,7 +5229,6 @@
                 });
             }
 
-            // Handle Delete
             if (uDelBtn) {
                 uDelBtn.addEventListener('click', () => {
                     if (uDelType.value !== 'instruction') return;
@@ -5369,7 +5253,6 @@
                 });
             }
 
-            // --- EVENTS ---
             if (searchInput) {
                 searchInput.addEventListener('input', renderList);
 
@@ -5394,20 +5277,16 @@
                 });
             }
 
-            // Initial Render
             renderList();
         });
     </script>
 
     <!-- New Procedure Search Button -->
     <script>
-        // 1. Load Lists
         let proceduresList = <?php echo (isset($proceduresList) && !empty($proceduresList)) ? json_encode($proceduresList) : '[]'; ?>;
 
-        // 2. Pre-checked items
         let savedProcedures = <?php echo (isset($procedures) && !empty($procedures)) ? json_encode($procedures) : '[]'; ?>;
 
-        // 3. Initialize Set
         let selectedSet = new Set();
         const norm = s => (s || '').toLowerCase().trim();
 
@@ -5419,14 +5298,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // --- ELEMENTS ---
             const searchInput = document.getElementById('procedureSearch');
             const clearBtn = document.getElementById('clearProcedureSearch');
             const addBtn = document.getElementById('addProcedure') || document.getElementById('addProcedureBtn');
             const list = document.getElementById('procedureList');
 
-            // --- UNIVERSAL MODALS ---
-            // 1. Add/Edit Modal
             const uAddModalEl = document.getElementById("universalAddMasterModal");
             const uAddModal = new bootstrap.Modal(uAddModalEl);
             const uAddForm = document.getElementById("universalAddMasterForm");
@@ -5436,7 +5312,6 @@
             const uId = document.getElementById("universalMasterId");
             const uType = document.getElementById("universalMasterType");
 
-            // 2. Delete Modal
             const uDelModalEl = document.getElementById("universalDeleteModal");
             const uDelModal = new bootstrap.Modal(uDelModalEl);
             const uDelName = document.getElementById("universalDeleteNameDisplay");
@@ -5444,8 +5319,6 @@
             const uDelType = document.getElementById("universalDeleteType");
             const uDelBtn = document.getElementById("universalDeleteBtn");
 
-            // FIX: FORCE CLOSE HANDLERS (Solves the Cancel Button Issue)
-            // 1. Add/Edit Modal (Cancel + X)
             uAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -5454,7 +5327,6 @@
                 });
             });
 
-            // 2. Delete Modal (Cancel + X)
             uDelModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -5462,7 +5334,6 @@
                 });
             });
 
-            // 1. DOM SORTING
             function sortList() {
                 const items = Array.from(list.querySelectorAll('.procedure-item'));
                 const selected = items.filter(i => i.querySelector('input').checked);
@@ -5473,12 +5344,10 @@
                 unselected.forEach(i => list.appendChild(i));
             }
 
-            // 2. RENDER LIST
             function renderList() {
                 const q = norm(searchInput.value);
                 list.innerHTML = '';
 
-                // Toggle Buttons
                 if (q.length > 0) {
                     clearBtn.style.display = 'block';
                 } else {
@@ -5488,7 +5357,6 @@
 
                 let filtered = proceduresList.filter(p => norm(p.proceduresName).includes(q));
 
-                // Sort: Checked items top
                 filtered.sort((a, b) => {
                     const aSelected = selectedSet.has(norm(a.proceduresName));
                     const bSelected = selectedSet.has(norm(b.proceduresName));
@@ -5519,7 +5387,6 @@
                             wrapper.style.backgroundColor = "transparent";
                         });
 
-                        // Left Side
                         const leftDiv = document.createElement('div');
                         leftDiv.className = 'd-flex align-items-center flex-grow-1';
 
@@ -5553,7 +5420,6 @@
                         leftDiv.appendChild(label);
                         wrapper.appendChild(leftDiv);
 
-                        // Right Side: Icons
                         if (pro.is_mine == true || pro.is_mine == "true") {
                             const actionDiv = document.createElement("div");
                             actionDiv.className = "d-flex align-items-center gap-2";
@@ -5584,14 +5450,12 @@
                 }
             }
 
-            // --- LISTEN FOR CHECKS ---
             list.addEventListener('change', (e) => {
                 if (e.target.matches('input[type="checkbox"]')) {
                     sortList();
                 }
             });
 
-            // --- HANDLERS ---
 
             if (addBtn) {
                 addBtn.addEventListener('click', () => {
@@ -5622,7 +5486,6 @@
                 uDelModal.show();
             }
 
-            // Handle Form Submit
             if (uAddForm) {
                 uAddForm.addEventListener('submit', (e) => {
                     if (uType.value !== 'procedure') return;
@@ -5632,7 +5495,6 @@
                     const id = uId.value;
                     if (!name) return;
 
-                    // 1. SELECT BUTTON AND DISABLE IT
                     const submitBtn = uAddForm.querySelector('button[type="submit"]');
                     const originalBtnText = submitBtn.textContent;
 
@@ -5649,32 +5511,28 @@
                     })
                         .then(res => res.json())
                         .then(data => {
-                            // 2. RE-ENABLE BUTTON ON RESPONSE
                             submitBtn.disabled = false;
                             submitBtn.textContent = originalBtnText;
 
                             if (data.status === 'success') {
                                 if (id) {
-                                    // Edit Logic
                                     const index = proceduresList.findIndex(p => p.id == id);
                                     if (index !== -1) {
                                         const oldName = proceduresList[index].proceduresName;
                                         proceduresList[index].proceduresName = name;
 
-                                        // Update Set if name changed
                                         if (selectedSet.has(norm(oldName))) {
                                             selectedSet.delete(norm(oldName));
                                             selectedSet.add(norm(name));
                                         }
                                     }
                                 } else {
-                                    // Add Logic
                                     proceduresList.push({
                                         id: data.id,
                                         proceduresName: name,
                                         is_mine: true
                                     });
-                                    selectedSet.add(norm(name)); // Auto-select
+                                    selectedSet.add(norm(name));
                                 }
                                 uAddModal.hide();
                                 searchInput.value = "";
@@ -5684,7 +5542,6 @@
                             }
                         })
                         .catch(err => {
-                            // 3. SAFETY CATCH: RE-ENABLE BUTTON ON ERROR
                             console.error(err);
                             submitBtn.disabled = false;
                             submitBtn.textContent = originalBtnText;
@@ -5693,7 +5550,6 @@
                 });
             }
 
-            // Handle Delete
             if (uDelBtn) {
                 uDelBtn.addEventListener('click', () => {
                     if (uDelType.value !== 'procedure') return;
@@ -5718,7 +5574,6 @@
                 });
             }
 
-            // --- EVENTS ---
             if (searchInput) {
                 searchInput.addEventListener('input', renderList);
 
@@ -5743,19 +5598,15 @@
                 });
             }
 
-            // Initial Render
             renderList();
         });
     </script>
 
     <!-- new Advice search and add script -->
     <script>
-        // 1. Load List
         let advicesList = <?php echo (isset($advicesList) && !empty($advicesList)) ? json_encode($advicesList) : '[]'; ?>;
-        // Pre-checked items
         let savedAdvices = <?php echo (isset($advices) && !empty($advices)) ? json_encode($advices) : '[]'; ?>;
 
-        // 2. Initialize Set
         let selectedAdviceSet = new Set();
         const normAdv = s => (s || '').toLowerCase().trim();
 
@@ -5767,13 +5618,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Elements
             const searchInput = document.getElementById('adviceSearch');
             const clearBtn = document.getElementById('clearAdviceSearch');
             const addBtn = document.getElementById('addAdviceBtn');
             const list = document.getElementById('adviceList');
 
-            // Universal Modals
             const uAddModal = new bootstrap.Modal(document.getElementById("universalAddMasterModal"));
             const uAddForm = document.getElementById("universalAddMasterForm");
             const uTitle = document.getElementById("universalMasterTitle");
@@ -5788,7 +5637,6 @@
             const uDelType = document.getElementById("universalDeleteType");
             const uDelBtn = document.getElementById("universalDeleteBtn");
 
-            // 1. DOM SORTING
             function sortList() {
                 const items = Array.from(list.querySelectorAll('.advice-item'));
                 const selected = items.filter(i => i.querySelector('input').checked);
@@ -5799,12 +5647,10 @@
                 unselected.forEach(i => list.appendChild(i));
             }
 
-            // 2. RENDER LIST
             function renderList() {
                 const q = normAdv(searchInput.value);
                 list.innerHTML = '';
 
-                // Toggle Buttons
                 if (q.length > 0) {
                     clearBtn.style.display = 'block';
                 } else {
@@ -5814,7 +5660,6 @@
 
                 let filtered = advicesList.filter(a => normAdv(a.adviceName).includes(q));
 
-                // Sorting: Checked items top
                 filtered.sort((a, b) => {
                     const aSelected = selectedAdviceSet.has(normAdv(a.adviceName));
                     const bSelected = selectedAdviceSet.has(normAdv(b.adviceName));
@@ -5848,7 +5693,6 @@
                             wrapper.addEventListener("mouseleave", () => {
                                 wrapper.style.backgroundColor = "transparent";
                             });
-                            // Left Side
                             const leftDiv = document.createElement('div');
                             leftDiv.className = 'd-flex align-items-center flex-grow-1';
 
@@ -5859,7 +5703,6 @@
                             checkbox.value = adv.adviceName;
                             checkbox.id = `adv${adv.id}`;
 
-                            // Check if in Set
                             if (selectedAdviceSet.has(normAdv(adv.adviceName))) {
                                 checkbox.checked = true;
                             }
@@ -5883,7 +5726,6 @@
                             leftDiv.appendChild(label);
                             wrapper.appendChild(leftDiv);
 
-                            // Right Side: Icons
                             if (adv.is_mine == true || adv.is_mine == "true") {
                                 const actionDiv = document.createElement("div");
                                 actionDiv.className = "d-flex align-items-center gap-2";
@@ -5917,21 +5759,19 @@
                 list.style.display = hasContent ? 'block' : 'none';
             }
 
-            // --- LISTEN FOR CHECKS (Triggers Sort) ---
             list.addEventListener('change', (e) => {
                 if (e.target.matches('input[type="checkbox"]')) {
                     sortList();
                 }
             });
 
-            // --- HANDLERS ---
             if (addBtn) {
                 addBtn.addEventListener('click', () => {
                     uTitle.textContent = "Add New Advice";
                     uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
                     uInput.value = searchInput.value.trim();
                     uId.value = "";
-                    uType.value = "advice"; // FLAG
+                    uType.value = "advice";
                     uAddModal.show();
                     setTimeout(() => uInput.focus(), 500);
                 });
@@ -5954,7 +5794,6 @@
                 uDelModal.show();
             }
 
-            // Handle Form Submit
             if (uAddForm) {
                 uAddForm.addEventListener('submit', (e) => {
                     if (uType.value !== 'advice') return;
@@ -6019,7 +5858,6 @@
                 });
             }
 
-            // Handle Delete
             if (uDelBtn) {
                 uDelBtn.addEventListener('click', () => {
                     if (uDelType.value !== 'advice') return;
@@ -6044,7 +5882,6 @@
                 });
             }
 
-            // --- EVENTS ---
             if (searchInput) {
                 searchInput.addEventListener('input', renderList);
 
@@ -6069,7 +5906,6 @@
                 });
             }
 
-            // Initial Render
             renderList();
         });
     </script>
@@ -6077,11 +5913,9 @@
     <!-- New Medicine Modal Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // 1. Load Lists
             let medicinesData = <?php echo json_encode($medicinesList); ?> || [];
             const savedMedicines = <?php echo isset($medicines) ? json_encode($medicines) : '[]'; ?> || [];
 
-            // --- DOM REFS ---
             const medicinesInput = document.getElementById("medicinesSearchInput");
             const medicinesSuggestionsBox = document.getElementById("medicinesSuggestionsBox");
             const medicinesTagContainer = document.getElementById("medicinesInput");
@@ -6090,7 +5924,6 @@
             const addBtn = document.getElementById("medicinesAddBtn");
             const clearBtn = document.getElementById("clearMedicineSearch");
 
-            // --- MODALS ---
             const medicinesModalEl = document.getElementById("medicinesModal");
             const medicinesModal = new bootstrap.Modal(medicinesModalEl);
             const medicinesModalTitle = document.getElementById("medicinesModalTitle");
@@ -6099,7 +5932,6 @@
             const medicineQuantity = document.getElementById("medicineQuantity");
             const medicineNotes = document.getElementById("medicineNotes");
 
-            // Master Modal
             const addMedMasterModalEl = document.getElementById("addMedicineModal");
             const addMedMasterModal = new bootstrap.Modal(addMedMasterModalEl);
             const addMedMasterForm = document.getElementById("addMedicineMasterForm");
@@ -6110,7 +5942,6 @@
             const editMedId = document.getElementById("editMedicineMasterId");
             const addMedicineConfirmBtn = document.getElementById("addMedicineConfirmBtn");
 
-            // Delete Modal
             const delMedModalEl = document.getElementById("deleteMedicineMasterModal");
             const delMedModal = new bootstrap.Modal(delMedModalEl);
             const delMedName = document.getElementById("delMedNameDisplay");
@@ -6122,7 +5953,6 @@
             let pendingMedicineName = "";
             let editingMedicineTag = null;
 
-            // --- FORCE CLOSE HANDLERS ---
             addMedMasterModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
                 btn.addEventListener('click', (e) => { e.preventDefault(); addMedMasterModal.hide(); });
             });
@@ -6130,7 +5960,6 @@
                 btn.addEventListener('click', (e) => { e.preventDefault(); delMedModal.hide(); });
             });
 
-            // 1. RENDER SUGGESTIONS (Updated to show Category)
             function renderMedicinesSuggestions() {
                 if (!medicinesInput) return;
                 const query = medicinesInput.value.trim().toLowerCase();
@@ -6172,11 +6001,9 @@
                             div.addEventListener("mouseenter", () => { div.style.backgroundColor = "#8db8afff"; });
                             div.addEventListener("mouseleave", () => { div.style.backgroundColor = "transparent"; });
 
-                            // --- NAME DISPLAY (Updated) ---
                             const spanName = document.createElement("span");
                             spanName.className = "flex-grow-1";
 
-                            // Add Category if it exists
                             const categoryHtml = item.category ? `<small class="text-muted me-2" style="font-size:0.75em;">${item.category}</small>` : '';
                             spanName.innerHTML = `${categoryHtml}<strong>${item.medicineName}</strong>`;
 
@@ -6187,7 +6014,6 @@
                             };
                             div.appendChild(spanName);
 
-                            // Icons
                             if (item.is_mine == true || item.is_mine == "true") {
                                 const actionDiv = document.createElement("div");
                                 actionDiv.className = "d-flex align-items-center gap-2";
@@ -6232,7 +6058,6 @@
                 medicinesInput.focus();
             }
 
-            // 2. MASTER ADD / EDIT
             if (addBtn) {
                 addBtn.addEventListener('click', () => {
                     openAddMedicineMaster(medicinesInput.value);
@@ -6268,7 +6093,6 @@
                 setTimeout(() => newMedName.focus(), 200);
             }
 
-            // Confirm Save (Handles both Add and Edit)
             addMedicineConfirmBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
 
@@ -6339,7 +6163,6 @@
                 }
             });
 
-            // 3. DELETE LOGIC
             function openDeleteMedicine(id, name) {
                 delMedName.textContent = name;
                 delMedId.value = id;
@@ -6366,7 +6189,6 @@
                     });
             });
 
-            // 4. DETAILED MODAL & EVENTS
             if (medicinesInput) {
                 medicinesInput.addEventListener("input", renderMedicinesSuggestions);
                 medicinesInput.addEventListener("focus", renderMedicinesSuggestions);
@@ -6399,7 +6221,6 @@
                 }
             });
 
-            // 5. TIMING CHECKBOX LISTENERS (The Fix)
             function forEachSlot(cb) {
                 slots.forEach(slot => {
                     const check = document.getElementById(`${slot}Check`);
@@ -6611,7 +6432,6 @@
                 hidden.value = JSON.stringify(selectedMedicines);
             }
 
-            // Initial Load
             if (Array.isArray(savedMedicines) && savedMedicines.length) {
                 savedMedicines.forEach(m => {
                     const row = toDbShape(m);

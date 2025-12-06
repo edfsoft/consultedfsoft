@@ -501,69 +501,6 @@
                     </div>
                 </section>
 
-                <!-- Check Mobile Number already exist or not -->
-                <script>
-                    function checkDuplicateField(field, value, callback) {
-                        const formData = new URLSearchParams();
-                        formData.append('field', 'mobileNumber');
-                        formData.append('value', value);
-                        formData.append('table', 'patient_details');
-
-                        fetch("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: formData
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                callback(data.exists);
-                            })
-                            .catch(error => {
-                                console.error('Error checking duplicate:', error);
-                                callback(false);
-                            });
-                    }
-
-                    function submitPatientDetails(event) {
-                        event.preventDefault();
-
-                        if (!validatePatientDetails()) {
-                            return false;
-                        }
-
-                        const mobileInput = document.getElementById("patientMobile");
-                        const errorElement = document.getElementById("duplicateMobile_err");
-                        const form = document.getElementById("patientDetails");
-
-                        errorElement.textContent = "";
-
-                        checkDuplicateField("mobile", mobileInput.value, function (exists) {
-                            if (exists) {
-                                errorElement.textContent = "Mobile number already added";
-                                const modalElement = document.getElementById('duplicateMobileModal');
-                                const modal = new bootstrap.Modal(modalElement);
-                                modal.show();
-                            } else {
-                                form.submit();
-                            }
-                        });
-                    }
-
-                    document.addEventListener("DOMContentLoaded", function () {
-                        const mobileInput = document.getElementById("patientMobile");
-                        const duplicateError = document.getElementById("duplicateMobile_err");
-
-                        if (mobileInput) {
-                            mobileInput.addEventListener("input", function () {
-                                if (duplicateError) {
-                                    duplicateError.textContent = "";
-                                }
-                            });
-                        }
-                    });
-                </script>
 
             <?php
         } else if ($method == "patientDetailsFormUpdate") {
@@ -582,7 +519,7 @@
                                     ?>
                                         <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
                                             name="patientDetails" id="multi-step-form" enctype="multipart/form-data" method="POST"
-                                            oninput="validatePatientDetails()" onsubmit="return validatePatientDetails()">
+                                            oninput="validatePatientDetails()" onsubmit="return submitPatientDetails(event)">
                                             <div class="position-relative">
                                                 <img id="previewImage" src="<?= isset($value['profilePhoto']) && $value['profilePhoto'] !== "No data"
                                                     ? base_url('uploads/' . $value['profilePhoto'])
@@ -630,6 +567,8 @@
                                                         value="<?php echo $value['mobileNumber'] ?>" maxlength="10"
                                                         placeholder="E.g. 9638527410">
                                                     <small id="patientMobile_err" class="text-danger pt-1"></small>
+                                                    <small id="duplicateMobile_err" class="text-danger pt-1"></small>
+                                                    <input type="hidden" id="oldMobile" value="<?php echo $value['mobileNumber']; ?>">
                                                 </div>
                                                 <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
                                                     <label class="form-label" for="patientAltMobile">Alternate Moblie
@@ -976,6 +915,7 @@
 
     </main>
 
+
     <script>
         <?php if ($method == "patients" || $method == "patientDetailsForm" || $method == "patientDetailsFormUpdate" || $method == "patientDetails" || $method == "prescription") { ?>
             document.getElementById('patients').style.color = "#87F7E3";
@@ -1137,6 +1077,74 @@
             }, "image/jpeg");
         });
 
+    </script>
+
+    <!-- Check Mobile Number already exist or not -->
+    <script>
+        function checkDuplicateField(field, value, callback) {
+            const formData = new URLSearchParams();
+            formData.append('field', 'mobileNumber');
+            formData.append('value', value);
+            formData.append('table', 'patient_details');
+
+            fetch("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => callback(data.exists))
+            .catch(error => {
+                console.error('Error:', error);
+                callback(false); 
+            });
+        }
+
+        // 2. Main Submit Handler
+        function submitPatientDetails(event) {
+            event.preventDefault();
+            if (!validatePatientDetails()) {
+                return false;
+            }
+            const mobileInput = document.getElementById("patientMobile");
+            const errorElement = document.getElementById("duplicateMobile_err");
+            
+            const oldMobileInput = document.getElementById("oldMobile");
+            const oldMobileValue = oldMobileInput ? oldMobileInput.value : "";
+
+            const form = document.getElementById("patientDetails") || document.getElementById("multi-step-form");
+
+            if (oldMobileValue !== "" && mobileInput.value === oldMobileValue) {
+                form.submit();
+                return;
+            }
+
+            if(errorElement) errorElement.textContent = "";
+
+            checkDuplicateField("mobile", mobileInput.value, function(exists) {
+                if (exists) {
+                    if(errorElement) errorElement.textContent = "Mobile number already registered.";
+                    const modalEl = document.getElementById('duplicateMobileModal');
+                    if (modalEl) {
+                        const modal = new bootstrap.Modal(modalEl);
+                        modal.show();
+                    }
+                } else {
+                    form.submit();
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const mobileInput = document.getElementById("patientMobile");
+            const dupErr = document.getElementById("duplicateMobile_err");
+
+            if (mobileInput && dupErr) {
+                mobileInput.addEventListener("input", function() {
+                    dupErr.textContent = "";
+                });
+            }
+        });
     </script>
 
     <!-- Consultation card show more and less -->

@@ -350,7 +350,7 @@
                 </td>
                 <td class="d-flex d-md-block" style="font-size: 16px">
                     <a href="${baseUrl}Edfadmin/ccDetails/${value.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${value.id}" data-name="${value.doctorName}" data-type="cc"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${value.id}" data-name="${value.doctorName}" data-type="cc"><i class="bi bi-trash"></i></button>
                 </td>`;
                                 ccTableBody.appendChild(ccRow);
                             });
@@ -909,7 +909,7 @@
                 </td>
                 <td class="d-flex d-md-block" style="font-size: 16px">
                     <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${hcp.id}" data-name="${hcp.hcpName}" data-type="hcp"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${hcp.id}" data-name="${hcp.hcpName}" data-type="hcp"><i class="bi bi-trash"></i></button>
                 </td>`;
                                             hcpTableBody.appendChild(hcpRow);
                                         });
@@ -1423,7 +1423,7 @@
                 </td>
                 <td class="d-flex d-md-block" style="font-size: 16px">
                     <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmDelete" data-id="${patient.id}" data-name="${patient.firstName} ${patient.lastName}" data-type="patient"><i class="bi bi-trash"></i></button>
+                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${patient.id}" data-name="${patient.firstName} ${patient.lastName}" data-type="patient"><i class="bi bi-trash"></i></button>
                 </td>`;
                                                         patientTableBody.appendChild(patientRow);
                                                     });

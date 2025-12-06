@@ -360,6 +360,76 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="SecondconfirmDelete" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">
+                    Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteItemMessage">Are you sure you want to delete <strong id="deleteItemName"></strong>?</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <a id="deleteConfirmButton" href="#" style="background-color: #2b353bf5;"
+                    class="btn text-light">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmDeleteModal = document.getElementById('SecondconfirmDelete');
+        
+        if (confirmDeleteModal) {
+            confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+                // 1. Button that triggered the modal
+                const button = event.relatedTarget;
+
+                // 2. Extract info from data-* attributes
+                const id = button.getAttribute('data-id');
+                const name = button.getAttribute('data-name');
+                const type = button.getAttribute('data-type'); // 'hcp', 'cc', or 'patient'
+
+                // 3. Update the Modal Text
+                const modalTitleName = confirmDeleteModal.querySelector('#deleteItemName');
+                if(modalTitleName) modalTitleName.textContent = name;
+
+                // 4. Construct the Controller URL based on Type
+                // Ensure 'baseUrl' is defined in your page (it usually is in your existing scripts)
+                const deleteBtn = confirmDeleteModal.querySelector('#deleteConfirmButton');
+                let deleteUrl = '#';
+
+                switch (type) {
+                    case 'hcp':
+                        // Matches: public function deleteHcp()
+                        deleteUrl = `${baseUrl}Edfadmin/deleteHcp/${id}`; 
+                        break;
+                    case 'cc':
+                        // Matches: public function deleteCc()
+                        deleteUrl = `${baseUrl}Edfadmin/deleteCc/${id}`;
+                        break;
+                    case 'patient':
+                        // Matches: public function deletePatient()
+                        deleteUrl = `${baseUrl}Edfadmin/deletePatient/${id}`;
+                        break;
+                    default:
+                        console.error('Unknown delete type: ' + type);
+                }
+
+                // 5. Set the href on the actual Delete button
+                if(deleteBtn) deleteBtn.setAttribute('href', deleteUrl);
+            });
+        }
+    });
+</script>
+
 <!-- Not in use currently -->
 <!--Display Message Popup Screen -->
 <!-- <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"

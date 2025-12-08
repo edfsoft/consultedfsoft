@@ -102,6 +102,12 @@
             min-height: 500px;
             border: none;
         }
+
+        /* To Move Model one the screen */
+        #medicinesModal .modal-header {
+            cursor: move;
+            user-select: none;
+        }
     </style>
 </head>
 

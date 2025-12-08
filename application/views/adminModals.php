@@ -28,6 +28,7 @@
                         <option value="">Select Category</option>
                         <option value="TABLET">Tablet</option>
                         <option value="CAPSULE">Capsule</option>
+                        <option value="TABLET/CAPSULE">Tablet/Capsule</option>
                         <option value="SYRUP">Syrup</option>
                         <option value="INJECTION">Injection</option>
                         <option value="DROPS">Drops</option>
@@ -473,3 +474,97 @@
             }
         });
     </script> -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Added '#medicineModal' to this list
+            const draggableModalIds = ['#medicineModal'];
+
+            draggableModalIds.forEach(id => {
+                const modalElement = document.querySelector(id);
+                if (modalElement) {
+                    makeModalDraggable(modalElement);
+                    // Reset position when closed so it doesn't get lost off-screen
+                    modalElement.addEventListener('hidden.bs.modal', function () {
+                        const modalDialog = modalElement.querySelector('.modal-dialog');
+                        modalDialog.style.left = '';
+                        modalDialog.style.top = '';
+                        modalDialog.style.margin = '';
+                        modalDialog.style.transform = '';
+                    });
+                }
+            });
+
+            // Close modals with ESC key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    const openModal = document.querySelector('.modal.show');
+                    if (openModal) {
+                        const modalInstance = bootstrap.Modal.getInstance(openModal);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    }
+                }
+            });
+        });
+
+        function makeModalDraggable(modal) {
+            const modalDialog = modal.querySelector('.modal-dialog');
+            const modalHeader = modal.querySelector('.modal-header');
+
+            if (!modalHeader) return; 
+
+            // Visual cue that it can be moved
+            modalHeader.style.cursor = 'move'; 
+
+            let isDragging = false;
+            let hasDragged = false;
+            let initialPosX = 0;
+            let initialPosY = 0;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            modalHeader.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                isDragging = true;
+                hasDragged = false;
+
+                const rect = modalDialog.getBoundingClientRect();
+                initialPosX = rect.left;
+                initialPosY = rect.top;
+
+                offsetX = e.clientX - initialPosX;
+                offsetY = e.clientY - initialPosY;
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+
+                if (!hasDragged) {
+                    modalDialog.style.margin = '0';
+                    modalDialog.style.transform = 'none';
+                    // Snap to current position to start movement smoothly
+                    modalDialog.style.left = initialPosX + 'px';
+                    modalDialog.style.top = initialPosY + 'px';
+                    hasDragged = true;
+                }
+
+                let newPosX = e.clientX - offsetX;
+                let newPosY = e.clientY - offsetY;
+
+                modalDialog.style.left = newPosX + 'px';
+                modalDialog.style.top = newPosY + 'px';
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+        }
+    </script>

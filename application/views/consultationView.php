@@ -2920,6 +2920,7 @@
                             <option value="">Select Category</option>
                             <option value="TABLET">Tablet</option>
                             <option value="CAPSULE">Capsule</option>
+                            <option value="TABLET/CAPSULE">Tablet/Capsule</option>
                             <option value="SYRUP">Syrup</option>
                             <option value="INJECTION">Injection</option>
                             <option value="DROPS">Drops</option>
@@ -3025,6 +3026,8 @@
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
+                                        <option value="drops">drops</option>
+                                        <option value="Box">Box</option>
                                     </select>
                                 </div>
 
@@ -3039,6 +3042,7 @@
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
+                                        <option value="Box">Box</option>
                                     </select>
                                 </div>
 
@@ -3053,6 +3057,7 @@
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
+                                        <option value="Box">Box</option>
                                     </select>
                                 </div>
 
@@ -3067,6 +3072,7 @@
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
+                                        <option value="Box">Box</option>
                                     </select>
                                 </div>
 

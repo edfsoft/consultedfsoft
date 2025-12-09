@@ -872,25 +872,39 @@
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
 
-        <!-- Mobile number already exist message display modal -->
-        <div class="modal fade" id="duplicateMobileModal" tabindex="-1" aria-labelledby="duplicateMobileLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                            id="duplicateMobileLabel">Mobile Number Exist</h5>
-                    </div>
-                    <div class="modal-body">
-                        This mobile number is already registered with another patient.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                            data-bs-dismiss="modal">OK</button>
-                    </div>
-                </div>
+<!-- Mobile number already exist message display modal -->
+<div class="modal fade" id="duplicateMobileModal" tabindex="-1" aria-labelledby="duplicateMobileLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="duplicateMobileLabel">Mobile Number Exist</h5>
+            </div>
+
+            <div class="modal-body">
+                This mobile number is already registered with another patient.
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+
+                <button type="button" class="btn btn-secondary" id="dupCloseBtn">
+                    Close
+                </button>
+
+                <button type="button" class="btn text-light" style="background-color:#00ad8e;" id="dupAddAnywayBtn">
+                    Add Anyway
+                </button>
+                
+                <button type="button" class="btn btn-warning text-dark" id="dupEditBtn">
+                    Edit Mobile
+                </button>
+                
             </div>
         </div>
+    </div>
+</div>
+
 
         <!-- Patient Profile Photo -->
         <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true"
@@ -1123,28 +1137,52 @@
 
             checkDuplicateField("mobile", mobileInput.value, function(exists) {
                 if (exists) {
-                    if(errorElement) errorElement.textContent = "Mobile number already registered.";
-                    const modalEl = document.getElementById('duplicateMobileModal');
-                    if (modalEl) {
-                        const modal = new bootstrap.Modal(modalEl);
-                        modal.show();
-                    }
-                } else {
+            const modalEl = document.getElementById('duplicateMobileModal');
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+            return;
+            }
+            else {
                     form.submit();
                 }
             });
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const mobileInput = document.getElementById("patientMobile");
-            const dupErr = document.getElementById("duplicateMobile_err");
+            document.addEventListener("DOMContentLoaded", function () {
 
-            if (mobileInput && dupErr) {
-                mobileInput.addEventListener("input", function() {
-                    dupErr.textContent = "";
+            const dupModalEl = document.getElementById("duplicateMobileModal");
+
+            if (dupModalEl) {
+
+                document.getElementById("dupEditBtn").addEventListener("click", function () {
+                    const modal = bootstrap.Modal.getInstance(dupModalEl);
+                    modal.hide();
+                });
+
+                document.getElementById("dupAddAnywayBtn").addEventListener("click", function () {
+                    const modal = bootstrap.Modal.getInstance(dupModalEl);
+                    modal.hide();
+
+                    const form = document.getElementById("patientDetails") ||
+                                document.getElementById("multi-step-form");
+
+                    form.submit();
+                });
+
+                document.getElementById("dupCloseBtn").addEventListener("click", function () {
+                    const modal = bootstrap.Modal.getInstance(dupModalEl);
+                    modal.hide();
+
+                    if (typeof goBack === "function") {
+                        goBack();
+                    } else {
+                        window.history.back();
+                    }
                 });
             }
         });
+
+
     </script>
 
     <!-- Consultation card show more and less -->

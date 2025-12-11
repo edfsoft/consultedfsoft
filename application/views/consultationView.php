@@ -574,6 +574,20 @@
                                                             </ul>
                                                         <?php endif; ?>
 
+                                                        <!-- Advices -->
+                                                        <?php if (!empty($consultation['advices'])): ?>
+                                                            <p><strong>Advices:</strong></p>
+                                                            <ul>
+                                                                <?php foreach ($consultation['advices'] as $adv): ?>
+                                                                    <li><?= $adv['advice_name'] ?>
+                                                                 <?php if (!empty($adv['note'])): ?>
+                                                                            - <?= htmlspecialchars($adv['note']) ?>
+                                                                        <?php endif; ?>
+                                                                    </li>
+                                                                <?php endforeach; ?>
+                                                            </ul>
+                                                        <?php endif; ?>
+
                                                         <!-- ====== Medicines ====== -->
                                                         <?php if (!empty($consultation['medicines'])): ?>
                                                             <p><strong>Medicines:</strong></p>
@@ -5889,7 +5903,6 @@
 
                 const textSpan = document.createElement("span");
                 tag.appendChild(textSpan);
-                tag.style.fontWeight = "bold";
 
                 const removeBtn = document.createElement("button");
                 removeBtn.type = "button";

@@ -872,39 +872,39 @@
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
 
-<!-- Mobile number already exist message display modal -->
-<div class="modal fade" id="duplicateMobileModal" tabindex="-1" aria-labelledby="duplicateMobileLabel"
-    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog">
-        <div class="modal-content">
+        <!-- Mobile number already exist message display modal - 2 palces [Add, Edit patient details] -->
+        <div class="modal fade" id="duplicateMobileModal" tabindex="-1" aria-labelledby="duplicateMobileLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog">
+                <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="duplicateMobileLabel">Mobile Number Exist</h5>
-            </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                            id="duplicateMobileLabel">Mobile Number Exist</h5>
+                    </div>
 
-            <div class="modal-body">
-                This mobile number is already registered with another patient.
-            </div>
+                    <div class="modal-body">
+                        This mobile number is already registered with another patient.
+                    </div>
 
-            <div class="modal-footer d-flex justify-content-between">
+                    <div class="modal-footer d-flex justify-content-between">
 
-                <button type="button" class="btn btn-secondary" id="dupCloseBtn">
-                    Close
-                </button>
+                        <button type="button" class="btn btn-secondary" id="dupCloseBtn">
+                            Cancel
+                        </button>
 
-                <button type="button" class="btn text-light" style="background-color:#00ad8e;" id="dupAddAnywayBtn">
-                    Add Anyway
-                </button>
-                
-                <button type="button" class="btn btn-warning text-dark" id="dupEditBtn">
-                    Edit Mobile
-                </button>
-                
+                        <button type="button" class="btn text-light" style="background-color:#00ad8e;"
+                            id="dupAddAnywayBtn">
+                            Add Anyway
+                        </button>
+
+                        <button type="button" class="btn btn-warning text-dark" id="dupEditBtn">
+                            Edit Mobile
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
 
         <!-- Patient Profile Photo -->
         <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true"
@@ -1106,12 +1106,12 @@
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => callback(data.exists))
-            .catch(error => {
-                console.error('Error:', error);
-                callback(false); 
-            });
+                .then(response => response.json())
+                .then(data => callback(data.exists))
+                .catch(error => {
+                    console.error('Error:', error);
+                    callback(false);
+                });
         }
 
         // 2. Main Submit Handler
@@ -1122,7 +1122,7 @@
             }
             const mobileInput = document.getElementById("patientMobile");
             const errorElement = document.getElementById("duplicateMobile_err");
-            
+
             const oldMobileInput = document.getElementById("oldMobile");
             const oldMobileValue = oldMobileInput ? oldMobileInput.value : "";
 
@@ -1133,22 +1133,22 @@
                 return;
             }
 
-            if(errorElement) errorElement.textContent = "";
+            if (errorElement) errorElement.textContent = "";
 
-            checkDuplicateField("mobile", mobileInput.value, function(exists) {
+            checkDuplicateField("mobile", mobileInput.value, function (exists) {
                 if (exists) {
-            const modalEl = document.getElementById('duplicateMobileModal');
-            const modal = new bootstrap.Modal(modalEl);
-            modal.show();
-            return;
-            }
-            else {
+                    const modalEl = document.getElementById('duplicateMobileModal');
+                    const modal = new bootstrap.Modal(modalEl);
+                    modal.show();
+                    return;
+                }
+                else {
                     form.submit();
                 }
             });
         }
 
-            document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
             const dupModalEl = document.getElementById("duplicateMobileModal");
 
@@ -1164,7 +1164,7 @@
                     modal.hide();
 
                     const form = document.getElementById("patientDetails") ||
-                                document.getElementById("multi-step-form");
+                        document.getElementById("multi-step-form");
 
                     form.submit();
                 });

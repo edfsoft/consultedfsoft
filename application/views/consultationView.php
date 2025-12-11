@@ -1483,39 +1483,41 @@
                                             </div>
                                         </div>
  -->
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
-                                        style="background-color: rgb(206, 206, 206);" role="button">
-                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
-                                                Advice</strong></span>
-                                        <span class="toggle-icon">+</span>
-                                    </div>
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                                style="background-color: rgb(206, 206, 206);" role="button">
+                                                <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                        Advice</strong></span>
+                                                <span class="toggle-icon">+</span>
+                                            </div>
 
-                                    <div class="collapse field-container mt-2">
-                                        <div id="adviceWrapper">
-                                            <div id="adviceList" class="mb-2" style="background-color: white; border: none"></div>
-                                            <div class="mb-3 position-relative">
-                                                <div class="input-group mb-2">
-                                                    <div class="tags-input flex-grow-1" id="adviceInputContainer">
-                                                        <input type="text" class="form-control border-0 shadow-none"
-                                                            id="adviceSearchInput"
-                                                            placeholder="Search Advice or type to add..." />
+                                            <div class="collapse field-container mt-2">
+                                                <div id="adviceWrapper">
+                                                    <div id="adviceList" class="mb-2"
+                                                        style="background-color: white; border: none"></div>
+                                                    <div class="mb-3 position-relative">
+                                                        <div class="input-group mb-2">
+                                                            <div class="tags-input flex-grow-1" id="adviceInputContainer">
+                                                                <input type="text" class="form-control border-0 shadow-none"
+                                                                    id="adviceSearchInput"
+                                                                    placeholder="Search Advice or type to add..." />
+                                                            </div>
+
+                                                            <button type="button" class="btn btn-outline-secondary"
+                                                                id="clearAdviceSearch" style="display: none;">✖</button>
+
+                                                            <button type="button" class="btn btn-outline-primary"
+                                                                id="addAdviceBtn" style="display: none;">+ Add</button>
+                                                        </div>
+
+                                                        <div class="suggestions-box" id="adviceSuggestionsBox"
+                                                            style="position: relative; margin-bottom: 15px; display: none;">
+                                                        </div>
                                                     </div>
-
-                                                    <button type="button" class="btn btn-outline-secondary"
-                                                        id="clearAdviceSearch" style="display: none;">✖</button>
-
-                                                    <button type="button" class="btn btn-outline-primary"
-                                                        id="addAdviceBtn" style="display: none;">+ Add</button>
                                                 </div>
-
-                                                <div class="suggestions-box" id="adviceSuggestionsBox"
-                                                    style="position: relative; margin-bottom: 15px; display: none;"></div>
+                                                <input type="hidden" name="advicesJson" id="advicesJson">
                                             </div>
                                         </div>
-                                        <input type="hidden" name="advicesJson" id="advicesJson">
-                                    </div>
-                                </div>
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -2034,7 +2036,7 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="medicinesJson" id="medicinesJson">
-<!-- 
+                                <!-- 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -2072,7 +2074,8 @@
 
                                     <div class="collapse field-container mt-2">
                                         <div id="adviceWrapper">
-                                            <div id="adviceList" class="mb-2" style="background-color: white; border: none;"></div>
+                                            <div id="adviceList" class="mb-2"
+                                                style="background-color: white; border: none;"></div>
 
                                             <div class="mb-3 position-relative">
                                                 <div class="input-group mb-2">
@@ -2085,15 +2088,15 @@
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         id="clearAdviceSearch" style="display: none;">✖</button>
 
-                                                    <button type="button" class="btn btn-outline-primary"
-                                                        id="addAdviceBtn" style="display: none;">+ Add</button>
+                                                    <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
+                                                        style="display: none;">+ Add</button>
                                                 </div>
 
                                                 <div class="suggestions-box" id="adviceSuggestionsBox"
                                                     style="position: relative; margin-bottom: 15px; display: none;"></div>
                                             </div>
                                         </div>
-                                        
+
                                         <input type="hidden" name="advicesJson" id="advicesJson">
                                     </div>
                                 </div>
@@ -2611,7 +2614,8 @@
 
                                     <div class="collapse field-container mt-2">
                                         <div id="adviceWrapper">
-                                            <div id="adviceList" class="mb-2" style="background-color: white; border: none"></div>
+                                            <div id="adviceList" class="mb-2" style="background-color: white; border: none">
+                                            </div>
 
                                             <div class="mb-3 position-relative">
                                                 <div class="input-group mb-2">
@@ -2624,8 +2628,8 @@
                                                     <button type="button" class="btn btn-outline-secondary"
                                                         id="clearAdviceSearch" style="display: none;">✖</button>
 
-                                                    <button type="button" class="btn btn-outline-primary"
-                                                        id="addAdviceBtn" style="display: none;">+ Add</button>
+                                                    <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
+                                                        style="display: none;">+ Add</button>
                                                 </div>
 
                                                 <div class="suggestions-box" id="adviceSuggestionsBox"
@@ -3176,6 +3180,34 @@
             </div>
         </div>
 
+        <!-- Advice Note Modal -->
+        <div class="modal fade" id="adviceModal" tabindex="-1" aria-labelledby="adviceModalTitle" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="adviceModalTitle"
+                            style="font-family: Poppins, sans-serif;">
+                            Enter Advice Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="adviceNote" class="form-label">Note</label>
+                            <input type="text" class="form-control" id="adviceNote" placeholder="Enter note" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                            onclick="saveAdviceModal()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Attachment Display Dashboard Modal -->
         <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
             aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
@@ -3255,6 +3287,7 @@
                 </form>
             </div>
         </div>
+
         <!--  Delete Model for all -->
         <div class="modal fade" id="universalDeleteModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
             data-bs-keyboard="false">
@@ -3277,34 +3310,6 @@
                 </div>
             </div>
         </div>
-
-
-<div class="modal fade" id="adviceModal" tabindex="-1" aria-labelledby="adviceModalTitle"
-    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="adviceModalTitle"
-                    style="font-family: Poppins, sans-serif;">
-                    Enter Advice Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="adviceNote" class="form-label">Note</label>
-                    <input type="text" class="form-control" id="adviceNote" placeholder="Enter note" />
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                    onclick="saveAdviceModal()">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -3472,7 +3477,7 @@
             deleteModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    universalDeleteModal.hide(); 
+                    universalDeleteModal.hide();
                 });
             });
 
@@ -3534,7 +3539,7 @@
                                 actionDiv.className = "d-flex align-items-center";
 
                                 const editIcon = document.createElement("i");
-                                editIcon.className = "bi bi-pen action-icon edit"; 
+                                editIcon.className = "bi bi-pen action-icon edit";
                                 editIcon.title = "Edit";
                                 editIcon.onclick = (e) => {
                                     e.stopPropagation();
@@ -3542,7 +3547,7 @@
                                 };
 
                                 const deleteIcon = document.createElement("i");
-                                deleteIcon.className = "bi bi-trash action-icon delete"; 
+                                deleteIcon.className = "bi bi-trash action-icon delete";
                                 deleteIcon.title = "Delete";
                                 deleteIcon.onclick = (e) => {
                                     e.stopPropagation();
@@ -3706,7 +3711,7 @@
             function openDeleteModal(id, name) {
                 universalDeleteName.textContent = name;
                 universalDeleteId.value = id;
-                universalDeleteType.value = "symptom"; 
+                universalDeleteType.value = "symptom";
                 universalDeleteModal.show();
             }
 
@@ -3888,8 +3893,8 @@
             const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             addModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault(); 
-                    universalAddModal.hide(); 
+                    e.preventDefault();
+                    universalAddModal.hide();
 
                     if (universalForm) universalForm.reset();
                 });
@@ -3899,7 +3904,7 @@
             deleteModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    universalDeleteModal.hide(); 
+                    universalDeleteModal.hide();
                 });
             });
             function renderSuggestions() {
@@ -4060,7 +4065,7 @@
                 universalLabel.innerHTML = 'Finding Name <span class="text-danger">*</span>';
                 universalInput.value = name;
                 universalId.value = id;
-                universalType.value = "finding"; 
+                universalType.value = "finding";
 
                 universalAddModal.show();
                 setTimeout(() => universalInput.focus(), 500);
@@ -4127,7 +4132,7 @@
             function openDeleteModal(id, name) {
                 universalDeleteName.textContent = name;
                 universalDeleteId.value = id;
-                universalDeleteType.value = "finding"; 
+                universalDeleteType.value = "finding";
                 universalDeleteModal.show();
             }
 
@@ -4301,7 +4306,7 @@
             const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             addModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault(); 
+                    e.preventDefault();
                     universalAddModal.hide();
 
                     if (universalForm) universalForm.reset();
@@ -4312,7 +4317,7 @@
             deleteModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    universalDeleteModal.hide(); 
+                    universalDeleteModal.hide();
                 });
             });
 
@@ -4474,7 +4479,7 @@
                 universalLabel.innerHTML = 'Diagnosis Name <span class="text-danger">*</span>';
                 universalInput.value = name;
                 universalId.value = id;
-                universalType.value = "diagnosis"; 
+                universalType.value = "diagnosis";
 
                 universalAddModal.show();
                 setTimeout(() => universalInput.focus(), 500);
@@ -4713,8 +4718,8 @@
             const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             addModalCloseBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault(); 
-                    universalAddModal.hide(); 
+                    e.preventDefault();
+                    universalAddModal.hide();
 
                     if (universalForm) universalForm.reset();
                 });
@@ -4880,7 +4885,7 @@
                 universalLabel.innerHTML = 'Investigation Name <span class="text-danger">*</span>';
                 universalInput.value = name;
                 universalId.value = id;
-                universalType.value = "investigation"; 
+                universalType.value = "investigation";
 
                 universalAddModal.show();
                 setTimeout(() => universalInput.focus(), 500);
@@ -5716,315 +5721,8 @@
         });
     </script>
 
-    <!-- new Advice search and add script -->
-    <!-- <script>
-        let advicesList = <?php echo (isset($advicesList) && !empty($advicesList)) ? json_encode($advicesList) : '[]'; ?>;
-        let savedAdvices = <?php echo (isset($advices) && !empty($advices)) ? json_encode($advices) : '[]'; ?>;
-
-        let selectedAdviceSet = new Set();
-        const normAdv = s => (s || '').toLowerCase().trim();
-
-        if (Array.isArray(savedAdvices)) {
-            savedAdvices.forEach(a => {
-                let name = a.advice_name || a;
-                selectedAdviceSet.add(normAdv(name));
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('adviceSearch');
-            const clearBtn = document.getElementById('clearAdviceSearch');
-            const addBtn = document.getElementById('addAdviceBtn');
-            const list = document.getElementById('adviceList');
-
-            const uAddModal = new bootstrap.Modal(document.getElementById("universalAddMasterModal"));
-            const uAddForm = document.getElementById("universalAddMasterForm");
-            const uTitle = document.getElementById("universalMasterTitle");
-            const uLabel = document.getElementById("universalMasterLabel");
-            const uInput = document.getElementById("universalMasterInput");
-            const uId = document.getElementById("universalMasterId");
-            const uType = document.getElementById("universalMasterType");
-
-            const uDelModal = new bootstrap.Modal(document.getElementById("universalDeleteModal"));
-            const uDelName = document.getElementById("universalDeleteNameDisplay");
-            const uDelId = document.getElementById("universalDeleteId");
-            const uDelType = document.getElementById("universalDeleteType");
-            const uDelBtn = document.getElementById("universalDeleteBtn");
-
-            function sortList() {
-                const items = Array.from(list.querySelectorAll('.advice-item'));
-                const selected = items.filter(i => i.querySelector('input').checked);
-                const unselected = items.filter(i => !i.querySelector('input').checked);
-
-                items.forEach(i => i.remove());
-                selected.forEach(i => list.appendChild(i));
-                unselected.forEach(i => list.appendChild(i));
-            }
-
-            function renderList() {
-                const q = normAdv(searchInput.value);
-                list.innerHTML = '';
-
-                if (q.length > 0) {
-                    clearBtn.style.display = 'block';
-                } else {
-                    clearBtn.style.display = 'none';
-                    if (addBtn) addBtn.style.display = 'none';
-                }
-
-                let filtered = advicesList.filter(a => normAdv(a.adviceName).includes(q));
-
-                filtered.sort((a, b) => {
-                    const aSelected = selectedAdviceSet.has(normAdv(a.adviceName));
-                    const bSelected = selectedAdviceSet.has(normAdv(b.adviceName));
-
-                    if (aSelected && !bSelected) return -1;
-                    if (!aSelected && bSelected) return 1;
-                    return 0;
-                });
-
-                let hasContent = false;
-
-                if (filtered.length === 0 && q !== "") {
-                    if (addBtn) addBtn.style.display = 'block';
-
-                    const noResultDiv = document.createElement("div");
-                    noResultDiv.className = "text-muted p-2";
-                    noResultDiv.textContent = "No result found – Add new";
-                    list.appendChild(noResultDiv);
-                    hasContent = true;
-                } else {
-                    if (addBtn) addBtn.style.display = 'none';
-
-                    if (filtered.length > 0) {
-                        hasContent = true;
-                        filtered.forEach(adv => {
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'form-check advice-item d-flex justify-content-between align-items-center mb-2 border-bottom pb-1';
-                            wrapper.addEventListener("mouseenter", () => {
-                                wrapper.style.backgroundColor = "#8db8afff";
-                            });
-                            wrapper.addEventListener("mouseleave", () => {
-                                wrapper.style.backgroundColor = "transparent";
-                            });
-                            const leftDiv = document.createElement('div');
-                            leftDiv.className = 'd-flex align-items-center flex-grow-1';
-
-                            const checkbox = document.createElement('input');
-                            checkbox.className = 'form-check-input mt-0';
-                            checkbox.type = 'checkbox';
-                            checkbox.name = 'advices[]';
-                            checkbox.value = adv.adviceName;
-                            checkbox.id = `adv${adv.id}`;
-
-                            if (selectedAdviceSet.has(normAdv(adv.adviceName))) {
-                                checkbox.checked = true;
-                            }
-
-                            checkbox.addEventListener('change', (e) => {
-                                if (e.target.checked) {
-                                    selectedAdviceSet.add(normAdv(adv.adviceName));
-                                } else {
-                                    selectedAdviceSet.delete(normAdv(adv.adviceName));
-                                }
-                            });
-
-                            const label = document.createElement('label');
-                            label.className = 'form-check-label ms-2';
-                            label.htmlFor = `adv${adv.id}`;
-                            label.textContent = adv.adviceName;
-                            label.style.cursor = 'pointer';
-                            label.style.width = '100%';
-
-                            leftDiv.appendChild(checkbox);
-                            leftDiv.appendChild(label);
-                            wrapper.appendChild(leftDiv);
-
-                            if (adv.is_mine == true || adv.is_mine == "true") {
-                                const actionDiv = document.createElement("div");
-                                actionDiv.className = "d-flex align-items-center gap-2";
-
-                                const editIcon = document.createElement("i");
-                                editIcon.className = "bi bi-pen action-icon edit";
-                                editIcon.title = "Edit";
-                                editIcon.onclick = (e) => {
-                                    e.preventDefault();
-                                    openUniversalEdit('advice', adv.id, adv.adviceName);
-                                };
-
-                                const deleteIcon = document.createElement("i");
-                                deleteIcon.className = "bi bi-trash action-icon delete";
-                                deleteIcon.title = "Delete";
-                                deleteIcon.onclick = (e) => {
-                                    e.preventDefault();
-                                    openUniversalDelete('advice', adv.id, adv.adviceName);
-                                };
-
-                                actionDiv.appendChild(editIcon);
-                                actionDiv.appendChild(deleteIcon);
-                                wrapper.appendChild(actionDiv);
-                            }
-
-                            list.appendChild(wrapper);
-                        });
-                    }
-                }
-
-                list.style.display = hasContent ? 'block' : 'none';
-            }
-
-            list.addEventListener('change', (e) => {
-                if (e.target.matches('input[type="checkbox"]')) {
-                    sortList();
-                }
-            });
-
-            if (addBtn) {
-                addBtn.addEventListener('click', () => {
-                    uTitle.textContent = "Add New Advice";
-                    uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
-                    uInput.value = searchInput.value.trim();
-                    uId.value = "";
-                    uType.value = "advice";
-                    uAddModal.show();
-                    setTimeout(() => uInput.focus(), 500);
-                });
-            }
-
-            function openUniversalEdit(type, id, name) {
-                uTitle.textContent = "Edit Advice";
-                uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
-                uInput.value = name;
-                uId.value = id;
-                uType.value = "advice";
-                uAddModal.show();
-                setTimeout(() => uInput.focus(), 500);
-            }
-
-            function openUniversalDelete(type, id, name) {
-                uDelName.textContent = name;
-                uDelId.value = id;
-                uDelType.value = "advice";
-                uDelModal.show();
-            }
-
-            if (uAddForm) {
-                uAddForm.addEventListener('submit', (e) => {
-                    if (uType.value !== 'advice') return;
-                    e.preventDefault();
-
-                    const name = uInput.value.trim();
-                    const id = uId.value;
-                    if (!name) return;
-
-                    const submitBtn = uAddForm.querySelector('button[type="submit"]');
-                    const originalBtnText = submitBtn.textContent;
-
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = 'Saving...';
-
-                    const url = id ? "<?= site_url('Consultation/editAdviceItem') ?>" : "<?= site_url('Consultation/addAdviceMaster') ?>";
-                    const body = id ? `id=${id}&name=${encodeURIComponent(name)}` : `name=${encodeURIComponent(name)}`;
-
-                    fetch(url, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: body
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = originalBtnText;
-
-                            if (data.status === 'success') {
-                                if (id) {
-                                    const index = advicesList.findIndex(a => a.id == id);
-                                    if (index !== -1) {
-                                        const oldName = advicesList[index].adviceName;
-                                        advicesList[index].adviceName = name;
-
-                                        if (selectedAdviceSet.has(normAdv(oldName))) {
-                                            selectedAdviceSet.delete(normAdv(oldName));
-                                            selectedAdviceSet.add(normAdv(name));
-                                        }
-                                    }
-                                } else {
-                                    advicesList.push({
-                                        id: data.id,
-                                        adviceName: name,
-                                        is_mine: true
-                                    });
-                                    selectedAdviceSet.add(normAdv(name));
-                                }
-                                uAddModal.hide();
-                                searchInput.value = "";
-                                renderList();
-                            } else {
-                                alert("Operation failed");
-                            }
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            submitBtn.disabled = false;
-                            submitBtn.textContent = originalBtnText;
-                            alert("An error occurred. Please try again.");
-                        });
-                });
-            }
-
-            if (uDelBtn) {
-                uDelBtn.addEventListener('click', () => {
-                    if (uDelType.value !== 'advice') return;
-
-                    const id = uDelId.value;
-                    fetch("<?= site_url('Consultation/deleteAdviceItem') ?>", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: `id=${id}`
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                const item = advicesList.find(a => a.id == id);
-                                if (item) selectedAdviceSet.delete(normAdv(item.adviceName));
-
-                                advicesList = advicesList.filter(a => a.id != id);
-                                uDelModal.hide();
-                                renderList();
-                            }
-                        });
-                });
-            }
-
-            if (searchInput) {
-                searchInput.addEventListener('input', renderList);
-
-                searchInput.addEventListener('keydown', (e) => {
-                    if (e.key === "Enter" && searchInput.value.trim() !== "") {
-                        e.preventDefault();
-                        const q = normAdv(searchInput.value);
-                        const exists = advicesList.some(a => normAdv(a.adviceName) === q);
-
-                        if (!exists) {
-                            if (addBtn) addBtn.click();
-                        }
-                    }
-                });
-            }
-
-            if (clearBtn) {
-                clearBtn.addEventListener('click', () => {
-                    searchInput.value = '';
-                    renderList();
-                    searchInput.focus();
-                });
-            }
-
-            renderList();
-        });
-    </script> -->
-    <!-- add note script -->
-     <script>
+    <!-- New Advice search and add script -->
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             let adviceDataList = <?php echo (isset($advicesList) && !empty($advicesList)) ? json_encode($advicesList) : '[]'; ?>;
             const adviceInput = document.getElementById('adviceSearchInput');
@@ -6086,14 +5784,14 @@
                     adviceSuggestionsBox.appendChild(noResultDiv);
                 } else {
                     if (addAdviceBtn) addAdviceBtn.style.display = 'none';
-                    
+
                     if (q !== "") {
                         adviceSuggestionsBox.style.display = "block";
                         filtered.forEach(item => {
                             const div = document.createElement("div");
                             div.className = "d-flex justify-content-between align-items-center border-bottom p-1 pointer-hover";
                             div.style.cursor = "pointer";
-                            
+
                             div.addEventListener("mouseenter", () => div.style.backgroundColor = "#8db8afff");
                             div.addEventListener("mouseleave", () => div.style.backgroundColor = "transparent");
 
@@ -6149,7 +5847,7 @@
             }
 
             // 4. NOTE MODAL LOGIC
-            window.openAdviceModal = function(tagName, existing = null, tagEl = null) {
+            window.openAdviceModal = function (tagName, existing = null, tagEl = null) {
                 pendingAdvice = tagName;
                 editingAdviceTag = tagEl;
                 if (adviceModalTitle) adviceModalTitle.textContent = existing ? `Edit: ${tagName}` : `Detail for: ${tagName}`;
@@ -6158,7 +5856,7 @@
                 setTimeout(() => { if (adviceNote) adviceNote.focus(); }, 500);
             }
 
-            window.saveAdviceModal = function() {
+            window.saveAdviceModal = function () {
                 const note = adviceNote ? adviceNote.value.trim() : "";
                 if (!pendingAdvice) return;
 
@@ -6183,9 +5881,9 @@
 
             function addAdviceTag(data) {
                 const tag = document.createElement("span");
-                
-                tag.className = "bg-success text-light rounded-2 p-2 me-2 mb-2 d-inline-block"; 
-                
+
+                tag.className = "bg-success text-light rounded-2 p-2 me-2 mb-2 d-inline-block";
+
                 tag.style.cursor = "pointer";
                 tag.setAttribute("data-id", data.id || "new");
 
@@ -6195,9 +5893,9 @@
 
                 const removeBtn = document.createElement("button");
                 removeBtn.type = "button";
-                
-                removeBtn.className = "text-light ms-2"; 
-                
+
+                removeBtn.className = "text-light ms-2";
+
                 removeBtn.innerHTML = "&times;";
                 removeBtn.style.fontSize = "1rem";
                 removeBtn.style.border = "none";
@@ -6212,7 +5910,7 @@
                 tag.appendChild(removeBtn);
                 updateAdviceTagDisplay(tag, data);
                 tag.onclick = () => openAdviceModal(data.advice, data, tag);
-                
+
                 if (adviceListContainer) adviceListContainer.appendChild(tag);
             }
 
@@ -6227,7 +5925,7 @@
             function updateAdviceHiddenInput() {
                 if (adviceHiddenInput) adviceHiddenInput.value = JSON.stringify(selectedAdvices);
             }
-            
+
             // Open Add Modal
             if (addAdviceBtn) {
                 addAdviceBtn.addEventListener('click', () => {
@@ -6277,12 +5975,12 @@
                     submitBtn.disabled = true;
                     submitBtn.textContent = 'Saving...';
 
-                    const url = id 
-                        ? "<?= site_url('Consultation/editAdviceItem') ?>" 
+                    const url = id
+                        ? "<?= site_url('Consultation/editAdviceItem') ?>"
                         : "<?= site_url('Consultation/addAdviceMaster') ?>";
-                    
-                    const body = id 
-                        ? `id=${id}&name=${encodeURIComponent(name)}` 
+
+                    const body = id
+                        ? `id=${id}&name=${encodeURIComponent(name)}`
                         : `name=${encodeURIComponent(name)}`;
 
                     fetch(url, {
@@ -6290,38 +5988,38 @@
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: body
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
+                        .then(res => res.json())
+                        .then(data => {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
 
-                        if (data.status === 'success') {
-                            if (id) {
-                                const index = adviceDataList.findIndex(a => a.id == id);
-                                if (index !== -1) adviceDataList[index].adviceName = name;
-                                uAddModal.hide();
-                                clearAdviceSearchFunc();
-                                renderAdviceSuggestions();
+                            if (data.status === 'success') {
+                                if (id) {
+                                    const index = adviceDataList.findIndex(a => a.id == id);
+                                    if (index !== -1) adviceDataList[index].adviceName = name;
+                                    uAddModal.hide();
+                                    clearAdviceSearchFunc();
+                                    renderAdviceSuggestions();
+                                } else {
+                                    adviceDataList.push({
+                                        id: data.id,
+                                        adviceName: name,
+                                        is_mine: true
+                                    });
+                                    uAddModal.hide();
+                                    clearAdviceSearchFunc();
+                                    setTimeout(() => openAdviceModal(name), 300);
+                                }
                             } else {
-                                adviceDataList.push({
-                                    id: data.id,
-                                    adviceName: name,
-                                    is_mine: true
-                                });
-                                uAddModal.hide();
-                                clearAdviceSearchFunc();
-                                setTimeout(() => openAdviceModal(name), 300);
+                                alert("Operation failed");
                             }
-                        } else {
-                            alert("Operation failed");
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = originalBtnText;
-                        alert("An error occurred. Please try again.");
-                    });
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalBtnText;
+                            alert("An error occurred. Please try again.");
+                        });
                 });
             }
 
@@ -6331,26 +6029,26 @@
                     if (document.getElementById("universalDeleteType").value !== 'advice') return;
 
                     const id = uDelId.value;
-                    
+
                     fetch("<?= site_url('Consultation/deleteAdviceItem') ?>", {
                         method: "POST",
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: `id=${id}`
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            adviceDataList = adviceDataList.filter(a => a.id != id);
-                            uDelModal.hide();
-                            renderAdviceSuggestions();
-                        } else {
-                            alert("Delete failed.");
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        alert("An error occurred.");
-                    });
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                adviceDataList = adviceDataList.filter(a => a.id != id);
+                                uDelModal.hide();
+                                renderAdviceSuggestions();
+                            } else {
+                                alert("Delete failed.");
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert("An error occurred.");
+                        });
                 });
             }
 
@@ -6362,7 +6060,7 @@
                     e.preventDefault();
                     const val = adviceInput.value.trim();
                     const exists = adviceDataList.some(a => a.adviceName.toLowerCase() === val.toLowerCase());
-                    
+
                     if (exists) {
                         openAdviceModal(val);
                         clearAdviceSearchFunc();
@@ -6377,7 +6075,7 @@
             }
 
             if (adviceModalEl) {
-                adviceModalEl.addEventListener('keydown', function(e) {
+                adviceModalEl.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter') {
                         e.preventDefault();
                         saveAdviceModal();
@@ -6400,7 +6098,7 @@
                     if (name) {
                         const data = {
                             id: item.id || "",
-                            advice: name, 
+                            advice: name,
                             note: item.note || ""
                         };
                         selectedAdvices.push(data);

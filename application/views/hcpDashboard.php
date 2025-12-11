@@ -1292,11 +1292,38 @@
 
                     <!-- Add to db and validation -->
                     <script>
+
+                        function resetNewPatientForm() {
+                            document.getElementById("newFirstName").value = "";
+                            document.getElementById("newLastName").value = "";
+                            document.getElementById("newMobile").value = "";
+                            document.getElementById("newEmail").value = "";
+                            document.getElementById("newGender").value = "";
+                            document.getElementById("newAge").value = "";
+
+                            document.getElementById("newFirstName_err").innerHTML = "";
+                            document.getElementById("newLastName_err").innerHTML = "";
+                            document.getElementById("newMobile_err").innerHTML = "";
+                            document.getElementById("newMobileDuplicate_err").innerHTML = "";
+                            document.getElementById("newEmail_err").innerHTML = "";
+                            document.getElementById("newGender_err").innerHTML = "";
+                            document.getElementById("newAge_err").innerHTML = "";
+
+                            document.getElementById("newPatientStatus").innerHTML = "";
+                        }
+
                         document.addEventListener("DOMContentLoaded", function () {
                             const newMobileInput = document.getElementById("newMobile");
                             if (newMobileInput) {
                                 newMobileInput.addEventListener("input", function () {
                                     document.getElementById("newMobileDuplicate_err").innerHTML = "";
+                                });
+                            }
+                            const newPatientModalEl = document.getElementById("newPatientModal");
+
+                            if (newPatientModalEl) {
+                                newPatientModalEl.addEventListener("hidden.bs.modal", function () {
+                                    resetNewPatientForm();
                                 });
                             }
                         });
@@ -1374,10 +1401,13 @@
 
                                     const checkData = await checkResponse.json();
 
-                                    if (checkData.exists) {
-                                        document.getElementById("newMobileDuplicate_err").innerHTML = "Mobile number already added.";
+                                    if (checkData.exists && !window.forceAddAnyway) {
+                                        const modalEl = document.getElementById("duplicateNewPatientModal");
+                                        const modal = new bootstrap.Modal(modalEl);
+                                        modal.show();
                                         return;
                                     }
+
 
                                     const saveResponse = await fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
                                         method: 'POST',
@@ -1422,6 +1452,45 @@
                                 }
                             }
                         }
+                            document.addEventListener("DOMContentLoaded", function () {
+
+                            const dupModalEl = document.getElementById("duplicateNewPatientModal");
+
+                            if (dupModalEl) {
+
+                                document.getElementById("dupNewEditBtn").addEventListener("click", function () {
+                                    const modal = bootstrap.Modal.getInstance(dupModalEl);
+                                    modal.hide();
+
+                                    document.getElementById("newMobile").focus();
+                                });
+
+                                document.getElementById("dupNewAddAnywayBtn").addEventListener("click", function () {
+                                    const modal = bootstrap.Modal.getInstance(dupModalEl);
+                                    modal.hide();
+
+                                    window.forceAddAnyway = true;
+
+                                    saveNewPatient();
+
+                                    setTimeout(() => {
+                                        window.forceAddAnyway = false;
+                                    }, 500);
+                                });
+
+                                    
+                                document.getElementById("dupNewCloseBtn").addEventListener("click", function () {
+                                    const modal = bootstrap.Modal.getInstance(dupModalEl);
+                                    modal.hide();
+
+                                    const newPatientModalEl = document.getElementById("newPatientModal");
+                                    const newPatientModal = bootstrap.Modal.getInstance(newPatientModalEl)
+                                                        || bootstrap.Modal.getOrCreateInstance(newPatientModalEl);
+                                    newPatientModal.hide();
+                                });
+
+                            }
+                        });
                     </script>
 
                     <!-- Appointment booking -->
@@ -3116,6 +3185,43 @@
                 </div>
             </div>
         </div>
+
+        <!-- Duplicate Mobile Popup for New Patient Modal -->
+    <div class="modal fade" id="duplicateNewPatientModal" tabindex="-1" aria-labelledby="duplicateNewPatientLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title fw-medium" id="duplicateNewPatientLabel">Mobile Number Exists</h5>
+                </div>
+
+                <div class="modal-body">
+                    This mobile number is already registered with another patient.
+                </div>
+
+                <div class="modal-footer d-flex justify-content-between">
+
+                    <button type="button" class="btn btn-secondary" id="dupNewCloseBtn">
+                        Close
+                    </button>
+
+                    <button type="button" class="btn text-light" style="background-color: #00ad8e;" id="dupNewAddAnywayBtn">
+                        Add Anyway
+                    </button>
+
+                    <button type="button" class="btn btn-warning text-dark" id="dupNewEditBtn">
+                        Edit Mobile
+                    </button>
+                    
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     </main>
 
     <script>

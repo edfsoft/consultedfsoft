@@ -28,6 +28,7 @@
                         <option value="">Select Category</option>
                         <option value="TABLET">Tablet</option>
                         <option value="CAPSULE">Capsule</option>
+                        <option value="TABLET/CAPSULE">Tablet/Capsule</option>
                         <option value="SYRUP">Syrup</option>
                         <option value="INJECTION">Injection</option>
                         <option value="DROPS">Drops</option>
@@ -40,6 +41,8 @@
                         <option value="INSULIN">Insulin</option>
                         <option value="Oil">Oil</option>
                         <option value="NEEDLE">Needle</option>
+                        <option value=" RESPULES"> Respules</option>
+                        <option value="INHALER">Inhaler</option>
                     </select>
 
                     <button type="submit" id="medicineSubmit" class="btn text-light float-end mt-3"
@@ -360,6 +363,76 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="SecondconfirmDelete" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">
+                    Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteItemMessage">Are you sure you want to delete <strong id="deleteItemName"></strong>?</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <a id="deleteConfirmButton" href="#" style="background-color: #2b353bf5;"
+                    class="btn text-light">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmDeleteModal = document.getElementById('SecondconfirmDelete');
+        
+        if (confirmDeleteModal) {
+            confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
+                // 1. Button that triggered the modal
+                const button = event.relatedTarget;
+
+                // 2. Extract info from data-* attributes
+                const id = button.getAttribute('data-id');
+                const name = button.getAttribute('data-name');
+                const type = button.getAttribute('data-type'); // 'hcp', 'cc', or 'patient'
+
+                // 3. Update the Modal Text
+                const modalTitleName = confirmDeleteModal.querySelector('#deleteItemName');
+                if(modalTitleName) modalTitleName.textContent = name;
+
+                // 4. Construct the Controller URL based on Type
+                // Ensure 'baseUrl' is defined in your page (it usually is in your existing scripts)
+                const deleteBtn = confirmDeleteModal.querySelector('#deleteConfirmButton');
+                let deleteUrl = '#';
+
+                switch (type) {
+                    case 'hcp':
+                        // Matches: public function deleteHcp()
+                        deleteUrl = `${baseUrl}Edfadmin/deleteHcp/${id}`; 
+                        break;
+                    case 'cc':
+                        // Matches: public function deleteCc()
+                        deleteUrl = `${baseUrl}Edfadmin/deleteCc/${id}`;
+                        break;
+                    case 'patient':
+                        // Matches: public function deletePatient()
+                        deleteUrl = `${baseUrl}Edfadmin/deletePatient/${id}`;
+                        break;
+                    default:
+                        console.error('Unknown delete type: ' + type);
+                }
+
+                // 5. Set the href on the actual Delete button
+                if(deleteBtn) deleteBtn.setAttribute('href', deleteUrl);
+            });
+        }
+    });
+</script>
+
 <!-- Not in use currently -->
 <!--Display Message Popup Screen -->
 <!-- <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
@@ -403,3 +476,97 @@
             }
         });
     </script> -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Added '#medicineModal' to this list
+            const draggableModalIds = ['#medicineModal'];
+
+            draggableModalIds.forEach(id => {
+                const modalElement = document.querySelector(id);
+                if (modalElement) {
+                    makeModalDraggable(modalElement);
+                    // Reset position when closed so it doesn't get lost off-screen
+                    modalElement.addEventListener('hidden.bs.modal', function () {
+                        const modalDialog = modalElement.querySelector('.modal-dialog');
+                        modalDialog.style.left = '';
+                        modalDialog.style.top = '';
+                        modalDialog.style.margin = '';
+                        modalDialog.style.transform = '';
+                    });
+                }
+            });
+
+            // Close modals with ESC key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    const openModal = document.querySelector('.modal.show');
+                    if (openModal) {
+                        const modalInstance = bootstrap.Modal.getInstance(openModal);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    }
+                }
+            });
+        });
+
+        function makeModalDraggable(modal) {
+            const modalDialog = modal.querySelector('.modal-dialog');
+            const modalHeader = modal.querySelector('.modal-header');
+
+            if (!modalHeader) return; 
+
+            // Visual cue that it can be moved
+            modalHeader.style.cursor = 'move'; 
+
+            let isDragging = false;
+            let hasDragged = false;
+            let initialPosX = 0;
+            let initialPosY = 0;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            modalHeader.addEventListener('mousedown', function (e) {
+                e.preventDefault();
+                isDragging = true;
+                hasDragged = false;
+
+                const rect = modalDialog.getBoundingClientRect();
+                initialPosX = rect.left;
+                initialPosY = rect.top;
+
+                offsetX = e.clientX - initialPosX;
+                offsetY = e.clientY - initialPosY;
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+
+                if (!hasDragged) {
+                    modalDialog.style.margin = '0';
+                    modalDialog.style.transform = 'none';
+                    // Snap to current position to start movement smoothly
+                    modalDialog.style.left = initialPosX + 'px';
+                    modalDialog.style.top = initialPosY + 'px';
+                    hasDragged = true;
+                }
+
+                let newPosX = e.clientX - offsetX;
+                let newPosY = e.clientY - offsetY;
+
+                modalDialog.style.left = newPosX + 'px';
+                modalDialog.style.top = newPosY + 'px';
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+        }
+    </script>

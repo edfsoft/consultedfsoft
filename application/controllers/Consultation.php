@@ -78,6 +78,17 @@ class Consultation extends CI_Controller
         $post = $this->input->post(null, true);
         $consultationId = $this->ConsultModel->save_consultation();
         $post['consultationId'] = $consultationId;
+
+        $vitalsSaved = false;
+        $symptomSaved = false;
+        $findingSaved = false;
+        $diagnosisSaved = false;
+        $investigationSaved = false;
+        $instructionSaved = false;
+        $procedureSaved = false;
+        $adviceSaved = false;
+        $medicineSaved = false;
+        $attachmentsSaved = false;
         // Vitals
         $vitalsSaved = $this->ConsultModel->save_vitals($post);
         // Symptoms
@@ -141,9 +152,24 @@ class Consultation extends CI_Controller
             }
         }
 
+        $advices_json = $this->input->post('advicesJson');
+        $advices = json_decode($advices_json, true);
+        $adviceSaved = false; 
+
+        if ($advices && is_array($advices)) {
+            foreach ($advices as $advice) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'advice_name' => $advice['advice'], // Matching JS key
+                    'note' => $advice['note'],
+                );
+                $adviceSaved = $this->ConsultModel->save_advice($data);
+            }
+        }
+
         $instructionSaved = $this->ConsultModel->save_instruction($post);
         $procedureSaved = $this->ConsultModel->save_procedure($post);
-        $adviceSaved = $this->ConsultModel->save_advice($post);
+        //$adviceSaved = $this->ConsultModel->save_advice($post);
 
         $medicines_json = $this->input->post('medicinesJson');
         $medicines = json_decode($medicines_json, true);
@@ -281,6 +307,16 @@ class Consultation extends CI_Controller
     public function saveEditConsult()
     {
         $post = $this->input->post(null, true);
+        $vitalsSaved = false;
+        $symptomSaved = false;
+        $findingSaved = false;
+        $diagnosisSaved = false;
+        $investigationSaved = false;
+        $instructionSaved = false;
+        $procedureSaved = false;
+        $adviceSaved = false;
+        $medicineSaved = false;
+        $attachmentsSaved = false;
         $consultationId = $this->ConsultModel->update_consultation();
         $post['consultationId'] = $consultationId;
         // Vitals
@@ -394,6 +430,36 @@ class Consultation extends CI_Controller
             $this->ConsultModel->delete_removed_investigations($consultationId, $existingIds);
             $investigationSaved = true;
         }
+
+        // Advices
+        $advices_json = $this->input->post('advicesJson');
+        $advices = json_decode($advices_json, true);
+        $adviceSaved = false;
+
+        if ($advices && is_array($advices)) {
+            $existingIds = [];
+            foreach ($advices as $advice) {
+                $data = array(
+                    'consultation_id' => $consultationId,
+                    'advice_name' => $advice['advice'],
+                    'note' => $advice['note'],
+                );
+
+                if (!empty($advice['id']) && $advice['id'] !== 'new') {
+                    $this->ConsultModel->update_advice($advice['id'], $data);
+                    $existingIds[] = $advice['id'];
+                } elseif ($advice['id'] == 'new') {
+                    $insertId = $this->ConsultModel->save_advice($data);
+                    $existingIds[] = $insertId;
+                }
+            }
+            $this->ConsultModel->delete_removed_advices($consultationId, $existingIds);
+            $adviceSaved = true;
+        } else {
+             // If array is empty, clear all for this consultation
+             $this->ConsultModel->delete_advices($consultationId);
+        }
+
         // $this->ConsultModel->delete_investigations($consultationId);
         // $investigationSaved = $this->ConsultModel->save_investigation($post);
         // Instructions
@@ -403,8 +469,8 @@ class Consultation extends CI_Controller
         $this->ConsultModel->delete_procedures($consultationId);
         $procedureSaved = $this->ConsultModel->save_procedure($post);
         // Advices
-        $this->ConsultModel->delete_advices($consultationId);
-        $adviceSaved = $this->ConsultModel->save_advice($post);
+        /* $this->ConsultModel->delete_advices($consultationId);
+        $adviceSaved = $this->ConsultModel->save_advice($post); */
 
         $medicines_json = $this->input->post('medicinesJson');
         $medicines = json_decode($medicines_json, true);

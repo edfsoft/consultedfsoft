@@ -100,15 +100,24 @@ class AdminModel extends CI_Model
         return $select->result_array();
     }
 
+
+    /* Soft Delete
     public function deletePatientDb($patientIdDb)
-    {
-        $updateStatus = array(
-            'deleteStatus' => '1',
-        );
-        $this->db->where('id', $patientIdDb);
-        $this->db->update('patient_details', $updateStatus);
-        return true;
-    }
+        {
+            $updateStatus = array(
+                'deleteStatus' => '1',
+            );
+            $this->db->where('id', $patientIdDb);
+            $this->db->update('patient_details', $updateStatus);
+            return true;
+        } */
+
+    //Permanent Delete
+    public function deletePatientDb($patientIdDb)
+        {
+            $this->db->where('id', $patientIdDb);
+            return $this->db->delete('patient_details');
+        }
 
     public function getSpecializationList()
     {
@@ -244,7 +253,6 @@ class AdminModel extends CI_Model
 
         return $this->db->affected_rows() > 0;
     }
-
 
 }
 ?>

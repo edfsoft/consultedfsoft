@@ -245,22 +245,28 @@ class ConsultModel extends CI_Model
         return $this->db->delete('consult_advices');
     }
 
-    public function save_advice($post)
+    // public function save_advice($post)
+    // {
+    //     $advices = $this->input->post('advices');
+    //     $rowsInserted = 0;
+    //     if (!empty($advices) && is_array($advices)) {
+    //         foreach ($advices as $advice) {
+    //             $this->db->insert('consult_advices', [
+    //                 'consultation_id' => $post['consultationId'],
+    //                 'advice_name' => $advice
+    //             ]);
+    //             if ($this->db->affected_rows() > 0) {
+    //                 $rowsInserted++;
+    //             }
+    //         }
+    //     }
+    //     return ($rowsInserted > 0);
+    // }
+
+    public function save_advice($data)
     {
-        $advices = $this->input->post('advices');
-        $rowsInserted = 0;
-        if (!empty($advices) && is_array($advices)) {
-            foreach ($advices as $advice) {
-                $this->db->insert('consult_advices', [
-                    'consultation_id' => $post['consultationId'],
-                    'advice_name' => $advice
-                ]);
-                if ($this->db->affected_rows() > 0) {
-                    $rowsInserted++;
-                }
-            }
-        }
-        return ($rowsInserted > 0);
+        $this->db->insert('consult_advices', $data);
+        return $this->db->insert_id();
     }
 
     public function save_medicine($data)
@@ -874,6 +880,11 @@ class ConsultModel extends CI_Model
         $this->db->where('id', $id);
         return $this->db->update('advices_list', ['adviceName' => $name]);
     }
+    public function update_advice($id, $data)
+    {
+        $this->db->where('id', $id);
+        return $this->db->update('consult_advices', $data);
+    }
 
     public function deleteAdvice($id)
     {
@@ -881,7 +892,17 @@ class ConsultModel extends CI_Model
         return $this->db->delete('advices_list');
     }
 
-
+    public function delete_removed_advices($consultationId, $keepIds)
+    {
+        if (empty($keepIds)) {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->delete('consult_advices');
+        } else {
+            $this->db->where('consultation_id', $consultationId);
+            $this->db->where_not_in('id', $keepIds);
+            $this->db->delete('consult_advices');
+        }
+    }
 
     //Instruction in consultation page
     public function getInstructions()

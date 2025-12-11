@@ -1455,7 +1455,7 @@
                                         </div>
                                         <input type="hidden" name="medicinesJson" id="medicinesJson">
 
-                                        <div class="mb-3">
+                                        <!-- <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                                 style="background-color: rgb(206, 206, 206);" role="button">
                                                 <span><strong><i class="bi bi-chat-square-text me-2"></i>
@@ -1482,6 +1482,40 @@
                                                 </div>
                                             </div>
                                         </div>
+ -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div id="adviceWrapper">
+                                            <div id="adviceList" class="mb-2" style="background-color: white; border: none"></div>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="adviceInputContainer">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="adviceSearchInput"
+                                                            placeholder="Search Advice or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearAdviceSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addAdviceBtn" style="display: none;">+ Add</button>
+                                                </div>
+
+                                                <div class="suggestions-box" id="adviceSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px; display: none;"></div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="advicesJson" id="advicesJson">
+                                    </div>
+                                </div>
 
                                         <div class="mb-3">
                                             <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
@@ -2000,7 +2034,7 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="medicinesJson" id="medicinesJson">
-
+<!-- 
                                 <div class="mb-3">
                                     <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
                                         style="background-color: rgb(206, 206, 206);" role="button">
@@ -2027,6 +2061,41 @@
                                         </div>
                                     </div>
 
+                                </div> -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center p-2 rounded toggle-label"
+                                        style="background-color: rgb(206, 206, 206);" role="button">
+                                        <span><strong><i class="bi bi-chat-square-text me-2"></i>
+                                                Advice</strong></span>
+                                        <span class="toggle-icon">+</span>
+                                    </div>
+
+                                    <div class="collapse field-container mt-2">
+                                        <div id="adviceWrapper">
+                                            <div id="adviceList" class="mb-2" style="background-color: white; border: none;"></div>
+
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="adviceInputContainer">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="adviceSearchInput"
+                                                            placeholder="Search Advice or type to add..." />
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearAdviceSearch" style="display: none;">✖</button>
+
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addAdviceBtn" style="display: none;">+ Add</button>
+                                                </div>
+
+                                                <div class="suggestions-box" id="adviceSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px; display: none;"></div>
+                                            </div>
+                                        </div>
+                                        
+                                        <input type="hidden" name="advicesJson" id="advicesJson">
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -2542,20 +2611,29 @@
 
                                     <div class="collapse field-container mt-2">
                                         <div id="adviceWrapper">
-                                            <div class="input-group mb-2">
-                                                <input type="text" class="form-control" id="adviceSearch"
-                                                    placeholder="Search Advice">
+                                            <div id="adviceList" class="mb-2" style="background-color: white; border: none"></div>
 
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    id="clearAdviceSearch" style="display: none;">✖</button>
+                                            <div class="mb-3 position-relative">
+                                                <div class="input-group mb-2">
+                                                    <div class="tags-input flex-grow-1" id="adviceInputContainer">
+                                                        <input type="text" class="form-control border-0 shadow-none"
+                                                            id="adviceSearchInput"
+                                                            placeholder="Search Advice or type to add..." />
+                                                    </div>
 
-                                                <button type="button" class="btn btn-outline-primary" id="addAdviceBtn"
-                                                    style="display: none;">+ Add</button>
-                                            </div>
+                                                    <button type="button" class="btn btn-outline-secondary"
+                                                        id="clearAdviceSearch" style="display: none;">✖</button>
 
-                                            <div id="adviceList" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+                                                    <button type="button" class="btn btn-outline-primary"
+                                                        id="addAdviceBtn" style="display: none;">+ Add</button>
+                                                </div>
+
+                                                <div class="suggestions-box" id="adviceSuggestionsBox"
+                                                    style="position: relative; margin-bottom: 15px; display: none;"></div>
                                             </div>
                                         </div>
+
+                                        <input type="hidden" name="advicesJson" id="advicesJson">
                                     </div>
                                 </div>
 
@@ -2933,6 +3011,8 @@
                             <option value="INSULIN">Insulin</option>
                             <option value="OIL">Oil</option>
                             <option value="NEEDLE">Needle</option>
+                            <option value=" RESPULES"> Respules</option>
+                            <option value="INHALER">Inhaler</option>
                         </select>
 
                         <input type="hidden" id="editMedicineMasterId" value="">
@@ -3197,6 +3277,34 @@
                 </div>
             </div>
         </div>
+
+
+<div class="modal fade" id="adviceModal" tabindex="-1" aria-labelledby="adviceModalTitle"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="adviceModalTitle"
+                    style="font-family: Poppins, sans-serif;">
+                    Enter Advice Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="adviceNote" class="form-label">Note</label>
+                    <input type="text" class="form-control" id="adviceNote" placeholder="Enter note" />
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                    onclick="saveAdviceModal()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -5609,7 +5717,7 @@
     </script>
 
     <!-- new Advice search and add script -->
-    <script>
+    <!-- <script>
         let advicesList = <?php echo (isset($advicesList) && !empty($advicesList)) ? json_encode($advicesList) : '[]'; ?>;
         let savedAdvices = <?php echo (isset($advices) && !empty($advices)) ? json_encode($advices) : '[]'; ?>;
 
@@ -5913,6 +6021,394 @@
             }
 
             renderList();
+        });
+    </script> -->
+    <!-- add note script -->
+     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let adviceDataList = <?php echo (isset($advicesList) && !empty($advicesList)) ? json_encode($advicesList) : '[]'; ?>;
+            const adviceInput = document.getElementById('adviceSearchInput');
+            const adviceSuggestionsBox = document.getElementById('adviceSuggestionsBox');
+            const adviceListContainer = document.getElementById('adviceList');
+            const addAdviceBtn = document.getElementById('addAdviceBtn');
+            const clearAdviceBtn = document.getElementById('clearAdviceSearch');
+            const adviceHiddenInput = document.getElementById('advicesJson');
+
+            const adviceModalEl = document.getElementById("adviceModal");
+            if (!adviceInput || !adviceModalEl) return;
+
+            const adviceModal = new bootstrap.Modal(adviceModalEl);
+            const adviceNote = document.getElementById("adviceNote");
+            const adviceModalTitle = document.getElementById("adviceModalTitle");
+
+            // Universal Modal Elements
+            const uAddModalEl = document.getElementById("universalAddMasterModal");
+            const uAddModal = new bootstrap.Modal(uAddModalEl);
+            const uAddForm = document.getElementById("universalAddMasterForm");
+            const uTitle = document.getElementById("universalMasterTitle");
+            const uLabel = document.getElementById("universalMasterLabel");
+            const uInput = document.getElementById("universalMasterInput");
+            const uId = document.getElementById("universalMasterId");
+            const uType = document.getElementById("universalMasterType");
+
+            const uDelModalEl = document.getElementById("universalDeleteModal");
+            const uDelModal = new bootstrap.Modal(uDelModalEl);
+            const uDelName = document.getElementById("universalDeleteNameDisplay");
+            const uDelId = document.getElementById("universalDeleteId");
+            const uDelType = document.getElementById("universalDeleteType");
+            const uDelBtn = document.getElementById("universalDeleteBtn");
+
+            // State Variables
+            let selectedAdvices = [];
+            let pendingAdvice = "";
+            let editingAdviceTag = null;
+
+            function renderAdviceSuggestions() {
+                const q = adviceInput.value.trim().toLowerCase();
+                adviceSuggestionsBox.innerHTML = "";
+
+                if (q.length > 0) {
+                    if (clearAdviceBtn) clearAdviceBtn.style.display = 'block';
+                } else {
+                    if (clearAdviceBtn) clearAdviceBtn.style.display = 'none';
+                    if (addAdviceBtn) addAdviceBtn.style.display = 'none';
+                }
+
+                const filtered = adviceDataList.filter(a => a.adviceName.toLowerCase().includes(q));
+
+                // No Result Found
+                if (filtered.length === 0 && q !== "") {
+                    if (addAdviceBtn) addAdviceBtn.style.display = 'block';
+                    adviceSuggestionsBox.style.display = 'block';
+                    const noResultDiv = document.createElement("div");
+                    noResultDiv.className = "text-muted p-2";
+                    noResultDiv.textContent = "No result found – Add new";
+                    adviceSuggestionsBox.appendChild(noResultDiv);
+                } else {
+                    if (addAdviceBtn) addAdviceBtn.style.display = 'none';
+                    
+                    if (q !== "") {
+                        adviceSuggestionsBox.style.display = "block";
+                        filtered.forEach(item => {
+                            const div = document.createElement("div");
+                            div.className = "d-flex justify-content-between align-items-center border-bottom p-1 pointer-hover";
+                            div.style.cursor = "pointer";
+                            
+                            div.addEventListener("mouseenter", () => div.style.backgroundColor = "#8db8afff");
+                            div.addEventListener("mouseleave", () => div.style.backgroundColor = "transparent");
+
+                            const spanName = document.createElement("span");
+                            spanName.textContent = item.adviceName;
+                            spanName.className = "flex-grow-1";
+                            spanName.onclick = (e) => {
+                                e.stopPropagation();
+                                openAdviceModal(item.adviceName);
+                                clearAdviceSearchFunc();
+                            };
+                            div.appendChild(spanName);
+
+                            // Edit/Delete Icons (Owned Items Only)
+                            if (item.is_mine == true || item.is_mine == "true") {
+                                const actionDiv = document.createElement("div");
+                                actionDiv.className = "d-flex align-items-center gap-2";
+
+                                const editIcon = document.createElement("i");
+                                editIcon.className = "bi bi-pen action-icon edit";
+                                editIcon.title = "Edit";
+                                editIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openAdviceEdit(item.id, item.adviceName);
+                                };
+
+                                const deleteIcon = document.createElement("i");
+                                deleteIcon.className = "bi bi-trash action-icon delete";
+                                deleteIcon.title = "Delete";
+                                deleteIcon.onclick = (e) => {
+                                    e.stopPropagation();
+                                    openAdviceDelete(item.id, item.adviceName);
+                                };
+
+                                actionDiv.appendChild(editIcon);
+                                actionDiv.appendChild(deleteIcon);
+                                div.appendChild(actionDiv);
+                            }
+                            adviceSuggestionsBox.appendChild(div);
+                        });
+                    } else {
+                        adviceSuggestionsBox.style.display = "none";
+                    }
+                }
+            }
+
+            function clearAdviceSearchFunc() {
+                adviceInput.value = "";
+                adviceInput.focus();
+                adviceSuggestionsBox.style.display = "none";
+                if (clearAdviceBtn) clearAdviceBtn.style.display = "none";
+                if (addAdviceBtn) addAdviceBtn.style.display = "none";
+            }
+
+            // 4. NOTE MODAL LOGIC
+            window.openAdviceModal = function(tagName, existing = null, tagEl = null) {
+                pendingAdvice = tagName;
+                editingAdviceTag = tagEl;
+                if (adviceModalTitle) adviceModalTitle.textContent = existing ? `Edit: ${tagName}` : `Detail for: ${tagName}`;
+                if (adviceNote) adviceNote.value = existing?.note || "";
+                adviceModal.show();
+                setTimeout(() => { if (adviceNote) adviceNote.focus(); }, 500);
+            }
+
+            window.saveAdviceModal = function() {
+                const note = adviceNote ? adviceNote.value.trim() : "";
+                if (!pendingAdvice) return;
+
+                const existingIndex = selectedAdvices.findIndex(s => s.advice === pendingAdvice);
+                if (editingAdviceTag && existingIndex !== -1) {
+                    // Update
+                    let existingId = selectedAdvices[existingIndex].id || "new";
+                    selectedAdvices[existingIndex] = { id: existingId, advice: pendingAdvice, note };
+                    updateAdviceTagDisplay(editingAdviceTag, selectedAdvices[existingIndex]);
+                    editingAdviceTag.setAttribute("data-id", existingId);
+                } else {
+                    // Add
+                    const data = { id: "new", advice: pendingAdvice, note };
+                    selectedAdvices.push(data);
+                    addAdviceTag(data);
+                }
+                adviceModal.hide();
+                pendingAdvice = "";
+                editingAdviceTag = null;
+                updateAdviceHiddenInput();
+            }
+
+            function addAdviceTag(data) {
+                const tag = document.createElement("span");
+                
+                tag.className = "bg-success text-light rounded-2 p-2 me-2 mb-2 d-inline-block"; 
+                
+                tag.style.cursor = "pointer";
+                tag.setAttribute("data-id", data.id || "new");
+
+                const textSpan = document.createElement("span");
+                tag.appendChild(textSpan);
+                tag.style.fontWeight = "bold";
+
+                const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                
+                removeBtn.className = "text-light ms-2"; 
+                
+                removeBtn.innerHTML = "&times;";
+                removeBtn.style.fontSize = "1rem";
+                removeBtn.style.border = "none";
+                removeBtn.style.background = "transparent";
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    tag.remove();
+                    selectedAdvices = selectedAdvices.filter(s => s.advice !== data.advice);
+                    updateAdviceHiddenInput();
+                };
+
+                tag.appendChild(removeBtn);
+                updateAdviceTagDisplay(tag, data);
+                tag.onclick = () => openAdviceModal(data.advice, data, tag);
+                
+                if (adviceListContainer) adviceListContainer.appendChild(tag);
+            }
+
+            function updateAdviceTagDisplay(tagEl, data) {
+                const textParts = [data.advice];
+                const details = [];
+                if (data.note) details.push(`Note: ${data.note}`);
+                if (details.length > 0) textParts.push(`(${details.join(", ")})`);
+                tagEl.firstChild.textContent = textParts.join(" ");
+            }
+
+            function updateAdviceHiddenInput() {
+                if (adviceHiddenInput) adviceHiddenInput.value = JSON.stringify(selectedAdvices);
+            }
+            
+            // Open Add Modal
+            if (addAdviceBtn) {
+                addAdviceBtn.addEventListener('click', () => {
+                    uTitle.textContent = "Add New Advice";
+                    uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
+                    uInput.value = adviceInput.value.trim();
+                    uId.value = "";
+                    uType.value = "advice";
+                    uAddModal.show();
+                    setTimeout(() => uInput.focus(), 500);
+                });
+            }
+
+            // Open Edit Modal
+            function openAdviceEdit(id, name) {
+                uTitle.textContent = "Edit Advice";
+                uLabel.innerHTML = 'Advice Name <span class="text-danger">*</span>';
+                uInput.value = name;
+                uId.value = id;
+                uType.value = "advice";
+                uAddModal.show();
+                setTimeout(() => uInput.focus(), 500);
+            }
+
+            // Open Delete Modal
+            function openAdviceDelete(id, name) {
+                uDelName.textContent = name;
+                uDelId.value = id;
+                uDelType.value = "advice";
+                uDelModal.show();
+            }
+
+            // Handle Form Submit (Add/Edit)
+            if (uAddForm) {
+                uAddForm.addEventListener('submit', (e) => {
+                    if (document.getElementById("universalMasterType").value !== 'advice') return;
+
+                    e.preventDefault();
+
+                    const name = uInput.value.trim();
+                    const id = uId.value;
+
+                    if (!name) return;
+
+                    const submitBtn = uAddForm.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.textContent;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Saving...';
+
+                    const url = id 
+                        ? "<?= site_url('Consultation/editAdviceItem') ?>" 
+                        : "<?= site_url('Consultation/addAdviceMaster') ?>";
+                    
+                    const body = id 
+                        ? `id=${id}&name=${encodeURIComponent(name)}` 
+                        : `name=${encodeURIComponent(name)}`;
+
+                    fetch(url, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: body
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+
+                        if (data.status === 'success') {
+                            if (id) {
+                                const index = adviceDataList.findIndex(a => a.id == id);
+                                if (index !== -1) adviceDataList[index].adviceName = name;
+                                uAddModal.hide();
+                                clearAdviceSearchFunc();
+                                renderAdviceSuggestions();
+                            } else {
+                                adviceDataList.push({
+                                    id: data.id,
+                                    adviceName: name,
+                                    is_mine: true
+                                });
+                                uAddModal.hide();
+                                clearAdviceSearchFunc();
+                                setTimeout(() => openAdviceModal(name), 300);
+                            }
+                        } else {
+                            alert("Operation failed");
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                        alert("An error occurred. Please try again.");
+                    });
+                });
+            }
+
+            // Handle Delete Confirm
+            if (uDelBtn) {
+                uDelBtn.addEventListener('click', () => {
+                    if (document.getElementById("universalDeleteType").value !== 'advice') return;
+
+                    const id = uDelId.value;
+                    
+                    fetch("<?= site_url('Consultation/deleteAdviceItem') ?>", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: `id=${id}`
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            adviceDataList = adviceDataList.filter(a => a.id != id);
+                            uDelModal.hide();
+                            renderAdviceSuggestions();
+                        } else {
+                            alert("Delete failed.");
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("An error occurred.");
+                    });
+                });
+            }
+
+            // 7. EVENT LISTENERS
+            adviceInput.addEventListener('input', renderAdviceSuggestions);
+            adviceInput.addEventListener('focus', renderAdviceSuggestions);
+            adviceInput.addEventListener('keydown', (e) => {
+                if (e.key === "Enter" && adviceInput.value.trim() !== "") {
+                    e.preventDefault();
+                    const val = adviceInput.value.trim();
+                    const exists = adviceDataList.some(a => a.adviceName.toLowerCase() === val.toLowerCase());
+                    
+                    if (exists) {
+                        openAdviceModal(val);
+                        clearAdviceSearchFunc();
+                    } else {
+                        if (addAdviceBtn) addAdviceBtn.click();
+                    }
+                }
+            });
+
+            if (clearAdviceBtn) {
+                clearAdviceBtn.addEventListener('click', clearAdviceSearchFunc);
+            }
+
+            if (adviceModalEl) {
+                adviceModalEl.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveAdviceModal();
+                    }
+                });
+            }
+            document.addEventListener("click", (e) => {
+                const adviceContainer = document.getElementById("adviceInputContainer");
+                if (adviceContainer && !adviceContainer.contains(e.target) &&
+                    addAdviceBtn && !addAdviceBtn.contains(e.target)) {
+                    if (adviceSuggestionsBox) adviceSuggestionsBox.style.display = "none";
+                }
+            });
+
+            // 8. PRELOAD DATA (For Edit/Follow-up)
+            const preloadAdvices = <?php echo (isset($advices) && !empty($advices)) ? json_encode($advices) : '[]'; ?>;
+            if (preloadAdvices.length > 0) {
+                preloadAdvices.forEach(item => {
+                    const name = item.advice_name || item.advice || "";
+                    if (name) {
+                        const data = {
+                            id: item.id || "",
+                            advice: name, 
+                            note: item.note || ""
+                        };
+                        selectedAdvices.push(data);
+                        addAdviceTag(data);
+                    }
+                });
+                updateAdviceHiddenInput();
+            }
         });
     </script>
 

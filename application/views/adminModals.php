@@ -41,6 +41,8 @@
                         <option value="INSULIN">Insulin</option>
                         <option value="Oil">Oil</option>
                         <option value="NEEDLE">Needle</option>
+                        <option value=" RESPULES"> Respules</option>
+                        <option value="INHALER">Inhaler</option>
                     </select>
 
                     <button type="submit" id="medicineSubmit" class="btn text-light float-end mt-3"

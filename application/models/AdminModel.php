@@ -88,7 +88,7 @@ class AdminModel extends CI_Model
 
     public function patientList()
     {
-        $list = "SELECT * FROM `patient_details` WHERE deleteStatus = '0'";
+        $list = "SELECT * FROM `patient_details` WHERE deleteStatus = '0' ORDER BY `patientId` ASC";
         $select = $this->db->query($list);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

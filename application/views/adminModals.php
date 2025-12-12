@@ -481,7 +481,7 @@
         document.addEventListener("DOMContentLoaded", function () {
 
             // Added '#medicineModal' to this list
-            const draggableModalIds = ['#medicineModal'];
+            const draggableModalIds = ['#medicineModal','#editCommonModal','#universalAddModal'];
 
             draggableModalIds.forEach(id => {
                 const modalElement = document.querySelector(id);

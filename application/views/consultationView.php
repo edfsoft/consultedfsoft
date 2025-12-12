@@ -3124,8 +3124,7 @@
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
-                                        <option value="drops">drops</option>
-                                        <option value="Box">Box</option>
+                                        <option value="SACHET">sachet</option>
                                     </select>
                                 </div>
 
@@ -3140,7 +3139,7 @@
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
-                                        <option value="Box">Box</option>
+                                        <option value="SACHET">sachet</option>
                                     </select>
                                 </div>
 
@@ -3155,7 +3154,7 @@
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
-                                        <option value="Box">Box</option>
+                                        <option value="SACHET">sachet</option>
                                     </select>
                                 </div>
 
@@ -3170,7 +3169,7 @@
                                         <option value="ml">ml</option>
                                         <option value="units">units</option>
                                         <option value="drops">drops</option>
-                                        <option value="Box">Box</option>
+                                        <option value="SACHET">sachet</option>
                                     </select>
                                 </div>
 

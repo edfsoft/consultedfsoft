@@ -596,4 +596,29 @@ class Edfadmin extends CI_Controller
         $this->session->unset_userdata('adminMobileNum');
         redirect('Edfadmin/');
     }
+
+    //Check duplicate number and for new HCP or CC Signup
+    public function check_duplicate_user()
+    {
+        $type = $this->input->post('type'); // 'Cc' or 'Hcp'
+        $mobile = $this->input->post('mobile');
+        $email = $this->input->post('email');
+
+        $existing_errors = [];
+
+        if ($type == 'Cc') {
+            $existing_errors = $this->CcModel->check_existing_user($mobile, $email);
+        } else if ($type == 'Hcp') {
+            $existing_errors = $this->HcpModel->check_existing_user($mobile, $email);
+        }
+
+        $response = [
+            'mobile_exists' => in_array('Mobile Number', $existing_errors),
+            'email_exists'  => in_array('Mail Id', $existing_errors)
+        ];
+
+        // 4. Return JSON
+        header('Content-Type: application/json');
+        echo json_encode($response);
+    }
 }

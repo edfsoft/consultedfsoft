@@ -254,5 +254,26 @@ class AdminModel extends CI_Model
         return $this->db->affected_rows() > 0;
     }
 
+
+
+    public function getMedicineCategories()
+{
+    return $this->db->order_by('category', 'ASC')
+                    ->get('medicines_category')
+                    ->result_array();
+}
+
+
+    public function insertCategory($name)
+    {
+        $name = strtoupper(trim($name));
+        return $this->db->insert('medicines_category', ['category' => $name]);
+    }
+
+    public function deleteCategory($id)
+    {
+        return $this->db->delete('medicines_category', ['id' => $id]);
+    }
+
 }
 ?>

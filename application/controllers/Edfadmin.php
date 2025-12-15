@@ -384,6 +384,7 @@ class Edfadmin extends CI_Controller
         if (isset($_SESSION['adminIdDb'])) {
             $this->data['method'] = "medicines";
             $list = $this->AdminModel->getMedicinesList();
+            $this->data['medicineCategories'] = $this->AdminModel->getMedicineCategories();
             $this->data['medicinesList'] = $list;
             $this->load->view('adminDashboard.php', $this->data);
         } else {
@@ -621,4 +622,36 @@ class Edfadmin extends CI_Controller
         header('Content-Type: application/json');
         echo json_encode($response);
     }
+
+    //Category from db
+    public function getCategories()
+    {
+        $result = $this->AdminModel->getMedicineCategories();
+        echo json_encode($result);
+    }
+
+
+    public function addCategory()
+    {
+        $name = trim($this->input->post('name'));
+
+        if ($name == "") {
+            echo json_encode(["status" => false, "msg" => "Category cannot be empty"]);
+            return;
+        }
+
+        $insert = $this->AdminModel->insertCategory($name);
+
+        echo json_encode(["status" => $insert]);
+    }
+
+
+    public function deleteCategory()
+    {
+        $id = $this->input->post('id');
+        $deleted = $this->AdminModel->deleteCategory($id);
+
+        echo json_encode(["status" => $deleted]);
+    }
+
 }

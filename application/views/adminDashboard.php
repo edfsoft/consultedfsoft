@@ -3792,11 +3792,20 @@
 
                                                                                 <section>
                                                                                     <div class="card rounded">
-                                                                                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                                            <p style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                                            <a href="#" role="butto" onclick="openAddMedicineModal()" style="background-color: #2b353bf5;"
+                                                                                        <div class="mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                                           <div class="d-sm-flex justify-content-between align-items-center">
+                                                                                                <p style="font-size: 24px; font-weight: 500">Medicines List</p>
+                                                                                                <a href="#" role="butto" onclick="openAddMedicineModal()" style="background-color: #2b353bf5;"
                                                                                                 class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
                                                                                                 <i class="bi bi-plus-square-fill"></i> New</a>
+                                                                                            </div>
+                                                                                            <div class="mt-2">
+                                                                                                <a href="#" role="button" onclick="openCategoryModal()" 
+                                                                                                style="background-color: #198754;" 
+                                                                                                class="text-light border-0 rounded mx-sm-2 p-2 mb-3">
+                                                                                                <i class="bi bi-tags-fill"></i> Add Category
+                                                                                                </a>
+                                                                                            </div>
                                                                                         </div>
                                                                                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                             <div class="ms-2">
@@ -4088,9 +4097,118 @@
                                                                                     });
                                                                                 </script>
 
+                                                                                <!-- Handle Add Category Function -->
+                                                                                <script>
+                                                                                    const baseURL = "<?php echo base_url(); ?>";
+
+                                                                                    // OPEN MODAL
+                                                                                    function openCategoryModal() {
+                                                                                        loadCategories();
+
+                                                                                        const modal = new bootstrap.Modal(document.getElementById("categoryModal"));
+                                                                                        modal.show();
+                                                                                    }
+
+                                                                                    // LOAD CATEGORY LIST
+                                                                                    function loadCategories() {
+                                                                                        fetch(baseURL + "Edfadmin/getCategories")
+                                                                                            .then(res => res.json())
+                                                                                            .then(data => {
+                                                                                                const ul = document.getElementById("categoryList");
+                                                                                                ul.innerHTML = "";
+
+                                                                                                data.forEach(cat => {
+                                                                                                    ul.innerHTML += `
+                                                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                                            ${cat.category}
+                                                                                                            <button class="btn btn-danger btn-sm"
+                                                                                                                    onclick="openCategoryDeleteModal(${cat.id}, '${cat.category}')">
+                                                                                                                <i class="bi bi-trash"></i>
+                                                                                                            </button>
+                                                                                                        </li>`;
+                                                                                                });
+                                                                                            });
+                                                                                    }
+
+                                                                                    let selectedCategoryId = null;
+
+                                                                                    function openCategoryDeleteModal(id, name) {
+                                                                                        selectedCategoryId = id;
+
+                                                                                        const categoryModalEl = document.getElementById("categoryModal");
+                                                                                        const categoryModalInstance = bootstrap.Modal.getInstance(categoryModalEl);
+                                                                                        if (categoryModalInstance) {
+                                                                                            categoryModalInstance.hide();
+                                                                                        }
+
+                                                                                        document.getElementById("deleteItemName").innerText = name;
+                                                                                        document.getElementById("deleteConfirmButton").onclick = function () {
+                                                                                            confirmDeleteCategory();
+                                                                                        };
+
+                                                                                        const deleteModal = new bootstrap.Modal(
+                                                                                            document.getElementById("confirmDelete")
+                                                                                        );
+                                                                                        deleteModal.show();
+                                                                                    }
+
+
+                                                                                    function confirmDeleteCategory() {
+                                                                                        if (!selectedCategoryId) return;
+
+                                                                                        fetch(baseURL + "Edfadmin/deleteCategory", {
+                                                                                            method: "POST",
+                                                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                                                            body: "id=" + selectedCategoryId
+                                                                                        })
+                                                                                        .then(res => res.json())
+                                                                                        .then(resp => {
+                                                                                            if (resp.status) {
+                                                                                                const modalEl = document.getElementById("confirmDelete");
+                                                                                                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                                                                                                modalInstance.hide();
+                                                                                                selectedCategoryId = null;
+                                                                                                loadCategories();
+                                                                                                const categoryModal = new bootstrap.Modal(
+                                                                                                document.getElementById("categoryModal")
+                                                                                                );
+                                                                                                categoryModal.show();
+                                                                                            }
+                                                                                        });
+                                                                                    }
+
+                                                                                    function addCategory() {
+                                                                                        let name = document.getElementById("newCategoryName").value.trim();
+                                                                                        let error = document.getElementById("categoryError");
+
+                                                                                        if (name === "") {
+                                                                                            error.innerText = "Please enter category name";
+                                                                                            error.classList.remove("d-none");
+                                                                                            return;
+                                                                                        }
+
+                                                                                        fetch(baseURL + "Edfadmin/addCategory", {
+                                                                                            method: "POST",
+                                                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                                                            body: "name=" + encodeURIComponent(name)
+                                                                                        })
+                                                                                        .then(res => res.json())
+                                                                                        .then(resp => {
+                                                                                            if (resp.status) {
+                                                                                                document.getElementById("newCategoryName").value = "";
+                                                                                                error.classList.add("d-none");
+                                                                                                loadCategories(); // refresh list
+                                                                                            } else {
+                                                                                                error.innerText = resp.msg;
+                                                                                                error.classList.remove("d-none");
+                                                                                            }
+                                                                                        });
+                                                                                    }
+                                                                                 </script>
+
+
 
         <?php } ?>
-
 
         <!-- All modal files -->
         <?php include 'adminModals.php'; ?>

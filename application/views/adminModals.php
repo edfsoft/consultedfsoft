@@ -26,23 +26,13 @@
                     <label for="medicineCategory" class="form-label pb-2 mt-2">Category</label>
                     <select name="medicineCategory" id="medicineCategory" class="form-select">
                         <option value="">Select Category</option>
-                        <option value="TABLET">Tablet</option>
-                        <option value="CAPSULE">Capsule</option>
-                        <option value="TABLET/CAPSULE">Tablet/Capsule</option>
-                        <option value="SYRUP">Syrup</option>
-                        <option value="INJECTION">Injection</option>
-                        <option value="DROPS">Drops</option>
-                        <option value="OINTMENT">Ointment</option>
-                        <option value="CREAM">Cream</option>
-                        <option value="GEL">Gel</option>
-                        <option value="SPRAY">Spray</option>
-                        <option value="POWDER">Powder</option>
-                        <option value="SUSPPOSITORY">Suppository</option>
-                        <option value="INSULIN">Insulin</option>
-                        <option value="Oil">Oil</option>
-                        <option value="NEEDLE">Needle</option>
-                        <option value=" RESPULES"> Respules</option>
-                        <option value="INHALER">Inhaler</option>
+                        <?php if (!empty($medicineCategories)) { ?>
+                            <?php foreach ($medicineCategories as $cat) { ?>
+                                <option value="<?php echo htmlspecialchars($cat['category']); ?>">
+                                    <?php echo htmlspecialchars($cat['category']); ?>
+                                </option>
+                            <?php } ?>
+                        <?php } ?>
                     </select>
 
                     <button type="submit" id="medicineSubmit" class="btn text-light float-end mt-3"
@@ -301,7 +291,7 @@
     }, 50);
 </script>
 
-<!-- Universal Delete confirmation Modal -->
+<!-- Universal Delete confirmation Modal and also for delete Medicine category-->
 <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true"
     data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
@@ -322,6 +312,7 @@
         </div>
     </div>
 </div>
+
 <!-- Universal Delete confirmation Script  -->
 <script>
     document.addEventListener("click", (event) => {
@@ -385,7 +376,7 @@
     </div>
 </div>
 
-
+<!-- script to delete hcp, cc, patient -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const confirmDeleteModal = document.getElementById('SecondconfirmDelete');
@@ -481,7 +472,7 @@
         document.addEventListener("DOMContentLoaded", function () {
 
             // Added '#medicineModal' to this list
-            const draggableModalIds = ['#medicineModal','#editCommonModal','#universalAddModal'];
+            const draggableModalIds = ['#medicineModal','#editCommonModal','#universalAddModal','#categoryModal'];
 
             draggableModalIds.forEach(id => {
                 const modalElement = document.querySelector(id);
@@ -591,4 +582,35 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Add Medicine Category model -->
+<div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content p-3">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Manage Medicine Categories</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="d-flex mb-3 gap-2">
+          <input type="text" id="newCategoryName" 
+                 class="form-control" placeholder="Enter category name">
+
+          <button class="btn btn-primary" onclick="addCategory()">Add</button>
+        </div>
+        <span id="categoryError" class="text-danger mb-1 d-none"></span>
+
+        <div style="max-height: 300px; overflow-y: auto;">
+            <ul id="categoryList" class="list-group"></ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
 </div>

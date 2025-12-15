@@ -639,7 +639,7 @@
 
                                         const data = await response.json();
                                         let hasDbError = false;
-                                        let errorMsg ="This ";
+                                        let errorMsg ="";
 
                                         if (data.mobile_exists) {
                                             hasDbError = true;
@@ -653,14 +653,15 @@
                                         }
                                         if (data.mobile_exists && data.email_exists) {
                                                 hasError = true;
-                                                errorMsg = "This Mobile and Email "
+                                                errorMsg = "This Mobile and Email ";
                                             }
 
                                         if (!hasDbError) {
                                             form.submit();
+                                            hasError = false;
                                         }
                                         if (hasError) {
-                                                errorMsg +="already registered with another CC"
+                                                errorMsg +="already registered with another CC";
                                                 document.getElementById("duplicateCheckBody").innerText = errorMsg;
 
                                                 const myModal = new bootstrap.Modal(document.getElementById('duplicateCheckModal'));
@@ -1292,6 +1293,7 @@
                                                         // 7. If no DB errors, Submit
                                                         if (!hasDbError) {
                                                             hcpForm.submit();
+                                                            hasError = false;
                                                         }
                                                         if (hasError) {
                                                                 errorMsg +="already registered with another HCP"
@@ -4089,26 +4091,7 @@
 
         <?php } ?>
 
-        <div class="modal fade" id="duplicateCheckModal" tabindex="-1" aria-labelledby="duplicateCheckLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="duplicateCheckLabel">
-                    Credential Exist
-                </h5>
-            </div>
-            
-            <div class="modal-body" id="duplicateCheckBody">
-                </div>
 
-            <div class="modal-footer d-flex justify-content-end">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
         <!-- All modal files -->
         <?php include 'adminModals.php'; ?>
 

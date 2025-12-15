@@ -570,3 +570,25 @@
             }
         }
     </script>
+
+ <!-- Duplicate signup popup Model --> 
+<div class="modal fade" id="duplicateCheckModal" tabindex="-1" aria-labelledby="duplicateCheckLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="duplicateCheckLabel">
+                    Duplicate Entry
+                </h5>
+            </div>
+            
+            <div class="modal-body" id="duplicateCheckBody">
+                </div>
+
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

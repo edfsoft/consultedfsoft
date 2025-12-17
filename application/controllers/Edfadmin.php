@@ -630,7 +630,6 @@ class Edfadmin extends CI_Controller
         echo json_encode($result);
     }
 
-
     public function addCategory()
     {
         $name = trim($this->input->post('name'));
@@ -644,7 +643,6 @@ class Edfadmin extends CI_Controller
 
         echo json_encode(["status" => $insert]);
     }
-
 
     public function deleteCategory()
     {

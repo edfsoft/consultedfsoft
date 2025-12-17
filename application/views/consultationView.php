@@ -3012,26 +3012,16 @@
                             placeholder="E.g. Paracetamol">
 
                         <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category</label>
-                        <select id="newMedicineCategory" class="form-select">
-                            <option value="">Select Category</option>
-                            <option value="TABLET">Tablet</option>
-                            <option value="CAPSULE">Capsule</option>
-                            <option value="TABLET/CAPSULE">Tablet/Capsule</option>
-                            <option value="SYRUP">Syrup</option>
-                            <option value="INJECTION">Injection</option>
-                            <option value="DROPS">Drops</option>
-                            <option value="OINTMENT">Ointment</option>
-                            <option value="CREAM">Cream</option>
-                            <option value="GEL">Gel</option>
-                            <option value="SPRAY">Spray</option>
-                            <option value="POWDER">Powder</option>
-                            <option value="SUPPOSITORY">Suppository</option>
-                            <option value="INSULIN">Insulin</option>
-                            <option value="OIL">Oil</option>
-                            <option value="NEEDLE">Needle</option>
-                            <option value=" RESPULES"> Respules</option>
-                            <option value="INHALER">Inhaler</option>
-                        </select>
+                            <select id="newMedicineCategory" class="form-select">
+                                <option value="">Select Category</option>
+                                <?php if (!empty($medicineCategories)): ?>
+                                    <?php foreach ($medicineCategories as $cat): ?>
+                                        <option value="<?= htmlspecialchars($cat['category']) ?>">
+                                            <?= htmlspecialchars($cat['category']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
 
                         <input type="hidden" id="editMedicineMasterId" value="">
                     </div>

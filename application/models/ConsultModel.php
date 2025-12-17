@@ -1047,4 +1047,15 @@ class ConsultModel extends CI_Model
         $this->db->where('id', $id);
         return $this->db->delete('medicines_list');
     }
+    
+    //Get medicine category
+    public function getMedicineCategories()
+    {
+        return $this->db
+            ->select('category')
+            ->order_by('category', 'ASC')
+            ->get('medicines_category')
+            ->result_array();
+    }
+
 }

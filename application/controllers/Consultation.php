@@ -25,6 +25,7 @@ class Consultation extends CI_Controller
             $this->data['instructionsList'] = $this->ConsultModel->getInstructions();
             $this->data['proceduresList'] = $this->ConsultModel->getProcedures();
             $this->data['medicinesList'] = $this->ConsultModel->getMedicines();
+            $this->data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
             $this->data['advicesList'] = $this->ConsultModel->getAdvices();
 
             $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
@@ -60,6 +61,7 @@ class Consultation extends CI_Controller
             $data['procedures'] = $this->ConsultModel->get_procedures_by_consultation_id($consultation_id);
             $data['advices'] = $this->ConsultModel->get_advices_by_consultation_id($consultation_id);
             $data['medicines'] = $this->ConsultModel->get_medicines_by_consultation_id($consultation_id);
+            $data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();
             // $data['attachments'] = $this->ConsultModel->get_attachments_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
@@ -292,6 +294,7 @@ class Consultation extends CI_Controller
             $data['procedures'] = $this->ConsultModel->get_procedures_by_consultation_id($consultation_id);
             $data['advices'] = $this->ConsultModel->get_advices_by_consultation_id($consultation_id);
             $data['medicines'] = $this->ConsultModel->get_medicines_by_consultation_id($consultation_id);
+            $data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
             $data['attachments'] = $this->ConsultModel->get_attachments_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];

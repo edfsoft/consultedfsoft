@@ -112,12 +112,43 @@ class AdminModel extends CI_Model
             return true;
         } */
 
-    //Permanent Delete
+/*     //Permanent Delete
     public function deletePatientDb($patientIdDb)
         {
             $this->db->where('id', $patientIdDb);
             return $this->db->delete('patient_details');
+        } */
+
+    //Delete patient and related patient consultation
+    public function deletePatientDb($patientIdDb)
+    {
+        // Get consultations
+        $consultations = $this->db
+            ->select('id')
+            ->where('patient_id', $patientIdDb)
+            ->get('consultations')
+            ->result_array();
+
+        foreach ($consultations as $c) {
+            $cid = $c['id'];
+
+            $this->db->where('consultation_id', $cid)->delete('consult_diagnosis');
+            $this->db->where('consultation_id', $cid)->delete('consult_symptoms');
+            $this->db->where('consultation_id', $cid)->delete('consult_medicines');
+            $this->db->where('consultation_id', $cid)->delete('consult_findings');
+            $this->db->where('consultation_id', $cid)->delete('consult_investigations');
+            $this->db->where('consultation_id', $cid)->delete('consult_advices');
+            $this->db->where('consultation_id', $cid)->delete('consult_procedures');
+            $this->db->where('consultation_id', $cid)->delete('consult_instructions');
+            $this->db->where('consultation_id', $cid)->delete('consult_attachments');
         }
+
+        $this->db->where('patient_id', $patientIdDb)->delete('consultations');
+
+        $this->db->where('id', $patientIdDb);
+        return $this->db->delete('patient_details');
+    }
+
 
     public function getSpecializationList()
     {
@@ -254,15 +285,12 @@ class AdminModel extends CI_Model
         return $this->db->affected_rows() > 0;
     }
 
-
-
     public function getMedicineCategories()
-{
-    return $this->db->order_by('category', 'ASC')
-                    ->get('medicines_category')
-                    ->result_array();
-}
-
+    {
+        return $this->db->order_by('category', 'ASC')
+                        ->get('medicines_category')
+                        ->result_array();
+    }
 
     public function insertCategory($name)
     {

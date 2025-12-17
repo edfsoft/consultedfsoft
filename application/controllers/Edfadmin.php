@@ -164,7 +164,6 @@ class Edfadmin extends CI_Controller
         }
     }
 
-
     public function deleteCc()
     {
         if (isset($_SESSION['adminIdDb'])) {
@@ -178,6 +177,30 @@ class Edfadmin extends CI_Controller
         } else {
             redirect('Edfadmin/');
         }
+    }
+
+    //Check duplicate number and for new HCP or CC Signup
+    public function check_duplicate_user()
+    {
+        $type = $this->input->post('type'); // 'Cc' or 'Hcp'
+        $mobile = $this->input->post('mobile');
+        $email = $this->input->post('email');
+
+        $existing_errors = [];
+
+        if ($type == 'Cc') {
+            $existing_errors = $this->CcModel->check_existing_user($mobile, $email);
+        } else if ($type == 'Hcp') {
+            $existing_errors = $this->HcpModel->check_existing_user($mobile, $email);
+        }
+
+        $response = [
+            'mobile_exists' => in_array('Mobile Number', $existing_errors),
+            'email_exists' => in_array('Mail Id', $existing_errors)
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
     }
 
     public function hcpList()
@@ -379,41 +402,6 @@ class Edfadmin extends CI_Controller
         }
     }
 
-    public function medicinesList()
-    {
-        if (isset($_SESSION['adminIdDb'])) {
-            $this->data['method'] = "medicines";
-            $list = $this->AdminModel->getMedicinesList();
-            $this->data['medicineCategories'] = $this->AdminModel->getMedicineCategories();
-            $this->data['medicinesList'] = $list;
-            $this->load->view('adminDashboard.php', $this->data);
-        } else {
-            redirect('Edfadmin/');
-        }
-    }
-
-    public function saveMedicine()
-    {
-        if ($this->AdminModel->saveMedicine()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Medicine saved successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in saving medicine');
-        }
-
-        redirect('Edfadmin/medicinesList');
-    }
-
-    public function deleteMedicine()
-    {
-        $medicineId = $this->uri->segment(3);
-        if ($this->AdminModel->medicineDelete($medicineId)) {
-            $this->session->set_flashdata('showSuccessMessage', 'Medicine deleted successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in deleting edicine');
-        }
-        redirect('Edfadmin/medicinesList');
-    }
-
     public function investigationsList()
     {
         if (isset($_SESSION['adminIdDb'])) {
@@ -460,6 +448,69 @@ class Edfadmin extends CI_Controller
         } else {
             redirect('Edfadmin/');
         }
+    }
+
+    public function medicinesList()
+    {
+        if (isset($_SESSION['adminIdDb'])) {
+            $this->data['method'] = "medicines";
+            $list = $this->AdminModel->getMedicinesList();
+            $this->data['medicineCategories'] = $this->AdminModel->getMedicineCategories();
+            $this->data['medicinesList'] = $list;
+            $this->load->view('adminDashboard.php', $this->data);
+        } else {
+            redirect('Edfadmin/');
+        }
+    }
+
+    public function saveMedicine()
+    {
+        if ($this->AdminModel->saveMedicine()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Medicine saved successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in saving medicine');
+        }
+
+        redirect('Edfadmin/medicinesList');
+    }
+
+    public function deleteMedicine()
+    {
+        $medicineId = $this->uri->segment(3);
+        if ($this->AdminModel->medicineDelete($medicineId)) {
+            $this->session->set_flashdata('showSuccessMessage', 'Medicine deleted successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in deleting edicine');
+        }
+        redirect('Edfadmin/medicinesList');
+    }
+
+    public function getCategories()
+    {
+        $result = $this->AdminModel->getMedicineCategories();
+        echo json_encode($result);
+    }
+
+    public function addCategory()
+    {
+        $name = trim($this->input->post('name'));
+
+        if ($name == "") {
+            echo json_encode(["status" => false, "msg" => "Category cannot be empty"]);
+            return;
+        }
+
+        $insert = $this->AdminModel->insertCategory($name);
+
+        echo json_encode(["status" => $insert]);
+    }
+
+    public function deleteCategory()
+    {
+        $id = $this->input->post('id');
+        $deleted = $this->AdminModel->deleteCategory($id);
+
+        echo json_encode(["status" => $deleted]);
     }
 
     //Universal Add
@@ -598,58 +649,6 @@ class Edfadmin extends CI_Controller
         redirect('Edfadmin/');
     }
 
-    //Check duplicate number and for new HCP or CC Signup
-    public function check_duplicate_user()
-    {
-        $type = $this->input->post('type'); // 'Cc' or 'Hcp'
-        $mobile = $this->input->post('mobile');
-        $email = $this->input->post('email');
 
-        $existing_errors = [];
-
-        if ($type == 'Cc') {
-            $existing_errors = $this->CcModel->check_existing_user($mobile, $email);
-        } else if ($type == 'Hcp') {
-            $existing_errors = $this->HcpModel->check_existing_user($mobile, $email);
-        }
-
-        $response = [
-            'mobile_exists' => in_array('Mobile Number', $existing_errors),
-            'email_exists'  => in_array('Mail Id', $existing_errors)
-        ];
-
-        // 4. Return JSON
-        header('Content-Type: application/json');
-        echo json_encode($response);
-    }
-
-    //Category from db
-    public function getCategories()
-    {
-        $result = $this->AdminModel->getMedicineCategories();
-        echo json_encode($result);
-    }
-
-    public function addCategory()
-    {
-        $name = trim($this->input->post('name'));
-
-        if ($name == "") {
-            echo json_encode(["status" => false, "msg" => "Category cannot be empty"]);
-            return;
-        }
-
-        $insert = $this->AdminModel->insertCategory($name);
-
-        echo json_encode(["status" => $insert]);
-    }
-
-    public function deleteCategory()
-    {
-        $id = $this->input->post('id');
-        $deleted = $this->AdminModel->deleteCategory($id);
-
-        echo json_encode(["status" => $deleted]);
-    }
 
 }

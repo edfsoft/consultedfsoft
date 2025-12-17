@@ -380,45 +380,36 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const confirmDeleteModal = document.getElementById('SecondconfirmDelete');
-        
+
         if (confirmDeleteModal) {
             confirmDeleteModal.addEventListener('show.bs.modal', function (event) {
-                // 1. Button that triggered the modal
                 const button = event.relatedTarget;
 
-                // 2. Extract info from data-* attributes
                 const id = button.getAttribute('data-id');
                 const name = button.getAttribute('data-name');
                 const type = button.getAttribute('data-type'); // 'hcp', 'cc', or 'patient'
 
-                // 3. Update the Modal Text
                 const modalTitleName = confirmDeleteModal.querySelector('#deleteItemName');
-                if(modalTitleName) modalTitleName.textContent = name;
+                if (modalTitleName) modalTitleName.textContent = name;
 
-                // 4. Construct the Controller URL based on Type
-                // Ensure 'baseUrl' is defined in your page (it usually is in your existing scripts)
                 const deleteBtn = confirmDeleteModal.querySelector('#deleteConfirmButton');
                 let deleteUrl = '#';
 
                 switch (type) {
                     case 'hcp':
-                        // Matches: public function deleteHcp()
-                        deleteUrl = `${baseUrl}Edfadmin/deleteHcp/${id}`; 
+                        deleteUrl = `${baseUrl}Edfadmin/deleteHcp/${id}`;
                         break;
                     case 'cc':
-                        // Matches: public function deleteCc()
                         deleteUrl = `${baseUrl}Edfadmin/deleteCc/${id}`;
                         break;
                     case 'patient':
-                        // Matches: public function deletePatient()
                         deleteUrl = `${baseUrl}Edfadmin/deletePatient/${id}`;
                         break;
                     default:
                         console.error('Unknown delete type: ' + type);
                 }
 
-                // 5. Set the href on the actual Delete button
-                if(deleteBtn) deleteBtn.setAttribute('href', deleteUrl);
+                if (deleteBtn) deleteBtn.setAttribute('href', deleteUrl);
             });
         }
     });
@@ -468,102 +459,99 @@
         });
     </script> -->
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
+<!-- Movable Add, Edit, Add medicines, Edit Medicines, Category Modals script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
 
-            // Added '#medicineModal' to this list
-            const draggableModalIds = ['#medicineModal','#editCommonModal','#universalAddModal','#categoryModal'];
+        const draggableModalIds = ['#medicineModal', '#editCommonModal', '#universalAddModal', '#categoryModal'];
 
-            draggableModalIds.forEach(id => {
-                const modalElement = document.querySelector(id);
-                if (modalElement) {
-                    makeModalDraggable(modalElement);
-                    // Reset position when closed so it doesn't get lost off-screen
-                    modalElement.addEventListener('hidden.bs.modal', function () {
-                        const modalDialog = modalElement.querySelector('.modal-dialog');
-                        modalDialog.style.left = '';
-                        modalDialog.style.top = '';
-                        modalDialog.style.margin = '';
-                        modalDialog.style.transform = '';
-                    });
-                }
-            });
-
-            // Close modals with ESC key
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') {
-                    const openModal = document.querySelector('.modal.show');
-                    if (openModal) {
-                        const modalInstance = bootstrap.Modal.getInstance(openModal);
-                        if (modalInstance) {
-                            modalInstance.hide();
-                        }
-                    }
-                }
-            });
+        draggableModalIds.forEach(id => {
+            const modalElement = document.querySelector(id);
+            if (modalElement) {
+                makeModalDraggable(modalElement);
+                modalElement.addEventListener('hidden.bs.modal', function () {
+                    const modalDialog = modalElement.querySelector('.modal-dialog');
+                    modalDialog.style.left = '';
+                    modalDialog.style.top = '';
+                    modalDialog.style.margin = '';
+                    modalDialog.style.transform = '';
+                });
+            }
         });
 
-        function makeModalDraggable(modal) {
-            const modalDialog = modal.querySelector('.modal-dialog');
-            const modalHeader = modal.querySelector('.modal-header');
-
-            if (!modalHeader) return; 
-
-            // Visual cue that it can be moved
-            modalHeader.style.cursor = 'move'; 
-
-            let isDragging = false;
-            let hasDragged = false;
-            let initialPosX = 0;
-            let initialPosY = 0;
-            let offsetX = 0;
-            let offsetY = 0;
-
-            modalHeader.addEventListener('mousedown', function (e) {
-                e.preventDefault();
-                isDragging = true;
-                hasDragged = false;
-
-                const rect = modalDialog.getBoundingClientRect();
-                initialPosX = rect.left;
-                initialPosY = rect.top;
-
-                offsetX = e.clientX - initialPosX;
-                offsetY = e.clientY - initialPosY;
-
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            });
-
-            function onMouseMove(e) {
-                if (!isDragging) return;
-
-                if (!hasDragged) {
-                    modalDialog.style.margin = '0';
-                    modalDialog.style.transform = 'none';
-                    // Snap to current position to start movement smoothly
-                    modalDialog.style.left = initialPosX + 'px';
-                    modalDialog.style.top = initialPosY + 'px';
-                    hasDragged = true;
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('.modal.show');
+                if (openModal) {
+                    const modalInstance = bootstrap.Modal.getInstance(openModal);
+                    if (modalInstance) {
+                        modalInstance.hide();
+                    }
                 }
+            }
+        });
+    });
 
-                let newPosX = e.clientX - offsetX;
-                let newPosY = e.clientY - offsetY;
+    function makeModalDraggable(modal) {
+        const modalDialog = modal.querySelector('.modal-dialog');
+        const modalHeader = modal.querySelector('.modal-header');
 
-                modalDialog.style.left = newPosX + 'px';
-                modalDialog.style.top = newPosY + 'px';
+        if (!modalHeader) return;
+
+        modalHeader.style.cursor = 'move';
+
+        let isDragging = false;
+        let hasDragged = false;
+        let initialPosX = 0;
+        let initialPosY = 0;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        modalHeader.addEventListener('mousedown', function (e) {
+            e.preventDefault();
+            isDragging = true;
+            hasDragged = false;
+
+            const rect = modalDialog.getBoundingClientRect();
+            initialPosX = rect.left;
+            initialPosY = rect.top;
+
+            offsetX = e.clientX - initialPosX;
+            offsetY = e.clientY - initialPosY;
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        function onMouseMove(e) {
+            if (!isDragging) return;
+
+            if (!hasDragged) {
+                modalDialog.style.margin = '0';
+                modalDialog.style.transform = 'none';
+                modalDialog.style.left = initialPosX + 'px';
+                modalDialog.style.top = initialPosY + 'px';
+                hasDragged = true;
             }
 
-            function onMouseUp() {
-                isDragging = false;
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-            }
+            let newPosX = e.clientX - offsetX;
+            let newPosY = e.clientY - offsetY;
+
+            modalDialog.style.left = newPosX + 'px';
+            modalDialog.style.top = newPosY + 'px';
         }
-    </script>
 
- <!-- Duplicate signup popup Model --> 
-<div class="modal fade" id="duplicateCheckModal" tabindex="-1" aria-labelledby="duplicateCheckLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        function onMouseUp() {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+    }
+</script>
+
+<!-- Duplicate signup popup Model - CC and HCP -->
+<div class="modal fade" id="duplicateCheckModal" tabindex="-1" aria-labelledby="duplicateCheckLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -571,9 +559,9 @@
                     Duplicate Entry
                 </h5>
             </div>
-            
+
             <div class="modal-body" id="duplicateCheckBody">
-                </div>
+            </div>
 
             <div class="modal-footer d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -584,32 +572,31 @@
     </div>
 </div>
 
-<!-- Add Medicine Category model -->
+<!-- Add Medicine Category modal -->
 <div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content p-3">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content p-3">
 
-      <div class="modal-header">
-        <h5 class="modal-title">Manage Medicine Categories</h5>
-         <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
-         <span aria-hidden="true">&times;</span>
-      </div>
-      <div class="modal-body">
-        <div class="d-flex mb-3 gap-2">
-          <input type="text" id="newCategoryName" 
-          class="form-control" placeholder="Enter category name">
+            <div class="modal-header">
+                <h5 class="modal-title">Manage Medicine Categories</h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex mb-3 gap-2">
+                    <input type="text" id="newCategoryName" class="form-control" placeholder="Enter category name">
 
-          <button class="btn btn-primary" onclick="addCategory()">Add</button>
+                    <button class="btn btn-primary" onclick="addCategory()">Add</button>
+                </div>
+                <span id="categoryError" class="text-danger mb-1 d-none"></span>
+
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <ul id="categoryList" class="list-group"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-        <span id="categoryError" class="text-danger mb-1 d-none"></span>
-
-        <div style="max-height: 300px; overflow-y: auto;">
-            <ul id="categoryList" class="list-group"></ul>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
     </div>
-  </div>
 </div>

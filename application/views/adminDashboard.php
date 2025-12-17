@@ -606,16 +606,16 @@
                     </script>
 
                     <script>
-                        document.addEventListener("DOMContentLoaded", function() {
+                        document.addEventListener("DOMContentLoaded", function () {
                             const signupBtn = document.getElementById("ccSignupBtn");
-                            const form = document.querySelector("form[name='signupform']"); 
+                            const form = document.querySelector("form[name='signupform']");
 
-                            if(signupBtn){
-                                signupBtn.addEventListener("click", async function(e) {
+                            if (signupBtn) {
+                                signupBtn.addEventListener("click", async function (e) {
                                     e.preventDefault(); // STOP form submission immediately
 
                                     if (!validateSignup()) {
-                                        return; 
+                                        return;
                                     }
                                     const mobile = document.getElementById("ccMobile").value.trim();
                                     const email = document.getElementById("ccEmail").value.trim();
@@ -624,7 +624,7 @@
 
                                     mobileErr.innerHTML = "";
                                     emailErr.innerHTML = "";
-                                    
+
                                     const formData = new URLSearchParams();
                                     formData.append("type", "Cc");
                                     formData.append("mobile", mobile);
@@ -639,7 +639,7 @@
 
                                         const data = await response.json();
                                         let hasDbError = false;
-                                        let errorMsg ="";
+                                        let errorMsg = "";
 
                                         if (data.mobile_exists) {
                                             hasDbError = true;
@@ -652,20 +652,20 @@
                                             emailErr.innerHTML = "Email ID already exists!";
                                         }
                                         if (data.mobile_exists && data.email_exists) {
-                                                hasError = true;
-                                                errorMsg = "This Mobile and Email ";
-                                            }
+                                            hasError = true;
+                                            errorMsg = "This Mobile and Email ";
+                                        }
 
                                         if (!hasDbError) {
                                             form.submit();
                                             hasError = false;
                                         }
                                         if (hasError) {
-                                                errorMsg +="already registered with another CC";
-                                                document.getElementById("duplicateCheckBody").innerText = errorMsg;
+                                            errorMsg += "already registered with another CC";
+                                            document.getElementById("duplicateCheckBody").innerText = errorMsg;
 
-                                                const myModal = new bootstrap.Modal(document.getElementById('duplicateCheckModal'));
-                                                myModal.show();
+                                            const myModal = new bootstrap.Modal(document.getElementById('duplicateCheckModal'));
+                                            myModal.show();
                                         }
 
                                     } catch (error) {
@@ -1238,78 +1238,78 @@
                                 </script>
 
 
-                                    <script>
-                                        document.addEventListener("DOMContentLoaded", function() {
-                                            const hcpBtn = document.getElementById("hcpSignupBtn");
-                                            const hcpForm = document.querySelector("form[name='hcpsignupform']"); 
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        const hcpBtn = document.getElementById("hcpSignupBtn");
+                                        const hcpForm = document.querySelector("form[name='hcpsignupform']");
 
-                                            if(hcpBtn){
-                                                hcpBtn.addEventListener("click", async function(e) {
-                                                    e.preventDefault(); // 1. STOP form submission
+                                        if (hcpBtn) {
+                                            hcpBtn.addEventListener("click", async function (e) {
+                                                e.preventDefault(); // 1. STOP form submission
 
-                                                    if (!validateSignup()) {
-                                                        return;
+                                                if (!validateSignup()) {
+                                                    return;
+                                                }
+
+                                                const mobile = document.getElementById("hcpMobile").value.trim();
+                                                const email = document.getElementById("hcpEmail").value.trim();
+                                                const mobileErr = document.getElementById("mobile_err");
+                                                const emailErr = document.getElementById("mail_err");
+
+                                                mobileErr.innerHTML = "";
+                                                emailErr.innerHTML = "";
+
+                                                const formData = new URLSearchParams();
+                                                formData.append("type", "Hcp");
+                                                formData.append("mobile", mobile);
+                                                formData.append("email", email);
+
+                                                try {
+                                                    const response = await fetch("<?= base_url('Edfadmin/check_duplicate_user') ?>", {
+                                                        method: "POST",
+                                                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                        body: formData
+                                                    });
+
+                                                    const data = await response.json();
+                                                    let hasDbError = false;
+                                                    let errorMsg = "";
+
+                                                    if (data.mobile_exists) {
+                                                        hasDbError = true;
+                                                        errorMsg = "This Mobile Number ";
+                                                        mobileErr.innerHTML = "Mobile number already exists!";
+                                                    }
+                                                    if (data.email_exists) {
+                                                        hasDbError = true;
+                                                        errorMsg = "This Email ";
+                                                        emailErr.innerHTML = "Email ID already exists!";
+                                                    }
+                                                    if (data.mobile_exists && data.email_exists) {
+                                                        hasError = true;
+                                                        errorMsg = "This Mobile and Email "
                                                     }
 
-                                                    const mobile = document.getElementById("hcpMobile").value.trim();
-                                                    const email = document.getElementById("hcpEmail").value.trim();
-                                                    const mobileErr = document.getElementById("mobile_err");
-                                                    const emailErr = document.getElementById("mail_err");
-
-                                                    mobileErr.innerHTML = "";
-                                                    emailErr.innerHTML = "";
-
-                                                    const formData = new URLSearchParams();
-                                                    formData.append("type", "Hcp");
-                                                    formData.append("mobile", mobile);
-                                                    formData.append("email", email);
-
-                                                    try {
-                                                        const response = await fetch("<?= base_url('Edfadmin/check_duplicate_user') ?>", {
-                                                            method: "POST",
-                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                                                            body: formData
-                                                        });
-
-                                                        const data = await response.json();
-                                                        let hasDbError = false;
-                                                        let errorMsg ="";
-
-                                                        if (data.mobile_exists) {
-                                                            hasDbError = true;
-                                                            errorMsg = "This Mobile Number ";
-                                                            mobileErr.innerHTML = "Mobile number already exists!";
-                                                        }
-                                                        if (data.email_exists) {
-                                                            hasDbError = true;
-                                                            errorMsg = "This Email ";
-                                                            emailErr.innerHTML = "Email ID already exists!";
-                                                        }
-                                                        if (data.mobile_exists && data.email_exists) {
-                                                            hasError = true;
-                                                            errorMsg = "This Mobile and Email "
-                                                            }
-
-                                                        // 7. If no DB errors, Submit
-                                                        if (!hasDbError) {
-                                                            hcpForm.submit();
-                                                            hasError = false;
-                                                        }
-                                                        if (hasError) {
-                                                                errorMsg +="already registered with another HCP"
-                                                                document.getElementById("duplicateCheckBody").innerText = errorMsg;
-
-                                                                const myModal = new bootstrap.Modal(document.getElementById('duplicateCheckModal'));
-                                                                myModal.show();
-                                                            }
-
-                                                    } catch (error) {
-                                                        console.error("Error checking duplicates:", error);
+                                                    // 7. If no DB errors, Submit
+                                                    if (!hasDbError) {
+                                                        hcpForm.submit();
+                                                        hasError = false;
                                                     }
-                                                });
-                                            }
-                                        });
-                                    </script>
+                                                    if (hasError) {
+                                                        errorMsg += "already registered with another HCP"
+                                                        document.getElementById("duplicateCheckBody").innerText = errorMsg;
+
+                                                        const myModal = new bootstrap.Modal(document.getElementById('duplicateCheckModal'));
+                                                        myModal.show();
+                                                    }
+
+                                                } catch (error) {
+                                                    console.error("Error checking duplicates:", error);
+                                                }
+                                            });
+                                        }
+                                    });
+                                </script>
             <?php
         } else if ($method == "hcpDetails") {
             ?>
@@ -3793,17 +3793,16 @@
                                                                                 <section>
                                                                                     <div class="card rounded">
                                                                                         <div class="mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                                           <div class="d-sm-flex justify-content-between align-items-center">
+                                                                                            <div class="d-sm-flex justify-content-between align-items-center">
                                                                                                 <p style="font-size: 24px; font-weight: 500">Medicines List</p>
                                                                                                 <a href="#" role="butto" onclick="openAddMedicineModal()" style="background-color: #2b353bf5;"
-                                                                                                class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
-                                                                                                <i class="bi bi-plus-square-fill"></i> New</a>
+                                                                                                    class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                                    <i class="bi bi-plus-square-fill"></i> New</a>
                                                                                             </div>
                                                                                             <div class="mt-2">
-                                                                                                <a href="#" role="button" onclick="openCategoryModal()" 
-                                                                                                style="background-color: #198754;" 
-                                                                                                class="text-light border-0 rounded mx-sm-2 p-2 mb-3">
-                                                                                                <i class="bi bi-tags-fill"></i> Add Category
+                                                                                                <a href="#" role="button" onclick="openCategoryModal()" style="background-color: #198754;"
+                                                                                                    class="text-light border-0 rounded mx-sm-2 p-2 mb-3">
+                                                                                                    <i class="bi bi-tags-fill"></i> Add Category
                                                                                                 </a>
                                                                                             </div>
                                                                                         </div>
@@ -4161,20 +4160,20 @@
                                                                                             headers: { "Content-Type": "application/x-www-form-urlencoded" },
                                                                                             body: "id=" + selectedCategoryId
                                                                                         })
-                                                                                        .then(res => res.json())
-                                                                                        .then(resp => {
-                                                                                            if (resp.status) {
-                                                                                                const modalEl = document.getElementById("confirmDelete");
-                                                                                                const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                                                                                                modalInstance.hide();
-                                                                                                selectedCategoryId = null;
-                                                                                                loadCategories();
-                                                                                                const categoryModal = new bootstrap.Modal(
-                                                                                                document.getElementById("categoryModal")
-                                                                                                );
-                                                                                                categoryModal.show();
-                                                                                            }
-                                                                                        });
+                                                                                            .then(res => res.json())
+                                                                                            .then(resp => {
+                                                                                                if (resp.status) {
+                                                                                                    const modalEl = document.getElementById("confirmDelete");
+                                                                                                    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                                                                                                    modalInstance.hide();
+                                                                                                    selectedCategoryId = null;
+                                                                                                    loadCategories();
+                                                                                                    const categoryModal = new bootstrap.Modal(
+                                                                                                        document.getElementById("categoryModal")
+                                                                                                    );
+                                                                                                    categoryModal.show();
+                                                                                                }
+                                                                                            });
                                                                                     }
 
                                                                                     function addCategory() {
@@ -4192,19 +4191,19 @@
                                                                                             headers: { "Content-Type": "application/x-www-form-urlencoded" },
                                                                                             body: "name=" + encodeURIComponent(name)
                                                                                         })
-                                                                                        .then(res => res.json())
-                                                                                        .then(resp => {
-                                                                                            if (resp.status) {
-                                                                                                document.getElementById("newCategoryName").value = "";
-                                                                                                error.classList.add("d-none");
-                                                                                                loadCategories(); // refresh list
-                                                                                            } else {
-                                                                                                error.innerText = resp.msg;
-                                                                                                error.classList.remove("d-none");
-                                                                                            }
-                                                                                        });
+                                                                                            .then(res => res.json())
+                                                                                            .then(resp => {
+                                                                                                if (resp.status) {
+                                                                                                    document.getElementById("newCategoryName").value = "";
+                                                                                                    error.classList.add("d-none");
+                                                                                                    loadCategories(); // refresh list
+                                                                                                } else {
+                                                                                                    error.innerText = resp.msg;
+                                                                                                    error.classList.remove("d-none");
+                                                                                                }
+                                                                                            });
                                                                                     }
-                                                                                 </script>
+                                                                                </script>
 
 
 

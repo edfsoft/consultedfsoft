@@ -580,7 +580,7 @@
                                                             <ul>
                                                                 <?php foreach ($consultation['advices'] as $adv): ?>
                                                                     <li><?= $adv['advice_name'] ?>
-                                                                 <?php if (!empty($adv['note'])): ?>
+                                                                        <?php if (!empty($adv['note'])): ?>
                                                                             - <?= htmlspecialchars($adv['note']) ?>
                                                                         <?php endif; ?>
                                                                     </li>
@@ -3012,16 +3012,16 @@
                             placeholder="E.g. Paracetamol">
 
                         <label for="newMedicineCategory" class="form-label fieldLabel pb-2 mt-2">Category</label>
-                            <select id="newMedicineCategory" class="form-select">
-                                <option value="">Select Category</option>
-                                <?php if (!empty($medicineCategories)): ?>
-                                    <?php foreach ($medicineCategories as $cat): ?>
-                                        <option value="<?= htmlspecialchars($cat['category']) ?>">
-                                            <?= htmlspecialchars($cat['category']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </select>
+                        <select id="newMedicineCategory" class="form-select">
+                            <option value="">Select Category</option>
+                            <?php if (!empty($medicineCategories)): ?>
+                                <?php foreach ($medicineCategories as $cat): ?>
+                                    <option value="<?= htmlspecialchars($cat['category']) ?>">
+                                        <?= htmlspecialchars($cat['category']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
 
                         <input type="hidden" id="editMedicineMasterId" value="">
                     </div>

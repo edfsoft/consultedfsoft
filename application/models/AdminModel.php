@@ -112,17 +112,9 @@ class AdminModel extends CI_Model
             return true;
         } */
 
-/*     //Permanent Delete
-    public function deletePatientDb($patientIdDb)
-        {
-            $this->db->where('id', $patientIdDb);
-            return $this->db->delete('patient_details');
-        } */
-
     //Delete patient and related patient consultation
     public function deletePatientDb($patientIdDb)
     {
-        // Get consultations
         $consultations = $this->db
             ->select('id')
             ->where('patient_id', $patientIdDb)
@@ -148,7 +140,6 @@ class AdminModel extends CI_Model
         $this->db->where('id', $patientIdDb);
         return $this->db->delete('patient_details');
     }
-
 
     public function getSpecializationList()
     {
@@ -288,8 +279,8 @@ class AdminModel extends CI_Model
     public function getMedicineCategories()
     {
         return $this->db->order_by('category', 'ASC')
-                        ->get('medicines_category')
-                        ->result_array();
+            ->get('medicines_category')
+            ->result_array();
     }
 
     public function insertCategory($name)

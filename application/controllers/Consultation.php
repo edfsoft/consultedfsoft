@@ -25,6 +25,7 @@ class Consultation extends CI_Controller
             $this->data['instructionsList'] = $this->ConsultModel->getInstructions();
             $this->data['proceduresList'] = $this->ConsultModel->getProcedures();
             $this->data['medicinesList'] = $this->ConsultModel->getMedicines();
+            $this->data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
             $this->data['advicesList'] = $this->ConsultModel->getAdvices();
 
             $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
@@ -60,6 +61,7 @@ class Consultation extends CI_Controller
             $data['procedures'] = $this->ConsultModel->get_procedures_by_consultation_id($consultation_id);
             $data['advices'] = $this->ConsultModel->get_advices_by_consultation_id($consultation_id);
             $data['medicines'] = $this->ConsultModel->get_medicines_by_consultation_id($consultation_id);
+            $data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();
             // $data['attachments'] = $this->ConsultModel->get_attachments_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
@@ -154,7 +156,7 @@ class Consultation extends CI_Controller
 
         $advices_json = $this->input->post('advicesJson');
         $advices = json_decode($advices_json, true);
-        $adviceSaved = false; 
+        $adviceSaved = false;
 
         if ($advices && is_array($advices)) {
             foreach ($advices as $advice) {
@@ -292,6 +294,7 @@ class Consultation extends CI_Controller
             $data['procedures'] = $this->ConsultModel->get_procedures_by_consultation_id($consultation_id);
             $data['advices'] = $this->ConsultModel->get_advices_by_consultation_id($consultation_id);
             $data['medicines'] = $this->ConsultModel->get_medicines_by_consultation_id($consultation_id);
+            $data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
             $data['attachments'] = $this->ConsultModel->get_attachments_by_consultation_id($consultation_id);
 
             $data['patient_id'] = $data['consultation']['patient_id'];
@@ -456,8 +459,8 @@ class Consultation extends CI_Controller
             $this->ConsultModel->delete_removed_advices($consultationId, $existingIds);
             $adviceSaved = true;
         } else {
-             // If array is empty, clear all for this consultation
-             $this->ConsultModel->delete_advices($consultationId);
+            // If array is empty, clear all for this consultation
+            $this->ConsultModel->delete_advices($consultationId);
         }
 
         // $this->ConsultModel->delete_investigations($consultationId);
@@ -917,12 +920,10 @@ class Consultation extends CI_Controller
     //Medicine for consultation form
     public function addNewMedicines()
     {
-        // Check if JSON or POST
         $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
         $data = json_decode($stream_clean, true);
 
         if (!$data) {
-            // Fallback to standard POST for Universal Modal
             $name = $this->input->post('name');
             $composition = $this->input->post('composition');
             $category = $this->input->post('category');
@@ -934,22 +935,17 @@ class Consultation extends CI_Controller
         }
 
         if (!$name) {
-            // Output JSON error
             echo json_encode(['status' => 'error', 'message' => 'Name required']);
             return;
         }
 
-        // Passes name, and potentially empty strings for composition and category.
         $id = $this->ConsultModel->insertNewMedicineMaster($name, $composition, $category);
         if ($id) {
             echo json_encode([
-                'status' => 'success', // Changed to string 'success' to match other scripts
+                'status' => 'success',
                 'id' => $id,
                 'medicineName' => $name,
-                // Note: compositionName and category might be empty string here, 
-                // but the DB value is converted to 'Nill' in the Model.
                 'compositionName' => $composition,
-
                 'category' => $category
             ]);
         } else {
@@ -959,7 +955,6 @@ class Consultation extends CI_Controller
 
     public function editMedicineItem()
     {
-        // --- MODIFICATION START (Retrieve JSON body, assuming AJAX POST from script) ---
         $stream_clean = $this->security->xss_clean($this->input->raw_input_stream);
         $data = json_decode($stream_clean, true);
 
@@ -969,14 +964,12 @@ class Consultation extends CI_Controller
             $composition = $data['compositionName'] ?? null;
             $category = $data['category'] ?? null;
         } else {
-            // Fallback to standard POST for non-JSON requests
             $id = $this->input->post('id');
             $name = $this->input->post('name');
             $composition = $this->input->post('composition');
             $category = $this->input->post('category');
         }
 
-        // Passes name, and potentially empty strings for composition and category.
         if ($this->ConsultModel->updateMedicineMaster($id, $name, $composition, $category)) {
             echo json_encode(['status' => 'success']);
         } else {

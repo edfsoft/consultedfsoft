@@ -435,8 +435,8 @@
                                     <div class="mb-3">
                                         <label for="ccMobile" class="form-label">Mobile Number <span
                                                 class="text-danger">*</span></label>
-                                        <input type="number" name="ccMobile" id="ccMobile" placeholder="9876543210"
-                                            class="form-control">
+                                        <input type="text" name="ccMobile" id="ccMobile" maxlength="10" placeholder="9876543210"
+                                            class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                         <div id="mobile_err" class="text-danger pt-1"></div>
                                     </div>
                                     <div class="mb-3">
@@ -489,7 +489,7 @@
                                     <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="0">
                                     <div class="d-flex justify-content-between">
                                         <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
-                                        <button type="submit" style="background-color: #2b353bf5;"
+                                        <button type="submit" id="ccSignupBtn" style="background-color: #2b353bf5;"
                                             class="btn text-light float-end mt-2">Sign Up</button>
                                     </div>
                                 </form>
@@ -559,6 +559,7 @@
                             } else {
                                 document.getElementById("cnfmpassword_err").innerHTML = "";
                             }
+                            return true;
                         }
 
                         document.getElementById("ccPassword").onfocus = function () {
@@ -602,6 +603,77 @@
                                 document.getElementById("cnfmpassword_err").innerHTML = "";
                             }
                         }
+                    </script>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const signupBtn = document.getElementById("ccSignupBtn");
+                            const form = document.querySelector("form[name='signupform']");
+
+                            if (signupBtn) {
+                                signupBtn.addEventListener("click", async function (e) {
+                                    e.preventDefault(); // STOP form submission immediately
+
+                                    if (!validateSignup()) {
+                                        return;
+                                    }
+                                    const mobile = document.getElementById("ccMobile").value.trim();
+                                    const email = document.getElementById("ccEmail").value.trim();
+                                    const mobileErr = document.getElementById("mobile_err");
+                                    const emailErr = document.getElementById("mail_err");
+
+                                    mobileErr.innerHTML = "";
+                                    emailErr.innerHTML = "";
+
+                                    const formData = new URLSearchParams();
+                                    formData.append("type", "Cc");
+                                    formData.append("mobile", mobile);
+                                    formData.append("email", email);
+
+                                    try {
+                                        const response = await fetch("<?= base_url('Edfadmin/check_duplicate_user') ?>", {
+                                            method: "POST",
+                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                            body: formData
+                                        });
+
+                                        const data = await response.json();
+                                        let hasDbError = false;
+                                        let errorMsg = "";
+
+                                        if (data.mobile_exists) {
+                                            hasDbError = true;
+                                            errorMsg = "This Mobile Number ";
+                                            mobileErr.innerHTML = "Mobile number already exists!";
+                                        }
+                                        if (data.email_exists) {
+                                            hasDbError = true;
+                                            errorMsg = "This Email ID ";
+                                            emailErr.innerHTML = "Email ID already exists!";
+                                        }
+                                        if (data.mobile_exists && data.email_exists) {
+                                            hasError = true;
+                                            errorMsg = "This Mobile and Email ";
+                                        }
+
+                                        if (!hasDbError) {
+                                            form.submit();
+                                            hasError = false;
+                                        }
+                                        if (hasError) {
+                                            errorMsg += "already registered with another CC";
+                                            document.getElementById("duplicateCheckBody").innerText = errorMsg;
+
+                                            const myModal = new bootstrap.Modal(document.getElementById('duplicateCheckModal'));
+                                            myModal.show();
+                                        }
+
+                                    } catch (error) {
+                                        console.error("Error checking duplicates:", error);
+                                    }
+                                });
+                            }
+                        });
                     </script>
 
             <?php
@@ -994,8 +1066,8 @@
                                                 <div class="mb-3">
                                                     <label for="hcpMobile" class="form-label">Mobile Number <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="number" name="hcpMobile" id="hcpMobile" placeholder="9876543210"
-                                                        class="form-control">
+                                                    <input type="text" name="hcpMobile" id="hcpMobile" maxlength="10" placeholder="9876543210"
+                                                        class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                                                     <div id="mobile_err" class="text-danger pt-1"></div>
                                                 </div>
                                                 <div class="mb-3">
@@ -1049,7 +1121,7 @@
 
                                                 <div class="d-flex justify-content-between">
                                                     <button type="reset" class="btn btn-secondary text-light mt-2">Reset</button>
-                                                    <button type="submit" style="background-color: #2b353bf5;"
+                                                    <button type="submit" id="hcpSignupBtn" style="background-color: #2b353bf5;"
                                                         class="btn text-light float-end mt-2">Sign Up</button>
                                                 </div>
                                             </form>
@@ -1119,6 +1191,7 @@
                                         } else {
                                             document.getElementById("cnfmpassword_err").innerHTML = "";
                                         }
+                                        return true;
                                     }
 
                                     document.getElementById("hcpPassword").onfocus = function () {
@@ -1164,6 +1237,79 @@
                                     }
                                 </script>
 
+
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", function () {
+                                        const hcpBtn = document.getElementById("hcpSignupBtn");
+                                        const hcpForm = document.querySelector("form[name='hcpsignupform']");
+
+                                        if (hcpBtn) {
+                                            hcpBtn.addEventListener("click", async function (e) {
+                                                e.preventDefault(); // 1. STOP form submission
+
+                                                if (!validateSignup()) {
+                                                    return;
+                                                }
+
+                                                const mobile = document.getElementById("hcpMobile").value.trim();
+                                                const email = document.getElementById("hcpEmail").value.trim();
+                                                const mobileErr = document.getElementById("mobile_err");
+                                                const emailErr = document.getElementById("mail_err");
+
+                                                mobileErr.innerHTML = "";
+                                                emailErr.innerHTML = "";
+
+                                                const formData = new URLSearchParams();
+                                                formData.append("type", "Hcp");
+                                                formData.append("mobile", mobile);
+                                                formData.append("email", email);
+
+                                                try {
+                                                    const response = await fetch("<?= base_url('Edfadmin/check_duplicate_user') ?>", {
+                                                        method: "POST",
+                                                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                        body: formData
+                                                    });
+
+                                                    const data = await response.json();
+                                                    let hasDbError = false;
+                                                    let errorMsg = "";
+
+                                                    if (data.mobile_exists) {
+                                                        hasDbError = true;
+                                                        errorMsg = "This Mobile Number ";
+                                                        mobileErr.innerHTML = "Mobile number already exists!";
+                                                    }
+                                                    if (data.email_exists) {
+                                                        hasDbError = true;
+                                                        errorMsg = "This Email ";
+                                                        emailErr.innerHTML = "Email ID already exists!";
+                                                    }
+                                                    if (data.mobile_exists && data.email_exists) {
+                                                        hasError = true;
+                                                        errorMsg = "This Mobile and Email "
+                                                    }
+
+                                                    // 7. If no DB errors, Submit
+                                                    if (!hasDbError) {
+                                                        hcpForm.submit();
+                                                        hasError = false;
+                                                    }
+                                                    if (hasError) {
+                                                        errorMsg += "already registered with another HCP"
+                                                        document.getElementById("duplicateCheckBody").innerText = errorMsg;
+
+                                                        const myModal = new bootstrap.Modal(document.getElementById('duplicateCheckModal'));
+                                                        myModal.show();
+                                                    }
+
+                                                } catch (error) {
+                                                    console.error("Error checking duplicates:", error);
+                                                }
+                                            });
+                                        }
+                                    });
+                                </script>
             <?php
         } else if ($method == "hcpDetails") {
             ?>
@@ -3646,11 +3792,20 @@
 
                                                                                 <section>
                                                                                     <div class="card rounded">
-                                                                                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                                            <p style="font-size: 24px; font-weight: 500">Medicines List</p>
-                                                                                            <a href="#" role="butto" onclick="openAddMedicineModal()" style="background-color: #2b353bf5;"
-                                                                                                class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
-                                                                                                <i class="bi bi-plus-square-fill"></i> New</a>
+                                                                                        <div class="mt-2 p-3 pt-sm-4 px-sm-4">
+                                                                                            <div class="d-sm-flex justify-content-between align-items-center">
+                                                                                                <p style="font-size: 24px; font-weight: 500">Medicines List</p>
+                                                                                                <a href="#" role="butto" onclick="openAddMedicineModal()" style="background-color: #2b353bf5;"
+                                                                                                    class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
+                                                                                                    <i class="bi bi-plus-square-fill"></i> New</a>
+                                                                                            </div>
+                                                                                            <div class="my-2">
+                                                                                                <a href="#" role="button" onclick="openCategoryModal()" class="text-dark fw-medium fs-5">
+                                                                                                    Category :
+                                                                                                    <button class="btn text-light border-0 rounded"
+                                                                                                        style="background-color: #198754;">Manage</button>
+                                                                                                </a>
+                                                                                            </div>
                                                                                         </div>
                                                                                         <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-3">
                                                                                             <div class="ms-2">
@@ -3941,6 +4096,116 @@
                                                                                         }
                                                                                     });
                                                                                 </script>
+
+                                                                                <!-- Handle Add Category Function -->
+                                                                                <script>
+                                                                                    const baseURL = "<?php echo base_url(); ?>";
+
+                                                                                    // OPEN MODAL
+                                                                                    function openCategoryModal() {
+                                                                                        loadCategories();
+
+                                                                                        const modal = new bootstrap.Modal(document.getElementById("categoryModal"));
+                                                                                        modal.show();
+                                                                                    }
+
+                                                                                    // LOAD CATEGORY LIST
+                                                                                    function loadCategories() {
+                                                                                        fetch(baseURL + "Edfadmin/getCategories")
+                                                                                            .then(res => res.json())
+                                                                                            .then(data => {
+                                                                                                const ul = document.getElementById("categoryList");
+                                                                                                ul.innerHTML = "";
+
+                                                                                                data.forEach(cat => {
+                                                                                                    ul.innerHTML += `
+                                                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                                            ${cat.category}
+                                                                                                            <button class="btn btn-danger btn-sm"
+                                                                                                                    onclick="openCategoryDeleteModal(${cat.id}, '${cat.category}')">
+                                                                                                                <i class="bi bi-trash"></i>
+                                                                                                            </button>
+                                                                                                        </li>`;
+                                                                                                });
+                                                                                            });
+                                                                                    }
+
+                                                                                    let selectedCategoryId = null;
+
+                                                                                    function openCategoryDeleteModal(id, name) {
+                                                                                        selectedCategoryId = id;
+
+                                                                                        const categoryModalEl = document.getElementById("categoryModal");
+                                                                                        const categoryModalInstance = bootstrap.Modal.getInstance(categoryModalEl);
+                                                                                        if (categoryModalInstance) {
+                                                                                            categoryModalInstance.hide();
+                                                                                        }
+
+                                                                                        document.getElementById("deleteItemName").innerText = name;
+                                                                                        document.getElementById("deleteConfirmButton").onclick = function () {
+                                                                                            confirmDeleteCategory();
+                                                                                        };
+
+                                                                                        const deleteModal = new bootstrap.Modal(
+                                                                                            document.getElementById("confirmDelete")
+                                                                                        );
+                                                                                        deleteModal.show();
+                                                                                    }
+
+
+                                                                                    function confirmDeleteCategory() {
+                                                                                        if (!selectedCategoryId) return;
+
+                                                                                        fetch(baseURL + "Edfadmin/deleteCategory", {
+                                                                                            method: "POST",
+                                                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                                                            body: "id=" + selectedCategoryId
+                                                                                        })
+                                                                                            .then(res => res.json())
+                                                                                            .then(resp => {
+                                                                                                if (resp.status) {
+                                                                                                    const modalEl = document.getElementById("confirmDelete");
+                                                                                                    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                                                                                                    modalInstance.hide();
+                                                                                                    selectedCategoryId = null;
+                                                                                                    loadCategories();
+                                                                                                    const categoryModal = new bootstrap.Modal(
+                                                                                                        document.getElementById("categoryModal")
+                                                                                                    );
+                                                                                                    categoryModal.show();
+                                                                                                }
+                                                                                            });
+                                                                                    }
+
+                                                                                    function addCategory() {
+                                                                                        let name = document.getElementById("newCategoryName").value.trim();
+                                                                                        let error = document.getElementById("categoryError");
+
+                                                                                        if (name === "") {
+                                                                                            error.innerText = "Please enter category name";
+                                                                                            error.classList.remove("d-none");
+                                                                                            return;
+                                                                                        }
+
+                                                                                        fetch(baseURL + "Edfadmin/addCategory", {
+                                                                                            method: "POST",
+                                                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                                                            body: "name=" + encodeURIComponent(name)
+                                                                                        })
+                                                                                            .then(res => res.json())
+                                                                                            .then(resp => {
+                                                                                                if (resp.status) {
+                                                                                                    document.getElementById("newCategoryName").value = "";
+                                                                                                    error.classList.add("d-none");
+                                                                                                    loadCategories(); // refresh list
+                                                                                                } else {
+                                                                                                    error.innerText = resp.msg;
+                                                                                                    error.classList.remove("d-none");
+                                                                                                }
+                                                                                            });
+                                                                                    }
+                                                                                </script>
+
 
 
         <?php } ?>

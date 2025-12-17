@@ -78,12 +78,9 @@
         const input = document.getElementById("universalInput");
         const form = document.getElementById("universalAddForm");
 
-        // Find the submit button inside the form
         const submitButton = form.querySelector('button[type="submit"]');
         if (submitButton) {
-            // Re-enable the button in case it was disabled
             submitButton.disabled = false;
-            // Reset the text back to "Add"
             submitButton.innerHTML = 'Add';
         }
 
@@ -157,7 +154,6 @@
 
         form.reset();
 
-        // This line requires the Bootstrap JS file to be loaded
         const modal = new bootstrap.Modal(document.getElementById("universalAddModal"));
         modal.show();
     }
@@ -167,20 +163,14 @@
 
         if (universalForm) {
             universalForm.addEventListener('submit', function (e) {
-                // Find the submit button inside this specific form
                 const submitButton = universalForm.querySelector('button[type="submit"]');
 
                 if (submitButton) {
-                    // If button is already disabled, stop this duplicate submission
                     if (submitButton.disabled) {
-                        e.preventDefault(); // Stop the form from submitting again
+                        e.preventDefault();
                         return;
                     }
-
-                    // Disable the button immediately on the first click
                     submitButton.disabled = true;
-
-                    // Change the button text to show it's working
                     submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Adding...`;
                 }
             });
@@ -242,11 +232,9 @@
                 procedure: 'Procedure Name',
                 advice: 'Advice Name'
             };
-            // This is your existing listener that OPENS the modal
             document.body.addEventListener('click', function (e) {
                 const btn = e.target.closest('.edit-btn');
                 if (!btn) return;
-                // resetting the modal's button before it's shown.
                 const editForm = document.getElementById('editCommonForm');
                 const submitButton = editForm.querySelector('button[type="submit"]');
 
@@ -275,12 +263,10 @@
                 editForm.addEventListener('submit', function (e) {
                     const submitButton = editForm.querySelector('button[type="submit"]');
                     if (submitButton) {
-                        // If button is already disabled, stop this duplicate submission
                         if (submitButton.disabled) {
                             e.preventDefault();
                             return;
                         }
-                        // Disable the button immediately on the first click
                         submitButton.disabled = true;
                         submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...`;
                     }
@@ -354,7 +340,7 @@
     </div>
 </div>
 
-
+<!-- To delete HCP, CC, Patient -->
 <div class="modal fade" id="SecondconfirmDelete" tabindex="-1" aria-labelledby="confirmLabel" aria-hidden="true"
     data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
@@ -578,15 +564,16 @@
         <div class="modal-content p-3">
 
             <div class="modal-header">
-                <h5 class="modal-title">Manage Medicine Categories</h5>
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Manage Medicine Categories
+                </h5>
                 <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="d-flex mb-3 gap-2">
-                    <input type="text" id="newCategoryName" class="form-control" placeholder="Enter category name">
+                    <input type="text" id="newCategoryName" class="form-control" placeholder="Enter new category name">
 
-                    <button class="btn btn-primary" onclick="addCategory()">Add</button>
+                    <button class="btn text-light" style="background-color: #2b353bf5;" onclick="addCategory()">Add</button>
                 </div>
                 <span id="categoryError" class="text-danger mb-1 d-none"></span>
 

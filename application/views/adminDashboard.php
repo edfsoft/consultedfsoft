@@ -3799,10 +3799,11 @@
                                                                                                     class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
                                                                                                     <i class="bi bi-plus-square-fill"></i> New</a>
                                                                                             </div>
-                                                                                            <div class="mt-2">
-                                                                                                <a href="#" role="button" onclick="openCategoryModal()" style="background-color: #198754;"
-                                                                                                    class="text-light border-0 rounded mx-sm-2 p-2 mb-3">
-                                                                                                    <i class="bi bi-tags-fill"></i> Add Category
+                                                                                            <div class="my-2">
+                                                                                                <a href="#" role="button" onclick="openCategoryModal()" class="text-dark fw-medium fs-5">
+                                                                                                    Category :
+                                                                                                    <button class="btn text-light border-0 rounded"
+                                                                                                        style="background-color: #198754;">Manage</button>
                                                                                                 </a>
                                                                                             </div>
                                                                                         </div>

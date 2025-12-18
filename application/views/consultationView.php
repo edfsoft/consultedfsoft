@@ -406,7 +406,9 @@
                                         </div>
                                         <?php
                                         usort($consultations, function ($a, $b) {
-                                            return strtotime($b['created_at']) - strtotime($a['created_at']);
+                                            $dateTimeA = strtotime($a['consult_date'] . ' ' . $a['consult_time']);
+                                            $dateTimeB = strtotime($b['consult_date'] . ' ' . $b['consult_time']);
+                                            return $dateTimeB <=> $dateTimeA; // latest first
                                         });
                                         ?>
                                         <?php foreach ($consultations as $index => $consultation): ?>

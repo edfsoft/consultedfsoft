@@ -52,6 +52,7 @@ class ConsultModel extends CI_Model
             'consultation_id' => $post['consultationId'],
             'weight_kg' => $post['patientWeight'],
             'height_cm' => $post['patientHeight'],
+            'body_mass_index' => $post['bodyMassIndex'],
             'systolic_bp' => $post['patientSystolicBp'],
             'diastolic_bp' => $post['patientDiastolicBp'],
             'HbA1c_percent' => $post['patientsHbA1c'],
@@ -70,6 +71,7 @@ class ConsultModel extends CI_Model
         $vitalData = array(
             'weight_kg' => $post['patientWeight'],
             'height_cm' => $post['patientHeight'],
+            'body_mass_index' => $post['bodyMassIndex'],
             'systolic_bp' => $post['patientSystolicBp'],
             'diastolic_bp' => $post['patientDiastolicBp'],
             'HbA1c_percent' => $post['patientsHbA1c'],

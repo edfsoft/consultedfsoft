@@ -464,6 +464,7 @@
                                                                 $vitals = [
                                                                     'Height' => !empty($consultation['vitals']['height_cm']) ? $consultation['vitals']['height_cm'] . ' cm' : null,
                                                                     'Weight' => !empty($consultation['vitals']['weight_kg']) ? $consultation['vitals']['weight_kg'] . ' kg' : null,
+                                                                    'BMI' => !empty($consultation['vitals']['body_mass_index']) ? $consultation['vitals']['body_mass_index'] . ' kg/m²' : null,
                                                                     'BP' => (!empty($consultation['vitals']['systolic_bp']) && !empty($consultation['vitals']['diastolic_bp'])) ? $consultation['vitals']['systolic_bp'] . '/' . $consultation['vitals']['diastolic_bp'] . ' mmHg' : null,
                                                                     'HbA1c' => !empty($consultation['vitals']['HbA1c_percent']) ? $consultation['vitals']['HbA1c_percent'] . ' %' : null,
                                                                     'Fasting Blood Sugar' => !empty($consultation['vitals']['blood_sugar_fasting']) ? $consultation['vitals']['blood_sugar_fasting'] . ' mg/dL' : null,
@@ -1187,7 +1188,7 @@
 
                                     <div class="p-3">
                                         <div class="d-md-flex mb-3">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label class="form-label fieldLabel" for="patientHeight">Height</label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="patientHeight"
@@ -1195,7 +1196,7 @@
                                                     <p class="mx-2 my-2">Cm</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
+                                            <div class="col-md-3 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientWeight">Weight </label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="patientWeight"
@@ -1203,18 +1204,19 @@
                                                     <p class="mx-2 my-2">Kg</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientWeight">Systolic BP
+                                            <div class="col-md-3 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientSystolicBp">Systolic BP
                                                 </label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle"
                                                         id="patientSystolicBp" name="patientSystolicBp"
                                                         placeholder="E.g. 120" step="0.1" min="0">
+                                                    <p class="mx-2 my-2">mmHg</p>
                                                 </div>
                                                 <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                             </div>
-                                            <div class="col-md-2 mt-3 mt-md-0">
-                                                <label class="form-label fieldLabel" for="patientHeight">Diastolic
+                                            <div class="col-md-3 mt-3 mt-md-0">
+                                                <label class="form-label fieldLabel" for="patientDiastolicBp">Diastolic
                                                     BP</label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle"
@@ -1226,7 +1228,16 @@
                                             </div>
                                         </div>
                                         <div class="d-md-flex mb-3">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
+                                                <label class="form-label fieldLabel" for="bodyMassIndex">BMI
+                                                </label>
+                                                <div class="d-flex me-4">
+                                                    <input type="number" class="form-control fieldStyle" id="bodyMassIndex"
+                                                        name="bodyMassIndex" step="0.1" min="0" placeholder="E.g. 27.4">
+                                                    <p class="mx-2 my-2">kg/m<sup>2</sup></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                                     (Fasting)</label>
                                                 <div class="d-flex me-4">
@@ -1235,7 +1246,7 @@
                                                     <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
+                                            <div class="col-md-3 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP)
                                                 </label>
                                                 <div class="d-flex me-4">
@@ -1244,7 +1255,7 @@
                                                     <p class="mx-2 my-2">mg/dL</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
+                                            <div class="col-md-3 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar
                                                     (Random)
                                                 </label>
@@ -1256,7 +1267,7 @@
                                             </div>
                                         </div>
                                         <div class="d-md-flex mb-3">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
                                                 <div class="d-flex me-4">
                                                     <input type="number" class="form-control fieldStyle" id="patientSpo2"
@@ -1264,7 +1275,7 @@
                                                     <p class="mx-2 my-2">%</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 mt-3 mt-md-0">
+                                            <div class="col-md-3 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
                                                 </label>
                                                 <div class="d-flex me-4">
@@ -1275,7 +1286,7 @@
                                                 </div>
                                                 <div id="patientPulseRate_err" class="text-danger pt-1"></div>
                                             </div>
-                                            <div class="col-md-2 mt-3 mt-md-0">
+                                            <div class="col-md-3 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                                 </label>
                                                 <div class="d-flex me-4">
@@ -1285,7 +1296,7 @@
                                                     <p class="mx-2 my-2">°F</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2 mt-3 mt-md-0">
+                                            <div class="col-md-3 mt-3 mt-md-0">
                                                 <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
                                                 <div class="d-flex">
                                                     <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
@@ -1763,7 +1774,7 @@
 
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label class="form-label fieldLabel" for="patientHeight">Height</label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientHeight"
@@ -1772,7 +1783,7 @@
                                             <p class="mx-2 my-2">Cm</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientWeight">Weight </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientWeight"
@@ -1781,18 +1792,19 @@
                                             <p class="mx-2 my-2">Kg</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientWeight">Systolic BP
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSystolicBp">Systolic BP
                                         </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
                                                 name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
                                                 value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
                                         </div>
                                         <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientDiastolicBp">Diastolic BP</label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
                                                 name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
@@ -1803,7 +1815,18 @@
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
+                                        <label class="form-label fieldLabel" for="bodyMassIndex">BMI
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="bodyMassIndex"
+                                                name="bodyMassIndex" step="0.1" min="0"
+                                                value="<?= isset($vitals['body_mass_index']) ? $vitals['body_mass_index'] : '' ?>"
+                                                placeholder="E.g. 27.4">
+                                            <p class="mx-2 my-2">kg/m<sup>2</sup></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
@@ -1814,7 +1837,7 @@
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="ppBsugar"
@@ -1823,7 +1846,7 @@
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
                                         </label>
                                         <div class="d-flex">
@@ -1833,11 +1856,11 @@
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
-
+                                    <div class="col-md-3">
                                         <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientSpo2"
@@ -1846,7 +1869,7 @@
                                             <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
                                         </label>
                                         <div class="d-flex me-4">
@@ -1857,7 +1880,7 @@
                                         </div>
                                         <div id="patientPulseRate_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                         </label>
                                         <div class="d-flex me-4">
@@ -1868,7 +1891,7 @@
                                             <p class="mx-2 my-2">°F</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
@@ -2336,7 +2359,7 @@
                             <p class="mb-2 mt-0 pt-0 fs-5 fw-semibold">Vitals:</p>
                             <div class="p-3">
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label class="form-label fieldLabel" for="patientHeight">Height</label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientHeight"
@@ -2345,7 +2368,7 @@
                                             <p class="mx-2 my-2">Cm</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientWeight">Weight </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientWeight"
@@ -2354,18 +2377,19 @@
                                             <p class="mx-2 my-2">Kg</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientWeight">Systolic BP
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientSystolicBp">Systolic BP
                                         </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientSystolicBp"
                                                 name="patientSystolicBp" placeholder="E.g. 120" step="0.1" min="0"
                                                 value="<?= isset($vitals['systolic_bp']) ? $vitals['systolic_bp'] : '' ?>">
+                                            <p class="mx-2 my-2">mmHg</p>
                                         </div>
                                         <div id="patientSystolicBp_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
-                                        <label class="form-label fieldLabel" for="patientHeight">Diastolic BP</label>
+                                    <div class="col-md-3 mt-3 mt-md-0">
+                                        <label class="form-label fieldLabel" for="patientDiastolicBp">Diastolic BP</label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientDiastolicBp"
                                                 name="patientDiastolicBp" placeholder="E.g. 80" step="0.1" min="0"
@@ -2376,7 +2400,18 @@
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
+                                        <label class="form-label fieldLabel" for="bodyMassIndex">BMI
+                                        </label>
+                                        <div class="d-flex me-4">
+                                            <input type="number" class="form-control fieldStyle" id="bodyMassIndex"
+                                                name="bodyMassIndex" step="0.1" min="0"
+                                                value="<?= isset($vitals['body_mass_index']) ? $vitals['body_mass_index'] : '' ?>"
+                                                placeholder="E.g. 27.4">
+                                            <p class="mx-2 my-2">kg/m<sup>2</sup></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="fastingBsugar">Blood Sugar
                                             (Fasting)</label>
                                         <div class="d-flex me-4">
@@ -2387,7 +2422,7 @@
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientSpo2">Blood Sugar (PP) </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="ppBsugar"
@@ -2396,7 +2431,7 @@
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="randomBsugar">Blood Sugar (Random)
                                         </label>
                                         <div class="d-flex">
@@ -2406,10 +2441,11 @@
                                                 placeholder="E.g. 125">
                                             <p class="mx-2 my-2">mg/dL</p>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="d-md-flex mb-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label class="form-label fieldLabel" for="patientSpo2">SPO2 </label>
                                         <div class="d-flex me-4">
                                             <input type="number" class="form-control fieldStyle" id="patientSpo2"
@@ -2418,7 +2454,7 @@
                                             <p class="mx-2 my-2">%</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientPulseRate">Pulse Rate
                                         </label>
                                         <div class="d-flex me-4">
@@ -2429,7 +2465,7 @@
                                         </div>
                                         <div id="patientPulseRate_err" class="text-danger pt-1"></div>
                                     </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientTemperature">Temperature
                                         </label>
                                         <div class="d-flex me-4">
@@ -2440,7 +2476,7 @@
                                             <p class="mx-2 my-2">°F</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 mt-3 mt-md-0">
+                                    <div class="col-md-3 mt-3 mt-md-0">
                                         <label class="form-label fieldLabel" for="patientsHbA1c">HbA1c</label>
                                         <div class="d-flex">
                                             <input type="number" class="form-control fieldStyle" id="patientsHbA1c"
@@ -3399,7 +3435,8 @@
                 "<?= isset($consultation['consult_date']) ? $consultation['consult_date'] : '' ?>" : "";
             const phpTime = method !== "consultDashboard" ?
                 "<?= isset($consultation['consult_time']) ? $consultation['consult_time'] : '' ?>" : "";
-
+            console.log("PHP Date:", phpDate);
+            console.log("PHP Time:", phpTime);
             for (let h = 0; h < 24; h++) {
                 for (let m = 0; m < 60; m += 10) {
                     const hours12 = h % 12 === 0 ? 12 : h % 12;
@@ -3420,7 +3457,8 @@
             dateInput.value = phpDate || today;
 
             if (phpTime) {
-                timeSelect.value = phpTime;
+                const normalizedTime = phpTime.substring(0, 5);
+                timeSelect.value = normalizedTime;
             } else {
                 const currentMinutes = now.getMinutes();
                 const roundedMinutes = Math.round(currentMinutes / 10) * 10;
@@ -3435,6 +3473,31 @@
                     timeSelect.value = currentValue;
                 }
             }
+        });
+    </script>
+
+    <!-- BMI calculate script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const heightInput = document.getElementById("patientHeight");
+            const weightInput = document.getElementById("patientWeight");
+            const bmiInput = document.getElementById("bodyMassIndex");
+
+            function calculateBMI() {
+                const heightCm = parseFloat(heightInput.value);
+                const weightKg = parseFloat(weightInput.value);
+
+                if (heightCm > 0 && weightKg > 0) {
+                    const heightMeters = heightCm / 100;
+                    const bmi = weightKg / (heightMeters * heightMeters);
+                    bmiInput.value = bmi.toFixed(1); // 1 decimal place
+                } else {
+                    bmiInput.value = "";
+                }
+            }
+
+            heightInput.addEventListener("input", calculateBMI);
+            weightInput.addEventListener("input", calculateBMI);
         });
     </script>
 

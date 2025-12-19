@@ -513,6 +513,32 @@ class Edfadmin extends CI_Controller
         echo json_encode(["status" => $deleted]);
     }
 
+    public function getDosageUnits()
+    {
+        $result = $this->AdminModel->getDosageUnits();
+        echo json_encode($result);
+    }
+
+    public function addDosageUnit()
+    {
+        $name = trim($this->input->post('name'));
+
+        if ($name == "") {
+            echo json_encode(["status" => false, "msg" => "Unit cannot be empty"]);
+            return;
+        }
+
+        $insert = $this->AdminModel->insertDosageUnit($name);
+        echo json_encode(["status" => $insert]);
+    }
+
+    public function deleteDosageUnit()
+    {
+        $id = $this->input->post('id');
+        $deleted = $this->AdminModel->deleteDosageUnit($id);
+        echo json_encode(["status" => $deleted]);
+    }
+
     //Universal Add
     public function addListItem($type)
     {
@@ -648,7 +674,6 @@ class Edfadmin extends CI_Controller
         $this->session->unset_userdata('adminMobileNum');
         redirect('Edfadmin/');
     }
-
 
 
 }

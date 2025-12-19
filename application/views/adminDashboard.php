@@ -3799,9 +3799,15 @@
                                                                                                     class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
                                                                                                     <i class="bi bi-plus-square-fill"></i> New</a>
                                                                                             </div>
-                                                                                            <div class="my-2">
+                                                                                            <div class="my-2 d-flex justify-content-between align-items-center">
                                                                                                 <a href="#" role="button" onclick="openCategoryModal()" class="text-dark fw-medium fs-5">
                                                                                                     Category :
+                                                                                                    <button class="btn text-light border-0 rounded"
+                                                                                                        style="background-color: #198754;">Manage</button>
+                                                                                                </a>
+
+                                                                                                <a href="#" role="button" onclick="openDosageUnitModal()" class="text-dark fw-medium fs-5">
+                                                                                                    Dosage Unit :
                                                                                                     <button class="btn text-light border-0 rounded"
                                                                                                         style="background-color: #198754;">Manage</button>
                                                                                                 </a>
@@ -3988,8 +3994,8 @@
                                                                                     displayMedicinesPage(initialPageMedicines);
                                                                                 </script>
 
+                                                                                <!-- Add and Edit Medicines Modal Script -->
                                                                                 <script>
-                                                                                    //1. ADD MODAL FUNCTION 
                                                                                     function openAddMedicineModal() {
                                                                                         const form = document.getElementById('medicineForm');
                                                                                         const submitButton = document.getElementById('medicineSubmit');
@@ -4097,7 +4103,7 @@
                                                                                     });
                                                                                 </script>
 
-                                                                                <!-- Handle Add Category Function -->
+                                                                                <!-- Handle Manage Category Function -->
                                                                                 <script>
                                                                                     const baseURL = "<?php echo base_url(); ?>";
 
@@ -4206,12 +4212,162 @@
                                                                                     }
                                                                                 </script>
 
+                                                                                <!-- Handle Manage Dosage Unit Function -->
+                                                                                <script>
+                                                                                    window.BASE_URL = "<?php echo base_url(); ?>";
 
+                                                                                    let selectedDosageUnitId = null;
+
+                                                                                    function openDosageUnitModal() {
+                                                                                        loadDosageUnits();
+                                                                                        const modal = new bootstrap.Modal(
+                                                                                            document.getElementById("dosageUnitModal")
+                                                                                        );
+                                                                                        modal.show();
+                                                                                    }
+                                                                                    function loadDosageUnits() {
+                                                                                        fetch(BASE_URL + "Edfadmin/getDosageUnits")
+                                                                                            .then(res => res.json())
+                                                                                            .then(data => {
+                                                                                                const ul = document.getElementById("dosageUnitList");
+                                                                                                ul.innerHTML = "";
+
+                                                                                                data.forEach(unit => {
+                                                                                                    ul.innerHTML += `
+                                                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                                            ${unit.units_name}
+                                                                                                            <button class="btn btn-danger btn-sm"
+                                                                                                                onclick="openDosageDeleteModal(${unit.id}, '${unit.units_name}')">
+                                                                                                                <i class="bi bi-trash"></i>
+                                                                                                            </button>
+                                                                                                        </li>`;
+                                                                                                });
+                                                                                            });
+                                                                                    }
+
+                                                                                    function openDosageDeleteModal(id, name) {
+                                                                                        selectedDosageUnitId = id;
+                                                                                        const dosageModal = bootstrap.Modal.getInstance(
+                                                                                            document.getElementById("dosageUnitModal")
+                                                                                        );
+                                                                                        if (dosageModal) dosageModal.hide();
+
+                                                                                        document.getElementById("deleteItemName").innerText = name;
+                                                                                        document.getElementById("deleteConfirmButton").onclick = function () {
+                                                                                            confirmDeleteDosageUnit();
+                                                                                        };
+
+                                                                                        const deleteModal = new bootstrap.Modal(
+                                                                                            document.getElementById("confirmDelete")
+                                                                                        );
+                                                                                        deleteModal.show();
+                                                                                    }
+
+                                                                                    function confirmDeleteDosageUnit() {
+                                                                                        if (!selectedDosageUnitId) return;
+
+                                                                                        fetch(BASE_URL + "Edfadmin/deleteDosageUnit", {
+                                                                                            method: "POST",
+                                                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                                                            body: "id=" + selectedDosageUnitId
+                                                                                        })
+                                                                                            .then(res => res.json())
+                                                                                            .then(resp => {
+                                                                                                if (resp.status) {
+                                                                                                    bootstrap.Modal.getInstance(
+                                                                                                        document.getElementById("confirmDelete")
+                                                                                                    ).hide();
+
+                                                                                                    selectedDosageUnitId = null;
+                                                                                                    loadDosageUnits();
+
+                                                                                                    new bootstrap.Modal(
+                                                                                                        document.getElementById("dosageUnitModal")
+                                                                                                    ).show();
+                                                                                                }
+                                                                                            });
+                                                                                    }
+
+                                                                                    function addDosageUnit() {
+                                                                                        let name = document.getElementById("newUnitName").value.trim();
+                                                                                        let error = document.getElementById("dosageUnitError");
+
+                                                                                        if (name === "") {
+                                                                                            error.innerText = "Please enter dosage unit";
+                                                                                            error.classList.remove("d-none");
+                                                                                            return;
+                                                                                        }
+
+                                                                                        fetch(baseURL + "Edfadmin/addDosageUnit", {
+                                                                                            method: "POST",
+                                                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                                                            body: "name=" + encodeURIComponent(name)
+                                                                                        })
+                                                                                            .then(res => res.json())
+                                                                                            .then(resp => {
+                                                                                                if (resp.status) {
+                                                                                                    document.getElementById("newUnitName").value = "";
+                                                                                                    error.classList.add("d-none");
+                                                                                                    loadDosageUnits();
+                                                                                                } else {
+                                                                                                    error.innerText = resp.msg;
+                                                                                                    error.classList.remove("d-none");
+                                                                                                }
+                                                                                            });
+                                                                                    }
+                                                                                </script>
 
         <?php } ?>
 
         <!-- All modal files -->
         <?php include 'adminModals.php'; ?>
+
+        <!-- Patient Attachment Display Dashboard Modal -->
+        <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
+                            id="dashboardPreviewModalLabel">
+                            Attachment Preview in Dashboard
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body text-center position-relative p-0">
+                        <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
+                            style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
+                            <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out"
+                                disabled><b style="font-size:1.2rem;">-</b></button>
+                            <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In"
+                                disabled><b style="font-size:1.2rem;">+</b></button>
+                            <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
+                                    class="bi bi-download"></i></button>
+                        </div>
+
+                        <button id="prevAttachment"
+                            class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
+                            style="font-size:1.5rem;" disabled><b>&lt;</b></button>
+                        <button id="nextAttachment"
+                            class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
+                            style="font-size:1.5rem;" disabled><b>&gt;</b></button>
+
+                        <div class="preview-area">
+                            <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
+                                style="transform-origin:top left;transition:transform .2s ease-out;">
+                            <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;"
+                                frameborder="0"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary text-light"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main>
 
@@ -4245,7 +4401,6 @@
             document.getElementById('medicines').style.color = "white";
         <?php } ?>
     </script>
-
 
     <!-- Script to display patient attachments in modal -->
     <script>
@@ -4439,51 +4594,6 @@
         });
     </script>
 
-    <!-- Patient Attachment Display Dashboard Modal -->
-    <div class="modal fade" id="dashboardPreviewModal" tabindex="-1" aria-labelledby="dashboardPreviewModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                        id="dashboardPreviewModalLabel">
-                        Attachment Preview in Dashboard
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body text-center position-relative p-0">
-                    <div id="attachment-toolbar" class="d-flex justify-content-center align-items-center mb-1 mt-0"
-                        style="height:43px;width:100%;background:#cccecfff;border-radius:5px;display:none;">
-                        <button id="zoomOutBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom Out" disabled><b
-                                style="font-size:1.2rem;">-</b></button>
-                        <button id="zoomInBtn" class="btn btn-dark btn-sm mx-1 text-light" title="Zoom In" disabled><b
-                                style="font-size:1.2rem;">+</b></button>
-                        <button id="downloadAttachmentBtn" class="btn btn-secondary ms-3"><i
-                                class="bi bi-download"></i></button>
-                    </div>
-
-                    <button id="prevAttachment"
-                        class="btn btn-outline-secondary position-absolute start-0 top-50 translate-middle-y"
-                        style="font-size:1.5rem;" disabled><b>&lt;</b></button>
-                    <button id="nextAttachment"
-                        class="btn btn-outline-secondary position-absolute end-0 top-50 translate-middle-y"
-                        style="font-size:1.5rem;" disabled><b>&gt;</b></button>
-
-                    <div class="preview-area">
-                        <img id="attachmentImage" src="" alt="Attachment" class="img-fluid d-none"
-                            style="transform-origin:top left;transition:transform .2s ease-out;">
-                        <iframe id="attachmentPDF" src="" class="w-100" style="height:100%;border:none;"
-                            frameborder="0"></iframe>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary text-light" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!-- Common Script -->

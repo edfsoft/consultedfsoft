@@ -1,48 +1,3 @@
-<!-- Add and Edit medicine modal -->
-<div class="modal fade" id="medicineModal" tabindex="-1" role="dialog" aria-labelledby="medicineModalLabel"
-    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="medicineModalLabel" style="font-family: Poppins, sans-serif;">Add
-                    New Medicine</h5>
-                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="medicineForm" enctype="multipart/form-data" method="POST">
-                    <input type="hidden" name="medicineId" id="medicineId" value="">
-
-                    <label for="medicineName" class="form-label pb-2">Medicine Name <span
-                            class="text-danger">*</span></label>
-                    <input type="text" name="medicineName" id="medicineName" class="form-control"
-                        placeholder="E.g. Dolo 650" required>
-
-                    <label for="medicineComposition" class="form-label pb-2 mt-2">Composition</label>
-                    <input type="text" name="medicineComposition" id="medicineComposition" class="form-control"
-                        placeholder="E.g. Paracetamol">
-
-                    <label for="medicineCategory" class="form-label pb-2 mt-2">Category</label>
-                    <select name="medicineCategory" id="medicineCategory" class="form-select">
-                        <option value="">Select Category</option>
-                        <?php if (!empty($medicineCategories)) { ?>
-                            <?php foreach ($medicineCategories as $cat) { ?>
-                                <option value="<?php echo htmlspecialchars($cat['category']); ?>">
-                                    <?php echo htmlspecialchars($cat['category']); ?>
-                                </option>
-                            <?php } ?>
-                        <?php } ?>
-                    </select>
-
-                    <button type="submit" id="medicineSubmit" class="btn text-light float-end mt-3"
-                        style="background-color: #2b353bf5;">Add</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- UNIVERSAL ADD MODAL -->
 <div class="modal fade" id="universalAddModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static"
     data-bs-keyboard="false">
@@ -298,7 +253,6 @@
         </div>
     </div>
 </div>
-
 <!-- Universal Delete confirmation Script  -->
 <script>
     document.addEventListener("click", (event) => {
@@ -317,24 +271,24 @@
     });
 </script>
 
-<!-- Log out confirmation -->
-<div class="modal fade" id="confirmLogout" tabindex="-1" aria-labelledby="confirmLogoutLabel" aria-hidden="true"
+<!-- Duplicate signup popup Model - CC and HCP -->
+<div class="modal fade" id="duplicateCheckModal" tabindex="-1" aria-labelledby="duplicateCheckLabel" aria-hidden="true"
     data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">
-                    Confirm Logout</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="duplicateCheckLabel">
+                    Duplicate Entry
+                </h5>
             </div>
-            <div class="modal-body">
-                <p>Are you sure you want to log out?</p>
+
+            <div class="modal-body" id="duplicateCheckBody">
             </div>
+
             <div class="modal-footer d-flex justify-content-end">
-                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                <a href="<?php echo base_url() . "Edfadmin/logout" ?>">
-                    <button class="btn text-light" style="background-color: #2b353bf5;">Logout</button>
-                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    OK
+                </button>
             </div>
         </div>
     </div>
@@ -361,7 +315,6 @@
         </div>
     </div>
 </div>
-
 <!-- script to delete hcp, cc, patient -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -401,49 +354,119 @@
     });
 </script>
 
-<!-- Not in use currently -->
-<!--Display Message Popup Screen -->
-<!-- <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <?php if ($this->session->flashdata('successMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
-                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
-                        </div>
-                    <?php }
-                    if ($this->session->flashdata('errorMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
-                        </div>
-                    <?php } ?>
-                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
-                            data-bs-dismiss="modal">Close</button> </div>
+<!-- Add and Edit medicine modal -->
+<div class="modal fade" id="medicineModal" tabindex="-1" role="dialog" aria-labelledby="medicineModalLabel"
+    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" id="medicineModalLabel" style="font-family: Poppins, sans-serif;">Add
+                    New Medicine</h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="medicineForm" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="medicineId" id="medicineId" value="">
+
+                    <label for="medicineName" class="form-label pb-2">Medicine Name <span
+                            class="text-danger">*</span></label>
+                    <input type="text" name="medicineName" id="medicineName" class="form-control"
+                        placeholder="E.g. Dolo 650" required>
+
+                    <label for="medicineComposition" class="form-label pb-2 mt-2">Composition</label>
+                    <input type="text" name="medicineComposition" id="medicineComposition" class="form-control"
+                        placeholder="E.g. Paracetamol">
+
+                    <label for="medicineCategory" class="form-label pb-2 mt-2">Category</label>
+                    <select name="medicineCategory" id="medicineCategory" class="form-select">
+                        <option value="">Select Category</option>
+                        <?php if (!empty($medicineCategories)) { ?>
+                            <?php foreach ($medicineCategories as $cat) { ?>
+                                <option value="<?php echo htmlspecialchars($cat['category']); ?>">
+                                    <?php echo htmlspecialchars($cat['category']); ?>
+                                </option>
+                            <?php } ?>
+                        <?php } ?>
+                    </select>
+
+                    <button type="submit" id="medicineSubmit" class="btn text-light float-end mt-3"
+                        style="background-color: #2b353bf5;">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manage Medicine Category modal -->
+<div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content p-3">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Manage Medicine Categories
+                </h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex mb-3 gap-2">
+                    <input type="text" id="newCategoryName" class="form-control" placeholder="Enter new category name">
+
+                    <button class="btn text-light" style="background-color: #2b353bf5;"
+                        onclick="addCategory()">Add</button>
+                </div>
+                <span id="categoryError" class="text-danger mb-1 d-none"></span>
+
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <ul id="categoryList" class="list-group"></ul>
                 </div>
             </div>
-        </div> -->
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Display Message Popup Screen Script -->
-<!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var messagePopup = document.getElementById('display_message_popup');
+<!-- Manage Dosage Unit Modal -->
+<div class="modal fade" id="dosageUnitModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content p-3">
 
-            if (messagePopup) {
-                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
-                    var displayMessage = new bootstrap.Modal(messagePopup);
-                    displayMessage.show();
-                <?php } ?>
-            }
-        });
-    </script> -->
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">
+                    Manage Dosage Units
+                </h5>
+                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="d-flex mb-3 gap-2">
+                    <input type="text" id="newUnitName" class="form-control"
+                        placeholder="Enter dosage unit (mg, ml...)">
+
+                    <button class="btn text-light" style="background-color: #090a0af5;"
+                        onclick="addDosageUnit()">Add</button>
+                </div>
+
+                <span id="dosageUnitError" class="text-danger mb-1 d-none"></span>
+
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <ul id="dosageUnitList" class="list-group"></ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!-- Movable Add, Edit, Add medicines, Edit Medicines, Category Modals script -->
 <script>
@@ -535,55 +558,69 @@
     }
 </script>
 
-<!-- Duplicate signup popup Model - CC and HCP -->
-<div class="modal fade" id="duplicateCheckModal" tabindex="-1" aria-labelledby="duplicateCheckLabel" aria-hidden="true"
+<!-- Log out confirmation -->
+<div class="modal fade" id="confirmLogout" tabindex="-1" aria-labelledby="confirmLogoutLabel" aria-hidden="true"
     data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="duplicateCheckLabel">
-                    Duplicate Entry
-                </h5>
-            </div>
-
-            <div class="modal-body" id="duplicateCheckBody">
-            </div>
-
-            <div class="modal-footer d-flex justify-content-end">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add Medicine Category modal -->
-<div class="modal fade" id="categoryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content p-3">
-
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Manage Medicine Categories
-                </h5>
-                <button type="button" class="close btn btn-outline-danger" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h5 class="modal-title fw-medium" id="confirmLogoutLabel" style="font-family: Poppins, sans-serif;">
+                    Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="d-flex mb-3 gap-2">
-                    <input type="text" id="newCategoryName" class="form-control" placeholder="Enter new category name">
-
-                    <button class="btn text-light" style="background-color: #2b353bf5;" onclick="addCategory()">Add</button>
-                </div>
-                <span id="categoryError" class="text-danger mb-1 d-none"></span>
-
-                <div style="max-height: 300px; overflow-y: auto;">
-                    <ul id="categoryList" class="list-group"></ul>
-                </div>
+                <p>Are you sure you want to log out?</p>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <a href="<?php echo base_url() . "Edfadmin/logout" ?>">
+                    <button class="btn text-light" style="background-color: #2b353bf5;">Logout</button>
+                </a>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Not in use currently -->
+<!--Display Message Popup Screen -->
+<!-- <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <?php if ($this->session->flashdata('successMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
+                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                        </div>
+                    <?php }
+                    if ($this->session->flashdata('errorMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                        </div>
+                    <?php } ?>
+                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                            data-bs-dismiss="modal">Close</button> </div>
+                </div>
+            </div>
+        </div> -->
+
+<!-- Display Message Popup Screen Script -->
+<!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var messagePopup = document.getElementById('display_message_popup');
+
+            if (messagePopup) {
+                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+                    var displayMessage = new bootstrap.Modal(messagePopup);
+                    displayMessage.show();
+                <?php } ?>
+            }
+        });
+    </script> -->

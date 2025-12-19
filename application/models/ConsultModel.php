@@ -1060,4 +1060,14 @@ class ConsultModel extends CI_Model
             ->result_array();
     }
 
+    public function getDosageUnits()
+    {
+        return $this->db
+            ->select('units_name')
+            ->order_by('units_name', 'ASC')
+            ->get('dosage_units')
+            ->result_array();
+    }
+
+
 }

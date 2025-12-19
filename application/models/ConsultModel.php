@@ -334,7 +334,9 @@ class ConsultModel extends CI_Model
         $this->db->select('*');
         $this->db->from('consultations');
         $this->db->where('patient_id', $patient_id);
-        $this->db->order_by('created_at', 'DESC');
+        // $this->db->order_by('created_at', 'DESC');
+        $this->db->order_by('consult_date', 'DESC');
+        $this->db->order_by('consult_time', 'DESC');
         $consultations = $this->db->get()->result_array();
 
         foreach ($consultations as &$consultation) {
@@ -1047,7 +1049,7 @@ class ConsultModel extends CI_Model
         $this->db->where('id', $id);
         return $this->db->delete('medicines_list');
     }
-    
+
     //Get medicine category
     public function getMedicineCategories()
     {
@@ -1057,5 +1059,15 @@ class ConsultModel extends CI_Model
             ->get('medicines_category')
             ->result_array();
     }
+
+    public function getDosageUnits()
+    {
+        return $this->db
+            ->select('units_name')
+            ->order_by('units_name', 'ASC')
+            ->get('dosage_units')
+            ->result_array();
+    }
+
 
 }

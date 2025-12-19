@@ -186,11 +186,13 @@
                         const fullName = `${patient.firstName || ''} ${patient.lastName || ''}`.trim();
                         const patientId = patient.patientId || '';
                         const mobileNumber = patient.mobileNumber || '';
+                        const alternateMobileNumber = patient.alternateMobile || '';
 
                         const matchesSearch =
                             fullName.toLowerCase().includes(searchTerm) ||
                             patientId.toLowerCase().includes(searchTerm) ||
-                            mobileNumber.includes(searchTerm);
+                            mobileNumber.includes(searchTerm) ||
+                            alternateMobileNumber.includes(searchTerm);
 
                         let matchesGender = true;
                         if (genderFilter !== 'All') {
@@ -1196,6 +1198,13 @@
             } else {
                 btn.innerHTML = 'Show Less <i class="bi bi-chevron-up"></i>';
             }
+        }
+    </script>
+
+    <!-- Go back function for patient edit details page -->
+    <script>
+        function goBack() {
+            window.history.back();
         }
     </script>
 

@@ -440,10 +440,9 @@
                                     <thead>
                                         <tr style="font-weight:700">
                                             <th>S.No</th>
-                                            <th class="text-center">Consult Date</th>
-                                            <th>Patient Name</th>
                                             <th>Patient ID</th>
-                                            <th>Mobile</th>
+                                            <th>Patient Name</th>
+                                            <th>Mobile Number</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -485,10 +484,10 @@
                                     <thead>
                                         <tr style="color: #000; font-weight: 700;">
                                             <th>S.No</th>
-                                            <th style="text-align:center">Last Consult On</th>
-                                            <th>Patient Name</th>
                                             <th style="text-align:top">Patient ID</th>
+                                            <th>Patient Name</th>
                                             <th>Mobile Number</th>
+                                            <th>Last Consult On</th>
                                             <th>Symptoms</th>
                                             <th>Action</th>
                                         </tr>
@@ -571,13 +570,9 @@
 
                             tbody.innerHTML += `
                  <tr>
-                    <td>${i + 1}</td>
-                    <td class="text-center">
-                        ${formatDisplayDate(consultDate)}<br>
-                        ${row.time_12hr}
-                    </td>
-                    <td>${row.patientName}</td>
-                    <td>${row.patientId}</td>
+                    <td>${i + 1}.</td>
+                     <td>${row.patientId}</td>
+                    <td>${row.patientName}</td>                   
                     <td>${row.mobileNumber}</td>
                     <td>
                         <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}"
@@ -666,20 +661,20 @@
                         data.forEach((row, i) => {
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
-                <td>${i + 1}.</td>
-                <td style="text-align:center">
-                    <span class="fw-medium">${formatConsultDate(row.consult_date)}</span>
-                    <br>${row.time_12hr}<br>
-                </td>
-                <td>${row.patientName}</td>
-                <td>${row.patientId}</td>
-                <td>${row.mobileNumber}</td>
-                <td>${row.symptoms || '-'}</td>
-                <td>
-                    <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}" 
-                       class="btn btn-sm btn-secondary text-light"> <i class="bi bi-calendar-check"></i></a>
-                </td>
-             `;
+                                        <td>${i + 1}.</td>
+                                        <td>${row.patientId}</td> 
+                                        <td>${row.patientName}</td>
+                                        <td>${row.mobileNumber}</td>
+                                        <td>
+                                            <span class="fw-medium">${formatConsultDate(row.consult_date)}</span>
+                                            <br>${row.time_12hr}<br>
+                                        </td>
+                                        <td>${row.symptoms || '-'}</td>
+                                        <td>
+                                            <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}" 
+                                            class="btn btn-sm btn-secondary text-light"> <i class="bi bi-calendar-check"></i></a>
+                                        </td>
+                                           `;
                             tbody.appendChild(tr);
                         });
                     }

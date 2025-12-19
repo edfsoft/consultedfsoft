@@ -152,6 +152,52 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    public function getCompletedConsultByDate()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $date = $this->input->get('date');
+        $consultDate = $date ? date('Y-m-d', strtotime($date)) : date('Y-m-d');
+
+        $data = $this->HcpModel->getCompletedConsultByDate($hcpIdDb, $consultDate);
+
+        foreach ($data as &$row) {
+            $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
+        }
+
+        echo json_encode([
+            'success' => true,
+            'date' => $consultDate,
+            'data' => $data
+        ]);
+    }
+
+    public function getFollowUpConsultations()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $date = $this->input->get('date');
+
+        $data = $this->HcpModel->getFollowUpConsult($hcpIdDb, $date);
+
+        foreach ($data as &$row) {
+            $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
     public function patients()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -543,51 +589,7 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function getFollowUpConsultations()
-    {
-        $hcpIdDb = $this->session->userdata('hcpIdDb');
-        if (!$hcpIdDb) {
-            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-            return;
-        }
 
-        $date = $this->input->get('date');
-
-        $data = $this->HcpModel->getFollowUpConsult($hcpIdDb, $date);
-
-        foreach ($data as &$row) {
-            $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
-        }
-
-        echo json_encode([
-            'success' => true,
-            'data' => $data
-        ]);
-    }
-
-    public function getCompletedConsultByDate()
-{
-    $hcpIdDb = $this->session->userdata('hcpIdDb');
-    if (!$hcpIdDb) {
-        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-        return;
-    }
-
-    $date = $this->input->get('date');
-    $consultDate = $date ? date('Y-m-d', strtotime($date)) : date('Y-m-d');
-
-    $data = $this->HcpModel->getCompletedConsultByDate($hcpIdDb, $consultDate);
-
-    foreach ($data as &$row) {
-        $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
-    }
-
-    echo json_encode([
-        'success' => true,
-        'date' => $consultDate,
-        'data' => $data
-    ]);
-}
 
 
 

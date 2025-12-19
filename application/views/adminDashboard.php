@@ -3799,9 +3799,15 @@
                                                                                                     class="text-light border-0 rounded mx-sm-0 p-2 mb-3">
                                                                                                     <i class="bi bi-plus-square-fill"></i> New</a>
                                                                                             </div>
-                                                                                            <div class="my-2">
+                                                                                            <div class="my-2 d-flex justify-content-between align-items-center">
                                                                                                 <a href="#" role="button" onclick="openCategoryModal()" class="text-dark fw-medium fs-5">
                                                                                                     Category :
+                                                                                                    <button class="btn text-light border-0 rounded"
+                                                                                                        style="background-color: #198754;">Manage</button>
+                                                                                                </a>
+
+                                                                                                <a href="#" role="button" onclick="openDosageUnitModal()" class="text-dark fw-medium fs-5">
+                                                                                                    Dosage Unit :
                                                                                                     <button class="btn text-light border-0 rounded"
                                                                                                         style="background-color: #198754;">Manage</button>
                                                                                                 </a>
@@ -4205,6 +4211,110 @@
                                                                                             });
                                                                                     }
                                                                                 </script>
+
+                                                                                <script>
+                                                                                    window.BASE_URL = "<?php echo base_url(); ?>";
+
+                                                                                    let selectedDosageUnitId = null;
+
+                                                                                    function openDosageUnitModal() {
+                                                                                        loadDosageUnits();
+                                                                                        const modal = new bootstrap.Modal(
+                                                                                            document.getElementById("dosageUnitModal")
+                                                                                        );
+                                                                                        modal.show();
+                                                                                    }
+                                                                                    function loadDosageUnits() {
+                                                                                        fetch(BASE_URL + "Edfadmin/getDosageUnits")
+                                                                                            .then(res => res.json())
+                                                                                            .then(data => {
+                                                                                                const ul = document.getElementById("dosageUnitList");
+                                                                                                ul.innerHTML = "";
+
+                                                                                                data.forEach(unit => {
+                                                                                                    ul.innerHTML += `
+                                                                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                                            ${unit.units_name}
+                                                                                                            <button class="btn btn-danger btn-sm"
+                                                                                                                onclick="openDosageDeleteModal(${unit.id}, '${unit.units_name}')">
+                                                                                                                <i class="bi bi-trash"></i>
+                                                                                                            </button>
+                                                                                                        </li>`;
+                                                                                                });
+                                                                                            });
+                                                                                    }
+
+                                                                                    function openDosageDeleteModal(id, name) {
+                                                                                        selectedDosageUnitId = id;
+                                                                                        const dosageModal = bootstrap.Modal.getInstance(
+                                                                                            document.getElementById("dosageUnitModal")
+                                                                                        );
+                                                                                        if (dosageModal) dosageModal.hide();
+
+                                                                                        document.getElementById("deleteItemName").innerText = name;
+                                                                                        document.getElementById("deleteConfirmButton").onclick = function () {
+                                                                                            confirmDeleteDosageUnit();
+                                                                                        };
+
+                                                                                        const deleteModal = new bootstrap.Modal(
+                                                                                            document.getElementById("confirmDelete")
+                                                                                        );
+                                                                                        deleteModal.show();
+                                                                                    }
+
+                                                                                    function confirmDeleteDosageUnit() {
+                                                                                        if (!selectedDosageUnitId) return;
+
+                                                                                        fetch(BASE_URL + "Edfadmin/deleteDosageUnit", {
+                                                                                            method: "POST",
+                                                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                                                            body: "id=" + selectedDosageUnitId
+                                                                                        })
+                                                                                        .then(res => res.json())
+                                                                                        .then(resp => {
+                                                                                            if (resp.status) {
+                                                                                                bootstrap.Modal.getInstance(
+                                                                                                    document.getElementById("confirmDelete")
+                                                                                                ).hide();
+
+                                                                                                selectedDosageUnitId = null;
+                                                                                                loadDosageUnits();
+
+                                                                                                new bootstrap.Modal(
+                                                                                                    document.getElementById("dosageUnitModal")
+                                                                                                ).show();
+                                                                                            }
+                                                                                        });
+                                                                                    }
+
+                                                                                    function addDosageUnit() {
+                                                                                        let name = document.getElementById("newUnitName").value.trim();
+                                                                                        let error = document.getElementById("dosageUnitError");
+
+                                                                                        if (name === "") {
+                                                                                            error.innerText = "Please enter dosage unit";
+                                                                                            error.classList.remove("d-none");
+                                                                                            return;
+                                                                                        }
+
+                                                                                        fetch(baseURL + "Edfadmin/addDosageUnit", {
+                                                                                            method: "POST",
+                                                                                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                                                                            body: "name=" + encodeURIComponent(name)
+                                                                                        })
+                                                                                        .then(res => res.json())
+                                                                                        .then(resp => {
+                                                                                            if (resp.status) {
+                                                                                                document.getElementById("newUnitName").value = "";
+                                                                                                error.classList.add("d-none");
+                                                                                                loadDosageUnits();
+                                                                                            } else {
+                                                                                                error.innerText = resp.msg;
+                                                                                                error.classList.remove("d-none");
+                                                                                            }
+                                                                                        });
+                                                                                    }
+                                                                                    </script>
 
 
 

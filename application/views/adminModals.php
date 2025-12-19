@@ -587,3 +587,44 @@
         </div>
     </div>
 </div>
+
+<!-- Manage Dosage Unit Modal -->
+<div class="modal fade" id="dosageUnitModal" tabindex="-1"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content p-3">
+
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">
+                    Manage Dosage Units
+                </h5>
+                <button type="button" class="close btn btn-outline-danger"
+                    data-bs-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="d-flex mb-3 gap-2">
+                    <input type="text" id="newUnitName" class="form-control"
+                        placeholder="Enter dosage unit (mg, ml...)">
+
+                    <button class="btn text-light"
+                        style="background-color: #090a0af5;"
+                        onclick="addDosageUnit()">Add</button>
+                </div>
+
+                <span id="dosageUnitError" class="text-danger mb-1 d-none"></span>
+
+                <div style="max-height: 300px; overflow-y: auto;">
+                    <ul id="dosageUnitList" class="list-group"></ul>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

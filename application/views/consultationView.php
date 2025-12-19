@@ -325,6 +325,17 @@
                 padding: 0 !important;
             }
         }
+
+        #medicinesList span {
+        cursor: grab;
+        }
+        #medicinesList span:active {
+            cursor: grabbing;
+        }
+        .sortable-ghost {
+            opacity: 0.4;
+        }
+
     </style>
 </head>
 
@@ -654,7 +665,10 @@
                                                                                 </td>
                                                                                 <td style="border: 1px solid #000; padding: 6px;">
                                                                                     <?php if (!empty($medicine['medicine_name'])): ?>
-                                                                                        <?php if (!empty($medicine['category'])): ?>
+                                                                                                <?php
+                                                                                                    $category = trim($medicine['category'] ?? '');
+                                                                                                    if ($category !== '' && strtolower($category) !== 'nil'):
+                                                                                                ?>
                                                                                             <small style="font-size:12px;"
                                                                                                 class="text-muted"><?= htmlspecialchars($medicine['category']) ?></small>
                                                                                         <?php endif; ?>
@@ -1004,7 +1018,10 @@
                                                                                                 style="display: flex; flex-direction: column; justify-content: center;">
                                                                                                 <div
                                                                                                     style="display: flex; flex-direction: row; align-items: baseline;">
-                                                                                                    <?php if (!empty($medicine['category'])): ?>
+                                                                                                                <?php
+                                                                                                                    $category = trim($medicine['category'] ?? '');
+                                                                                                                    if ($category !== '' && strtolower($category) !== 'nil'):
+                                                                                                                ?>
                                                                                                         <span
                                                                                                             style="font-size: 10px; color: #555; margin-right: 6px;">
                                                                                                             <?= htmlspecialchars($medicine['category']) ?>
@@ -1016,7 +1033,10 @@
                                                                                                         <?= htmlspecialchars($medicine['medicine_name']) ?>
                                                                                                     </strong>
                                                                                                 </div>
-                                                                                                <?php if (!empty($medicine['composition_name'])): ?>
+                                                                                                        <?php
+                                                                                                            $composition = trim($medicine['composition_name'] ?? '');
+                                                                                                            if ($composition !== '' && strtolower($composition) !== 'nil'):
+                                                                                                        ?>
                                                                                                     <span
                                                                                                         style="font-size: 11px; font-style: italic; color: #444; line-height: 1; margin-top: 2px;">
                                                                                                         <?= htmlspecialchars($medicine['composition_name']) ?>
@@ -3110,11 +3130,13 @@
                                         disabled placeholder="Qty">
                                     <select id="morningUnit" class="form-select w-25" disabled>
                                         <option value=""></option>
-                                        <option value="mg">mg</option>
-                                        <option value="ml">ml</option>
-                                        <option value="units">units</option>
-                                        <option value="drops">drops</option>
-                                        <option value="SACHET">sachet</option>
+                                        <?php if (!empty($dosageUnits)): ?>
+                                            <?php foreach ($dosageUnits as $unit): ?>
+                                                <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                    <?= htmlspecialchars($unit['units_name']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
 
@@ -3125,11 +3147,13 @@
                                         disabled placeholder="Qty">
                                     <select id="afternoonUnit" class="form-select w-25" disabled>
                                         <option value=""></option>
-                                        <option value="mg">mg</option>
-                                        <option value="ml">ml</option>
-                                        <option value="units">units</option>
-                                        <option value="drops">drops</option>
-                                        <option value="SACHET">sachet</option>
+                                        <?php if (!empty($dosageUnits)): ?>
+                                            <?php foreach ($dosageUnits as $unit): ?>
+                                                <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                    <?= htmlspecialchars($unit['units_name']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
 
@@ -3140,11 +3164,13 @@
                                         disabled placeholder="Qty">
                                     <select id="eveningUnit" class="form-select w-25" disabled>
                                         <option value=""></option>
-                                        <option value="mg">mg</option>
-                                        <option value="ml">ml</option>
-                                        <option value="units">units</option>
-                                        <option value="drops">drops</option>
-                                        <option value="SACHET">sachet</option>
+                                        <?php if (!empty($dosageUnits)): ?>
+                                            <?php foreach ($dosageUnits as $unit): ?>
+                                                <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                    <?= htmlspecialchars($unit['units_name']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
 
@@ -3155,11 +3181,13 @@
                                         disabled placeholder="Qty">
                                     <select id="nightUnit" class="form-select w-25" disabled>
                                         <option value=""></option>
-                                        <option value="mg">mg</option>
-                                        <option value="ml">ml</option>
-                                        <option value="units">units</option>
-                                        <option value="drops">drops</option>
-                                        <option value="SACHET">sachet</option>
+                                        <?php if (!empty($dosageUnits)): ?>
+                                            <?php foreach ($dosageUnits as $unit): ?>
+                                                <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                    <?= htmlspecialchars($unit['units_name']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
 
@@ -3465,6 +3493,7 @@
             let selectedSymptoms = [];
             let pendingSymptom = "";
             let editingSymptomTag = null;
+            let pendingMedicineMasterId = null;
 
             const addModalCloseBtns = universalAddModalEl.querySelectorAll('[data-bs-dismiss="modal"]');
             addModalCloseBtns.forEach(btn => {
@@ -6154,6 +6183,9 @@
             let selectedMedicines = [];
             let pendingMedicineName = "";
             let editingMedicineTag = null;
+            let pendingMedicineId = null;
+            let pendingMedicineMasterId = null;
+            
 
             addMedMasterModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
                 btn.addEventListener('click', (e) => { e.preventDefault(); addMedMasterModal.hide(); });
@@ -6166,18 +6198,19 @@
                 if (!medicinesInput) return;
                 const query = medicinesInput.value.trim().toLowerCase();
                 medicinesSuggestionsBox.innerHTML = "";
+                if (addBtn) addBtn.style.display = 'block';
 
                 if (query.length > 0) {
                     if (clearBtn) clearBtn.style.display = 'block';
                 } else {
                     if (clearBtn) clearBtn.style.display = 'none';
-                    if (addBtn) addBtn.style.display = 'none';
+                    //if (addBtn) addBtn.style.display = 'none';
                 }
 
                 const filtered = medicinesData.filter(m => m.medicineName.toLowerCase().includes(query));
 
                 if (filtered.length === 0 && query !== "") {
-                    if (addBtn) addBtn.style.display = 'block';
+                    //if (addBtn) addBtn.style.display = 'block';
                     if (medicinesSuggestionsBox) {
                         medicinesSuggestionsBox.style.display = 'block';
                         const div = document.createElement("div");
@@ -6191,7 +6224,7 @@
                         medicinesSuggestionsBox.appendChild(div);
                     }
                 } else {
-                    if (addBtn) addBtn.style.display = 'none';
+                    //if (addBtn) addBtn.style.display = 'none';
 
                     if (medicinesSuggestionsBox && query !== "") {
                         filtered.forEach(item => {
@@ -6211,6 +6244,7 @@
 
                             spanName.onclick = (e) => {
                                 e.stopPropagation();
+                                pendingMedicineMasterId = item.id;
                                 openMedicineModal(item.medicineName);
                                 clearSearch();
                             };
@@ -6240,6 +6274,8 @@
                             }
 
                             div.onclick = () => {
+                                pendingMedicineMasterId = item.id; // ✅ master id
+                                pendingMedicineId = null;
                                 openMedicineModal(item.medicineName);
                                 clearSearch();
                             };
@@ -6352,7 +6388,8 @@
                             medicinesData.push(newObj);
                             addMedMasterModal.hide();
                             clearSearch();
-                            setTimeout(() => openMedicineModal(name), 300);
+                            pendingMedicineMasterId = newObj.id;
+                            setTimeout(() => openMedicineModal(newObj.medicineName), 300);
                         }
                     } else {
                         alert(data.message || "Failed to save.");
@@ -6400,7 +6437,7 @@
                         const q = medicinesInput.value.trim().toLowerCase();
                         const found = medicinesData.find(m => m.medicineName.toLowerCase() === q);
                         if (found) {
-                            openMedicineModal(found.medicineName);
+                            openMedicineModal(found);
                             clearSearch();
                         } else {
                             openAddMedicineMaster(medicinesInput.value);
@@ -6498,6 +6535,7 @@
                 if (!row) return null;
                 return {
                     id: row.id ?? row.medicine_id ?? "",
+                    medicine_id: row.medicine_id ?? row.id ?? "",
                     consultation_id: row.consultation_id ?? "",
                     medicine_name: row.medicine_name ?? row.medicine ?? row.medicineBrand ?? "",
                     quantity: row.quantity ?? "",
@@ -6510,19 +6548,53 @@
                 };
             }
 
-            window.openMedicineModal = function (name, existing = null, tagEl = null) {
-                pendingMedicineName = name;
+            //New Helper: Centralize "Nil" hiding for display
+            function getCleanDisplay(value, field = 'category') {
+                if (!value || value === 'Nil' || value === 'nil') return ''; // Hide Nil/empty
+                return value; // Show if valid
+            }
+
+            window.openMedicineModal = function (nameOrItem, existing = null, tagEl = null) {
                 editingMedicineTag = tagEl;
 
-                const medData = medicinesData.find(m => m.medicineName === name);
-                medicinesModalTitle.textContent = existing ? `Edit: ${name}` : `Details for: ${name}`;
+                // Fixed: Handle if first arg is item object (e.g., new master)
+                let item = null;
+                if (typeof nameOrItem === 'object' && nameOrItem && nameOrItem.medicineName) {
+                    item = nameOrItem;
+                    pendingMedicineName = item.medicineName;
+                    pendingMedicineMasterId = item.id;
+                } else {
+                    pendingMedicineName = nameOrItem;
+                }
 
+                if (existing && existing.id) {
+                    pendingMedicineId = existing.id; //  consultation row id
+                    pendingMedicineMasterId = existing.medicine_id || pendingMedicineMasterId; // Fallback to passed if any
+                } else {
+                    pendingMedicineId = null;
+                }
+
+                // Find medData: prefer existing overrides, then item, then search
+                let medData = null;
+                if (existing) {
+                    medData = existing; // Use consultation data if editing
+                } else {
+                    medData = item || medicinesData.find(m => m.medicineName === pendingMedicineName);
+                }
+
+                medicinesModalTitle.textContent = existing ? `Edit: ${pendingMedicineName}` : `Details for: ${pendingMedicineName}`;
+
+                //  Fixed: Robustly hide "Nil" using helper (applies to all cases: medData, existing, new)
                 if (medData) {
-                    medicineCompositionText.textContent = medData.compositionName || "";
-                    medicineCategoryText.textContent = medData.category || "";
+                    medicineCompositionText.textContent = getCleanDisplay(medData.compositionName || medData.composition, 'composition');
+                    medicineCategoryText.textContent = getCleanDisplay(medData.category || medData.medicineCategory, 'category');
                 } else if (existing) {
-                    medicineCompositionText.textContent = existing.composition || "";
-                    medicineCategoryText.textContent = existing.category || "";
+                    medicineCompositionText.textContent = getCleanDisplay(existing.composition, 'composition');
+                    medicineCategoryText.textContent = getCleanDisplay(existing.category, 'category');
+                } else {
+                    // Default empty for truly new
+                    medicineCompositionText.textContent = "";
+                    medicineCategoryText.textContent = "";
                 }
 
                 medicineQuantity.value = "";
@@ -6548,7 +6620,6 @@
                 medicinesModal.show();
                 setTimeout(() => medicineQuantity.focus(), 500);
             };
-
             window.saveMedicineModal = function () {
                 const quantity = (medicineQuantity.value || "").trim();
                 const notes = (medicineNotes.value || "").trim();
@@ -6557,13 +6628,24 @@
 
                 if (!pendingMedicineName) return;
 
-                const existingIndex = selectedMedicines.findIndex(m => m.medicine_name === pendingMedicineName);
+                const existingIndex = selectedMedicines.findIndex(
+                    m => String(m.id) === String(pendingMedicineId)
+                    );
+
+                console.log('EDIT', {
+                    pendingMedicineName,
+                    pendingMedicineId,
+                    pendingMedicineMasterId,
+                    existingIndex
+                });
+
                 const medData = medicinesData.find(m => m.medicineName === pendingMedicineName);
                 const composition = medData?.compositionName || "";
                 const category = medData?.category || "";
 
                 const data = {
-                    id: (existingIndex !== -1 && selectedMedicines[existingIndex]?.id) ? selectedMedicines[existingIndex].id : "new",
+                    id: pendingMedicineId || `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,         // consultation row id
+                    medicine_id: pendingMedicineMasterId,    // master medicine id (required for DB)
                     medicine_name: pendingMedicineName,
                     quantity,
                     timing,
@@ -6577,7 +6659,10 @@
                     if (existingIndex !== -1) {
                         if (selectedMedicines[existingIndex].consultation_id)
                             data.consultation_id = selectedMedicines[existingIndex].consultation_id;
-                        selectedMedicines[existingIndex] = data;
+                        selectedMedicines[existingIndex] = {
+                            ...selectedMedicines[existingIndex],
+                            ...data
+                        };
                     }
                     updateMedicineTagDisplay(editingMedicineTag, data);
                     editingMedicineTag.setAttribute("data-id", data.id);
@@ -6587,16 +6672,28 @@
                 }
                 updateMedicinesHiddenInput();
                 medicinesModal.hide();
+                pendingMedicineId = null;
+                pendingMedicineMasterId = null;
+                editingMedicineTag = null;
             };
 
             function addMedicineTag(row) {
                 const tag = document.createElement("span");
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
                 tag.style.cursor = "pointer";
-                tag.setAttribute("data-id", row.id || "new");
+                tag.setAttribute("data-id", row.id);  // Already there: consultation-level ID
 
                 updateMedicineTagDisplay(tag, row);
-                tag.onclick = () => openMedicineModal(row.medicine_name, row, tag);
+                
+                tag.onclick = () => {
+                    const currentId = tag.getAttribute("data-id");
+                    const currentMed = selectedMedicines.find(m => String(m.id) === String(currentId));
+                    if (currentMed) {
+                        openMedicineModal(currentMed.medicine_name, currentMed, tag);
+                    } else {
+                        console.warn("Medicine not found in selectedMedicines:", currentId);
+                    }
+                };
 
                 if (medicinesListContainer) {
                     medicinesListContainer.appendChild(tag);
@@ -6616,22 +6713,42 @@
                 tagEl.querySelector('button').onclick = (e) => {
                     e.stopPropagation();
                     tagEl.remove();
-                    selectedMedicines = selectedMedicines.filter(s => s.medicine_name !== row.medicine_name);
+                    selectedMedicines = selectedMedicines.filter(
+                        s => String(s.id) !== String(row.id)  // Uses ID, safe
+                    );
                     updateMedicinesHiddenInput();
+                };
+
+                tagEl.onclick = (e) => {
+                    if (e.target.tagName === 'BUTTON') return; // Avoid on close button
+                    const currentId = tagEl.getAttribute("data-id");
+                    const currentMed = selectedMedicines.find(m => String(m.id) === String(currentId));
+                    if (currentMed) {
+                        openMedicineModal(currentMed.medicine_name, currentMed, tagEl);
+                    }
                 };
             }
 
-            function updateMedicinesHiddenInput() {
-                let hidden = document.getElementById("medicinesJson");
-                if (!hidden) {
-                    hidden = document.createElement("input");
-                    hidden.type = "hidden";
-                    hidden.id = "medicinesJson";
-                    hidden.name = "medicinesJson";
-                    const form = medicinesModalEl.closest("form") || document.querySelector("form");
-                    (form || document.body).appendChild(hidden);
+        function updateMedicinesHiddenInput() {
+            let hidden = document.getElementById("medicinesJson");
+            if (!hidden) {
+                hidden = document.createElement("input");
+                hidden.type = "hidden";
+                hidden.id = "medicinesJson";
+                hidden.name = "medicinesJson";
+                const form = medicinesModalEl.closest("form") || document.querySelector("form");
+                (form || document.body).appendChild(hidden);
+            }
+
+            const forBackend = selectedMedicines.map(m => {
+                const copy = { ...m };
+                if (String(copy.id).startsWith('temp_') || copy.id === 'new' || !copy.id) {
+                    copy.id = 'new';
                 }
-                hidden.value = JSON.stringify(selectedMedicines);
+                return copy;
+            });
+
+            hidden.value = JSON.stringify(forBackend);
             }
 
             if (Array.isArray(savedMedicines) && savedMedicines.length) {
@@ -6640,6 +6757,29 @@
                     selectedMedicines.push(row);
                     addMedicineTag(row);
                 });
+                updateMedicinesHiddenInput();
+            }
+            //for dragable
+             if (medicinesListContainer) {
+                Sortable.create(medicinesListContainer, {
+                    animation: 150,
+                    ghostClass: "sortable-ghost",
+                    onEnd: function () {
+                        syncSelectedMedicinesOrder();
+                    }
+                });
+            }
+
+            function syncSelectedMedicinesOrder() {
+                const newOrder = [];
+
+                document.querySelectorAll("#medicinesList [data-id]").forEach(tag => {
+                    const id = tag.getAttribute("data-id");
+                    const found = selectedMedicines.find(m => String(m.id) === String(id));
+                    if (found) newOrder.push(found);
+                });
+
+                selectedMedicines = newOrder;
                 updateMedicinesHiddenInput();
             }
         });
@@ -7963,6 +8103,9 @@
     <!-- Fabric.js and Cropper.js JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.0/fabric.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
 
 </body>
 

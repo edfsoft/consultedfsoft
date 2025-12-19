@@ -327,15 +327,16 @@
         }
 
         #medicinesList span {
-        cursor: grab;
+            cursor: grab;
         }
+
         #medicinesList span:active {
             cursor: grabbing;
         }
+
         .sortable-ghost {
             opacity: 0.4;
         }
-
     </style>
 </head>
 
@@ -665,10 +666,10 @@
                                                                                 </td>
                                                                                 <td style="border: 1px solid #000; padding: 6px;">
                                                                                     <?php if (!empty($medicine['medicine_name'])): ?>
-                                                                                                <?php
-                                                                                                    $category = trim($medicine['category'] ?? '');
-                                                                                                    if ($category !== '' && strtolower($category) !== 'nil'):
-                                                                                                ?>
+                                                                                        <?php
+                                                                                        $category = trim($medicine['category'] ?? '');
+                                                                                        if ($category !== '' && strtolower($category) !== 'nil'):
+                                                                                            ?>
                                                                                             <small style="font-size:12px;"
                                                                                                 class="text-muted"><?= htmlspecialchars($medicine['category']) ?></small>
                                                                                         <?php endif; ?>
@@ -1018,10 +1019,10 @@
                                                                                                 style="display: flex; flex-direction: column; justify-content: center;">
                                                                                                 <div
                                                                                                     style="display: flex; flex-direction: row; align-items: baseline;">
-                                                                                                                <?php
-                                                                                                                    $category = trim($medicine['category'] ?? '');
-                                                                                                                    if ($category !== '' && strtolower($category) !== 'nil'):
-                                                                                                                ?>
+                                                                                                    <?php
+                                                                                                    $category = trim($medicine['category'] ?? '');
+                                                                                                    if ($category !== '' && strtolower($category) !== 'nil'):
+                                                                                                        ?>
                                                                                                         <span
                                                                                                             style="font-size: 10px; color: #555; margin-right: 6px;">
                                                                                                             <?= htmlspecialchars($medicine['category']) ?>
@@ -1033,10 +1034,10 @@
                                                                                                         <?= htmlspecialchars($medicine['medicine_name']) ?>
                                                                                                     </strong>
                                                                                                 </div>
-                                                                                                        <?php
-                                                                                                            $composition = trim($medicine['composition_name'] ?? '');
-                                                                                                            if ($composition !== '' && strtolower($composition) !== 'nil'):
-                                                                                                        ?>
+                                                                                                <?php
+                                                                                                $composition = trim($medicine['composition_name'] ?? '');
+                                                                                                if ($composition !== '' && strtolower($composition) !== 'nil'):
+                                                                                                    ?>
                                                                                                     <span
                                                                                                         style="font-size: 11px; font-style: italic; color: #444; line-height: 1; margin-top: 2px;">
                                                                                                         <?= htmlspecialchars($medicine['composition_name']) ?>
@@ -6185,7 +6186,7 @@
             let editingMedicineTag = null;
             let pendingMedicineId = null;
             let pendingMedicineMasterId = null;
-            
+
 
             addMedMasterModalEl.querySelectorAll('[data-bs-dismiss="modal"]').forEach(btn => {
                 btn.addEventListener('click', (e) => { e.preventDefault(); addMedMasterModal.hide(); });
@@ -6630,7 +6631,7 @@
 
                 const existingIndex = selectedMedicines.findIndex(
                     m => String(m.id) === String(pendingMedicineId)
-                    );
+                );
 
                 console.log('EDIT', {
                     pendingMedicineName,
@@ -6684,7 +6685,7 @@
                 tag.setAttribute("data-id", row.id);  // Already there: consultation-level ID
 
                 updateMedicineTagDisplay(tag, row);
-                
+
                 tag.onclick = () => {
                     const currentId = tag.getAttribute("data-id");
                     const currentMed = selectedMedicines.find(m => String(m.id) === String(currentId));
@@ -6729,26 +6730,26 @@
                 };
             }
 
-        function updateMedicinesHiddenInput() {
-            let hidden = document.getElementById("medicinesJson");
-            if (!hidden) {
-                hidden = document.createElement("input");
-                hidden.type = "hidden";
-                hidden.id = "medicinesJson";
-                hidden.name = "medicinesJson";
-                const form = medicinesModalEl.closest("form") || document.querySelector("form");
-                (form || document.body).appendChild(hidden);
-            }
-
-            const forBackend = selectedMedicines.map(m => {
-                const copy = { ...m };
-                if (String(copy.id).startsWith('temp_') || copy.id === 'new' || !copy.id) {
-                    copy.id = 'new';
+            function updateMedicinesHiddenInput() {
+                let hidden = document.getElementById("medicinesJson");
+                if (!hidden) {
+                    hidden = document.createElement("input");
+                    hidden.type = "hidden";
+                    hidden.id = "medicinesJson";
+                    hidden.name = "medicinesJson";
+                    const form = medicinesModalEl.closest("form") || document.querySelector("form");
+                    (form || document.body).appendChild(hidden);
                 }
-                return copy;
-            });
 
-            hidden.value = JSON.stringify(forBackend);
+                const forBackend = selectedMedicines.map(m => {
+                    const copy = { ...m };
+                    if (String(copy.id).startsWith('temp_') || copy.id === 'new' || !copy.id) {
+                        copy.id = 'new';
+                    }
+                    return copy;
+                });
+
+                hidden.value = JSON.stringify(forBackend);
             }
 
             if (Array.isArray(savedMedicines) && savedMedicines.length) {
@@ -6760,7 +6761,7 @@
                 updateMedicinesHiddenInput();
             }
             //for dragable
-             if (medicinesListContainer) {
+            if (medicinesListContainer) {
                 Sortable.create(medicinesListContainer, {
                     animation: 150,
                     ghostClass: "sortable-ghost",

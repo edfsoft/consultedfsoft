@@ -1047,7 +1047,7 @@ class ConsultModel extends CI_Model
         $this->db->where('id', $id);
         return $this->db->delete('medicines_list');
     }
-    
+
     //Get medicine category
     public function getMedicineCategories()
     {
@@ -1059,13 +1059,13 @@ class ConsultModel extends CI_Model
     }
 
     public function getDosageUnits()
-{
-    return $this->db
-        ->select('units_name')
-        ->order_by('units_name', 'ASC')
-        ->get('dosage_units')
-        ->result_array();
-}
+    {
+        return $this->db
+            ->select('units_name')
+            ->order_by('units_name', 'ASC')
+            ->get('dosage_units')
+            ->result_array();
+    }
 
 
 }

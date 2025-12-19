@@ -295,21 +295,21 @@ class AdminModel extends CI_Model
     }
 
     public function getDosageUnits()
-{
-    return $this->db->order_by('units_name', 'ASC')
-        ->get('dosage_units')
-        ->result_array();
-}
+    {
+        return $this->db->order_by('units_name', 'ASC')
+            ->get('dosage_units')
+            ->result_array();
+    }
 
-public function insertDosageUnit($name)
-{
-    return $this->db->insert('dosage_units', ['units_name' => $name]);
-}
+    public function insertDosageUnit($name)
+    {
+        return $this->db->insert('dosage_units', ['units_name' => $name]);
+    }
 
-public function deleteDosageUnit($id)
-{
-    return $this->db->delete('dosage_units', ['id' => $id]);
-}
+    public function deleteDosageUnit($id)
+    {
+        return $this->db->delete('dosage_units', ['id' => $id]);
+    }
 
 
 }

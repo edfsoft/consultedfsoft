@@ -543,7 +543,7 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function getFollowUpAppointments()
+    public function getFollowUpConsultations()
     {
         $hcpIdDb = $this->session->userdata('hcpIdDb');
         if (!$hcpIdDb) {
@@ -551,11 +551,10 @@ class Healthcareprovider extends CI_Controller
             return;
         }
 
-        $date = $this->input->get('date'); // e.g., 17-Oct-2025
+        $date = $this->input->get('date');
 
-        $data = $this->HcpModel->getFollowUpAppointments($hcpIdDb, $date);
+        $data = $this->HcpModel->getFollowUpConsult($hcpIdDb, $date);
 
-        // Format time to 12-hour (e.g., 02:50 PM)
         foreach ($data as &$row) {
             $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
         }

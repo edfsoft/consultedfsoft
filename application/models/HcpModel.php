@@ -570,7 +570,7 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function getFollowUpAppointments($hcpIdDb, $followUpDate = null)
+    public function getFollowUpConsult($hcpIdDb, $followUpDate = null)
     {
         $this->db->select("
         c.id AS consultationId, c.patient_id AS consultationPatientId,

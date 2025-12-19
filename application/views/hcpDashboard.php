@@ -108,7 +108,7 @@
         if ($method == "dashboard") {
             ?>
             <section>
-                <p class=" card ps-3 py-3" style="font-size: 24px; font-weight: 500">
+                <p class="card ps-3 py-3" style="font-size: 24px; font-weight: 500">
                     Dashboard
                 </p>
 
@@ -399,21 +399,18 @@
                     </div>
                 </div>
 
-                <!-- Today's Appointments Section (Static) -->
-                <div class="card rounded-5 mx-1 mt-4">
+                <!-- Today's Follow up Section  -->
+                <div class="card rounded-5 mx-1 mt-3">
                     <div class="card-body p-4">
                         <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-3">
-                            <i class="bi bi-clock-history pe-3"></i> Appointments (Next Follow-ups)
+                            <i class="bi bi-clock-history pe-3"></i> Today's Follow-ups (Next Follow-up)
                         </p>
-
-                        <!-- Curved Box -->
-                        <div class="rounded-4 shadow-sm p-3" style="border: 2px solid #000; border-radius: 20px;">
-
+                        <div class="rounded-4 px-3">
                             <!-- Date Header -->
                             <div class="d-flex justify-content-between align-items-center mb-3"
-                                style="background-color: #00ad8e; color: #fff; border-radius: 12px; padding: 10px 20px;">
-                                <button id="prevDayBtn" class="btn btn-link text-white fw-bold p-0"
-                                    style="font-size: 1.5rem;">
+                                style="background-color: #fff; color: #00ad8e; border-radius: 12px; padding: 10px 20px;border: 2px solid #00ad8e;">
+                                <button id="prevDayBtn" class="btn btn-link fw-bold p-0"
+                                    style="font-size: 1.5rem; color: #00ad8e;">
                                     <i class="bi bi-chevron-left"></i>
                                 </button>
 
@@ -422,19 +419,18 @@
                                     <small id="appointmentsDay">Thursday</small>
                                 </div>
 
-                                <button id="nextDayBtn" class="btn btn-link text-white fw-bold p-0"
-                                    style="font-size: 1.5rem;">
+                                <button id="nextDayBtn" class="btn btn-link fw-bold p-0"
+                                    style="font-size: 1.5rem; color: #00ad8e;">
                                     <i class="bi bi-chevron-right"></i>
                                 </button>
                             </div>
-
                             <!-- Table -->
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="max-height: 300px;">
                                 <table class="table align-middle mb-0">
                                     <thead>
                                         <tr style="color: #000; font-weight: 700;">
                                             <th>S.No</th>
-                                            <th style="text-align:center">Consulted Date & Time</th>
+                                            <th style="text-align:center">Last Consult On</th>
                                             <th>Patient Name</th>
                                             <th style="text-align:top">Patient ID</th>
                                             <th>Mobile Number</th>
@@ -453,7 +449,7 @@
 
             </section>
 
-
+            <!-- Today Follow up Script -->
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     const dateEl = document.getElementById('appointmentsDate');
@@ -464,7 +460,7 @@
 
                     let currentDate = new Date();
 
-                    const baseUrl = '<?= base_url("Healthcareprovider/getFollowUpAppointments") ?>';
+                    const baseUrl = '<?= base_url("Healthcareprovider/getFollowUpConsultations") ?>';
 
                     function formatDate(date) {
                         return date.toLocaleDateString('en-GB', {
@@ -474,7 +470,7 @@
 
                     function formatConsultDate(dateStr) {
                         if (!dateStr) return '-';
-                        const date = new Date(dateStr + 'T00:00:00'); // Fix for invalid date
+                        const date = new Date(dateStr + 'T00:00:00');
                         return date.toLocaleDateString('en-GB', {
                             day: '2-digit', month: 'short', year: 'numeric'
                         }).replace(/ /g, '-');
@@ -509,10 +505,9 @@
                         data.forEach((row, i) => {
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
-                <td>${i + 1}</td>
+                <td>${i + 1}.</td>
                 <td style="text-align:center">
-                    
-                    <strong>${formatConsultDate(row.consult_date)}</strong>
+                    <span class="fw-medium">${formatConsultDate(row.consult_date)}</span>
                     <br>${row.time_12hr}<br>
                 </td>
                 <td>${row.patientName}</td>
@@ -521,7 +516,7 @@
                 <td>${row.symptoms || '-'}</td>
                 <td>
                     <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}" 
-                       class="btn btn-sm btn-dark">View</a>
+                       class="btn btn-sm btn-secondary text-light"> <i class="bi bi-calendar-check"></i></a>
                 </td>
             `;
                             tbody.appendChild(tr);
@@ -538,11 +533,9 @@
                         loadAppointments();
                     });
 
-                    // Load today's follow-ups
                     loadAppointments();
                 });
             </script>
-
 
             <?php
         } else if ($method == "appointments") {
@@ -1452,7 +1445,7 @@
                                 }
                             }
                         }
-                            document.addEventListener("DOMContentLoaded", function () {
+                        document.addEventListener("DOMContentLoaded", function () {
 
                             const dupModalEl = document.getElementById("duplicateNewPatientModal");
 
@@ -1478,14 +1471,14 @@
                                     }, 500);
                                 });
 
-                                    
+
                                 document.getElementById("dupNewCloseBtn").addEventListener("click", function () {
                                     const modal = bootstrap.Modal.getInstance(dupModalEl);
                                     modal.hide();
 
                                     const newPatientModalEl = document.getElementById("newPatientModal");
                                     const newPatientModal = bootstrap.Modal.getInstance(newPatientModalEl)
-                                                        || bootstrap.Modal.getOrCreateInstance(newPatientModalEl);
+                                        || bootstrap.Modal.getOrCreateInstance(newPatientModalEl);
                                     newPatientModal.hide();
                                 });
 
@@ -3187,39 +3180,40 @@
         </div>
 
         <!-- Duplicate Mobile Popup for New Patient Modal -->
-    <div class="modal fade" id="duplicateNewPatientModal" tabindex="-1" aria-labelledby="duplicateNewPatientLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog">
-            <div class="modal-content">
+        <div class="modal fade" id="duplicateNewPatientModal" tabindex="-1" aria-labelledby="duplicateNewPatientLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title fw-medium" id="duplicateNewPatientLabel">Mobile Number Exists</h5>
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-medium" id="duplicateNewPatientLabel">Mobile Number Exists</h5>
+                    </div>
+
+                    <div class="modal-body">
+                        This mobile number is already registered with another patient.
+                    </div>
+
+                    <div class="modal-footer d-flex justify-content-between">
+
+                        <button type="button" class="btn btn-secondary" id="dupNewCloseBtn">
+                            Close
+                        </button>
+
+                        <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                            id="dupNewAddAnywayBtn">
+                            Add Anyway
+                        </button>
+
+                        <button type="button" class="btn btn-warning text-dark" id="dupNewEditBtn">
+                            Edit Mobile
+                        </button>
+
+
+                    </div>
+
                 </div>
-
-                <div class="modal-body">
-                    This mobile number is already registered with another patient.
-                </div>
-
-                <div class="modal-footer d-flex justify-content-between">
-
-                    <button type="button" class="btn btn-secondary" id="dupNewCloseBtn">
-                        Close
-                    </button>
-
-                    <button type="button" class="btn text-light" style="background-color: #00ad8e;" id="dupNewAddAnywayBtn">
-                        Add Anyway
-                    </button>
-
-                    <button type="button" class="btn btn-warning text-dark" id="dupNewEditBtn">
-                        Edit Mobile
-                    </button>
-                    
-
-                </div>
-
             </div>
         </div>
-    </div>
 
 
     </main>

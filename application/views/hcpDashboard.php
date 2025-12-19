@@ -399,6 +399,61 @@
                     </div>
                 </div>
 
+                <!-- Completed Consult Section -->
+                <div class="card rounded-5 mx-1 mt-3">
+                    <div class="card-body p-4">
+                        <p style="font-size:20px;font-weight:500;color:#00ad8e" class="pb-3">
+                            <i class="bi bi-clock-history pe-3"></i> Completed Consultations
+                        </p>
+
+                        <div class="rounded-4 px-3">
+                            <!-- Date Header -->
+                            <div class="d-flex justify-content-between align-items-center mb-3"
+                                style="background:#fff;color:#00ad8e;border-radius:12px;padding:10px 20px;border:2px solid #00ad8e">
+
+                                <button id="prevDayBtnCompletedConsult" class="btn btn-link p-0"
+                                    style="font-size:1.5rem;color:#00ad8e">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+
+                                <div class="text-center">
+                                    <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
+                                        <span id="completedConsultDate"></span>
+
+                                        <input type="date" id="completedConsultCalendar"
+                                            style="opacity:0;position:absolute;pointer-events:none">
+
+                                        <i class="bi bi-calendar-event" id="completedConsultCalendarIcon"
+                                            style="cursor:pointer;font-size:1.2rem"></i>
+                                    </h5>
+                                    <small id="completedConsultDay"></small>
+                                </div>
+
+                                <button id="nextDayBtnCompletedConsult" class="btn btn-link p-0"
+                                    style="font-size:1.5rem;color:#00ad8e">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                            <!-- Table -->
+                            <div class="table-responsive" style="max-height:300px">
+                                <table class="table align-middle mb-0">
+                                    <thead>
+                                        <tr style="font-weight:700">
+                                            <th>S.No</th>
+                                            <th class="text-center">Consult Date</th>
+                                            <th>Patient Name</th>
+                                            <th>Patient ID</th>
+                                            <th>Mobile</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="completedConsultTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Today's Follow up Section  -->
                 <div class="card rounded-5 mx-1 mt-3">
                     <div class="card-body p-4">
@@ -409,7 +464,7 @@
                             <!-- Date Header -->
                             <div class="d-flex justify-content-between align-items-center mb-3"
                                 style="background-color: #fff; color: #00ad8e; border-radius: 12px; padding: 10px 20px;border: 2px solid #00ad8e;">
-                                <button id="prevDayBtn" class="btn btn-link fw-bold p-0"
+                                <button id="prevDayBtnFollowUp" class="btn btn-link fw-bold p-0"
                                     style="font-size: 1.5rem; color: #00ad8e;">
                                     <i class="bi bi-chevron-left"></i>
                                 </button>
@@ -419,7 +474,7 @@
                                     <small id="appointmentsDay">Thursday</small>
                                 </div>
 
-                                <button id="nextDayBtn" class="btn btn-link fw-bold p-0"
+                                <button id="nextDayBtnFollowUp" class="btn btn-link fw-bold p-0"
                                     style="font-size: 1.5rem; color: #00ad8e;">
                                     <i class="bi bi-chevron-right"></i>
                                 </button>
@@ -438,7 +493,7 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="appointmentsTableBody">
+                                    <tbody id="followUpTableBody">
                                         <!-- Data loaded here -->
                                     </tbody>
                                 </table>
@@ -449,14 +504,120 @@
 
             </section>
 
+            <!-- Completed Consultations script -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+
+                    const dateEl = document.getElementById('completedConsultDate');
+                    const dayEl = document.getElementById('completedConsultDay');
+                    const tbody = document.getElementById('completedConsultTableBody');
+                    const prevBtn = document.getElementById('prevDayBtnCompletedConsult');
+                    const nextBtn = document.getElementById('nextDayBtnCompletedConsult');
+                    const calIn = document.getElementById('completedConsultCalendar');
+                    const calIcon = document.getElementById('completedConsultCalendarIcon');
+
+                    let currentDate = new Date();
+
+                    const baseUrl = '<?= base_url("Healthcareprovider/getCompletedConsultByDate") ?>';
+
+                    function formatDisplayDate(date) {
+                        return date.toLocaleDateString('en-GB', {
+                            day: '2-digit', month: 'short', year: 'numeric'
+                        }).replace(/ /g, '-');
+                    }
+
+                    function formatApiDate(date) {
+                        return date.toISOString().split('T')[0];
+                    }
+
+                    function updateHeader() {
+                        dateEl.textContent = formatDisplayDate(currentDate);
+                        dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                        calIn.value = formatApiDate(currentDate);
+                    }
+
+                    function loadCompletedConsult() {
+                        updateHeader();
+                        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">Loading...</td></tr>`;
+
+                        fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
+                            .then(res => res.json())
+                            .then(res => {
+                                if (res.success && res.data.length) {
+                                    renderCompletedConsult(res.data);
+                                } else {
+                                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                No completed consultations
+                            </td>
+                        </tr>`;
+                                }
+                            })
+                            .catch(() => {
+                                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-danger">
+                            Error loading data
+                        </td>
+                    </tr>`;
+                            });
+                    }
+
+                    function renderCompletedConsult(data) {
+                        tbody.innerHTML = '';
+                        data.forEach((row, i) => {
+                            const consultDate = new Date(row.consult_date + 'T00:00:00');
+
+                            tbody.innerHTML += `
+                 <tr>
+                    <td>${i + 1}</td>
+                    <td class="text-center">
+                        ${formatDisplayDate(consultDate)}<br>
+                        ${row.time_12hr}
+                    </td>
+                    <td>${row.patientName}</td>
+                    <td>${row.patientId}</td>
+                    <td>${row.mobileNumber}</td>
+                    <td>
+                        <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}"
+                           class="btn btn-sm btn-secondary">
+                            <i class="bi bi-calendar-check"></i>
+                        </a>
+                    </td>
+                </tr>`;
+                        });
+                    }
+
+                    prevBtn.onclick = () => {
+                        currentDate.setDate(currentDate.getDate() - 1);
+                        loadCompletedConsult();
+                    };
+
+                    nextBtn.onclick = () => {
+                        currentDate.setDate(currentDate.getDate() + 1);
+                        loadCompletedConsult();
+                    };
+
+                    calIcon.onclick = () => calIn.showPicker();
+
+                    calIn.onchange = () => {
+                        currentDate = new Date(calIn.value);
+                        loadCompletedConsult();
+                    };
+
+                    loadCompletedConsult(); // default = today
+                });
+            </script>
+
             <!-- Today Follow up Script -->
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
                     const dateEl = document.getElementById('appointmentsDate');
                     const dayEl = document.getElementById('appointmentsDay');
-                    const prevBtn = document.getElementById('prevDayBtn');
-                    const nextBtn = document.getElementById('nextDayBtn');
-                    const tbody = document.getElementById('appointmentsTableBody');
+                    const prevBtn = document.getElementById('prevDayBtnFollowUp');
+                    const nextBtn = document.getElementById('nextDayBtnFollowUp');
+                    const tbody = document.getElementById('followUpTableBody');
 
                     let currentDate = new Date();
 
@@ -518,7 +679,7 @@
                     <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}" 
                        class="btn btn-sm btn-secondary text-light"> <i class="bi bi-calendar-check"></i></a>
                 </td>
-            `;
+             `;
                             tbody.appendChild(tr);
                         });
                     }
@@ -3214,7 +3375,6 @@
                 </div>
             </div>
         </div>
-
 
     </main>
 

@@ -598,6 +598,33 @@ class HcpModel extends CI_Model
         return $query->result_array();
     }
 
+    public function getCompletedConsultByDate($hcpIdDb, $consultDate)
+    {
+        $this->db->select("
+        MAX(c.id) AS consultationId,
+        c.patient_id AS consultationPatientId,
+        c.consult_date,
+        c.consult_time,
+        CONCAT(p.firstName, ' ', p.lastName) AS patientName,
+        p.patientId,
+        p.mobileNumber
+    ");
+
+        $this->db->from('consultations c');
+        $this->db->join('patient_details p', 'p.id = c.patient_id', 'left');
+
+        $this->db->where('c.doctor_id', $hcpIdDb);
+        $this->db->where('DATE(c.consult_date)', $consultDate);
+
+        $this->db->group_by('c.patient_id');
+
+        $this->db->order_by('c.consult_time', 'ASC');
+
+        return $this->db->get()->result_array();
+    }
+
+
+
 
 
 }

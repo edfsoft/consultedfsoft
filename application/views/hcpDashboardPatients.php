@@ -321,8 +321,8 @@
                         </div>
 
                         <div class="card-body px-md-4 pb-4">
-                            <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>" name="patientDetails"
-                                id="patientDetails" enctype="multipart/form-data" method="POST"
+                            <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
+                                name="addPatientDetails" id="addPatientDetails" enctype="multipart/form-data" method="POST"
                                 oninput="validatePatientDetails()" onsubmit="return submitPatientDetails(event)">
                                 <div class="position-relative">
                                     <img id="previewImage" src="<?= base_url('assets/BlankProfileCircle.png') ?>"
@@ -520,8 +520,9 @@
                                 foreach ($patientDetails as $key => $value) {
                                     ?>
                                         <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
-                                            name="patientDetails" id="multi-step-form" enctype="multipart/form-data" method="POST"
-                                            oninput="validatePatientDetails()" onsubmit="return submitPatientDetails(event)">
+                                            name="editPatientDetails" id="editPatientDetails" enctype="multipart/form-data"
+                                            method="POST" oninput="validatePatientDetails()"
+                                            onsubmit="return submitPatientDetails(event)">
                                             <div class="position-relative">
                                                 <img id="previewImage" src="<?= isset($value['profilePhoto']) && $value['profilePhoto'] !== "No data"
                                                     ? base_url('uploads/' . $value['profilePhoto'])
@@ -579,6 +580,8 @@
                                                         name="patientAltMobile" value="<?php echo $value['alternateMobile'] ?>"
                                                         maxlength="10" placeholder="E.g. 9876543210">
                                                     <small id="patientAltMobile_err" class="text-danger pt-1"></small>
+                                                    <input type="hidden" id="oldAltMobile"
+                                                        value="<?php echo $value['alternateMobile']; ?>">
                                                 </div>
                                             </div>
                                             <div class="d-md-flex justify-content-between pb-3">
@@ -875,34 +878,19 @@
         <?php include 'hcpModals.php'; ?>
 
         <!-- Mobile number already exist message display modal - 2 palces [Add, Edit patient details] -->
-        <div class="modal fade" id="duplicateMobileModal" tabindex="-1" aria-labelledby="duplicateMobileLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog">
+        <div class="modal fade" id="duplicateMobileModal" tabindex="-1" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog">
                 <div class="modal-content">
-
                     <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                            id="duplicateMobileLabel">Mobile Number Exist</h5>
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Mobile Number Exists
+                        </h5>
                     </div>
-
-                    <div class="modal-body">
-                        This mobile number is already registered with another patient.
-                    </div>
-
+                    <div class="modal-body" id="duplicateDetails"></div>
                     <div class="modal-footer d-flex justify-content-between">
-
-                        <button type="button" class="btn btn-secondary" id="dupCloseBtn">
-                            Cancel
-                        </button>
-
-                        <button type="button" class="btn text-light" style="background-color:#00ad8e;"
-                            id="dupAddAnywayBtn">
-                            Add Anyway
-                        </button>
-
-                        <button type="button" class="btn btn-warning text-dark" id="dupEditBtn">
-                            Edit Mobile
-                        </button>
+                        <button class="btn btn-secondary" id="dupCloseBtn">Cancel</button>
+                        <button class="btn btn-success" id="dupAddAnywayBtn">Add Anyway</button>
+                        <button class="btn btn-warning" id="dupEditBtn">Edit Number</button>
                     </div>
                 </div>
             </div>
@@ -930,7 +918,6 @@
         </div>
 
     </main>
-
 
     <script>
         <?php if ($method == "patients" || $method == "patientDetailsForm" || $method == "patientDetailsFormUpdate" || $method == "patientDetails" || $method == "prescription") { ?>
@@ -1095,96 +1082,109 @@
 
     </script>
 
-    <!-- Check Mobile Number already exist or not -->
+    <!-- Check Mobile Number, Alternate mobile number already exist or not -->
+    <!-- Need to update for Mail id check, currently only one mobile check at a time so change method to check all 3 at a time in future -->
     <script>
-        function checkDuplicateField(field, value, callback) {
-            const formData = new URLSearchParams();
-            formData.append('field', 'mobileNumber');
-            formData.append('value', value);
-            formData.append('table', 'patient_details');
+        function checkDuplicateNumber(number, patientId, callback) {
 
-            fetch("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
+            const formData = new URLSearchParams();
+            formData.append('value', number);
+            if (patientId) {
+                formData.append('patientId', patientId);
+            }
+
+            fetch("<?= base_url('Healthcareprovider/check_duplicate_mobile') ?>", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData
             })
-                .then(response => response.json())
-                .then(data => callback(data.exists))
-                .catch(error => {
-                    console.error('Error:', error);
-                    callback(false);
-                });
+                .then(res => res.json())
+                .then(data => callback(data))
+                .catch(() => callback({ exists: false }));
         }
 
-        // 2. Main Submit Handler
         function submitPatientDetails(event) {
             event.preventDefault();
-            if (!validatePatientDetails()) {
-                return false;
+
+            if (!validatePatientDetails()) return false;
+
+            const mobile = document.getElementById("patientMobile").value.trim();
+            const alt = document.getElementById("patientAltMobile").value.trim();
+
+            const oldMobile = document.getElementById("oldMobile")?.value || "";
+            const oldAlt = document.getElementById("oldAltMobile")?.value || "";
+
+            const patientId = document.getElementById("patientIdDb")?.value || "";
+
+            const form = document.getElementById("addPatientDetails") ||
+                document.getElementById("editPatientDetails");
+
+            if (mobile !== oldMobile) {
+                checkDuplicateNumber(mobile, patientId, function (res) {
+                    if (res.exists) {
+                        showDuplicateModal(res.data, mobile, 'Mobile Number');
+                        return;
+                    }
+                    checkAlternate();
+                });
+            } else {
+                checkAlternate();
             }
-            const mobileInput = document.getElementById("patientMobile");
-            const errorElement = document.getElementById("duplicateMobile_err");
 
-            const oldMobileInput = document.getElementById("oldMobile");
-            const oldMobileValue = oldMobileInput ? oldMobileInput.value : "";
+            function checkAlternate() {
 
-            const form = document.getElementById("patientDetails") || document.getElementById("multi-step-form");
-
-            if (oldMobileValue !== "" && mobileInput.value === oldMobileValue) {
-                form.submit();
-                return;
-            }
-
-            if (errorElement) errorElement.textContent = "";
-
-            checkDuplicateField("mobile", mobileInput.value, function (exists) {
-                if (exists) {
-                    const modalEl = document.getElementById('duplicateMobileModal');
-                    const modal = new bootstrap.Modal(modalEl);
-                    modal.show();
+                if (alt === "" || alt === oldAlt) {
+                    form.submit();
                     return;
                 }
-                else {
-                    form.submit();
-                }
+
+                checkDuplicateNumber(alt, patientId, function (resAlt) {
+                    if (resAlt.exists) {
+                        showDuplicateModal(resAlt.data, alt, 'Alternate Mobile');
+                    } else {
+                        form.submit();
+                    }
+                });
+            }
+        }
+
+        function showDuplicateModal(patients, number, type) {
+
+            let html = `<p class="fw-semibold mb-2">${type} <b>${number}</b> already exists</p><ul>`;
+
+            patients.forEach(p => {
+                html += `<li>
+        <b>${p.firstName}</b> (Patient ID: ${p.patientId})
+    </li>`;
             });
+
+            html += '</ul>';
+
+            document.getElementById("duplicateDetails").innerHTML = html;
+
+            const modal = new bootstrap.Modal(document.getElementById('duplicateMobileModal'));
+            modal.show();
         }
 
         document.addEventListener("DOMContentLoaded", function () {
 
-            const dupModalEl = document.getElementById("duplicateMobileModal");
+            const modalEl = document.getElementById("duplicateMobileModal");
 
-            if (dupModalEl) {
+            document.getElementById("dupEditBtn").onclick = () => {
+                bootstrap.Modal.getInstance(modalEl).hide();
+            };
 
-                document.getElementById("dupEditBtn").addEventListener("click", function () {
-                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                    modal.hide();
-                });
+            document.getElementById("dupAddAnywayBtn").onclick = () => {
+                bootstrap.Modal.getInstance(modalEl).hide();
+                const form = document.getElementById("addPatientDetails") || document.getElementById("editPatientDetails");
+                form.submit();
+            };
 
-                document.getElementById("dupAddAnywayBtn").addEventListener("click", function () {
-                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                    modal.hide();
-
-                    const form = document.getElementById("patientDetails") ||
-                        document.getElementById("multi-step-form");
-
-                    form.submit();
-                });
-
-                document.getElementById("dupCloseBtn").addEventListener("click", function () {
-                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                    modal.hide();
-
-                    if (typeof goBack === "function") {
-                        goBack();
-                    } else {
-                        window.history.back();
-                    }
-                });
-            }
+            document.getElementById("dupCloseBtn").onclick = () => {
+                bootstrap.Modal.getInstance(modalEl).hide();
+                window.history.back();
+            };
         });
-
-
     </script>
 
     <!-- Consultation card show more and less -->

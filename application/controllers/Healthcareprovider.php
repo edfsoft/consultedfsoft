@@ -220,17 +220,25 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function check_duplicate_field()
+    public function check_duplicate_mobile()
     {
-        $field = $this->input->post('field');
-        $value = $this->input->post('value');
-        $table = $this->input->post('table');
+        $number = $this->input->post('value');
+        $table = 'patient_details';
 
-        $this->db->where($field, $value);
-        $query = $this->db->get($table);
+        $this->db->select('patientId, firstName, mobileNumber, alternateMobile');
+        $this->db->from($table);
+        $this->db->group_start();
+        $this->db->where('mobileNumber', $number);
+        $this->db->or_where('alternateMobile', $number);
+        $this->db->group_end();
+
+        $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
-            echo json_encode(['exists' => true]);
+            echo json_encode([
+                'exists' => true,
+                'data' => $query->result_array()
+            ]);
         } else {
             echo json_encode(['exists' => false]);
         }

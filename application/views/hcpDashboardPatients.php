@@ -1154,7 +1154,7 @@
 
             patients.forEach(p => {
                 html += `<li>
-        <b>${p.firstName}</b> (Patient ID: ${p.patientId})
+        <b>${p.firstName} ${p.lastName}</b> (Patient ID: ${p.patientId})
     </li>`;
             });
 

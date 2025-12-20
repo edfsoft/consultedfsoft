@@ -225,7 +225,7 @@ class Healthcareprovider extends CI_Controller
         $number = $this->input->post('value');
         $table = 'patient_details';
 
-        $this->db->select('patientId, firstName, mobileNumber, alternateMobile');
+        $this->db->select('patientId, firstName, lastName, mobileNumber, alternateMobile');
         $this->db->from($table);
         $this->db->group_start();
         $this->db->where('mobileNumber', $number);

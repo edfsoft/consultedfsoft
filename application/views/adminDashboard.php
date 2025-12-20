@@ -108,6 +108,11 @@
             cursor: move;
             user-select: none;
         }
+
+        .sortable:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -1453,9 +1458,14 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;">PATIENT ID</th>
-                                                                        <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">
-                                                                            PATIENT NAME</th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; cursor: pointer;"
+                                                                            id="sortPatientId" class="sortable">
+                                                                            PATIENT ID <span id="sortIdIndicator">🡱</span>
+                                                                        </th>
+                                                                        <th scope="col" style="font-size: 16px; font-weight: 500; cursor: pointer;"
+                                                                            class="text-start sortable" id="sortPatientName">
+                                                                            PATIENT NAME <span id="sortNameIndicator"></span>
+                                                                        </th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">GENDER</th>
                                                                         <th scope="col" style="font-size: 16px; font-weight: 500;">AGE</th>
@@ -1486,10 +1496,17 @@
                                             let filteredPatientList = [...patientList];
                                             const initialPagePatient = parseInt(localStorage.getItem('currentPagePatient')) || 1;
 
+                                            let sortBy = 'patientId';
+                                            let sortOrder = 'asc';
+
                                             const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                                             const searchBar = document.getElementById('searchBar');
                                             const clearSearch = document.getElementById('clearSearch');
                                             const filterDropdown = document.getElementById('filterDropdown');
+                                            const sortPatientId = document.getElementById('sortPatientId');
+                                            const sortPatientName = document.getElementById('sortPatientName');
+                                            const sortIdIndicator = document.getElementById('sortIdIndicator');
+                                            const sortNameIndicator = document.getElementById('sortNameIndicator');
 
                                             // Load saved itemsPerPage
                                             const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPagePatient')) || itemsPerPagePatient;
@@ -1516,6 +1533,34 @@
 
                                             filterDropdown.addEventListener('change', applyFilters);
 
+                                            // Sorting click handlers
+                                            sortPatientId.addEventListener('click', () => {
+                                                if (sortBy === 'patientId') {
+                                                    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                                                } else {
+                                                    sortBy = 'patientId';
+                                                    sortOrder = 'asc';
+                                                }
+                                                updateSortIndicators();
+                                                applyFilters();
+                                            });
+
+                                            sortPatientName.addEventListener('click', () => {
+                                                if (sortBy === 'name') {
+                                                    sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                                                } else {
+                                                    sortBy = 'name';
+                                                    sortOrder = 'asc';
+                                                }
+                                                updateSortIndicators();
+                                                applyFilters();
+                                            });
+
+                                            function updateSortIndicators() {
+                                                sortIdIndicator.textContent = (sortBy === 'patientId') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                                                sortNameIndicator.textContent = (sortBy === 'name') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                                            }
+
                                             function toggleClearIcons() {
                                                 clearSearch.style.display = searchBar.value ? 'block' : 'none';
                                             }
@@ -1524,7 +1569,7 @@
                                                 const searchTerm = searchBar.value.toLowerCase();
                                                 const genderFilter = filterDropdown.value;
 
-                                                filteredPatientList = patientList.filter((patient) => {
+                                                let filtered = patientList.filter((patient) => {
                                                     const fullName = `${patient.firstName || ''} ${patient.lastName || ''}`.trim();
                                                     const patientId = patient.patientId || '';
                                                     const mobileNumber = patient.mobileNumber || '';
@@ -1544,6 +1589,27 @@
                                                     return matchesSearch && matchesGender;
                                                 });
 
+                                                // Apply sorting
+                                                filtered.sort((a, b) => {
+                                                    let valA, valB;
+
+                                                    if (sortBy === 'patientId') {
+                                                        valA = a.patientId || '';
+                                                        valB = b.patientId || '';
+                                                        return sortOrder === 'asc'
+                                                            ? valA.localeCompare(valB)
+                                                            : valB.localeCompare(valA);
+                                                    } else if (sortBy === 'name') {
+                                                        valA = `${a.firstName || ''} ${a.lastName || ''}`.trim().toLowerCase();
+                                                        valB = `${b.firstName || ''} ${b.lastName || ''}`.trim().toLowerCase();
+                                                        return sortOrder === 'asc'
+                                                            ? valA.localeCompare(valB)
+                                                            : valB.localeCompare(valA);
+                                                    }
+                                                    return 0;
+                                                });
+
+                                                filteredPatientList = filtered;
                                                 displayPatientPage(1);
                                             }
 
@@ -1566,19 +1632,19 @@
                                                     itemsToShow.forEach((patient, index) => {
                                                         const patientRow = document.createElement('tr');
                                                         patientRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${patient.patientId}</td>
-                <td style="font-size: 16px; text-align:left" class="pt-3">${patient.firstName} ${patient.lastName}</td>
-                <td style="font-size: 16px" class="pt-3">${patient.mobileNumber}</td>
-                <td style="font-size: 16px text-align:left" class="pt-3">${patient.gender}</td>
-                <td style="font-size: 16px" class="pt-3">${patient.age}</td>
-                <td style="font-size: 16px" class="pt-3">
-                    <a href="${baseUrl}Edfadmin/hcpDetails/${patient.patientHcpDbId}" class="text-dark" onmouseover="style='text-decoration:underline'" onmouseout="style='text-decoration:none'">${patient.patientHcp}</a>
-                </td>
-                <td class="d-flex d-md-block" style="font-size: 16px">
-                    <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${patient.id}" data-name="${patient.firstName} ${patient.lastName}" data-type="patient"><i class="bi bi-trash"></i></button>
-                </td>`;
+                                                                    <td class="pt-3">${start + index + 1}.</td>
+                                                                    <td style="font-size: 16px" class="pt-3">${patient.patientId}</td>
+                                                                    <td style="font-size: 16px; text-align:left" class="pt-3">${patient.firstName} ${patient.lastName}</td>
+                                                                    <td style="font-size: 16px" class="pt-3">${patient.mobileNumber}</td>
+                                                                    <td style="font-size: 16px text-align:left" class="pt-3">${patient.gender}</td>
+                                                                    <td style="font-size: 16px" class="pt-3">${patient.age}</td>
+                                                                    <td style="font-size: 16px" class="pt-3">
+                                                                        <a href="${baseUrl}Edfadmin/hcpDetails/${patient.patientHcpDbId}" class="text-dark" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${patient.patientHcp}</a>
+                                                                    </td>
+                                                                    <td class="d-flex d-md-block" style="font-size: 16px">
+                                                                        <a href="${baseUrl}Edfadmin/patientdetails/${patient.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
+                                                                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${patient.id}" data-name="${patient.firstName} ${patient.lastName}" data-type="patient"><i class="bi bi-trash"></i></button>
+                                                                    </td>`;
                                                         patientTableBody.appendChild(patientRow);
                                                     });
                                                 }
@@ -1601,7 +1667,8 @@
 
                                                 const prevLi = document.createElement('li');
                                                 prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
-                                                prevLi.onclick = () => {
+                                                prevLi.onclick = (e) => {
+                                                    e.preventDefault();
                                                     if (currentPage > 1) displayPatientPage(currentPage - 1);
                                                 };
                                                 ul.appendChild(prevLi);
@@ -1612,13 +1679,17 @@
                                                 for (let i = startPage; i <= endPage; i++) {
                                                     const li = document.createElement('li');
                                                     li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
-                                                    li.onclick = () => displayPatientPage(i);
+                                                    li.onclick = (e) => {
+                                                        e.preventDefault();
+                                                        displayPatientPage(i);
+                                                    };
                                                     ul.appendChild(li);
                                                 }
 
                                                 const nextLi = document.createElement('li');
                                                 nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
-                                                nextLi.onclick = () => {
+                                                nextLi.onclick = (e) => {
+                                                    e.preventDefault();
                                                     if (currentPage < totalPages) displayPatientPage(currentPage + 1);
                                                 };
                                                 ul.appendChild(nextLi);
@@ -1626,10 +1697,10 @@
                                                 paginationContainer.appendChild(ul);
                                             }
 
-                                            // On load: Show all data, then render
+                                            // Initial load
+                                            updateSortIndicators();  // Show default ↑ on Patient ID
                                             toggleClearIcons();
-                                            filteredPatientList = [...patientList];
-                                            displayPatientPage(initialPagePatient);
+                                            applyFilters();  // This will sort by Patient ID ascending by default
                                         </script>
 
             <?php

@@ -375,7 +375,8 @@
                                 </div>
                                 <div class="d-md-flex justify-content-between pb-3">
                                     <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                        <label class="form-label" for="patientEmail">Email Id</label>
+                                        <label class="form-label" for="patientEmail">Email Id <span
+                                                class="text-danger">*</span></label>
                                         <input type="email" class="form-control" id="patientEmail" name="patientEmail"
                                             placeholder="E.g. example@gmail.com" maxlength="50">
                                         <small id="patientEmail_err" class="text-danger pt-1"></small>
@@ -586,7 +587,8 @@
                                             </div>
                                             <div class="d-md-flex justify-content-between pb-3">
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                                    <label class="form-label" for="patientEmail">Email</label>
+                                                    <label class="form-label" for="patientEmail">Email <span
+                                                            class="text-danger">*</span></label>
                                                     <input type="email" class="form-control" id="patientEmail" name="patientEmail"
                                                         value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com"
                                                         maxlength="50">
@@ -932,10 +934,11 @@
 
             var name = document.getElementById("patientName").value.trim();
             var mobile = document.getElementById("patientMobile").value;
+            var AltMob = document.getElementById("patientAltMobile").value;
+            var mailId = document.getElementById("patientEmail").value;
             var gender = document.getElementById("patientGender").value;
             var age = document.getElementById("patientAge").value;
             var gdMob = document.getElementById("partnerMobile").value;
-            var AltMob = document.getElementById("patientAltMobile").value;
 
             // === NAME ===
             if (name === "") {
@@ -954,6 +957,25 @@
                 isValid = false;
             } else {
                 document.getElementById("patientMobile_err").innerHTML = "";
+            }
+
+            // === ALTERNATE MOBILE (Optional but must be 10 digits if provided) ===
+            if (AltMob !== "" && !/^\d{10}$/.test(AltMob)) {
+                document.getElementById("patientAltMobile_err").innerHTML = "Please enter a valid 10-digit mobile number";
+                isValid = false;
+            } else {
+                document.getElementById("patientAltMobile_err").innerHTML = "";
+            }
+
+            // === EMAIL ===
+            if (mailId == "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
+                document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
+                isValid = false;
+            } else if (mailId !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
+                document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
+                isValid = false;
+            } else {
+                document.getElementById("patientEmail_err").innerHTML = "";
             }
 
             // === GENDER ===
@@ -983,13 +1005,7 @@
                 document.getElementById("partnerMobile_err").innerHTML = "";
             }
 
-            // === ALTERNATE MOBILE (Optional but must be 10 digits if provided) ===
-            if (AltMob !== "" && !/^\d{10}$/.test(AltMob)) {
-                document.getElementById("patientAltMobile_err").innerHTML = "Please enter a valid 10-digit mobile number";
-                isValid = false;
-            } else {
-                document.getElementById("patientAltMobile_err").innerHTML = "";
-            }
+
 
             return isValid;
         }

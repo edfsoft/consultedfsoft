@@ -152,6 +152,52 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    public function getCompletedConsultByDate()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $date = $this->input->get('date');
+        $consultDate = $date ? date('Y-m-d', strtotime($date)) : date('Y-m-d');
+
+        $data = $this->HcpModel->getCompletedConsultByDate($hcpIdDb, $consultDate);
+
+        foreach ($data as &$row) {
+            $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
+        }
+
+        echo json_encode([
+            'success' => true,
+            'date' => $consultDate,
+            'data' => $data
+        ]);
+    }
+
+    public function getFollowUpConsultations()
+    {
+        $hcpIdDb = $this->session->userdata('hcpIdDb');
+        if (!$hcpIdDb) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            return;
+        }
+
+        $date = $this->input->get('date');
+
+        $data = $this->HcpModel->getFollowUpConsult($hcpIdDb, $date);
+
+        foreach ($data as &$row) {
+            $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
     public function patients()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -174,22 +220,54 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function check_duplicate_field()
+    public function check_duplicate()
     {
-        $field = $this->input->post('field');
         $value = $this->input->post('value');
-        $table = $this->input->post('table');
+        $field = $this->input->post('field'); // 'mobile', 'alt_mobile', 'email'
+        $patientId = $this->input->post('patientId');
 
-        $this->db->where($field, $value);
-        $query = $this->db->get($table);
+        if (!$value || !$field) {
+            echo json_encode(['exists' => false]);
+            return;
+        }
+
+        $table = 'patient_details';
+
+        $this->db->select('patientId, firstName, lastName, mobileNumber, alternateMobile, mailId');
+        $this->db->from($table);
+
+        switch ($field) {
+            case 'mobile':
+                $this->db->where('mobileNumber', $value);
+                break;
+            case 'alt_mobile':
+                $this->db->where('alternateMobile', $value);
+                break;
+            case 'email':
+                $this->db->where('mailId', $value);
+                break;
+            default:
+                echo json_encode(['exists' => false]);
+                return;
+        }
+
+        // Exclude current patient in edit mode
+        if ($patientId) {
+            $this->db->where('patientId !=', $patientId);
+        }
+
+        $query = $this->db->get();
 
         if ($query->num_rows() > 0) {
-            echo json_encode(['exists' => true]);
+            echo json_encode([
+                'exists' => true,
+                'data' => $query->result_array()
+            ]);
         } else {
             echo json_encode(['exists' => false]);
         }
     }
-
+    
     public function addPatientsForm()
     {
         $register = $this->HcpModel->insertPatients();
@@ -543,28 +621,9 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function getFollowUpAppointments()
-    {
-        $hcpIdDb = $this->session->userdata('hcpIdDb');
-        if (!$hcpIdDb) {
-            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-            return;
-        }
 
-        $date = $this->input->get('date'); // e.g., 17-Oct-2025
 
-        $data = $this->HcpModel->getFollowUpAppointments($hcpIdDb, $date);
 
-        // Format time to 12-hour (e.g., 02:50 PM)
-        foreach ($data as &$row) {
-            $row['time_12hr'] = date('h:i A', strtotime($row['consult_time']));
-        }
-
-        echo json_encode([
-            'success' => true,
-            'data' => $data
-        ]);
-    }
 
 public function patientAppointments()
 {

@@ -321,8 +321,8 @@
                         </div>
 
                         <div class="card-body px-md-4 pb-4">
-                            <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>" name="patientDetails"
-                                id="patientDetails" enctype="multipart/form-data" method="POST"
+                            <form action="<?php echo base_url() . "Healthcareprovider/addPatientsForm" ?>"
+                                name="addPatientDetails" id="addPatientDetails" enctype="multipart/form-data" method="POST"
                                 oninput="validatePatientDetails()" onsubmit="return submitPatientDetails(event)">
                                 <div class="position-relative">
                                     <img id="previewImage" src="<?= base_url('assets/BlankProfileCircle.png') ?>"
@@ -375,7 +375,8 @@
                                 </div>
                                 <div class="d-md-flex justify-content-between pb-3">
                                     <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                        <label class="form-label" for="patientEmail">Email Id</label>
+                                        <label class="form-label" for="patientEmail">Email Id <span
+                                                class="text-danger">*</span></label>
                                         <input type="email" class="form-control" id="patientEmail" name="patientEmail"
                                             placeholder="E.g. example@gmail.com" maxlength="50">
                                         <small id="patientEmail_err" class="text-danger pt-1"></small>
@@ -520,8 +521,9 @@
                                 foreach ($patientDetails as $key => $value) {
                                     ?>
                                         <form action="<?php echo base_url() . "Healthcareprovider/updatePatientsForm" ?>"
-                                            name="patientDetails" id="multi-step-form" enctype="multipart/form-data" method="POST"
-                                            oninput="validatePatientDetails()" onsubmit="return submitPatientDetails(event)">
+                                            name="editPatientDetails" id="editPatientDetails" enctype="multipart/form-data"
+                                            method="POST" oninput="validatePatientDetails()"
+                                            onsubmit="return submitPatientDetails(event)">
                                             <div class="position-relative">
                                                 <img id="previewImage" src="<?= isset($value['profilePhoto']) && $value['profilePhoto'] !== "No data"
                                                     ? base_url('uploads/' . $value['profilePhoto'])
@@ -570,7 +572,6 @@
                                                         placeholder="E.g. 9638527410">
                                                     <small id="patientMobile_err" class="text-danger pt-1"></small>
                                                     <small id="duplicateMobile_err" class="text-danger pt-1"></small>
-                                                    <input type="hidden" id="oldMobile" value="<?php echo $value['mobileNumber']; ?>">
                                                 </div>
                                                 <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
                                                     <label class="form-label" for="patientAltMobile">Alternate Moblie
@@ -583,7 +584,8 @@
                                             </div>
                                             <div class="d-md-flex justify-content-between pb-3">
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                                    <label class="form-label" for="patientEmail">Email</label>
+                                                    <label class="form-label" for="patientEmail">Email <span
+                                                            class="text-danger">*</span></label>
                                                     <input type="email" class="form-control" id="patientEmail" name="patientEmail"
                                                         value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com"
                                                         maxlength="50">
@@ -743,6 +745,10 @@
                                             </div>
                                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                                 value="<?php echo $value['id']; ?>">
+                                            <input type="hidden" id="oldMobile" value="<?php echo $value['mobileNumber'] ?? ''; ?>">
+                                            <input type="hidden" id="oldAltMobile"
+                                                value="<?php echo $value['alternateMobile'] ?? ''; ?>">
+                                            <input type="hidden" id="oldEmail" value="<?php echo $value['mailId'] ?? ''; ?>">
                                             <div class="d-flex justify-content-between mt-3">
                                                 <button type="reset" class="btn btn-secondary">Reset</button>
                                                 <button type="submit" class="btn text-light"
@@ -875,34 +881,20 @@
         <?php include 'hcpModals.php'; ?>
 
         <!-- Mobile number already exist message display modal - 2 palces [Add, Edit patient details] -->
-        <div class="modal fade" id="duplicateMobileModal" tabindex="-1" aria-labelledby="duplicateMobileLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog">
+        <div class="modal fade" id="duplicateMobileModal" tabindex="-1" data-bs-backdrop="static"
+            data-bs-keyboard="false">
+            <div class="modal-dialog">
                 <div class="modal-content">
-
                     <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                            id="duplicateMobileLabel">Mobile Number Exist</h5>
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">
+                            Duplicate Information Found
+                        </h5>
                     </div>
-
-                    <div class="modal-body">
-                        This mobile number is already registered with another patient.
-                    </div>
-
+                    <div class="modal-body" id="duplicateDetails"></div>
                     <div class="modal-footer d-flex justify-content-between">
-
-                        <button type="button" class="btn btn-secondary" id="dupCloseBtn">
-                            Cancel
-                        </button>
-
-                        <button type="button" class="btn text-light" style="background-color:#00ad8e;"
-                            id="dupAddAnywayBtn">
-                            Add Anyway
-                        </button>
-
-                        <button type="button" class="btn btn-warning text-dark" id="dupEditBtn">
-                            Edit Mobile
-                        </button>
+                        <button class="btn btn-secondary" id="dupCloseBtn">Cancel</button>
+                        <button class="btn btn-success" id="dupAddAnywayBtn">Add Anyway</button>
+                        <button class="btn btn-warning" id="dupEditBtn">Edit Details</button>
                     </div>
                 </div>
             </div>
@@ -931,7 +923,6 @@
 
     </main>
 
-
     <script>
         <?php if ($method == "patients" || $method == "patientDetailsForm" || $method == "patientDetailsFormUpdate" || $method == "patientDetails" || $method == "prescription") { ?>
             document.getElementById('patients').style.color = "#87F7E3";
@@ -945,10 +936,11 @@
 
             var name = document.getElementById("patientName").value.trim();
             var mobile = document.getElementById("patientMobile").value;
+            var AltMob = document.getElementById("patientAltMobile").value;
+            var mailId = document.getElementById("patientEmail").value;
             var gender = document.getElementById("patientGender").value;
             var age = document.getElementById("patientAge").value;
             var gdMob = document.getElementById("partnerMobile").value;
-            var AltMob = document.getElementById("patientAltMobile").value;
 
             // === NAME ===
             if (name === "") {
@@ -967,6 +959,25 @@
                 isValid = false;
             } else {
                 document.getElementById("patientMobile_err").innerHTML = "";
+            }
+
+            // === ALTERNATE MOBILE (Optional but must be 10 digits if provided) ===
+            if (AltMob !== "" && !/^\d{10}$/.test(AltMob)) {
+                document.getElementById("patientAltMobile_err").innerHTML = "Please enter a valid 10-digit mobile number";
+                isValid = false;
+            } else {
+                document.getElementById("patientAltMobile_err").innerHTML = "";
+            }
+
+            // === EMAIL ===
+            if (mailId == "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
+                document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
+                isValid = false;
+            } else if (mailId !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
+                document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
+                isValid = false;
+            } else {
+                document.getElementById("patientEmail_err").innerHTML = "";
             }
 
             // === GENDER ===
@@ -994,14 +1005,6 @@
                 isValid = false;
             } else {
                 document.getElementById("partnerMobile_err").innerHTML = "";
-            }
-
-            // === ALTERNATE MOBILE (Optional but must be 10 digits if provided) ===
-            if (AltMob !== "" && !/^\d{10}$/.test(AltMob)) {
-                document.getElementById("patientAltMobile_err").innerHTML = "Please enter a valid 10-digit mobile number";
-                isValid = false;
-            } else {
-                document.getElementById("patientAltMobile_err").innerHTML = "";
             }
 
             return isValid;
@@ -1095,96 +1098,134 @@
 
     </script>
 
-    <!-- Check Mobile Number already exist or not -->
+    <!-- Check Mobile Number, Alternate mobile number already exist or not -->
     <script>
-        function checkDuplicateField(field, value, callback) {
-            const formData = new URLSearchParams();
-            formData.append('field', 'mobileNumber');
-            formData.append('value', value);
-            formData.append('table', 'patient_details');
+        function checkDuplicate(fieldValue, fieldType, patientId, callback) {
+            if (!fieldValue) {
+                callback({ exists: false });
+                return;
+            }
 
-            fetch("<?= base_url('Healthcareprovider/check_duplicate_field') ?>", {
+            const formData = new URLSearchParams();
+            formData.append('value', fieldValue);
+            formData.append('field', fieldType); // mobile, alt_mobile, email
+            if (patientId) {
+                formData.append('patientId', patientId);
+            }
+
+            fetch("<?= base_url('Healthcareprovider/check_duplicate') ?>", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData
             })
-                .then(response => response.json())
-                .then(data => callback(data.exists))
-                .catch(error => {
-                    console.error('Error:', error);
-                    callback(false);
-                });
+                .then(res => res.json())
+                .then(data => callback(data))
+                .catch(() => callback({ exists: false }));
         }
 
-        // 2. Main Submit Handler
         function submitPatientDetails(event) {
             event.preventDefault();
-            if (!validatePatientDetails()) {
-                return false;
-            }
-            const mobileInput = document.getElementById("patientMobile");
-            const errorElement = document.getElementById("duplicateMobile_err");
 
-            const oldMobileInput = document.getElementById("oldMobile");
-            const oldMobileValue = oldMobileInput ? oldMobileInput.value : "";
+            if (!validatePatientDetails()) return false;
 
-            const form = document.getElementById("patientDetails") || document.getElementById("multi-step-form");
+            const mobile = document.getElementById("patientMobile").value.trim();
+            const alt = document.getElementById("patientAltMobile").value.trim();
+            const email = document.getElementById("patientEmail").value.trim();
 
-            if (oldMobileValue !== "" && mobileInput.value === oldMobileValue) {
-                form.submit();
-                return;
-            }
+            const oldMobile = document.getElementById("oldMobile")?.value || "";
+            const oldAlt = document.getElementById("oldAltMobile")?.value || "";
+            const oldEmail = document.getElementById("oldEmail")?.value || ""; // assume hidden input in edit form
 
-            if (errorElement) errorElement.textContent = "";
+            const patientId = document.getElementById("patientIdDb")?.value || "";
 
-            checkDuplicateField("mobile", mobileInput.value, function (exists) {
-                if (exists) {
-                    const modalEl = document.getElementById('duplicateMobileModal');
-                    const modal = new bootstrap.Modal(modalEl);
-                    modal.show();
-                    return;
+            const form = document.getElementById("addPatientDetails") || document.getElementById("editPatientDetails");
+
+            const duplicates = {}; // To collect all duplicate info
+
+            let checksCompleted = 0;
+            const totalChecks = 3;
+
+            function finalize() {
+                checksCompleted++;
+                if (checksCompleted === totalChecks) {
+                    if (Object.keys(duplicates).length > 0) {
+                        showDuplicateModal(duplicates);
+                    } else {
+                        form.submit();
+                    }
                 }
-                else {
-                    form.submit();
-                }
-            });
+            }
+
+            // Check Mobile
+            if (mobile && mobile !== oldMobile) {
+                checkDuplicate(mobile, 'mobile', patientId, function (res) {
+                    if (res.exists) duplicates['Mobile Number'] = { value: mobile, patients: res.data };
+                    finalize();
+                });
+            } else {
+                finalize();
+            }
+
+            // Check Alternate Mobile
+            if (alt && alt !== oldAlt) {
+                checkDuplicate(alt, 'alt_mobile', patientId, function (res) {
+                    if (res.exists) duplicates['Alternate Mobile'] = { value: alt, patients: res.data };
+                    finalize();
+                });
+            } else {
+                finalize();
+            }
+
+            // Check Email
+            if (email && email !== oldEmail) {
+                checkDuplicate(email, 'email', patientId, function (res) {
+                    if (res.exists) duplicates['Email'] = { value: email, patients: res.data };
+                    finalize();
+                });
+            } else {
+                finalize();
+            }
+        }
+
+        function showDuplicateModal(duplicates) {
+            let html = '<p class="fw-semibold mb-3">The following information already exists in the system:</p>';
+
+            for (const [fieldName, info] of Object.entries(duplicates)) {
+                html += `<div class="mb-3">
+                <p class="fw-semibold mb-1">${fieldName} <b>${info.value}</b> already exists</p>
+                <ul class="mb-0">`;
+
+                info.patients.forEach(p => {
+                    html += `<li><b>${p.firstName} ${p.lastName}</b> (Patient ID: ${p.patientId})</li>`;
+                });
+
+                html += `</ul></div>`;
+            }
+
+            document.getElementById("duplicateDetails").innerHTML = html;
+
+            const modal = new bootstrap.Modal(document.getElementById('duplicateMobileModal'));
+            modal.show();
         }
 
         document.addEventListener("DOMContentLoaded", function () {
+            const modalEl = document.getElementById("duplicateMobileModal");
 
-            const dupModalEl = document.getElementById("duplicateMobileModal");
+            document.getElementById("dupEditBtn").onclick = () => {
+                bootstrap.Modal.getInstance(modalEl).hide();
+            };
 
-            if (dupModalEl) {
+            document.getElementById("dupAddAnywayBtn").onclick = () => {
+                bootstrap.Modal.getInstance(modalEl).hide();
+                const form = document.getElementById("addPatientDetails") || document.getElementById("editPatientDetails");
+                form.submit();
+            };
 
-                document.getElementById("dupEditBtn").addEventListener("click", function () {
-                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                    modal.hide();
-                });
-
-                document.getElementById("dupAddAnywayBtn").addEventListener("click", function () {
-                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                    modal.hide();
-
-                    const form = document.getElementById("patientDetails") ||
-                        document.getElementById("multi-step-form");
-
-                    form.submit();
-                });
-
-                document.getElementById("dupCloseBtn").addEventListener("click", function () {
-                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                    modal.hide();
-
-                    if (typeof goBack === "function") {
-                        goBack();
-                    } else {
-                        window.history.back();
-                    }
-                });
-            }
+            document.getElementById("dupCloseBtn").onclick = () => {
+                bootstrap.Modal.getInstance(modalEl).hide();
+                window.history.back();
+            };
         });
-
-
     </script>
 
     <!-- Consultation card show more and less -->

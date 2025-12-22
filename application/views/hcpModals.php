@@ -19,73 +19,6 @@
     </div>
 </div>
 
-<!-- Log out confirmation -->
-<div class="modal fade" id="confirmLogout" tabindex="-1" aria-labelledby="confirmLogoutLabel" aria-hidden="true"
-    data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="confirmLogoutLabel">
-                    Confirm Logout</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to log out?</p>
-            </div>
-            <div class="modal-footer d-flex justify-content-end">
-                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
-                <a href="<?php echo base_url() . "Healthcareprovider/logout" ?>">
-                    <button class="btn text-light" style="background-color: #00ad8e;">Logout</button>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Not in use currently -->
-<!--Display Message Popup Screen -->
-<!-- <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <?php if ($this->session->flashdata('successMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
-                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
-                        </div>
-                    <?php }
-                if ($this->session->flashdata('errorMessage')) { ?>
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
-                                data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
-                        </div>
-                    <?php } ?>
-                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
-                            data-bs-dismiss="modal">Close</button> </div>
-                </div>
-            </div>
-        </div> -->
-
-<!-- Display Message Popup Screen Script -->
-<!-- <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var messagePopup = document.getElementById('display_message_popup');
-
-            if (messagePopup) {
-                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
-                    var displayMessage = new bootstrap.Modal(messagePopup);
-                    displayMessage.show();
-                <?php } ?>
-            }
-        });
-    </script> -->
-
 <!-- Delete Consultation Confirmation Modal -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -107,10 +40,9 @@
     </div>
 </div>
 
-
 <!-- Modal for add new patient -->
-<div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel"
-    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
     <input type="hidden" id="newPatientResult" value="">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -121,24 +53,27 @@
             <div class="modal-body">
                 <div class="form-group pb-2">
                     <label>First Name <span class="text-danger">*</span></label>
-                    <input type="text" name="newFirstName" id="newFirstName" placeholder="E.g. Siva" class="form-control">
+                    <input type="text" name="newFirstName" id="newFirstName" placeholder="E.g. Siva"
+                        class="form-control">
                     <div id="newFirstName_err" class="text-danger"></div>
                 </div>
                 <div class="form-group pb-2">
                     <label>Last Name</label>
-                    <input type="text" name="newLastName" id="newLastName" placeholder="E.g. kumar" class="form-control">
+                    <input type="text" name="newLastName" id="newLastName" placeholder="E.g. kumar"
+                        class="form-control">
                     <div id="newLastName_err" class="text-danger"></div>
                 </div>
                 <div class="form-group pb-2">
                     <label>Mobile <span class="text-danger">*</span></label>
-                    <input type="text" name="newMobile" id="newMobile" placeholder="E.g. 5987654321" class="form-control" maxlength="10"
-                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <input type="text" name="newMobile" id="newMobile" placeholder="E.g. 5987654321"
+                        class="form-control" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     <div id="newMobile_err" class="text-danger"></div>
                     <div id="newMobileDuplicate_err" class="text-danger"></div>
                 </div>
                 <div class="form-group pb-2">
                     <label>Email <span class="text-danger">*</span></label>
-                    <input type="email" name="newEmail" id="newEmail" placeholder="E.g. siva@gmail.com" class="form-control">
+                    <input type="email" name="newEmail" id="newEmail" placeholder="E.g. siva@gmail.com"
+                        class="form-control">
                     <div id="newEmail_err" class="text-danger"></div>
                 </div>
                 <div class="form-group pb-2">
@@ -166,6 +101,7 @@
         </div>
     </div>
 </div>
+
 <!-- Add New patient -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -498,7 +434,7 @@
             isValid = false;
         }
 
-            if (email === "") {
+        if (email === "") {
             document.getElementById("newEmail_err").innerHTML = "Email must be filled out.";
             isValid = false;
         } else if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -520,64 +456,34 @@
         }
 
         if (isValid) {
-        try {
+            try {
 
-            // Prepare duplicate container
-            const duplicates = {};
-            // CHECK MOBILE DUPLICATE
-            const mobileFormData = new URLSearchParams();
-            mobileFormData.append('field', 'mobile');
-            mobileFormData.append('value', mobile);
+                // Prepare duplicate container
+                const duplicates = {};
+                // CHECK MOBILE DUPLICATE
+                const mobileFormData = new URLSearchParams();
+                mobileFormData.append('field', 'mobile');
+                mobileFormData.append('value', mobile);
 
-            const mobileResponse = await fetch(
-                '<?= base_url("Healthcareprovider/check_duplicate") ?>',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: mobileFormData
+                const mobileResponse = await fetch(
+                    '<?= base_url("Healthcareprovider/check_duplicate") ?>',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: mobileFormData
+                    }
+                );
+
+                const mobileData = await mobileResponse.json();
+
+                if (mobileData.exists) {
+                    duplicates['Mobile Number'] = {
+                        value: mobile,
+                        patients: mobileData.data
+                    };
                 }
-            );
 
-            const mobileData = await mobileResponse.json();
-
-            if (mobileData.exists) {
-                duplicates['Mobile Number'] = {
-                    value: mobile,
-                    patients: mobileData.data
-                };
-            }
-
-            // CHECK EMAIL DUPLICATE
-            const emailFormData = new URLSearchParams();
-            emailFormData.append('field', 'email');
-            emailFormData.append('value', email);
-
-            const emailResponse = await fetch(
-                '<?= base_url("Healthcareprovider/check_duplicate") ?>',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: emailFormData
-                }
-            );
-
-            const emailData = await emailResponse.json();
-
-            if (emailData.exists) {
-                duplicates['Email Address'] = {
-                    value: email,
-                    patients: emailData.data
-                };
-            }
-
-            // SHOW MODAL IF ANY DUPLICATE
-            if (Object.keys(duplicates).length > 0 && !window.forceAddAnyway) {
-                showDuplicateModal(duplicates);
-                return;
-            }
-
-            // 2 CHECK EMAIL DUPLICATE
-            if (email) {
+                // CHECK EMAIL DUPLICATE
                 const emailFormData = new URLSearchParams();
                 emailFormData.append('field', 'email');
                 emailFormData.append('value', email);
@@ -593,93 +499,123 @@
 
                 const emailData = await emailResponse.json();
 
-                if (emailData.exists && !window.forceAddAnyway) {
-                    showDuplicateModal(emailData.data);
+                if (emailData.exists) {
+                    duplicates['Email Address'] = {
+                        value: email,
+                        patients: emailData.data
+                    };
+                }
+
+                // SHOW MODAL IF ANY DUPLICATE
+                if (Object.keys(duplicates).length > 0 && !window.forceAddAnyway) {
+                    showDuplicateModal(duplicates);
                     return;
                 }
-            }
 
-            // 3 SAVE PATIENT (NO DUPLICATE)
-            const saveResponse = await fetch(
-                '<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        firstName, lastName, mobile, email, gender, age
-                    })
+                // 2 CHECK EMAIL DUPLICATE
+                if (email) {
+                    const emailFormData = new URLSearchParams();
+                    emailFormData.append('field', 'email');
+                    emailFormData.append('value', email);
+
+                    const emailResponse = await fetch(
+                        '<?= base_url("Healthcareprovider/check_duplicate") ?>',
+                        {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: emailFormData
+                        }
+                    );
+
+                    const emailData = await emailResponse.json();
+
+                    if (emailData.exists && !window.forceAddAnyway) {
+                        showDuplicateModal(emailData.data);
+                        return;
+                    }
                 }
-            );
 
-            const data = await saveResponse.json(); 
+                // 3 SAVE PATIENT (NO DUPLICATE)
+                const saveResponse = await fetch(
+                    '<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            firstName, lastName, mobile, email, gender, age
+                        })
+                    }
+                );
 
-        if (data.success) {
-            document.getElementById("newPatientStatus").innerHTML =
-                "Patient saved successfully!";
-            document.getElementById("newPatientStatus").className =
-                "text-success mt-2";
+                const data = await saveResponse.json();
 
-            const patientData = {
-                patientId: data.patientId,
-                id: data.id,
-                firstName: data.firstName,
-                lastName: data.lastName || ''
-            };
-            document.getElementById("newPatientResult").value =
-                JSON.stringify(patientData);
+                if (data.success) {
+                    document.getElementById("newPatientStatus").innerHTML =
+                        "Patient saved successfully!";
+                    document.getElementById("newPatientStatus").className =
+                        "text-success mt-2";
 
-            // Clear fields
-            document.getElementById("newFirstName").value = "";
-            document.getElementById("newLastName").value = "";
-            document.getElementById("newMobile").value = "";
-            document.getElementById("newEmail").value = "";
-            document.getElementById("newGender").value = "";
-            document.getElementById("newAge").value = "";
+                    const patientData = {
+                        patientId: data.patientId,
+                        id: data.id,
+                        firstName: data.firstName,
+                        lastName: data.lastName || ''
+                    };
+                    document.getElementById("newPatientResult").value =
+                        JSON.stringify(patientData);
 
-            bootstrap.Modal.getInstance(
-                document.getElementById('newPatientModal')
-            ).hide();
-        } else {
-            document.getElementById("newPatientStatus").innerHTML =
-                "Failed to save patient.";
-            document.getElementById("newPatientStatus").className =
-                "text-danger mt-2";
+                    // Clear fields
+                    document.getElementById("newFirstName").value = "";
+                    document.getElementById("newLastName").value = "";
+                    document.getElementById("newMobile").value = "";
+                    document.getElementById("newEmail").value = "";
+                    document.getElementById("newGender").value = "";
+                    document.getElementById("newAge").value = "";
+
+                    bootstrap.Modal.getInstance(
+                        document.getElementById('newPatientModal')
+                    ).hide();
+                } else {
+                    document.getElementById("newPatientStatus").innerHTML =
+                        "Failed to save patient.";
+                    document.getElementById("newPatientStatus").className =
+                        "text-danger mt-2";
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById("newPatientStatus").innerHTML =
+                    "An error occurred.";
+                document.getElementById("newPatientStatus").className =
+                    "text-danger mt-2";
+            }
         }
-
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById("newPatientStatus").innerHTML =
-                "An error occurred.";
-            document.getElementById("newPatientStatus").className =
-                "text-danger mt-2";
-        }
-    }
 
     }
 
 
     function showDuplicateModal(duplicates) {
-            let html = '<p class="fw-semibold mb-3">The following information already exists in the system:</p>';
+        let html = '<p class="fw-semibold mb-3">The following information already exists in the system:</p>';
 
-            for (const [fieldName, info] of Object.entries(duplicates)) {
-                html += `<div class="mb-3">
+        for (const [fieldName, info] of Object.entries(duplicates)) {
+            html += `<div class="mb-3">
                     <p class="fw-semibold mb-1">${fieldName} <b>${info.value}</b> already exists in:</p>
                     <ul class="mb-0">`;
 
-                info.patients.forEach(p => {
-                    html += `<li><b>${p.firstName} ${p.lastName || ''}</b> (Patient ID: ${p.patientId})</li>`;
-                });
+            info.patients.forEach(p => {
+                html += `<li><b>${p.firstName} ${p.lastName || ''}</b> (Patient ID: ${p.patientId})</li>`;
+            });
 
-                html += `</ul></div>`;
-            }
-
-            document.getElementById("duplicateDetails").innerHTML = html;
-
-            const modal = new bootstrap.Modal(
-                document.getElementById('duplicateMobileModal')
-            );
-            modal.show();
+            html += `</ul></div>`;
         }
+
+        document.getElementById("duplicateDetails").innerHTML = html;
+
+        const modal = new bootstrap.Modal(
+            document.getElementById('duplicateMobileModal')
+        );
+        modal.show();
+    }
 
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -731,8 +667,7 @@
 </script>
 
 <!-- Mobile number already exist message display modal - 2 palces [Add, Edit patient details] -->
-<div class="modal fade" id="duplicateMobileModal" tabindex="-1" data-bs-backdrop="static"
-    data-bs-keyboard="false">
+<div class="modal fade" id="duplicateMobileModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -751,7 +686,8 @@
 </div>
 
 <!-- Success Appointment Booked Modal -->
-<div class="modal fade" id="appointmentSuccessModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+<div class="modal fade" id="appointmentSuccessModal" tabindex="-1" aria-labelledby="successModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0">
@@ -763,8 +699,76 @@
                 <p class="mt-3">Appointment booked, link has been sent to the registered Email</p>
             </div>
             <div class="modal-footer border-0 justify-content-center">
-                <button type="button" class="btn text-light" style="background-color: #00ad8e;" data-bs-dismiss="modal">OK</button>
+                <button type="button" class="btn text-light" style="background-color: #00ad8e;"
+                    data-bs-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Log out confirmation -->
+<div class="modal fade" id="confirmLogout" tabindex="-1" aria-labelledby="confirmLogoutLabel" aria-hidden="true"
+    data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="confirmLogoutLabel">
+                    Confirm Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to log out?</p>
+            </div>
+            <div class="modal-footer d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+                <a href="<?php echo base_url() . "Healthcareprovider/logout" ?>">
+                    <button class="btn text-light" style="background-color: #00ad8e;">Logout</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Not in use currently -->
+<!--Display Message Popup Screen -->
+<!-- <div class="modal fade" id="display_message_popup" tabindex="-1" aria-labelledby="errorModalLabel"
+            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <?php if ($this->session->flashdata('successMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Success</h5> <button type="button"
+                                class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('successMessage'); ?></p>
+                        </div>
+                    <?php }
+                if ($this->session->flashdata('errorMessage')) { ?>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errorModalLabel">Error!</h5> <button type="button" class="btn-close"
+                                data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><?php echo $this->session->flashdata('errorMessage'); ?></p>
+                        </div>
+                    <?php } ?>
+                    <div class="modal-footer"> <button type="button" class="btn btn-danger"
+                            data-bs-dismiss="modal">Close</button> </div>
+                </div>
+            </div>
+        </div> -->
+
+<!-- Display Message Popup Screen Script -->
+<!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var messagePopup = document.getElementById('display_message_popup');
+
+            if (messagePopup) {
+                <?php if ($this->session->flashdata('successMessage') || $this->session->flashdata('errorMessage')) { ?>
+                    var displayMessage = new bootstrap.Modal(messagePopup);
+                    displayMessage.show();
+                <?php } ?>
+            }
+        });
+    </script> -->

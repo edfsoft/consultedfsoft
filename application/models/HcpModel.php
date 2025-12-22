@@ -499,47 +499,60 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    // For Reference to save medicine
-    // public function consultMedicineSave($consultIdDb)
-    // {
-    //     $medNames = $this->input->post('preMedName');
-    //     $frequencies = $this->input->post('preMedFrequency');
-    //     $durations = $this->input->post('preMedDuration');
-    //     $durationUnits = $this->input->post('preMedDurationUnit');
-    //     $notes = $this->input->post('preMedNotes');
-    //     $patientDbId = $this->input->post('patientIdDb');
+    public function insertPatientAppointment()
+    {
+        $post = $this->input->post(null, true);
 
-    //     // for ($i = 0; $i < count($medNames); $i++) {
-    //     //     $data = [
-    //     //         'patientDbId' => $patientDbId,
-    //     //         'consultationDbId' => $consultIdDb,
-    //     //         'medicineName' => $medNames[$i],
-    //     //         'frequency' => $frequencies[$i],
-    //     //         'duration' => $durations[$i],
-    //     //         'duration_unit' => $durationUnits[$i],
-    //     //         'notes' => $notes[$i],
-    //     //         'dateOfAppoint' => date('Y-m-d')
-    //     //     ];
-    //     // $this->db->insert('consultation_medicines', $data);
-    //     for ($i = 0; $i < count($medNames); $i++) {
-    //         $frequency = isset($frequencies[$i]) ? $frequencies[$i] : '';
-    //         $duration = isset($durations[$i]) ? $durations[$i] : '';
-    //         $durationUnit = isset($durationUnits[$i]) ? $durationUnits[$i] : '';
-    //         $note = isset($notes[$i]) ? $notes[$i] : '';
+        list($patientCode, $patientDbId) = explode('|', $post['patientId']);
 
-    //         $data = [
-    //             'patientDbId' => $patientDbId,
-    //             'consultationDbId' => $consultIdDb,
-    //             'medicineName' => $medNames[$i],
-    //             'frequency' => $frequency,
-    //             'duration' => $duration,
-    //             'duration_unit' => $durationUnit,
-    //             'notes' => $note,
-    //             'dateOfAppoint' => date('Y-m-d')
-    //         ];
-    //         $this->db->insert('consultation_medicines', $data);
-    //     }
-    // }
+        // Convert 12-hour time to 24-hour
+        $time24hr = date('H:i:s', strtotime($post['appTime']));
+
+        $appointmentLink = 'https://meet.google.com/wzo-dprz-zqy';
+
+        $insert = [
+            'patient_id' => $patientCode,
+            'appointment_date' => $post['appDate'],
+            'appointment_time' => $time24hr,
+            'appointment_link' => $appointmentLink,
+            'reason' => $post['appReason'],
+            'hcp_id' => $_SESSION['hcpIdDb']
+        ];
+
+        $this->db->insert('patient_appointments', $insert);
+
+        return $this->db->insert_id();
+    }
+
+    public function getPatientAppointments($hcpIdDb)
+    {
+        $this->db->select('
+        pa.*,
+        p.id AS patientDbId,
+        p.patientId AS patientCode,
+        p.firstName,
+        p.lastName
+    ');
+        $this->db->from('patient_appointments pa');
+        $this->db->join('patient_details p', 'p.patientId = pa.patient_id', 'left');
+        $this->db->where('pa.hcp_id', $hcpIdDb);
+        $this->db->where('pa.appointment_date >=', date('Y-m-d'));
+        $this->db->order_by('pa.appointment_date ASC, pa.appointment_time ASC');
+
+        return $this->db->get()->result_array();
+    }
+
+    public function getPatientEmail($patientId)
+    {
+        $this->db->select('emailId');
+        $this->db->from('patient_details');
+        $this->db->where('patientId', $patientId);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->row()->emailId;
+        }
+        return false;  // No email found
+    }
 
     public function getHcpDetails()
     {
@@ -597,7 +610,6 @@ class HcpModel extends CI_Model
         return true;
     }
 
-
     public function updateNewPassword()/* Password chnage after login */
     {
         $post = $this->input->post(null, true);
@@ -629,59 +641,5 @@ class HcpModel extends CI_Model
 
 
 
-public function insertPatientAppointment()
-{
-    $post = $this->input->post(null, true);
 
-    list($patientCode, $patientDbId) = explode('|', $post['patientId']);
-
-    // Convert 12-hour time to 24-hour
-    $time24hr = date('H:i:s', strtotime($post['appTime']));
-
-    $appointmentLink = 'https://meet.google.com/wzo-dprz-zqy';
-
-    $insert = [
-        'patient_id'        => $patientCode,
-        'appointment_date'  => $post['appDate'],
-        'appointment_time'  => $time24hr,
-        'appointment_link'  => $appointmentLink,
-        'reason'            => $post['appReason'],
-        'hcp_id'            => $_SESSION['hcpIdDb']
-    ];
-
-    $this->db->insert('patient_appointments', $insert);
-
-    return $this->db->insert_id();
-}
-
-public function getPatientAppointments($hcpIdDb)
-{
-    $this->db->select('
-        pa.*,
-        p.id AS patientDbId,
-        p.patientId AS patientCode,
-        p.firstName,
-        p.lastName
-    ');
-    $this->db->from('patient_appointments pa');
-    $this->db->join('patient_details p', 'p.patientId = pa.patient_id', 'left');
-    $this->db->where('pa.hcp_id', $hcpIdDb);
-    $this->db->where('pa.appointment_date >=', date('Y-m-d'));
-    $this->db->order_by('pa.appointment_date ASC, pa.appointment_time ASC');
-
-    return $this->db->get()->result_array();
-}
-
-
-public function getPatientEmail($patientId)
-{
-    $this->db->select('emailId');
-    $this->db->from('patient_details');
-    $this->db->where('patientId', $patientId);
-    $query = $this->db->get();
-    if ($query->num_rows() > 0) {
-        return $query->row()->emailId;
-    }
-    return false;  // No email found
-}
 }

@@ -220,17 +220,41 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function check_duplicate_mobile()
+    public function check_duplicate()
     {
-        $number = $this->input->post('value');
+        $value = $this->input->post('value');
+        $field = $this->input->post('field'); // 'mobile', 'alt_mobile', 'email'
+        $patientId = $this->input->post('patientId');
+
+        if (!$value || !$field) {
+            echo json_encode(['exists' => false]);
+            return;
+        }
+
         $table = 'patient_details';
 
-        $this->db->select('patientId, firstName, lastName, mobileNumber, alternateMobile');
+        $this->db->select('patientId, firstName, lastName, mobileNumber, alternateMobile, mailId');
         $this->db->from($table);
-        $this->db->group_start();
-        $this->db->where('mobileNumber', $number);
-        $this->db->or_where('alternateMobile', $number);
-        $this->db->group_end();
+
+        switch ($field) {
+            case 'mobile':
+                $this->db->where('mobileNumber', $value);
+                break;
+            case 'alt_mobile':
+                $this->db->where('alternateMobile', $value);
+                break;
+            case 'email':
+                $this->db->where('mailId', $value);
+                break;
+            default:
+                echo json_encode(['exists' => false]);
+                return;
+        }
+
+        // Exclude current patient in edit mode
+        if ($patientId) {
+            $this->db->where('patientId !=', $patientId);
+        }
 
         $query = $this->db->get();
 
@@ -243,7 +267,7 @@ class Healthcareprovider extends CI_Controller
             echo json_encode(['exists' => false]);
         }
     }
-
+    
     public function addPatientsForm()
     {
         $register = $this->HcpModel->insertPatients();

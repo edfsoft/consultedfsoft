@@ -572,7 +572,6 @@
                                                         placeholder="E.g. 9638527410">
                                                     <small id="patientMobile_err" class="text-danger pt-1"></small>
                                                     <small id="duplicateMobile_err" class="text-danger pt-1"></small>
-                                                    <input type="hidden" id="oldMobile" value="<?php echo $value['mobileNumber']; ?>">
                                                 </div>
                                                 <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
                                                     <label class="form-label" for="patientAltMobile">Alternate Moblie
@@ -581,8 +580,6 @@
                                                         name="patientAltMobile" value="<?php echo $value['alternateMobile'] ?>"
                                                         maxlength="10" placeholder="E.g. 9876543210">
                                                     <small id="patientAltMobile_err" class="text-danger pt-1"></small>
-                                                    <input type="hidden" id="oldAltMobile"
-                                                        value="<?php echo $value['alternateMobile']; ?>">
                                                 </div>
                                             </div>
                                             <div class="d-md-flex justify-content-between pb-3">
@@ -748,6 +745,10 @@
                                             </div>
                                             <input type="hidden" id="patientIdDb" name="patientIdDb"
                                                 value="<?php echo $value['id']; ?>">
+                                            <input type="hidden" id="oldMobile" value="<?php echo $value['mobileNumber'] ?? ''; ?>">
+                                            <input type="hidden" id="oldAltMobile"
+                                                value="<?php echo $value['alternateMobile'] ?? ''; ?>">
+                                            <input type="hidden" id="oldEmail" value="<?php echo $value['mailId'] ?? ''; ?>">
                                             <div class="d-flex justify-content-between mt-3">
                                                 <button type="reset" class="btn btn-secondary">Reset</button>
                                                 <button type="submit" class="btn text-light"
@@ -885,14 +886,15 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Mobile Number Exists
+                        <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">
+                            Duplicate Information Found
                         </h5>
                     </div>
                     <div class="modal-body" id="duplicateDetails"></div>
                     <div class="modal-footer d-flex justify-content-between">
                         <button class="btn btn-secondary" id="dupCloseBtn">Cancel</button>
                         <button class="btn btn-success" id="dupAddAnywayBtn">Add Anyway</button>
-                        <button class="btn btn-warning" id="dupEditBtn">Edit Number</button>
+                        <button class="btn btn-warning" id="dupEditBtn">Edit Details</button>
                     </div>
                 </div>
             </div>
@@ -1005,8 +1007,6 @@
                 document.getElementById("partnerMobile_err").innerHTML = "";
             }
 
-
-
             return isValid;
         }
     </script>
@@ -1099,17 +1099,21 @@
     </script>
 
     <!-- Check Mobile Number, Alternate mobile number already exist or not -->
-    <!-- Need to update for Mail id check, currently only one mobile check at a time so change method to check all 3 at a time in future -->
     <script>
-        function checkDuplicateNumber(number, patientId, callback) {
+        function checkDuplicate(fieldValue, fieldType, patientId, callback) {
+            if (!fieldValue) {
+                callback({ exists: false });
+                return;
+            }
 
             const formData = new URLSearchParams();
-            formData.append('value', number);
+            formData.append('value', fieldValue);
+            formData.append('field', fieldType); // mobile, alt_mobile, email
             if (patientId) {
                 formData.append('patientId', patientId);
             }
 
-            fetch("<?= base_url('Healthcareprovider/check_duplicate_mobile') ?>", {
+            fetch("<?= base_url('Healthcareprovider/check_duplicate') ?>", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData
@@ -1126,55 +1130,77 @@
 
             const mobile = document.getElementById("patientMobile").value.trim();
             const alt = document.getElementById("patientAltMobile").value.trim();
+            const email = document.getElementById("patientEmail").value.trim();
 
             const oldMobile = document.getElementById("oldMobile")?.value || "";
             const oldAlt = document.getElementById("oldAltMobile")?.value || "";
+            const oldEmail = document.getElementById("oldEmail")?.value || ""; // assume hidden input in edit form
 
             const patientId = document.getElementById("patientIdDb")?.value || "";
 
-            const form = document.getElementById("addPatientDetails") ||
-                document.getElementById("editPatientDetails");
+            const form = document.getElementById("addPatientDetails") || document.getElementById("editPatientDetails");
 
-            if (mobile !== oldMobile) {
-                checkDuplicateNumber(mobile, patientId, function (res) {
-                    if (res.exists) {
-                        showDuplicateModal(res.data, mobile, 'Mobile Number');
-                        return;
-                    }
-                    checkAlternate();
-                });
-            } else {
-                checkAlternate();
-            }
+            const duplicates = {}; // To collect all duplicate info
 
-            function checkAlternate() {
+            let checksCompleted = 0;
+            const totalChecks = 3;
 
-                if (alt === "" || alt === oldAlt) {
-                    form.submit();
-                    return;
-                }
-
-                checkDuplicateNumber(alt, patientId, function (resAlt) {
-                    if (resAlt.exists) {
-                        showDuplicateModal(resAlt.data, alt, 'Alternate Mobile');
+            function finalize() {
+                checksCompleted++;
+                if (checksCompleted === totalChecks) {
+                    if (Object.keys(duplicates).length > 0) {
+                        showDuplicateModal(duplicates);
                     } else {
                         form.submit();
                     }
+                }
+            }
+
+            // Check Mobile
+            if (mobile && mobile !== oldMobile) {
+                checkDuplicate(mobile, 'mobile', patientId, function (res) {
+                    if (res.exists) duplicates['Mobile Number'] = { value: mobile, patients: res.data };
+                    finalize();
                 });
+            } else {
+                finalize();
+            }
+
+            // Check Alternate Mobile
+            if (alt && alt !== oldAlt) {
+                checkDuplicate(alt, 'alt_mobile', patientId, function (res) {
+                    if (res.exists) duplicates['Alternate Mobile'] = { value: alt, patients: res.data };
+                    finalize();
+                });
+            } else {
+                finalize();
+            }
+
+            // Check Email
+            if (email && email !== oldEmail) {
+                checkDuplicate(email, 'email', patientId, function (res) {
+                    if (res.exists) duplicates['Email'] = { value: email, patients: res.data };
+                    finalize();
+                });
+            } else {
+                finalize();
             }
         }
 
-        function showDuplicateModal(patients, number, type) {
+        function showDuplicateModal(duplicates) {
+            let html = '<p class="fw-semibold mb-3">The following information already exists in the system:</p>';
 
-            let html = `<p class="fw-semibold mb-2">${type} <b>${number}</b> already exists</p><ul>`;
+            for (const [fieldName, info] of Object.entries(duplicates)) {
+                html += `<div class="mb-3">
+                <p class="fw-semibold mb-1">${fieldName} <b>${info.value}</b> already exists</p>
+                <ul class="mb-0">`;
 
-            patients.forEach(p => {
-                html += `<li>
-        <b>${p.firstName} ${p.lastName}</b> (Patient ID: ${p.patientId})
-    </li>`;
-            });
+                info.patients.forEach(p => {
+                    html += `<li><b>${p.firstName} ${p.lastName}</b> (Patient ID: ${p.patientId})</li>`;
+                });
 
-            html += '</ul>';
+                html += `</ul></div>`;
+            }
 
             document.getElementById("duplicateDetails").innerHTML = html;
 
@@ -1183,7 +1209,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", function () {
-
             const modalEl = document.getElementById("duplicateMobileModal");
 
             document.getElementById("dupEditBtn").onclick = () => {

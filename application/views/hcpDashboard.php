@@ -167,7 +167,7 @@
                     <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-2">
-                                <i class="bi bi-calendar4 pe-3"></i> Appointments List
+                                <i class="bi bi-calendar4 pe-3"></i> CC-Appointments List
                             </p>
                             <div class="table-responsive">
                                 <?php if (isset($appointmentList[0]['id'])) { ?>
@@ -551,11 +551,11 @@
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                             <p style="font-size: 24px; font-weight: 500">
-                                Appointments
+                                CC Appointments
                             </p>
                             <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
                                     style="background-color: #00ad8e;" class="float-end text-light border-0 rounded p-2">
-                                    <i class="bi bi-plus-square-fill"></i> Book Appointment
+                                    <i class="bi bi-plus-square-fill"></i> Book CC Appointment
                                 </button></a>
                         </div>
 
@@ -795,7 +795,7 @@
                     <section>
                         <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                <p style="font-size: 24px; font-weight: 500"> New Appointment</p>
+                                <p style="font-size: 24px; font-weight: 500"> New CC Appointment</p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                     class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                             </div>
@@ -978,521 +978,7 @@
                         </div>
                     </section>
 
-                    <!-- Modal for add new patient -->
-                    <div class="modal fade" id="newPatientModal" tabindex="-1" aria-labelledby="newPatientModalLabel"
-                        aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-                        <input type="hidden" id="newPatientResult" value="">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="newPatientModalLabel">Add New Patient</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group pb-2">
-                                        <label>First Name <span class="text-danger">*</span></label>
-                                        <input type="text" name="newFirstName" id="newFirstName" class="form-control">
-                                        <div id="newFirstName_err" class="text-danger"></div>
-                                    </div>
-                                    <div class="form-group pb-2">
-                                        <label>Last Name</label>
-                                        <input type="text" name="newLastName" id="newLastName" class="form-control">
-                                        <div id="newLastName_err" class="text-danger"></div>
-                                    </div>
-                                    <div class="form-group pb-2">
-                                        <label>Mobile <span class="text-danger">*</span></label>
-                                        <input type="text" name="newMobile" id="newMobile" class="form-control" maxlength="10"
-                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                        <div id="newMobile_err" class="text-danger"></div>
-                                        <div id="newMobileDuplicate_err" class="text-danger"></div>
-                                    </div>
-                                    <div class="form-group pb-2">
-                                        <label>Email</label>
-                                        <input type="email" name="newEmail" id="newEmail" class="form-control">
-                                        <div id="newEmail_err" class="text-danger"></div>
-                                    </div>
-                                    <div class="form-group pb-2">
-                                        <label>Gender <span class="text-danger">*</span></label>
-                                        <select name="newGender" id="newGender" class="form-control">
-                                            <option value="">Select Gender</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                        <div id="newGender_err" class="text-danger"></div>
-                                    </div>
-                                    <div class="form-group pb-2">
-                                        <label>Age <span class="text-danger">*</span></label>
-                                        <input type="number" name="newAge" id="newAge" class="form-control">
-                                        <div id="newAge_err" class="text-danger"></div>
-                                    </div>
-                                    <div id="newPatientStatus" class="text-success mt-2"></div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn text-light" style="background-color: #00ad8e;"
-                                        onclick="saveNewPatient()">Add Patient</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Add New patient -->
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const select = document.getElementById('patientId');
-                            const searchInput = document.getElementById('patientSearch');
-                            const addBtn = document.getElementById('addPatientBtn');
-                            let originalOptions = Array.from(select.options);
-
-                            select.value = "";
-                            searchInput.addEventListener('input', function () {
-                                const term = this.value.toLowerCase().trim();
-
-                                if (term.length > 0) {
-                                    select.size = 6;
-                                } else {
-                                    select.size = 1;
-                                }
-
-                                select.innerHTML = '<option value="">Select Patient Id</option>';
-                                let matches = 0;
-                                originalOptions.forEach(opt => {
-                                    if (opt.value === '') return;
-                                    if (opt.textContent.toLowerCase().includes(term)) {
-                                        select.appendChild(opt.cloneNode(true));
-                                        matches++;
-                                    }
-                                });
-                                if (matches === 0 && term !== '') {
-                                    const no = document.createElement('option');
-                                    no.disabled = true;
-                                    no.textContent = '— No patient found —';
-                                    select.appendChild(no);
-                                }
-                            });
-
-                            select.addEventListener('change', function () {
-                                if (this.value) {
-                                    searchInput.value = '';
-                                }
-                                select.size = 1;
-                            });
-
-                            addBtn.addEventListener('click', function () {
-                                showNewPatientModal();
-                                searchInput.value = '';
-                                select.value = '';
-                            });
-
-                            document.getElementById('newPatientModal').addEventListener('hidden.bs.modal', function () {
-                                const resultInput = document.getElementById('newPatientResult');
-                                if (resultInput && resultInput.value) {
-                                    const patient = JSON.parse(resultInput.value);
-                                    addPatientToSelectAndSelect(patient);
-                                    resultInput.value = '';
-                                }
-                                document.getElementById('patientSearch').value = '';
-                            });
-                        });
-
-                        function showNewPatientModal() {
-                            const modal = new bootstrap.Modal(document.getElementById('newPatientModal'));
-                            modal.show();
-                        }
-
-                        function addPatientToSelectAndSelect(patient) {
-                            const select = document.getElementById('patientId');
-                            const value = patient.patientId + '|' + patient.id;
-                            const text = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
-
-                            let exists = false;
-                            for (let opt of select.options) {
-                                if (opt.value === value) {
-                                    exists = true;
-                                    break;
-                                }
-                            }
-
-                            if (!exists) {
-                                const option = new Option(text, value, true, true);
-                                select.add(option);
-                                originalOptions = Array.from(select.options);
-                            } else {
-                                select.value = value;
-                            }
-
-                            select.dispatchEvent(new Event('change'));
-                        }
-                    </script>
-
-                    <!-- Patient Id and Doctor Id Search Area -->
-                    <script>
-                        let newPatientModalInstance;
-
-                        function setupSearchDropdown(selectElementId, searchInputId, placeholderText, noResultText) {
-                            const selectElement = document.getElementById(selectElementId);
-                            const searchInputElement = document.getElementById(searchInputId);
-
-                            if (!selectElement || !searchInputElement) {
-                                console.error(`Missing required elements for search: #${selectElementId} or #${searchInputId}`);
-                                return;
-                            }
-
-                            let originalOptions = Array.from(selectElement.options);
-                            const MAX_DISPLAY_COUNT = 5;
-
-                            selectElement.value = "";
-                            searchInputElement.addEventListener('input', function () {
-                                const term = this.value.toLowerCase().trim();
-
-                                if (term.length > 0) {
-                                    selectElement.size = 6;
-                                } else {
-                                    selectElement.size = 1;
-                                }
-
-                                selectElement.innerHTML = `<option value="">${placeholderText}</option>`;
-                                let matches = 0;
-                                let count = 0;
-
-                                originalOptions.forEach(opt => {
-                                    if (opt.value === '') return;
-
-                                    if (count >= MAX_DISPLAY_COUNT) return;
-
-                                    if (opt.textContent.toLowerCase().includes(term)) {
-                                        selectElement.appendChild(opt.cloneNode(true));
-                                        matches++;
-                                        count++;
-                                    }
-                                });
-
-                                if (term.length > 0) {
-                                    selectElement.size = Math.min(matches + 1, MAX_DISPLAY_COUNT + 1);
-                                }
-
-                                if (matches === 0 && term !== '') {
-                                    const no = document.createElement('option');
-                                    no.disabled = true;
-                                    no.textContent = noResultText;
-                                    selectElement.appendChild(no);
-                                    selectElement.size = 2;
-                                }
-                            });
-
-                            searchInputElement.addEventListener('click', function () {
-                                selectElement.size = 6;
-                                this.focus();
-                                this._ignoreBlur = true;
-                            });
-
-                            searchInputElement.addEventListener('blur', function () {
-                                if (this._ignoreBlur) {
-                                    this._ignoreBlur = false;
-                                    return;
-                                }
-                                setTimeout(() => selectElement.size = 1, 100);
-                            });
-
-                            selectElement.addEventListener('change', function () {
-                                if (this.value) {
-                                    searchInputElement.value = '';
-                                }
-                                selectElement.size = 1;
-                            });
-
-                            return {
-                                originalOptions: originalOptions,
-                                selectElement: selectElement
-                            };
-                        }
-
-                        function showNewPatientModal() {
-                            if (newPatientModalInstance) {
-                                newPatientModalInstance.show();
-                            } else {
-                                console.error('New Patient Modal instance not initialized.');
-                            }
-                        }
-                        function addPatientToSelectAndSelect(patient, selectElement, originalOptionsRef) {
-                            const value = patient.patientId + '|' + patient.id;
-                            const text = patient.patientId + " / " + patient.firstName + (patient.lastName ? " " + patient.lastName : "");
-
-                            let exists = false;
-                            for (let opt of selectElement.options) {
-                                if (opt.value === value) {
-                                    exists = true;
-                                    break;
-                                }
-                            }
-
-                            if (!exists) {
-                                const option = new Option(text, value, true, true);
-                                selectElement.add(option);
-                                if (originalOptionsRef) {
-                                    originalOptionsRef.splice(0, originalOptionsRef.length, ...Array.from(selectElement.options));
-                                }
-                            } else {
-                                selectElement.value = value;
-                            }
-
-                            selectElement.dispatchEvent(new Event('change'));
-                        }
-
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const patientElements = setupSearchDropdown(
-                                'patientId',
-                                'patientSearch',
-                                'Select Patient Id',
-                                '— No patient found —'
-                            );
-                            let originalOptions = patientElements.originalOptions;
-                            const select = patientElements.selectElement;
-
-                            setupSearchDropdown(
-                                'referalDoctor',
-                                'referralDoctorSearch',
-                                'Select Chief Consultant Id',
-                                '— No doctor found —'
-                            );
-                            const newPatientModalElement = document.getElementById('newPatientModal');
-                            if (newPatientModalElement) {
-                                newPatientModalInstance = new bootstrap.Modal(newPatientModalElement);
-                            }
-
-                            const searchInput = document.getElementById('patientSearch');
-                            const addBtn = document.getElementById('addPatientBtn');
-
-                            if (addBtn) {
-                                addBtn.addEventListener('click', function () {
-                                    showNewPatientModal();
-                                    if (searchInput) searchInput.value = '';
-                                    if (select) select.value = '';
-                                });
-                            }
-
-                            if (newPatientModalElement) {
-                                newPatientModalElement.addEventListener('hidden.bs.modal', function () {
-                                    const resultInput = document.getElementById('newPatientResult');
-                                    if (resultInput && resultInput.value) {
-                                        try {
-                                            const patient = JSON.parse(resultInput.value);
-                                            addPatientToSelectAndSelect(patient, select, originalOptions);
-                                            resultInput.value = '';
-                                        } catch (e) {
-                                            console.error("Error parsing new patient result:", e);
-                                        }
-                                    }
-                                    if (searchInput) document.getElementById('patientSearch').value = '';
-                                });
-                            }
-
-                        });
-                    </script>
-
-                    <!-- Add to db and validation -->
-                    <script>
-
-                        function resetNewPatientForm() {
-                            document.getElementById("newFirstName").value = "";
-                            document.getElementById("newLastName").value = "";
-                            document.getElementById("newMobile").value = "";
-                            document.getElementById("newEmail").value = "";
-                            document.getElementById("newGender").value = "";
-                            document.getElementById("newAge").value = "";
-
-                            document.getElementById("newFirstName_err").innerHTML = "";
-                            document.getElementById("newLastName_err").innerHTML = "";
-                            document.getElementById("newMobile_err").innerHTML = "";
-                            document.getElementById("newMobileDuplicate_err").innerHTML = "";
-                            document.getElementById("newEmail_err").innerHTML = "";
-                            document.getElementById("newGender_err").innerHTML = "";
-                            document.getElementById("newAge_err").innerHTML = "";
-
-                            document.getElementById("newPatientStatus").innerHTML = "";
-                        }
-
-                        document.addEventListener("DOMContentLoaded", function () {
-                            const newMobileInput = document.getElementById("newMobile");
-                            if (newMobileInput) {
-                                newMobileInput.addEventListener("input", function () {
-                                    document.getElementById("newMobileDuplicate_err").innerHTML = "";
-                                });
-                            }
-                            const newPatientModalEl = document.getElementById("newPatientModal");
-
-                            if (newPatientModalEl) {
-                                newPatientModalEl.addEventListener("hidden.bs.modal", function () {
-                                    resetNewPatientForm();
-                                });
-                            }
-                        });
-
-                        async function saveNewPatient() {
-                            document.getElementById("newFirstName_err").innerHTML = "";
-                            document.getElementById("newLastName_err").innerHTML = "";
-                            document.getElementById("newMobile_err").innerHTML = "";
-                            document.getElementById("newMobileDuplicate_err").innerHTML = "";
-                            document.getElementById("newEmail_err").innerHTML = "";
-                            document.getElementById("newGender_err").innerHTML = "";
-                            document.getElementById("newAge_err").innerHTML = "";
-                            document.getElementById("newPatientStatus").innerHTML = "";
-
-                            const firstName = document.getElementById("newFirstName").value.trim();
-                            const lastName = document.getElementById("newLastName").value.trim();
-                            const mobile = document.getElementById("newMobile").value.trim();
-                            const email = document.getElementById("newEmail").value.trim();
-                            const gender = document.getElementById("newGender").value;
-                            const age = document.getElementById("newAge").value.trim();
-
-                            let isValid = true;
-
-                            if (firstName === "") {
-                                document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
-                                isValid = false;
-                            } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
-                                document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
-                                isValid = false;
-                            }
-
-                            if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
-                                document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
-                                isValid = false;
-                            }
-
-                            if (mobile === "") {
-                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
-                                isValid = false;
-                            } else if (!/^\d{10}$/.test(mobile)) {
-                                document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
-                                isValid = false;
-                            }
-
-                            if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                                document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
-                                isValid = false;
-                            }
-
-                            if (gender === "") {
-                                document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
-                                isValid = false;
-                            }
-
-                            if (age === "") {
-                                document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
-                                isValid = false;
-                            } else if (isNaN(age) || age < 1 || age > 120) {
-                                document.getElementById("newAge_err").innerHTML = "Age must be a number between 1 and 120.";
-                                isValid = false;
-                            }
-
-                            if (isValid) {
-                                try {
-                                    const checkFormData = new URLSearchParams();
-                                    checkFormData.append('field', 'mobileNumber');
-                                    checkFormData.append('value', mobile);
-                                    checkFormData.append('table', 'patient_details');
-
-                                    const checkResponse = await fetch('<?= base_url("Healthcareprovider/check_duplicate_field") ?>', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                        body: checkFormData
-                                    });
-
-                                    const checkData = await checkResponse.json();
-
-                                    if (checkData.exists && !window.forceAddAnyway) {
-                                        const modalEl = document.getElementById("duplicateNewPatientModal");
-                                        const modal = new bootstrap.Modal(modalEl);
-                                        modal.show();
-                                        return;
-                                    }
-
-
-                                    const saveResponse = await fetch('<?php echo base_url("Healthcareprovider/ajaxSavePatient"); ?>', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({
-                                            firstName, lastName, mobile, email, gender, age
-                                        })
-                                    });
-
-                                    const data = await saveResponse.json();
-
-                                    if (data.success) {
-                                        document.getElementById("newPatientStatus").innerHTML = "Patient saved successfully!";
-                                        document.getElementById("newPatientStatus").className = "text-success mt-2";
-
-                                        const patientData = {
-                                            patientId: data.patientId,
-                                            id: data.id,
-                                            firstName: data.firstName,
-                                            lastName: data.lastName || ''
-                                        };
-                                        document.getElementById("newPatientResult").value = JSON.stringify(patientData);
-
-                                        document.getElementById("newFirstName").value = "";
-                                        document.getElementById("newLastName").value = "";
-                                        document.getElementById("newMobile").value = "";
-                                        document.getElementById("newEmail").value = "";
-                                        document.getElementById("newGender").value = "";
-                                        document.getElementById("newAge").value = "";
-
-                                        const modal = bootstrap.Modal.getInstance(document.getElementById('newPatientModal'));
-                                        modal.hide();
-                                    } else {
-                                        document.getElementById("newPatientStatus").innerHTML = "Failed to save patient.";
-                                        document.getElementById("newPatientStatus").className = "text-danger mt-2";
-                                    }
-
-                                } catch (error) {
-                                    console.error('Error:', error);
-                                    document.getElementById("newPatientStatus").innerHTML = "An error occurred.";
-                                    document.getElementById("newPatientStatus").className = "text-danger mt-2";
-                                }
-                            }
-                        }
-                            document.addEventListener("DOMContentLoaded", function () {
-
-                            const dupModalEl = document.getElementById("duplicateNewPatientModal");
-
-                            if (dupModalEl) {
-
-                                document.getElementById("dupNewEditBtn").addEventListener("click", function () {
-                                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                                    modal.hide();
-
-                                    document.getElementById("newMobile").focus();
-                                });
-
-                                document.getElementById("dupNewAddAnywayBtn").addEventListener("click", function () {
-                                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                                    modal.hide();
-
-                                    window.forceAddAnyway = true;
-
-                                    saveNewPatient();
-
-                                    setTimeout(() => {
-                                        window.forceAddAnyway = false;
-                                    }, 500);
-                                });
-
-                                    
-                                document.getElementById("dupNewCloseBtn").addEventListener("click", function () {
-                                    const modal = bootstrap.Modal.getInstance(dupModalEl);
-                                    modal.hide();
-
-                                    const newPatientModalEl = document.getElementById("newPatientModal");
-                                    const newPatientModal = bootstrap.Modal.getInstance(newPatientModalEl)
-                                                        || bootstrap.Modal.getOrCreateInstance(newPatientModalEl);
-                                    newPatientModal.hide();
-                                });
-
-                            }
-                        });
-                    </script>
-
+                    
                     <!-- Appointment booking -->
                     <script>
                         var appBookedDetails = <?php echo json_encode($appBookedDetails); ?>;
@@ -3160,7 +2646,480 @@
                                                         return isValid;
                                                     }
                                                 </script>
-        <?php } ?>
+        <?php 
+        } else if ($method == "patientAppointments") {
+        ?>
+            <section>
+                <div class="card rounded">
+                    <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                        <p style="font-size: 24px; font-weight: 500">Patient Appointments</p>
+                        <a href="<?php echo base_url() . "Healthcareprovider/newPatientAppointment" ?>"> 
+                            <button style="background-color: #00ad8e;" class="float-end text-light border-0 rounded p-2">
+                                <i class="bi bi-plus-square-fill"></i> Book Patient Appointment
+                            </button>
+                        </a>
+                    </div>
+
+                    <?php
+                    $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+                    $items_per_page = 10;
+
+                    $total_items = count($appointmentList);
+                    $total_pages = ceil($total_items / $items_per_page);
+
+                    $offset = ($current_page - 1) * $items_per_page;
+
+                    $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
+
+                    if (isset($appointmentList[0]['id'])) {  // If data exists
+                        ?>
+
+                        <div class="card-body p-2 p-sm-4">
+                            <div class="table-responsive">
+                                <table class="table text-center table-hoverr" id="patientAppointmentTable">  <!-- New ID for table -->
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT NAME</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">REASON</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $count = $offset;
+                                        foreach ($current_page_items as $key => $value) {
+                                            $count++;
+                                            ?>
+                                            <tr>
+                                                <td class="pt-3"><?php echo $count; ?>.</td>
+                                                <td style="font-size: 16px" class="pt-3">
+                                                    <a href="<?php echo base_url("Healthcareprovider/patientdetails/" . $value['patientDbId']); ?>"
+                                                    class="text-dark"
+                                                    onmouseover="style='text-decoration:underline'"
+                                                    onmouseout="style='text-decoration:none'">
+                                                        <?php echo htmlspecialchars($value['patientCode']); ?>
+                                                    </a>
+                                                </td>
+
+                                                <td style="font-size: 16px" class="pt-3">
+                                                    <?php
+                                                        echo htmlspecialchars(
+                                                            trim($value['firstName'] . ' ' . ($value['lastName'] ?? ''))
+                                                        );
+                                                    ?>
+                                                </td>
+
+                                                <td style="font-size: 16px" class="pt-3">
+                                                    <?php
+                                                    if (date('Y-m-d', strtotime($value['appointment_date'])) == date('Y-m-d')) {
+                                                        echo "<b>Today</b>";
+                                                    } else {
+                                                        echo date("d-m-Y", strtotime($value['appointment_date']));
+                                                    }
+                                                    ?>
+                                                </td>
+
+                                                <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo date('h:i a', strtotime($value['appointment_time'])); ?>
+                                                </td>
+
+                                                <td style="font-size: 16px" class="pt-3">
+                                                    <?php echo htmlspecialchars($value['reason'] != '' ? substr($value['reason'], 0, 50) . '...' : "-"); ?>
+                                                </td>
+
+                                                <td style="font-size: 16px" class="d-flex d-lg-block pt-3">  <!-- pt-3 for alignment -->
+                                                    <?php
+                                                    date_default_timezone_set('Asia/Kolkata');
+                                                    $appointmentDate = $value['appointment_date'];
+                                                    $appointmentTime = $value['appointment_time']; // H:i:s (24hr)
+
+                                                    $appointmentDateTime = strtotime("$appointmentDate $appointmentTime");
+                                                    $currentDateTime = time();
+
+                                                    // Define 10-minute window BEFORE appointment
+                                                    $windowStart = $appointmentDateTime - (10 * 60); // -10 minutes
+                                                    $windowEnd   = $appointmentDateTime;             // appointment time
+
+                                                    $isToday = ($appointmentDate === date('Y-m-d'));
+
+                                                    $shouldEnableJoin = $isToday &&
+                                                                    ($currentDateTime >= $windowStart) &&
+                                                                    ($currentDateTime <= $windowEnd);
+                                                    ?>
+
+                                                    <!-- Join Button (enabled only within 10min) --> 
+                                                    <?php if ($shouldEnableJoin && !empty($value['appointment_link'])): ?>
+                                                    <a href="<?php echo htmlspecialchars($value['appointment_link']); ?>"
+                                                    target="_blank"
+                                                    class="btn btn-success mx-1">
+                                                        Join
+                                                    </a>
+                                                    <?php else: ?>
+                                                        <a href="javascript:void(0);"
+                                                        class="btn btn-secondary mx-1 disabled"
+                                                        title="Available only within 10 minutes of appointment">
+                                                            Join
+                                                        </a>
+                                                    <?php endif; ?>
+
+                                                    <!-- Open Consultant View -->
+                                                    <a href="<?php echo base_url() . "Consultation/Consultation/" . $value['patientDbId']; ?>" class="">
+                                                        <button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button>
+                                                    </a>
+
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination (same as reference) -->
+                            <?php if ($total_pages > 1): ?>
+                                <nav aria-label="Patient Appointments Pagination">
+                                    <ul class="pagination justify-content-center mt-4">
+                                        <?php if ($current_page > 1): ?>
+                                            <li class="page-item">
+                                                <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
+                                                    <button type="button" class="bg-light border px-3 py-2"><</button>
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+
+                                        <?php
+                                        $start_page = max(1, $current_page - 2);
+                                        $end_page = min($total_pages, $current_page + 2);
+
+                                        if ($start_page == 1) {
+                                            $end_page = min($total_pages, 5);
+                                        }
+                                        if ($end_page == $total_pages) {
+                                            $start_page = max(1, $total_pages - 4);
+                                        }
+
+                                        for ($i = $start_page; $i <= $end_page; $i++): ?>
+                                            <li class="">
+                                                <a href="?page=<?php echo $i; ?>">
+                                                    <button type="button" class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : ''; ?>">
+                                                        <?php echo $i; ?>
+                                                    </button>
+                                                </a>
+                                            </li>
+                                        <?php endfor; ?>
+
+                                        <?php if ($current_page < $total_pages): ?>
+                                            <li class="page-item">
+                                                <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
+                                                    <button type="button" class="bg-light border px-3 py-2">></button>
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                    </ul>
+                                </nav>
+                            <?php endif; ?>
+                        </div>
+                    <?php } else { ?>
+                        <div class="card-body p-4">
+                            <h5 class="text-center my-5"><b>No Patient Appointments Found.</b></h5>
+                        </div>
+                    <?php } ?>
+                </div>
+            </section>
+            <?php
+        }
+         else if ($method == "newPatientAppointment") {
+            ?>
+            <section>
+                <div class="card rounded">
+                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                        <p style="font-size: 24px; font-weight: 500"> New Patient Appointment</p>
+                        <a href="<?php echo base_url() . "Healthcareprovider/patientAppointments" ?>"
+                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                    </div>
+                    <div class="card-body px-md-4 pb-4">
+                        <!-- Form  -->
+                        <div>
+                            <div class="col-md-8">
+                                <form id="patientAppointmentForm"
+                                method="post" action="<?= base_url('Healthcareprovider/bookPatientAppointment') ?>"
+                                onsubmit="return validatePatientAppointment();">
+                                    <div>
+                                        <!-- Patient Field (exact copy from existing appointmentsForm) -->
+                                        <div class="form-group pb-2">
+                                            <label class="form-label" for="patientId">
+                                                Patient Id <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="input-group mb-1">
+                                                <input type="text" class="form-control"
+                                                    placeholder="Search patient Id / Name" id="patientSearch"
+                                                    autocomplete="off" onkeyup="filterPatients()">
+                                                <span class="input-group-text bg-white border-start-0">
+                                                    <i class="bi bi-search"></i>
+                                                </span>
+                                                <button class="btn btn-outline-primary d-flex align-items-center"
+                                                    type="button" id="addPatientBtnP" title="Add New Patient" onclick="showNewPatientModal()">
+                                                    <i class="bi bi-plus-lg me-1"></i> Add Patient
+                                                </button>
+                                            </div>
+                                            <select class="form-select" name="patientId" id="patientId" >
+                                                <option value="">Select Patient</option>
+                                                <?php foreach ($patientsId as $value): ?>
+                                                    <option value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
+                                                        <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <div id="patientId_err" class="text-danger pt-1"></div>
+                                        </div>
+
+                                        <!-- Date -->
+                                        <div class="form-group pb-3">
+                                            <label class="form-label" for="appDate">Date <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="appDate" name="appDate" 
+                                                min="<?php echo date('Y-m-d'); ?>" onchange="updateTimes()">
+                                            <div id="appDate_err" class="text-danger pt-1"></div>
+                                        </div>
+
+                                        <!-- Part of Day (Radio Buttons) -->
+                                        <div class="form-group pb-3">
+                                            <label class="form-label pb-2">Part of the day <span class="text-danger">*</span></label><br>
+                                            <input type="radio" id="morning" name="partOfDay" value="Morning" onchange="updateTimes()">
+                                            <label for="morning">Morning (6:00 AM – 11:59 AM)</label><br>
+                                            <input type="radio" id="afternoon" name="partOfDay" value="Afternoon" onchange="updateTimes()">
+                                            <label for="afternoon">Afternoon (12:00 PM – 3:59 PM)</label><br>
+                                            <input type="radio" id="evening" name="partOfDay" value="Evening" onchange="updateTimes()">
+                                            <label for="evening">Evening (4:00 PM – 7:59 PM)</label><br>
+                                            <input type="radio" id="Night" name="partOfDay" value="Night" onchange="updateTimes()">
+                                            <label for="Night">Night (8:00 PM – 9:59 PM)</label><br>
+                                            <div id="partOfDay_err" class="text-danger pt-1"></div>
+                                        </div>
+
+                                        <!-- Time (Dropdown, populated by JS) -->
+                                        <div class="form-group pb-3">
+                                            <label class="form-label" for="appTime">Time <span class="text-danger">*</span></label>
+                                            <select class="form-select" id="appTime" name="appTime" >
+                                                <option value="">Select time (based on part of day)</option>
+                                            </select>
+                                            <div id="appTime_err" class="text-danger pt-1"></div>
+                                        </div>
+
+                                        <!-- Reason -->
+                                        <div class="form-group py-3">
+                                            <label class="form-label" for="appReason">Complaint</label>
+                                            <textarea class="form-control" id="appReason" name="appReason" rows="3" placeholder="Enter Compliant to book appointment..."></textarea>
+                                            <div id="appReason_err" class="text-danger pt-1"></div>
+                                        </div>
+
+                                        <button type="submit" class="btn text-light float-end mt-2"
+                                            style="background-color: #00ad8e;" onclick="handleSubmit(event)">Book Appointment</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <?php
+        }?>
+
+        <script>
+            function filterPatients() {
+                const searchInput = document.getElementById('patientSearch').value.toLowerCase();
+                const select = document.getElementById('patientId');
+                const options = select.options;
+
+                for (let i = 1; i < options.length; i++) {
+                    const optionText = options[i].text.toLowerCase();
+                    options[i].style.display = optionText.includes(searchInput) ? '' : 'none';
+                }
+            }
+
+            function generateTimes(partOfDay) {
+                const times = [];
+                let startHour, endHour;
+
+                if (partOfDay === 'Morning') {
+                    startHour = 6; endHour = 11;
+                } else if (partOfDay === 'Afternoon') {
+                    startHour = 12; endHour = 15;
+                } else if (partOfDay === 'Evening') {
+                    startHour = 16; endHour = 19;
+                } else if (partOfDay === 'Night') {
+                    startHour = 20; endHour = 21;
+                } else {
+                    return [];
+                }
+
+                let currentHour = startHour;
+                let currentMin = 0;
+
+                while (currentHour < endHour || (currentHour === endHour && currentMin <= 45)) {
+                    const hour12 = currentHour > 12 ? currentHour - 12 : currentHour;
+                    const ampm = currentHour >= 12 ? 'PM' : 'AM';
+                    times.push(
+                        `${hour12.toString().padStart(2, '0')}:${currentMin.toString().padStart(2, '0')} ${ampm}`
+                    );
+
+                    currentMin += 15;
+                    if (currentMin >= 60) {
+                        currentMin = 0;
+                        currentHour++;
+                    }
+                }
+
+                return times;
+            }
+
+            function updateTimes() {
+                const partOfDay = document.querySelector('input[name="partOfDay"]:checked')?.value;
+                const timeSelect = document.getElementById('appTime');
+
+                timeSelect.innerHTML = '<option value="">Select time</option>';
+
+                if (!partOfDay) return;
+
+                const times = generateTimes(partOfDay);
+                times.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    timeSelect.appendChild(option);
+                });
+            }
+
+            function clearPatientAppointmentErrors() {
+                const errorIds = [
+                    'patientId_err',
+                    'appDate_err',
+                    'partOfDay_err',
+                    'appTime_err',
+                    'appReason_err'
+                ];
+
+                errorIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerHTML = '';
+                });
+            }
+
+            function validatePatientAppointment() {
+                let isValid = true;
+
+                const patientId = document.getElementById('patientId').value;
+                const appDate = document.getElementById('appDate').value;
+                const partOfDay = document.querySelector('input[name="partOfDay"]:checked');
+                const appTime = document.getElementById('appTime').value;
+                const appReason = document.getElementById('appReason').value.trim();
+                const today = new Date().toISOString().split('T')[0];
+
+                if (!patientId) {
+                    document.getElementById('patientId_err').innerHTML = 'Patient must be selected.';
+                    isValid = false;
+                }
+
+                if (!appDate) {
+                    document.getElementById('appDate_err').innerHTML = 'Date must be selected.';
+                    isValid = false;
+                } else if (appDate < today) {
+                    document.getElementById('appDate_err').innerHTML = 'Date cannot be in the past.';
+                    isValid = false;
+                }
+
+                if (!partOfDay) {
+                    document.getElementById('partOfDay_err').innerHTML = 'Part of the day must be selected.';
+                    isValid = false;
+                }
+
+                if (!appTime) {
+                    document.getElementById('appTime_err').innerHTML = 'Time must be selected.';
+                    isValid = false;
+                }
+
+                if (!appReason) {
+                    document.getElementById('appReason_err').innerHTML = 'Reason for appointment must be provided.';
+                    isValid = false;
+                } else if (appReason.length < 10) {
+                    document.getElementById('appReason_err').innerHTML = 'Reason must be at least 10 characters.';
+                    isValid = false;
+                }
+
+                return isValid; // TRUE → normal POST submit
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+
+                // Form submit (STANDARD POST)
+                const form = document.getElementById('patientAppointmentForm');
+                if (form) {
+                    form.onsubmit = function () {
+                        clearPatientAppointmentErrors();
+                        return validatePatientAppointment();
+                    };
+                }
+
+                // Clear errors on input/change
+                ['patientId', 'appDate', 'appTime', 'appReason'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.addEventListener('input', clearPatientAppointmentErrors);
+                });
+
+                document.querySelectorAll('input[name="partOfDay"]').forEach(radio => {
+                    radio.addEventListener('change', clearPatientAppointmentErrors);
+                });
+
+                // Patient search dropdown logic
+                const select = document.getElementById('patientId');
+                const searchInput = document.getElementById('patientSearch');
+                let originalOptions = Array.from(select.options);
+
+                if (searchInput) {
+                    searchInput.addEventListener('input', function () {
+                        const term = this.value.toLowerCase().trim();
+                        select.size = term ? 6 : 1;
+                        select.innerHTML = '<option value="">Select Patient</option>';
+
+                        let matches = 0;
+                        originalOptions.forEach(opt => {
+                            if (opt.value && opt.textContent.toLowerCase().includes(term)) {
+                                select.appendChild(opt.cloneNode(true));
+                                matches++;
+                            }
+                        });
+
+                        if (!matches && term) {
+                            const noMatch = document.createElement('option');
+                            noMatch.disabled = true;
+                            noMatch.textContent = '— No patient found —';
+                            select.appendChild(noMatch);
+                        }
+                    });
+                }
+
+                select.addEventListener('change', function () {
+                    if (this.value) searchInput.value = '';
+                    select.size = 1;
+                });
+            });
+
+            function showNewPatientModal() {
+                const modal = new bootstrap.Modal(document.getElementById('newPatientModal'));
+                modal.show();
+            }
+
+            function addPatientToSelect(patient) {
+                const select = document.getElementById('patientId');
+                const value = patient.patientId + '|' + patient.id;
+                const text = patient.patientId + ' / ' + patient.firstName + (patient.lastName ? ' ' + patient.lastName : '');
+
+                const option = new Option(text, value, true, true);
+                select.add(option);
+                select.dispatchEvent(new Event('change'));
+            }
+        </script>
 
         <!-- All modal files -->
         <?php include 'hcpModals.php'; ?>
@@ -3231,6 +3190,8 @@
             document.getElementById('appointments').style.color = "#87F7E3";
         <?php } elseif ($method == "chiefDoctors" || $method == "chiefDoctorProfile") { ?>
             document.getElementById('chiefDoctor').style.color = "#87F7E3";
+        <?php } elseif ($method == "newPatientAppointment" || $method == "patientAppointments") { ?>
+            document.getElementById('patientAppointments').style.color = "#87F7E3";
         <?php } ?>
     </script>
 

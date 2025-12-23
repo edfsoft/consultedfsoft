@@ -79,6 +79,7 @@ class CcModel extends CI_Model
         );
         $this->db->where('doctorMobile', $post['ccMobileNum']);
         $this->db->update('cc_details', $updatedata);
+        return ($this->db->affected_rows() > 0);
     }
 
     public function ccLoginDetails()

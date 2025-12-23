@@ -12,7 +12,37 @@ class Chiefconsultant extends CI_Controller
         $this->load->model('ConsultModel');
         $this->load->library('session');
         $this->load->library('email');
+        $this->check_session_timeout();
     }
+
+    private function check_session_timeout()
+    {
+        $session_lifetime = 1800; // 30 minutes
+        $alert_time = 1200; // 10 minutes (for alert)
+        $last_activity = $this->session->userdata('last_activity_time');
+
+        if ($this->session->userdata('ccIdDb')) {
+            if ($last_activity) {
+                $inactive_time = time() - $last_activity;
+                if ($inactive_time >= $alert_time && $inactive_time < $session_lifetime) {
+                    $this->session->set_flashdata('showErrorMessage', 'You have been inactive for 10 minutes. You will be logged out soon due to inactivity.');
+                }
+                if ($inactive_time >= $session_lifetime) {
+                    $this->session->set_flashdata('errorMessage', 'Session expired due to inactivity for last 30 minutes.');
+                    $this->session->unset_userdata('ccIdDb');
+                    $this->session->unset_userdata('ccId');
+                    $this->session->unset_userdata('ccName');
+                    $this->session->unset_userdata('ccMailId');
+                    $this->session->unset_userdata('ccMobileNum');
+                    $this->session->unset_userdata('last_activity_time');
+                    $this->session->sess_regenerate(TRUE);
+                    redirect('Chiefconsultant/');
+                }
+            }
+            $this->session->set_userdata('last_activity_time', time());
+        }
+    }
+
 
     public function index()
     {
@@ -86,7 +116,13 @@ class Chiefconsultant extends CI_Controller
 
     public function updateNewPassword()
     {
-        $profileDetails = $this->CcModel->changeNewPassword();
+        $result = $this->CcModel->changeNewPassword();
+
+        if ($result) {
+            $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Password update failed or no changes made');
+        }
         redirect('Chiefconsultant/');
     }
 
@@ -359,6 +395,10 @@ class Chiefconsultant extends CI_Controller
         $this->session->unset_userdata('ccMailId');
         $this->session->unset_userdata('ccMobileNum');
         $this->session->unset_userdata('firstLogin');
+        $this->session->unset_userdata('last_activity_time');
+
+        $this->session->sess_regenerate(TRUE);
+
         redirect('Chiefconsultant/');
     }
 

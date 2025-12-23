@@ -13,7 +13,36 @@ class Edfadmin extends CI_Controller
         $this->load->model('ConsultModel');
         $this->load->library('session');
         $this->load->library('email');
+        $this->check_session_timeout();
     }
+
+    private function check_session_timeout()
+    {
+        $session_lifetime = 1800; // 30 minutes
+        $alert_time = 1200; // 10 minutes (for alert)
+        $last_activity = $this->session->userdata('last_activity_time');
+
+        if ($this->session->userdata('adminIdDb')) {
+            if ($last_activity) {
+                $inactive_time = time() - $last_activity;
+                if ($inactive_time >= $alert_time && $inactive_time < $session_lifetime) {
+                    $this->session->set_flashdata('showErrorMessage', 'You have been inactive for 10 minutes. You will be logged out soon due to inactivity.');
+                }
+                if ($inactive_time >= $session_lifetime) {
+                    $this->session->set_flashdata('errorMessage', 'Session expired due to inactivity for last 30 minutes.');
+                    $this->session->unset_userdata('adminIdDb');
+                    $this->session->unset_userdata('adminName');
+                    $this->session->unset_userdata('adminMailId');
+                    $this->session->unset_userdata('adminMobileNum');
+                    $this->session->unset_userdata('last_activity_time');
+                    $this->session->sess_regenerate(TRUE);
+                    redirect('Edfadmin/');
+                }
+            }
+            $this->session->set_userdata('last_activity_time', time());
+        }
+    }
+
 
     public function index()
     {
@@ -672,6 +701,10 @@ class Edfadmin extends CI_Controller
         $this->session->unset_userdata('adminName');
         $this->session->unset_userdata('adminMailId');
         $this->session->unset_userdata('adminMobileNum');
+        $this->session->unset_userdata('last_activity_time');
+
+        $this->session->sess_regenerate(TRUE);
+
         redirect('Edfadmin/');
     }
 

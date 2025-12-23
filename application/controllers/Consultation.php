@@ -10,71 +10,68 @@ class Consultation extends CI_Controller
         $this->load->model('ConsultModel');
         $this->load->library('session');
         $this->load->library('email');
+
+        if (!$this->session->userdata('hcpsName') || !$this->session->userdata('hcpIdDb')) {
+            redirect('Healthcareprovider/');
+        }
+
     }
 
     public function consultation($patientIdDb)
     {
-        if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "consultDashboard";
-            $this->data['patientId'] = $patientIdDb;
-            $this->data['patientDetails'] = $this->ConsultModel->getPatientDetails($patientIdDb);
-            $this->data['symptomsList'] = $this->ConsultModel->getSymptoms();
-            $this->data['findingsList'] = $this->ConsultModel->getFindings();
-            $this->data['diagnosisList'] = $this->ConsultModel->getDiagnosis();
-            $this->data['investigationsList'] = $this->ConsultModel->getInvestigations();
-            $this->data['instructionsList'] = $this->ConsultModel->getInstructions();
-            $this->data['proceduresList'] = $this->ConsultModel->getProcedures();
-            $this->data['medicinesList'] = $this->ConsultModel->getMedicines();
-            $this->data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
-            $this->data['dosageUnits'] = $this->ConsultModel->getDosageUnits();
-            $this->data['advicesList'] = $this->ConsultModel->getAdvices();
+        $this->data['method'] = "consultDashboard";
+        $this->data['patientId'] = $patientIdDb;
+        $this->data['patientDetails'] = $this->ConsultModel->getPatientDetails($patientIdDb);
+        $this->data['symptomsList'] = $this->ConsultModel->getSymptoms();
+        $this->data['findingsList'] = $this->ConsultModel->getFindings();
+        $this->data['diagnosisList'] = $this->ConsultModel->getDiagnosis();
+        $this->data['investigationsList'] = $this->ConsultModel->getInvestigations();
+        $this->data['instructionsList'] = $this->ConsultModel->getInstructions();
+        $this->data['proceduresList'] = $this->ConsultModel->getProcedures();
+        $this->data['medicinesList'] = $this->ConsultModel->getMedicines();
+        $this->data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
+        $this->data['dosageUnits'] = $this->ConsultModel->getDosageUnits();
+        $this->data['advicesList'] = $this->ConsultModel->getAdvices();
 
-            $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
-            $this->data['patient_id'] = $patientIdDb;
+        $this->data['consultations'] = $this->ConsultModel->get_consultations_by_patient($patientIdDb);
+        $this->data['patient_id'] = $patientIdDb;
 
-            $this->load->view('consultationView.php', $this->data);
-        } else {
-            redirect('Consultation/');
-        }
+        $this->load->view('consultationView.php', $this->data);
     }
 
     // Follow up Consultation view page
     public function followupConsultation($consultation_id)
     {
-        if (isset($_SESSION['hcpsName'])) {
-            $data['method'] = "followupConsult";
-            $data['symptomsList'] = $this->ConsultModel->getSymptoms();
-            $data['findingsList'] = $this->ConsultModel->getFindings();
-            $data['diagnosisList'] = $this->ConsultModel->getDiagnosis();
-            $data['investigationsList'] = $this->ConsultModel->getInvestigations();
-            $data['instructionsList'] = $this->ConsultModel->getInstructions();
-            $data['proceduresList'] = $this->ConsultModel->getProcedures();
-            $data['medicinesList'] = $this->ConsultModel->getMedicines();
-            $data['advicesList'] = $this->ConsultModel->getAdvices();
+        $data['method'] = "followupConsult";
+        $data['symptomsList'] = $this->ConsultModel->getSymptoms();
+        $data['findingsList'] = $this->ConsultModel->getFindings();
+        $data['diagnosisList'] = $this->ConsultModel->getDiagnosis();
+        $data['investigationsList'] = $this->ConsultModel->getInvestigations();
+        $data['instructionsList'] = $this->ConsultModel->getInstructions();
+        $data['proceduresList'] = $this->ConsultModel->getProcedures();
+        $data['medicinesList'] = $this->ConsultModel->getMedicines();
+        $data['advicesList'] = $this->ConsultModel->getAdvices();
 
-            $data['consultation'] = $this->ConsultModel->get_consultation_by_id($consultation_id);
-            $data['vitals'] = $this->ConsultModel->get_vitals_by_consultation_id($consultation_id);
-            $data['symptoms'] = $this->ConsultModel->get_symptoms_by_consultation_id($consultation_id);
-            $data['findings'] = $this->ConsultModel->get_findings_by_consultation_id($consultation_id);
-            $data['diagnosis'] = $this->ConsultModel->get_diagnosis_by_consultation_id($consultation_id);
-            $data['investigations'] = $this->ConsultModel->get_investigations_by_consultation_id($consultation_id);
-            $data['instructions'] = $this->ConsultModel->get_instructions_by_consultation_id($consultation_id);
-            $data['procedures'] = $this->ConsultModel->get_procedures_by_consultation_id($consultation_id);
-            $data['advices'] = $this->ConsultModel->get_advices_by_consultation_id($consultation_id);
-            $data['medicines'] = $this->ConsultModel->get_medicines_by_consultation_id($consultation_id);
-            $data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();
-            $data['dosageUnits'] = $this->ConsultModel->getDosageUnits();
+        $data['consultation'] = $this->ConsultModel->get_consultation_by_id($consultation_id);
+        $data['vitals'] = $this->ConsultModel->get_vitals_by_consultation_id($consultation_id);
+        $data['symptoms'] = $this->ConsultModel->get_symptoms_by_consultation_id($consultation_id);
+        $data['findings'] = $this->ConsultModel->get_findings_by_consultation_id($consultation_id);
+        $data['diagnosis'] = $this->ConsultModel->get_diagnosis_by_consultation_id($consultation_id);
+        $data['investigations'] = $this->ConsultModel->get_investigations_by_consultation_id($consultation_id);
+        $data['instructions'] = $this->ConsultModel->get_instructions_by_consultation_id($consultation_id);
+        $data['procedures'] = $this->ConsultModel->get_procedures_by_consultation_id($consultation_id);
+        $data['advices'] = $this->ConsultModel->get_advices_by_consultation_id($consultation_id);
+        $data['medicines'] = $this->ConsultModel->get_medicines_by_consultation_id($consultation_id);
+        $data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();
+        $data['dosageUnits'] = $this->ConsultModel->getDosageUnits();
 
-            // $data['attachments'] = $this->ConsultModel->get_attachments_by_consultation_id($consultation_id);
+        // $data['attachments'] = $this->ConsultModel->get_attachments_by_consultation_id($consultation_id);
 
-            $data['patient_id'] = $data['consultation']['patient_id'];
-            $data['previous_consultation_id'] = $consultation_id;
-            $data['patientDetails'] = $this->ConsultModel->getPatientDetails($data['patient_id']);
+        $data['patient_id'] = $data['consultation']['patient_id'];
+        $data['previous_consultation_id'] = $consultation_id;
+        $data['patientDetails'] = $this->ConsultModel->getPatientDetails($data['patient_id']);
 
-            $this->load->view('consultationView.php', $data);
-        } else {
-            redirect('Consultation/');
-        }
+        $this->load->view('consultationView.php', $data);
     }
 
     // Common save consultation for new and follow-up
@@ -276,39 +273,35 @@ class Consultation extends CI_Controller
     // Edit Consultation view page
     public function editConsultation($consultation_id)
     {
-        if (isset($_SESSION['hcpsName'])) {
-            $data['method'] = "editConsult";
-            $data['symptomsList'] = $this->ConsultModel->getSymptoms();
-            $data['findingsList'] = $this->ConsultModel->getFindings();
-            $data['diagnosisList'] = $this->ConsultModel->getDiagnosis();
-            $data['investigationsList'] = $this->ConsultModel->getInvestigations();
-            $data['instructionsList'] = $this->ConsultModel->getInstructions();
-            $data['proceduresList'] = $this->ConsultModel->getProcedures();
-            $data['medicinesList'] = $this->ConsultModel->getMedicines();
-            $data['advicesList'] = $this->ConsultModel->getAdvices();
+        $data['method'] = "editConsult";
+        $data['symptomsList'] = $this->ConsultModel->getSymptoms();
+        $data['findingsList'] = $this->ConsultModel->getFindings();
+        $data['diagnosisList'] = $this->ConsultModel->getDiagnosis();
+        $data['investigationsList'] = $this->ConsultModel->getInvestigations();
+        $data['instructionsList'] = $this->ConsultModel->getInstructions();
+        $data['proceduresList'] = $this->ConsultModel->getProcedures();
+        $data['medicinesList'] = $this->ConsultModel->getMedicines();
+        $data['advicesList'] = $this->ConsultModel->getAdvices();
 
-            $data['consultation'] = $this->ConsultModel->get_consultation_by_id($consultation_id);
-            $data['vitals'] = $this->ConsultModel->get_vitals_by_consultation_id($consultation_id);
-            $data['symptoms'] = $this->ConsultModel->get_symptoms_by_consultation_id($consultation_id);
-            $data['findings'] = $this->ConsultModel->get_findings_by_consultation_id($consultation_id);
-            $data['diagnosis'] = $this->ConsultModel->get_diagnosis_by_consultation_id($consultation_id);
-            $data['investigations'] = $this->ConsultModel->get_investigations_by_consultation_id($consultation_id);
-            $data['instructions'] = $this->ConsultModel->get_instructions_by_consultation_id($consultation_id);
-            $data['procedures'] = $this->ConsultModel->get_procedures_by_consultation_id($consultation_id);
-            $data['advices'] = $this->ConsultModel->get_advices_by_consultation_id($consultation_id);
-            $data['medicines'] = $this->ConsultModel->get_medicines_by_consultation_id($consultation_id);
-            $data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
-            $data['dosageUnits'] = $this->ConsultModel->getDosageUnits();
-            $data['attachments'] = $this->ConsultModel->get_attachments_by_consultation_id($consultation_id);
+        $data['consultation'] = $this->ConsultModel->get_consultation_by_id($consultation_id);
+        $data['vitals'] = $this->ConsultModel->get_vitals_by_consultation_id($consultation_id);
+        $data['symptoms'] = $this->ConsultModel->get_symptoms_by_consultation_id($consultation_id);
+        $data['findings'] = $this->ConsultModel->get_findings_by_consultation_id($consultation_id);
+        $data['diagnosis'] = $this->ConsultModel->get_diagnosis_by_consultation_id($consultation_id);
+        $data['investigations'] = $this->ConsultModel->get_investigations_by_consultation_id($consultation_id);
+        $data['instructions'] = $this->ConsultModel->get_instructions_by_consultation_id($consultation_id);
+        $data['procedures'] = $this->ConsultModel->get_procedures_by_consultation_id($consultation_id);
+        $data['advices'] = $this->ConsultModel->get_advices_by_consultation_id($consultation_id);
+        $data['medicines'] = $this->ConsultModel->get_medicines_by_consultation_id($consultation_id);
+        $data['medicineCategories'] = $this->ConsultModel->getMedicineCategories();//pass category
+        $data['dosageUnits'] = $this->ConsultModel->getDosageUnits();
+        $data['attachments'] = $this->ConsultModel->get_attachments_by_consultation_id($consultation_id);
 
-            $data['patient_id'] = $data['consultation']['patient_id'];
-            $data['previous_consultation_id'] = $consultation_id;
-            $data['patientDetails'] = $this->ConsultModel->getPatientDetails($data['patient_id']);
+        $data['patient_id'] = $data['consultation']['patient_id'];
+        $data['previous_consultation_id'] = $consultation_id;
+        $data['patientDetails'] = $this->ConsultModel->getPatientDetails($data['patient_id']);
 
-            $this->load->view('consultationView.php', $data);
-        } else {
-            redirect('Consultation/');
-        }
+        $this->load->view('consultationView.php', $data);
     }
 
     public function saveEditConsult()

@@ -133,11 +133,9 @@ class HcpModel extends CI_Model
         CONCAT(p.firstName, ' ', p.lastName) AS patientName,
         p.patientId,
         p.mobileNumber,
-        GROUP_CONCAT(s.symptom_name SEPARATOR ', ') AS symptoms
     ");
         $this->db->from('consultations c');
         $this->db->join('patient_details p', 'p.id = c.patient_id', 'left');
-        $this->db->join('consult_symptoms s', 's.consultation_id = c.id', 'left');
         $this->db->where('c.doctor_id', $hcpIdDb);
 
         if ($followUpDate) {

@@ -37,7 +37,7 @@
                 width="200" height="90"></a>
     </div>
     <div class="d-flex align-middle justify-content-center">
-        <div class="card mt-3 p-4 p-sm-5">
+        <div class="card mt-3 p-4 p-sm-5" style="box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);">
             <p class="fs-2 pb-3" style="font-weight:500;">Administrator Login</p>
             <form action="<?php echo base_url() . "Edfadmin/adminLogin" ?>" method="post" name="hcploginform"
                 onsubmit="return validateLogin()">

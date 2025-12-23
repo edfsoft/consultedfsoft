@@ -79,6 +79,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('hcpMobile', $post['hcpMobileNum']);
         $this->db->update('hcp_details', $updatedata);
+        return ($this->db->affected_rows() > 0);
     }
 
     public function hcpLoginDetails()

@@ -6729,7 +6729,7 @@
             function addMedicineTag(row) {
                 const tag = document.createElement("span");
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-                tag.style.cursor = "pointer";
+                tag.style.cursor = "move";
                 tag.setAttribute("data-id", row.id);
 
                 updateMedicineTagDisplay(tag, row);

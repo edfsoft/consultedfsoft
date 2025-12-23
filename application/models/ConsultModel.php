@@ -386,6 +386,7 @@ class ConsultModel extends CI_Model
 
             // Medicines
             $consultation['medicines'] = $this->db
+                ->order_by('order_position', 'ASC')
                 ->get_where('consult_medicines', ['consultation_id' => $consultation_id])
                 ->result_array();
 
@@ -452,9 +453,18 @@ class ConsultModel extends CI_Model
         return $query->result_array();
     }
 
-    public function get_medicines_by_consultation_id($consultation_id)
+/*     public function get_medicines_by_consultation_id($consultation_id)
     {
         $query = $this->db->get_where(' consult_medicines', array('consultation_id' => $consultation_id));
+        return $query->result_array();
+    } */
+
+    public function get_medicines_by_consultation_id($consultation_id)
+    {
+        // Add this line to sort by your new column
+        $this->db->order_by('order_position', 'ASC'); 
+        
+        $query = $this->db->get_where('consult_medicines', array('consultation_id' => $consultation_id));
         return $query->result_array();
     }
 

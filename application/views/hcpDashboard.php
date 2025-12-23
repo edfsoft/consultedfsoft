@@ -108,7 +108,7 @@
         if ($method == "dashboard") {
             ?>
             <section>
-                <p class="card ps-3 py-3" style="font-size: 24px; font-weight: 500">
+                <p class="card ps-3 py-3 mx-1" style="font-size: 24px; font-weight: 500">
                     Dashboard
                 </p>
 
@@ -150,7 +150,7 @@
                                 style="width:80px;height:80px" alt="icon3" />
                             <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Appointments Count
+                                   CC Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     <?php echo $appointmentsTotal; ?>
@@ -402,13 +402,13 @@
                 </div> -->
 
                 <!-- Section 3 -->
-                <div class="d-lg-flex justify-content-evenly">
+                <div class="d-lg-flex justify-content-between mx-2">
                     <!-- Completed Consult Section -->
                     <div class="card col-lg-6 col-12 rounded-5 mx-1 mt-3">
                         <div class="card-body p-4">
                             <p style="font-size:20px;font-weight:500;color:#00ad8e"
                                 class="pb-3 d-flex justify-content-between align-items-center">
-                                <span><i class="bi bi-clock-history pe-3"></i>Completed Consultations</span>
+                                <span><i class="bi bi-check2-circle pe-3"></i>Completed Consultations</span>
                                 <span class="px-2" id="completedConsultCount"
                                     style="font-size:16px;color: #00ad8e;border : 2px solid #00ad8e; border-radius:50%;">0</span>
                             </p>
@@ -465,7 +465,7 @@
                             <p style="font-size: 20px; font-weight: 500; color: #00ad8e"
                                 class="pb-3 d-flex justify-content-between align-items-center">
                                 <span><i class="bi bi-clock-history pe-3"></i>
-                                    Today's Follow-ups (Next Follow-up)</span>
+                                    Follow-ups (Next Follow-up)</span>
                                 <span class="px-2" id="followUpCount"
                                     style="font-size:16px;color: #00ad8e;border : 2px solid #00ad8e; border-radius:50%;">0</span>
                             </p>
@@ -678,7 +678,7 @@
                                     tbody.innerHTML = `
                         <tr>
                             <td colspan="7" class="text-center text-muted py-4">
-                                No follow-ups scheduled for this date
+                                No follow-ups scheduled
                             </td>
                         </tr>`;
                                     countEl.textContent = 0;

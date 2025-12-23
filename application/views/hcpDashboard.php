@@ -462,9 +462,14 @@
                     <!-- Today's Follow up Section  -->
                     <div class="card col-lg-6 col-12 rounded-5 mx-1 mt-3">
                         <div class="card-body p-4">
-                            <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-3">
-                                <i class="bi bi-clock-history pe-3"></i> Today's Follow-ups (Next Follow-up)
+                            <p style="font-size: 20px; font-weight: 500; color: #00ad8e"
+                                class="pb-3 d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-clock-history pe-3"></i>
+                                    Today's Follow-ups (Next Follow-up)</span>
+                                <span class="px-2" id="followUpCount"
+                                    style="font-size:16px;color: #00ad8e;border : 2px solid #00ad8e; border-radius:50%;">0</span>
                             </p>
+
                             <div class="rounded-4 px-3">
                                 <!-- Date Header -->
                                 <div class="d-flex justify-content-between align-items-center mb-3"
@@ -473,12 +478,16 @@
                                         style="font-size: 1.5rem; color: #00ad8e;">
                                         <i class="bi bi-chevron-left"></i>
                                     </button>
-
                                     <div class="text-center">
-                                        <h5 class="mb-0 fw-semibold" id="appointmentsDate">17-Oct-2025</h5>
-                                        <small id="appointmentsDay">Thursday</small>
+                                        <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
+                                            <span id="appointmentsDate"></span>
+                                            <input type="date" id="followUpCalendar"
+                                                style="opacity:0;position:absolute;pointer-events:none">
+                                            <i class="bi bi-calendar-event ms-md-3 ms-1" id="followUpCalendarIcon"
+                                                style="cursor:pointer;font-size:1.5rem"></i>
+                                        </h5>
+                                        <small id="appointmentsDay"></small>
                                     </div>
-
                                     <button id="nextDayBtnFollowUp" class="btn btn-link fw-bold p-0"
                                         style="font-size: 1.5rem; color: #00ad8e;">
                                         <i class="bi bi-chevron-right"></i>
@@ -622,6 +631,9 @@
                     const prevBtn = document.getElementById('prevDayBtnFollowUp');
                     const nextBtn = document.getElementById('nextDayBtnFollowUp');
                     const tbody = document.getElementById('followUpTableBody');
+                    const countEl = document.getElementById('followUpCount');
+                    const calIn = document.getElementById('followUpCalendar');
+                    const calIcon = document.getElementById('followUpCalendarIcon');
 
                     let currentDate = new Date();
 
@@ -631,6 +643,10 @@
                         return date.toLocaleDateString('en-GB', {
                             day: '2-digit', month: 'short', year: 'numeric'
                         }).replace(/ /g, '-');
+                    }
+
+                    function formatApiDate(date) {
+                        return date.toISOString().split('T')[0];
                     }
 
                     function formatConsultDate(dateStr) {
@@ -644,24 +660,38 @@
                     function updateHeader() {
                         dateEl.textContent = formatDate(currentDate);
                         dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                        calIn.value = formatApiDate(currentDate);
                     }
 
                     function loadAppointments() {
-                        const apiDate = formatDate(currentDate);
                         updateHeader();
+                        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Loading...</td></tr>`;
+                        countEl.textContent = 0;
 
-                        fetch(`${baseUrl}?date=${apiDate}`)
+                        fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
                             .then(r => r.json())
                             .then(res => {
                                 if (res.success && res.data.length > 0) {
                                     renderTable(res.data);
+                                    countEl.textContent = res.data.length;
                                 } else {
-                                    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No follow-ups scheduled for this date</td></tr>`;
+                                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                No follow-ups scheduled for this date
+                            </td>
+                        </tr>`;
+                                    countEl.textContent = 0;
                                 }
                             })
-                            .catch(err => {
-                                console.error(err);
-                                tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error loading data</td></tr>`;
+                            .catch(() => {
+                                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-danger">
+                            Error loading data
+                        </td>
+                    </tr>`;
+                                countEl.textContent = 0;
                             });
                     }
 
@@ -686,15 +716,22 @@
                         });
                     }
 
-                    prevBtn.addEventListener('click', () => {
+                    prevBtn.onclick = () => {
                         currentDate.setDate(currentDate.getDate() - 1);
                         loadAppointments();
-                    });
+                    };
 
-                    nextBtn.addEventListener('click', () => {
+                    nextBtn.onclick = () => {
                         currentDate.setDate(currentDate.getDate() + 1);
                         loadAppointments();
-                    });
+                    };
+
+                    calIcon.onclick = () => calIn.showPicker();
+
+                    calIn.onchange = () => {
+                        currentDate = new Date(calIn.value);
+                        loadAppointments();
+                    };
 
                     loadAppointments();
                 });

@@ -139,8 +139,7 @@ class HcpModel extends CI_Model
         $this->db->where('c.doctor_id', $hcpIdDb);
 
         if ($followUpDate) {
-            $mysqlDate = date('Y-m-d', strtotime(str_replace('-', ' ', $followUpDate)));
-            $this->db->where('DATE(c.next_follow_up)', $mysqlDate);
+            $this->db->where('DATE(c.next_follow_up)', $followUpDate);
         }
 
         $this->db->group_by('c.id');

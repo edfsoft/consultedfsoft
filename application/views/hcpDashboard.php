@@ -164,7 +164,7 @@
                 </div>
 
                 <!-- Section 2 -->
-                <!-- Currently hiding, there 2 appointment sections  -->
+                <!-- Hiding - there 2 appointment sections  -->
                 <!-- <div class="d-lg-flex justify-content-evenly">
                     <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
@@ -406,8 +406,11 @@
                     <!-- Completed Consult Section -->
                     <div class="card col-lg-6 col-12 rounded-5 mx-1 mt-3">
                         <div class="card-body p-4">
-                            <p style="font-size:20px;font-weight:500;color:#00ad8e" class="pb-3">
-                                <i class="bi bi-clock-history pe-3"></i> Completed Consultations
+                            <p style="font-size:20px;font-weight:500;color:#00ad8e"
+                                class="pb-3 d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-clock-history pe-3"></i>Completed Consultations</span>
+                                <span class="px-2" id="completedConsultCount"
+                                    style="font-size:16px;color: #00ad8e;border : 2px solid #00ad8e; border-radius:50%;">0</span>
                             </p>
 
                             <div class="rounded-4 px-3">
@@ -427,8 +430,8 @@
                                             <input type="date" id="completedConsultCalendar"
                                                 style="opacity:0;position:absolute;pointer-events:none">
 
-                                            <i class="bi bi-calendar-event" id="completedConsultCalendarIcon"
-                                                style="cursor:pointer;font-size:1.2rem"></i>
+                                            <i class="bi bi-calendar-event ms-md-3 ms-1" id="completedConsultCalendarIcon"
+                                                style="cursor:pointer;font-size:1.5rem"></i>
                                         </h5>
                                         <small id="completedConsultDay"></small>
                                     </div>
@@ -516,6 +519,7 @@
                     const nextBtn = document.getElementById('nextDayBtnCompletedConsult');
                     const calIn = document.getElementById('completedConsultCalendar');
                     const calIcon = document.getElementById('completedConsultCalendarIcon');
+                    const countEl = document.getElementById('completedConsultCount');
 
                     let currentDate = new Date();
 
@@ -546,22 +550,25 @@
                             .then(res => {
                                 if (res.success && res.data.length) {
                                     renderCompletedConsult(res.data);
+                                    countEl.textContent = res.data.length;
                                 } else {
                                     tbody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                No completed consultations
-                            </td>
-                        </tr>`;
+                                                <tr>
+                                                    <td colspan="6" class="text-center text-muted py-4">
+                                                        No completed consultations
+                                                    </td>
+                                                </tr>`;
+                                    countEl.textContent = 0;
                                 }
                             })
                             .catch(() => {
                                 tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center text-danger">
-                            Error loading data
-                        </td>
-                    </tr>`;
+                                            <tr>
+                                                <td colspan="6" class="text-center text-danger">
+                                                    Error loading data
+                                                </td>
+                                            </tr>`;
+                                countEl.textContent = 0;
                             });
                     }
 

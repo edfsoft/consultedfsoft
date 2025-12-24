@@ -850,8 +850,9 @@
                                                     <?php } else { ?>
                                                             <a
                                                                 href="<?php echo base_url() . "Healthcareprovider/appointmentUpdate/" . $value['id'] ?>">
-                                                                <button class="btn btn-secondary">Edit</button> </a>
-                                                            <button class="btn btn-secondary" disabled>Summary</button>
+                                                                <button class="btn btn-secondary"> <i class="bi bi-pen"></i></button> </a>
+                                                            <button class="btn btn-secondary" disabled> <i
+                                                                    class="bi bi-calendar-check"></i></button>
                                                             <button class="btn btn-success" disabled>Join</button>
                                                     <?php } ?>
                                                     </td>
@@ -2172,7 +2173,7 @@
                                                                     NAME</th>
                                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
                                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
-                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">REASON
+                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">COMPLAINT
                                                                 </th>
                                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                                 </th>
@@ -2217,32 +2218,31 @@
                                                                     </td>
 
                                                                     <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo htmlspecialchars($value['reason'] != '' ? substr($value['reason'], 0, 50) . '...' : "-"); ?>
+                                                    <?php echo htmlspecialchars($value['reason'] != '' ? substr($value['reason'], 0, 20) . '...' : "-"); ?>
                                                                     </td>
 
                                                                     <td style="font-size: 16px" class="d-flex d-lg-block pt-3">
-                                                                        <!-- pt-3 for alignment -->
+                                                                        <a href="<?php echo base_url() . "Consultation/Consultation/" . $value['patientDbId']; ?>"
+                                                                            class="">
+                                                                            <button class="btn btn-secondary text-light mb-1"><i
+                                                                                    class="bi bi-calendar-check"></i></button>
+                                                                        </a>
                                                         <?php
                                                         date_default_timezone_set('Asia/Kolkata');
                                                         $appointmentDate = $value['appointment_date'];
-                                                        $appointmentTime = $value['appointment_time']; // H:i:s (24hr)
-                                            
+                                                        $appointmentTime = $value['appointment_time'];
+
                                                         $appointmentDateTime = strtotime("$appointmentDate $appointmentTime");
                                                         $currentDateTime = time();
 
-                                                        // Define 10-minute window BEFORE appointment
-                                                        $windowStart = $appointmentDateTime - (10 * 60); // -10 minutes
-                                                        $windowEnd = $appointmentDateTime;             // appointment time
-                                            
+                                                        $windowStart = $appointmentDateTime - (10 * 60);
+                                                        $windowEnd = $appointmentDateTime;
                                                         $isToday = ($appointmentDate === date('Y-m-d'));
 
                                                         $shouldEnableJoin = $isToday &&
                                                             ($currentDateTime >= $windowStart) &&
                                                             ($currentDateTime <= $windowEnd);
-                                                        ?>
-
-                                                                        <!-- Join Button (enabled only within 10min) -->
-                                                    <?php if ($shouldEnableJoin && !empty($value['appointment_link'])): ?>
+                                                        if ($shouldEnableJoin && !empty($value['appointment_link'])): ?>
                                                                             <a href="<?php echo htmlspecialchars($value['appointment_link']); ?>"
                                                                                 target="_blank" class="btn btn-success mx-1">
                                                                                 Join
@@ -2253,14 +2253,6 @@
                                                                                 Join
                                                                             </a>
                                                     <?php endif; ?>
-
-                                                                        <!-- Open Consultant View -->
-                                                                        <a href="<?php echo base_url() . "Consultation/Consultation/" . $value['patientDbId']; ?>"
-                                                                            class="">
-                                                                            <button class="btn btn-secondary text-light mb-1"><i
-                                                                                    class="bi bi-calendar-check"></i></button>
-                                                                        </a>
-
                                                                     </td>
                                                                 </tr>
                                         <?php } ?>

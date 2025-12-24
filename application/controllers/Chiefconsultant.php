@@ -224,21 +224,6 @@ class Chiefconsultant extends CI_Controller
         }
     }
 
-    // This is old code, need to update or remove this
-    public function prescriptionView()
-    {
-        if (isset($_SESSION['ccName'])) {
-            $this->data['method'] = "prescription";
-            $patientIdDb = $this->uri->segment(3);
-            $patientDetails = $this->HcpModel->getPatientDetails($patientIdDb);
-            $this->data['patientDetails'] = $patientDetails;
-            $this->setVariable();
-            $this->load->view('ccDashboard.php', $this->data);
-        } else {
-            redirect('Chiefconsultant/');
-        }
-    }
-
     public function appointments()
     {
         if (isset($_SESSION['ccName'])) {

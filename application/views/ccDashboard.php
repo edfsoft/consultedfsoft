@@ -172,7 +172,7 @@
                                 style="width:80px;height:80px" alt="icon3" />
                             <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                    Appointments Count
+                                    Today Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #0079AD">
                                     <?php echo $appointmentsTotal; ?>
@@ -185,11 +185,12 @@
                     </div>
                 </div>
 
+                <!-- Section 2  -->
                 <div class="d-lg-flex justify-content-evenly">
-                    <div class="card rounded-5 mx-1">
+                    <div class="card col-12 col-lg-5 rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                <i class="bi bi-calendar4 pe-3"></i> Appointments List
+                                <i class="bi bi-calendar2-check pe-3"></i> Today Appointments
                             </p>
                             <div class="table-responsive">
                                 <?php if (isset($appointmentList[0]['id'])) { ?>
@@ -197,11 +198,11 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col-4" style="font-size: 18px; font-weight: 500; color: #0079AD">
-                                                    Patients
+                                                    Patient
                                                 </th>
                                                 <th scope="col" style="font-size: 18px; font-weight: 500; color: #0079AD"
                                                     class="px-5">
-                                                    Name / Diagonsis
+                                                    Patient Id / Name
                                                 </th>
                                                 <th scope="col" style="font-size: 18px; font-weight: 500; color: #0079AD">
                                                     Time
@@ -225,7 +226,7 @@
                                                         <span
                                                             style="font-size: 16px; font-weight: 500; color: #0079AD"><?php echo $appointmentList[0]['patientId']; ?></span><br /><span
                                                             style="font-size: 16px">
-                                                            <?php echo $appointmentList[0]['patientComplaint'] != '' ? $appointmentList[0]['patientComplaint'] : "-"; ?></span>
+                                                            <?php echo $appointmentList[0]['firstName'] != '' ? $appointmentList[0]['firstName'] . " " . $appointmentList[0]['lastName'] : "-"; ?></span>
                                                     </td>
                                                     <td style="font-size: 16px">
                                                         <?php echo date('h:i a', strtotime($appointmentList[0]['timeOfAppoint'])); ?>
@@ -291,11 +292,10 @@
                         </div>
                     </div>
 
-
-                    <div class="card rounded-5 mx-1">
+                    <div class="card col-12 col-lg-5 rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #0079AD">
-                                <i class="bi bi-person pe-3"></i> Patient Appointment Details
+                                <i class="bi bi-person pe-3"></i> Patient Details
                             </p>
                             <?php if (isset($appointmentList[0]['id'])) { ?>
                                 <div class="d-flex justify-content-evenly">
@@ -322,13 +322,13 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col-4" style="font-size: 16px; font-weight: 600">
+                                                <th class="col-4" style="font-size: 16px; font-weight: 600">
                                                     Age
                                                 </th>
-                                                <th scope="col-4" style="font-size: 16px; font-weight: 600">
+                                                <th class="col-4" style="font-size: 16px; font-weight: 600">
                                                     Gender
                                                 </th>
-                                                <th scope="col-4" style="font-size: 16px; font-weight: 600">
+                                                <th class="col-4" style="font-size: 16px; font-weight: 600">
                                                     Blood Group
                                                 </th>
                                             </tr>
@@ -353,10 +353,10 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col-6" style="font-size: 16px; font-weight: 600">
-                                                    Diagonsis
+                                                <th class="col-8" style="font-size: 16px; font-weight: 600">
+                                                    Complaint
                                                 </th>
-                                                <th scope="col-6" style="font-size: 16px; font-weight: 600">
+                                                <th class="col-4" style="font-size: 16px; font-weight: 600">
                                                     Patient HCP ID
                                                 </th>
                                             </tr>
@@ -381,34 +381,15 @@
                                 <p style="font-size: 16px;font-weight: 400;background-color: #e9eeed;padding: 10px;">
                                     Diabetes - Health care
                                 </p> -->
-                                <div>
+                                <div class="d-flex justify-content-center">
                                     <a href="tel:<?php echo $appointmentList[0]['mobileNumber']; ?>"><button
                                             style=" background-color: #0079AD; color: white; font-size: 16px;"
                                             class="border border-1 rounded p-2 p-md-3">
                                             <i class="bi bi-telephone"></i> +91
                                             <?php echo $appointmentList[0]['mobileNumber']; ?>
                                         </button></a>
-                                    <?php if ($appointmentList[0]['documentOne'] != "No data") { ?>
-                                        <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentOne'] ?>"
-                                            target="blank"><button style="border: 2px solid #0079AD; background-color: white"
-                                                class="rounded p-2 p-md-3 mt-2 mt-sm-0 mx-sm-2">
-                                                <i class="bi bi-folder2"></i> Reports
-                                            </button></a>
-                                    <?php }
-                                    if ($appointmentList[0]['documentTwo'] != "No data") { ?>
-                                        <a href="<?php echo base_url() . 'uploads/' . $appointmentList[0]['documentTwo'] ?>"
-                                            target="blank"><button style="border: 2px solid #0079AD; background-color: white"
-                                                class="rounded p-2 p-md-3 mt-2 mt-sm-0">
-                                                <i class="bi bi-folder2"></i> Medicines
-                                            </button></a>
-                                    <?php } ?>
                                 </div>
-                                <br>
-                                <!-- <a href="#" class="text-decoration-underline">Last Appointment</a> -->
-                                <?php if ($appointmentList[0]['lastAppDate'] != "") { ?>
-                                    <p>Last Appointment Date - <?php echo $appointmentList[0]['lastAppDate']; ?></p>
-                                <?php }
-                            } else { ?>
+                            <?php } else { ?>
                                 <p class="m-md-5 px-md-5"><b> No Appointments Today.</b></p>
                             <?php } ?>
                         </div>

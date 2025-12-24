@@ -150,7 +150,7 @@
                                 style="width:80px;height:80px" alt="icon3" />
                             <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                   CC Appointments
+                                    CC Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     <?php echo $appointmentsTotal; ?>
@@ -404,7 +404,7 @@
                 <!-- Section 3 -->
                 <div class="d-lg-flex justify-content-between mx-2">
                     <!-- Completed Consult Section -->
-                    <div class="card col-lg-6 col-12 rounded-5 mx-1 mt-3">
+                    <div class="card col-12 col-lg-6 rounded-5 mx-1 mt-3">
                         <div class="card-body p-4">
                             <p style="font-size:20px;font-weight:500;color:#00ad8e"
                                 class="pb-3 d-flex justify-content-between align-items-center">
@@ -460,7 +460,7 @@
                         </div>
                     </div>
                     <!-- Today's Follow up Section  -->
-                    <div class="card col-lg-6 col-12 rounded-5 mx-1 mt-3">
+                    <div class="card col-12 col-lg-6 rounded-5 mx-1 mt-3">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #00ad8e"
                                 class="pb-3 d-flex justify-content-between align-items-center">

@@ -77,7 +77,7 @@
         <li class="pt-4">
             <a style="font-size: 18px; font-weight: 400;color:white;" id="patients"
                 href="<?php echo base_url() . "Healthcareprovider/patients" ?>">
-                <div><i class="bi bi-person pe-3"></i> <span>Patients</span></div>
+                <div><i class="bi bi-people pe-3"></i> <span>Patients</span></div>
             </a>
         </li>
 

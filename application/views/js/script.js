@@ -21,22 +21,6 @@ function togglePasswordVisibility(id, icon) {
 	}
 }
 
-// View password CC, HCP and admin password
-function togglePasswordVisibility(inputId, iconId) {
-	var passwordInput = document.getElementById(inputId);
-	var visibilityIcon = document.getElementById(iconId);
-
-	if (passwordInput.type === "password") {
-		passwordInput.type = "text";
-		visibilityIcon.classList.remove("bi-eye-slash");
-		visibilityIcon.classList.add("bi-eye");
-	} else {
-		passwordInput.type = "password";
-		visibilityIcon.classList.remove("bi-eye");
-		visibilityIcon.classList.add("bi-eye-slash");
-	}
-}
-
 //  Go back
 function goBack() {
 	window.history.back();

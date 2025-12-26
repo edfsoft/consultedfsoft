@@ -24,16 +24,12 @@
         .form-label {
             font-weight: 500;
         }
-
-        .card {
-            border-radius: 10px !important;
-        }
     </style>
 </head>
 
 <body>
     <div class="min-vh-100 d-flex justify-content-center align-items-center">
-        <div class="card p-4 p-sm-5 col-md-6 col-lg-5" style="box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);">
+        <div class="card rounded p-4 p-sm-5 col-md-6 col-lg-5" style="box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);">
             <div class="text-center">
                 <a href="<?php echo base_url(); ?>" class="d-inline-block">
                     <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo">
@@ -45,19 +41,19 @@
                 <div class="mb-3">
                     <label for="adminEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
                     <input type="text" name="adminEmail" id="adminEmail" placeholder="example@gmail.com"
-                        oninput="validEmail(this)" class="form-control rounded-pill p-3">
+                        oninput="validEmail(this)" class="form-control rounded p-3">
                     <small id="mail_err" class="text-danger pt-1"></small>
                 </div>
-                <div class="position-relative mb-3">
+                <div class="position-relative">
                     <label for="adminPassword" class="form-label">Password <span class="text-danger">*</span></label>
                     <input type="password" name="adminPassword" id="adminPassword" placeholder="password"
-                        oninput="validePassword(this)" class="form-control rounded-pill p-3">
+                        oninput="validePassword(this)" class="form-control rounded-3 p-3">
                     <i id="togglePassword" class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
                         style="cursor: pointer;"></i>
                 </div>
                 <small id="password_err" class="text-danger pt-1"></small>
                 <button type="submit"
-                    class="border-0 rounded-pill rounded-3 text-light fw-bold float-end mt-4 px-4 px-md-5 py-2 py-md-3"
+                    class="border-0 rounded text-light fw-bold float-end mt-4 px-4 px-md-5 py-2 py-md-3"
                     style="background-color: #2b353bf5;">Login</button>
             </form>
         </div>

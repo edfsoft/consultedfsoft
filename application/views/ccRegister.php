@@ -98,19 +98,21 @@
                             <label for="ccName" class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" name="ccName" id="ccName" maxlength="30" placeholder="Suresh Kumar"
                                 class="form-control rounded-pill p-3">
-                            <div id="name_err" class="text-danger pt-1"></div>
+                            <small id="name_err" class="text-danger pt-1"></small>
                         </div>
                         <div class="mb-3">
-                            <label for="ccMobile" class="form-label">Mobile <span class="text-danger">*</span></label>
+                            <label for="ccMobile" class="form-label">Mobile Number <span
+                                    class="text-danger">*</span></label>
                             <input type="number" name="ccMobile" id="ccMobile" placeholder="9876543210"
                                 class="form-control rounded-pill p-3">
-                            <div id="mobile_err" class="text-danger pt-1"></div>
+                            <small id="mobile_err" class="text-danger pt-1"></small>
                         </div>
                         <div class="mb-3">
-                            <label for="ccEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                            <label for="ccEmail" class="form-label">Email Address <span
+                                    class="text-danger">*</span></label>
                             <input type="email" name="ccEmail" id="ccEmail" maxlength="30"
                                 placeholder="example@gmail.com" class="form-control rounded-pill p-3">
-                            <div id="mail_err" class="text-danger pt-1"></div>
+                            <small id="mail_err" class="text-danger pt-1"></small>
                         </div>
                         <div class="mb-3">
                             <label for="ccSpec" class="form-label">Specialization <span
@@ -125,7 +127,7 @@
                                     </option>
                                 <?php } ?>
                             </select>
-                            <div id="spec_err" class="text-danger pt-1"></div>
+                            <small id="spec_err" class="text-danger pt-1"></small>
                         </div>
                         <div class="position-relative">
                             <label for="ccPassword" class="form-label">Password <span
@@ -136,7 +138,7 @@
                                 class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
                                 style="cursor: pointer;"></i>
                         </div>
-                        <div id="password_err" class="text-danger pt-1"></div>
+                        <small id="password_err" class="text-danger pt-1"></small>
                         <div class="text-secondary mt-2" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                             and a minimum of 8 characters.</div>
@@ -145,7 +147,7 @@
                                     class="text-danger">*</span></label>
                             <input type="password" name="ccCnfmPassword" id="ccCnfmPassword" maxlength="20"
                                 placeholder="re-type password" class="form-control rounded-pill p-3">
-                            <div id="cnfmpassword_err" class="text-danger pt-1"></div>
+                            <small id="cnfmpassword_err" class="text-danger pt-1"></small>
                         </div>
 
                         <!-- <div class="mb-3">
@@ -216,14 +218,14 @@
             var confirmpassword = document.getElementById("ccCnfmPassword").value;
 
             if (name == "") {
-                document.getElementById("name_err").innerHTML = "Name must be filled out.";
+                document.getElementById("name_err").innerHTML = "Please enter a name.";
                 return false;
             } else {
                 document.getElementById("name_err").innerHTML = "";
             }
 
             if (mobile == "") {
-                document.getElementById("mobile_err").innerHTML = "Mobile number must be filled out.";
+                document.getElementById("mobile_err").innerHTML = "Please enter a mobile number.";
                 return false;
             } else if (!/^\d{10}$/.test(mobile)) {
                 document.getElementById("mobile_err").innerHTML = "Invalid mobile number. Please enter valid number.";
@@ -233,7 +235,7 @@
             }
 
             if (email == "") {
-                document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
+                document.getElementById("mail_err").innerHTML = "Please enter an email address.";
                 return false;
             } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                 document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
@@ -243,14 +245,14 @@
             }
 
             if (spec == "") {
-                document.getElementById("spec_err").innerHTML = "Specialization must be filled out.";
+                document.getElementById("spec_err").innerHTML = "Please select a specialization.";
                 return false;
             } else {
                 document.getElementById("spec_err").innerHTML = "";
             }
 
             if (password == "") {
-                document.getElementById("password_err").innerHTML = "Password must be filled out.";
+                document.getElementById("password_err").innerHTML = "Please enter a password.";
                 return false;
             } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
                 document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password."
@@ -260,10 +262,10 @@
             }
 
             if (confirmpassword == "") {
-                document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
+                document.getElementById("cnfmpassword_err").innerHTML = "Please re-enter the password.";
                 return false;
             } else if (confirmpassword != password) {
-                document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
+                document.getElementById("cnfmpassword_err").innerHTML = "Please enter the same password again."
                 return false;
             } else {
                 document.getElementById("cnfmpassword_err").innerHTML = "";

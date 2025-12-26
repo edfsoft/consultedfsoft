@@ -90,14 +90,7 @@
             </a>
         </li>
 
-        <li class="pt-4">
-            <a href="<?php echo base_url() . "Healthcareprovider/patientAppointments" ?>"
-                style="font-size: 18px; font-weight: 400;color:white;" id="patientAppointments">
-                <div>
-                    <i class="bi bi-calendar-check pe-3"></i> <span>Patient Appointments</span>
-                </div>
-            </a>
-        </li>
+        
 
         <li class="pt-4">
             <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>"

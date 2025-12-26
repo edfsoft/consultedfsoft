@@ -55,26 +55,26 @@
                     <label>First Name <span class="text-danger">*</span></label>
                     <input type="text" name="newFirstName" id="newFirstName" placeholder="E.g. Siva"
                         class="form-control">
-                    <div id="newFirstName_err" class="text-danger"></div>
+                    <small id="newFirstName_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
                     <label>Last Name</label>
                     <input type="text" name="newLastName" id="newLastName" placeholder="E.g. kumar"
                         class="form-control">
-                    <div id="newLastName_err" class="text-danger"></div>
+                    <small id="newLastName_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
                     <label>Mobile <span class="text-danger">*</span></label>
                     <input type="text" name="newMobile" id="newMobile" placeholder="E.g. 5987654321"
                         class="form-control" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                    <div id="newMobile_err" class="text-danger"></div>
-                    <div id="newMobileDuplicate_err" class="text-danger"></div>
+                    <small id="newMobile_err" class="text-danger"></small>
+                    <small id="newMobileDuplicate_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
                     <label>Email <span class="text-danger">*</span></label>
                     <input type="email" name="newEmail" id="newEmail" placeholder="E.g. siva@gmail.com"
                         class="form-control">
-                    <div id="newEmail_err" class="text-danger"></div>
+                    <small id="newEmail_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
                     <label>Gender <span class="text-danger">*</span></label>
@@ -84,12 +84,12 @@
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
                     </select>
-                    <div id="newGender_err" class="text-danger"></div>
+                    <small id="newGender_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
                     <label>Age <span class="text-danger">*</span></label>
                     <input type="number" name="newAge" id="newAge" placeholder="E.g. 35" class="form-control">
-                    <div id="newAge_err" class="text-danger"></div>
+                    <small id="newAge_err" class="text-danger"></small>
                 </div>
                 <div id="newPatientStatus" class="text-success mt-2"></div>
             </div>
@@ -414,28 +414,28 @@
         let isValid = true;
 
         if (firstName === "") {
-            document.getElementById("newFirstName_err").innerHTML = "First name must be filled out.";
+            document.getElementById("newFirstName_err").innerHTML = "Please enter First Name";
             isValid = false;
         } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
-            document.getElementById("newFirstName_err").innerHTML = "First name must contain only letters and spaces.";
+            document.getElementById("newFirstName_err").innerHTML = "Please enter a First name using only letters and spaces.";
             isValid = false;
         }
 
-        if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
+        /* if (lastName !== "" && !/^[a-zA-Z\s]+$/.test(lastName)) {
             document.getElementById("newLastName_err").innerHTML = "Last name must contain only letters and spaces.";
             isValid = false;
-        }
+        } */
 
         if (mobile === "") {
-            document.getElementById("newMobile_err").innerHTML = "Mobile number must be filled out.";
+            document.getElementById("newMobile_err").innerHTML = "Please enter your mobile number.";
             isValid = false;
         } else if (!/^\d{10}$/.test(mobile)) {
-            document.getElementById("newMobile_err").innerHTML = "Mobile number must be exactly 10 digits.";
+            document.getElementById("newMobile_err").innerHTML = "Please enter a 10-digit mobile number.";
             isValid = false;
         }
 
         if (email === "") {
-            document.getElementById("newEmail_err").innerHTML = "Email must be filled out.";
+            document.getElementById("newEmail_err").innerHTML = "Please enter your email address.";
             isValid = false;
         } else if (email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             document.getElementById("newEmail_err").innerHTML = "Please enter a valid email address.";
@@ -443,15 +443,15 @@
         }
 
         if (gender === "") {
-            document.getElementById("newGender_err").innerHTML = "Gender must be selected.";
+            document.getElementById("newGender_err").innerHTML = "Please select a gender.";
             isValid = false;
         }
 
         if (age === "") {
-            document.getElementById("newAge_err").innerHTML = "Age must be filled out.";
+            document.getElementById("newAge_err").innerHTML = "Please enter your age.";
             isValid = false;
         } else if (isNaN(age) || age < 1 || age > 120) {
-            document.getElementById("newAge_err").innerHTML = "Age must be a number between 1 and 120.";
+            document.getElementById("newAge_err").innerHTML = "Please enter an age between 1 and 120.";
             isValid = false;
         }
 

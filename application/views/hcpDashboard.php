@@ -728,13 +728,14 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">APPOINTMENT WITH</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
-                                                </th>
+                                                <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
+                                                </th> -->
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
                                                 </th>
                                             </tr>
@@ -747,6 +748,15 @@
                                                 ?>
                                                 <tr>
                                                     <td class="pt-3"><?php echo $count; ?>. </td>
+                                                    <td style="font-size: 16px" class="pt-3">
+                                                        <?php if(!empty($value['appointment_type'])){
+                                                            if($value['appointment_type']==="cc_hcp"){
+                                                                echo 'CC';
+                                                            } else if($value['appointment_type']==="only_hcp"){
+                                                                echo 'PATIENT';
+                                                            }
+                                                        } ?>
+                                                    </td>
                                                     <td style="font-size: 16px" class="pt-3">
                                                         <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
                                                             class="text-dark" onmouseover="style='text-decoration:underline'"
@@ -769,12 +779,12 @@
                                                         <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
                                                             class="text-dark" onmouseover="style='text-decoration:underline'"
                                                             onmouseout="style='text-decoration:none'">
-                                                        <?php echo $value['referalDoctor'] ?>
+                                                        <?php echo $value['referalDoctor'] !='Nil' ? $value['referalDoctor']: "NA";?>
                                                         </a>
                                                     </td>
-                                                    <td style="font-size: 16px" class="pt-3">
+                                                    <!-- <td style="font-size: 16px" class="pt-3">
                                                     <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
-                                                    </td>
+                                                    </td> -->
                                                     <td style="font-size: 16px" class="d-flex d-lg-block">
                                                         <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
                                                         <?php
@@ -955,93 +965,87 @@
                                         <form action="<?php echo base_url() . "Healthcareprovider/newAppointment" ?>" method="POST"
                                             name="patientDetails" onsubmit="return validateAppointment()"
                                             oninput="clearErrorAppointment()">
-                                            <div>
+
+                                            <div class="form-group pb-3">
+                                                <label class="form-label">Appointment Type <span class="text-danger">*</span></label>
+                                                <select class="form-select" id="appointmentType" name="appointmentType" onchange="toggleAppointmentFields()">
+                                                    <option value="">Select Appointment Type</option>
+                                                    <option value="cc_hcp">CC & HCP Appointment</option>
+                                                    <option value="only_hcp">Only HCP Appointment</option>
+                                                </select>
+                                                <small id="appointmentType_err" class="text-danger pt-1"></small>
+                                            </div>
+
+                                            <fieldset id="appointmentFormFields" disabled>
+
+                                                <div class="form-group pb-3" id="referalDoctorSection">
+                                                    <label class="form-label" for="referalDoctor">Referal Doctor ID <span class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control mb-1" id="referralDoctorSearch" placeholder="Search Chief Consultant Id / Name" autocomplete="off">
+                                                    <select class="form-select" name="referalDoctor" id="referalDoctor" oninput="adjustTimeOptions()">
+                                                        <option value="">Select Chief Consultant Id</option>
+                                                        <?php foreach ($ccsId as $key => $value) { ?>
+                                                            <option value="<?php echo $value['ccId'] . '|' . $value['id'] . '|' . $value['gMeetLink'] ?>">
+                                                                <?php echo $value['ccId'] ?> / <?php echo $value['doctorName'] ?>
+                                                            </option>
+                                                        <?php } ?>
+                                                    </select>
+                                                    <small id="referalDoctor_err" class="text-danger pt-1"></small>
+                                                </div>
+
                                                 <div class="form-group pb-2">
-                                                    <label class="form-label" for="patientId">
-                                                        Patient Id <span class="text-danger">*</span>
-                                                    </label>
+                                                    <label class="form-label" for="patientId">Patient Id <span class="text-danger">*</span></label>
                                                     <div class="input-group mb-1">
-                                                        <input type="text" class="form-control"
-                                                            placeholder="Search patient Id / Name" id="patientSearch"
-                                                            autocomplete="off">
-                                                        <span class="input-group-text bg-white border-start-0">
-                                                            <i class="bi bi-search"></i>
-                                                        </span>
-                                                        <button class="btn btn-outline-primary d-flex align-items-center"
-                                                            type="button" id="addPatientBtn" title="Add New Patient">
+                                                        <input type="text" class="form-control" placeholder="Search patient Id / Name" id="patientSearch" autocomplete="off">
+                                                        <span class="input-group-text bg-white border-start-0"><i class="bi bi-search"></i></span>
+                                                        <button class="btn btn-outline-primary d-flex align-items-center" type="button" id="addPatientBtn" title="Add New Patient">
                                                             <i class="bi bi-plus-lg me-1"></i> Add Patient
                                                         </button>
                                                     </div>
                                                     <select class="form-select" name="patientId" id="patientId">
-                                                <?php foreach ($patientsId as $value): ?>
-                                                            <option
-                                                                value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
-                                                        <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
+                                                        <?php foreach ($patientsId as $value): ?>
+                                                            <option value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
+                                                                <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
                                                             </option>
-                                                <?php endforeach; ?>
+                                                        <?php endforeach; ?>
                                                     </select>
-                                                    <div id="patientId_err" class="text-danger pt-1"></div>
+                                                    <small id="patientId_err" class="text-danger pt-1"></small>
                                                 </div>
 
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label" for="referalDoctor">Referal Doctor ID <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control mb-1" id="referralDoctorSearch"
-                                                        placeholder="Search Chief Consultant Id / Name" autocomplete="off">
-                                                    <select class="form-select" name="referalDoctor" id="referalDoctor"
-                                                        oninput="adjustTimeOptions()">
-                                                        <option value="">Select Chief Consultant Id</option>
-                                                    <?php
-                                                    foreach ($ccsId as $key => $value) {
-                                                        ?>
-                                                            <option
-                                                                value="<?php echo $value['ccId'] . '|' . $value['id'] . '|' . $value['gMeetLink'] ?>">
-                                                        <?php echo $value['ccId'] ?> / <?php echo $value['doctorName'] ?>
-                                                            </option>
-                                                <?php } ?>
-                                                    </select>
-                                                    <div id="referalDoctor_err" class="text-danger pt-1"></div>
-                                                </div>
+                                                
 
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label pb-2" for="appConsult">Mode of consult <span
-                                                            class="text-danger">*</span></label><br>
+                                                <!-- <div class="form-group pb-3" id="modeSection">
+                                                    <label class="form-label pb-2" for="appConsult">Mode of consult <span class="text-danger">*</span></label><br>
                                                     <input type="radio" id="audio" name="appConsult" value="audio" checked>
                                                     <label for="audio">Audio</label>
-                                                    <input type="radio" class="ms-5 ps-5" id="video" name="appConsult"
-                                                        value="video">
+                                                    <input type="radio" class="ms-5 ps-5" id="video" name="appConsult" value="video">
                                                     <label for="video">Video</label><br>
                                                     <div id="appConsult_err" class="text-danger pt-1"></div>
+                                                </div> -->
+
+                                                <div class="form-group pb-3">
+                                                    <label class="form-label" for="appDate">Date <span class="text-danger">*</span></label>
+                                                    <input type="date" class="form-control" id="appDate" name="appDate" oninput="adjustTimeOptions()">
+                                                    <small id="appDate_err" class="text-danger pt-1"></small>
                                                 </div>
 
                                                 <div class="form-group pb-3">
-                                                    <label class="form-label" for="appDate">Date <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" id="appDate" name="appDate"
-                                                        oninput="adjustTimeOptions()">
-                                                    <div id="appDate_err" class="text-danger pt-1"></div>
-                                                </div>
-
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label" for="dayTime">Part of a day <span
-                                                            class="text-danger">*</span></label>
-                                                    <select class="form-select" id="dayTime" name="dayTime"
-                                                        onchange="adjustTimeOptions()">
-                                                        <option id="placeholderOption" value="" style="display: none;">Select part
-                                                            of the day</option>
+                                                    <label class="form-label" for="dayTime">Part of a day <span class="text-danger">*</span></label>
+                                                    <select class="form-select" id="dayTime" name="dayTime" onchange="adjustTimeOptions()">
+                                                        <option id="placeholderOption" value="" style="display: none;">Select part of the day</option>
                                                         <option value="Morning">Morning</option>
                                                         <option value="Afternoon">Afternoon</option>
                                                         <option value="Evening">Evening</option>
                                                         <option value="Night">Night</option>
                                                     </select>
-                                                    <div id="dayTime_err" class="text-danger pt-1"></div>
+                                                    <small id="dayTime_err" class="text-danger pt-1"></small>
                                                 </div>
+
                                                 <div class="form-group pb-1">
                                                     <label class="form-label" for="appTime">Time <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control" id="appTime" name="appTime"
                                                         placeholder="E.g. Select time" readonly>
-                                                    <div id="appTime_err" class="text-danger pt-1"></div>
+                                                    <small id="appTime_err" class="text-danger pt-1"></small>
                                                 </div>
 
                                                 <div class="py-2" id="morningTime" style="display:none">
@@ -1083,50 +1087,27 @@
                                                         </button>
                                             <?php endforeach; ?>
                                                 </div>
-                                                <div class="form-group py-3">
-                                                    <label class="form-label" for="appReason">Patient's Complaint / Symptoms</label>
 
-                                                    <input type="text" id="appReason" name="appReason" readonly class="form-control"
-                                                        hidden>
-
-                                                    <div class="selected-values-container mb-2 p-2" id="selectedValuesContainer">
-                                                    </div>
-
-                                                    <input type="text" id="symptomSearchInput" class="form-control mb-1"
-                                                        placeholder="Type to search symptoms..." autocomplete="off">
-
-                                                    <select class="form-select" id="multiSelectSymptoms" style="overflow-y: auto;">
-                                                        <option value="" selected disabled>Select Symptoms</option>
-                                                    <?php
-                                                    $count = 0;
-                                                    foreach ($symptomsList as $key => $value) {
-                                                        $count++;
-                                                        ?>
-                                                            <option value="<?php echo $value['symptomsName'] ?>">
-                                                        <?php echo $count . '. ' . $value['symptomsName'] ?>
-                                                            </option>
-                                                <?php } ?>
-                                                    </select>
-                                                    <div id="appReason_err" class="text-danger pt-1"></div>
-                                                </div>
-                                                <!-- Payment -->
-                                                <div class="form-group pb-3">
-                                                    <label class="form-label" for="pay">Payment <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" id="pay" name="pay"
-                                                        placeholder="E.g. Add payment details">
-                                                </div>
-
-                                                <button type="submit" class="btn text-light float-end mt-2"
-                                                    style="background-color: #00ad8e;">Confirm </button>
+                                            <div class="form-group py-3">
+                                                <label class="form-label" for="appReason">Complaint</label>
+                                                <textarea class="form-control" id="appReason" name="appReason" rows="3" maxlength="250"
+                                                    placeholder="Enter Compliant to book appointment..."></textarea>
+                                                <small id="appReason_err" class="text-danger pt-1"></small>
                                             </div>
-                                        </form>
+
+                                            <div class="form-group pb-3">
+                                                <label class="form-label" for="pay">Payment <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="pay" name="pay" placeholder="E.g. Add payment details">
+                                            </div>
+
+                                            <button type="submit" class="btn text-light float-end mt-2" style="background-color: #00ad8e;">Confirm</button>
+                                        </fieldset>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
-
 
                     <!-- Appointment booking -->
                     <script>
@@ -1137,6 +1118,7 @@
                             const referalCc = document.getElementById('referalDoctor').value;
                             const parts = referalCc.split('|');
                             const referalCcId = parts[0];
+                            var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";
 
                             const timeButtons = document.querySelectorAll('.timeButton');
 
@@ -1152,8 +1134,9 @@
                                 const bookedDate = formatDate(appointment.dateOfAppoint);
                                 const bookedTime = appointment.timeOfAppoint;
                                 const bookedCcDoctor = appointment.referalDoctor;
+                                const bookedHcpId = appointment.hcpDbId;
 
-                                if (bookedDate === selectedDate && bookedCcDoctor === referalCcId) {
+                                if ((bookedDate === selectedDate && referalCcId !== '' && bookedCcDoctor === referalCcId)) {
                                     timeButtons.forEach(button => {
                                         if (button.value === bookedTime) {
                                             button.disabled = true;
@@ -1168,6 +1151,23 @@
                                         }
                                     });
                                 }
+
+                                if ((bookedDate === selectedDate && bookedHcpId === currentHcpId)) {
+                                    timeButtons.forEach(button => {
+                                        if (button.value === bookedTime) {
+                                            button.disabled = true;
+                                            button.classList.add('btn-secondary');
+                                            button.classList.remove('btn-outline-secondary');
+                                            button.style.fontSize = '12px';
+                                            const time = button.textContent;
+                                            const booked = ' Booked';
+                                            if (!button.innerHTML.includes(booked)) {
+                                                button.innerHTML = time + booked;
+                                            }
+                                        }
+                                    });
+                                }
+
                             });
                         }
 
@@ -1295,7 +1295,7 @@
                         });
                     </script>
                     <!-- Symptoms search and select -->
-                    <script>
+                    <!-- <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             const multiSelect = document.getElementById("multiSelectSymptoms");
                             const selectedValuesInput = document.getElementById("appReason");
@@ -1414,10 +1414,10 @@
                                 selectedValuesInput.value = Array.from(selectedValues).join(", ");
                             };
                         });
-                    </script>
+                    </script> -->
 
                     <!-- Appoinmtent form validation -->
-                    <script>
+                    <!-- <script>
                         function clearErrorAppointment() {
                             var patientId = document.getElementById("patientId").value;
                             var referalDr = document.getElementById("referalDoctor").value;
@@ -1455,21 +1455,21 @@
                             // var reason = document.getElementById("appReason").value;
 
                             if (patientId == "") {
-                                document.getElementById("patientId_err").innerHTML = "Id must be filled out.";
+                                document.getElementById("patientId_err").innerHTML = "Please select a patient.";
                                 document.getElementById("patientId").focus();
                                 return false;
                             } else {
                                 document.getElementById("patientId_err").innerHTML = "";
                             }
                             if (referalDr == "") {
-                                document.getElementById("referalDoctor_err").innerHTML = "Referal doctor name must be filled out.";
+                                document.getElementById("referalDoctor_err").innerHTML = "Please Select the referral doctor’s name.";
                                 document.getElementById("referalDoctor").focus();
                                 return false;
                             } else {
                                 document.getElementById("referalDoctor_err").innerHTML = "";
                             }
                             if (date == "") {
-                                document.getElementById("appDate_err").innerHTML = "Date must be filled out.";
+                                document.getElementById("appDate_err").innerHTML = "Please select a date.";
                                 document.getElementById("appDate").focus();
                                 return false;
                             } else {
@@ -1477,14 +1477,14 @@
                             }
 
                             if (dayTime == "") {
-                                document.getElementById("dayTime_err").innerHTML = "Time must be filled out.";
+                                document.getElementById("dayTime_err").innerHTML = "Please select Part Of Day";
                                 document.getElementById("dayTime").focus();
                                 return false;
                             } else {
                                 document.getElementById("dayTime_err").innerHTML = "";
                             }
                             if (time == "") {
-                                document.getElementById("appTime_err").innerHTML = "Time must be filled out.";
+                                document.getElementById("appTime_err").innerHTML = "Please select a time.";
                                 document.getElementById("appTime").focus();
                                 return false;
                             } else {
@@ -1498,6 +1498,137 @@
                             //     document.getElementById("appReason_err").innerHTML = "";
                             // }
                             return true;
+                        }
+                    </script> -->
+
+                    <!--New Appoinmtent form validation -->
+                    <script>
+                        function toggleAppointmentFields() {
+                                var type = document.getElementById("appointmentType").value;
+                                var fieldset = document.getElementById("appointmentFormFields"); // This targets the <fieldset> wrapper
+                                var referalSection = document.getElementById("referalDoctorSection");
+                                //var modeSection = document.getElementById("modeSection");
+
+                                if (type === "") {
+                                    // Disable everything if no type selected
+                                    if(fieldset) fieldset.disabled = true;
+                                } else {
+                                    // Enable form
+                                    if(fieldset) fieldset.disabled = false;
+
+                                    if (type === "only_hcp") {
+                                        // Hide Referral & Mode sections for Only HCP
+                                        if(referalSection) referalSection.style.display = "none";
+                                        //if(modeSection) modeSection.style.display = "none";
+                                        // Clear values to avoid validation errors
+                                        document.getElementById("referalDoctor").value = "";
+                                    } else {
+                                        // Show them for CC & HCP
+                                        if(referalSection) referalSection.style.display = "block";
+                                        //if(modeSection) modeSection.style.display = "block";
+                                    }
+                                }
+                            }
+                            function clearErrorAppointment() {
+                            // 1. Get the new Appointment Type
+                            var type = document.getElementById("appointmentType").value;
+                            var patientId = document.getElementById("patientId").value;
+                            var referalDr = document.getElementById("referalDoctor").value;
+                            var date = document.getElementById("appDate").value;
+                            var dayTime = document.getElementById("dayTime").value;
+                            var time = document.getElementById("appTime").value;
+
+                            // 2. Clear error for Appointment Type
+                            if (type != "") {
+                                document.getElementById("appointmentType_err").innerHTML = "";
+                            }
+                            if (patientId != "") {
+                                document.getElementById("patientId_err").innerHTML = "";
+                            }
+                            if (referalDr != "") {
+                                document.getElementById("referalDoctor_err").innerHTML = "";
+                            }
+                            if (date != "") {
+                                document.getElementById("appDate_err").innerHTML = "";
+                            }
+                            if (dayTime != "") {
+                                document.getElementById("dayTime_err").innerHTML = "";
+                            }
+                            if (time != "") {
+                                document.getElementById("appTime_err").innerHTML = "";
+                            }
+                        }
+
+                        function validateAppointment() {
+                            var type = document.getElementById("appointmentType").value;
+                            var patientId = document.getElementById("patientId").value;
+                            var referalDr = document.getElementById("referalDoctor").value;
+                            var date = document.getElementById("appDate").value;
+                            var dayTime = document.getElementById("dayTime").value;
+                            var time = document.getElementById("appTime").value;
+                            var Reason = document.getElementById("appReason").value;
+
+                            if (type == "") {
+                                document.getElementById("appointmentType_err").innerHTML = "Please select an appointment type.";
+                                document.getElementById("appointmentType").focus();
+                                return false;
+                            } else {
+                                document.getElementById("appointmentType_err").innerHTML = "";
+                            }
+
+                            if (type !== "only_hcp") {
+                                if (referalDr == "") {
+                                    document.getElementById("referalDoctor_err").innerHTML = "Please Select the referral doctor’s name.";
+                                    document.getElementById("referalDoctor").focus();
+                                    return false;
+                                } else {
+                                    document.getElementById("referalDoctor_err").innerHTML = "";
+                                }
+                            }
+
+                            if (patientId == "") {
+                                document.getElementById("patientId_err").innerHTML = "Please select the patient";
+                                document.getElementById("patientId").focus();
+                                return false;
+                            } else {
+                                document.getElementById("patientId_err").innerHTML = "";
+                            }
+
+                            if (date == "") {
+                                document.getElementById("appDate_err").innerHTML = "Please select a date.";
+                                document.getElementById("appDate").focus();
+                                return false;
+                            } else {
+                                document.getElementById("appDate_err").innerHTML = "";
+                            }
+
+                            if (dayTime == "") {
+                                document.getElementById("dayTime_err").innerHTML = "Please select part of day";
+                                document.getElementById("dayTime").focus();
+                                return false;
+                            } else {
+                                document.getElementById("dayTime_err").innerHTML = "";
+                            }
+
+                            if (time == "") {
+                                document.getElementById("appTime_err").innerHTML = "Please select a time.";
+                                document.getElementById("appTime").focus();
+                                return false;
+                            } else {
+                                document.getElementById("appTime_err").innerHTML = "";
+                            }
+
+                            if (Reason == "") {
+                                document.getElementById("appReason_err").innerHTML = "Please fill the compliant section";
+                                document.getElementById("appReason").focus();
+                                return false;
+                            
+                            } else {
+                                document.getElementById("appReason_err").innerHTML = "";
+                            }
+
+                            return true;
+
                         }
                     </script>
 
@@ -2088,301 +2219,7 @@
 
             <?php
 
-        } else if ($method == "patientAppointments") {
-            ?>
-                                <section>
-                                    <div class="card rounded">
-                                        <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                            <p style="font-size: 24px; font-weight: 500">Patient Appointments</p>
-                                            <a href="<?php echo base_url() . "Healthcareprovider/newPatientAppointment" ?>">
-                                                <button style="background-color: #00ad8e;" class="float-end text-light border-0 rounded p-2">
-                                                    <i class="bi bi-plus-square-fill"></i> Book Patient Appointment
-                                                </button>
-                                            </a>
-                                        </div>
-
-                        <?php
-                        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-                        $items_per_page = 10;
-
-                        $total_items = count($appointmentList);
-                        $total_pages = ceil($total_items / $items_per_page);
-
-                        $offset = ($current_page - 1) * $items_per_page;
-
-                        $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
-
-                        if (isset($appointmentList[0]['id'])) {  // If data exists
-                            ?>
-
-                                            <div class="card-body p-2 p-sm-4">
-                                                <div class="table-responsive">
-                                                    <table class="table text-center table-hoverr" id="patientAppointmentTable">
-                                                        <!-- New ID for table -->
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
-                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
-                                                                </th>
-                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT
-                                                                    NAME</th>
-                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
-                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
-                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">REASON
-                                                                </th>
-                                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                            <?php
-                                            $count = $offset;
-                                            foreach ($current_page_items as $key => $value) {
-                                                $count++;
-                                                ?>
-                                                                <tr>
-                                                                    <td class="pt-3"><?php echo $count; ?>.</td>
-                                                                    <td style="font-size: 16px" class="pt-3">
-                                                                        <a href="<?php echo base_url("Healthcareprovider/patientdetails/" . $value['patientDbId']); ?>"
-                                                                            class="text-dark" onmouseover="style='text-decoration:underline'"
-                                                                            onmouseout="style='text-decoration:none'">
-                                                        <?php echo htmlspecialchars($value['patientCode']); ?>
-                                                                        </a>
-                                                                    </td>
-
-                                                                    <td style="font-size: 16px" class="pt-3">
-                                                        <?php
-                                                        echo htmlspecialchars(
-                                                            trim($value['firstName'] . ' ' . ($value['lastName'] ?? ''))
-                                                        );
-                                                        ?>
-                                                                    </td>
-
-                                                                    <td style="font-size: 16px" class="pt-3">
-                                                        <?php
-                                                        if (date('Y-m-d', strtotime($value['appointment_date'])) == date('Y-m-d')) {
-                                                            echo "<b>Today</b>";
-                                                        } else {
-                                                            echo date("d-m-Y", strtotime($value['appointment_date']));
-                                                        }
-                                                        ?>
-                                                                    </td>
-
-                                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo date('h:i a', strtotime($value['appointment_time'])); ?>
-                                                                    </td>
-
-                                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo htmlspecialchars($value['reason'] != '' ? substr($value['reason'], 0, 50) . '...' : "-"); ?>
-                                                                    </td>
-
-                                                                    <td style="font-size: 16px" class="d-flex d-lg-block pt-3">
-                                                                        <!-- pt-3 for alignment -->
-                                                        <?php
-                                                        date_default_timezone_set('Asia/Kolkata');
-                                                        $appointmentDate = $value['appointment_date'];
-                                                        $appointmentTime = $value['appointment_time']; // H:i:s (24hr)
-                                            
-                                                        $appointmentDateTime = strtotime("$appointmentDate $appointmentTime");
-                                                        $currentDateTime = time();
-
-                                                        // Define 10-minute window BEFORE appointment
-                                                        $windowStart = $appointmentDateTime - (10 * 60); // -10 minutes
-                                                        $windowEnd = $appointmentDateTime;             // appointment time
-                                            
-                                                        $isToday = ($appointmentDate === date('Y-m-d'));
-
-                                                        $shouldEnableJoin = $isToday &&
-                                                            ($currentDateTime >= $windowStart) &&
-                                                            ($currentDateTime <= $windowEnd);
-                                                        ?>
-
-                                                                        <!-- Join Button (enabled only within 10min) -->
-                                                    <?php if ($shouldEnableJoin && !empty($value['appointment_link'])): ?>
-                                                                            <a href="<?php echo htmlspecialchars($value['appointment_link']); ?>"
-                                                                                target="_blank" class="btn btn-success mx-1">
-                                                                                Join
-                                                                            </a>
-                                                    <?php else: ?>
-                                                                            <a href="javascript:void(0);" class="btn btn-secondary mx-1 disabled"
-                                                                                title="Available only within 10 minutes of appointment">
-                                                                                Join
-                                                                            </a>
-                                                    <?php endif; ?>
-
-                                                                        <!-- Open Consultant View -->
-                                                                        <a href="<?php echo base_url() . "Consultation/Consultation/" . $value['patientDbId']; ?>"
-                                                                            class="">
-                                                                            <button class="btn btn-secondary text-light mb-1"><i
-                                                                                    class="bi bi-calendar-check"></i></button>
-                                                                        </a>
-
-                                                                    </td>
-                                                                </tr>
-                                        <?php } ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-
-                                                <!-- Pagination (same as reference) -->
-                            <?php if ($total_pages > 1): ?>
-                                                    <nav aria-label="Patient Appointments Pagination">
-                                                        <ul class="pagination justify-content-center mt-4">
-                                        <?php if ($current_page > 1): ?>
-                                                                <li class="page-item">
-                                                                    <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
-                                                                        <button type="button" class="bg-light border px-3 py-2">
-                                                                            << /button>
-                                                                    </a>
-                                                                </li>
-                                        <?php endif; ?>
-
-                                            <?php
-                                            $start_page = max(1, $current_page - 2);
-                                            $end_page = min($total_pages, $current_page + 2);
-
-                                            if ($start_page == 1) {
-                                                $end_page = min($total_pages, 5);
-                                            }
-                                            if ($end_page == $total_pages) {
-                                                $start_page = max(1, $total_pages - 4);
-                                            }
-
-                                            for ($i = $start_page; $i <= $end_page; $i++): ?>
-                                                                <li class="">
-                                                                    <a href="?page=<?php echo $i; ?>">
-                                                                        <button type="button"
-                                                                            class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : ''; ?>">
-                                                        <?php echo $i; ?>
-                                                                        </button>
-                                                                    </a>
-                                                                </li>
-                                        <?php endfor; ?>
-
-                                        <?php if ($current_page < $total_pages): ?>
-                                                                <li class="page-item">
-                                                                    <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
-                                                                        <button type="button" class="bg-light border px-3 py-2">></button>
-                                                                    </a>
-                                                                </li>
-                                        <?php endif; ?>
-                                                        </ul>
-                                                    </nav>
-                            <?php endif; ?>
-                                            </div>
-                    <?php } else { ?>
-                                            <div class="card-body p-4">
-                                                <h5 class="text-center my-5"><b>No Patient Appointments Found.</b></h5>
-                                            </div>
-                    <?php } ?>
-                                    </div>
-                                </section>
-
-            <?php
-        } else if ($method == "newPatientAppointment") {
-            ?>
-                                    <section>
-                                        <div class="card rounded">
-                                            <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                <p style="font-size: 24px; font-weight: 500"> New Patient Appointment</p>
-                                                <a href="<?php echo base_url() . "Healthcareprovider/patientAppointments" ?>"
-                                                    class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                                            </div>
-                                            <div class="card-body px-md-4 pb-4">
-                                                <!-- Form  -->
-                                                <div>
-                                                    <div class="col-md-8">
-                                                        <form id="patientAppointmentForm" method="post"
-                                                            action="<?= base_url('Healthcareprovider/bookPatientAppointment') ?>"
-                                                            onsubmit="return validatePatientAppointment();">
-                                                            <div>
-                                                                <!-- Patient Field (exact copy from existing appointmentsForm) -->
-                                                                <div class="form-group pb-2">
-                                                                    <label class="form-label" for="patientId">
-                                                                        Patient Id <span class="text-danger">*</span>
-                                                                    </label>
-                                                                    <div class="input-group mb-1">
-                                                                        <input type="text" class="form-control"
-                                                                            placeholder="Search patient Id / Name" id="patientSearch"
-                                                                            autocomplete="off" onkeyup="filterPatients()">
-                                                                        <span class="input-group-text bg-white border-start-0">
-                                                                            <i class="bi bi-search"></i>
-                                                                        </span>
-                                                                        <button class="btn btn-outline-primary d-flex align-items-center"
-                                                                            type="button" id="addPatientBtnP" title="Add New Patient"
-                                                                            onclick="showNewPatientModal()">
-                                                                            <i class="bi bi-plus-lg me-1"></i> Add Patient
-                                                                        </button>
-                                                                    </div>
-                                                                    <select class="form-select" name="patientId" id="patientId">
-                                                                        <option value="">Select Patient</option>
-                                                <?php foreach ($patientsId as $value): ?>
-                                                                            <option
-                                                                                value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
-                                                        <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
-                                                                            </option>
-                                                <?php endforeach; ?>
-                                                                    </select>
-                                                                    <div id="patientId_err" class="text-danger pt-1"></div>
-                                                                </div>
-
-                                                                <!-- Date -->
-                                                                <div class="form-group pb-3">
-                                                                    <label class="form-label" for="appDate">Date <span
-                                                                            class="text-danger">*</span></label>
-                                                                    <input type="date" class="form-control" id="appDate" name="appDate"
-                                                                        min="<?php echo date('Y-m-d'); ?>" onchange="updateTimes()">
-                                                                    <div id="appDate_err" class="text-danger pt-1"></div>
-                                                                </div>
-
-                                                                <!-- Part of Day (Radio Buttons) -->
-                                                                <div class="form-group pb-3">
-                                                                    <label class="form-label pb-2">Part of the day <span
-                                                                            class="text-danger">*</span></label><br>
-                                                                    <input type="radio" id="morning" name="partOfDay" value="Morning"
-                                                                        onchange="updateTimes()">
-                                                                    <label for="morning">Morning (6:00 AM – 11:59 AM)</label><br>
-                                                                    <input type="radio" id="afternoon" name="partOfDay" value="Afternoon"
-                                                                        onchange="updateTimes()">
-                                                                    <label for="afternoon">Afternoon (12:00 PM – 3:59 PM)</label><br>
-                                                                    <input type="radio" id="evening" name="partOfDay" value="Evening"
-                                                                        onchange="updateTimes()">
-                                                                    <label for="evening">Evening (4:00 PM – 7:59 PM)</label><br>
-                                                                    <input type="radio" id="Night" name="partOfDay" value="Night"
-                                                                        onchange="updateTimes()">
-                                                                    <label for="Night">Night (8:00 PM – 9:59 PM)</label><br>
-                                                                    <div id="partOfDay_err" class="text-danger pt-1"></div>
-                                                                </div>
-
-                                                                <!-- Time (Dropdown, populated by JS) -->
-                                                                <div class="form-group pb-3">
-                                                                    <label class="form-label" for="appTime">Time <span
-                                                                            class="text-danger">*</span></label>
-                                                                    <select class="form-select" id="appTime" name="appTime">
-                                                                        <option value="">Select time (based on part of day)</option>
-                                                                    </select>
-                                                                    <div id="appTime_err" class="text-danger pt-1"></div>
-                                                                </div>
-
-                                                                <!-- Reason -->
-                                                                <div class="form-group py-3">
-                                                                    <label class="form-label" for="appReason">Complaint</label>
-                                                                    <textarea class="form-control" id="appReason" name="appReason" rows="3"
-                                                                        placeholder="Enter Compliant to book appointment..."></textarea>
-                                                                    <div id="appReason_err" class="text-danger pt-1"></div>
-                                                                </div>
-
-                                                                <button type="submit" class="btn text-light float-end mt-2"
-                                                                    style="background-color: #00ad8e;" onclick="handleSubmit(event)">Book
-                                                                    Appointment</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </section>
-            <?php
+        
         } else if ($method == "chiefDoctors") {
             ?>
                                         <section>
@@ -3126,206 +2963,9 @@
             document.getElementById('appointments').style.color = "#87F7E3";
         <?php } elseif ($method == "chiefDoctors" || $method == "chiefDoctorProfile") { ?>
             document.getElementById('chiefDoctor').style.color = "#87F7E3";
-        <?php } elseif ($method == "newPatientAppointment" || $method == "patientAppointments") { ?>
-            document.getElementById('patientAppointments').style.color = "#87F7E3";
         <?php } ?>
     </script>
 
-    <!-- Patient Appointment Form Script -->
-    <script>
-        function filterPatients() {
-            const searchInput = document.getElementById('patientSearch').value.toLowerCase();
-            const select = document.getElementById('patientId');
-            const options = select.options;
-
-            for (let i = 1; i < options.length; i++) {
-                const optionText = options[i].text.toLowerCase();
-                options[i].style.display = optionText.includes(searchInput) ? '' : 'none';
-            }
-        }
-
-        function generateTimes(partOfDay) {
-            const times = [];
-            let startHour, endHour;
-
-            if (partOfDay === 'Morning') {
-                startHour = 6; endHour = 11;
-            } else if (partOfDay === 'Afternoon') {
-                startHour = 12; endHour = 15;
-            } else if (partOfDay === 'Evening') {
-                startHour = 16; endHour = 19;
-            } else if (partOfDay === 'Night') {
-                startHour = 20; endHour = 21;
-            } else {
-                return [];
-            }
-
-            let currentHour = startHour;
-            let currentMin = 0;
-
-            while (currentHour < endHour || (currentHour === endHour && currentMin <= 45)) {
-                const hour12 = currentHour > 12 ? currentHour - 12 : currentHour;
-                const ampm = currentHour >= 12 ? 'PM' : 'AM';
-                times.push(
-                    `${hour12.toString().padStart(2, '0')}:${currentMin.toString().padStart(2, '0')} ${ampm}`
-                );
-
-                currentMin += 15;
-                if (currentMin >= 60) {
-                    currentMin = 0;
-                    currentHour++;
-                }
-            }
-
-            return times;
-        }
-
-        function updateTimes() {
-            const partOfDay = document.querySelector('input[name="partOfDay"]:checked')?.value;
-            const timeSelect = document.getElementById('appTime');
-
-            timeSelect.innerHTML = '<option value="">Select time</option>';
-
-            if (!partOfDay) return;
-
-            const times = generateTimes(partOfDay);
-            times.forEach(time => {
-                const option = document.createElement('option');
-                option.value = time;
-                option.textContent = time;
-                timeSelect.appendChild(option);
-            });
-        }
-
-        function clearPatientAppointmentErrors() {
-            const errorIds = [
-                'patientId_err',
-                'appDate_err',
-                'partOfDay_err',
-                'appTime_err',
-                'appReason_err'
-            ];
-
-            errorIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.innerHTML = '';
-            });
-        }
-
-        function validatePatientAppointment() {
-            let isValid = true;
-
-            const patientId = document.getElementById('patientId').value;
-            const appDate = document.getElementById('appDate').value;
-            const partOfDay = document.querySelector('input[name="partOfDay"]:checked');
-            const appTime = document.getElementById('appTime').value;
-            const appReason = document.getElementById('appReason').value.trim();
-            const today = new Date().toISOString().split('T')[0];
-
-            if (!patientId) {
-                document.getElementById('patientId_err').innerHTML = 'Patient must be selected.';
-                isValid = false;
-            }
-
-            if (!appDate) {
-                document.getElementById('appDate_err').innerHTML = 'Date must be selected.';
-                isValid = false;
-            } else if (appDate < today) {
-                document.getElementById('appDate_err').innerHTML = 'Date cannot be in the past.';
-                isValid = false;
-            }
-
-            if (!partOfDay) {
-                document.getElementById('partOfDay_err').innerHTML = 'Part of the day must be selected.';
-                isValid = false;
-            }
-
-            if (!appTime) {
-                document.getElementById('appTime_err').innerHTML = 'Time must be selected.';
-                isValid = false;
-            }
-
-            if (!appReason) {
-                document.getElementById('appReason_err').innerHTML = 'Reason for appointment must be provided.';
-                isValid = false;
-            } else if (appReason.length < 10) {
-                document.getElementById('appReason_err').innerHTML = 'Reason must be at least 10 characters.';
-                isValid = false;
-            }
-
-            return isValid; // TRUE → normal POST submit
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-
-            // Form submit (STANDARD POST)
-            const form = document.getElementById('patientAppointmentForm');
-            if (form) {
-                form.onsubmit = function () {
-                    clearPatientAppointmentErrors();
-                    return validatePatientAppointment();
-                };
-            }
-
-            // Clear errors on input/change
-            ['patientId', 'appDate', 'appTime', 'appReason'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.addEventListener('input', clearPatientAppointmentErrors);
-            });
-
-            document.querySelectorAll('input[name="partOfDay"]').forEach(radio => {
-                radio.addEventListener('change', clearPatientAppointmentErrors);
-            });
-
-            // Patient search dropdown logic
-            const select = document.getElementById('patientId');
-            const searchInput = document.getElementById('patientSearch');
-            let originalOptions = Array.from(select.options);
-
-            if (searchInput) {
-                searchInput.addEventListener('input', function () {
-                    const term = this.value.toLowerCase().trim();
-                    select.size = term ? 6 : 1;
-                    select.innerHTML = '<option value="">Select Patient</option>';
-
-                    let matches = 0;
-                    originalOptions.forEach(opt => {
-                        if (opt.value && opt.textContent.toLowerCase().includes(term)) {
-                            select.appendChild(opt.cloneNode(true));
-                            matches++;
-                        }
-                    });
-
-                    if (!matches && term) {
-                        const noMatch = document.createElement('option');
-                        noMatch.disabled = true;
-                        noMatch.textContent = '— No patient found —';
-                        select.appendChild(noMatch);
-                    }
-                });
-            }
-
-            select.addEventListener('change', function () {
-                if (this.value) searchInput.value = '';
-                select.size = 1;
-            });
-        });
-
-        function showNewPatientModal() {
-            const modal = new bootstrap.Modal(document.getElementById('newPatientModal'));
-            modal.show();
-        }
-
-        function addPatientToSelect(patient) {
-            const select = document.getElementById('patientId');
-            const value = patient.patientId + '|' + patient.id;
-            const text = patient.patientId + ' / ' + patient.firstName + (patient.lastName ? ' ' + patient.lastName : '');
-
-            const option = new Option(text, value, true, true);
-            select.add(option);
-            select.dispatchEvent(new Event('change'));
-        }
-    </script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

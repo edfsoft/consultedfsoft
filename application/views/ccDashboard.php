@@ -172,7 +172,7 @@
                                     <?php echo $appointmentsTotal; ?>
                                 </p>
                                 <p style="font-size: 16px">
-                                    <?php echo date("d-m-Y") ?>
+                                    <?php echo date("d-M-Y") ?>
                                 </p>
                             </div>
                         </div>
@@ -670,7 +670,7 @@
                                         </p>
                                     </div>
                                     <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Mail</span> :
+                                        <p class="col-sm-6"><span class="text-secondary ">Email address</span> :
                                         <?php
                                         $mailId = isset($value['mailId']) ? $value['mailId'] : null;
                                         ?>
@@ -715,6 +715,9 @@
                                     <?php echo $value['partnerBlood'] ? $value['partnerBlood'] : "Not provided"; ?>
                                         </p>
                                     </div>
+                                    <p class="mb-2"><span class="text-secondary ">Registration Date </span> :
+                                <?php echo date('d-M-Y', strtotime($value['created_at'])); ?>
+                                    </p>
                         <?php } ?>
                                 <p class="fs-5 fw-semibold mt-3">All Consultations</p>
                         <?php if (!empty($consultations)): ?>
@@ -1147,7 +1150,7 @@
                                                     <?php if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
                                                         echo "<b>Today</b>";
                                                     } else {
-                                                        echo date("d-m-Y", strtotime($value['dateOfAppoint']));
+                                                        echo date("d-M-Y", strtotime($value['dateOfAppoint']));
                                                     } ?>
                                                             </td>
                                                             <td style="font-size: 16px" class="pt-3">

@@ -156,7 +156,7 @@
                                     <?php echo $appointmentsTotal; ?>
                                 </p>
                                 <p style="font-size: 16px">
-                                    <?php echo date("d-m-Y") ?>
+                                    <?php echo date("d-M-Y") ?>
                                 </p>
                             </div>
                         </div>

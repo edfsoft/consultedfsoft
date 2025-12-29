@@ -179,7 +179,7 @@ class Healthcareprovider extends CI_Controller
             $ccDetails = $this->HcpModel->getCcProfile();
             $this->data['totalCcs'] = $ccDetails['totalRows'];
             $appointmentList = $this->HcpModel->getAppointmentListDash();
-            $this->data['appointmentList'] = $appointmentList['response'];
+            // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
             $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
             $this->load->view('hcpDashboard.php', $this->data);
         } else {
@@ -370,7 +370,7 @@ class Healthcareprovider extends CI_Controller
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "appointmentsForm";
-            $patientList = $this->HcpModel->getPatientList();
+            $patientList = $this->HcpModel->getPatientForAppointment();
             $this->data['patientsId'] = $patientList['response'];
             $ccDetails = $this->HcpModel->getCcProfile();
             $this->data['ccsId'] = $ccDetails['response'];

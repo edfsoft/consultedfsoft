@@ -375,8 +375,9 @@
                                 </div>
                                 <div class="d-md-flex justify-content-between pb-3">
                                     <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                        <label class="form-label" for="patientEmail">Email Id <span
-                                                class="text-danger">*</span></label>
+                                        <label class="form-label" for="patientEmail">Email Id 
+                                            <!-- <span class="text-danger">*</span> -->
+                                            </label>
                                         <input type="email" class="form-control" id="patientEmail" name="patientEmail"
                                             placeholder="E.g. example@gmail.com" maxlength="50">
                                         <small id="patientEmail_err" class="text-danger pt-1"></small>
@@ -584,8 +585,9 @@
                                             </div>
                                             <div class="d-md-flex justify-content-between pb-3">
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                                    <label class="form-label" for="patientEmail">Email <span
-                                                            class="text-danger">*</span></label>
+                                                    <label class="form-label" for="patientEmail">Email 
+                                                        <!-- <span class="text-danger">*</span> -->
+                                                    </label>
                                                     <input type="email" class="form-control" id="patientEmail" name="patientEmail"
                                                         value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com"
                                                         maxlength="50">
@@ -973,10 +975,11 @@
             }
 
             // === EMAIL ===
-            if (mailId == "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
-                document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
-                isValid = false;
-            } else if (mailId !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
+            // if (mailId == "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
+            //     document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
+            //     isValid = false;
+            // } else
+             if (mailId !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
                 document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
                 isValid = false;
             } else {

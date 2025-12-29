@@ -1036,7 +1036,7 @@
 
                                             <fieldset id="appointmentFormFields" disabled>
 
-                                                <div class="form-group pb-3" id="referalDoctorSection">
+                                                <div class="form-group pb-3" id="referalDoctorSection" style="display:none;">
                                                     <label class="form-label" for="referalDoctor">Referal Doctor ID <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control mb-1" id="referralDoctorSearch"

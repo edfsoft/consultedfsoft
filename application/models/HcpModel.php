@@ -79,6 +79,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('hcpMobile', $post['hcpMobileNum']);
         $this->db->update('hcp_details', $updatedata);
+        return ($this->db->affected_rows() > 0);
     }
 
     public function hcpLoginDetails()
@@ -133,16 +134,13 @@ class HcpModel extends CI_Model
         CONCAT(p.firstName, ' ', p.lastName) AS patientName,
         p.patientId,
         p.mobileNumber,
-        GROUP_CONCAT(s.symptom_name SEPARATOR ', ') AS symptoms
     ");
         $this->db->from('consultations c');
         $this->db->join('patient_details p', 'p.id = c.patient_id', 'left');
-        $this->db->join('consult_symptoms s', 's.consultation_id = c.id', 'left');
         $this->db->where('c.doctor_id', $hcpIdDb);
 
         if ($followUpDate) {
-            $mysqlDate = date('Y-m-d', strtotime(str_replace('-', ' ', $followUpDate)));
-            $this->db->where('DATE(c.next_follow_up)', $mysqlDate);
+            $this->db->where('DATE(c.next_follow_up)', $followUpDate);
         }
 
         $this->db->group_by('c.id');

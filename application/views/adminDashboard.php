@@ -142,7 +142,7 @@
 
                 <!-- Section-1 -->
                 <div class="d-lg-flex justify-content-evenly">
-                    <div class="card position-relative rounded-5 mx-2">
+                    <div class="card position-relative rounded-4 mx-2">
                         <div class="card-body d-flex px-3 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon1" />
@@ -153,7 +153,7 @@
                                 <p style="font-size: 30px; font-weight: 400;">
                                     <?php echo $totalCcList; ?>
                                 </p>
-                                <p style="font-size: 16px"> <?php echo date("d - m - Y") ?></p>
+                                <p style="font-size: 16px"> <?php echo date("d-M-Y") ?></p>
                             </div>
                             <a href="<?php echo base_url() . "Edfadmin/ccList" ?>"
                                 class="small position-absolute bottom-0 end-0 m-2 mt-3" style="color: #1f3861;"
@@ -162,7 +162,7 @@
                                 View All <i class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>
-                    <div class="card position-relative rounded-5 mx-2">
+                    <div class="card position-relative rounded-4 mx-2">
                         <div class="card-body d-flex px-3 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin2.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon2" />
@@ -174,7 +174,7 @@
                                     <?php echo $totalHcpList; ?>
                                 </p>
                                 <p style="font-size: 16px">
-                                    <?php echo date("d - m - Y") ?>
+                                    <?php echo date("d-M-Y") ?>
                                 </p>
                             </div>
                             <a href="<?php echo base_url() . "Edfadmin/hcpList" ?>"
@@ -184,7 +184,7 @@
                                 View All <i class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>
-                    <div class="card position-relative rounded-5 mx-2">
+                    <div class="card position-relative rounded-4 mx-2">
                         <div class="card-body d-flex px-4 pt-3">
                             <img src="<?php echo base_url(); ?>assets/dash_iconadmin1.svg" class="my-auto"
                                 style="width:80px;height:80px" alt="icon3" />
@@ -249,13 +249,13 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">S.NO</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">ID</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">CC ID</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24"
                                                     class="text-start">NAME</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">MOBILE
                                                     NUMBER</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24"
-                                                    class="text-start">SPECIALIST
+                                                    class="text-start">SPECIALIZATION
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">STATUS
                                                 </th>
@@ -427,28 +427,29 @@
                                 <a href="<?php echo base_url() . "Edfadmin/ccList" ?>" class="text-dark mt-2"><i
                                         class="bi bi-arrow-left"></i> Back</a>
                             </div>
-                            <div class="card-body col-md-8 px-sm-4">
-                                <p style="font-size: 20px; font-weight: 500">Create an Account for Chief Consultant</p>
+                            <div class="card-body col-md-8 ms-4">
+                                <p style="font-size: 20px; font-weight: 500"><i>Create an Account for Chief Consultant:</i></p>
                                 <form action="<?php echo base_url() . "Edfadmin/ccSignup" ?>" method="post" name="signupform"
                                     onsubmit="return validateSignup()" oninput="return removeError()">
                                     <div class="mb-3">
                                         <label for="ccName" class="form-label">Name <span class="text-danger">*</span></label>
                                         <input type="text" name="ccName" id="ccName" maxlength="30" placeholder="Suresh Kumar"
                                             class="form-control">
-                                        <div id="name_err" class="text-danger pt-1"></div>
+                                        <small id="name_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="mb-3">
                                         <label for="ccMobile" class="form-label">Mobile Number <span
                                                 class="text-danger">*</span></label>
                                         <input type="text" name="ccMobile" id="ccMobile" maxlength="10" placeholder="9876543210"
                                             class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                        <div id="mobile_err" class="text-danger pt-1"></div>
+                                        <small id="mobile_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="ccEmail" class="form-label">Email Id <span class="text-danger">*</span></label>
+                                        <label for="ccEmail" class="form-label">Email Address <span
+                                                class="text-danger">*</span></label>
                                         <input type="email" name="ccEmail" id="ccEmail" maxlength="30"
                                             placeholder="example@gmail.com" class="form-control">
-                                        <div id="mail_err" class="text-danger pt-1"></div>
+                                        <small id="mail_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="mb-3">
                                         <label for="ccSpec" class="form-label">Specialization <span
@@ -463,7 +464,7 @@
                                                 </option>
                                     <?php } ?>
                                         </select>
-                                        <div id="spec_err" class="text-danger pt-1"></div>
+                                        <small id="spec_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="mb-3">
                                         <label for="ccPassword" class="form-label">Password <span
@@ -474,7 +475,7 @@
                                             <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('ccPassword', this)"
                                                 style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                                         </div>
-                                        <div id="password_err" class="text-danger pt-1"></div>
+                                        <small id="password_err" class="text-danger pt-1"></small>
                                     </div>
                                     <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
                                         Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1
@@ -488,7 +489,7 @@
                                             <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('ccCnfmPassword', this)"
                                                 style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                                         </div>
-                                        <div id="cnfmpassword_err" class="text-danger pt-1"></div>
+                                        <small id="cnfmpassword_err" class="text-danger pt-1"></small>
                                     </div>
                                     <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
                                     <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="0">
@@ -512,14 +513,14 @@
                             var confirmpassword = document.getElementById("ccCnfmPassword").value;
 
                             if (name == "") {
-                                document.getElementById("name_err").innerHTML = "Name must be filled out.";
+                                document.getElementById("name_err").innerHTML = "Please enter a name.";
                                 return false;
                             } else {
                                 document.getElementById("name_err").innerHTML = "";
                             }
 
                             if (mobile == "") {
-                                document.getElementById("mobile_err").innerHTML = "Mobile number must be filled out.";
+                                document.getElementById("mobile_err").innerHTML = "Please enter a mobile number.";
                                 return false;
                             } else if (!/^\d{10}$/.test(mobile)) {
                                 document.getElementById("mobile_err").innerHTML = "Invalid mobile number. Please enter valid number.";
@@ -529,7 +530,7 @@
                             }
 
                             if (email == "") {
-                                document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
+                                document.getElementById("mail_err").innerHTML = "Please enter an email address.";
                                 return false;
                             } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                                 document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
@@ -539,14 +540,14 @@
                             }
 
                             if (spec == "") {
-                                document.getElementById("spec_err").innerHTML = "Specialization must be filled out.";
+                                document.getElementById("spec_err").innerHTML = "Please select a specialization.";
                                 return false;
                             } else {
                                 document.getElementById("spec_err").innerHTML = "";
                             }
 
                             if (password == "") {
-                                document.getElementById("password_err").innerHTML = "Password must be filled out.";
+                                document.getElementById("password_err").innerHTML = "Please enter a password.";
                                 return false;
                             } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
                                 document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password."
@@ -556,10 +557,10 @@
                             }
 
                             if (confirmpassword == "") {
-                                document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
+                                document.getElementById("cnfmpassword_err").innerHTML = "Please re-enter the password.";
                                 return false;
                             } else if (confirmpassword != password) {
-                                document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
+                                document.getElementById("cnfmpassword_err").innerHTML = "Please enter the same password again."
                                 return false;
                             } else {
                                 document.getElementById("cnfmpassword_err").innerHTML = "";
@@ -653,8 +654,8 @@
                                         }
                                         if (data.email_exists) {
                                             hasDbError = true;
-                                            errorMsg = "This Email ID ";
-                                            emailErr.innerHTML = "Email ID already exists!";
+                                            errorMsg = "This Email Address ";
+                                            emailErr.innerHTML = "Email Address already exists!";
                                         }
                                         if (data.mobile_exists && data.email_exists) {
                                             hasError = true;
@@ -724,7 +725,7 @@
                                             </div>
                                         </div>
 
-                                        <h5 class="fw-bolder pb-3">Profile Details:</h5>
+                                        <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details</p>
 
                                         <div class="d-md-flex pb-1">
                                             <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
@@ -764,7 +765,7 @@
                                         <div class="d-md-flex pb-1">
                                             <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
                                             <p class="col-md-9 ps-2">
-                                    <?php echo $value['dateOfBirth'] ? $value['dateOfBirth'] : "Not provided"; ?>
+                                    <?php echo $value['dateOfBirth'] ? date('d-M-Y', strtotime($value['dateOfBirth'])) : "Not provided"; ?>
                                             </p>
                                         </div>
 
@@ -781,11 +782,18 @@
                                     <?php echo $value['location'] ? $value['location'] : "Not provided"; ?>
                                             </p>
                                         </div>
+                                        <div class="d-md-flex pb-1">
+                                            <p class="text-secondary col-md-3 mb-1">Registration Date : </p>
+                                            <p class="col-md-9 ps-2">
+                                    <?php echo date('d-M-Y', strtotime($value['created_at'])); ?>
+                                            </p>
+                                        </div>
 
-                                        <h5 class="my-3 fw-bolder">Appointment Link:</h5>
+                                        <p class="my-3 mt-3 fs-5 fw-semibold">Appointment Link</p>
                                         <form action="<?php echo base_url() . "Edfadmin/addAppLink/" . $value['id'] ?>" method="POST"
                                             class="col-md-6 mb-5" name="appLinkForm" onsubmit="return validateLink()">
-                                            <label for="appLink" class="pb-2">Add Link <span class="text-danger">*</span></label><br>
+                                            <label for="appLink" class="form-label pb-2">Add Link <span
+                                                    class="text-danger">*</span></label><br>
                                             <input type="text" class="form-control" name="appLink" id="appLink"
                                                 placeholder="Enter Google Meet Link" value="<?php echo $value['gMeetLink']; ?>"
                                                 oninput="validateLinkClearError(this)">
@@ -798,14 +806,14 @@
                                                     class="btn text-light my-2 float-end">Update</button>
                                 <?php } ?>
                                         </form>
-                                        <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
+                                        <p class="my-3 mt-3 fs-5 fw-semibold">Profile Approval Process</p>
                                         <!--<p>Please review the details and approve the Chief Consultant for login :
                                                   <a href="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>"
                                                     onclick="return confirm('The details have been verified and approved for login.')"><button
                                                         class="btn btn-success px-2 py-1">Approve</button></a> </p> -->
                                         <form action="<?php echo base_url() . "Edfadmin/approveCc/" . $value['id'] ?>" method="post"
                                             name="ccApproveForm" class="col-6 border border-2 rounded p-3">
-                                            <p>Verify the details and approve to login: </p>
+                                            <p class="form-label">Verify the details and approve to login: </p>
                                             <div class="mb-2 ps-2"><input type="radio" name="approveCc" value="0" id="notApproved" <?php if ($value['approvalStatus'] == '0')
                                                 echo "checked"; ?> required>
                                                 <label class="ps-2" for="notApproved">Not Approved</label>
@@ -815,7 +823,7 @@
                                                 <label class="ps-2" for="approved">Approved</label>
                                             </div>
                                             <button type="submit" style="background-color: #2b353bf5;"
-                                                class="btn text-light px-2 py-1 mt-2">Approve</button>
+                                                class="btn text-light px-2 py-1 mt-2">Update</button>
                                         </form>
                             <?php
                                 } ?>
@@ -883,12 +891,12 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">ID</th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">HCP ID</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">NAME
                                                             </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">
-                                                                SPECIALIST</th>
+                                                                SPECIALIZATION</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">STATUS</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">ACTION</th>
                                                         </tr>
@@ -1058,28 +1066,29 @@
                                             <a href="<?php echo base_url() . "Edfadmin/hcpList" ?>" class="text-dark mt-2"><i
                                                     class="bi bi-arrow-left"></i> Back</a>
                                         </div>
-                                        <div class="card-body col-md-8 px-sm-4">
-                                            <p style="font-size: 20px; font-weight: 500">Create an Account for Health Care Provider</p>
+                                        <div class="card-body col-md-8 ms-4">
+                                            <p style="font-size: 20px; font-weight: 500"><i>Create an Account for Health Care Provider:</i></p>
                                             <form action="<?php echo base_url() . "Edfadmin/hcpSignup" ?>" method="post" name="hcpsignupform"
                                                 onsubmit="return validateSignup()" oninput="return removeError()">
                                                 <div class="mb-3">
                                                     <label for="hcpName" class="form-label">Name <span class="text-danger">*</span></label>
                                                     <input type="text" name="hcpName" id="hcpName" maxlength="30" placeholder="Suresh Kumar"
                                                         class="form-control">
-                                                    <div id="name_err" class="text-danger pt-1"></div>
+                                                    <small id="name_err" class="text-danger pt-1"></small>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="hcpMobile" class="form-label">Mobile Number <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" name="hcpMobile" id="hcpMobile" maxlength="10" placeholder="9876543210"
                                                         class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                                                    <div id="mobile_err" class="text-danger pt-1"></div>
+                                                    <small id="mobile_err" class="text-danger pt-1"></small>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="hcpEmail" class="form-label">Email Id <span class="text-danger">*</span></label>
+                                                    <label for="hcpEmail" class="form-label">Email Address <span
+                                                            class="text-danger">*</span></label>
                                                     <input type="email" name="hcpEmail" id="hcpEmail" maxlength="30"
                                                         placeholder="example@gmail.com" class="form-control">
-                                                    <div id="mail_err" class="text-danger pt-1"></div>
+                                                    <small id="mail_err" class="text-danger pt-1"></small>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="hcpSpec" class="form-label">Specialization <span
@@ -1094,7 +1103,7 @@
                                                             </option>
                                     <?php } ?>
                                                     </select>
-                                                    <div id="spec_err" class="text-danger pt-1"></div>
+                                                    <small id="spec_err" class="text-danger pt-1"></small>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="hcpPassword" class="form-label">Password <span
@@ -1105,7 +1114,7 @@
                                                         <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('hcpPassword', this)"
                                                             style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                                                     </div>
-                                                    <div id="password_err" class="text-danger pt-1"></div>
+                                                    <small id="password_err" class="text-danger pt-1"></small>
                                                 </div>
                                                 <div class="text-secondary mb-3" style="font-size:12px;display:none;" id="passwordmessage">
                                                     Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
@@ -1119,7 +1128,7 @@
                                                         <i class="bi bi-eye-slash" onclick="togglePasswordVisibility('hcpCnfmPassword', this)"
                                                             style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                                                     </div>
-                                                    <div id="cnfmpassword_err" class="text-danger pt-1"></div>
+                                                    <small id="cnfmpassword_err" class="text-danger pt-1"></small>
                                                 </div>
                                                 <input type="hidden" name="approvalApproved" id="approvalApproved" value="1">
                                                 <input type="hidden" name="firstLoginPswdChange" id="firstLoginPswdChange" value="0">
@@ -1144,14 +1153,14 @@
                                         var confirmpassword = document.getElementById("hcpCnfmPassword").value;
 
                                         if (name == "") {
-                                            document.getElementById("name_err").innerHTML = "Name must be filled out.";
+                                            document.getElementById("name_err").innerHTML = "Please enter a name.";
                                             return false;
                                         } else {
                                             document.getElementById("name_err").innerHTML = "";
                                         }
 
                                         if (mobile == "") {
-                                            document.getElementById("mobile_err").innerHTML = "Mobile number must be filled out.";
+                                            document.getElementById("mobile_err").innerHTML = "Please enter a mobile number.";
                                             return false;
                                         } else if (!/^\d{10}$/.test(mobile)) {
                                             document.getElementById("mobile_err").innerHTML = "Invalid mobile number. Please enter valid number.";
@@ -1161,7 +1170,7 @@
                                         }
 
                                         if (email == "") {
-                                            document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
+                                            document.getElementById("mail_err").innerHTML = "Please enter an email address.";
                                             return false;
                                         } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                                             document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
@@ -1171,14 +1180,14 @@
                                         }
 
                                         if (spec == "") {
-                                            document.getElementById("spec_err").innerHTML = "Specialization must be filled out.";
+                                            document.getElementById("spec_err").innerHTML = "Please select a specialization.";
                                             return false;
                                         } else {
                                             document.getElementById("spec_err").innerHTML = "";
                                         }
 
                                         if (password == "") {
-                                            document.getElementById("password_err").innerHTML = "Password must be filled out.";
+                                            document.getElementById("password_err").innerHTML = "Please enter a password.";
                                             return false;
                                         } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
                                             document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password."
@@ -1188,10 +1197,10 @@
                                         }
 
                                         if (confirmpassword == "") {
-                                            document.getElementById("cnfmpassword_err").innerHTML = "Re-enter the password.";
+                                            document.getElementById("cnfmpassword_err").innerHTML = "Please re-enter the password.";
                                             return false;
                                         } else if (confirmpassword != password) {
-                                            document.getElementById("cnfmpassword_err").innerHTML = "Enter same as password."
+                                            document.getElementById("cnfmpassword_err").innerHTML = "Please enter the same password again."
                                             return false;
                                         } else {
                                             document.getElementById("cnfmpassword_err").innerHTML = "";
@@ -1288,7 +1297,7 @@
                                                     if (data.email_exists) {
                                                         hasDbError = true;
                                                         errorMsg = "This Email ";
-                                                        emailErr.innerHTML = "Email ID already exists!";
+                                                        emailErr.innerHTML = "Email Address already exists!";
                                                     }
                                                     if (data.mobile_exists && data.email_exists) {
                                                         hasError = true;
@@ -1357,8 +1366,7 @@
                                                                 </a></p>
                                                         </div>
                                                     </div>
-                                                    <h5 class="fw-bolder pb-3">Profile Details:</h5>
-
+                                                    <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details</p>
                                                     <div class="d-md-flex pb-1">
                                                         <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
                                                         <p class="col-md-9 ps-2">
@@ -1376,7 +1384,7 @@
                                                     <div class="d-md-flex pb-1">
                                                         <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
                                                         <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpDob'] ? $value['hcpDob'] : "Not provided"; ?>
+                                    <?php echo $value['hcpDob'] ? date('d-M-Y', strtotime($value['hcpDob'])) : "Not provided"; ?>
                                                         </p>
                                                     </div>
 
@@ -1394,14 +1402,21 @@
                                                         </p>
                                                     </div>
 
-                                                    <h5 class="my-3 fw-bolder">Profile Approval Process:</h5>
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Registration Date : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo date('d-M-Y', strtotime($value['created_at'])); ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <p class="my-3 mt-3 fs-5 fw-semibold">Profile Approval Process</p>
                                                     <!-- <p>Please review the details and approve the Health Care Provider for login : <a
                                                                 href="<?php echo base_url() . "Edfadmin/approveHcp/" . $value['id'] ?>"
                                                                 onclick="return confirm('The details have been verified and approved for login.')"><button
                                                                     class="btn btn-success px-2 py-1">Approve</button></a> </p> -->
                                                     <form action="<?php echo base_url() . "Edfadmin/approveHcp/" . $value['id'] ?>" method="post"
                                                         name="hcpApproveForm" class="col-6 border border-2 rounded p-3">
-                                                        <p>Verify the details and approve to login: </p>
+                                                        <p class="form-label">Verify the details and approve to login: </p>
                                                         <div class="mb-2 ps-2"><input type="radio" name="approveHcp" value="0" id="notApproved" <?php if ($value['approvalStatus'] == '0')
                                                             echo "checked"; ?> required>
                                                             <label class="ps-2" for="notApproved">Not Approved</label>
@@ -1411,7 +1426,7 @@
                                                             <label class="ps-2" for="approved">Approved</label>
                                                         </div>
                                                         <button type="submit" style="background-color: #2b353bf5;"
-                                                            class="btn text-light px-2 py-1 mt-2">Approve</button>
+                                                            class="btn text-light px-2 py-1 mt-2">Update</button>
                                                     </form>
                         <?php } ?>
                                             </div>
@@ -1743,7 +1758,7 @@
                                                             </div>
                                                             <p class="my-3 mt-3 fs-5 fw-semibold">Personal Details</p>
                                                             <div class="d-md-flex">
-                                                                <p class="col-sm-6"><span class="text-secondary ">Mobile Number</span> : <a
+                                                                <p class="col-sm-6"><span class="text-secondary ">Mobile number</span> : <a
                                                                         href="tel:<?php echo $value['mobileNumber'] ?>" class="text-decoration-none text-dark">
                                         <?php echo $value['mobileNumber'] ?></a></p>
                                                                 <p><span class="text-secondary ">Alternate mobile</span> :
@@ -1751,7 +1766,7 @@
                                                                 </p>
                                                             </div>
                                                             <div class="d-md-flex">
-                                                                <p class="col-sm-6"><span class="text-secondary ">Email Id</span> :
+                                                                <p class="col-sm-6"><span class="text-secondary ">Email address</span> :
                                         <?php
                                         $mailId = isset($value['mailId']) ? $value['mailId'] : null;
                                         ?>
@@ -1796,6 +1811,9 @@
                                     <?php echo $value['partnerBlood'] ? $value['partnerBlood'] : "Not provided"; ?>
                                                                 </p>
                                                             </div>
+                                                            <p class="mb-4"><span class="text-secondary ">Registration Date </span> :
+                                <?php echo date('d-M-Y', strtotime($value['created_at'])); ?>
+                                                            </p>
                         <?php } ?>
 
                                                         <p class="fs-5 fw-semibold mt-3">All Consultations</p>
@@ -4667,8 +4685,6 @@
             });
         });
     </script>
-
-
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

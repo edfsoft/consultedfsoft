@@ -108,7 +108,7 @@
         if ($method == "dashboard") {
             ?>
             <section>
-                <p class="card ps-3 py-3" style="font-size: 24px; font-weight: 500">
+                <p class="card ps-3 py-3 mx-1" style="font-size: 24px; font-weight: 500">
                     Dashboard
                 </p>
 
@@ -150,20 +150,22 @@
                                 style="width:80px;height:80px" alt="icon3" />
                             <div class="text-center px-4">
                                 <p style="font-size: 20px; font-weight: 500; color: #00ad8e">
-                                    Appointments Count
+                                    CC Appointments
                                 </p>
                                 <p style="font-size: 30px; font-weight: 400; color: #00ad8e">
                                     <?php echo $appointmentsTotal; ?>
                                 </p>
                                 <p style="font-size: 16px">
-                                    <?php echo date("d-m-Y") ?>
+                                    <?php echo date("d-M-Y") ?>
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="d-lg-flex justify-content-evenly">
+                <!-- Section 2 -->
+                <!-- Hiding - there 2 appointment sections  -->
+                <!-- <div class="d-lg-flex justify-content-evenly">
                     <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-2">
@@ -333,9 +335,9 @@
                                                 <th scope="col-6" style="font-size: 16px; font-weight: 600">
                                                     Diagonsis
                                                 </th>
-                                                <!-- <th scope="col-4" style="font-size: 16px; font-weight: 600" class="px-5">
+                                                <th scope="col-4" style="font-size: 16px; font-weight: 600" class="px-5">
                                                     Height
-                                                </th> -->
+                                                </th>
                                                 <th scope="col-6" style="font-size: 16px; font-weight: 600">
                                                     Referal Doctor
                                                 </th>
@@ -347,9 +349,9 @@
                                                     <span
                                                         style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['patientComplaint'] != '' ? $appointmentList[0]['patientComplaint'] : "-"; ?></span>
                                                 </td>
-                                                <!-- <td class="px-5">
+                                                <td class="px-5">
                                                     <span style="font-size: 16px; font-weight: 400">172cm</span>
-                                                </td> -->
+                                                </td>
                                                 <td>
                                                     <span
                                                         style="font-size: 16px; font-weight: 400"><?php echo $appointmentList[0]['referalDoctor']; ?></span>
@@ -358,12 +360,12 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <!-- <p style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                <p style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                     Patient History
                                 </p>
                                 <p style="font-size: 16px;font-weight: 400;background-color: #e9eeed;padding: 10px;">
                                     Diabetes - Health care
-                                </p> -->
+                                </p>
                                 <div>
                                     <a href="tel:<?php echo $appointmentList[0]['mobileNumber']; ?>"><button
                                             style=" background-color: #00ad8e; color: white; font-size: 16px;"
@@ -387,7 +389,7 @@
                                     <?php } ?>
                                 </div>
                                 <br>
-                                <!-- <a href="#" class="text-decoration-underline">Last Appointment</a> -->
+                                <a href="#" class="text-decoration-underline">Last Appointment</a>
                                 <?php if ($appointmentList[0]['lastAppDate'] != "") { ?>
                                     <p>Last Appointment Date - <?php echo $appointmentList[0]['lastAppDate']; ?></p>
                                 <?php }
@@ -397,105 +399,117 @@
 
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <!-- Completed Consult Section -->
-                <div class="card rounded-5 mx-1 mt-3">
-                    <div class="card-body p-4">
-                        <p style="font-size:20px;font-weight:500;color:#00ad8e" class="pb-3">
-                            <i class="bi bi-clock-history pe-3"></i> Completed Consultations
-                        </p>
+                <!-- Section 3 -->
+                <div class="d-lg-flex justify-content-between mx-2">
+                    <!-- Completed Consult Section -->
+                    <div class="card col-12 col-lg-6 rounded-5 mx-1 mt-3">
+                        <div class="card-body p-4">
+                            <p style="font-size:20px;font-weight:500;color:#00ad8e"
+                                class="pb-3 d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-check2-circle pe-3"></i>Completed Consultations</span>
+                                <span class="px-2" id="completedConsultCount"
+                                    style="font-size:16px;color: #00ad8e;border : 2px solid #00ad8e; border-radius:50%;">0</span>
+                            </p>
 
-                        <div class="rounded-4 px-3">
-                            <!-- Date Header -->
-                            <div class="d-flex justify-content-between align-items-center mb-3"
-                                style="background:#fff;color:#00ad8e;border-radius:12px;padding:10px 20px;border:2px solid #00ad8e">
+                            <div class="rounded-4 px-3">
+                                <!-- Date Header -->
+                                <div class="d-flex justify-content-between align-items-center mb-3"
+                                    style="background:#fff;color:#00ad8e;border-radius:12px;padding:10px 20px;border:2px solid #00ad8e">
 
-                                <button id="prevDayBtnCompletedConsult" class="btn btn-link p-0"
-                                    style="font-size:1.5rem;color:#00ad8e">
-                                    <i class="bi bi-chevron-left"></i>
-                                </button>
+                                    <button id="prevDayBtnCompletedConsult" class="btn btn-link p-0"
+                                        style="font-size:1.5rem;color:#00ad8e">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </button>
 
-                                <div class="text-center">
-                                    <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
-                                        <span id="completedConsultDate"></span>
+                                    <div class="text-center">
+                                        <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
+                                            <span id="completedConsultDate"></span>
 
-                                        <input type="date" id="completedConsultCalendar"
-                                            style="opacity:0;position:absolute;pointer-events:none">
+                                            <input type="date" id="completedConsultCalendar"
+                                                style="opacity:0;position:absolute;pointer-events:none">
 
-                                        <i class="bi bi-calendar-event" id="completedConsultCalendarIcon"
-                                            style="cursor:pointer;font-size:1.2rem"></i>
-                                    </h5>
-                                    <small id="completedConsultDay"></small>
+                                            <i class="bi bi-calendar-event ms-md-3 ms-1" id="completedConsultCalendarIcon"
+                                                style="cursor:pointer;font-size:1.5rem"></i>
+                                        </h5>
+                                        <small id="completedConsultDay"></small>
+                                    </div>
+
+                                    <button id="nextDayBtnCompletedConsult" class="btn btn-link p-0"
+                                        style="font-size:1.5rem;color:#00ad8e">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
                                 </div>
-
-                                <button id="nextDayBtnCompletedConsult" class="btn btn-link p-0"
-                                    style="font-size:1.5rem;color:#00ad8e">
-                                    <i class="bi bi-chevron-right"></i>
-                                </button>
-                            </div>
-                            <!-- Table -->
-                            <div class="table-responsive" style="max-height:300px">
-                                <table class="table align-middle mb-0">
-                                    <thead>
-                                        <tr style="font-weight:700">
-                                            <th>S.No</th>
-                                            <th>Patient ID</th>
-                                            <th>Patient Name</th>
-                                            <th>Mobile Number</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="completedConsultTableBody"></tbody>
-                                </table>
+                                <!-- Table -->
+                                <div class="table-responsive" style="max-height:300px">
+                                    <table class="table align-middle mb-0">
+                                        <thead>
+                                            <tr style="font-weight:700">
+                                                <th>S.No</th>
+                                                <th>Patient ID</th>
+                                                <th>Patient Name</th>
+                                                <th>Mobile Number</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="completedConsultTableBody"></tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <!-- Today's Follow up Section  -->
+                    <div class="card col-12 col-lg-6 rounded-5 mx-1 mt-3">
+                        <div class="card-body p-4">
+                            <p style="font-size: 20px; font-weight: 500; color: #00ad8e"
+                                class="pb-3 d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-clock-history pe-3"></i>
+                                    Follow-ups (Next Follow-up)</span>
+                                <span class="px-2" id="followUpCount"
+                                    style="font-size:16px;color: #00ad8e;border : 2px solid #00ad8e; border-radius:50%;">0</span>
+                            </p>
 
-                <!-- Today's Follow up Section  -->
-                <div class="card rounded-5 mx-1 mt-3">
-                    <div class="card-body p-4">
-                        <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-3">
-                            <i class="bi bi-clock-history pe-3"></i> Today's Follow-ups (Next Follow-up)
-                        </p>
-                        <div class="rounded-4 px-3">
-                            <!-- Date Header -->
-                            <div class="d-flex justify-content-between align-items-center mb-3"
-                                style="background-color: #fff; color: #00ad8e; border-radius: 12px; padding: 10px 20px;border: 2px solid #00ad8e;">
-                                <button id="prevDayBtnFollowUp" class="btn btn-link fw-bold p-0"
-                                    style="font-size: 1.5rem; color: #00ad8e;">
-                                    <i class="bi bi-chevron-left"></i>
-                                </button>
-
-                                <div class="text-center">
-                                    <h5 class="mb-0 fw-semibold" id="appointmentsDate">17-Oct-2025</h5>
-                                    <small id="appointmentsDay">Thursday</small>
+                            <div class="rounded-4 px-3">
+                                <!-- Date Header -->
+                                <div class="d-flex justify-content-between align-items-center mb-3"
+                                    style="background-color: #fff; color: #00ad8e; border-radius: 12px; padding: 10px 20px;border: 2px solid #00ad8e;">
+                                    <button id="prevDayBtnFollowUp" class="btn btn-link fw-bold p-0"
+                                        style="font-size: 1.5rem; color: #00ad8e;">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </button>
+                                    <div class="text-center">
+                                        <h5 class="mb-0 fw-semibold d-flex align-items-center gap-2 justify-content-center">
+                                            <span id="appointmentsDate"></span>
+                                            <input type="date" id="followUpCalendar"
+                                                style="opacity:0;position:absolute;pointer-events:none">
+                                            <i class="bi bi-calendar-event ms-md-3 ms-1" id="followUpCalendarIcon"
+                                                style="cursor:pointer;font-size:1.5rem"></i>
+                                        </h5>
+                                        <small id="appointmentsDay"></small>
+                                    </div>
+                                    <button id="nextDayBtnFollowUp" class="btn btn-link fw-bold p-0"
+                                        style="font-size: 1.5rem; color: #00ad8e;">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </button>
                                 </div>
-
-                                <button id="nextDayBtnFollowUp" class="btn btn-link fw-bold p-0"
-                                    style="font-size: 1.5rem; color: #00ad8e;">
-                                    <i class="bi bi-chevron-right"></i>
-                                </button>
-                            </div>
-                            <!-- Table -->
-                            <div class="table-responsive" style="max-height: 300px;">
-                                <table class="table align-middle mb-0">
-                                    <thead>
-                                        <tr style="color: #000; font-weight: 700;">
-                                            <th>S.No</th>
-                                            <th style="text-align:top">Patient ID</th>
-                                            <th>Patient Name</th>
-                                            <th>Mobile Number</th>
-                                            <th>Last Consult On</th>
-                                            <th>Symptoms</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="followUpTableBody">
-                                        <!-- Data loaded here -->
-                                    </tbody>
-                                </table>
+                                <!-- Table -->
+                                <div class="table-responsive" style="max-height: 300px;">
+                                    <table class="table align-middle mb-0">
+                                        <thead>
+                                            <tr style="color: #000; font-weight: 700;">
+                                                <th>S.No</th>
+                                                <th style="text-align:top">Patient ID</th>
+                                                <th>Patient Name</th>
+                                                <th>Last Consult On</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="followUpTableBody">
+                                            <!-- Data loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -514,6 +528,7 @@
                     const nextBtn = document.getElementById('nextDayBtnCompletedConsult');
                     const calIn = document.getElementById('completedConsultCalendar');
                     const calIcon = document.getElementById('completedConsultCalendarIcon');
+                    const countEl = document.getElementById('completedConsultCount');
 
                     let currentDate = new Date();
 
@@ -544,22 +559,25 @@
                             .then(res => {
                                 if (res.success && res.data.length) {
                                     renderCompletedConsult(res.data);
+                                    countEl.textContent = res.data.length;
                                 } else {
                                     tbody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                No completed consultations
-                            </td>
-                        </tr>`;
+                                                <tr>
+                                                    <td colspan="6" class="text-center text-muted py-4">
+                                                        No completed consultations
+                                                    </td>
+                                                </tr>`;
+                                    countEl.textContent = 0;
                                 }
                             })
                             .catch(() => {
                                 tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center text-danger">
-                            Error loading data
-                        </td>
-                    </tr>`;
+                                            <tr>
+                                                <td colspan="6" class="text-center text-danger">
+                                                    Error loading data
+                                                </td>
+                                            </tr>`;
+                                countEl.textContent = 0;
                             });
                     }
 
@@ -613,6 +631,9 @@
                     const prevBtn = document.getElementById('prevDayBtnFollowUp');
                     const nextBtn = document.getElementById('nextDayBtnFollowUp');
                     const tbody = document.getElementById('followUpTableBody');
+                    const countEl = document.getElementById('followUpCount');
+                    const calIn = document.getElementById('followUpCalendar');
+                    const calIcon = document.getElementById('followUpCalendarIcon');
 
                     let currentDate = new Date();
 
@@ -622,6 +643,10 @@
                         return date.toLocaleDateString('en-GB', {
                             day: '2-digit', month: 'short', year: 'numeric'
                         }).replace(/ /g, '-');
+                    }
+
+                    function formatApiDate(date) {
+                        return date.toISOString().split('T')[0];
                     }
 
                     function formatConsultDate(dateStr) {
@@ -635,24 +660,38 @@
                     function updateHeader() {
                         dateEl.textContent = formatDate(currentDate);
                         dayEl.textContent = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+                        calIn.value = formatApiDate(currentDate);
                     }
 
                     function loadAppointments() {
-                        const apiDate = formatDate(currentDate);
                         updateHeader();
+                        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4">Loading...</td></tr>`;
+                        countEl.textContent = 0;
 
-                        fetch(`${baseUrl}?date=${apiDate}`)
+                        fetch(`${baseUrl}?date=${formatApiDate(currentDate)}`)
                             .then(r => r.json())
                             .then(res => {
                                 if (res.success && res.data.length > 0) {
                                     renderTable(res.data);
+                                    countEl.textContent = res.data.length;
                                 } else {
-                                    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No follow-ups scheduled for this date</td></tr>`;
+                                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                No follow-ups scheduled
+                            </td>
+                        </tr>`;
+                                    countEl.textContent = 0;
                                 }
                             })
-                            .catch(err => {
-                                console.error(err);
-                                tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error loading data</td></tr>`;
+                            .catch(() => {
+                                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-danger">
+                            Error loading data
+                        </td>
+                    </tr>`;
+                                countEl.textContent = 0;
                             });
                     }
 
@@ -664,12 +703,10 @@
                                         <td>${i + 1}.</td>
                                         <td>${row.patientId}</td> 
                                         <td>${row.patientName}</td>
-                                        <td>${row.mobileNumber}</td>
                                         <td>
                                             <span class="fw-medium">${formatConsultDate(row.consult_date)}</span>
                                             <br>${row.time_12hr}<br>
                                         </td>
-                                        <td>${row.symptoms || '-'}</td>
                                         <td>
                                             <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}" 
                                             class="btn btn-sm btn-secondary text-light"> <i class="bi bi-calendar-check"></i></a>
@@ -679,15 +716,22 @@
                         });
                     }
 
-                    prevBtn.addEventListener('click', () => {
+                    prevBtn.onclick = () => {
                         currentDate.setDate(currentDate.getDate() - 1);
                         loadAppointments();
-                    });
+                    };
 
-                    nextBtn.addEventListener('click', () => {
+                    nextBtn.onclick = () => {
                         currentDate.setDate(currentDate.getDate() + 1);
                         loadAppointments();
-                    });
+                    };
+
+                    calIcon.onclick = () => calIn.showPicker();
+
+                    calIn.onchange = () => {
+                        currentDate = new Date(calIn.value);
+                        loadAppointments();
+                    };
 
                     loadAppointments();
                 });
@@ -822,8 +866,9 @@
                                                     <?php } else { ?>
                                                             <a
                                                                 href="<?php echo base_url() . "Healthcareprovider/appointmentUpdate/" . $value['id'] ?>">
-                                                                <button class="btn btn-secondary">Edit</button> </a>
-                                                            <button class="btn btn-secondary" disabled>Summary</button>
+                                                                <button class="btn btn-secondary"> <i class="bi bi-pen"></i></button> </a>
+                                                            <button class="btn btn-secondary" disabled> <i
+                                                                    class="bi bi-calendar-check"></i></button>
                                                             <button class="btn btn-success" disabled>Join</button>
                                                     <?php } ?>
                                                     </td>

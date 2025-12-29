@@ -6619,8 +6619,8 @@
             }
 
             function getCleanDisplay(value, field = 'category') {
-                if (!value || value === 'Nil' || value === 'nil') return ''; 
-                return value; 
+                if (!value || value === 'Nil' || value === 'nil') return '';
+                return value;
             }
 
             window.openMedicineModal = function (nameOrItem, existing = null, tagEl = null) {
@@ -6694,7 +6694,7 @@
                 const category = medData.category || "";
 
                 const data = {
-                    id: pendingMedicineId || `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`, 
+                    id: pendingMedicineId || `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                     medicine_id: pendingMedicineMasterId,
                     medicine_name: pendingMedicineName,
                     quantity,

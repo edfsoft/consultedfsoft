@@ -498,7 +498,7 @@ class HcpModel extends CI_Model
         'dateOfAppoint'     => $post['appDate'],
         'partOfDay'         => $post['dayTime'],
         'timeOfAppoint'     => $post['appTime'],
-        'appointmentType'  => $post['appointmentType'],
+        'appointment_type'  => $post['appointmentType'],
         'patientComplaint'  => $post['appReason'],
         'patientHcp'        => $_SESSION['hcpId'],
         'hcpDbId'           => $_SESSION['hcpIdDb'],

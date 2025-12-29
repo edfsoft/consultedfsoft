@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" style="font-family: Poppins, sans-serif;">Upload HCP Profile Photo
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;">Upload HCP Profile Photo
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -47,7 +47,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newPatientModalLabel">Add New Patient</h5>
+                <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;" id="newPatientModalLabel">
+                    Add New Patient</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

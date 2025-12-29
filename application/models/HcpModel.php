@@ -286,36 +286,6 @@ class HcpModel extends CI_Model
         return $post['patientIdDb'];
     }
 
-    /* public function generatePatientId($dbid)
-    {
-        $latest_customer_id = $this->getlastPatientId();
-        $last_four_digits = substr($latest_customer_id, -6);
-        $incremented_id = str_pad((int) $last_four_digits + 1, 6, '0', STR_PAD_LEFT);
-        $generate_id = "EDF{$incremented_id}";
-        $insert = array(
-            'patientId' => $generate_id
-        );
-        $this->db->where('id', $dbid);
-        $this->db->update('patient_details', $insert);
-        return $generate_id;
-    }
-
-    public function getlastPatientId()
-    {
-        $this->db->select('patientId');
-        $this->db->from('patient_details');
-        $this->db->order_by('patientId', 'DESC');
-        $this->db->limit(1);
-
-        $query = $this->db->get();
-        if ($query->num_rows() > 0) {
-            $row = $query->row();
-            return $row->patientId;
-        } else {
-            return 'EDF000000';
-        }
-    } */
-
     public function generatePatientId($dbid)
     {
         $next_number = $this->getFirstAvailableId();
@@ -446,68 +416,44 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    /* public function insertAppointment()
+    public function insertAppointment()
     {
         $post = $this->input->post(null, true);
-        list($patientId, $dbId) = explode('|', $post['patientId']);
-        list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);
+
+        $ccId = 'Nil';
+        $ccDbId = 'Nil';
+        $appLink = 'https://meet.google.com/wzo-dprz-zqy';//link for only hcp
+        $modeOfConsultant = 'Nil';
+        if (!empty($post['patientId'])) {
+            list($patientId, $dbId) = explode('|', $post['patientId']);
+        } else {
+            return false; // Or handle error
+        }
+
+
+        if (!empty($post['referalDoctor'])) {//If referal doctor has, insert cc & hcp meet link
+            list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);
+        }
+
         $insert = array(
             'patientId' => $patientId,
             'patientDbId' => $dbId,
             'referalDoctor' => $ccId,
             'appointmentLink' => $appLink,
             'referalDoctorDbId' => $ccDbId,
-            'modeOfConsultant' => $post['appConsult'],
+            'modeOfConsultant' => $modeOfConsultant,
             'dateOfAppoint' => $post['appDate'],
             'partOfDay' => $post['dayTime'],
             'timeOfAppoint' => $post['appTime'],
+            'appointment_type' => $post['appointmentType'],
             'patientComplaint' => $post['appReason'],
             'patientHcp' => $_SESSION['hcpId'],
-            'hcpDbId' => $_SESSION['hcpIdDb']
+            'hcpDbId' => $_SESSION['hcpIdDb'],
         );
+
         $this->db->insert('appointment_details', $insert);
-        return true;
-    } */
-
-    public function insertAppointment()
-{
-    $post = $this->input->post(null, true);
-    
-    $ccId = 'Nil';
-    $ccDbId = 'Nil';
-    $appLink = 'https://meet.google.com/wzo-dprz-zqy';//link for only hcp
-    $modeOfConsultant = 'Nil';
-    if (!empty($post['patientId'])) {
-        list($patientId, $dbId) = explode('|', $post['patientId']);
-    } else {
-        return false; // Or handle error
+        return $this->db->insert_id();
     }
-    
-
-    if (!empty($post['referalDoctor'])) {//If referal doctor has, insert cc & hcp meet link
-        list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);
-    }
-
-    $insert = array(
-        'patientId'         => $patientId,
-        'patientDbId'       => $dbId,
-        'referalDoctor'     => $ccId,
-        'appointmentLink'   => $appLink,
-        'referalDoctorDbId' => $ccDbId,
-        'modeOfConsultant'  => $modeOfConsultant,
-        'dateOfAppoint'     => $post['appDate'],
-        'partOfDay'         => $post['dayTime'],
-        'timeOfAppoint'     => $post['appTime'],
-        'appointment_type'  => $post['appointmentType'],
-        'patientComplaint'  => $post['appReason'],
-        'patientHcp'        => $_SESSION['hcpId'],
-        'hcpDbId'           => $_SESSION['hcpIdDb'],
-    );
-
-    // 5. Insert
-    $this->db->insert('appointment_details', $insert);
-    return $this->db->insert_id();
-}
 
     public function getAppointmentReschedule()
     {
@@ -539,7 +485,6 @@ class HcpModel extends CI_Model
         $this->db->update('appointment_details', $updatedata);
         return true;
     }
-
 
     public function getHcpDetails()
     {
@@ -597,7 +542,7 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    public function updateNewPassword()/* Password chnage after login */
+    public function updateNewPassword()/* Password change after login */
     {
         $post = $this->input->post(null, true);
         $updatedata = array(

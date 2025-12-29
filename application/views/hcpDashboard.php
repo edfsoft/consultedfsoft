@@ -728,7 +728,8 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">APPOINTMENT WITH</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                    APPOINTMENT WITH</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
@@ -749,13 +750,13 @@
                                                 <tr>
                                                     <td class="pt-3"><?php echo $count; ?>. </td>
                                                     <td style="font-size: 16px" class="pt-3">
-                                                        <?php if(!empty($value['appointment_type'])){
-                                                            if($value['appointment_type']==="cc_hcp"){
-                                                                echo 'CC';
-                                                            } else if($value['appointment_type']==="only_hcp"){
-                                                                echo 'PATIENT';
-                                                            }
-                                                        } ?>
+                                                    <?php if (!empty($value['appointment_type'])) {
+                                                        if ($value['appointment_type'] === "cc_hcp") {
+                                                            echo 'CC';
+                                                        } else if ($value['appointment_type'] === "only_hcp") {
+                                                            echo 'PATIENT';
+                                                        }
+                                                    } ?>
                                                     </td>
                                                     <td style="font-size: 16px" class="pt-3">
                                                         <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
@@ -776,16 +777,15 @@
                                                     <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                     </td>
                                                     <td style="font-size: 16px" class="pt-3">
-                                                        <?php if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') { ?>
+                                                    <?php if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') { ?>
                                                             <a href="<?php echo base_url('Healthcareprovider/chiefDoctorsProfile/' . $value['referalDoctorDbId']); ?>"
-                                                            class="text-dark"
-                                                            onmouseover="this.style.textDecoration='underline'"
-                                                            onmouseout="this.style.textDecoration='none'">
-                                                                <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
+                                                                class="text-dark" onmouseover="this.style.textDecoration='underline'"
+                                                                onmouseout="this.style.textDecoration='none'">
+                                                            <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
                                                             </a>
-                                                        <?php } else { ?>
+                                                    <?php } else { ?>
                                                             <span>NA</span>
-                                                        <?php } ?>
+                                                    <?php } ?>
                                                     </td>
 
                                                     <!-- <td style="font-size: 16px" class="pt-3">
@@ -896,12 +896,15 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
+                                                </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
+                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -926,16 +929,15 @@
                                                     <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                     </td>
                                                     <td style="font-size: 16px" class="pt-3">
-                                                        <?php if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') { ?>
+                                                    <?php if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') { ?>
                                                             <a href="<?php echo base_url('Healthcareprovider/chiefDoctorsProfile/' . $value['referalDoctorDbId']); ?>"
-                                                            class="text-dark"
-                                                            onmouseover="this.style.textDecoration='underline'"
-                                                            onmouseout="this.style.textDecoration='none'">
-                                                                <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
+                                                                class="text-dark" onmouseover="this.style.textDecoration='underline'"
+                                                                onmouseout="this.style.textDecoration='none'">
+                                                            <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
                                                             </a>
-                                                        <?php } else { ?>
+                                                    <?php } else { ?>
                                                             <span>NA</span>
-                                                        <?php } ?>
+                                                    <?php } ?>
                                                     </td>
 
                                                     <td style="font-size: 16px" class="pt-3">
@@ -976,8 +978,10 @@
                                             oninput="clearErrorAppointment()">
 
                                             <div class="form-group pb-3">
-                                                <label class="form-label">Appointment Type <span class="text-danger">*</span></label>
-                                                <select class="form-select" id="appointmentType" name="appointmentType" onchange="toggleAppointmentFields()">
+                                                <label class="form-label">Appointment Type <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-select" id="appointmentType" name="appointmentType"
+                                                    onchange="toggleAppointmentFields()">
                                                     <option value="">Select Appointment Type</option>
                                                     <option value="cc_hcp">CC & HCP Appointment</option>
                                                     <option value="only_hcp">Only HCP Appointment</option>
@@ -988,39 +992,49 @@
                                             <fieldset id="appointmentFormFields" disabled>
 
                                                 <div class="form-group pb-3" id="referalDoctorSection">
-                                                    <label class="form-label" for="referalDoctor">Referal Doctor ID <span class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control mb-1" id="referralDoctorSearch" placeholder="Search Chief Consultant Id / Name" autocomplete="off">
-                                                    <select class="form-select" name="referalDoctor" id="referalDoctor" oninput="adjustTimeOptions()">
+                                                    <label class="form-label" for="referalDoctor">Referal Doctor ID <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control mb-1" id="referralDoctorSearch"
+                                                        placeholder="Search Chief Consultant Id / Name" autocomplete="off">
+                                                    <select class="form-select" name="referalDoctor" id="referalDoctor"
+                                                        oninput="adjustTimeOptions()">
                                                         <option value="">Select Chief Consultant Id</option>
-                                                        <?php foreach ($ccsId as $key => $value) { ?>
-                                                            <option value="<?php echo $value['ccId'] . '|' . $value['id'] . '|' . $value['gMeetLink'] ?>">
-                                                                <?php echo $value['ccId'] ?> / <?php echo $value['doctorName'] ?>
+                                                <?php foreach ($ccsId as $key => $value) { ?>
+                                                            <option
+                                                                value="<?php echo $value['ccId'] . '|' . $value['id'] . '|' . $value['gMeetLink'] ?>">
+                                                        <?php echo $value['ccId'] ?> / <?php echo $value['doctorName'] ?>
                                                             </option>
-                                                        <?php } ?>
+                                                <?php } ?>
                                                     </select>
                                                     <small id="referalDoctor_err" class="text-danger pt-1"></small>
                                                 </div>
 
                                                 <div class="form-group pb-2">
-                                                    <label class="form-label" for="patientId">Patient Id <span class="text-danger">*</span></label>
+                                                    <label class="form-label" for="patientId">Patient Id <span
+                                                            class="text-danger">*</span></label>
                                                     <div class="input-group mb-1">
-                                                        <input type="text" class="form-control" placeholder="Search patient Id / Name" id="patientSearch" autocomplete="off">
-                                                        <span class="input-group-text bg-white border-start-0"><i class="bi bi-search"></i></span>
-                                                        <button class="btn btn-outline-primary d-flex align-items-center" type="button" id="addPatientBtn" title="Add New Patient">
+                                                        <input type="text" class="form-control"
+                                                            placeholder="Search patient Id / Name" id="patientSearch"
+                                                            autocomplete="off">
+                                                        <span class="input-group-text bg-white border-start-0"><i
+                                                                class="bi bi-search"></i></span>
+                                                        <button class="btn btn-outline-primary d-flex align-items-center"
+                                                            type="button" id="addPatientBtn" title="Add New Patient">
                                                             <i class="bi bi-plus-lg me-1"></i> Add Patient
                                                         </button>
                                                     </div>
                                                     <select class="form-select" name="patientId" id="patientId">
-                                                        <?php foreach ($patientsId as $value): ?>
-                                                            <option value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
-                                                                <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
+                                                <?php foreach ($patientsId as $value): ?>
+                                                            <option
+                                                                value="<?php echo htmlspecialchars($value['patientId'] . '|' . $value['id']); ?>">
+                                                        <?php echo htmlspecialchars($value['patientId'] . " / " . $value['firstName'] . " " . $value['lastName']); ?>
                                                             </option>
-                                                        <?php endforeach; ?>
+                                                <?php endforeach; ?>
                                                     </select>
                                                     <small id="patientId_err" class="text-danger pt-1"></small>
                                                 </div>
 
-                                                
+
 
                                                 <!-- <div class="form-group pb-3" id="modeSection">
                                                     <label class="form-label pb-2" for="appConsult">Mode of consult <span class="text-danger">*</span></label><br>
@@ -1032,15 +1046,20 @@
                                                 </div> -->
 
                                                 <div class="form-group pb-3">
-                                                    <label class="form-label" for="appDate">Date <span class="text-danger">*</span></label>
-                                                    <input type="date" class="form-control" id="appDate" name="appDate" oninput="adjustTimeOptions()">
+                                                    <label class="form-label" for="appDate">Date <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="date" class="form-control" id="appDate" name="appDate"
+                                                        oninput="adjustTimeOptions()">
                                                     <small id="appDate_err" class="text-danger pt-1"></small>
                                                 </div>
 
                                                 <div class="form-group pb-3">
-                                                    <label class="form-label" for="dayTime">Part of a day <span class="text-danger">*</span></label>
-                                                    <select class="form-select" id="dayTime" name="dayTime" onchange="adjustTimeOptions()">
-                                                        <option id="placeholderOption" value="" style="display: none;">Select part of the day</option>
+                                                    <label class="form-label" for="dayTime">Part of a day <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" id="dayTime" name="dayTime"
+                                                        onchange="adjustTimeOptions()">
+                                                        <option id="placeholderOption" value="" style="display: none;">Select part
+                                                            of the day</option>
                                                         <option value="Morning">Morning</option>
                                                         <option value="Afternoon">Afternoon</option>
                                                         <option value="Evening">Evening</option>
@@ -1097,21 +1116,25 @@
                                             <?php endforeach; ?>
                                                 </div>
 
-                                            <div class="form-group py-3">
-                                                <label class="form-label" for="appReason">Complaint</label>
-                                                <textarea class="form-control" id="appReason" name="appReason" rows="3" maxlength="250"
-                                                    placeholder="Enter Compliant to book appointment..."></textarea>
-                                                <small id="appReason_err" class="text-danger pt-1"></small>
-                                            </div>
+                                                <div class="form-group py-3">
+                                                    <label class="form-label" for="appReason">Complaint</label>
+                                                    <textarea class="form-control" id="appReason" name="appReason" rows="3"
+                                                        maxlength="250"
+                                                        placeholder="Enter Compliant to book appointment..."></textarea>
+                                                    <small id="appReason_err" class="text-danger pt-1"></small>
+                                                </div>
 
-                                            <div class="form-group pb-3">
-                                                <label class="form-label" for="pay">Payment <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" id="pay" name="pay" placeholder="E.g. Add payment details">
-                                            </div>
+                                                <div class="form-group pb-3">
+                                                    <label class="form-label" for="pay">Payment <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" id="pay" name="pay"
+                                                        placeholder="E.g. Add payment details">
+                                                </div>
 
-                                            <button type="submit" class="btn text-light float-end mt-2" style="background-color: #00ad8e;">Confirm</button>
-                                        </fieldset>
-                                    </form>
+                                                <button type="submit" class="btn text-light float-end mt-2"
+                                                    style="background-color: #00ad8e;">Confirm</button>
+                                            </fieldset>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -1513,32 +1536,32 @@
                     <!--New Appoinmtent form validation -->
                     <script>
                         function toggleAppointmentFields() {
-                                var type = document.getElementById("appointmentType").value;
-                                var fieldset = document.getElementById("appointmentFormFields"); // This targets the <fieldset> wrapper
-                                var referalSection = document.getElementById("referalDoctorSection");
-                                //var modeSection = document.getElementById("modeSection");
+                            var type = document.getElementById("appointmentType").value;
+                            var fieldset = document.getElementById("appointmentFormFields"); // This targets the <fieldset> wrapper
+                            var referalSection = document.getElementById("referalDoctorSection");
+                            //var modeSection = document.getElementById("modeSection");
 
-                                if (type === "") {
-                                    // Disable everything if no type selected
-                                    if(fieldset) fieldset.disabled = true;
+                            if (type === "") {
+                                // Disable everything if no type selected
+                                if (fieldset) fieldset.disabled = true;
+                            } else {
+                                // Enable form
+                                if (fieldset) fieldset.disabled = false;
+
+                                if (type === "only_hcp") {
+                                    // Hide Referral & Mode sections for Only HCP
+                                    if (referalSection) referalSection.style.display = "none";
+                                    //if(modeSection) modeSection.style.display = "none";
+                                    // Clear values to avoid validation errors
+                                    document.getElementById("referalDoctor").value = "";
                                 } else {
-                                    // Enable form
-                                    if(fieldset) fieldset.disabled = false;
-
-                                    if (type === "only_hcp") {
-                                        // Hide Referral & Mode sections for Only HCP
-                                        if(referalSection) referalSection.style.display = "none";
-                                        //if(modeSection) modeSection.style.display = "none";
-                                        // Clear values to avoid validation errors
-                                        document.getElementById("referalDoctor").value = "";
-                                    } else {
-                                        // Show them for CC & HCP
-                                        if(referalSection) referalSection.style.display = "block";
-                                        //if(modeSection) modeSection.style.display = "block";
-                                    }
+                                    // Show them for CC & HCP
+                                    if (referalSection) referalSection.style.display = "block";
+                                    //if(modeSection) modeSection.style.display = "block";
                                 }
                             }
-                            function clearErrorAppointment() {
+                        }
+                        function clearErrorAppointment() {
                             // 1. Get the new Appointment Type
                             var type = document.getElementById("appointmentType").value;
                             var patientId = document.getElementById("patientId").value;
@@ -1631,7 +1654,7 @@
                                 document.getElementById("appReason_err").innerHTML = "Please fill the compliant section";
                                 document.getElementById("appReason").focus();
                                 return false;
-                            
+
                             } else {
                                 document.getElementById("appReason_err").innerHTML = "";
                             }
@@ -2263,714 +2286,714 @@
 
             <?php
 
-        
+
         } else if ($method == "chiefDoctors") {
             ?>
-                                        <section>
-                                            <div class="card rounded">
-                                                <div class="d-sm-flex justify-content-between p-3">
-                                                    <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
-                                                        Chief Doctors
-                                                    </p>
-                                                    <div class="input-group pt-2 pt-sm-0" style="width:250px;">
-                                                        <span class="input-group-text" id="searchIcon">
-                                                            <i class="bi bi-search"></i>
-                                                        </span>
-                                                        <input type="text" id="searchInputChiefDoctor" class="form-control" placeholder="Search by name"
-                                                            aria-describedby="searchIcon">
-                                                        <button class="btn btn-outline-secondary" type="button" id="clearSearchChiefDoctor">
-                                                            <i class="bi bi-x"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                <section>
+                                    <div class="card rounded">
+                                        <div class="d-sm-flex justify-content-between p-3">
+                                            <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
+                                                Chief Doctors
+                                            </p>
+                                            <div class="input-group pt-2 pt-sm-0" style="width:250px;">
+                                                <span class="input-group-text" id="searchIcon">
+                                                    <i class="bi bi-search"></i>
+                                                </span>
+                                                <input type="text" id="searchInputChiefDoctor" class="form-control" placeholder="Search by name"
+                                                    aria-describedby="searchIcon">
+                                                <button class="btn btn-outline-secondary" type="button" id="clearSearchChiefDoctor">
+                                                    <i class="bi bi-x"></i>
+                                                </button>
                                             </div>
+                                        </div>
+                                    </div>
 
                 <?php if (isset($ccDetails[0]['id'])) { ?>
 
-                                                <div class="container">
-                                                    <div class="row justify-content-center" id="doctorContainer">
-                                                    </div>
+                                        <div class="container">
+                                            <div class="row justify-content-center" id="doctorContainer">
+                                            </div>
 
-                                                    <div class="pagination justify-content-center mt-3" id="paginationContainer">
-                                                    </div>
-                                                </div>
+                                            <div class="pagination justify-content-center mt-3" id="paginationContainer">
+                                            </div>
+                                        </div>
                 <?php } else { ?>
-                                                <h5 class="card text-center p-3"><b>No Records Found.</b> </h5>
+                                        <h5 class="card text-center p-3"><b>No Records Found.</b> </h5>
                 <?php } ?>
-                                        </section>
+                                </section>
 
-                                        <script>
-                                            const itemsPerPage = 6;
-                                            const ccDetails = <?php echo json_encode($ccDetails); ?>;
-                                            let filteredDetails = ccDetails;
-                                            const initialPage = parseInt(localStorage.getItem('currentPage')) || 1;
+                                <script>
+                                    const itemsPerPage = 6;
+                                    const ccDetails = <?php echo json_encode($ccDetails); ?>;
+                                    let filteredDetails = ccDetails;
+                                    const initialPage = parseInt(localStorage.getItem('currentPage')) || 1;
 
-                                            function displayPage(page) {
-                                                localStorage.setItem('currentPage', page);
-                                                const start = (page - 1) * itemsPerPage;
-                                                const end = start + itemsPerPage;
-                                                const itemsToShow = filteredDetails.slice(start, end);
+                                    function displayPage(page) {
+                                        localStorage.setItem('currentPage', page);
+                                        const start = (page - 1) * itemsPerPage;
+                                        const end = start + itemsPerPage;
+                                        const itemsToShow = filteredDetails.slice(start, end);
 
-                                                const doctorContainer = document.getElementById('doctorContainer');
-                                                doctorContainer.innerHTML = '';
+                                        const doctorContainer = document.getElementById('doctorContainer');
+                                        doctorContainer.innerHTML = '';
 
-                                                if (itemsToShow.length === 0) {
-                                                    const noMatchesDiv = document.createElement('div');
-                                                    noMatchesDiv.className = 'col-12 text-center';
-                                                    noMatchesDiv.innerHTML = '<p>No matches found.</p>';
-                                                    doctorContainer.appendChild(noMatchesDiv);
-                                                } else {
-                                                    itemsToShow.forEach(value => {
-                                                        const doctorItem = document.createElement('div');
-                                                        doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
-                                                        doctorItem.innerHTML =
-                                                            '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
-                                                            '<img src="' + (value.ccPhoto ? '<?php echo base_url(); ?>uploads/' + value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') +
-                                                            'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
-                                                            'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
-                                                            '<div>' +
-                                                            '<p class=\'card-title\'><b>' + value.doctorName + '</b><br>' + value.ccId + '</p>' +
-                                                            '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
-                                                            '<a href=\'<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/' + value.id + '\' ' +
-                                                            'class=\'btn btn-secondary\'>Full Details</a>' +
-                                                            '</div>' +
-                                                            '</div>';
-                                                        doctorContainer.appendChild(doctorItem);
-                                                    });
-                                                }
-
-                                                generatePagination(filteredDetails.length, page);
-                                            }
-
-                                            function generatePagination(totalItems, currentPage) {
-                                                const totalPages = Math.ceil(totalItems / itemsPerPage);
-                                                const paginationContainer = document.getElementById('paginationContainer');
-                                                paginationContainer.innerHTML = '';
-
-                                                const ul = document.createElement('ul');
-                                                ul.className = 'pagination';
-
-                                                const prevLi = document.createElement('li');
-                                                prevLi.innerHTML =
-                                                    '<a href=\'#\'>' +
-                                                    '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === 1 ? 'disabled' : '') + '>&lt;</button>' +
-                                                    '</a>';
-                                                prevLi.onclick = () => {
-                                                    if (currentPage > 1) displayPage(currentPage - 1);
-                                                };
-                                                ul.appendChild(prevLi);
-
-                                                for (let i = 1; i <= totalPages; i++) {
-                                                    const li = document.createElement('li');
-                                                    li.innerHTML =
-                                                        '<a href=\'#\'>' +
-                                                        '<button type=\'button\' class=\'btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '\'>' + i + '</button>' +
-                                                        '</a>';
-                                                    li.onclick = () => displayPage(i);
-                                                    ul.appendChild(li);
-                                                }
-
-                                                const nextLi = document.createElement('li');
-                                                nextLi.innerHTML =
-                                                    '<a href=\'#\'>' +
-                                                    '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === totalPages ? 'disabled' : '') + '>&gt;</button>' +
-                                                    '</a>';
-                                                nextLi.onclick = () => {
-                                                    if (currentPage < totalPages) displayPage(currentPage + 1);
-                                                };
-                                                ul.appendChild(nextLi);
-
-                                                paginationContainer.appendChild(ul);
-                                            }
-
-                                            document.getElementById('searchInputChiefDoctor').addEventListener('keyup', function () {
-                                                const searchQuery = this.value.toLowerCase();
-                                                filteredDetails = ccDetails.filter(item => item.doctorName.toLowerCase().includes(searchQuery));
-                                                displayPage(1);
+                                        if (itemsToShow.length === 0) {
+                                            const noMatchesDiv = document.createElement('div');
+                                            noMatchesDiv.className = 'col-12 text-center';
+                                            noMatchesDiv.innerHTML = '<p>No matches found.</p>';
+                                            doctorContainer.appendChild(noMatchesDiv);
+                                        } else {
+                                            itemsToShow.forEach(value => {
+                                                const doctorItem = document.createElement('div');
+                                                doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
+                                                doctorItem.innerHTML =
+                                                    '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
+                                                    '<img src="' + (value.ccPhoto ? '<?php echo base_url(); ?>uploads/' + value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') +
+                                                    'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
+                                                    'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
+                                                    '<div>' +
+                                                    '<p class=\'card-title\'><b>' + value.doctorName + '</b><br>' + value.ccId + '</p>' +
+                                                    '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
+                                                    '<a href=\'<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/' + value.id + '\' ' +
+                                                    'class=\'btn btn-secondary\'>Full Details</a>' +
+                                                    '</div>' +
+                                                    '</div>';
+                                                doctorContainer.appendChild(doctorItem);
                                             });
+                                        }
 
-                                            document.getElementById('clearSearchChiefDoctor').addEventListener('click', function () {
-                                                document.getElementById('searchInputChiefDoctor').value = '';
-                                                filteredDetails = ccDetails;
-                                                displayPage(1);
-                                            });
+                                        generatePagination(filteredDetails.length, page);
+                                    }
 
-                                            displayPage(initialPage);
-                                        </script>
+                                    function generatePagination(totalItems, currentPage) {
+                                        const totalPages = Math.ceil(totalItems / itemsPerPage);
+                                        const paginationContainer = document.getElementById('paginationContainer');
+                                        paginationContainer.innerHTML = '';
+
+                                        const ul = document.createElement('ul');
+                                        ul.className = 'pagination';
+
+                                        const prevLi = document.createElement('li');
+                                        prevLi.innerHTML =
+                                            '<a href=\'#\'>' +
+                                            '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === 1 ? 'disabled' : '') + '>&lt;</button>' +
+                                            '</a>';
+                                        prevLi.onclick = () => {
+                                            if (currentPage > 1) displayPage(currentPage - 1);
+                                        };
+                                        ul.appendChild(prevLi);
+
+                                        for (let i = 1; i <= totalPages; i++) {
+                                            const li = document.createElement('li');
+                                            li.innerHTML =
+                                                '<a href=\'#\'>' +
+                                                '<button type=\'button\' class=\'btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '\'>' + i + '</button>' +
+                                                '</a>';
+                                            li.onclick = () => displayPage(i);
+                                            ul.appendChild(li);
+                                        }
+
+                                        const nextLi = document.createElement('li');
+                                        nextLi.innerHTML =
+                                            '<a href=\'#\'>' +
+                                            '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === totalPages ? 'disabled' : '') + '>&gt;</button>' +
+                                            '</a>';
+                                        nextLi.onclick = () => {
+                                            if (currentPage < totalPages) displayPage(currentPage + 1);
+                                        };
+                                        ul.appendChild(nextLi);
+
+                                        paginationContainer.appendChild(ul);
+                                    }
+
+                                    document.getElementById('searchInputChiefDoctor').addEventListener('keyup', function () {
+                                        const searchQuery = this.value.toLowerCase();
+                                        filteredDetails = ccDetails.filter(item => item.doctorName.toLowerCase().includes(searchQuery));
+                                        displayPage(1);
+                                    });
+
+                                    document.getElementById('clearSearchChiefDoctor').addEventListener('click', function () {
+                                        document.getElementById('searchInputChiefDoctor').value = '';
+                                        filteredDetails = ccDetails;
+                                        displayPage(1);
+                                    });
+
+                                    displayPage(initialPage);
+                                </script>
 
 
             <?php
         } else if ($method == "chiefDoctorProfile") {
             ?>
-                                            <section>
-                                                <div class="card rounded">
-                                                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                        <p style="font-size: 24px; font-weight: 500">
-                                                            Chief Doctor Profile </p>
-                                                        <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
-                                                                class="bi bi-arrow-left"></i> Back</button>
-                                                    </div>
+                                    <section>
+                                        <div class="card rounded">
+                                            <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                <p style="font-size: 24px; font-weight: 500">
+                                                    Chief Doctor Profile </p>
+                                                <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
+                                                        class="bi bi-arrow-left"></i> Back</button>
+                                            </div>
 
-                                                    <div class="card-body p-3 p-sm-4">
+                                            <div class="card-body p-3 p-sm-4">
 
-                                                        <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                                <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php
                                 foreach ($ccDetails as $key => $value) {
                                     ?>
                                 <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                                                    <img src="<?php echo base_url('uploads/' . $value['ccPhoto']); ?>" alt="Profile Photo"
-                                                                        width="140" height="140" class="rounded-circle"
-                                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
+                                                            <img src="<?php echo base_url('uploads/' . $value['ccPhoto']); ?>" alt="Profile Photo"
+                                                                width="140" height="140" class="rounded-circle"
+                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
-                                                                    <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                                        height="140" class="rounded-circle my-auto">
+                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                                height="140" class="rounded-circle my-auto">
                                 <?php } ?>
-                                                                <div class="ps-sm-5">
-                                                                    <p style="font-size:20px;font-weight:500;">Dr.
+                                                        <div class="ps-sm-5">
+                                                            <p style="font-size:20px;font-weight:500;">Dr.
                                         <?php echo $value['doctorName']; ?>
-                                                                    </p>
-                                                                    <p style="font-size:16px;font-weight:400;color:#00ad8e;">Diabetologist</p>
-                                                                    <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
-                                                                            style="font-size:16px;font-weight:400;"
-                                                                            class="text-decoration-none text-dark fs-6">+91
+                                                            </p>
+                                                            <p style="font-size:16px;font-weight:400;color:#00ad8e;">Diabetologist</p>
+                                                            <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
+                                                                    style="font-size:16px;font-weight:400;"
+                                                                    class="text-decoration-none text-dark fs-6">+91
                                             <?php echo $value['doctorMobile']; ?>
-                                                                        </a> | <a href="mailto:<?php echo $value['doctorMail']; ?>"
-                                                                            style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                                                </a> | <a href="mailto:<?php echo $value['doctorMail']; ?>"
+                                                                    style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['doctorMail']; ?>
-                                                                        </a></p>
-                                                                </div>
-                                                            </div>
-
-                                                            <h5 class="fw-bolder pb-3">Profile Details:</h5>
-
-                                                            <div class="d-md-flex pb-1">
-                                                                <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
-                                                                <p class="col-md-9 ps-2">
-                                    <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "-"; ?>
-                                                                </p>
-                                                            </div>
-
-                                                            <div class="d-md-flex pb-1">
-                                                                <p class="text-secondary col-md-3 mb-1">Qualification : </p>
-                                                                <p class="col-md-9 ps-2">
-                                    <?php echo $value['qualification'] ? $value['qualification'] : "Not provided"; ?>
-                                                                </p>
-                                                            </div>
-
-                                                            <div class="d-md-flex pb-1">
-                                                                <p class="text-secondary col-md-3 mb-1">Registration detail : </p>
-                                                                <p class="col-md-9 ps-2">
-                                    <?php echo $value['regDetails'] ? $value['regDetails'] : "Not provided"; ?>
-                                                                </p>
-                                                            </div>
-
-                                                            <div class="d-md-flex pb-1">
-                                                                <p class="text-secondary col-md-3 mb-1">Membership : </p>
-                                                                <p class="col-md-9 ps-2">
-                                    <?php echo $value['membership'] ? $value['membership'] : "Not provided"; ?>
-                                                                </p>
-                                                            </div>
-
-                                                            <div class="d-md-flex pb-1">
-                                                                <p class="text-secondary col-md-3 mb-1">Services : </p>
-                                                                <p class="col-md-9 ps-2">
-                                    <?php echo $value['services'] ? $value['services'] : "Not provided"; ?>
-                                                                </p>
-                                                            </div>
-
-                                                            <div class="d-md-flex pb-1">
-                                                                <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
-                                                                <p class="col-md-9 ps-2">
-                                    <?php echo $value['dateOfBirth'] ? $value['dateOfBirth'] : "Not provided"; ?>
-                                                                </p>
-                                                            </div>
-
-                                                            <div class="d-md-flex pb-1">
-                                                                <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
-                                                                <p class="col-md-9 ps-2">
-                                    <?php echo $value['hospitalName'] ? $value['hospitalName'] : "Not provided"; ?>
-                                                                </p>
-                                                            </div>
-
-                                                            <div class="d-md-flex pb-1">
-                                                                <p class="text-secondary col-md-3 mb-1">Location : </p>
-                                                                <p class="col-md-9 ps-2">
-                                    <?php echo $value['location'] ? $value['location'] : "Not provided"; ?>
-                                                                </p>
-                                                            </div>
-
+                                                                </a></p>
                                                         </div>
-                    <?php } ?>
+                                                    </div>
+
+                                                    <h5 class="fw-bolder pb-3">Profile Details:</h5>
+
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "-"; ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo $value['qualification'] ? $value['qualification'] : "Not provided"; ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Registration detail : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo $value['regDetails'] ? $value['regDetails'] : "Not provided"; ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Membership : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo $value['membership'] ? $value['membership'] : "Not provided"; ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Services : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo $value['services'] ? $value['services'] : "Not provided"; ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo $value['dateOfBirth'] ? $value['dateOfBirth'] : "Not provided"; ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo $value['hospitalName'] ? $value['hospitalName'] : "Not provided"; ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="d-md-flex pb-1">
+                                                        <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                                        <p class="col-md-9 ps-2">
+                                    <?php echo $value['location'] ? $value['location'] : "Not provided"; ?>
+                                                        </p>
+                                                    </div>
+
                                                 </div>
-                                            </section>
+                    <?php } ?>
+                                        </div>
+                                    </section>
 
             <?php
         } else if ($method == "myProfile") {
             ?>
-                                                <section>
-                                                    <div class="card rounded">
-                                                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                            <p style="font-size: 24px; font-weight: 500"> My Profile</p>
-                                                            <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>"
-                                                                class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                                                        </div>
-                                                        <div class="card-body p-3 p-sm-4">
+                                        <section>
+                                            <div class="card rounded">
+                                                <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                    <p style="font-size: 24px; font-weight: 500"> My Profile</p>
+                                                    <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>"
+                                                        class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                                </div>
+                                                <div class="card-body p-3 p-sm-4">
                             <?php
                             foreach ($hcpDetails as $key => $value) {
                                 ?>
-                                                                <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                                        <div class="d-sm-flex justify-content-start mt-2 mb-5">
                                 <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
-                                                                        <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo"
-                                                                            width="140" height="140" class="rounded-circle"
-                                                                            onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
+                                                                <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo"
+                                                                    width="140" height="140" class="rounded-circle"
+                                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
                                 <?php } else { ?>
-                                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt=" Profile Photo" width="140"
-                                                                            height="140" class="rounded-circle">
+                                                                <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt=" Profile Photo" width="140"
+                                                                    height="140" class="rounded-circle">
                                 <?php } ?>
-                                                                    <div class="ps-sm-5">
-                                                                        <p style="font-size:20px;font-weight:500;">Dr.
+                                                            <div class="ps-sm-5">
+                                                                <p style="font-size:20px;font-weight:500;">Dr.
                                         <?php echo $value['hcpName']; ?>
-                                                                        </p>
-                                                                        <p style="font-size:16px;font-weight:400;color:#00ad8e;">
+                                                                </p>
+                                                                <p style="font-size:16px;font-weight:400;color:#00ad8e;">
                                         <?php echo $value['hcpSpecialization']; ?>
-                                                                        </p>
-                                                                        <p><a href="tel:<?php echo $value['hcpMobile']; ?>" style="font-size:16px;font-weight:400;"
-                                                                                class="text-decoration-none text-dark fs-6">+91
+                                                                </p>
+                                                                <p><a href="tel:<?php echo $value['hcpMobile']; ?>" style="font-size:16px;font-weight:400;"
+                                                                        class="text-decoration-none text-dark fs-6">+91
                                             <?php echo $value['hcpMobile']; ?>
-                                                                            </a> | <a href="mailto:<?php echo $value['hcpMail']; ?>"
-                                                                                style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                                                    </a> | <a href="mailto:<?php echo $value['hcpMail']; ?>"
+                                                                        style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
                                             <?php echo $value['hcpMail']; ?>
-                                                                            </a></p>
+                                                                    </a></p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="d-flex justify-content-between mt-2 ">
+                                                            <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details :</p>
+                                                            <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
+                                                                    class="bi bi-pencil-square"></i> Edit</a>
+                                                        </div>
+
+                                                        <div class="d-md-flex pb-1">
+                                                            <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "Not provided"; ?>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="d-md-flex pb-1">
+                                                            <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpQualification'] ? $value['hcpQualification'] : "Not provided"; ?>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="d-md-flex pb-1">
+                                                            <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpDob'] ? $value['hcpDob'] : "Not provided"; ?>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="d-md-flex pb-1">
+                                                            <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpHospitalName'] ? $value['hcpHospitalName'] : "Not provided"; ?>
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="d-md-flex pb-1">
+                                                            <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                                            <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpLocation'] ? $value['hcpLocation'] : "Not provided"; ?>
+                                                            </p>
+                                                        </div>
+
+                        <?php } ?>
+                                                </div>
+                                            </div>
+                                        </section>
+
+            <?php
+        } else if ($method == "editMyProfile") {
+            ?>
+                                            <section>
+                                                <div class="card rounded">
+                                                    <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                        <p style="font-size: 24px; font-weight: 500"> Edit Profile Details</p>
+                                                        <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
+                                                            class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                                    </div>
+                                                    <div class="card-body ps-3 p-sm-4">
+                            <?php
+                            foreach ($hcpDetails as $key => $value) {
+                                ?>
+                                                            <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
+                                                                name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
+                                                                onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="">
+                                                                <div class="position-relative">
+                                                                    <img id="previewImage"
+                                                                        src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
+                                                                            ? base_url('uploads/' . $value['hcpPhoto'])
+                                                                            : base_url('assets/img/BlankProfileCircle.png') ?>"
+                                                                        alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
+                                                                        style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
+                                                                        onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                                                    <input type="file" id="profilePhoto" name="profilePhoto"
+                                                                        class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
+                                                                    <a href="#" class="position-absolute rounded-circle px-2 py-1"
+                                                                        style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
+                                                                        onclick="document.getElementById('profilePhoto').click();"><i
+                                                                            class="bi bi-camera"></i></a>
+                                                                </div>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                        <label class="form-label" for="drName">Full Name</label>
+                                                                        <input type="text" class="form-control" id="drName" name="drName"
+                                                                            value="<?php echo $value['hcpName']; ?>" placeholder="E.g. Suresh Kumar"
+                                                                            style="cursor: no-drop;" disabled readonly>
+                                                                    </div>
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                        <label class="form-label" for="drMobile">Mobile Number</label>
+                                                                        <input type="number" class="form-control" id="drMobile" name="drMobile"
+                                                                            value="<?php echo $value['hcpMobile']; ?>" placeholder="E.g. 9632587410"
+                                                                            style="cursor: no-drop;" disabled readonly>
                                                                     </div>
                                                                 </div>
-
-                                                                <div class="d-flex justify-content-between mt-2 ">
-                                                                    <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details :</p>
-                                                                    <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
-                                                                            class="bi bi-pencil-square"></i> Edit</a>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                        <label class="form-label" for="drEmail">Email Id</label>
+                                                                        <input type="email" class="form-control" id="drEmail" name="drEmail"
+                                                                            value="<?php echo $value['hcpMail']; ?>" placeholder="E.g. example@gmail.com"
+                                                                            style="cursor: no-drop;" disabled readonly>
+                                                                    </div>
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                        <label class="form-label" for="specialization">Specialization</label>
+                                                                        <select class="form-control" id="specialization" name="specialization"
+                                                                            style="cursor: no-drop;" disabled readonly>
+                                                                            <option value="" selected><?php echo $value['hcpSpecialization'] ?></option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
-
-                                                                <div class="d-md-flex pb-1">
-                                                                    <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
-                                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "Not provided"; ?>
-                                                                    </p>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                        <label class="form-label" for="yearOfExp">Years of Experience</label>
+                                                                        <input type="text" class="form-control" id="yearOfExp" name="yearOfExp" maxlength="25"
+                                                                            value="<?php echo $value['hcpExperience']; ?>" placeholder="E.g. 25">
+                                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                    </div>
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                        <label class="form-label" for="qualification">Qualification</label>
+                                                                        <input type="text" class="form-control" id="qualification" name="qualification"
+                                                                            value="<?php echo $value['hcpQualification']; ?>" maxlength="90"
+                                                                            placeholder="E.g. MBBS">
+                                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                    </div>
                                                                 </div>
-
-                                                                <div class="d-md-flex pb-1">
-                                                                    <p class="text-secondary col-md-3 mb-1">Qualification : </p>
-                                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpQualification'] ? $value['hcpQualification'] : "Not provided"; ?>
-                                                                    </p>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                        <label class="form-label" for="dob">Date of Birth</label>
+                                                                        <input type="date" class="form-control" id="dob" name="dob"
+                                                                            value="<?php echo $value['hcpDob']; ?>">
+                                                                        <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
+                                                                    </div>
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                        <label class="form-label" for="hospitalName">Hospital / Clinic Name</label>
+                                                                        <input type="text" class="form-control" id="hospitalName" name="hospitalName"
+                                                                            maxlength="90" value="<?php echo $value['hcpHospitalName']; ?>"
+                                                                            placeholder="E.g. MMCH">
+                                                                        <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
+                                                                    </div>
                                                                 </div>
-
-                                                                <div class="d-md-flex pb-1">
-                                                                    <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
-                                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpDob'] ? $value['hcpDob'] : "Not provided"; ?>
-                                                                    </p>
+                                                                <div class="d-md-flex justify-content-between py-3">
+                                                                    <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                        <label class="form-label" for="location">Location</label>
+                                                                        <input type="text" class="form-control" id="location" name="location" maxlength="90"
+                                                                            value="<?php echo $value['hcpLocation']; ?>" placeholder="E.g. Erode">
+                                                                        <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
+                                                                    </div>
+                                                                    <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                        <label class="form-label">Password</label><br>
+                                                                        <a href="<?php echo base_url('Healthcareprovider/changePassword'); ?>"
+                                                                            class="btn text-light" style="background-color: #00ad8e;">
+                                                                            Change Password</a>
+                                                                    </div>
                                                                 </div>
+                                                                <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
+                                                                <button type="submit" class="btn float-end mt-3"
+                                                                    style="color: white;background-color: #00ad8e;">Update</button>
+                                                            </form>
+                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </section>
 
-                                                                <div class="d-md-flex pb-1">
-                                                                    <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
-                                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpHospitalName'] ? $value['hcpHospitalName'] : "Not provided"; ?>
-                                                                    </p>
-                                                                </div>
+                                            <script>
+                                                function clearErrorDetails() {
+                                                    var doctorName = document.getElementById("drName").value;
+                                                    var doctorMobile = document.getElementById("drMobile").value;
+                                                    var doctorEmail = document.getElementById("drEmail").value;
+                                                    // var doctorpassword = document.getElementById("drPassword").value;
+                                                    // var photo = document.getElementById("profilePhoto").value;
 
-                                                                <div class="d-md-flex pb-1">
-                                                                    <p class="text-secondary col-md-3 mb-1">Location : </p>
-                                                                    <p class="col-md-9 ps-2">
-                                    <?php echo $value['hcpLocation'] ? $value['hcpLocation'] : "Not provided"; ?>
-                                                                    </p>
-                                                                </div>
+                                                    if (doctorName != "") {
+                                                        document.getElementById("drName_err").innerHTML = "";
+                                                    }
+                                                    if (doctorMobile != "") {
+                                                        document.getElementById("drMobile_err").innerHTML = "";
+                                                    }
+                                                    if (doctorEmail != "") {
+                                                        document.getElementById("drEmail_err").innerHTML = "";
+                                                    }
+                                                    if (doctorpassword != "") {
+                                                        document.getElementById("drPassword_err").innerHTML = "";
+                                                    }
+                                                    // if (photo != "") {
+                                                    //     document.getElementById("profilePhoto_err").innerHTML = "";   // }
+                                                }
+                                            </script>
 
+                                            <script>
+                                                function validateDetails() {
+                                                    var doctorNmae = document.getElementById("drName").value;
+                                                    var doctorMobile = document.getElementById("drMobile").value;
+                                                    var doctorEmail = document.getElementById("drEmail").value;
+                                                    // var doctorPassword = document.getElementById("drPassword").value;
+                                                    // var photo = document.getElementById("profilePhoto").value;
+
+                                                    if (doctorNmae == "") {
+                                                        document.getElementById("drName_err").innerHTML = "A name can't be blank.";
+                                                        document.getElementById("drName").focus();
+                                                        return false;
+                                                    } else {
+                                                        document.getElementById("drName_err").innerHTML = "";
+                                                    }
+                                                    if (doctorMobile == "") {
+                                                        document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
+                                                        document.getElementById("drMobile").focus();
+                                                        return false;
+                                                    } else {
+                                                        document.getElementById("drMobile_err").innerHTML = "";
+                                                    }
+                                                    if (doctorEmail == "") {
+                                                        document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
+                                                        document.getElementById("drEmail").focus();
+                                                        return false;
+                                                    } else {
+                                                        document.getElementById("drEmail_err").innerHTML = "";
+                                                    }
+                                                    // if (doctorPassword == "") {
+                                                    //     document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
+                                                    //     document.getElementById("drPassword").focus();
+                                                    //     return false;
+                                                    // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
+                                                    //     document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
+                                                    //     document.getElementById("drPassword").focus();
+                                                    //     return false;
+                                                    // } else {
+                                                    //     document.getElementById("drPassword_err").innerHTML = "";
+                                                    // }
+                                                    // // if (photo == "") {
+                                                    //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
+                                                    //     document.getElementById("profilePhoto").focus();
+                                                    //     return false;                 // } else {
+                                                    //     document.getElementById("profilePhoto_err").innerHTML = "";
+                                                    // }
+                                                }
+                                            </script>
+
+            <?php
+        } else if ($method == "passwordChange") {
+            ?>
+                                                <section>
+                                                    <div class="card rounded m-md-2">
+                                                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                                            <p style="font-size: 24px; font-weight: 500"> Change Password</p>
+                                                            <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
+                                                                class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
+                                                        </div>
+                                                        <div class="card-body">
+                            <?php
+                            foreach ($hcpDetails as $key => $value) {
+                                ?>
+                                                                <form action="<?php echo base_url() . "Healthcareprovider/saveNewPassword" ?>" name="PasswordForm"
+                                                                    method="POST" class="px-md-3" onsubmit="return validateNewPassword()"
+                                                                    oninput="validateNewPassword()">
+                                                                    <input type="hidden" name="hcpDbId" id="hcpDbId" value="<?php echo $value['id']; ?>">
+                                                                    <div class="d-md-flex justify-content-between pb-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drName">Full Name</label>
+                                                                            <input type="text" class="form-control" id="drName" name="drName"
+                                                                                style="cursor: no-drop;" value="<?php echo $value['hcpName']; ?>"
+                                                                                placeholder="Suresh Kumar" disabled readonly>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label class="form-label pb-2" for="drMobile">Mobile Number </label>
+                                                                            <input type="text" class="form-control" id="drMobile" name="drMobile"
+                                                                                style="cursor: no-drop;" value="<?php echo $value['hcpMobile']; ?>"
+                                                                                placeholder="9632587410" disabled readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-md-flex justify-content-between pt-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drEmail">Email Id</label>
+                                                                            <div class="">
+                                                                                <input type="email" class="form-control" id="drEmail" name="drEmail"
+                                                                                    style="cursor: no-drop;" value="<?php echo $value['hcpMail']; ?>"
+                                                                                    placeholder="example@gmail.com" disabled readonly>
+                                                                            </div>
+                                                                            <p type="button" class="float-end mt-2 m-0 p-0" style="color: #00ad8e;"
+                                                                                id="sendEmailOtpBtn" onclick="sendEmailOtp()"
+                                                                                onmouseover="this.style.textDecoration='underline'"
+                                                                                onmouseout="this.style.textDecoration='none'">Send
+                                                                                OTP</p>
+                                                                            <small id="emailOtpStatus" class="text-success"></small>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label for="emailOtp" class="form-label pb-2">Enter OTP <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <input type="text" id="emailOtp" maxlength="6" class="form-control"
+                                                                                placeholder="Enter OTP" disabled>
+                                                                            <small id="emailOtpError" class="text-danger"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-md-flex justify-content-between py-3">
+                                                                        <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
+                                                                            <label class="form-label pb-2" for="drNewPassword">New Password <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <div style="position: relative;">
+                                                                                <input type="password" class="form-control" id="drNewPassword" maxlength="20"
+                                                                                    name="drNewPassword" placeholder="Enter New Password">
+                                                                                <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drNewPassword', this)"
+                                                                                    style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
+                                                                            </div>
+                                                                            <small id="passwordError" class="text-danger"></small>
+                                                                        </div>
+                                                                        <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
+                                                                            <label class="form-label pb-2" for="drCnfmPassword">Confirm Password <span
+                                                                                    class="text-danger">*</span></label>
+                                                                            <div style="position: relative;">
+                                                                                <input type="password" class="form-control" id="drCnfmPassword" maxlength="20"
+                                                                                    name="drCnfmPassword" placeholder="Re-Enter New Password">
+                                                                                <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drCnfmPassword', this)"
+                                                                                    style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
+                                                                            </div>
+                                                                            <small id="confirmPasswordError" class="text-danger"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="btn float-end mt-3"
+                                                                        style="color: white;background-color: #00ad8e;">Save</button>
+                                                                </form>
                         <?php } ?>
                                                         </div>
                                                     </div>
                                                 </section>
 
-            <?php
-        } else if ($method == "editMyProfile") {
-            ?>
-                                                    <section>
-                                                        <div class="card rounded">
-                                                            <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                <p style="font-size: 24px; font-weight: 500"> Edit Profile Details</p>
-                                                                <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
-                                                                    class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                                                            </div>
-                                                            <div class="card-body ps-3 p-sm-4">
-                            <?php
-                            foreach ($hcpDetails as $key => $value) {
-                                ?>
-                                                                    <form action="<?php echo base_url() . "Healthcareprovider/updateMyProfile" ?>"
-                                                                        name="profileEditForm" name="profileEditForm" enctype="multipart/form-data" method="POST"
-                                                                        onsubmit="return validateDetails()" oninput="clearErrorDetails()" class="">
-                                                                        <div class="position-relative">
-                                                                            <img id="previewImage"
-                                                                                src="<?= isset($value['hcpPhoto']) && $value['hcpPhoto'] !== "No data"
-                                                                                    ? base_url('uploads/' . $value['hcpPhoto'])
-                                                                                    : base_url('assets/img/BlankProfileCircle.png') ?>"
-                                                                                alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
-                                                                                style="box-shadow: 0px 4px 4px rgba(5, 149, 123, 0.7); outline: 1px solid white;"
-                                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
-                                                                            <input type="file" id="profilePhoto" name="profilePhoto"
-                                                                                class="fieldStyle form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
-                                                                            <a href="#" class="position-absolute rounded-circle px-2 py-1"
-                                                                                style="color: #00ad8e;border: 2px solid #00ad8e;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
-                                                                                onclick="document.getElementById('profilePhoto').click();"><i
-                                                                                    class="bi bi-camera"></i></a>
-                                                                        </div>
-                                                                        <div class="d-md-flex justify-content-between py-3">
-                                                                            <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                                <label class="form-label" for="drName">Full Name</label>
-                                                                                <input type="text" class="form-control" id="drName" name="drName"
-                                                                                    value="<?php echo $value['hcpName']; ?>" placeholder="E.g. Suresh Kumar"
-                                                                                    style="cursor: no-drop;" disabled readonly>
-                                                                            </div>
-                                                                            <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                                <label class="form-label" for="drMobile">Mobile Number</label>
-                                                                                <input type="number" class="form-control" id="drMobile" name="drMobile"
-                                                                                    value="<?php echo $value['hcpMobile']; ?>" placeholder="E.g. 9632587410"
-                                                                                    style="cursor: no-drop;" disabled readonly>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="d-md-flex justify-content-between py-3">
-                                                                            <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                                <label class="form-label" for="drEmail">Email Id</label>
-                                                                                <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                                                    value="<?php echo $value['hcpMail']; ?>" placeholder="E.g. example@gmail.com"
-                                                                                    style="cursor: no-drop;" disabled readonly>
-                                                                            </div>
-                                                                            <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                                <label class="form-label" for="specialization">Specialization</label>
-                                                                                <select class="form-control" id="specialization" name="specialization"
-                                                                                    style="cursor: no-drop;" disabled readonly>
-                                                                                    <option value="" selected><?php echo $value['hcpSpecialization'] ?></option>
-                                                                                </select>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="d-md-flex justify-content-between py-3">
-                                                                            <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                                <label class="form-label" for="yearOfExp">Years of Experience</label>
-                                                                                <input type="text" class="form-control" id="yearOfExp" name="yearOfExp" maxlength="25"
-                                                                                    value="<?php echo $value['hcpExperience']; ?>" placeholder="E.g. 25">
-                                                                                <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                            </div>
-                                                                            <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                                <label class="form-label" for="qualification">Qualification</label>
-                                                                                <input type="text" class="form-control" id="qualification" name="qualification"
-                                                                                    value="<?php echo $value['hcpQualification']; ?>" maxlength="90"
-                                                                                    placeholder="E.g. MBBS">
-                                                                                <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="d-md-flex justify-content-between py-3">
-                                                                            <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                                <label class="form-label" for="dob">Date of Birth</label>
-                                                                                <input type="date" class="form-control" id="dob" name="dob"
-                                                                                    value="<?php echo $value['hcpDob']; ?>">
-                                                                                <!-- <div id="drName_err" class="text-danger pt-1"></div> -->
-                                                                            </div>
-                                                                            <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                                <label class="form-label" for="hospitalName">Hospital / Clinic Name</label>
-                                                                                <input type="text" class="form-control" id="hospitalName" name="hospitalName"
-                                                                                    maxlength="90" value="<?php echo $value['hcpHospitalName']; ?>"
-                                                                                    placeholder="E.g. MMCH">
-                                                                                <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="d-md-flex justify-content-between py-3">
-                                                                            <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                                <label class="form-label" for="location">Location</label>
-                                                                                <input type="text" class="form-control" id="location" name="location" maxlength="90"
-                                                                                    value="<?php echo $value['hcpLocation']; ?>" placeholder="E.g. Erode">
-                                                                                <!-- <div id="specialization_err" class="text-danger pt-1"></div> -->
-                                                                            </div>
-                                                                            <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                                <label class="form-label">Password</label><br>
-                                                                                <a href="<?php echo base_url('Healthcareprovider/changePassword'); ?>"
-                                                                                    class="btn text-light" style="background-color: #00ad8e;">
-                                                                                    Change Password</a>
-                                                                            </div>
-                                                                        </div>
-                                                                        <button type="reset" class="btn btn-secondary float-start mt-3">Reset</button>
-                                                                        <button type="submit" class="btn float-end mt-3"
-                                                                            style="color: white;background-color: #00ad8e;">Update</button>
-                                                                    </form>
-                        <?php } ?>
-                                                            </div>
-                                                        </div>
-                                                    </section>
+                                                <script>
+                                                    function togglePasswordVisibility(id, icon) {
+                                                        const passwordField = document.getElementById(id);
 
-                                                    <script>
-                                                        function clearErrorDetails() {
-                                                            var doctorName = document.getElementById("drName").value;
-                                                            var doctorMobile = document.getElementById("drMobile").value;
-                                                            var doctorEmail = document.getElementById("drEmail").value;
-                                                            // var doctorpassword = document.getElementById("drPassword").value;
-                                                            // var photo = document.getElementById("profilePhoto").value;
-
-                                                            if (doctorName != "") {
-                                                                document.getElementById("drName_err").innerHTML = "";
-                                                            }
-                                                            if (doctorMobile != "") {
-                                                                document.getElementById("drMobile_err").innerHTML = "";
-                                                            }
-                                                            if (doctorEmail != "") {
-                                                                document.getElementById("drEmail_err").innerHTML = "";
-                                                            }
-                                                            if (doctorpassword != "") {
-                                                                document.getElementById("drPassword_err").innerHTML = "";
-                                                            }
-                                                            // if (photo != "") {
-                                                            //     document.getElementById("profilePhoto_err").innerHTML = "";   // }
+                                                        if (passwordField.type === "password") {
+                                                            passwordField.type = "text";
+                                                            icon.classList.remove('bi-eye-fill');
+                                                            icon.classList.add('bi-eye-slash-fill');
+                                                        } else {
+                                                            passwordField.type = "password";
+                                                            icon.classList.remove('bi-eye-slash-fill');
+                                                            icon.classList.add('bi-eye-fill');
                                                         }
-                                                    </script>
+                                                    }
+                                                </script>
 
-                                                    <script>
-                                                        function validateDetails() {
-                                                            var doctorNmae = document.getElementById("drName").value;
-                                                            var doctorMobile = document.getElementById("drMobile").value;
-                                                            var doctorEmail = document.getElementById("drEmail").value;
-                                                            // var doctorPassword = document.getElementById("drPassword").value;
-                                                            // var photo = document.getElementById("profilePhoto").value;
+                                                <script>
+                                                    function sendEmailOtp() {
+                                                        const email = document.getElementById('drEmail').value.trim();
 
-                                                            if (doctorNmae == "") {
-                                                                document.getElementById("drName_err").innerHTML = "A name can't be blank.";
-                                                                document.getElementById("drName").focus();
-                                                                return false;
-                                                            } else {
-                                                                document.getElementById("drName_err").innerHTML = "";
-                                                            }
-                                                            if (doctorMobile == "") {
-                                                                document.getElementById("drMobile_err").innerHTML = "A mobile number can't be blank.";
-                                                                document.getElementById("drMobile").focus();
-                                                                return false;
-                                                            } else {
-                                                                document.getElementById("drMobile_err").innerHTML = "";
-                                                            }
-                                                            if (doctorEmail == "") {
-                                                                document.getElementById("drEmail_err").innerHTML = "A email id can't be blank.";
-                                                                document.getElementById("drEmail").focus();
-                                                                return false;
-                                                            } else {
-                                                                document.getElementById("drEmail_err").innerHTML = "";
-                                                            }
-                                                            // if (doctorPassword == "") {
-                                                            //     document.getElementById("drPassword_err").innerHTML = "A password can't be blank.";
-                                                            //     document.getElementById("drPassword").focus();
-                                                            //     return false;
-                                                            // } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(doctorPassword)) {
-                                                            //     document.getElementById("drPassword_err").innerHTML = "Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, 1 number and a minimum of 8 characters.";
-                                                            //     document.getElementById("drPassword").focus();
-                                                            //     return false;
-                                                            // } else {
-                                                            //     document.getElementById("drPassword_err").innerHTML = "";
-                                                            // }
-                                                            // // if (photo == "") {
-                                                            //     document.getElementById("profilePhoto_err").innerHTML = "Photo must be uploaded.";
-                                                            //     document.getElementById("profilePhoto").focus();
-                                                            //     return false;                 // } else {
-                                                            //     document.getElementById("profilePhoto_err").innerHTML = "";
-                                                            // }
-                                                        }
-                                                    </script>
-
-            <?php
-        } else if ($method == "passwordChange") {
-            ?>
-                                                        <section>
-                                                            <div class="card rounded m-md-2">
-                                                                <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                                    <p style="font-size: 24px; font-weight: 500"> Change Password</p>
-                                                                    <a href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
-                                                                        class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
-                                                                </div>
-                                                                <div class="card-body">
-                            <?php
-                            foreach ($hcpDetails as $key => $value) {
-                                ?>
-                                                                        <form action="<?php echo base_url() . "Healthcareprovider/saveNewPassword" ?>" name="PasswordForm"
-                                                                            method="POST" class="px-md-3" onsubmit="return validateNewPassword()"
-                                                                            oninput="validateNewPassword()">
-                                                                            <input type="hidden" name="hcpDbId" id="hcpDbId" value="<?php echo $value['id']; ?>">
-                                                                            <div class="d-md-flex justify-content-between pb-3">
-                                                                                <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                                    <label class="form-label pb-2" for="drName">Full Name</label>
-                                                                                    <input type="text" class="form-control" id="drName" name="drName"
-                                                                                        style="cursor: no-drop;" value="<?php echo $value['hcpName']; ?>"
-                                                                                        placeholder="Suresh Kumar" disabled readonly>
-                                                                                </div>
-                                                                                <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                                    <label class="form-label pb-2" for="drMobile">Mobile Number </label>
-                                                                                    <input type="text" class="form-control" id="drMobile" name="drMobile"
-                                                                                        style="cursor: no-drop;" value="<?php echo $value['hcpMobile']; ?>"
-                                                                                        placeholder="9632587410" disabled readonly>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="d-md-flex justify-content-between pt-3">
-                                                                                <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                                    <label class="form-label pb-2" for="drEmail">Email Id</label>
-                                                                                    <div class="">
-                                                                                        <input type="email" class="form-control" id="drEmail" name="drEmail"
-                                                                                            style="cursor: no-drop;" value="<?php echo $value['hcpMail']; ?>"
-                                                                                            placeholder="example@gmail.com" disabled readonly>
-                                                                                    </div>
-                                                                                    <p type="button" class="float-end mt-2 m-0 p-0" style="color: #00ad8e;"
-                                                                                        id="sendEmailOtpBtn" onclick="sendEmailOtp()"
-                                                                                        onmouseover="this.style.textDecoration='underline'"
-                                                                                        onmouseout="this.style.textDecoration='none'">Send
-                                                                                        OTP</p>
-                                                                                    <small id="emailOtpStatus" class="text-success"></small>
-                                                                                </div>
-                                                                                <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                                    <label for="emailOtp" class="form-label pb-2">Enter OTP <span
-                                                                                            class="text-danger">*</span></label>
-                                                                                    <input type="text" id="emailOtp" maxlength="6" class="form-control"
-                                                                                        placeholder="Enter OTP" disabled>
-                                                                                    <small id="emailOtpError" class="text-danger"></small>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="d-md-flex justify-content-between py-3">
-                                                                                <div class="col-md-6 pe-md-4 pb-3 pb-md-0">
-                                                                                    <label class="form-label pb-2" for="drNewPassword">New Password <span
-                                                                                            class="text-danger">*</span></label>
-                                                                                    <div style="position: relative;">
-                                                                                        <input type="password" class="form-control" id="drNewPassword" maxlength="20"
-                                                                                            name="drNewPassword" placeholder="Enter New Password">
-                                                                                        <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drNewPassword', this)"
-                                                                                            style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
-                                                                                    </div>
-                                                                                    <small id="passwordError" class="text-danger"></small>
-                                                                                </div>
-                                                                                <div class="col-md-6 pe-md-4 pt-3 pt-md-0">
-                                                                                    <label class="form-label pb-2" for="drCnfmPassword">Confirm Password <span
-                                                                                            class="text-danger">*</span></label>
-                                                                                    <div style="position: relative;">
-                                                                                        <input type="password" class="form-control" id="drCnfmPassword" maxlength="20"
-                                                                                            name="drCnfmPassword" placeholder="Re-Enter New Password">
-                                                                                        <i class="bi bi-eye-fill" onclick="togglePasswordVisibility('drCnfmPassword', this)"
-                                                                                            style="position: absolute; right: 20px;top: 50%;transform: translateY(-50%);cursor: pointer;"></i>
-                                                                                    </div>
-                                                                                    <small id="confirmPasswordError" class="text-danger"></small>
-                                                                                </div>
-                                                                            </div>
-                                                                            <button type="submit" class="btn float-end mt-3"
-                                                                                style="color: white;background-color: #00ad8e;">Save</button>
-                                                                        </form>
-                        <?php } ?>
-                                                                </div>
-                                                            </div>
-                                                        </section>
-
-                                                        <script>
-                                                            function togglePasswordVisibility(id, icon) {
-                                                                const passwordField = document.getElementById(id);
-
-                                                                if (passwordField.type === "password") {
-                                                                    passwordField.type = "text";
-                                                                    icon.classList.remove('bi-eye-fill');
-                                                                    icon.classList.add('bi-eye-slash-fill');
+                                                        fetch("<?= base_url('Healthcareprovider/sendEmailOtp') ?>", {
+                                                            method: "POST",
+                                                            headers: {
+                                                                "Content-Type": "application/x-www-form-urlencoded"
+                                                            },
+                                                            body: `email=${encodeURIComponent(email)}`
+                                                        })
+                                                            .then(res => res.json())
+                                                            .then(data => {
+                                                                if (data.status === "success") {
+                                                                    document.getElementById('emailOtp').disabled = false;
+                                                                    document.getElementById('emailOtp').focus();
+                                                                    document.getElementById('emailOtpStatus').textContent = "OTP sent to your email.";
+                                                                    alert("OTP sent to your email.");
                                                                 } else {
-                                                                    passwordField.type = "password";
-                                                                    icon.classList.remove('bi-eye-slash-fill');
-                                                                    icon.classList.add('bi-eye-fill');
-                                                                }
-                                                            }
-                                                        </script>
-
-                                                        <script>
-                                                            function sendEmailOtp() {
-                                                                const email = document.getElementById('drEmail').value.trim();
-
-                                                                fetch("<?= base_url('Healthcareprovider/sendEmailOtp') ?>", {
-                                                                    method: "POST",
-                                                                    headers: {
-                                                                        "Content-Type": "application/x-www-form-urlencoded"
-                                                                    },
-                                                                    body: `email=${encodeURIComponent(email)}`
-                                                                })
-                                                                    .then(res => res.json())
-                                                                    .then(data => {
-                                                                        if (data.status === "success") {
-                                                                            document.getElementById('emailOtp').disabled = false;
-                                                                            document.getElementById('emailOtp').focus();
-                                                                            document.getElementById('emailOtpStatus').textContent = "OTP sent to your email.";
-                                                                            alert("OTP sent to your email.");
-                                                                        } else {
-                                                                            document.getElementById('emailOtpStatus').textContent = "Failed to send OTP.";
-                                                                        }
-                                                                    });
-                                                            }
-
-                                                            document.getElementById('emailOtp').addEventListener('input', () => {
-                                                                const otp = document.getElementById('emailOtp').value.trim();
-
-                                                                if (otp.length === 4) {
-                                                                    fetch("<?= base_url('Healthcareprovider/verifyEmailOtp') ?>", {
-                                                                        method: "POST",
-                                                                        headers: {
-                                                                            "Content-Type": "application/x-www-form-urlencoded"
-                                                                        },
-                                                                        body: `otp=${otp}`
-                                                                    })
-                                                                        .then(res => res.json())
-                                                                        .then(data => {
-                                                                            if (data.status === "success") {
-                                                                                document.getElementById('emailOtpError').textContent = "";
-                                                                                document.getElementById('emailOtpStatus').textContent = "OTP verified successfully!";
-                                                                                document.getElementById('emailOtp').disabled = true;
-                                                                                document.getElementById('emailOtp').dataset.verified = "true";
-                                                                            } else {
-                                                                                document.getElementById('emailOtpError').textContent = "Invalid OTP.";
-                                                                                document.getElementById('emailOtpStatus').textContent = "";
-                                                                                document.getElementById('emailOtp').dataset.verified = "false";
-                                                                            }
-                                                                        })
-                                                                        .catch(err => {
-                                                                            console.error("OTP verification error:", err);
-                                                                            document.getElementById('emailOtpError').textContent = "Server error during OTP verification.";
-                                                                        });
+                                                                    document.getElementById('emailOtpStatus').textContent = "Failed to send OTP.";
                                                                 }
                                                             });
+                                                    }
 
-                                                            function validateNewPassword() {
-                                                                let password = document.getElementById("drNewPassword").value.trim();
-                                                                let confirmPassword = document.getElementById("drCnfmPassword").value.trim();
-                                                                let otpVerified = document.getElementById("emailOtp").dataset.verified === "true";
+                                                    document.getElementById('emailOtp').addEventListener('input', () => {
+                                                        const otp = document.getElementById('emailOtp').value.trim();
 
-                                                                let isValid = true;
+                                                        if (otp.length === 4) {
+                                                            fetch("<?= base_url('Healthcareprovider/verifyEmailOtp') ?>", {
+                                                                method: "POST",
+                                                                headers: {
+                                                                    "Content-Type": "application/x-www-form-urlencoded"
+                                                                },
+                                                                body: `otp=${otp}`
+                                                            })
+                                                                .then(res => res.json())
+                                                                .then(data => {
+                                                                    if (data.status === "success") {
+                                                                        document.getElementById('emailOtpError').textContent = "";
+                                                                        document.getElementById('emailOtpStatus').textContent = "OTP verified successfully!";
+                                                                        document.getElementById('emailOtp').disabled = true;
+                                                                        document.getElementById('emailOtp').dataset.verified = "true";
+                                                                    } else {
+                                                                        document.getElementById('emailOtpError').textContent = "Invalid OTP.";
+                                                                        document.getElementById('emailOtpStatus').textContent = "";
+                                                                        document.getElementById('emailOtp').dataset.verified = "false";
+                                                                    }
+                                                                })
+                                                                .catch(err => {
+                                                                    console.error("OTP verification error:", err);
+                                                                    document.getElementById('emailOtpError').textContent = "Server error during OTP verification.";
+                                                                });
+                                                        }
+                                                    });
 
-                                                                if (password === "") {
-                                                                    document.getElementById("passwordError").textContent = "Please enter a new password.";
-                                                                    isValid = false;
-                                                                } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/.test(password)) {
-                                                                    document.getElementById("passwordError").textContent = "Please enter a valid password (8 to 20 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character).";
-                                                                    isValid = false;
-                                                                } else {
-                                                                    document.getElementById("passwordError").textContent = "";
-                                                                }
+                                                    function validateNewPassword() {
+                                                        let password = document.getElementById("drNewPassword").value.trim();
+                                                        let confirmPassword = document.getElementById("drCnfmPassword").value.trim();
+                                                        let otpVerified = document.getElementById("emailOtp").dataset.verified === "true";
 
-                                                                if (confirmPassword === "") {
-                                                                    document.getElementById("confirmPasswordError").textContent = "Please re-enter the password.";
-                                                                    isValid = false;
-                                                                } else if (confirmPassword !== password) {
-                                                                    document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
-                                                                    isValid = false;
-                                                                } else {
-                                                                    document.getElementById("confirmPasswordError").textContent = "";
-                                                                }
+                                                        let isValid = true;
 
-                                                                if (!otpVerified) {
-                                                                    document.getElementById('emailOtpError').textContent = "Please enter a valid OTP and wait for verification.";
-                                                                    isValid = false;
-                                                                }
+                                                        if (password === "") {
+                                                            document.getElementById("passwordError").textContent = "Please enter a new password.";
+                                                            isValid = false;
+                                                        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/.test(password)) {
+                                                            document.getElementById("passwordError").textContent = "Please enter a valid password (8 to 20 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character).";
+                                                            isValid = false;
+                                                        } else {
+                                                            document.getElementById("passwordError").textContent = "";
+                                                        }
 
-                                                                return isValid;
-                                                            }
-                                                        </script>
+                                                        if (confirmPassword === "") {
+                                                            document.getElementById("confirmPasswordError").textContent = "Please re-enter the password.";
+                                                            isValid = false;
+                                                        } else if (confirmPassword !== password) {
+                                                            document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+                                                            isValid = false;
+                                                        } else {
+                                                            document.getElementById("confirmPasswordError").textContent = "";
+                                                        }
+
+                                                        if (!otpVerified) {
+                                                            document.getElementById('emailOtpError').textContent = "Please enter a valid OTP and wait for verification.";
+                                                            isValid = false;
+                                                        }
+
+                                                        return isValid;
+                                                    }
+                                                </script>
             <?php
         } ?>
 

@@ -370,7 +370,7 @@ class HcpModel extends CI_Model
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto,
-        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp, ad.appointment_type
+        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp, ad.appointmentType
         FROM patient_details AS pd
         LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
         WHERE hcpDbId = $hcpIdDb AND  `dateOfAppoint` = CURDATE()   AND `timeOfAppoint` >= CURTIME() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
@@ -470,44 +470,44 @@ class HcpModel extends CI_Model
     } */
 
     public function insertAppointment()
-{
-    $post = $this->input->post(null, true);
-    
-    $ccId = 'Nil';
-    $ccDbId = 'Nil';
-    $appLink = 'https://meet.google.com/wzo-dprz-zqy';//link for only hcp
-    $modeOfConsultant = 'Nil';
-    if (!empty($post['patientId'])) {
-        list($patientId, $dbId) = explode('|', $post['patientId']);
-    } else {
-        return false; // Or handle error
+    {
+        $post = $this->input->post(null, true);
+
+        $ccId = 'Nil';
+        $ccDbId = 'Nil';
+        $appLink = 'https://meet.google.com/wzo-dprz-zqy';//link for only hcp
+        $modeOfConsultant = 'Nil';
+        if (!empty($post['patientId'])) {
+            list($patientId, $dbId) = explode('|', $post['patientId']);
+        } else {
+            return false; // Or handle error
+        }
+
+
+        if (!empty($post['referalDoctor'])) {//If referal doctor has, insert cc & hcp meet link
+            list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);
+        }
+
+        $insert = array(
+            'patientId' => $patientId,
+            'patientDbId' => $dbId,
+            'referalDoctor' => $ccId,
+            'appointmentLink' => $appLink,
+            'referalDoctorDbId' => $ccDbId,
+            'modeOfConsultant' => $modeOfConsultant,
+            'dateOfAppoint' => $post['appDate'],
+            'partOfDay' => $post['dayTime'],
+            'timeOfAppoint' => $post['appTime'],
+            'appointmentType' => $post['appointmentType'],
+            'patientComplaint' => $post['appReason'],
+            'patientHcp' => $_SESSION['hcpId'],
+            'hcpDbId' => $_SESSION['hcpIdDb'],
+        );
+
+        // 5. Insert
+        $this->db->insert('appointment_details', $insert);
+        return $this->db->insert_id();
     }
-    
-
-    if (!empty($post['referalDoctor'])) {//If referal doctor has, insert cc & hcp meet link
-        list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);
-    }
-
-    $insert = array(
-        'patientId'         => $patientId,
-        'patientDbId'       => $dbId,
-        'referalDoctor'     => $ccId,
-        'appointmentLink'   => $appLink,
-        'referalDoctorDbId' => $ccDbId,
-        'modeOfConsultant'  => $modeOfConsultant,
-        'dateOfAppoint'     => $post['appDate'],
-        'partOfDay'         => $post['dayTime'],
-        'timeOfAppoint'     => $post['appTime'],
-        'appointmentType'  => $post['appointmentType'],
-        'patientComplaint'  => $post['appReason'],
-        'patientHcp'        => $_SESSION['hcpId'],
-        'hcpDbId'           => $_SESSION['hcpIdDb'],
-    );
-
-    // 5. Insert
-    $this->db->insert('appointment_details', $insert);
-    return $this->db->insert_id();
-}
 
     public function getAppointmentReschedule()
     {

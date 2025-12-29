@@ -91,11 +91,11 @@
                     <form action="<?php echo base_url() . "Chiefconsultant/ccLogin" ?>" method="post" name="ccloginform"
                         onsubmit="return validateLogin()">
                         <div class="mb-3">
-                            <label for="ccEmail" class="form-label">Email address <span
+                            <label for="ccEmail" class="form-label">Email Address <span
                                     class="text-danger">*</span></label>
                             <input type="text" name="ccEmail" id="ccEmail" placeholder="example@gmail.com"
                                 oninput="validEmail(this)" class="form-control rounded-pill p-3">
-                            <div id="mail_err" class="text-danger pt-1"></div>
+                            <small id="mail_err" class="text-danger pt-1"></small>
                         </div>
                         <div class="position-relative">
                             <label for="ccPassword" class="form-label">Password <span
@@ -106,7 +106,7 @@
                                 class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
                                 style="cursor: pointer;"></i>
                         </div>
-                        <div id="password_err" class="text-danger pt-1"></div>
+                        <small id="password_err" class="text-danger pt-1"></small>
                         <div class="text-secondary my-3" style="font-size:12px;display:none;" id="passwordmessage">
                             Passwords must contain atleast 1 uppercase, 1 lowercase, 1 special character, <br> 1 number
                             and a minimum of 8 characters.</div>
@@ -207,7 +207,7 @@
             var password = document.getElementById("ccPassword").value;
 
             if (email == "") {
-                document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
+                document.getElementById("mail_err").innerHTML = "Please enter an email address.";
                 return false;
             } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                 document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
@@ -217,7 +217,7 @@
             }
 
             if (password == "") {
-                document.getElementById("password_err").innerHTML = "Password must be filled out.";
+                document.getElementById("password_err").innerHTML = "Please enter a password.";
                 return false;
             } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
                 document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password."

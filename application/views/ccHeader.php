@@ -71,7 +71,7 @@
         <li class="pt-4">
             <a class="" style="font-size: 18px; font-weight: 400;color:white;" id="patients"
                 href="<?php echo base_url() . "Chiefconsultant/patients" ?>">
-                <div><i class="bi bi-person pe-3"></i> <span>Patients</span></div>
+                <div><i class="bi bi-people pe-3"></i> <span>Patients</span></div>
             </a>
         </li>
 
@@ -79,7 +79,7 @@
             <a class="" href="<?php echo base_url() . "Chiefconsultant/appointments" ?>"
                 style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                 <div>
-                    <i class="bi bi-calendar4 pe-3"></i> <span>Appointments</span>
+                    <i class="bi bi-calendar2-check pe-3"></i> <span>Appointments</span>
                     <?php if ($appointmentListCount > 0) { ?>
                         <p class="text-dark float-end">
                             <i class="fas fa-envelope fa-2x"></i>

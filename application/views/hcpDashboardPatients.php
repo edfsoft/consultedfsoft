@@ -824,7 +824,7 @@
                                         </p>
                                     </div>
                                     <div class="d-md-flex">
-                                        <p class="col-sm-6"><span class="text-secondary ">Mail</span> :
+                                        <p class="col-sm-6"><span class="text-secondary ">Email address</span> :
                                         <?php
                                         $mailId = isset($value['mailId']) ? $value['mailId'] : null;
                                         ?>
@@ -870,6 +870,9 @@
                                     <?php echo $value['partnerBlood'] ? $value['partnerBlood'] : "Not provided"; ?>
                                         </p>
                                     </div>
+                                    <p class="mb-2"><span class="text-secondary ">Registration Date </span> :
+                                <?php echo date('d-M-Y', strtotime($value['created_at'])); ?>
+                                    </p>
                         <?php } ?>
                             </div>
                         </div>

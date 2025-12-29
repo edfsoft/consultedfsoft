@@ -77,7 +77,7 @@
         <li class="pt-4">
             <a style="font-size: 18px; font-weight: 400;color:white;" id="patients"
                 href="<?php echo base_url() . "Healthcareprovider/patients" ?>">
-                <div><i class="bi bi-person pe-3"></i> <span>Patients</span></div>
+                <div><i class="bi bi-people pe-3"></i> <span>Patients</span></div>
             </a>
         </li>
 
@@ -85,16 +85,7 @@
             <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                 style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                 <div>
-                    <i class="bi bi-calendar2-check pe-3"></i> <span>CC-Appointments</span>
-                </div>
-            </a>
-        </li>
-
-        <li class="pt-4">
-            <a href="<?php echo base_url() . "Healthcareprovider/patientAppointments" ?>"
-                style="font-size: 18px; font-weight: 400;color:white;" id="patientAppointments">
-                <div>
-                    <i class="bi bi-calendar-check pe-3"></i> <span>Patient Appointments</span>
+                    <i class="bi bi-calendar2-check pe-3"></i> <span>Appointments</span>
                 </div>
             </a>
         </li>

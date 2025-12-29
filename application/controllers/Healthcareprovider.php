@@ -7,9 +7,39 @@ class Healthcareprovider extends CI_Controller
     function __construct()
     {
         parent::__construct();
+
         $this->load->model('HcpModel');
         $this->load->library('session');
         $this->load->library('email');
+        $this->check_session_timeout();
+    }
+
+    private function check_session_timeout()
+    {
+        $session_lifetime = 1800; // 30 minutes
+        $alert_time = 1200; // 10 minutes (for alert)
+        $last_activity = $this->session->userdata('last_activity_time');
+
+        if ($this->session->userdata('hcpIdDb')) {
+            if ($last_activity) {
+                $inactive_time = time() - $last_activity;
+                if ($inactive_time >= $alert_time && $inactive_time < $session_lifetime) {
+                    $this->session->set_flashdata('showErrorMessage', 'You have been inactive for 10 minutes. You will be logged out soon due to inactivity.');
+                }
+                if ($inactive_time >= $session_lifetime) {
+                    $this->session->set_flashdata('errorMessage', 'Session expired due to inactivity for last 30 minutes.');
+                    $this->session->unset_userdata('hcpIdDb');
+                    $this->session->unset_userdata('hcpId');
+                    $this->session->unset_userdata('hcpsName');
+                    $this->session->unset_userdata('hcpsMailId');
+                    $this->session->unset_userdata('hcpsMobileNum');
+                    $this->session->unset_userdata('last_activity_time');
+                    $this->session->sess_regenerate(TRUE);
+                    redirect('Healthcareprovider/');
+                }
+            }
+            $this->session->set_userdata('last_activity_time', time());
+        }
     }
 
     public function index()
@@ -85,7 +115,12 @@ class Healthcareprovider extends CI_Controller
 
     public function updateNewPassword()
     {
-        $profileDetails = $this->HcpModel->changeNewPassword();
+        $result = $this->HcpModel->changeNewPassword();
+        if ($result) {
+            $this->session->set_flashdata('successMessage', 'Password updated successfully');
+        } else {
+            $this->session->set_flashdata('errorMessage', 'Password update failed or no changes made');
+        }
         redirect('Healthcareprovider/');
     }
 
@@ -394,6 +429,7 @@ class Healthcareprovider extends CI_Controller
     public function newAppointment()
     {
         if ($this->HcpModel->insertAppointment()) {
+
             $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
@@ -461,97 +497,6 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function patientAppointments()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $hcpIdDb = $this->session->userdata('hcpIdDb');
-            $this->data['method'] = "patientAppointments";
-            $this->data['appointmentList'] = $this->HcpModel->getPatientAppointments($hcpIdDb);  // Fetch here
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            redirect('Healthcareprovider/');
-        }
-    }
-
-    public function newPatientAppointment()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "newPatientAppointment";
-            $patientList = $this->HcpModel->getPatientList();
-            $this->data['patientsId'] = $patientList['response'];
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            redirect('Healthcareprovider/');
-        }
-    }
-
-    public function bookPatientAppointment()
-    {
-        $appointmentId = $this->HcpModel->insertPatientAppointment();
-
-        if (!$appointmentId) {
-            $this->session->set_flashdata(
-                'showErrorMessage',
-                'Failed to book appointment. Please try again.'
-            );
-            redirect('Healthcareprovider/patientAppointments');
-            return;
-        }
-
-        list(, $patientDbId) = explode('|', $this->input->post('patientId'));
-
-        $this->db->select('firstName, mailId');
-        $this->db->where('id', $patientDbId);
-        $patient = $this->db->get('patient_details')->row_array();
-
-        $this->db->select('appointment_date, appointment_time, appointment_link');
-        $this->db->where('id', $appointmentId);
-        $appointment = $this->db->get('patient_appointments')->row_array();
-
-        $formattedDate = date('d M Y', strtotime($appointment['appointment_date']));
-        $formattedTime = date('h:i A', strtotime($appointment['appointment_time']));
-
-        if ($patient && !empty($patient['mailId'])) {
-
-            $message = "
-            Dear {$patient['firstName']},<br><br>
-
-            Your appointment has been successfully booked.  
-            Please find the details below:<br><br>
-
-            <b>📅 Date:</b> {$formattedDate}<br>
-            <b>⏰ Time:</b> {$formattedTime}<br><br>
-
-            <b>🔗 Join Meeting:</b><br>
-            <a href='{$appointment['appointment_link']}' target='_blank'>
-                {$appointment['appointment_link']}
-            </a><br><br>
-
-            Please join the meeting at the scheduled time.<br><br>
-
-            Regards,<br>
-            <b>EDF Healthcare Team</b>
-        ";
-
-            $this->email->set_newline("\r\n");
-            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
-            $this->email->to($patient['mailId']);
-            $this->email->subject('Appointment Confirmation & Meeting Link');
-            $this->email->message($message);
-
-            // Email send should not block booking flow
-            $this->email->send();
-        }
-
-        $this->session->set_flashdata(
-            'showSuccessMessage',
-            !empty($patient['mailId'])
-            ? 'Appointment booked and meeting link sent to patient email.'
-            : 'Appointment booked successfully (patient email not available).'
-        );
-
-        redirect('Healthcareprovider/patientAppointments');
-    }
 
     public function chiefDoctors()
     {
@@ -691,6 +636,10 @@ class Healthcareprovider extends CI_Controller
         $this->session->unset_userdata('hcpsMailId');
         $this->session->unset_userdata('hcpsMobileNum');
         $this->session->unset_userdata('firstLogin');
+        $this->session->unset_userdata('last_activity_time');
+
+        $this->session->sess_regenerate(TRUE);
+
         redirect('Healthcareprovider/');
     }
 

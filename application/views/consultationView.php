@@ -6340,7 +6340,7 @@
                             }
 
                             div.onclick = () => {
-                                pendingMedicineMasterId = item.id; // ✅ master id
+                                pendingMedicineMasterId = item.id; //  master id
                                 pendingMedicineId = null;
                                 openMedicineModal(item.medicineName);
                                 clearSearch();
@@ -6455,7 +6455,7 @@
                             addMedMasterModal.hide();
                             clearSearch();
                             pendingMedicineMasterId = newObj.id;
-                            setTimeout(() => openMedicineModal(newObj.medicineName), 300);
+                            setTimeout(() => openMedicineModal(newObj), 300);  // Pass object instead of name
                         }
                     } else {
                         alert(data.message || "Failed to save.");
@@ -6501,10 +6501,14 @@
                     if (e.key === "Enter" && medicinesInput.value.trim() !== "") {
                         e.preventDefault();
                         const q = medicinesInput.value.trim().toLowerCase();
-                        const found = medicinesData.find(m => m.medicineName.toLowerCase() === q);
-                        if (found) {
-                            openMedicineModal(found);
+                        const founds = medicinesData.filter(m => m.medicineName.toLowerCase() === q);
+                        if (founds.length === 1) {
+                            const found = founds[0];
+                            pendingMedicineMasterId = found.id;
+                            openMedicineModal(found.medicineName);
                             clearSearch();
+                        } else if (founds.length > 1) {
+                            // Do nothing: Multiple matches,
                         } else {
                             openAddMedicineMaster(medicinesInput.value);
                         }
@@ -6614,16 +6618,14 @@
                 };
             }
 
-            //New Helper: Centralize "Nil" hiding for display
             function getCleanDisplay(value, field = 'category') {
-                if (!value || value === 'Nil' || value === 'nil') return ''; // Hide Nil/empty
-                return value; // Show if valid
+                if (!value || value === 'Nil' || value === 'nil') return '';
+                return value;
             }
 
             window.openMedicineModal = function (nameOrItem, existing = null, tagEl = null) {
                 editingMedicineTag = tagEl;
 
-                // Fixed: Handle if first arg is item object (e.g., new master)
                 let item = null;
                 if (typeof nameOrItem === 'object' && nameOrItem && nameOrItem.medicineName) {
                     item = nameOrItem;
@@ -6634,34 +6636,23 @@
                 }
 
                 if (existing && existing.id) {
-                    pendingMedicineId = existing.id; //  consultation row id
-                    pendingMedicineMasterId = existing.medicine_id || pendingMedicineMasterId; // Fallback to passed if any
+                    pendingMedicineId = existing.id; // consultation row id
+                    pendingMedicineMasterId = existing.medicine_id || pendingMedicineMasterId;
                 } else {
                     pendingMedicineId = null;
                 }
 
-                // Find medData: prefer existing overrides, then item, then search
                 let medData = null;
                 if (existing) {
-                    medData = existing; // Use consultation data if editing
+                    medData = existing;
                 } else {
-                    medData = item || medicinesData.find(m => m.medicineName === pendingMedicineName);
+                    medData = item || medicinesData.find(m => m.id === pendingMedicineMasterId) || null;
                 }
 
                 medicinesModalTitle.textContent = existing ? `Edit: ${pendingMedicineName}` : `Details for: ${pendingMedicineName}`;
 
-                //  Fixed: Robustly hide "Nil" using helper (applies to all cases: medData, existing, new)
-                if (medData) {
-                    medicineCompositionText.textContent = getCleanDisplay(medData.compositionName || medData.composition, 'composition');
-                    medicineCategoryText.textContent = getCleanDisplay(medData.category || medData.medicineCategory, 'category');
-                } else if (existing) {
-                    medicineCompositionText.textContent = getCleanDisplay(existing.composition, 'composition');
-                    medicineCategoryText.textContent = getCleanDisplay(existing.category, 'category');
-                } else {
-                    // Default empty for truly new
-                    medicineCompositionText.textContent = "";
-                    medicineCategoryText.textContent = "";
-                }
+                medicineCompositionText.textContent = getCleanDisplay(medData?.compositionName || medData?.composition || '', 'composition');
+                medicineCategoryText.textContent = getCleanDisplay(medData?.category || medData?.medicineCategory || '', 'category');
 
                 medicineQuantity.value = "";
                 medicineNotes.value = "";
@@ -6698,20 +6689,13 @@
                     m => String(m.id) === String(pendingMedicineId)
                 );
 
-                console.log('EDIT', {
-                    pendingMedicineName,
-                    pendingMedicineId,
-                    pendingMedicineMasterId,
-                    existingIndex
-                });
-
-                const medData = medicinesData.find(m => m.medicineName === pendingMedicineName);
-                const composition = medData?.compositionName || "";
-                const category = medData?.category || "";
+                const medData = medicinesData.find(m => m.id === pendingMedicineMasterId) || { compositionName: '', category: '' };
+                const composition = medData.compositionName || "";
+                const category = medData.category || "";
 
                 const data = {
-                    id: pendingMedicineId || `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,         // consultation row id
-                    medicine_id: pendingMedicineMasterId,    // master medicine id (required for DB)
+                    id: pendingMedicineId || `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                    medicine_id: pendingMedicineMasterId,
                     medicine_name: pendingMedicineName,
                     quantity,
                     timing,
@@ -6742,12 +6726,11 @@
                 pendingMedicineMasterId = null;
                 editingMedicineTag = null;
             };
-
             function addMedicineTag(row) {
                 const tag = document.createElement("span");
                 tag.className = "bg-success rounded-2 text-light p-2 me-2 mb-2 d-inline-block";
-                tag.style.cursor = "pointer";
-                tag.setAttribute("data-id", row.id);  // Already there: consultation-level ID
+                tag.style.cursor = "move";
+                tag.setAttribute("data-id", row.id);
 
                 updateMedicineTagDisplay(tag, row);
 

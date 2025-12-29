@@ -24,38 +24,36 @@
         .form-label {
             font-weight: 500;
         }
-
-        .card {
-            border-radius: 10px !important;
-        }
     </style>
 </head>
 
 <body>
-    <div class="text-center mt-5">
-        <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo"
-                width="200" height="90"></a>
-    </div>
-    <div class="d-flex align-middle justify-content-center">
-        <div class="card mt-3 p-4 p-sm-5">
-            <p class="fs-2 pb-3" style="font-weight:500;">Administrator Login</p>
+    <div class="min-vh-100 d-flex justify-content-center align-items-center">
+        <div class="card rounded p-4 p-sm-5 col-md-6 col-lg-5" style="box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);">
+            <div class="text-center">
+                <a href="<?php echo base_url(); ?>" class="d-inline-block">
+                    <img src="<?php echo base_url(); ?>assets/edf_logo.png" alt="logo">
+                </a>
+            </div>
+            <p class="fs-2 text-center my-3" style="font-weight:500;">Administrator Login</p>
             <form action="<?php echo base_url() . "Edfadmin/adminLogin" ?>" method="post" name="hcploginform"
                 onsubmit="return validateLogin()">
                 <div class="mb-3">
-                    <label for="adminEmail" class="form-label">Email address <span class="text-danger">*</span></label>
+                    <label for="adminEmail" class="form-label">Email Address <span class="text-danger">*</span></label>
                     <input type="text" name="adminEmail" id="adminEmail" placeholder="example@gmail.com"
-                        oninput="validEmail(this)" class="form-control p-2">
-                    <div id="mail_err" class="text-danger pt-1"></div>
+                        oninput="validEmail(this)" class="form-control rounded p-3">
+                    <small id="mail_err" class="text-danger pt-1"></small>
                 </div>
                 <div class="position-relative">
                     <label for="adminPassword" class="form-label">Password <span class="text-danger">*</span></label>
                     <input type="password" name="adminPassword" id="adminPassword" placeholder="password"
-                        oninput="validePassword(this)" class="form-control p-2">
+                        oninput="validePassword(this)" class="form-control rounded-3 p-3">
                     <i id="togglePassword" class="bi bi-eye position-absolute end-0 top-50 translate-middle-y mt-3 me-4"
                         style="cursor: pointer;"></i>
                 </div>
-                <div id="password_err" class="text-danger pt-1"></div>
-                <button type="submit" class="border-0 rounded-3 text-light float-end mt-4 px-4 py-2"
+                <small id="password_err" class="text-danger pt-1"></small>
+                <button type="submit"
+                    class="border-0 rounded text-light fw-bold float-end mt-4 px-4 px-md-5 py-2 py-md-3"
                     style="background-color: #2b353bf5;">Login</button>
             </form>
         </div>
@@ -122,7 +120,7 @@
             var password = document.getElementById("adminPassword").value;
 
             if (email == "") {
-                document.getElementById("mail_err").innerHTML = "Mail address must be filled out.";
+                document.getElementById("mail_err").innerHTML = "Please enter an email address.";
                 return false;
             } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                 document.getElementById("mail_err").innerHTML = "Invalid email address. Please enter valid mail address.";
@@ -132,7 +130,7 @@
             }
 
             if (password == "") {
-                document.getElementById("password_err").innerHTML = "Password must be filled out.";
+                document.getElementById("password_err").innerHTML = "Please enter a password.";
                 return false;
             } else {
                 document.getElementById("password_err").innerHTML = "";

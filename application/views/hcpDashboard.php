@@ -963,7 +963,7 @@
                     <section>
                         <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                <p style="font-size: 24px; font-weight: 500"> New CC Appointment</p>
+                                <p style="font-size: 24px; font-weight: 500"> New Appointment</p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                     class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                             </div>
@@ -2110,6 +2110,7 @@
                                         const bookedHcpId = appointment.hcpDbId;
 
                                         if ((bookedDate === selectedDate && referalCcId !== '' && bookedCcDoctor === referalCcId)) {
+
                                             timeButtons.forEach(button => {
                                                 if (button.value === bookedTime) {
                                                     button.disabled = true;

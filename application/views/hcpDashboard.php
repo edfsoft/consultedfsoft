@@ -1010,7 +1010,7 @@
                     <section>
                         <div class="card rounded">
                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                <p style="font-size: 24px; font-weight: 500"> New Appointment</p>
+                                <p style="font-size: 24px; font-weight: 500"> Book New Appointment</p>
                                 <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                                     class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                             </div>
@@ -1177,7 +1177,7 @@
                                                 </div>
 
                                                 <button type="submit" class="btn text-light float-end mt-2"
-                                                    style="background-color: #00ad8e;">Confirm</button>
+                                                    style="background-color: #00ad8e;">Book Appointment</button>
                                             </fieldset>
                                         </form>
                                     </div>

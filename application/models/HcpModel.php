@@ -153,7 +153,8 @@ class HcpModel extends CI_Model
     public function getPatientList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0' ORDER BY `patientId` DESC";
+        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0' 
+        AND `mailId` != '' AND `mailId` != 'NULL' ORDER BY `patientId` DESC";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -367,7 +368,7 @@ class HcpModel extends CI_Model
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto,
-        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp
+        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp, ad.appointmentType
         FROM patient_details AS pd
         LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
         WHERE hcpDbId = $hcpIdDb AND  `dateOfAppoint` = CURDATE()   AND `timeOfAppoint` >= CURTIME() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
@@ -443,7 +444,7 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function insertAppointment()
+    /* public function insertAppointment()
     {
         $post = $this->input->post(null, true);
         list($patientId, $dbId) = explode('|', $post['patientId']);
@@ -464,6 +465,46 @@ class HcpModel extends CI_Model
         );
         $this->db->insert('appointment_details', $insert);
         return true;
+    } */
+
+    public function insertAppointment()
+    {
+        $post = $this->input->post(null, true);
+
+        $ccId = 'Nil';
+        $ccDbId = 'Nil';
+        $appLink = 'https://meet.google.com/wzo-dprz-zqy';//link for only hcp
+        $modeOfConsultant = 'Nil';
+        if (!empty($post['patientId'])) {
+            list($patientId, $dbId) = explode('|', $post['patientId']);
+        } else {
+            return false; // Or handle error
+        }
+
+
+        if (!empty($post['referalDoctor'])) {//If referal doctor has, insert cc & hcp meet link
+            list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);
+        }
+
+        $insert = array(
+            'patientId' => $patientId,
+            'patientDbId' => $dbId,
+            'referalDoctor' => $ccId,
+            'appointmentLink' => $appLink,
+            'referalDoctorDbId' => $ccDbId,
+            'modeOfConsultant' => $modeOfConsultant,
+            'dateOfAppoint' => $post['appDate'],
+            'partOfDay' => $post['dayTime'],
+            'timeOfAppoint' => $post['appTime'],
+            'appointmentType' => $post['appointmentType'],
+            'patientComplaint' => $post['appReason'],
+            'patientHcp' => $_SESSION['hcpId'],
+            'hcpDbId' => $_SESSION['hcpIdDb'],
+        );
+
+        // 5. Insert
+        $this->db->insert('appointment_details', $insert);
+        return $this->db->insert_id();
     }
 
     public function getAppointmentReschedule()
@@ -497,60 +538,6 @@ class HcpModel extends CI_Model
         return true;
     }
 
-    public function insertPatientAppointment()
-    {
-        $post = $this->input->post(null, true);
-
-        list($patientCode, $patientDbId) = explode('|', $post['patientId']);
-
-        // Convert 12-hour time to 24-hour
-        $time24hr = date('H:i:s', strtotime($post['appTime']));
-
-        $appointmentLink = 'https://meet.google.com/wzo-dprz-zqy';
-
-        $insert = [
-            'patient_id' => $patientCode,
-            'appointment_date' => $post['appDate'],
-            'appointment_time' => $time24hr,
-            'appointment_link' => $appointmentLink,
-            'reason' => $post['appReason'],
-            'hcp_id' => $_SESSION['hcpIdDb']
-        ];
-
-        $this->db->insert('patient_appointments', $insert);
-
-        return $this->db->insert_id();
-    }
-
-    public function getPatientAppointments($hcpIdDb)
-    {
-        $this->db->select('
-        pa.*,
-        p.id AS patientDbId,
-        p.patientId AS patientCode,
-        p.firstName,
-        p.lastName
-    ');
-        $this->db->from('patient_appointments pa');
-        $this->db->join('patient_details p', 'p.patientId = pa.patient_id', 'left');
-        $this->db->where('pa.hcp_id', $hcpIdDb);
-        $this->db->where('pa.appointment_date >=', date('Y-m-d'));
-        $this->db->order_by('pa.appointment_date ASC, pa.appointment_time ASC');
-
-        return $this->db->get()->result_array();
-    }
-
-    public function getPatientEmail($patientId)
-    {
-        $this->db->select('emailId');
-        $this->db->from('patient_details');
-        $this->db->where('patientId', $patientId);
-        $query = $this->db->get();
-        if ($query->num_rows() > 0) {
-            return $query->row()->emailId;
-        }
-        return false;  // No email found
-    }
 
     public function getHcpDetails()
     {

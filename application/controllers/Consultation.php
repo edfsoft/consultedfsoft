@@ -177,7 +177,7 @@ class Consultation extends CI_Controller
         $medicines = json_decode($medicines_json, true);
 
         if ($medicines && is_array($medicines)) {
-            foreach ($medicines as $medicine) {
+            foreach ($medicines as $index => $medicine) {
                 $data = array(
                     'consultation_id' => $consultationId,
                     'medicine_name' => $medicine['medicine_name'],
@@ -187,6 +187,7 @@ class Consultation extends CI_Controller
                     'timing' => $medicine['timing'],
                     'food_timing' => $medicine['food_timing'],
                     'notes' => $medicine['notes'],
+                    'order_position' => $index + 1
                 );
 
                 $medicineSaved = $this->ConsultModel->save_medicine($data);
@@ -478,7 +479,7 @@ class Consultation extends CI_Controller
         if ($medicines && is_array($medicines)) {
             $existingIds = [];
 
-            foreach ($medicines as $medicine) {
+            foreach ($medicines as $index => $medicine) {
                 $data = array(
                     'consultation_id' => $consultationId,
                     'medicine_name' => $medicine['medicine_name'],
@@ -488,6 +489,7 @@ class Consultation extends CI_Controller
                     'timing' => $medicine['timing'],
                     'food_timing' => $medicine['food_timing'],
                     'notes' => $medicine['notes'],
+                    'order_position' => $index + 1
                 );
 
                 if (!empty($medicine['id']) && $medicine['id'] !== 'new') {

@@ -684,11 +684,13 @@
                                                                                 </td>
                                                                                 <td
                                                                                     style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                   <?= htmlspecialchars(trim($medicine['quantity'] ?? '') ?: '-') ?>
+
                                                                                 </td>
                                                                                 <td
                                                                                     style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                  <?= htmlspecialchars(trim($medicine['food_timing'] ?? '') ?: '-') ?>
+
                                                                                 </td>
 
                                                                                 <!-- Frequency split -->
@@ -701,7 +703,7 @@
                                                                                         $number = $parts[1] ?? $morning;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $morning)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -720,7 +722,7 @@
                                                                                         $number = $parts[1] ?? $afternoon;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $afternoon)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -739,7 +741,7 @@
                                                                                         $number = $parts[1] ?? $evening;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $evening)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -758,7 +760,7 @@
                                                                                         $number = $parts[1] ?? $night;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $night)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }

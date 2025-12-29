@@ -167,7 +167,7 @@
                     <div class="card rounded-5 mx-1">
                         <div class="card-body p-4">
                             <p style="font-size: 20px; font-weight: 500; color: #00ad8e" class="pb-2">
-                                <i class="bi bi-calendar4 pe-3"></i> CC-Appointments List
+                                <i class="bi bi-calendar4 pe-3"></i> Appointments List
                             </p>
                             <div class="table-responsive">
                                 <?php if (isset($appointmentList[0]['id'])) { ?>
@@ -750,10 +750,10 @@
                                                 <tr>
                                                     <td class="pt-3"><?php echo $count; ?>. </td>
                                                     <td style="font-size: 16px" class="pt-3">
-                                                    <?php if (!empty($value['appointment_type'])) {
-                                                        if ($value['appointment_type'] === "cc_hcp") {
+                                                    <?php if (!empty($value['appointmentType'])) {
+                                                        if ($value['appointmentType'] === "cc_hcp") {
                                                             echo 'CC';
-                                                        } else if ($value['appointment_type'] === "only_hcp") {
+                                                        } else if ($value['appointmentType'] === "only_hcp") {
                                                             echo 'PATIENT';
                                                         }
                                                     } ?>
@@ -984,7 +984,7 @@
                                                     onchange="toggleAppointmentFields()">
                                                     <option value="">Select Appointment Type</option>
                                                     <option value="cc_hcp">CC & HCP Appointment</option>
-                                                    <option value="only_hcp">Only HCP Appointment</option>
+                                                    <option value="only_hcp"> HCP & Patient Appointment</option>
                                                 </select>
                                                 <small id="appointmentType_err" class="text-danger pt-1"></small>
                                             </div>

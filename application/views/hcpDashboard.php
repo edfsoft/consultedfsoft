@@ -700,11 +700,11 @@
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                             <p style="font-size: 24px; font-weight: 500">
-                                CC Appointments
+                                Appointments
                             </p>
                             <a href="<?php echo base_url() . "Healthcareprovider/appointmentsForm" ?>"> <button
                                     style="background-color: #00ad8e;" class="float-end text-light border-0 rounded p-2">
-                                    <i class="bi bi-plus-square-fill"></i> Book CC Appointment
+                                    <i class="bi bi-plus-square-fill"></i> Book Appointment
                                 </button></a>
                         </div>
 
@@ -776,12 +776,18 @@
                                                     <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                     </td>
                                                     <td style="font-size: 16px" class="pt-3">
-                                                        <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
-                                                            class="text-dark" onmouseover="style='text-decoration:underline'"
-                                                            onmouseout="style='text-decoration:none'">
-                                                        <?php echo $value['referalDoctor'] !='Nil' ? $value['referalDoctor']: "NA";?>
-                                                        </a>
+                                                        <?php if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') { ?>
+                                                            <a href="<?php echo base_url('Healthcareprovider/chiefDoctorsProfile/' . $value['referalDoctorDbId']); ?>"
+                                                            class="text-dark"
+                                                            onmouseover="this.style.textDecoration='underline'"
+                                                            onmouseout="this.style.textDecoration='none'">
+                                                                <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
+                                                            </a>
+                                                        <?php } else { ?>
+                                                            <span>NA</span>
+                                                        <?php } ?>
                                                     </td>
+
                                                     <!-- <td style="font-size: 16px" class="pt-3">
                                                     <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
                                                     </td> -->
@@ -890,15 +896,12 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
-                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
-                                                </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
-                                                </th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE</th>
+                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -923,12 +926,18 @@
                                                     <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                     </td>
                                                     <td style="font-size: 16px" class="pt-3">
-                                                        <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctorsProfile/" . $value['referalDoctorDbId']; ?>"
-                                                            class="text-dark" onmouseover="style='text-decoration:underline'"
-                                                            onmouseout="style='text-decoration:none'">
-                                                        <?php echo $value['referalDoctor'] ?>
-                                                        </a>
+                                                        <?php if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') { ?>
+                                                            <a href="<?php echo base_url('Healthcareprovider/chiefDoctorsProfile/' . $value['referalDoctorDbId']); ?>"
+                                                            class="text-dark"
+                                                            onmouseover="this.style.textDecoration='underline'"
+                                                            onmouseout="this.style.textDecoration='none'">
+                                                                <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
+                                                            </a>
+                                                        <?php } else { ?>
+                                                            <span>NA</span>
+                                                        <?php } ?>
                                                     </td>
+
                                                     <td style="font-size: 16px" class="pt-3">
                                                     <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
                                                     </td>
@@ -1666,13 +1675,13 @@
                                                             value="<?php echo $value['referalDoctor'] ?>" disabled
                                                             onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
                                                     </div>
-                                                    <div class="form-group pb-3">
+                                                    <!-- <div class="form-group pb-3">
                                                         <label class="form-label pb-2" for="appConsult">Mode of consult</label><br>
                                                         <input type="radio" id="audio" name="appConsult" value="audio" checked>
                                                         <label for="audio">Audio</label>
                                                         <input type="radio" class="ms-5 ps-5" id="video" name="appConsult" value="video">
                                                         <label for="video">Video</label><br>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="appDate">Date <span
                                                                 class="text-danger">*</span></label>
@@ -1728,7 +1737,7 @@
                                             <?php endforeach; ?>
                                                     </div>
                                                     <div class="form-group py-3">
-                                                        <label class="form-label" for="appReason">Patient's Complaint / Symptoms</label>
+                                                        <label class="form-label" for="appReason">Complaint</label>
                                                         <input type="text" class="form-control" id="appReason" name="appReason"
                                                             value="<?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>"
                                                             disabled onmouseover="style='cursor: no-drop;'"
@@ -1781,6 +1790,7 @@
                                 const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
 
                                 const timeButtons = document.querySelectorAll('.timeButton');
+                                var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";
 
                                 if (!selectedDate) {
                                     document.getElementById('appTimeGroup').style.display = 'none';
@@ -1821,8 +1831,25 @@
                                     const bookedDate = formatDate(appointment.dateOfAppoint);
                                     const bookedTime = appointment.timeOfAppoint;
                                     const bookedCcDoctor = appointment.referalDoctor;
+                                    const bookedHcpId = appointment.hcpDbId;
 
-                                    if (bookedDate === selectedDate && bookedCcDoctor === referalCcId) {
+                                    if ((bookedDate === selectedDate && referalCcId !== '' && bookedCcDoctor === referalCcId)) {
+                                        timeButtons.forEach(button => {
+                                            if (button.value === bookedTime) {
+                                                button.disabled = true;
+                                                button.classList.add('btn-secondary');
+                                                button.classList.remove('btn-outline-secondary');
+                                                button.style.fontSize = '12px';
+                                                const time = button.textContent;
+                                                const booked = ' Booked';
+                                                if (!button.innerHTML.includes(booked)) {
+                                                    button.innerHTML = time + booked;
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    if ((bookedDate === selectedDate && bookedHcpId === currentHcpId)) {
                                         timeButtons.forEach(button => {
                                             if (button.value === bookedTime) {
                                                 button.disabled = true;
@@ -1953,13 +1980,13 @@
                                                                 value="<?php echo $value['referalDoctor'] ?>" disabled
                                                                 onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
                                                         </div>
-                                                        <div class="form-group pb-3">
+                                                        <!-- <div class="form-group pb-3">
                                                             <label class="form-label pb-2" for="appConsult">Mode of consult</label><br>
                                                             <input type="radio" id="audio" name="appConsult" value="audio" checked>
                                                             <label for="audio">Audio</label>
                                                             <input type="radio" class="ms-5 ps-5" id="video" name="appConsult" value="video">
                                                             <label for="video">Video</label><br>
-                                                        </div>
+                                                        </div> -->
 
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="appDate">Date <span
@@ -2033,7 +2060,7 @@
                                                         </div>
 
                                                         <div class="form-group py-3">
-                                                            <label class="form-label" for="appReason">Patient's Complaint / Symptoms</label>
+                                                            <label class="form-label" for="appReason">Complaint</label>
                                                             <input type="text" class="form-control" id="appReason" name="appReason"
                                                                 value="<?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>"
                                                                 disabled onmouseover="style='cursor: no-drop;'"
@@ -2066,9 +2093,8 @@
                                     const selectedDate = document.getElementById('appDate').value;
                                     const parts = referalCc ? referalCc.split('|') : [];
                                     const referalCcId = parts.length > 0 ? parts[0] : null;
-
                                     const timeButtons = document.querySelectorAll('.timeButton');
-
+                                    var currentHcpId = "<?php echo $_SESSION['hcpIdDb']; ?>";
                                     timeButtons.forEach(button => {
                                         button.disabled = false;
                                         button.classList.add('btn-outline-secondary');
@@ -2081,7 +2107,25 @@
                                         const bookedDate = formatDate(appointment.dateOfAppoint);
                                         const bookedTime = appointment.timeOfAppoint;
                                         const bookedCcDoctor = appointment.referalDoctor;
-                                        if (bookedDate === selectedDate && bookedCcDoctor === referalCcId) {
+                                        const bookedHcpId = appointment.hcpDbId;
+
+                                        if ((bookedDate === selectedDate && referalCcId !== '' && bookedCcDoctor === referalCcId)) {
+                                            timeButtons.forEach(button => {
+                                                if (button.value === bookedTime) {
+                                                    button.disabled = true;
+                                                    button.classList.add('btn-secondary');
+                                                    button.classList.remove('btn-outline-secondary');
+                                                    button.style.fontSize = '12px';
+                                                    const time = button.textContent;
+                                                    const booked = ' Booked';
+                                                    if (!button.innerHTML.includes(booked)) {
+                                                        button.innerHTML = time + booked;
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        if ((bookedDate === selectedDate && bookedHcpId === currentHcpId)) {
                                             timeButtons.forEach(button => {
                                                 if (button.value === bookedTime) {
                                                     button.disabled = true;

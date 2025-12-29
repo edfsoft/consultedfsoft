@@ -752,20 +752,44 @@
                                 </button></a>
                         </div>
 
-                        <?php
-                        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-                        $items_per_page = 10;
-
-                        $total_items = count($appointmentList);
-                        $total_pages = ceil($total_items / $items_per_page);
-
-                        $offset = ($current_page - 1) * $items_per_page;
-
-                        $current_page_items = array_slice($appointmentList, $offset, $items_per_page);
-
-                        if (isset($appointmentList[0]['id'])) {
+                        
+                        <?php if (isset($appointmentList[0]['id'])) {
                             ?>
+                            
+                            <div id="entriesPerPage" class="d-md-flex align-items-center justify-content-between mx-4">
 
+                                <!-- FILTER -->
+                                <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
+                                    style="height: 50px; width: 250px;">
+                                    <option value="All">Filter (All)</option>
+                                    <option value="only_hcp">HCP</option>
+                                    <option value="cc_hcp">CC</option>
+                                </select>
+
+                                <!-- SEARCH -->
+                                <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
+                                    <input type="text" id="searchBar"
+                                        class="border border-2 rounded-3 px-3 py-2"
+                                        style="height: 50px; width: 260px"
+                                        placeholder="Search (Patient ID / CC ID)">
+                                    <span id="clearSearch"
+                                        class="position-absolute"
+                                        style="right: 10px; top: 50%; transform: translateY(-50%);
+                                        cursor: pointer; display: none; font-size: 22px;">×</span>
+                                </div>
+                            </div>
+
+                            <!-- ITEMS PER PAGE -->
+                            <div class="mt-3 ms-4">
+                                <label>Show</label>
+                                <select id="itemsPerPageDropdown"
+                                    class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                    <option value="10" selected>10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                </select>
+                                <label>Entries</label>
+                            </div>
                             <div class="card-body p-2 p-sm-4">
                                 <div class="table-responsive">
                                     <table class="table text-center table-hoverr" id="appointmentTable">
@@ -774,9 +798,22 @@
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
                                                     APPOINTMENT WITH</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
+                                                <th scope="col"
+                                                    style="font-size:16px; font-weight:500; color:#00ad8e; cursor:pointer;"
+                                                    id="sortPatientId">
+                                                    <span onmouseover="this.style.textDecoration='underline'"
+                                                        onmouseout="this.style.textDecoration='none'">
+                                                        PATIENT ID <span id="sortPatientIdIndicator">🡱</span>
+                                                    </span>
                                                 </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
+                                                <th scope="col"
+                                                    style="font-size:16px; font-weight:500; color:#00ad8e; cursor:pointer;"
+                                                    id="sortDate">
+                                                    <span onmouseover="this.style.textDecoration='underline'"
+                                                        onmouseout="this.style.textDecoration='none'">
+                                                        DATE <span id="sortDateIndicator">🡱</span>
+                                                    </span>
+                                                </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
                                                 <!-- <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
@@ -785,146 +822,233 @@
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <?php
-                                            $count = $offset;
-                                            foreach ($current_page_items as $key => $value) {
-                                                $count++;
-                                                ?>
-                                                <tr>
-                                                    <td class="pt-3"><?php echo $count; ?>. </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php if (!empty($value['appointmentType'])) {
-                                                        if ($value['appointmentType'] === "cc_hcp") {
-                                                            echo 'CC';
-                                                        } else if ($value['appointmentType'] === "only_hcp") {
-                                                            echo 'PATIENT';
-                                                        }
-                                                    } ?>
-                                                    </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                        <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
-                                                            class="text-dark" onmouseover="style='text-decoration:underline'"
-                                                            onmouseout="style='text-decoration:none'">
-                                                        <?php echo $value['patientId'] ?>
-                                                        </a>
-                                                    </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                        <?php
-                                                        if (date('Y-m-d', strtotime($value['dateOfAppoint'])) == date('Y-m-d')) {
-                                                            echo "<b>Today</b>";
-                                                        } else {
-                                                            echo date("d-m-Y", strtotime($value['dateOfAppoint']));
-                                                        } ?>
-                                                    </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
-                                                    </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') { ?>
-                                                            <a href="<?php echo base_url('Healthcareprovider/chiefDoctorsProfile/' . $value['referalDoctorDbId']); ?>"
-                                                                class="text-dark" onmouseover="this.style.textDecoration='underline'"
-                                                                onmouseout="this.style.textDecoration='none'">
-                                                            <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
-                                                            </a>
-                                                    <?php } else { ?>
-                                                            <span>NA</span>
-                                                    <?php } ?>
-                                                    </td>
-
-                                                    <!-- <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
-                                                    </td> -->
-                                                    <td style="font-size: 16px" class="d-flex d-lg-block">
-                                                        <!-- <a href="#" class="ps-2"><i class="bi bi-three-dots-vertical"></i></a> -->
-                                                        <?php
-                                                        date_default_timezone_set('Asia/Kolkata');
-
-                                                        $dateOfAppoint = $value['dateOfAppoint'];
-                                                        $timeOfAppoint = $value['timeOfAppoint'];
-
-                                                        $today = date('Y-m-d');
-                                                        $currentTime = date('H:i:s');
-
-                                                        $appointmentDateTime = strtotime("$dateOfAppoint $timeOfAppoint");
-                                                        $currentDateTime = strtotime("$today $currentTime");
-
-                                                        $isToday = ($dateOfAppoint == $today);
-
-                                                        $isWithin10Minutes = ($currentDateTime <= strtotime('+10 minutes', $appointmentDateTime)) &&
-                                                            ($currentDateTime >= $appointmentDateTime);
-                                                        $shouldEnableButton = $isToday && $isWithin10Minutes;
-
-                                                        if ($shouldEnableButton) { ?>
-                                                            <a
-                                                                href="<?php echo base_url() . "Healthcareprovider/consultation/" . $value['patientDbId'] ?>">
-                                                                <button class="btn btn-secondary">Consult</button>
-                                                            </a>
-                                                            <a href="<?php echo $value['appointmentLink']; ?>" target="_blank">
-                                                                <button class="btn btn-success">Join</button>
-                                                            </a>
-                                                    <?php } else { ?>
-                                                            <a
-                                                                href="<?php echo base_url() . "Healthcareprovider/appointmentUpdate/" . $value['id'] ?>">
-                                                                <button class="btn btn-secondary"> <i class="bi bi-pen"></i></button> </a>
-                                                            <button class="btn btn-secondary" disabled> <i
-                                                                    class="bi bi-calendar-check"></i></button>
-                                                            <button class="btn btn-success" disabled>Join</button>
-                                                    <?php } ?>
-                                                    </td>
-                                                </tr>
-                                        <?php } ?>
-                                        </tbody>
+                                           <tbody id="appointmentTableBody">
                                     </table>
+                                    <div class="d-md-flex justify-content-between ms-2">
+                                        <div id="entriesInfoAppointment" class="mt-4"></div>
+                                        <div class="pagination justify-content-end mt-4" id="paginationContainerAppointment"></div>
+                                    </div>
 
-                                    <nav aria-label="Page navigation">
-                                        <ul class="pagination justify-content-center">
-                                        <?php if ($current_page > 1): ?>
-                                                <li>
-                                                    <a href="?page=<?php echo $current_page - 1; ?>" aria-label="Previous">
-                                                        <button type="button" class="bg-light border px-3 py-2">
-                                                            < </button>
-                                                    </a>
-                                                </li>
-                                        <?php endif; ?>
-
-                                            <?php
-                                            $start_page = max(1, $current_page - 2);
-                                            $end_page = min($total_pages, $current_page + 2);
-
-                                            if ($start_page == 1) {
-                                                $end_page = min($total_pages, 5);
-                                            }
-                                            if ($end_page == $total_pages) {
-                                                $start_page = max(1, $total_pages - 4);
-                                            }
-
-                                            for ($i = $start_page; $i <= $end_page; $i++): ?>
-                                                <li class=" ">
-                                                    <a href="?page=<?php echo $i; ?>">
-                                                        <button type="button"
-                                                            class="btn border px-3 py-2 <?php echo ($i == $current_page) ? 'btn-secondary text-light' : " "; ?>">
-                                                        <?php echo $i; ?></button>
-                                                    </a>
-                                                </li>
-                                        <?php endfor; ?>
-
-                                        <?php if ($current_page < $total_pages): ?>
-                                                <li class="page-item">
-                                                    <a href="?page=<?php echo $current_page + 1; ?>" aria-label="Next">
-                                                        <button type="button" class="bg-light border px-3 py-2">
-                                                            ></button>
-                                                    </a>
-                                                </li>
-                                        <?php endif; ?>
-                                        </ul>
-                                    </nav>
                             <?php } else { ?>
                                     <h5 class="text-center my-5"><b> No Appointments Found.</b> </h5>
                             <?php } ?>
                             </div>
                         </div>
                     </div>
+
+                    <script>
+                        const appointmentList = <?php echo json_encode($appointmentList); ?>;
+                        const baseUrl = '<?php echo base_url(); ?>';
+
+                        let filteredList = [...appointmentList];
+                        let itemsPerPageAppointment = parseInt(localStorage.getItem('itemsPerPageAppointment')) || 10;
+                        let currentPageAppointment  = 1;
+
+                        let sortBy = null;
+                        let sortOrder = 'asc';
+
+                        // Elements
+                        const itemsDropdown = document.getElementById('itemsPerPageDropdown');
+                        const searchBar = document.getElementById('searchBar');
+                        const clearSearch = document.getElementById('clearSearch');
+                        const filterDropdown = document.getElementById('filterDropdown');
+
+                        const sortPatientId = document.getElementById('sortPatientId');
+                        const sortDate = document.getElementById('sortDate');
+                        const pidIndicator = document.getElementById('sortPatientIdIndicator');
+                        const dateIndicator = document.getElementById('sortDateIndicator');
+
+                        itemsDropdown.value = itemsPerPageAppointment;
+
+                        // EVENTS
+                        itemsDropdown.onchange = e => {
+                            itemsPerPageAppointment = parseInt(e.target.value);
+                            localStorage.setItem('itemsPerPageAppointment', itemsPerPageAppointment);
+                            applyFilters();
+                        };
+
+                        searchBar.oninput = () => {
+                            clearSearch.style.display = searchBar.value ? 'block' : 'none';
+                            applyFilters();
+                        };
+
+                        clearSearch.onclick = () => {
+                            searchBar.value = '';
+                            clearSearch.style.display = 'none';
+                            applyFilters();
+                        };
+
+                        filterDropdown.onchange = applyFilters;
+
+                        // SORT EVENTS
+                        sortPatientId.onclick = () => toggleSort('patientId');
+                        sortDate.onclick = () => toggleSort('dateOfAppoint');
+
+                        function toggleSort(field) {
+                            if (sortBy === field) {
+                                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                            } else {
+                                sortBy = field;
+                                sortOrder = 'asc';
+                            }
+                            updateSortIcons();
+                            applyFilters();
+                        }
+
+                        function updateSortIcons() {
+                            pidIndicator.textContent = sortBy === 'patientId' ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                            dateIndicator.textContent = sortBy === 'dateOfAppoint' ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                        }
+
+                        // CORE FILTER
+                        function applyFilters() {
+                            const search = searchBar.value.toLowerCase();
+                            const typeFilter = filterDropdown.value;
+
+                            filteredList = appointmentList.filter(a => {
+                                const patientId = a.patientId?.toLowerCase() || '';
+                                const ccId = a.referalDoctor?.toLowerCase() || '';
+
+                                const matchSearch = patientId.includes(search) || ccId.includes(search);
+                                const matchType = typeFilter === 'All' || a.appointmentType === typeFilter;
+
+                                return matchSearch && matchType;
+                            });
+
+                            if (sortBy) {
+                                filteredList.sort((a, b) => {
+                                    let x = a[sortBy] || '';
+                                    let y = b[sortBy] || '';
+                                    return sortOrder === 'asc'
+                                        ? x.localeCompare(y)
+                                        : y.localeCompare(x);
+                                });
+                            }
+
+                            displayAppointmentPage(1);
+
+                        }
+
+                        function renderActionButtons(row) {
+                            // Timezone-safe current time
+                            const now = new Date();
+
+                            // Appointment datetime
+                            const appointmentDateTime = new Date(
+                                `${row.dateOfAppoint}T${row.timeOfAppoint}`
+                            );
+
+                            const diffMs = now - appointmentDateTime;
+                            const diffMinutes = diffMs / (1000 * 60);
+
+                            const isToday =
+                                new Date().toISOString().slice(0, 10) === row.dateOfAppoint;
+
+                            const isWithin10Minutes =
+                                diffMinutes >= 0 && diffMinutes <= 10;
+
+                            const shouldEnableButton = isToday && isWithin10Minutes;
+
+                            if (shouldEnableButton) {
+                                return `
+                                    <a href="${baseUrl}Healthcareprovider/consultation/${row.patientDbId}">
+                                        <button class="btn btn-secondary">Consult</button>
+                                    </a>
+                                    <a href="${row.appointmentLink}" target="_blank">
+                                        <button class="btn btn-success">Join</button>
+                                    </a>
+                                `;
+                            } else {
+                                return `
+                                    <a href="${baseUrl}Healthcareprovider/appointmentUpdate/${row.id}">
+                                        <button class="btn btn-secondary">
+                                            <i class="bi bi-pen"></i>
+                                        </button>
+                                    </a>
+                                    <button class="btn btn-secondary" disabled>
+                                        <i class="bi bi-calendar-check"></i>
+                                    </button>
+                                    <button class="btn btn-success" disabled>Join</button>
+                                `;
+                            }
+                        }
+
+                        // PAGINATION
+                        function displayAppointmentPage(page) {
+                            currentPageAppointment = page;
+
+                            const start = (page - 1) * itemsPerPageAppointment;
+                            const end = start + itemsPerPageAppointment;
+                            const rows = filteredList.slice(start, end);
+
+                            const tbody = document.getElementById('appointmentTableBody');
+                            tbody.innerHTML = '';
+
+                            updateAppointmentEntriesInfo(
+                                start + 1,
+                                Math.min(end, filteredList.length),
+                                filteredList.length
+                            );
+
+                            rows.forEach((r, i) => {
+                                tbody.insertAdjacentHTML('beforeend', `
+                                    <tr>
+                                        <td>${start + i + 1}.</td>
+                                        <td>${r.appointmentType === 'cc_hcp' ? 'CC' : 'PATIENT'}</td>
+                                        <td>${r.patientId}</td>
+                                        <td>${r.dateOfAppoint}</td>
+                                        <td>${r.timeOfAppoint}</td>
+                                        <td>${r.referalDoctor || 'NA'}</td>
+                                        <td class="d-flex d-lg-block">${renderActionButtons(r)}</td>
+                                    </tr>
+                                `);
+                            });
+
+                            generateAppointmentPagination(filteredList.length, page);
+                        }
+
+                        function updateAppointmentEntriesInfo(start, end, total) {
+                            document.getElementById('entriesInfoAppointment')
+                                .textContent = `Showing ${start} to ${end} of ${total} entries.`;
+                        }
+
+                        function generateAppointmentPagination(totalItems, currentPage) {
+                            const totalPages = Math.ceil(totalItems / itemsPerPageAppointment);
+                            const container = document.getElementById('paginationContainerAppointment');
+                            container.innerHTML = '';
+
+                            const ul = document.createElement('ul');
+                            ul.className = 'pagination';
+
+                            // Previous
+                            const prev = document.createElement('li');
+                            prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+                            prev.onclick = () => currentPage > 1 && displayAppointmentPage(currentPage - 1);
+                            ul.appendChild(prev);
+
+                            const startPage = Math.max(1, currentPage - 2);
+                            const endPage = Math.min(totalPages, startPage + 4);
+
+                            for (let i = startPage; i <= endPage; i++) {
+                                const li = document.createElement('li');
+                                li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
+                                    style="background-color:${i === currentPage ? '#2b353bf5' : 'transparent'}">${i}</button>`;
+                                li.onclick = () => displayAppointmentPage(i);
+                                ul.appendChild(li);
+                            }
+
+                            // Next
+                            const next = document.createElement('li');
+                            next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+                            next.onclick = () => currentPage < totalPages && displayAppointmentPage(currentPage + 1);
+                            ul.appendChild(next);
+
+                            container.appendChild(ul);
+                        }
+
+                        // INIT
+                        displayAppointmentPage(1);
+                    </script>
 
                 <?php if (isset($appointmentReschedule[0]['id'])) { ?>
 
@@ -954,49 +1078,59 @@
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $serial = 0;
-                                            foreach ($appointmentReschedule as $key => $value) {
-                                                $serial++;
-                                                ?>
+                                            $count = 1;
+                                            foreach ($appointmentReschedule as $value) {
+                                            ?>
                                                 <tr>
-                                                    <td class="pt-3"><?php echo $serial; ?>. </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                        <a href="<?php echo base_url() . "Healthcareprovider/patientdetails/" . $value['patientDbId']; ?>"
-                                                            class="text-dark" onmouseover="style='text-decoration:underline'"
-                                                            onmouseout="style='text-decoration:none'">
-                                                        <?php echo $value['patientId'] ?>
+                                                    <td><?php echo $count++; ?>.</td>
+
+                                                    <td>
+                                                        <a href="<?php echo base_url('Healthcareprovider/patientdetails/' . $value['patientDbId']); ?>"
+                                                        class="text-dark"
+                                                        onmouseover="this.style.textDecoration='underline'"
+                                                        onmouseout="this.style.textDecoration='none'">
+                                                            <?php echo htmlspecialchars($value['patientId'], ENT_QUOTES, 'UTF-8'); ?>
                                                         </a>
                                                     </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo date("d-m-Y", strtotime($value['dateOfAppoint'])) ?>
+
+                                                    <td>
+                                                        <?php echo date('d-m-Y', strtotime($value['dateOfAppoint'])); ?>
                                                     </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
+
+                                                    <td>
+                                                        <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
                                                     </td>
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') { ?>
+
+                                                    <td>
+                                                        <?php
+                                                        if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') {
+                                                        ?>
                                                             <a href="<?php echo base_url('Healthcareprovider/chiefDoctorsProfile/' . $value['referalDoctorDbId']); ?>"
-                                                                class="text-dark" onmouseover="this.style.textDecoration='underline'"
-                                                                onmouseout="this.style.textDecoration='none'">
-                                                            <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
+                                                            class="text-dark"
+                                                            onmouseover="this.style.textDecoration='underline'"
+                                                            onmouseout="this.style.textDecoration='none'">
+                                                                <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
                                                             </a>
-                                                    <?php } else { ?>
-                                                            <span>NA</span>
-                                                    <?php } ?>
+                                                        <?php } else { ?>
+                                                            NA
+                                                        <?php } ?>
                                                     </td>
 
-                                                    <td style="font-size: 16px" class="pt-3">
-                                                    <?php echo $value['patientComplaint'] != '' ? $value['patientComplaint'] : "-"; ?>
-                                                    </td>
-                                                    <td style="font-size: 16px" class="">
-                                                        <a href="<?php echo base_url() . "Healthcareprovider/appointmentReschedule/" . $value['id'] ?>"
-                                                            class="btn btn-secondary mx-1">Reschedule</a>
-                                                        <!-- <a href="#" class="btn btn-danger" disabled>Refund</a> -->
+                                                    <td>
+                                                        <?php echo !empty($value['patientComplaint']) ? htmlspecialchars($value['patientComplaint']) : '-'; ?>
                                                     </td>
 
+                                                    <td>
+                                                        <a href="<?php echo base_url('Healthcareprovider/appointmentUpdate/' . $value['id']); ?>">
+                                                            <button class="btn btn-secondary">
+                                                                <i class="bi bi-calendar-event"></i> Reschedule
+                                                            </button>
+                                                        </a>
+                                                    </td>
                                                 </tr>
-                                        <?php } ?>
-                                        </tbody>
+                                            <?php } ?>
+                                            </tbody>
+
                                     </table>
                                 </div>
                             </div>
@@ -1004,8 +1138,9 @@
                 <?php } ?>
                 </section>
 
+
             <?php
-        } else if ($method == "appointmentsForm") {
+        }else if ($method == "appointmentsForm") {
             ?>
                     <section>
                         <div class="card rounded">

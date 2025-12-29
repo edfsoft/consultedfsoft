@@ -153,8 +153,7 @@ class HcpModel extends CI_Model
     public function getPatientList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0' 
-        AND `mailId` != '' AND `mailId` != 'NULL' ORDER BY `patientId` DESC";
+        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0' ORDER BY `patientId` DESC";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -391,6 +390,15 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getPatientForAppointment()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $details = "SELECT * FROM `patient_details` WHERE `patientHcpDbId`=  $hcpIdDb AND deleteStatus = '0' 
+        AND `mailId` != '' AND `mailId` != 'NULL' ORDER BY `patientId` DESC";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function insertPartialPatient($data)
     {
         $this->db->insert('patient_details', $data);
@@ -443,29 +451,6 @@ class HcpModel extends CI_Model
         $select = $this->db->query($details);
         return $select->result_array();
     }
-
-    /* public function insertAppointment()
-    {
-        $post = $this->input->post(null, true);
-        list($patientId, $dbId) = explode('|', $post['patientId']);
-        list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);
-        $insert = array(
-            'patientId' => $patientId,
-            'patientDbId' => $dbId,
-            'referalDoctor' => $ccId,
-            'appointmentLink' => $appLink,
-            'referalDoctorDbId' => $ccDbId,
-            'modeOfConsultant' => $post['appConsult'],
-            'dateOfAppoint' => $post['appDate'],
-            'partOfDay' => $post['dayTime'],
-            'timeOfAppoint' => $post['appTime'],
-            'patientComplaint' => $post['appReason'],
-            'patientHcp' => $_SESSION['hcpId'],
-            'hcpDbId' => $_SESSION['hcpIdDb']
-        );
-        $this->db->insert('appointment_details', $insert);
-        return true;
-    } */
 
     public function insertAppointment()
     {

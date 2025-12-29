@@ -426,7 +426,76 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function newAppointment()
+public function bookPatientAppointment()
+    {
+        $appointmentId = $this->HcpModel->insertPatientAppointment();
+
+        if (!$appointmentId) {
+            $this->session->set_flashdata(
+                'showErrorMessage',
+                'Failed to book appointment. Please try again.'
+            );
+            redirect('Healthcareprovider/patientAppointments');
+            return;
+        }
+
+        list(, $patientDbId) = explode('|', $this->input->post('patientId'));
+
+        $this->db->select('firstName, mailId');
+        $this->db->where('id', $patientDbId);
+        $patient = $this->db->get('patient_details')->row_array();
+
+        $this->db->select('appointment_date, appointment_time, appointment_link');
+        $this->db->where('id', $appointmentId);
+        $appointment = $this->db->get('patient_appointments')->row_array();
+
+        $formattedDate = date('d M Y', strtotime($appointment['appointment_date']));
+        $formattedTime = date('h:i A', strtotime($appointment['appointment_time']));
+
+        if ($patient && !empty($patient['mailId'])) {
+
+            $message = "
+            Dear {$patient['firstName']},<br><br>
+
+            Your appointment has been successfully booked.  
+            Please find the details below:<br><br>
+
+            <b>📅 Date:</b> {$formattedDate}<br>
+            <b>⏰ Time:</b> {$formattedTime}<br><br>
+
+            <b>🔗 Join Meeting:</b><br>
+            <a href='{$appointment['appointment_link']}' target='_blank'>
+                {$appointment['appointment_link']}
+            </a><br><br>
+
+            Please join the meeting at the scheduled time.<br><br>
+
+            Regards,<br>
+            <b>EDF Healthcare Team</b>
+        ";
+
+            $this->email->set_newline("\r\n");
+            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+            $this->email->to($patient['mailId']);
+            $this->email->subject('Appointment Confirmation & Meeting Link');
+            $this->email->message($message);
+
+            // Email send should not block booking flow
+            $this->email->send();
+        }
+
+        $this->session->set_flashdata(
+            'showSuccessMessage',
+            !empty($patient['mailId'])
+            ? 'Appointment booked and meeting link sent to patient email.'
+            : 'Appointment booked successfully (patient email not available).'
+        );
+
+        redirect('Healthcareprovider/patientAppointments');
+    }
+
+
+    /* public function newAppointment()
     {
         if ($this->HcpModel->insertAppointment()) {
 
@@ -435,7 +504,73 @@ class Healthcareprovider extends CI_Controller
             $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
         }
         redirect('Healthcareprovider/appointments');
+    } */
+
+    public function newAppointment()
+    {
+        $appointmentId = $this->HcpModel->insertAppointment();
+
+        if (!$appointmentId) {
+            $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
+            redirect('Healthcareprovider/appointments');
+            return;
+        }
+
+        $this->db->select('patientDbId, dateOfAppoint, timeOfAppoint, appointmentLink, appointmentType');
+        $this->db->where('id', $appointmentId);
+        $appointment = $this->db->get('appointment_details')->row_array();
+
+        if ($appointment && $appointment['appointmentType'] === 'only_hcp') {
+
+            $this->db->select('firstName, mailId');
+            $this->db->where('id', $appointment['patientDbId']);
+            $patient = $this->db->get('patient_details')->row_array();
+
+            if ($patient && !empty($patient['mailId'])) {
+
+                $formattedDate = date('d M Y', strtotime($appointment['dateOfAppoint']));
+                $formattedTime = date('h:i A', strtotime($appointment['timeOfAppoint']));
+
+                $message = "
+                    Dear {$patient['firstName']},<br><br>
+
+                    Your appointment has been successfully booked.  
+                    Please find the details below:<br><br>
+
+                    <b>📅 Date:</b> {$formattedDate}<br>
+                    <b>⏰ Time:</b> {$formattedTime}<br><br>
+
+                    <b>🔗 Join Meeting:</b><br>
+                    <a href='{$appointment['appointmentLink']}' target='_blank'>
+                        {$appointment['appointmentLink']}
+                    </a><br><br>
+
+                    Please join the meeting at the scheduled time.<br><br>
+
+                    Regards,<br>
+                    <b>EDF Healthcare Team</b>
+                ";
+
+                $this->email->set_newline("\r\n");
+                $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+                $this->email->to($patient['mailId']);
+                $this->email->subject('Appointment Confirmation & Meeting Link');
+                $this->email->message($message);
+
+                $this->email->send();
+            }
+        }
+
+        $this->session->set_flashdata(
+            'showSuccessMessage',
+            ($appointment['appointmentType'] === 'only_hcp' && !empty($patient['mailId']))
+                ? 'Appointment booked and meeting link sent to patient email.'
+                : 'Appointment booked successfully.'
+        );
+
+        redirect('Healthcareprovider/appointments');
     }
+
 
     public function appointmentUpdate()
     {

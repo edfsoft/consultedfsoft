@@ -2045,7 +2045,11 @@
                                                         <div class="form-group pb-3">
                                                             <label class="form-label" for="referalDoctor">Referal Doctor ID</label>
                                                             <input type="text" class="form-control" id="referalDoctor" name="referalDoctor"
-                                                                value="<?php echo $value['referalDoctor'] ?>" disabled
+                                                                value="<?php
+                                                                echo (empty($value['referalDoctor']) || $value['referalDoctor'] === 'Nil')
+                                                                    ? 'NA'
+                                                                    : htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8');
+                                                                ?>" disabled
                                                                 onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
                                                         </div>
                                                         <!-- <div class="form-group pb-3">

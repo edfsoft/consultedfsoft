@@ -507,7 +507,33 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function updateAppointment()
+    public function delete_appointment($id)
+    {
+        $this->db->where('id', $id);
+        return $this->db->delete('appointment_details');
+    }
+
+    //Get Appointment details 
+    public function getAppointmentAndPatientDetails($appointmentId)
+    {
+        $this->db->select('
+            a.id as appointmentId,
+            a.dateOfAppoint, 
+            a.timeOfAppoint, 
+            a.appointmentLink, 
+            a.appointmentType,
+            p.firstName, 
+            p.mailId
+        ');
+        $this->db->from('appointment_details a');
+        $this->db->join('patient_details p', 'p.id = a.patientDbId', 'left'); 
+        $this->db->where('a.id', $appointmentId);
+        
+        return $this->db->get()->row_array();
+    }
+
+    //Update Appointments
+    /* public function updateAppointment()
     {
         $post = $this->input->post(null, true);
 
@@ -521,7 +547,7 @@ class HcpModel extends CI_Model
         $this->db->where('id', $post['appTableId']);
         $this->db->update('appointment_details', $updatedata);
         return true;
-    }
+    } */
 
 
     public function getHcpDetails()

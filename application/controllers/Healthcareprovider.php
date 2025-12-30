@@ -506,73 +506,94 @@ public function bookPatientAppointment()
         redirect('Healthcareprovider/appointments');
     } */
 
-    public function newAppointment()
+public function newAppointment()
+{
+    // 1. Insert and get ID
+    $appointmentId = $this->HcpModel->insertAppointment();
+
+    if (!$appointmentId) {
+        $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
+        redirect('Healthcareprovider/appointments');
+        return;
+    }
+
+    // 2. FETCH EVERYTHING WITH ONE FUNCTION CALL
+    $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
+
+    // 3. Check and Send Email
+    if ($details && $details['appointmentType'] === 'only_hcp' && !empty($details['mailId'])) {
+        
+        $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
+        $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
+
+        $message = "
+            Dear {$details['firstName']},<br><br>
+            Your appointment has been successfully booked.<br><br>
+            <b>📅 Date:</b> {$formattedDate}<br>
+            <b>⏰ Time:</b> {$formattedTime}<br><br>
+            <b>🔗 Join Meeting:</b><br>
+            <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
+            Please join the meeting at the scheduled time.<br><br>
+            Regards,<br><b>EDF Healthcare Team</b>
+        ";
+
+        $this->email->set_newline("\r\n");
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+        $this->email->to($details['mailId']);
+        $this->email->subject('Appointment Confirmation & Meeting Link');
+        $this->email->message($message);
+        $this->email->send();
+    }
+
+    $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully.');
+    redirect('Healthcareprovider/appointments');
+}
+
+    //Delete Appointments
+    public function deleteAppointment($id)
     {
-        $appointmentId = $this->HcpModel->insertAppointment();
+        // 1. FETCH DETAILS BEFORE DELETING using the new function
+        $details = $this->HcpModel->getAppointmentAndPatientDetails($id);
 
-        if (!$appointmentId) {
-            $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
-            redirect('Healthcareprovider/appointments');
-            return;
-        }
+        // 2. Perform Deletion
+        if ($this->HcpModel->delete_appointment($id)) {
 
-        $this->db->select('patientDbId, dateOfAppoint, timeOfAppoint, appointmentLink, appointmentType');
-        $this->db->where('id', $appointmentId);
-        $appointment = $this->db->get('appointment_details')->row_array();
+            // 3. Send Cancellation Email
+            if ($details && $details['appointmentType'] === 'only_hcp' && !empty($details['mailId'])) {
 
-        if ($appointment && $appointment['appointmentType'] === 'only_hcp') {
-
-            $this->db->select('firstName, mailId');
-            $this->db->where('id', $appointment['patientDbId']);
-            $patient = $this->db->get('patient_details')->row_array();
-
-            if ($patient && !empty($patient['mailId'])) {
-
-                $formattedDate = date('d M Y', strtotime($appointment['dateOfAppoint']));
-                $formattedTime = date('h:i A', strtotime($appointment['timeOfAppoint']));
+                $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
+                $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
                 $message = "
-                    Dear {$patient['firstName']},<br><br>
-
-                    Your appointment has been successfully booked.  
-                    Please find the details below:<br><br>
-
+                    Dear {$details['firstName']},<br><br>
+                    Your appointment scheduled for:<br>
                     <b>📅 Date:</b> {$formattedDate}<br>
                     <b>⏰ Time:</b> {$formattedTime}<br><br>
+                    has been <b>CANCELED</b>.<br><br>
 
-                    <b>🔗 Join Meeting:</b><br>
-                    <a href='{$appointment['appointmentLink']}' target='_blank'>
-                        {$appointment['appointmentLink']}
-                    </a><br><br>
-
-                    Please join the meeting at the scheduled time.<br><br>
-
-                    Regards,<br>
-                    <b>EDF Healthcare Team</b>
+                    
+                    Regards,<br><b>EDF Healthcare Team</b>
                 ";
 
                 $this->email->set_newline("\r\n");
                 $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
-                $this->email->to($patient['mailId']);
-                $this->email->subject('Appointment Confirmation & Meeting Link');
+                $this->email->to($details['mailId']);
+                $this->email->subject('Appointment Cancellation Notice');
                 $this->email->message($message);
-
                 $this->email->send();
             }
-        }
 
-        $this->session->set_flashdata(
-            'showSuccessMessage',
-            ($appointment['appointmentType'] === 'only_hcp' && !empty($patient['mailId']))
-                ? 'Appointment booked and meeting link sent to patient email.'
-                : 'Appointment booked successfully.'
-        );
+            $this->session->set_flashdata('showSuccessMessage', 'Appointment deleted and cancellation email sent.');
+
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to delete appointment.');
+        }
 
         redirect('Healthcareprovider/appointments');
     }
 
-
-    public function appointmentUpdate()
+    //Update Appointments
+    /* public function appointmentUpdate()
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "appointmentUpdate";
@@ -606,7 +627,7 @@ public function bookPatientAppointment()
         }
         redirect('Healthcareprovider/appointments');
     }
-
+ */
     public function appointmentReschedule()
     {
         if (isset($_SESSION['hcpsName'])) {

@@ -835,6 +835,7 @@
                             </div>
                         </div>
                     </div>
+
                     
                     <!-- Display Appointments -->
                     <script>
@@ -860,6 +861,16 @@
                         const dateIndicator = document.getElementById('sortDateIndicator');
 
                         itemsDropdown.value = itemsPerPageAppointment;
+
+                        //Delete Appointments
+                        function confirmDeleteApp(id, name) {
+                            document.getElementById('deleteItemName').innerText = name;
+                            var deleteUrl = "<?php echo base_url(); ?>Healthcareprovider/deleteAppointment/" + id;
+                            
+                            document.getElementById('deleteConfirmButton').setAttribute('href', deleteUrl);
+                            var myModal = new bootstrap.Modal(document.getElementById('confirmDelete'));
+                            myModal.show();
+                        }
 
                         //Block XSS Attacks
                         function escapeHTML(value) {
@@ -975,11 +986,9 @@
                                 `;
 
                             const editBtn = `
-                                <a href="${baseUrl}Healthcareprovider/appointmentUpdate/${row.id}">
-                                    <button class="btn btn-secondary">
-                                        <i class="bi bi-pen"></i>
-                                    </button>
-                                </a>
+                                <button class="btn btn-danger" onclick="confirmDeleteApp(${row.id}, '${row.patientId}')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             `;
 
                             return `

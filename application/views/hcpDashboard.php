@@ -835,16 +835,17 @@
                             </div>
                         </div>
                     </div>
-
+                    
+                    <!-- Display Appointments -->
                     <script>
-                        const appointmentList = <?php echo json_encode($appointmentList); ?>;
+                        const appointmentList = <?php echo json_encode($appointmentList,JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
                         const baseUrl = '<?php echo base_url(); ?>';
 
                         let filteredList = [...appointmentList];
                         let itemsPerPageAppointment = parseInt(localStorage.getItem('itemsPerPageAppointment')) || 10;
                         let currentPageAppointment  = 1;
 
-                        let sortBy = null;
+                        let sortBy = 'patientId';
                         let sortOrder = 'asc';
 
                         // Elements
@@ -859,6 +860,16 @@
                         const dateIndicator = document.getElementById('sortDateIndicator');
 
                         itemsDropdown.value = itemsPerPageAppointment;
+
+                        //Block XSS Attacks
+                        function escapeHTML(value) {
+                            return String(value)
+                                .replace(/&/g, '&amp;')
+                                .replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;')
+                                .replace(/"/g, '&quot;')
+                                .replace(/'/g, '&#039;');
+                        }
 
                         // EVENTS
                         itemsDropdown.onchange = e => {
@@ -930,47 +941,75 @@
                         }
 
                         function renderActionButtons(row) {
-                            // Timezone-safe current time
-                            const now = new Date();
 
-                            // Appointment datetime
-                            const appointmentDateTime = new Date(
-                                `${row.dateOfAppoint}T${row.timeOfAppoint}`
-                            );
-
-                            const diffMs = now - appointmentDateTime;
-                            const diffMinutes = diffMs / (1000 * 60);
-
-                            const isToday =
-                                new Date().toISOString().slice(0, 10) === row.dateOfAppoint;
-
-                            const isWithin10Minutes =
-                                diffMinutes >= 0 && diffMinutes <= 10;
-
-                            const shouldEnableButton = isToday && isWithin10Minutes;
-
-                            if (shouldEnableButton) {
-                                return `
-                                    <a href="${baseUrl}Healthcareprovider/consultation/${row.patientDbId}">
-                                        <button class="btn btn-secondary">Consult</button>
-                                    </a>
-                                    <a href="${row.appointmentLink}" target="_blank">
-                                        <button class="btn btn-success">Join</button>
-                                    </a>
-                                `;
-                            } else {
-                                return `
-                                    <a href="${baseUrl}Healthcareprovider/appointmentUpdate/${row.id}">
-                                        <button class="btn btn-secondary">
-                                            <i class="bi bi-pen"></i>
-                                        </button>
-                                    </a>
-                                    <button class="btn btn-secondary" disabled>
+                            const consultBtn = `
+                                <a href="${baseUrl}Consultation/consultation/${row.patientDbId}">
+                                    <button class="btn btn-secondary"
+                                        style="cursor:pointer;">
                                         <i class="bi bi-calendar-check"></i>
                                     </button>
-                                    <button class="btn btn-success" disabled>Join</button>
+                                </a>
+                            `;
+                            // Join logic stays SAME as before
+                            const now = new Date();
+                            const appointmentDateTime = new Date(
+                                row.dateOfAppoint + ' ' + row.timeOfAppoint
+                            );
+
+                            const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
+                            const isToday = now.toISOString().slice(0, 10) === row.dateOfAppoint;
+                            const isWithin10Minutes = diffMinutes >= -10 && diffMinutes <= 10;
+                            const shouldEnableJoin = isToday && isWithin10Minutes;
+
+                            const joinBtn = shouldEnableJoin
+                                ? `
+                                    <a href="${safeUrl(row.appointmentLink)}"
+                                    target="_blank" rel="noopener noreferrer">
+                                        <button class="btn btn-success">Join</button>
+                                    </a>
+                                `
+                                : `
+                                    <button class="btn btn-success" style="opacity:0.6" disabled>
+                                        Join
+                                    </button>
                                 `;
-                            }
+
+                            const editBtn = `
+                                <a href="${baseUrl}Healthcareprovider/appointmentUpdate/${row.id}">
+                                    <button class="btn btn-secondary">
+                                        <i class="bi bi-pen"></i>
+                                    </button>
+                                </a>
+                            `;
+
+                            return `
+                                ${editBtn}
+                                ${consultBtn}
+                                ${joinBtn}
+                            `;
+                        }
+                        function formatTimeAMPM(timeStr) {
+                            if (!timeStr) return '';
+
+                            const date = new Date('1970-01-01 ' + timeStr);
+                            return date.toLocaleTimeString('en-US', {
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                hour12: true
+                            });
+                        }
+
+                        function formatCcValue(value) {
+                            return (!value || value === 'Nil') ? 'NA' : value;
+                        }
+
+                        function formatDateOrToday(dateStr) {
+                            const today = new Date().toISOString().slice(0, 10);
+                            return dateStr === today ? '<b>Today</b>' : dateStr;
+                        }
+
+                        function safeUrl(url) {
+                            return /^https?:\/\//i.test(url) ? url : '#';
                         }
 
                         // PAGINATION
@@ -994,11 +1033,11 @@
                                 tbody.insertAdjacentHTML('beforeend', `
                                     <tr>
                                         <td>${start + i + 1}.</td>
-                                        <td>${r.appointmentType === 'cc_hcp' ? 'CC' : 'PATIENT'}</td>
-                                        <td>${r.patientId}</td>
-                                        <td>${r.dateOfAppoint}</td>
-                                        <td>${r.timeOfAppoint}</td>
-                                        <td>${r.referalDoctor || 'NA'}</td>
+                                        <td>${escapeHTML(r.appointmentType === 'cc_hcp' ? 'CC' : 'PATIENT')}</td>
+                                        <td>${escapeHTML(r.patientId)}</td>
+                                        <td>${formatDateOrToday(r.dateOfAppoint)}</td>
+                                        <td>${formatTimeAMPM(r.timeOfAppoint)}</td>
+                                        <td>${escapeHTML(formatCcValue(r.referalDoctor))}</td>
                                         <td class="d-flex d-lg-block">${renderActionButtons(r)}</td>
                                     </tr>
                                 `);
@@ -1465,23 +1504,45 @@
 
                             selectElement.style.display = 'block';
 
-                            if (currentDate.toDateString() === selectedDate.toDateString()) {
-                                const currentHour = currentDate.getHours();
-
-                                if (currentHour >= 4) {
-                                    hideOption('Morning');
-                                }
-                                if (currentHour >= 9) {
-                                    hideOption('Afternoon');
-                                }
-                                if (currentHour >= 15) {
-                                    hideOption('Evening');
-                                }
-                                if (currentHour >= 18) {
-                                    hideOption('Night');
-                                }
-                            } else {
+                            if (currentDate.toDateString() !== selectedDate.toDateString()) {
                                 showAllOptions();
+                                return;
+                            }
+
+                            // Helper: convert time to minutes from midnight
+                            const currentMinutes =
+                                currentDate.getHours() * 60 + currentDate.getMinutes();
+
+                            // Slot boundaries (in minutes)
+                            const morningStart = 8 * 60 + 30;   // 08:30
+                            const morningEnd   = 11 * 60 + 50;  // 11:50
+
+                            const afternoonStart = 12 * 60;     // 12:00
+                            const afternoonEnd   = 14 * 60 + 50;// 14:50
+
+                            const eveningStart = 17 * 60 + 30;  // 17:30
+                            const eveningEnd   = 19 * 60 + 50;  // 19:50
+
+                            const nightStart = 20 * 60;         // 20:00
+                            const nightEnd   = 24 * 60;         // 24:00 (midnight)
+
+                            // Always reset first
+                            showAllOptions();
+
+                            if (currentMinutes > morningEnd) {
+                                hideOption('Morning');
+                            }
+
+                            if (currentMinutes > afternoonEnd) {
+                                hideOption('Afternoon');
+                            }
+
+                            if (currentMinutes > eveningEnd) {
+                                hideOption('Evening');
+                            }
+
+                            if (currentMinutes < morningStart) {
+                                hideOption('Night');
                             }
                         }
 
@@ -1506,6 +1567,7 @@
                             displayTime();
                         });
                     </script>
+                    
                     <!-- Symptoms search and select -->
                     <!-- <script>
                         document.addEventListener("DOMContentLoaded", () => {

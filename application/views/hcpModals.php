@@ -26,7 +26,7 @@
         <div class="modal-content border-0 rounded-3 shadow">
             <div class="modal-header text-dark rounded-top-3">
                 <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                    id="deleteConfirmModalLabel">Confirm Consultation Deletion</h5>
+                    id="deleteConfirmModalLabel">Cancel and Delete Appointment</h5>
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
@@ -34,7 +34,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Cancel & Delete</button>
             </div>
         </div>
     </div>

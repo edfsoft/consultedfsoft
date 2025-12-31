@@ -363,22 +363,25 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
-    public function getAppointmentListDash()
+    /* public function getAppointmentList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto,
-        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp, ad.appointmentType
-        FROM patient_details AS pd
-        LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
-        WHERE hcpDbId = $hcpIdDb AND  `dateOfAppoint` = CURDATE()   AND `timeOfAppoint` >= CURTIME() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND `appStatus` = '0' AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
-    }
+    } */
 
     public function getAppointmentList()
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
-        $details = "SELECT * FROM `appointment_details` WHERE `hcpDbId` = $hcpIdDb AND `appStatus` = '0' AND ( `dateOfAppoint` > CURDATE() OR ( `dateOfAppoint` = CURDATE() AND ADDTIME(`timeOfAppoint`, '00:10:00') >= CURTIME() ) ) ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $details = "SELECT a.*, p.firstName, p.lastName 
+                    FROM `appointment_details` a
+                    LEFT JOIN `patient_details` p ON a.patientDbId = p.id
+                    WHERE a.hcpDbId = $hcpIdDb 
+                    AND a.appStatus = '0' 
+                    AND ( a.dateOfAppoint > CURDATE() OR ( a.dateOfAppoint = CURDATE() AND ADDTIME(a.timeOfAppoint, '00:10:00') >= CURTIME() ) ) 
+                    ORDER BY a.dateOfAppoint, a.timeOfAppoint";
+
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
@@ -452,6 +455,18 @@ class HcpModel extends CI_Model
         return $select->result_array();
     }
 
+    public function getAppointmentListDash()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $details = "SELECT pd.id, pd.patientId, pd.firstName, pd.lastName , pd.mobileNumber , pd.gender , pd.age , pd.bloodGroup, pd.profilePhoto,
+        ad.referalDoctor, ad.referalDoctorDbId , ad.dateOfAppoint , ad.timeOfAppoint , ad.patientComplaint , ad.patientHcp, ad.appointmentType
+        FROM patient_details AS pd
+        LEFT JOIN appointment_details AS ad ON pd.id = ad.patientDbId
+        WHERE hcpDbId = $hcpIdDb AND  `dateOfAppoint` = CURDATE()   AND `timeOfAppoint` >= CURTIME() ORDER BY `dateOfAppoint`, `timeOfAppoint`;";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
     public function insertAppointment()
     {
         $post = $this->input->post(null, true);
@@ -463,9 +478,8 @@ class HcpModel extends CI_Model
         if (!empty($post['patientId'])) {
             list($patientId, $dbId) = explode('|', $post['patientId']);
         } else {
-            return false; // Or handle error
+            return false; // handle error
         }
-
 
         if (!empty($post['referalDoctor'])) {//If referal doctor has, insert cc & hcp meet link
             list($ccId, $ccDbId, $appLink) = explode('|', $post['referalDoctor']);

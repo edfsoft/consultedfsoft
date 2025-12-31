@@ -762,8 +762,8 @@
                                 <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
                                     style="height: 50px; width: 250px;">
                                     <option value="All">Filter (All)</option>
-                                    <option value="only_hcp">HCP</option>
-                                    <option value="cc_hcp">CC</option>
+                                    <option value="PATIENT">HCP</option>
+                                    <option value="CC">CC</option>
                                 </select>
 
                                 <!-- SEARCH -->
@@ -803,7 +803,7 @@
                                                     id="sortPatientId">
                                                     <span onmouseover="this.style.textDecoration='underline'"
                                                         onmouseout="this.style.textDecoration='none'">
-                                                        PATIENT ID <span id="sortPatientIdIndicator">🡱</span>
+                                                        PATIENT ID <span id="sortPatientIdIndicator"></span>
                                                     </span>
                                                 </th>
                                                 <th scope="col"
@@ -863,15 +863,70 @@
                         itemsDropdown.value = itemsPerPageAppointment;
 
                         //Delete Appointments
-                        function confirmDeleteApp(id, name) {
-                            document.getElementById('deleteItemName').innerText = name;
-                            var deleteUrl = "<?php echo base_url(); ?>Healthcareprovider/deleteAppointment/" + id;
-                            
-                            document.getElementById('deleteConfirmButton').setAttribute('href', deleteUrl);
-                            var myModal = new bootstrap.Modal(document.getElementById('confirmDelete'));
-                            myModal.show();
-                        }
+                        function confirmDeleteApp(id) {
+                            const app = appointmentList.find(item => item.id == id);
+                            let formattedTime = app.timeOfAppoint; // Default to original if something fails
+        
+                            if (app.timeOfAppoint) {
+                                const timeParts = app.timeOfAppoint.split(':'); // Split "14:30:00"
+                                let hours = parseInt(timeParts[0]);
+                                let minutes = timeParts[1];
+                                
+                                const ampm = hours >= 12 ? 'PM' : 'AM';
+                                
+                                hours = hours % 12;
+                                hours = hours ? hours : 12;
+                                
+                                formattedTime = `${hours}:${minutes} ${ampm}`;
+                            }
+                            let formattedDate = app.dateOfAppoint;
+                            if (app.dateOfAppoint) {
+                                const dateParts = app.dateOfAppoint.split('-'); // Split 2026-01-30
+                                // Reassemble as DD-MM-YYYY (30-01-2026)
+                                if (dateParts.length === 3) {
+                                    formattedDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+                                }
+                            }
+                            let emailNotice = '';
+                            if (app.appointmentType === 'PATIENT') {
+                                emailNotice = ' A cancellation email will be sent to the patient.';
+                            }
 
+                            if (app) {
+                                var content = `
+                                    <p>Are you sure you want to delete this Appointment?</p>
+                                    <div class="alert alert-light border">
+                                        <strong>Patient Name:</strong> ${app.firstName} ${app.lastName}<br>
+                                        <strong>Patient ID:</strong> ${app.patientId}<br>
+                                        <strong>Appointment With:</strong> ${app.appointmentType}<br>
+                                        <strong>Date:</strong> ${formattedDate}<br>
+                                        <strong>Time:</strong> ${formattedTime}
+                                    </div>
+                                    <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> This action cannot be undone. <b>Are You Sure?<br></b>
+                                    ${emailNotice}</p>
+                                `;
+
+                                document.getElementById('deleteModalBody').innerHTML = content;
+
+                                var deleteUrl = "<?php echo base_url(); ?>Healthcareprovider/deleteAppointment/" + id;
+                                var deleteBtn = document.getElementById('confirmDeleteBtn');
+                                
+                                deleteBtn.disabled = false;
+                                deleteBtn.innerHTML = 'Cancel & Delete';
+
+                                deleteBtn.onclick = function() {
+                                    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+                                    this.disabled = true;
+
+                                    window.location.href = deleteUrl;
+                                };
+
+                                var myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                                myModal.show();
+                            } else {
+                                console.error("Appointment not found in list");
+                            }
+                        }
                         //Block XSS Attacks
                         function escapeHTML(value) {
                             return String(value)
@@ -986,7 +1041,16 @@
                                 `;
 
                             const editBtn = `
-                                <button class="btn btn-danger" onclick="confirmDeleteApp(${row.id}, '${row.patientId}')">
+                                <button class="btn btn-danger" 
+                                    onclick="confirmDeleteApp(
+                                        ${row.id}, 
+                                        '${row.firstName}', 
+                                        '${row.lastName}',
+                                        '${row.appointmentType}', 
+                                        '${row.patientId}', 
+                                        '${row.dateOfAppoint}', 
+                                        '${row.timeOfAppoint}'
+                                    )">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             `;
@@ -1042,7 +1106,7 @@
                                 tbody.insertAdjacentHTML('beforeend', `
                                     <tr>
                                         <td>${start + i + 1}.</td>
-                                        <td>${escapeHTML(r.appointmentType === 'cc_hcp' ? 'CC' : 'PATIENT')}</td>
+                                        <td>${escapeHTML(r.appointmentType)}</td>
                                         <td>${escapeHTML(r.patientId)}</td>
                                         <td>${formatDateOrToday(r.dateOfAppoint)}</td>
                                         <td>${formatTimeAMPM(r.timeOfAppoint)}</td>
@@ -1211,8 +1275,8 @@
                                                 <select class="form-select" id="appointmentType" name="appointmentType"
                                                     onchange="toggleAppointmentFields()">
                                                     <option value="">Select Appointment Type</option>
-                                                    <option value="cc_hcp">CC & HCP Appointment</option>
-                                                    <option value="only_hcp"> HCP & Patient Appointment</option>
+                                                    <option value="CC">CC & HCP Appointment</option>
+                                                    <option value="PATIENT"> HCP & Patient Appointment</option>
                                                 </select>
                                                 <small id="appointmentType_err" class="text-danger pt-1"></small>
                                             </div>
@@ -1345,7 +1409,8 @@
                                                 </div>
 
                                                 <div class="form-group py-3">
-                                                    <label class="form-label" for="appReason">Complaint</label>
+                                                    <label class="form-label" for="appReason">Complaint<span
+                                                            class="text-danger">*</span></label></label>
                                                     <textarea class="form-control" id="appReason" name="appReason" rows="3"
                                                         maxlength="250"
                                                         placeholder="Enter Compliant to book appointment..."></textarea>
@@ -1353,13 +1418,12 @@
                                                 </div>
 
                                                 <div class="form-group pb-3">
-                                                    <label class="form-label" for="pay">Payment <span
-                                                            class="text-danger">*</span></label>
+                                                    <label class="form-label" for="pay">Payment</label>
                                                     <input type="text" class="form-control" id="pay" name="pay"
                                                         placeholder="E.g. Add payment details">
                                                 </div>
 
-                                                <button type="submit" class="btn text-light float-end mt-2"
+                                                <button type="submit" id="AppSubmit" class="btn text-light float-end mt-2"
                                                     style="background-color: #00ad8e;">Confirm</button>
                                             </fieldset>
                                         </form>
@@ -1523,19 +1587,18 @@
                                 currentDate.getHours() * 60 + currentDate.getMinutes();
 
                             // Slot boundaries (in minutes)
-                            const morningStart = 8 * 60 + 30;   // 08:30
-                            const morningEnd   = 11 * 60 + 50;  // 11:50
+                            const morningStart = 8 * 60 + 30;
+                            const morningEnd   = 11 * 60 + 50;
 
-                            const afternoonStart = 12 * 60;     // 12:00
-                            const afternoonEnd   = 14 * 60 + 50;// 14:50
+                            const afternoonStart = 12 * 60;
+                            const afternoonEnd   = 14 * 60 + 50;
 
-                            const eveningStart = 17 * 60 + 30;  // 17:30
-                            const eveningEnd   = 19 * 60 + 50;  // 19:50
+                            const eveningStart = 17 * 60 + 30;
+                            const eveningEnd   = 19 * 60 + 50;
 
-                            const nightStart = 20 * 60;         // 20:00
-                            const nightEnd   = 24 * 60;         // 24:00 (midnight)
+                            const nightStart = 20 * 60;
+                            const nightEnd   = 24 * 60;
 
-                            // Always reset first
                             showAllOptions();
 
                             if (currentMinutes > morningEnd) {
@@ -1799,7 +1862,7 @@
                                 // Enable form
                                 if (fieldset) fieldset.disabled = false;
 
-                                if (type === "only_hcp") {
+                                if (type === "PATIENT") {
                                     // Hide Referral & Mode sections for Only HCP
                                     if (referalSection) referalSection.style.display = "none";
                                     //if(modeSection) modeSection.style.display = "none";
@@ -1859,7 +1922,7 @@
                                 document.getElementById("appointmentType_err").innerHTML = "";
                             }
 
-                            if (type !== "only_hcp") {
+                            if (type !== "PATIENT") {
                                 if (referalDr == "") {
                                     document.getElementById("referalDoctor_err").innerHTML = "Please Select the referral doctor’s name.";
                                     document.getElementById("referalDoctor").focus();
@@ -1909,16 +1972,21 @@
                             } else {
                                 document.getElementById("appReason_err").innerHTML = "";
                             }
+                            var submitBtn = document.getElementById("AppSubmit");
+                            if(submitBtn) {
+                                submitBtn.disabled = true;
+                                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+                            }
 
                             return true;
-
                         }
                     </script>
 
             <?php
         } else if ($method == "appointmentUpdate") {
             ?>
-                        <section>
+            <!-- UpdateAppointment section -->
+                        <!-- <section>
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                                     <p style="font-size: 24px; font-weight: 500">Update Appoitment</p>
@@ -1926,7 +1994,6 @@
                                         class="float-end text-dark mt-2"><i class="bi bi-arrow-left"></i> Back</a>
                                 </div>
                                 <div class="card-body px-md-4 pb-4">
-                                    <!-- Form  -->
                                     <div>
                                         <div class="col-md-8">
                                     <?php
@@ -1949,13 +2016,13 @@
                                                             value="<?php echo $value['referalDoctor'] ?>" disabled
                                                             onmouseover="style='cursor: no-drop;'" onmouseout="style='cursor: ns-resize;">
                                                     </div>
-                                                    <!-- <div class="form-group pb-3">
+                                                    <div class="form-group pb-3">
                                                         <label class="form-label pb-2" for="appConsult">Mode of consult</label><br>
                                                         <input type="radio" id="audio" name="appConsult" value="audio" checked>
                                                         <label for="audio">Audio</label>
                                                         <input type="radio" class="ms-5 ps-5" id="video" name="appConsult" value="video">
                                                         <label for="video">Video</label><br>
-                                                    </div> -->
+                                                    </div>
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="appDate">Date <span
                                                                 class="text-danger">*</span></label>
@@ -2034,9 +2101,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </section>
+                        </section> -->
 
-                        <script>
+                        <!-- <script>
                             function formatDate(dateString) {
                                 const date = new Date(dateString);
                                 const year = date.getFullYear();
@@ -2146,9 +2213,9 @@
                                     section.style.display = visibleButtons ? 'block' : 'none';
                                 });
                             }
-                        </script>
+                        </script> -->
 
-                        <script>
+                        <!-- <script>
                             function dateError() {
                                 const selectedDate = document.getElementById('appDate').value;
                                 const today = new Date().toISOString().split('T')[0];
@@ -2159,9 +2226,9 @@
                                 }
 
                             }
-                        </script>
+                        </script> -->
 
-                        <script>
+                        <!-- <script>
                             var buttons = document.querySelectorAll('.timeButton');
                             buttons.forEach(function (button) {
                                 button.addEventListener('click', function () {
@@ -2172,9 +2239,9 @@
                                     document.getElementById('appTime').value = button.value;
                                 });
                             });
-                        </script>
+                        </script> -->
 
-                        <script>
+                        <!-- <script>
                             function clearErrorAppointment() {
                                 var date = document.getElementById("appDate").value;
                                 var time = document.getElementById("appTime").value;
@@ -2219,7 +2286,8 @@
                                 }
                                 return true;
                             }
-                        </script>
+                        </script> -->
+           <!---End------------>
 
             <?php
         } else if ($method == "appointmentReschedule") {

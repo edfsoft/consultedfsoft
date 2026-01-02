@@ -902,7 +902,7 @@
                                         <strong>Date:</strong> ${formattedDate}<br>
                                         <strong>Time:</strong> ${formattedTime}
                                     </div>
-                                    <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> This action cannot be undone. <b>Are You Sure?<br></b>
+                                    <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> This action cannot be undone.<br>
                                     ${emailNotice}</p>
                                 `;
 
@@ -1040,23 +1040,24 @@
                                     </button>
                                 `;
 
-                            const editBtn = `
-                                <button class="btn btn-danger" 
-                                    onclick="confirmDeleteApp(
-                                        ${row.id}, 
-                                        '${row.firstName}', 
-                                        '${row.lastName}',
-                                        '${row.appointmentType}', 
-                                        '${row.patientId}', 
-                                        '${row.dateOfAppoint}', 
-                                        '${row.timeOfAppoint}'
-                                    )">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            `;
+                            const isTooLateToDelete = diffMinutes > -10; 
+                            const deleteBtn = isTooLateToDelete 
+                                ? `
+                                    <button class="btn btn-danger" 
+                                        style="opacity: 0.5; cursor: not-allowed;" 
+                                        title="Cannot delete 10 mins before appointment" disabled>
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                ` 
+                                : `
+                                    <button class="btn btn-danger" 
+                                        onclick="confirmDeleteApp(${row.id})">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                `;
 
                             return `
-                                ${editBtn}
+                                ${deleteBtn}
                                 ${consultBtn}
                                 ${joinBtn}
                             `;
@@ -1577,46 +1578,26 @@
 
                             selectElement.style.display = 'block';
 
-                            if (currentDate.toDateString() !== selectedDate.toDateString()) {
+                            if (currentDate.toDateString() === selectedDate.toDateString()) {
+                                const currentHour = currentDate.getHours();
+
+                                if (currentHour >= 4) {
+                                    hideOption('Morning');
+                                }
+                                if (currentHour >= 9) {
+                                    hideOption('Afternoon');
+                                }
+                                if (currentHour >= 15) {
+                                    hideOption('Evening');
+                                }
+                                if (currentHour >= 18) {
+                                    hideOption('Night');
+                                }
+                            } else {
                                 showAllOptions();
-                                return;
-                            }
-
-                            // Helper: convert time to minutes from midnight
-                            const currentMinutes =
-                                currentDate.getHours() * 60 + currentDate.getMinutes();
-
-                            // Slot boundaries (in minutes)
-                            const morningStart = 8 * 60 + 30;
-                            const morningEnd   = 11 * 60 + 50;
-
-                            const afternoonStart = 12 * 60;
-                            const afternoonEnd   = 14 * 60 + 50;
-
-                            const eveningStart = 17 * 60 + 30;
-                            const eveningEnd   = 19 * 60 + 50;
-
-                            const nightStart = 20 * 60;
-                            const nightEnd   = 24 * 60;
-
-                            showAllOptions();
-
-                            if (currentMinutes > morningEnd) {
-                                hideOption('Morning');
-                            }
-
-                            if (currentMinutes > afternoonEnd) {
-                                hideOption('Afternoon');
-                            }
-
-                            if (currentMinutes > eveningEnd) {
-                                hideOption('Evening');
-                            }
-
-                            if (currentMinutes < morningStart) {
-                                hideOption('Night');
                             }
                         }
+
 
                         function hideOption(timeOfDay) {
                             const selectElement = document.getElementById('dayTime');

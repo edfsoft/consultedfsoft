@@ -406,7 +406,7 @@ class HcpModel extends CI_Model
     {
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $today = date('Y-m-d');
-        $currentTime = date('H:i'); 
+        $currentTime = date('H:i');
         $this->db->where('hcpDbId', $hcpIdDb);
         $this->db->where('dateOfAppoint', $today);
         $this->db->where('appStatus', '0');
@@ -552,9 +552,9 @@ class HcpModel extends CI_Model
             p.mailId
         ');
         $this->db->from('appointment_details a');
-        $this->db->join('patient_details p', 'p.id = a.patientDbId', 'left'); 
+        $this->db->join('patient_details p', 'p.id = a.patientDbId', 'left');
         $this->db->where('a.id', $appointmentId);
-        
+
         return $this->db->get()->row_array();
     }
 

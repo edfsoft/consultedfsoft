@@ -176,6 +176,23 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    public function dashboard()
+    {
+        if (isset($_SESSION['hcpsName'])) {
+            $this->data['method'] = "dashboard";
+            $patientTotal = $this->HcpModel->getPatientList();
+            $this->data['patientTotal'] = $patientTotal['totalRows'];
+            $ccDetails = $this->HcpModel->getCcProfile();
+            $this->data['totalCcs'] = $ccDetails['totalRows'];
+            $appointmentList = $this->HcpModel->getAppointmentListDash();
+            // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
+            $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+            $this->load->view('hcpDashboard.php', $this->data);
+        } else {
+            redirect('Healthcareprovider/');
+        }
+    }
+
     public function getCompletedConsultByDate()
     {
         $hcpIdDb = $this->session->userdata('hcpIdDb');
@@ -415,33 +432,16 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    public function dashboard()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "dashboard";
-            $patientTotal = $this->HcpModel->getPatientList();
-            $this->data['patientTotal'] = $patientTotal['totalRows'];
-            $ccDetails = $this->HcpModel->getCcProfile();
-            $this->data['totalCcs'] = $ccDetails['totalRows'];
-            $appointmentList = $this->HcpModel->getAppointmentListDash();
-            // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
-            $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            redirect('Healthcareprovider/');
-        }
-    }
-
     /* public function newAppointment()
-    {
-        if ($this->HcpModel->insertAppointment()) {
+ {
+     if ($this->HcpModel->insertAppointment()) {
 
-            $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
-        }
-        redirect('Healthcareprovider/appointments');
-    } */
+         $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+     } else {
+         $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
+     }
+     redirect('Healthcareprovider/appointments');
+ } */
 
     public function newAppointment()
     {
@@ -456,7 +456,7 @@ class Healthcareprovider extends CI_Controller
         $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
 
         if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
-            
+
             $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
             $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
@@ -516,7 +516,7 @@ class Healthcareprovider extends CI_Controller
                 $this->email->message($message);
                 $this->email->send();
 
-            $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled and cancellation email sent.');
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled and cancellation email sent.');
             }
             $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled Successfully.');
 
@@ -563,6 +563,7 @@ class Healthcareprovider extends CI_Controller
         redirect('Healthcareprovider/appointments');
     }
  */
+   
     public function appointmentReschedule()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -587,7 +588,6 @@ class Healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/');
         }
     }
-
 
     public function chiefDoctors()
     {

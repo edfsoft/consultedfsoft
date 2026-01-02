@@ -249,14 +249,20 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">S.NO</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">CC ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24"
-                                                    class="text-start">NAME</th>
+                                                <th scope="col"
+                                                    style="font-size: 16px; font-weight: 500; color: #1a1f24; cursor: pointer;"
+                                                    id="sortCcId" class="sortable">
+                                                    CC ID <span id="sortIdIndicator">🡱</span>
+                                                </th>
+                                                <th scope="col"
+                                                    style="font-size: 16px; font-weight: 500; color: #1a1f24; cursor: pointer;"
+                                                    class="text-start sortable" id="sortName">
+                                                    NAME <span id="sortNameIndicator"></span>
+                                                </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">MOBILE
                                                     NUMBER</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24"
-                                                    class="text-start">SPECIALIZATION
-                                                </th>
+                                                    class="text-start">SPECIALIZATION</th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">STATUS
                                                 </th>
                                                 <th scope="col" style="font-size: 16px; font-weight: 500; color: #1a1f24">ACTION
@@ -285,9 +291,17 @@
                     let filteredCcDetails = [...ccDetails];
                     const initialPageCc = parseInt(localStorage.getItem('currentPageCc')) || 1;
 
+                    // Default sorting: CC ID ascending
+                    let sortBy = 'ccId';
+                    let sortOrder = 'asc';
+
                     const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                     const searchBar = document.getElementById('searchBar');
                     const clearSearch = document.getElementById('clearSearch');
+                    const sortCcId = document.getElementById('sortCcId');
+                    const sortName = document.getElementById('sortName');
+                    const sortIdIndicator = document.getElementById('sortIdIndicator');
+                    const sortNameIndicator = document.getElementById('sortNameIndicator');
 
                     // Load saved itemsPerPage
                     const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageCc')) || itemsPerPageCc;
@@ -312,6 +326,34 @@
                         applyFilters();
                     });
 
+                    // Sorting click handlers
+                    sortCcId.addEventListener('click', () => {
+                        if (sortBy === 'ccId') {
+                            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            sortBy = 'ccId';
+                            sortOrder = 'asc';  // Default to ascending when switching to CC ID
+                        }
+                        updateSortIndicators();
+                        applyFilters();
+                    });
+
+                    sortName.addEventListener('click', () => {
+                        if (sortBy === 'name') {
+                            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            sortBy = 'name';
+                            sortOrder = 'asc';
+                        }
+                        updateSortIndicators();
+                        applyFilters();
+                    });
+
+                    function updateSortIndicators() {
+                        sortIdIndicator.textContent = (sortBy === 'ccId') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                        sortNameIndicator.textContent = (sortBy === 'name') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                    }
+
                     function toggleClearIcons() {
                         clearSearch.style.display = searchBar.value ? 'block' : 'none';
                     }
@@ -319,16 +361,33 @@
                     function applyFilters() {
                         const searchTerm = searchBar.value.toLowerCase();
 
-                        filteredCcDetails = ccDetails.filter((item) => {
-                            const fullName = item.doctorName || '';
-                            const ccId = item.ccId || '';
+                        let filtered = ccDetails.filter((item) => {
+                            const fullName = (item.doctorName || '').toLowerCase();
+                            const ccId = (item.ccId || '').toLowerCase();
 
-                            return (
-                                fullName.toLowerCase().includes(searchTerm) ||
-                                ccId.toLowerCase().includes(searchTerm)
-                            );
+                            return fullName.includes(searchTerm) || ccId.includes(searchTerm);
                         });
 
+                        // Apply sorting
+                        filtered.sort((a, b) => {
+                            let valA, valB;
+
+                            if (sortBy === 'ccId') {
+                                valA = (a.ccId || '').toString().toLowerCase();
+                                valB = (b.ccId || '').toString().toLowerCase();
+                            } else if (sortBy === 'name') {
+                                valA = (a.doctorName || '').toString().toLowerCase();
+                                valB = (b.doctorName || '').toString().toLowerCase();
+                            }
+
+                            if (sortOrder === 'asc') {
+                                return valA.localeCompare(valB);
+                            } else {
+                                return valB.localeCompare(valA);
+                            }
+                        });
+
+                        filteredCcDetails = filtered;
                         displayCcPage(1);
                     }
 
@@ -351,18 +410,18 @@
                             itemsToShow.forEach((value, index) => {
                                 const ccRow = document.createElement('tr');
                                 ccRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px;" class="pt-3">${value.ccId}</td>
-                <td style="font-size: 16px; text-align:left" class="pt-3">${value.doctorName}</td>
-                <td style="font-size: 16px" class="pt-3">${value.doctorMobile}</td>
-                <td style="font-size: 16px; text-align:left" class="pt-3">${value.specialization}</td>
-                <td style="font-size: 16px" class="pt-3">
-                    ${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}
-                </td>
-                <td class="d-flex d-md-block" style="font-size: 16px">
-                    <a href="${baseUrl}Edfadmin/ccDetails/${value.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${value.id}" data-name="${value.doctorName}" data-type="cc"><i class="bi bi-trash"></i></button>
-                </td>`;
+                    <td class="pt-3">${start + index + 1}.</td>
+                    <td style="font-size: 16px;" class="pt-3">${value.ccId}</td>
+                    <td style="font-size: 16px; text-align:left" class="pt-3">${value.doctorName}</td>
+                    <td style="font-size: 16px" class="pt-3">${value.doctorMobile}</td>
+                    <td style="font-size: 16px; text-align:left" class="pt-3">${value.specialization}</td>
+                    <td style="font-size: 16px" class="pt-3">
+                        ${value.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}
+                    </td>
+                    <td class="d-flex d-md-block" style="font-size: 16px">
+                        <a href="${baseUrl}Edfadmin/ccDetails/${value.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
+                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${value.id}" data-name="${value.doctorName}" data-type="cc"><i class="bi bi-trash"></i></button>
+                    </td>`;
                                 ccTableBody.appendChild(ccRow);
                             });
                         }
@@ -385,9 +444,7 @@
 
                         const prevLi = document.createElement('li');
                         prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
-                        prevLi.onclick = () => {
-                            if (currentPage > 1) displayCcPage(currentPage - 1);
-                        };
+                        prevLi.onclick = (e) => { e.preventDefault(); if (currentPage > 1) displayCcPage(currentPage - 1); };
                         ul.appendChild(prevLi);
 
                         const startPage = Math.max(1, currentPage - 2);
@@ -396,24 +453,22 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
-                            li.onclick = () => displayCcPage(i);
+                            li.onclick = (e) => { e.preventDefault(); displayCcPage(i); };
                             ul.appendChild(li);
                         }
 
                         const nextLi = document.createElement('li');
                         nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
-                        nextLi.onclick = () => {
-                            if (currentPage < totalPages) displayCcPage(currentPage + 1);
-                        };
+                        nextLi.onclick = (e) => { e.preventDefault(); if (currentPage < totalPages) displayCcPage(currentPage + 1); };
                         ul.appendChild(nextLi);
 
                         paginationContainer.appendChild(ul);
                     }
 
-                    // On load: Show all data, then render
+                    // Initial load
+                    updateSortIndicators();  // Shows 🡱 on CC ID by default
                     toggleClearIcons();
-                    filteredCcDetails = [...ccDetails];
-                    displayCcPage(initialPageCc);
+                    applyFilters();  // Applies CC ID ascending sort on load
                 </script>
 
             <?php
@@ -891,8 +946,13 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">S.NO</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500;">HCP ID</th>
-                                                            <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">NAME
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; cursor: pointer;"
+                                                                id="sortHcpId" class="sortable">
+                                                                HCP ID <span id="sortIdIndicator">🡱</span>
+                                                            </th>
+                                                            <th scope="col" style="font-size: 16px; font-weight: 500; cursor: pointer;"
+                                                                class="text-start sortable" id="sortName">
+                                                                NAME <span id="sortNameIndicator"></span>
                                                             </th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;">MOBILE NUMBER</th>
                                                             <th scope="col" style="font-size: 16px; font-weight: 500;" class="text-start">
@@ -915,8 +975,6 @@
                                 </div>
                             </section>
 
-
-
                             <script>
                                 const baseUrl = '<?php echo base_url(); ?>';
                                 let itemsPerPageHcp = 10;
@@ -924,9 +982,17 @@
                                 let filteredHcpList = [...hcpList];
                                 const initialPageHcp = parseInt(localStorage.getItem('currentPageHcp')) || 1;
 
+                                // Default sorting: HCP ID ascending
+                                let sortBy = 'hcpId';
+                                let sortOrder = 'asc';
+
                                 const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                                 const searchBar = document.getElementById('searchBar');
                                 const clearSearch = document.getElementById('clearSearch');
+                                const sortHcpId = document.getElementById('sortHcpId');
+                                const sortName = document.getElementById('sortName');
+                                const sortIdIndicator = document.getElementById('sortIdIndicator');
+                                const sortNameIndicator = document.getElementById('sortNameIndicator');
 
                                 // Load saved itemsPerPage
                                 const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPageHcp')) || itemsPerPageHcp;
@@ -951,6 +1017,34 @@
                                     applyFilters();
                                 });
 
+                                // Sorting click handlers
+                                sortHcpId.addEventListener('click', () => {
+                                    if (sortBy === 'hcpId') {
+                                        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                                    } else {
+                                        sortBy = 'hcpId';
+                                        sortOrder = 'asc';  // Default to ascending when switching to HCP ID
+                                    }
+                                    updateSortIndicators();
+                                    applyFilters();
+                                });
+
+                                sortName.addEventListener('click', () => {
+                                    if (sortBy === 'name') {
+                                        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                                    } else {
+                                        sortBy = 'name';
+                                        sortOrder = 'asc';
+                                    }
+                                    updateSortIndicators();
+                                    applyFilters();
+                                });
+
+                                function updateSortIndicators() {
+                                    sortIdIndicator.textContent = (sortBy === 'hcpId') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                                    sortNameIndicator.textContent = (sortBy === 'name') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                                }
+
                                 function toggleClearIcons() {
                                     clearSearch.style.display = searchBar.value ? 'block' : 'none';
                                 }
@@ -958,16 +1052,33 @@
                                 function applyFilters() {
                                     const searchTerm = searchBar.value.toLowerCase();
 
-                                    filteredHcpList = hcpList.filter((hcp) => {
-                                        const fullName = hcp.hcpName || '';
-                                        const hcpId = hcp.hcpId || '';
+                                    let filtered = hcpList.filter((hcp) => {
+                                        const fullName = (hcp.hcpName || '').toLowerCase();
+                                        const hcpId = (hcp.hcpId || '').toLowerCase();
 
-                                        return (
-                                            fullName.toLowerCase().includes(searchTerm) ||
-                                            hcpId.toLowerCase().includes(searchTerm)
-                                        );
+                                        return fullName.includes(searchTerm) || hcpId.includes(searchTerm);
                                     });
 
+                                    // Apply sorting
+                                    filtered.sort((a, b) => {
+                                        let valA, valB;
+
+                                        if (sortBy === 'hcpId') {
+                                            valA = (a.hcpId || '').toString().toLowerCase();
+                                            valB = (b.hcpId || '').toString().toLowerCase();
+                                        } else if (sortBy === 'name') {
+                                            valA = (a.hcpName || '').toString().toLowerCase();
+                                            valB = (b.hcpName || '').toString().toLowerCase();
+                                        }
+
+                                        if (sortOrder === 'asc') {
+                                            return valA.localeCompare(valB);
+                                        } else {
+                                            return valB.localeCompare(valA);
+                                        }
+                                    });
+
+                                    filteredHcpList = filtered;
                                     displayHcpPage(1);
                                 }
 
@@ -990,18 +1101,18 @@
                                         itemsToShow.forEach((hcp, index) => {
                                             const hcpRow = document.createElement('tr');
                                             hcpRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td style="font-size: 16px" class="pt-3">${hcp.hcpId}</td>
-                <td style="font-size: 16px; text-align:left" class="pt-3">${hcp.hcpName}</td>
-                <td style="font-size: 16px" class="pt-3">${hcp.hcpMobile}</td>
-                <td style="font-size: 16px; text-align:left" class="pt-3">${hcp.hcpSpecialization}</td>
-                <td style="font-size: 16px" class="pt-3">
-                    ${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}
-                </td>
-                <td class="d-flex d-md-block" style="font-size: 16px">
-                    <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
-                    <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${hcp.id}" data-name="${hcp.hcpName}" data-type="hcp"><i class="bi bi-trash"></i></button>
-                </td>`;
+                    <td class="pt-3">${start + index + 1}.</td>
+                    <td style="font-size: 16px" class="pt-3">${hcp.hcpId}</td>
+                    <td style="font-size: 16px; text-align:left" class="pt-3">${hcp.hcpName}</td>
+                    <td style="font-size: 16px" class="pt-3">${hcp.hcpMobile}</td>
+                    <td style="font-size: 16px; text-align:left" class="pt-3">${hcp.hcpSpecialization}</td>
+                    <td style="font-size: 16px" class="pt-3">
+                        ${hcp.approvalStatus == 1 ? '<i class="bi bi-patch-check-fill text-success"></i>' : '<i class="bi bi-patch-check-fill text-danger"></i>'}
+                    </td>
+                    <td class="d-flex d-md-block" style="font-size: 16px">
+                        <a href="${baseUrl}Edfadmin/hcpDetails/${hcp.id}"><button class="btn btn-success me-1"><i class="bi bi-eye"></i></button></a>
+                        <button class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#SecondconfirmDelete" data-id="${hcp.id}" data-name="${hcp.hcpName}" data-type="hcp"><i class="bi bi-trash"></i></button>
+                    </td>`;
                                             hcpTableBody.appendChild(hcpRow);
                                         });
                                     }
@@ -1024,9 +1135,7 @@
 
                                     const prevLi = document.createElement('li');
                                     prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
-                                    prevLi.onclick = () => {
-                                        if (currentPage > 1) displayHcpPage(currentPage - 1);
-                                    };
+                                    prevLi.onclick = (e) => { e.preventDefault(); if (currentPage > 1) displayHcpPage(currentPage - 1); };
                                     ul.appendChild(prevLi);
 
                                     const startPage = Math.max(1, currentPage - 2);
@@ -1035,24 +1144,22 @@
                                     for (let i = startPage; i <= endPage; i++) {
                                         const li = document.createElement('li');
                                         li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#2b353bf5' : 'transparent'};">${i}</button></a>`;
-                                        li.onclick = () => displayHcpPage(i);
+                                        li.onclick = (e) => { e.preventDefault(); displayHcpPage(i); };
                                         ul.appendChild(li);
                                     }
 
                                     const nextLi = document.createElement('li');
                                     nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
-                                    nextLi.onclick = () => {
-                                        if (currentPage < totalPages) displayHcpPage(currentPage + 1);
-                                    };
+                                    nextLi.onclick = (e) => { e.preventDefault(); if (currentPage < totalPages) displayHcpPage(currentPage + 1); };
                                     ul.appendChild(nextLi);
 
                                     paginationContainer.appendChild(ul);
                                 }
 
-                                // On load: Show all data, then render
+                                // Initial load
+                                updateSortIndicators();  // Shows 🡱 on HCP ID by default
                                 toggleClearIcons();
-                                filteredHcpList = [...hcpList];
-                                displayHcpPage(initialPageHcp);
+                                applyFilters();  // Applies HCP ID ascending sort on first load
                             </script>
 
             <?php
@@ -1713,7 +1820,7 @@
                                             }
 
                                             // Initial load
-                                            updateSortIndicators();  // Show default ↑ on Patient ID
+                                            updateSortIndicators();  // Show default 🡱 on Patient ID
                                             toggleClearIcons();
                                             applyFilters();  // This will sort by Patient ID ascending by default
                                         </script>

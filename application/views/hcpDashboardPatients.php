@@ -43,6 +43,11 @@
         .fieldLink:hover {
             text-decoration: underline;
         }
+
+        .sortable:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -108,8 +113,14 @@
                                         <tr>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PHOTO</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ID</th>
-                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">NAME</th>
+                                            <th scope="col" id="sortPatientId" class="sortable"
+                                                style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor: pointer;"> ID
+                                                <span id="sortIdIndicator">🡳</span>
+                                            </th>
+                                            <th scope="col" class="sortable" id="sortPatientName"
+                                                style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor: pointer;">
+                                                NAME <span id="sortNameIndicator"></span>
+                                            </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">MOBILE
                                             </th>
                                             <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">GENDER
@@ -136,18 +147,21 @@
             <script>
                 let itemsPerPagePatients = 10;
                 const patientDetails = <?php echo json_encode($patientList); ?>;
-                patientDetails.sort((a, b) => {
-                    const dateA = new Date(a.createdAt || a.enrolledTime);
-                    const dateB = new Date(b.createdAt || b.enrolledTime);
-                    return dateB - dateA;
-                });
+
                 let filteredPatientDetails = [...patientDetails];
                 const initialPagePatients = parseInt(localStorage.getItem('currentPagePatients')) || 1;
+
+                let sortBy = 'id';
+                let sortOrder = 'desc';
 
                 const itemsPerPageDropdown = document.getElementById('itemsPerPageDropdown');
                 const searchBar = document.getElementById('searchBar');
                 const clearSearch = document.getElementById('clearSearch');
                 const filterDropdown = document.getElementById('filterDropdown');
+                const sortPatientId = document.getElementById('sortPatientId');
+                const sortPatientName = document.getElementById('sortPatientName');
+                const sortIdIndicator = document.getElementById('sortIdIndicator');
+                const sortNameIndicator = document.getElementById('sortNameIndicator');
 
                 // Load saved itemsPerPage
                 const savedItemsPerPage = parseInt(localStorage.getItem('itemsPerPagePatients')) || itemsPerPagePatients;
@@ -174,6 +188,34 @@
 
                 filterDropdown.addEventListener('change', applyFilters);
 
+                // Sorting click handlers
+                sortPatientId.addEventListener('click', () => {
+                    if (sortBy === 'id') {
+                        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        sortBy = 'id';
+                        sortOrder = 'desc';  // Default to descending when switching to ID
+                    }
+                    updateSortIndicators();
+                    applyFilters();
+                });
+
+                sortPatientName.addEventListener('click', () => {
+                    if (sortBy === 'name') {
+                        sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        sortBy = 'name';
+                        sortOrder = 'asc';
+                    }
+                    updateSortIndicators();
+                    applyFilters();
+                });
+
+                function updateSortIndicators() {
+                    sortIdIndicator.textContent = (sortBy === 'id') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                    sortNameIndicator.textContent = (sortBy === 'name') ? (sortOrder === 'asc' ? '🡱' : '🡳') : '';
+                }
+
                 function toggleClearIcons() {
                     clearSearch.style.display = searchBar.value ? 'block' : 'none';
                 }
@@ -182,7 +224,7 @@
                     const searchTerm = searchBar.value.toLowerCase();
                     const genderFilter = filterDropdown.value;
 
-                    filteredPatientDetails = patientDetails.filter((patient) => {
+                    let filtered = patientDetails.filter((patient) => {
                         const fullName = `${patient.firstName || ''} ${patient.lastName || ''}`.trim();
                         const patientId = patient.patientId || '';
                         const mobileNumber = patient.mobileNumber || '';
@@ -202,6 +244,25 @@
                         return matchesSearch && matchesGender;
                     });
 
+                    // Apply sorting based on current sortBy and sortOrder
+                    filtered.sort((a, b) => {
+                        if (sortBy === 'id') {
+                            const idA = (a.patientId || '').toString().toLowerCase();
+                            const idB = (b.patientId || '').toString().toLowerCase();
+                            return sortOrder === 'asc'
+                                ? idA.localeCompare(idB)
+                                : idB.localeCompare(idA);
+                        } else if (sortBy === 'name') {
+                            const nameA = `${a.firstName || ''} ${a.lastName || ''}`.trim().toLowerCase();
+                            const nameB = `${b.firstName || ''} ${b.lastName || ''}`.trim().toLowerCase();
+                            return sortOrder === 'asc'
+                                ? nameA.localeCompare(nameB)
+                                : nameB.localeCompare(nameA);
+                        }
+                        return 0;
+                    });
+
+                    filteredPatientDetails = filtered;
                     displayPatientPage(1);
                 }
 
@@ -239,24 +300,35 @@
 
                             const patientRow = document.createElement('tr');
                             patientRow.innerHTML = `
-                <td class="pt-3">${start + index + 1}.</td>
-                <td class="px-2">
-                    <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" alt="Profile" width="40" height="40" class="rounded-circle"  onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg') ?>';">
-                </td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
-                 class="fieldLink text-dark"> ${value.patientId}</a></td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
-                 class="fieldLink text-dark"> ${value.firstName} ${value.lastName}</a></td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
-                 class="fieldLink text-dark"> ${value.mobileNumber}</a></td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
-                 class="fieldLink text-dark"> ${value.gender}</a></td>
-                <td style="font-size: 16px" class="pt-3"><a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}"
-                 class="fieldLink text-dark"> ${currentAge}</a></td>
-                <td class="pt-2" style="font-size: 16px;">
-                    <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1"><button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button></a>
-                    <a href="<?php echo base_url(); ?>Consultation/consultation/${value.id}" class=""><button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button></a>
-                </td>`;
+                    <td class="pt-3">${start + index + 1}.</td>
+                    <td class="px-2">
+                        <img src="${value.profilePhoto && value.profilePhoto !== 'No data' ? '<?php echo base_url(); ?>uploads/' + value.profilePhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg'}" 
+                             alt="Profile" width="40" height="40" class="rounded-circle"  
+                             onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg') ?>';">
+                    </td>
+                    <td style="font-size: 16px" class="pt-3">
+                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${value.patientId}</a>
+                    </td>
+                    <td style="font-size: 16px" class="pt-3">
+                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${value.firstName} ${value.lastName}</a>
+                    </td>
+                    <td style="font-size: 16px" class="pt-3">
+                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${value.mobileNumber}</a>
+                    </td>
+                    <td style="font-size: 16px" class="pt-3">
+                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${value.gender}</a>
+                    </td>
+                    <td style="font-size: 16px" class="pt-3">
+                        <a href="<?php echo base_url('Consultation/consultation/'); ?>${value.id}" class="fieldLink text-dark"> ${currentAge}</a>
+                    </td>
+                    <td class="pt-2" style="font-size: 16px;">
+                        <a href="<?php echo base_url(); ?>Healthcareprovider/patientdetails/${value.id}" class="px-1">
+                            <button class="btn btn-success mb-1"><i class="bi bi-eye"></i></button>
+                        </a>
+                        <a href="<?php echo base_url(); ?>Consultation/consultation/${value.id}" class="">
+                            <button class="btn btn-secondary text-light mb-1"><i class="bi bi-calendar-check"></i></button>
+                        </a>
+                    </td>`;
                             patientContainer.appendChild(patientRow);
                         });
                     }
@@ -278,9 +350,7 @@
 
                     const prevLi = document.createElement('li');
                     prevLi.innerHTML = `<a href="#"><button type="button" class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button></a>`;
-                    prevLi.onclick = () => {
-                        if (currentPage > 1) displayPatientPage(currentPage - 1);
-                    };
+                    prevLi.onclick = (e) => { e.preventDefault(); if (currentPage > 1) displayPatientPage(currentPage - 1); };
                     ul.appendChild(prevLi);
 
                     const startPage = Math.max(1, currentPage - 2);
@@ -289,24 +359,22 @@
                     for (let i = startPage; i <= endPage; i++) {
                         const li = document.createElement('li');
                         li.innerHTML = `<a href="#"><button type="button" class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}" style="background-color: ${i === currentPage ? '#00ad8e' : 'transparent'};">${i}</button></a>`;
-                        li.onclick = () => displayPatientPage(i);
+                        li.onclick = (e) => { e.preventDefault(); displayPatientPage(i); };
                         ul.appendChild(li);
                     }
 
                     const nextLi = document.createElement('li');
                     nextLi.innerHTML = `<a href="#"><button type="button" class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button></a>`;
-                    nextLi.onclick = () => {
-                        if (currentPage < totalPages) displayPatientPage(currentPage + 1);
-                    };
+                    nextLi.onclick = (e) => { e.preventDefault(); if (currentPage < totalPages) displayPatientPage(currentPage + 1); };
                     ul.appendChild(nextLi);
 
                     paginationContainer.appendChild(ul);
                 }
 
-                // On load: Show all data, then render
+                // Initial load - Show 🡳 on ID and sort by ID descending by default
+                updateSortIndicators();
                 toggleClearIcons();
-                filteredPatientDetails = [...patientDetails];
-                displayPatientPage(initialPagePatients);
+                applyFilters();  // Will sort by Patient ID descending on first load
             </script>
 
             <?php
@@ -375,9 +443,9 @@
                                 </div>
                                 <div class="d-md-flex justify-content-between pb-3">
                                     <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                        <label class="form-label" for="patientEmail">Email Id 
+                                        <label class="form-label" for="patientEmail">Email Id
                                             <!-- <span class="text-danger">*</span> -->
-                                            </label>
+                                        </label>
                                         <input type="email" class="form-control" id="patientEmail" name="patientEmail"
                                             placeholder="E.g. example@gmail.com" maxlength="50">
                                         <small id="patientEmail_err" class="text-danger pt-1"></small>
@@ -585,7 +653,7 @@
                                             </div>
                                             <div class="d-md-flex justify-content-between pb-3">
                                                 <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
-                                                    <label class="form-label" for="patientEmail">Email 
+                                                    <label class="form-label" for="patientEmail">Email
                                                         <!-- <span class="text-danger">*</span> -->
                                                     </label>
                                                     <input type="email" class="form-control" id="patientEmail" name="patientEmail"
@@ -979,7 +1047,7 @@
             //     document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
             //     isValid = false;
             // } else
-             if (mailId !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
+            if (mailId !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailId)) {
                 document.getElementById("patientEmail_err").innerHTML = "Please enter a valid email address";
                 isValid = false;
             } else {

@@ -268,6 +268,30 @@ class Consultation extends CI_Controller
             $this->session->set_flashdata('showErrorMessage', 'Failed to save consultation details.');
         }
 
+        // Send mail only for new consultation
+        // if ($post['consultationSendEmail'] == '1') {
+        //     $patient = $this->ConsultModel->getPatientDetails($post['patientIdDb']);
+        //     $email = $patient[0]['mailId'];
+
+        //     $message = "
+        //         Dear {$patient[0]['firstName']} {$patient[0]['lastName']},
+        //         <br><br>
+        //         Your consultation has been successfully completed.  
+        //         Regards,
+        //         <br>
+        //         <b>EDF Healthcare Team</b>
+        // ";
+
+        //     $this->email->set_newline("\r\n");
+        //     $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+        //     $this->email->to($email);
+        //     $this->email->subject('Consultation Completed');
+        //     $this->email->message($message);
+
+        //     $mailSendResult = $this->email->send();
+        // }
+        // *************************** Currently commented - Get details need to send in mail **************************************
+
         redirect('Consultation/consultation/' . $post['patientIdDb']);
     }
 

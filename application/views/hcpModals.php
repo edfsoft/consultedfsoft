@@ -26,7 +26,7 @@
         <div class="modal-content border-0 rounded-3 shadow">
             <div class="modal-header text-dark rounded-top-3">
                 <h5 class="modal-title fw-medium" style="font-family: Poppins, sans-serif;"
-                    id="deleteConfirmModalLabel">Confirm Consultation Deletion</h5>
+                    id="deleteConfirmModalLabel">Cancel and Delete Appointment</h5>
                 <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
@@ -53,32 +53,32 @@
             </div>
             <div class="modal-body">
                 <div class="form-group pb-2">
-                    <label>First Name <span class="text-danger">*</span></label>
+                    <label class="fw-medium" >First Name <span class="text-danger">*</span></label>
                     <input type="text" name="newFirstName" id="newFirstName" placeholder="E.g. Siva"
                         class="form-control">
                     <small id="newFirstName_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
-                    <label>Last Name</label>
+                    <label class="fw-medium">Last Name</label>
                     <input type="text" name="newLastName" id="newLastName" placeholder="E.g. kumar"
                         class="form-control">
                     <small id="newLastName_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
-                    <label>Mobile <span class="text-danger">*</span></label>
+                    <label class="fw-medium">Mobile Number <span class="text-danger">*</span></label>
                     <input type="text" name="newMobile" id="newMobile" placeholder="E.g. 5987654321"
                         class="form-control" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     <small id="newMobile_err" class="text-danger"></small>
                     <small id="newMobileDuplicate_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
-                    <label>Email <span class="text-danger">*</span></label>
+                    <label class="fw-medium">Email Address <span class="text-danger">*</span></label>
                     <input type="email" name="newEmail" id="newEmail" placeholder="E.g. siva@gmail.com"
                         class="form-control">
                     <small id="newEmail_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
-                    <label>Gender <span class="text-danger">*</span></label>
+                    <label class="fw-medium">Gender <span class="text-danger">*</span></label>
                     <select name="newGender" id="newGender" class="form-control">
                         <option value="">Select Gender</option>
                         <option value="Male">Male</option>
@@ -88,7 +88,7 @@
                     <small id="newGender_err" class="text-danger"></small>
                 </div>
                 <div class="form-group pb-2">
-                    <label>Age <span class="text-danger">*</span></label>
+                    <label class="fw-medium">Age <span class="text-danger">*</span></label>
                     <input type="number" name="newAge" id="newAge" placeholder="E.g. 35" class="form-control">
                     <small id="newAge_err" class="text-danger"></small>
                 </div>

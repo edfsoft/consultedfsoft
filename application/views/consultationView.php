@@ -337,6 +337,21 @@
         .sortable-ghost {
             opacity: 0.4;
         }
+
+        /* Send mail from consultation to patient checkbox styles */
+        .form-check-input:checked {
+            border-color: #2b353b;
+        }
+
+        .form-check-input:disabled {
+            opacity: 1;
+            background-color: #dee2e6;
+            border-color: #2b353b;
+        }
+
+        .form-check-input:disabled+.form-check-label {
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -684,11 +699,13 @@
                                                                                 </td>
                                                                                 <td
                                                                                     style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($medicine['quantity'] ?? '-') ?>
+                                                                                    <?= htmlspecialchars(trim($medicine['quantity'] ?? '') ?: '-') ?>
+
                                                                                 </td>
                                                                                 <td
                                                                                     style="border: 1px solid #000; padding: 6px; text-align: center;">
-                                                                                    <?= htmlspecialchars($medicine['food_timing'] ?? '-') ?>
+                                                                                    <?= htmlspecialchars(trim($medicine['food_timing'] ?? '') ?: '-') ?>
+
                                                                                 </td>
 
                                                                                 <!-- Frequency split -->
@@ -701,7 +718,7 @@
                                                                                         $number = $parts[1] ?? $morning;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $morning)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -720,7 +737,7 @@
                                                                                         $number = $parts[1] ?? $afternoon;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $afternoon)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -739,7 +756,7 @@
                                                                                         $number = $parts[1] ?? $evening;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $evening)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -758,7 +775,7 @@
                                                                                         $number = $parts[1] ?? $night;  // the digits
                                                                                         $unit = trim(str_replace($number, '', $night)); // everything else (ml, tab, etc.)
                                                             
-                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span><br>';
+                                                                                        echo '<span style="font-size: 15px;">' . htmlspecialchars($number) . '</span>';
                                                                                         if ($unit) {
                                                                                             echo ' <span style="font-size: 13px; color: #555;">' . htmlspecialchars($unit) . '</span>';
                                                                                         }
@@ -1165,7 +1182,7 @@
                             <!-- New Consultation -->
                             <div class="tab-pane fade" id="new-consultation" role="tabpanel">
                                 <form action="<?php echo base_url() . 'Consultation/saveConsultation' ?>" method="post"
-                                    id="consultationForm" class="mb-5" enctype="multipart/form-data">
+                                    id="consultationForm" class="mb-3" enctype="multipart/form-data">
                                     <input type="hidden" id="patientIdDb" name="patientIdDb"
                                         value="<?php echo $patientDetails[0]['id'] ?>">
                                     <input type="hidden" id="patientId" name="patientId"
@@ -1630,8 +1647,22 @@
                                         <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                                     </div>
 
-                                    <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
-                                        style="background-color: #00ad8e;">Save</button>
+                                    <div class="d-flex justify-content-between mt-5">
+                                        <?php
+                                        $emailAvailable = !empty($patientDetails[0]['mailId']); ?>
+                                        <div class="form-check">
+                                            <input type="hidden" name="consultationSendEmail" value="0">
+                                            <input class="form-check-input border-dark" type="checkbox"
+                                                id="consultationSendEmail" name="consultationSendEmail" value="1"
+                                                <?= $emailAvailable ? '' : 'disabled'; ?>>
+                                            <label class="form-check-label fw-medium text-dark" for="consultationSendEmail">
+                                                Send consultation details to patient's email
+                                            </label>
+                                        </div>
+
+                                        <button type="submit" id="submitForm" class="float-end btn text-light"
+                                            style="background-color: #00ad8e;">Save</button>
+                                    </div>
                                 </form>
                                 <!---------------------------------------------------- Image Edit Modal -------------------------->
                                 <div class="modal fade" id="imageEditModal" tabindex="-1"
@@ -2220,7 +2251,7 @@
                                     value="<?= isset($consultation['next_follow_up']) ? $consultation['next_follow_up'] : '' ?>">
                                 <div id="nextFollowUpDate_err" class="text-danger pt-1"></div>
                             </div>
-
+                            <input type="hidden" name="consultationSendEmail" value="0">
                             <button type="submit" id="submitForm" class="mt-2 float-end btn text-light"
                                 style="background-color: #00ad8e;">Save as new</button>
                         </form>

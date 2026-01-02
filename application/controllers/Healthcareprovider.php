@@ -12,6 +12,12 @@ class Healthcareprovider extends CI_Controller
         $this->load->library('session');
         $this->load->library('email');
         $this->check_session_timeout();
+        //Notify Pending Appointments
+        if ($this->session->has_userdata('hcpIdDb')) {
+            $this->data['todayCount'] = $this->HcpModel->getTodayPendingCount();
+        } else {
+            $this->data['todayCount'] = 0;
+        }
     }
 
     private function check_session_timeout()
@@ -426,18 +432,103 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    /* public function newAppointment()
+ {
+     if ($this->HcpModel->insertAppointment()) {
+
+         $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+     } else {
+         $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
+     }
+     redirect('Healthcareprovider/appointments');
+ } */
+
     public function newAppointment()
     {
-        if ($this->HcpModel->insertAppointment()) {
+        $appointmentId = $this->HcpModel->insertAppointment();
 
-            $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
-        } else {
+        if (!$appointmentId) {
             $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
+            redirect('Healthcareprovider/appointments');
+            return;
         }
+
+        $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
+
+        if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
+
+            $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
+            $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
+
+            $message = "
+                Dear {$details['firstName']},<br><br>
+                Your appointment has been successfully booked.<br><br>
+                <b>📅 Date:</b> {$formattedDate}<br>
+                <b>⏰ Time:</b> {$formattedTime}<br><br>
+                <b>🔗 Join Meeting:</b><br>
+                <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
+                Please join the meeting at the scheduled time.<br><br>
+                Regards,<br><b>EDF Healthcare Team</b>
+            ";
+
+            $this->email->set_newline("\r\n");
+            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+            $this->email->to($details['mailId']);
+            $this->email->subject('Appointment Confirmation & Meeting Link');
+            $this->email->message($message);
+            $this->email->send();
+
+            $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully and Mail has been sent');
+        }
+
+        $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
         redirect('Healthcareprovider/appointments');
     }
 
-    public function appointmentUpdate()
+    //Delete Appointments
+    public function deleteAppointment($id)
+    {
+        $details = $this->HcpModel->getAppointmentAndPatientDetails($id);
+
+        if ($this->HcpModel->delete_appointment($id)) {
+
+            if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
+
+                $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
+                $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
+
+                $message = "
+                Dear {$details['firstName']},<br><br>
+
+                Your appointment on <b>{$formattedDate}</b> at <b>{$formattedTime}</b> 
+                has been <b>CANCELED</b>.<br><br>
+
+                You may reschedule anytime through our platform.<br><br>
+
+                Regards,<br>
+                <b>EDF Healthcare Team</b>
+                ";
+
+                $this->email->set_newline("\r\n");
+                $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+                $this->email->to($details['mailId']);
+                $this->email->subject('Appointment Cancellation Notice');
+                $this->email->message($message);
+                $this->email->send();
+
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled and cancellation email sent.');
+            }
+            $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled Successfully.');
+
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Failed to cancel appointment.');
+        }
+
+        redirect('Healthcareprovider/appointments');
+    }
+
+    //Update Appointments
+    /* public function appointmentUpdate()
     {
         if (isset($_SESSION['hcpsName'])) {
             $this->data['method'] = "appointmentUpdate";
@@ -471,7 +562,8 @@ class Healthcareprovider extends CI_Controller
         }
         redirect('Healthcareprovider/appointments');
     }
-
+ */
+   
     public function appointmentReschedule()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -496,7 +588,6 @@ class Healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/');
         }
     }
-
 
     public function chiefDoctors()
     {

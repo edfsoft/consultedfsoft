@@ -81,11 +81,29 @@
             </a>
         </li>
 
-        <li class="pt-4">
+<!--       <li class="pt-4">
             <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                 style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                 <div>
                     <i class="bi bi-calendar2-check pe-3"></i> <span>Appointments</span>
+                </div>
+            </a>
+        </li> -->
+        <li class="pt-4">
+            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" 
+            style="font-size: 18px; font-weight: 400; color: white;" 
+            id="appointments">
+                
+                <div class="d-flex justify-content-between align-items-center pe-3">
+                    <div>
+                        <i class="bi bi-calendar2-check pe-3"></i> 
+                        <span>Appointments</span>
+                    </div>
+                    <?php if (isset($todayCount) && $todayCount > 0): ?>
+                        <span class="badge bg-danger rounded-pill" style="font-size: 12px;">
+                            <?php echo $todayCount; ?>
+                        </span>
+                    <?php endif; ?>
                 </div>
             </a>
         </li>

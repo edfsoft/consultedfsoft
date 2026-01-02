@@ -12,6 +12,12 @@ class Healthcareprovider extends CI_Controller
         $this->load->library('session');
         $this->load->library('email');
         $this->check_session_timeout();
+        //Notify Pending Appointments
+        if ($this->session->has_userdata('hcpIdDb')) {
+            $this->data['todayCount'] = $this->HcpModel->getTodayPendingCount();
+        } else {
+            $this->data['todayCount'] = 0;
+        }
     }
 
     private function check_session_timeout()

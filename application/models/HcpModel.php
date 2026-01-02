@@ -402,6 +402,18 @@ class HcpModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
+    public function getTodayPendingCount()
+    {
+        $hcpIdDb = $_SESSION['hcpIdDb'];
+        $today = date('Y-m-d');
+        $currentTime = date('H:i'); 
+        $this->db->where('hcpDbId', $hcpIdDb);
+        $this->db->where('dateOfAppoint', $today);
+        $this->db->where('appStatus', '0');
+        $this->db->where('timeOfAppoint >=', $currentTime);
+        return $this->db->count_all_results('appointment_details');
+    }
+
     public function insertPartialPatient($data)
     {
         $this->db->insert('patient_details', $data);

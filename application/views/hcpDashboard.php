@@ -1079,7 +1079,13 @@
 
                         function formatDateOrToday(dateStr) {
                             const today = new Date().toISOString().slice(0, 10);
-                            return dateStr === today ? '<b>Today</b>' : dateStr;
+
+                            if (dateStr === today) {
+                                return '<b>Today</b>';
+                            }
+
+                            const [year, month, day] = dateStr.split('-');
+                            return `${day}-${month}-${year}`;
                         }
 
                         function safeUrl(url) {
@@ -1164,96 +1170,328 @@
                     </script>
 
                 <?php if (isset($appointmentReschedule[0]['id'])) { ?>
+                <section>
+                    <div class="card rounded mt-4"> <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                            <p style="font-size: 24px; font-weight: 500">
+                                Reschedule Appointments
+                            </p>
+                        </div>
 
-                        <div class="card rounded">
-                            <div class="mt-2 p-2 pt-sm-4 px-sm-4">
-                                <p style="font-size: 24px; font-weight: 500">
-                                    Reschedule Appointments
-                                </p>
-                            </div>
+                        <div id="entriesPerPageReschedule" class="d-md-flex align-items-center justify-content-between mx-4">
+                            <select id="filterDropdownReschedule" class="form-select border border-2 rounded-3 px-3 py-2"
+                                style="height: 50px; width: 250px;">
+                                <option value="All">Filter (All)</option>
+                                <option value="PATIENT">HCP</option>
+                                <option value="CC">CC</option>
+                            </select>
 
-                            <div class="card-body p-2 p-sm-4">
-                                <div class="table-responsive">
-                                    <table class="table table-hoverr text-center" id="appointmentReschedule">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PATIENT ID
-                                                </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">DATE</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">PURPOSE
-                                                </th>
-                                                <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $count = 1;
-                                            foreach ($appointmentReschedule as $value) {
-                                            ?>
-                                                <tr>
-                                                    <td><?php echo $count++; ?>.</td>
-
-                                                    <td>
-                                                        <a href="<?php echo base_url('Healthcareprovider/patientdetails/' . $value['patientDbId']); ?>"
-                                                        class="text-dark"
-                                                        onmouseover="this.style.textDecoration='underline'"
-                                                        onmouseout="this.style.textDecoration='none'">
-                                                            <?php echo htmlspecialchars($value['patientId'], ENT_QUOTES, 'UTF-8'); ?>
-                                                        </a>
-                                                    </td>
-
-                                                    <td>
-                                                        <?php echo date('d-m-Y', strtotime($value['dateOfAppoint'])); ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <?php echo date('h:i a', strtotime($value['timeOfAppoint'])); ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <?php
-                                                        if (!empty($value['referalDoctorDbId']) && $value['referalDoctorDbId'] !== 'Nil') {
-                                                        ?>
-                                                            <a href="<?php echo base_url('Healthcareprovider/chiefDoctorsProfile/' . $value['referalDoctorDbId']); ?>"
-                                                            class="text-dark"
-                                                            onmouseover="this.style.textDecoration='underline'"
-                                                            onmouseout="this.style.textDecoration='none'">
-                                                                <?php echo htmlspecialchars($value['referalDoctor'], ENT_QUOTES, 'UTF-8'); ?>
-                                                            </a>
-                                                        <?php } else { ?>
-                                                            NA
-                                                        <?php } ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <?php echo !empty($value['patientComplaint']) ? htmlspecialchars($value['patientComplaint']) : '-'; ?>
-                                                    </td>
-
-                                                    <td>
-                                                        <a href="<?php echo base_url('Healthcareprovider/appointmentUpdate/' . $value['id']); ?>">
-                                                            <button class="btn btn-secondary">
-                                                                <i class="bi bi-calendar-event"></i> Reschedule
-                                                            </button>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            <?php } ?>
-                                            </tbody>
-
-                                    </table>
-                                </div>
+                            <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
+                                <input type="text" id="searchBarReschedule"
+                                    class="border border-2 rounded-3 px-3 py-2"
+                                    style="height: 50px; width: 260px"
+                                    placeholder="Search (Patient ID / CC ID)">
+                                <span id="clearSearchReschedule" class="position-absolute"
+                                    style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; display: none; font-size: 22px;">&times;</span>
                             </div>
                         </div>
-                <?php } ?>
+
+                        <div class="mt-3 ms-4">
+                            <label>Show</label>
+                            <select id="itemsPerPageDropdownReschedule"
+                                class="form-select d-inline-block border border-2 rounded-2 w-auto mx-2">
+                                <option value="10" selected>10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                            <label>Entries</label>
+                        </div>
+
+                        <div class="card-body p-2 p-sm-4">
+                            <div class="table-responsive">
+                                <table class="table text-center table-hoverr" id="appointmentRescheduleTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">S.NO</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">
+                                                        APPOINTMENT WITH</th>
+                                            
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor:pointer;" id="sortPatientIdReschedule">
+                                                <span onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+                                                    PATIENT ID <span id="sortPatientIdIndicatorReschedule"></span>
+                                                </span>
+                                            </th>
+
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e; cursor:pointer;" id="sortDateReschedule">
+                                                <span onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+                                                    DATE <span id="sortDateIndicatorReschedule">🡱</span>
+                                                </span>
+                                            </th>
+
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">TIME</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">CC ID</th>
+                                            <th scope="col" style="font-size: 16px; font-weight: 500; color: #00ad8e">ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="rescheduleTableBody">
+                                        </tbody>
+                                </table>
+                                
+                                <div class="d-md-flex justify-content-between ms-2">
+                                    <div id="entriesInfoReschedule" class="mt-4"></div>
+                                    <div class="pagination justify-content-end mt-4" id="paginationContainerReschedule"></div>
+                                </div>
+                            </div>
+                    </div>
+                    </div>
+                    <?php } ?>
                 </section>
 
+    <script>
+        // 1. DATA SOURCE
+        const rescheduleList = <?php echo json_encode($appointmentReschedule, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+        
+        // 2. STATE VARIABLES (Isolated for Reschedule Table)
+        let filteredRescheduleList = [...rescheduleList];
+        let itemsPerPageReschedule = 10;
+        let currentPageReschedule = 1;
+        let sortByReschedule = 'dateOfAppoint'; // Default sort by date for reschedule
+        let sortOrderReschedule = 'asc';
 
-            <?php
-        }else if ($method == "appointmentsForm") {
+        // 3. DOM ELEMENTS
+        const itemsDropdownRes = document.getElementById('itemsPerPageDropdownReschedule');
+        const searchBarRes = document.getElementById('searchBarReschedule');
+        const clearSearchRes = document.getElementById('clearSearchReschedule');
+        const filterDropdownRes = document.getElementById('filterDropdownReschedule');
+
+        const sortPidRes = document.getElementById('sortPatientIdReschedule');
+        const sortDateRes = document.getElementById('sortDateReschedule');
+        const pidIndRes = document.getElementById('sortPatientIdIndicatorReschedule');
+        const dateIndRes = document.getElementById('sortDateIndicatorReschedule');
+
+        // 4. ACTION BUTTON RENDERER
+        function renderRescheduleActions(row) {
+            // Reschedule Button (Navigates to update page)
+            const rescheduleBtn = `
+                <a href="${baseUrl}Healthcareprovider/appointmentReschedule/${row.id}">
+                    <button class="btn btn-secondary" title="Reschedule">
+                        <i class="bi bi-calendar-event"></i>
+                    </button>
+                </a>
+            `;
+
+            // Delete Button (Triggers Modal via new function)
+            const deleteBtn = `
+                <button class="btn btn-danger" onclick="confirmDeleteReschedule(${row.id})" title="Delete">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+
+            return `
+                <div class="d-flex justify-content-center gap-2">
+                    ${rescheduleBtn}
+                    ${deleteBtn}
+                </div>
+            `;
+        }
+
+        // 5. DELETE CONFIRMATION (Specific to Reschedule List)
+        function confirmDeleteReschedule(id) {
+            // We search inside 'rescheduleList' instead of the main 'appointmentList'
+            const app = rescheduleList.find(item => item.id == id);
+            
+            if (app) {
+                // Re-use formatting logic
+                let formattedTime = formatTimeAMPM(app.timeOfAppoint);
+                let formattedDate = formatDateOrToday(app.dateOfAppoint).replace('<b>Today</b>', app.dateOfAppoint); // Strip bold for modal
+                
+                // Re-use modal ID 'deleteConfirmModal' from your existing page
+                var content = `
+                    <p>Are you sure you want to delete this Appointment?</p>
+                    <div class="alert alert-light border">
+                        <strong>Patient Name:</strong> ${app.firstName || ''} ${app.lastName || ''}<br>
+                        <strong>Patient ID:</strong> ${app.patientId}<br>
+                        <strong>Appointment With:</strong> ${app.appointmentType}<br>
+                        <strong>Date:</strong> ${formattedDate}<br>
+                        <strong>Time:</strong> ${formattedTime}
+                    </div>
+                    <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> This action cannot be undone.</p>
+                `;
+
+                document.getElementById('deleteModalBody').innerHTML = content;
+
+                var deleteUrl = "<?php echo base_url(); ?>Healthcareprovider/deleteAppointment/" + id;
+                var deleteBtn = document.getElementById('confirmDeleteBtn');
+                
+                deleteBtn.disabled = false;
+                deleteBtn.innerHTML = 'Delete';
+                deleteBtn.onclick = function() {
+                    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...';
+                    this.disabled = true;
+                    window.location.href = deleteUrl;
+                };
+
+                var myModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                myModal.show();
+            }
+        }
+
+        // 6. PAGINATION & RENDERING
+        function displayReschedulePage(page) {
+            currentPageReschedule = page;
+            const start = (page - 1) * itemsPerPageReschedule;
+            const end = start + itemsPerPageReschedule;
+            const rows = filteredRescheduleList.slice(start, end);
+            
+            const tbody = document.getElementById('rescheduleTableBody');
+            tbody.innerHTML = '';
+
+            if(rows.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="py-4">No appointments found</td></tr>';
+                document.getElementById('entriesInfoReschedule').textContent = '';
+                document.getElementById('paginationContainerReschedule').innerHTML = '';
+                return;
+            }
+
+            rows.forEach((r, i) => {
+                // Patient Link Logic
+                const patientLink = `<a href="${baseUrl}Healthcareprovider/patientdetails/${r.patientDbId}" 
+                                    class="text-dark" onmouseover="this.style.textDecoration='underline'" 
+                                    onmouseout="this.style.textDecoration='none'">${escapeHTML(r.patientId)}</a>`;
+                
+                // CC Link Logic
+                let ccLink = 'NA';
+                if(r.referalDoctor && r.referalDoctor !== 'Nil' && r.referalDoctorDbId) {
+                    ccLink = `<a href="${baseUrl}Healthcareprovider/chiefDoctorsProfile/${r.referalDoctorDbId}" 
+                            class="text-dark" onmouseover="this.style.textDecoration='underline'" 
+                            onmouseout="this.style.textDecoration='none'">${escapeHTML(r.referalDoctor)}</a>`;
+                }
+
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr>
+                        <td>${start + i + 1}.</td>
+                        <td>${r.appointmentType}</td>
+                        <td>${patientLink}</td>
+                        <td>${formatDateOrToday(r.dateOfAppoint)}</td>
+                        <td>${formatTimeAMPM(r.timeOfAppoint)}</td>
+                        <td>${ccLink}</td>
+                        <td>${renderRescheduleActions(r)}</td>
+                    </tr>
+                `);
+            });
+
+            // Update Info Text
+            document.getElementById('entriesInfoReschedule').textContent = 
+                `Showing ${start + 1} to ${Math.min(end, filteredRescheduleList.length)} of ${filteredRescheduleList.length} entries.`;
+                
+            generateReschedulePagination(filteredRescheduleList.length, page);
+        }
+
+        function generateReschedulePagination(totalItems, currentPage) {
+            const totalPages = Math.ceil(totalItems / itemsPerPageReschedule);
+            const container = document.getElementById('paginationContainerReschedule');
+            container.innerHTML = '';
+
+            if(totalPages <= 1) return;
+
+            const ul = document.createElement('ul');
+            ul.className = 'pagination';
+
+            // Prev
+            const prev = document.createElement('li');
+            prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
+            prev.onclick = () => currentPage > 1 && displayReschedulePage(currentPage - 1);
+            ul.appendChild(prev);
+
+            // Numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, startPage + 4);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const li = document.createElement('li');
+                li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
+                    style="background-color:${i === currentPage ? '#2b353bf5' : 'transparent'}">${i}</button>`;
+                li.onclick = () => displayReschedulePage(i);
+                ul.appendChild(li);
+            }
+
+            // Next
+            const next = document.createElement('li');
+            next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+            next.onclick = () => currentPage < totalPages && displayReschedulePage(currentPage + 1);
+            ul.appendChild(next);
+
+            container.appendChild(ul);
+        }
+
+        // 7. FILTER & SORT LOGIC
+        function applyRescheduleFilters() {
+            const search = searchBarRes.value.toLowerCase();
+            const typeFilter = filterDropdownRes.value; // 'All', 'PATIENT', 'CC'
+
+            filteredRescheduleList = rescheduleList.filter(a => {
+                const patientId = a.patientId?.toLowerCase() || '';
+                const ccId = a.referalDoctor?.toLowerCase() || '';
+                
+                const matchSearch = patientId.includes(search) || ccId.includes(search);
+                const matchType = typeFilter === 'All' || a.appointmentType === typeFilter; 
+
+                return matchSearch && matchType;
+            });
+
+            // Sort
+            if (sortByReschedule) {
+                filteredRescheduleList.sort((a, b) => {
+                    let x = a[sortByReschedule] || '';
+                    let y = b[sortByReschedule] || '';
+                    return sortOrderReschedule === 'asc' ? x.localeCompare(y) : y.localeCompare(x);
+                });
+            }
+
+            displayReschedulePage(1);
+        }
+
+        function toggleRescheduleSort(field) {
+            if (sortByReschedule === field) {
+                sortOrderReschedule = sortOrderReschedule === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortByReschedule = field;
+                sortOrderReschedule = 'asc';
+            }
+            
+            // Update Icons
+            pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
+            dateIndRes.textContent = sortByReschedule === 'dateOfAppoint' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
+
+            applyRescheduleFilters();
+        }
+
+        // 8. EVENT LISTENERS
+        itemsDropdownRes.onchange = e => {
+            itemsPerPageReschedule = parseInt(e.target.value);
+            displayReschedulePage(1);
+        };
+
+        searchBarRes.oninput = () => {
+            clearSearchRes.style.display = searchBarRes.value ? 'block' : 'none';
+            applyRescheduleFilters();
+        };
+
+        clearSearchRes.onclick = () => {
+            searchBarRes.value = '';
+            clearSearchRes.style.display = 'none';
+            applyRescheduleFilters();
+        };
+
+        filterDropdownRes.onchange = applyRescheduleFilters;
+
+        sortPidRes.onclick = () => toggleRescheduleSort('patientId');
+        sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
+
+        // 9. INITIALIZE
+        displayReschedulePage(1);
+
+    </script>
+<?php } else if ($method == "appointmentsForm") {
             ?>
                     <section>
                         <div class="card rounded">

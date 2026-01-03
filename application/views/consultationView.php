@@ -1620,7 +1620,8 @@
                                         <div class="mb-3"></div>
                                         <div class="dropZone"
                                             style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                            <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                            <p class="text-muted mb-0">Drag and drop your files here or click the button
+                                                above to upload. Supported formats: .pdf, .png, .jpg, .jpeg.
                                             </p>
                                         </div>
                                         <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
@@ -2227,7 +2228,8 @@
                                 <div class="mb-3"></div>
                                 <div class="dropZone"
                                     style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
+                                    <p class="text-muted mb-0">Drag and drop your files here or click the button above to
+                                        upload. Supported formats: .pdf, .png, .jpg, .jpeg.</p>
                                 </div>
                                 <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                     multiple>
@@ -2780,7 +2782,8 @@
                                 <div class="mb-3"></div>
                                 <div id="dropZone"
                                     style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                    <p class="text-muted mb-0">Drag and drop your files here or click the button above to
+                                        upload. Supported formats: .pdf, .png, .jpg, .jpeg.
                                     </p>
                                 </div>
                                 <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"

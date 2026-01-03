@@ -58,6 +58,10 @@
             background-color: rgba(0, 173, 142, 0.1) !important;
         }
 
+        .fieldLink:hover {
+            text-decoration: underline;
+        }
+
         /* Prescription Print */
         @page {
             size: A4;
@@ -589,9 +593,9 @@
                             tbody.innerHTML += `
                  <tr>
                     <td>${i + 1}.</td>
-                     <td>${row.patientId}</td>
-                    <td>${row.patientName}</td>                   
-                    <td>${row.mobileNumber}</td>
+                     <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.consultationPatientId}" class="fieldLink text-dark">${row.patientId}</a></td>
+                    <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.consultationPatientId}" class="fieldLink text-dark">${row.patientName}</a></td>                   
+                    <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.consultationPatientId}" class="fieldLink text-dark">${row.mobileNumber}</a></td>
                     <td>
                         <a href="<?= base_url('Consultation/consultation/') ?>${row.consultationPatientId}"
                            class="btn btn-sm btn-secondary">
@@ -701,8 +705,8 @@
                             const tr = document.createElement('tr');
                             tr.innerHTML = `
                                         <td>${i + 1}.</td>
-                                        <td>${row.patientId}</td> 
-                                        <td>${row.patientName}</td>
+                                        <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.consultationPatientId}" class="fieldLink text-dark">${row.patientId}</a></td> 
+                                        <td><a href="<?php echo base_url('Consultation/consultation/'); ?>${row.consultationPatientId}" class="fieldLink text-dark">${row.patientName}</a></td>
                                         <td>
                                             <span class="fw-medium">${formatConsultDate(row.consult_date)}</span>
                                             <br>${row.time_12hr}<br>
@@ -760,16 +764,16 @@
 
                                 <!-- FILTER -->
                                 <select id="filterDropdown" class="form-select border border-2 rounded-3 px-3 py-2"
-                                    style="height: 50px; width: 250px;">
-                                    <option value="All">Filter (All)</option>
-                                    <option value="PATIENT">HCP</option>
-                                    <option value="CC">CC</option>
+                                    style="height: 50px; width: 280px;">
+                                    <option value="All">Filter Appoinmtent with (All)</option>
+                                    <option value="CC">CC & HCP</option>
+                                    <option value="PATIENT">PATIENT & HCP</option>
                                 </select>
 
                                 <!-- SEARCH -->
                                 <div class="d-flex align-items-center position-relative pt-2 pt-md-0">
                                     <input type="text" id="searchBar" class="border border-2 rounded-3 px-3 py-2"
-                                        style="height: 50px; width: 260px" placeholder="Search (Patient ID / CC ID)">
+                                        style="height: 50px; width: 260px" placeholder="Search (PATIENT ID / CC ID)">
                                     <span id="clearSearch" class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%);
                                         cursor: pointer; display: none; font-size: 22px;">×</span>
                                 </div>
@@ -1006,7 +1010,7 @@
 
                             const consultBtn = `
                                 <a href="${baseUrl}Consultation/consultation/${row.patientDbId}">
-                                    <button class="btn btn-secondary"
+                                    <button class="btn btn-secondary mx-1"
                                         style="cursor:pointer;">
                                         <i class="bi bi-calendar-check"></i>
                                     </button>
@@ -1109,11 +1113,11 @@
                                 tbody.insertAdjacentHTML('beforeend', `
                                     <tr>
                                         <td>${start + i + 1}.</td>
-                                        <td>${escapeHTML(r.appointmentType)}</td>
-                                        <td>${escapeHTML(r.patientId)}</td>
-                                        <td>${formatDateOrToday(r.dateOfAppoint)}</td>
-                                        <td>${formatTimeAMPM(r.timeOfAppoint)}</td>
-                                        <td>${escapeHTML(formatCcValue(r.referalDoctor))}</td>
+                                        <td class="align-middle">${escapeHTML(r.appointmentType)}</td>
+                                        <td class="align-middle">${escapeHTML(r.patientId)}</td>
+                                        <td class="align-middle">${formatDateOrToday(r.dateOfAppoint)}</td>
+                                        <td class="align-middle">${formatTimeAMPM(r.timeOfAppoint)}</td>
+                                        <td class="align-middle">${escapeHTML(formatCcValue(r.referalDoctor))}</td>
                                         <td class="d-flex d-lg-block">${renderActionButtons(r)}</td>
                                     </tr>
                                 `);
@@ -1147,7 +1151,7 @@
                             for (let i = startPage; i <= endPage; i++) {
                                 const li = document.createElement('li');
                                 li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
-                                    style="background-color:${i === currentPage ? '#2b353bf5' : 'transparent'}">${i}</button>`;
+                                    style="background-color:${i === currentPage ? '#00ad8e' : 'transparent'}">${i}</button>`;
                                 li.onclick = () => displayAppointmentPage(i);
                                 ul.appendChild(li);
                             }
@@ -1254,17 +1258,14 @@
                     </section>
 
                     <script>
-                        // 1. DATA SOURCE
                         const rescheduleList = <?php echo json_encode($appointmentReschedule, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
 
-                        // 2. STATE VARIABLES (Isolated for Reschedule Table)
                         let filteredRescheduleList = [...rescheduleList];
                         let itemsPerPageReschedule = 10;
                         let currentPageReschedule = 1;
-                        let sortByReschedule = 'dateOfAppoint'; // Default sort by date for reschedule
+                        let sortByReschedule = 'dateOfAppoint';
                         let sortOrderReschedule = 'asc';
 
-                        // 3. DOM ELEMENTS
                         const itemsDropdownRes = document.getElementById('itemsPerPageDropdownReschedule');
                         const searchBarRes = document.getElementById('searchBarReschedule');
                         const clearSearchRes = document.getElementById('clearSearchReschedule');
@@ -1275,54 +1276,47 @@
                         const pidIndRes = document.getElementById('sortPatientIdIndicatorReschedule');
                         const dateIndRes = document.getElementById('sortDateIndicatorReschedule');
 
-                        // 4. ACTION BUTTON RENDERER
                         function renderRescheduleActions(row) {
-                            // Reschedule Button (Navigates to update page)
                             const rescheduleBtn = `
-                <a href="${baseUrl}Healthcareprovider/appointmentReschedule/${row.id}">
-                    <button class="btn btn-secondary" title="Reschedule">
-                        <i class="bi bi-calendar-event"></i>
-                    </button>
-                </a>
-            `;
+                                <a href="${baseUrl}Healthcareprovider/appointmentReschedule/${row.id}">
+                                    <button class="btn btn-secondary" title="Reschedule">
+                                        <i class="bi bi-calendar-event"></i>
+                                    </button>
+                                </a>
+                            `;
 
-                            // Delete Button (Triggers Modal via new function)
                             const deleteBtn = `
-                <button class="btn btn-danger" onclick="confirmDeleteReschedule(${row.id})" title="Delete">
-                    <i class="bi bi-trash"></i>
-                </button>
-            `;
+                                <button class="btn btn-danger" onclick="confirmDeleteReschedule(${row.id})" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            `;
 
                             return `
-                <div class="d-flex justify-content-center gap-2">
-                    ${rescheduleBtn}
-                    ${deleteBtn}
-                </div>
-            `;
+                                <div class="d-flex justify-content-center gap-2">
+                                    ${rescheduleBtn}
+                                    ${deleteBtn}
+                                </div>
+                            `;
                         }
 
-                        // 5. DELETE CONFIRMATION (Specific to Reschedule List)
                         function confirmDeleteReschedule(id) {
-                            // We search inside 'rescheduleList' instead of the main 'appointmentList'
                             const app = rescheduleList.find(item => item.id == id);
 
                             if (app) {
-                                // Re-use formatting logic
                                 let formattedTime = formatTimeAMPM(app.timeOfAppoint);
                                 let formattedDate = formatDateOrToday(app.dateOfAppoint).replace('<b>Today</b>', app.dateOfAppoint); // Strip bold for modal
 
-                                // Re-use modal ID 'deleteConfirmModal' from your existing page
                                 var content = `
-                    <p>Are you sure you want to delete this Appointment?</p>
-                    <div class="alert alert-light border">
-                        <strong>Patient Name:</strong> ${app.firstName || ''} ${app.lastName || ''}<br>
-                        <strong>Patient ID:</strong> ${app.patientId}<br>
-                        <strong>Appointment With:</strong> ${app.appointmentType}<br>
-                        <strong>Date:</strong> ${formattedDate}<br>
-                        <strong>Time:</strong> ${formattedTime}
-                    </div>
-                    <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> This action cannot be undone.</p>
-                `;
+                                    <p>Are you sure you want to delete this Appointment?</p>
+                                    <div class="alert alert-light border">
+                                        <strong>Patient Name:</strong> ${app.firstName || ''} ${app.lastName || ''}<br>
+                                        <strong>Patient ID:</strong> ${app.patientId}<br>
+                                        <strong>Appointment With:</strong> ${app.appointmentType}<br>
+                                        <strong>Date:</strong> ${formattedDate}<br>
+                                        <strong>Time:</strong> ${formattedTime}
+                                    </div>
+                                    <p class="text-danger small mb-0"><i class="bi bi-exclamation-triangle"></i> This action cannot be undone.</p>
+                                `;
 
                                 document.getElementById('deleteModalBody').innerHTML = content;
 
@@ -1342,8 +1336,8 @@
                             }
                         }
 
-                        // 6. PAGINATION & RENDERING
                         function displayReschedulePage(page) {
+                            
                             currentPageReschedule = page;
                             const start = (page - 1) * itemsPerPageReschedule;
                             const end = start + itemsPerPageReschedule;
@@ -1360,12 +1354,10 @@
                             }
 
                             rows.forEach((r, i) => {
-                                // Patient Link Logic
                                 const patientLink = `<a href="${baseUrl}Healthcareprovider/patientdetails/${r.patientDbId}" 
                                     class="text-dark" onmouseover="this.style.textDecoration='underline'" 
                                     onmouseout="this.style.textDecoration='none'">${escapeHTML(r.patientId)}</a>`;
 
-                                // CC Link Logic
                                 let ccLink = 'NA';
                                 if (r.referalDoctor && r.referalDoctor !== 'Nil' && r.referalDoctorDbId) {
                                     ccLink = `<a href="${baseUrl}Healthcareprovider/chiefDoctorsProfile/${r.referalDoctorDbId}" 
@@ -1374,19 +1366,18 @@
                                 }
 
                                 tbody.insertAdjacentHTML('beforeend', `
-                    <tr>
-                        <td>${start + i + 1}.</td>
-                        <td>${r.appointmentType}</td>
-                        <td>${patientLink}</td>
-                        <td>${formatDateOrToday(r.dateOfAppoint)}</td>
-                        <td>${formatTimeAMPM(r.timeOfAppoint)}</td>
-                        <td>${ccLink}</td>
-                        <td>${renderRescheduleActions(r)}</td>
-                    </tr>
-                `);
+                                    <tr>
+                                        <td>${start + i + 1}.</td>
+                                        <td>${r.appointmentType}</td>
+                                        <td>${patientLink}</td>
+                                        <td>${formatDateOrToday(r.dateOfAppoint)}</td>
+                                        <td>${formatTimeAMPM(r.timeOfAppoint)}</td>
+                                        <td>${ccLink}</td>
+                                        <td>${renderRescheduleActions(r)}</td>
+                                    </tr>
+                                `);
                             });
 
-                            // Update Info Text
                             document.getElementById('entriesInfoReschedule').textContent =
                                 `Showing ${start + 1} to ${Math.min(end, filteredRescheduleList.length)} of ${filteredRescheduleList.length} entries.`;
 
@@ -1403,13 +1394,11 @@
                             const ul = document.createElement('ul');
                             ul.className = 'pagination';
 
-                            // Prev
                             const prev = document.createElement('li');
                             prev.innerHTML = `<button class="bg-light border px-3 py-2" ${currentPage === 1 ? 'disabled' : ''}>Previous</button>`;
                             prev.onclick = () => currentPage > 1 && displayReschedulePage(currentPage - 1);
                             ul.appendChild(prev);
 
-                            // Numbers
                             const startPage = Math.max(1, currentPage - 2);
                             const endPage = Math.min(totalPages, startPage + 4);
 
@@ -1421,7 +1410,6 @@
                                 ul.appendChild(li);
                             }
 
-                            // Next
                             const next = document.createElement('li');
                             next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
                             next.onclick = () => currentPage < totalPages && displayReschedulePage(currentPage + 1);
@@ -1430,7 +1418,6 @@
                             container.appendChild(ul);
                         }
 
-                        // 7. FILTER & SORT LOGIC
                         function applyRescheduleFilters() {
                             const search = searchBarRes.value.toLowerCase();
                             const typeFilter = filterDropdownRes.value; // 'All', 'PATIENT', 'CC'
@@ -1445,7 +1432,6 @@
                                 return matchSearch && matchType;
                             });
 
-                            // Sort
                             if (sortByReschedule) {
                                 filteredRescheduleList.sort((a, b) => {
                                     let x = a[sortByReschedule] || '';
@@ -1465,14 +1451,12 @@
                                 sortOrderReschedule = 'asc';
                             }
 
-                            // Update Icons
                             pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
                             dateIndRes.textContent = sortByReschedule === 'dateOfAppoint' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
 
                             applyRescheduleFilters();
                         }
 
-                        // 8. EVENT LISTENERS
                         itemsDropdownRes.onchange = e => {
                             itemsPerPageReschedule = parseInt(e.target.value);
                             displayReschedulePage(1);
@@ -1494,10 +1478,9 @@
                         sortPidRes.onclick = () => toggleRescheduleSort('patientId');
                         sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
 
-                        // 9. INITIALIZE
                         displayReschedulePage(1);
-
                     </script>
+
             <?php } else if ($method == "appointmentsForm") {
             ?>
                         <section>
@@ -1516,13 +1499,13 @@
                                                 oninput="clearErrorAppointment()">
 
                                                 <div class="form-group pb-3">
-                                                    <label class="form-label">Appointment Type <span
+                                                    <label class="form-label">Appointment With <span
                                                             class="text-danger">*</span></label>
                                                     <select class="form-select" id="appointmentType" name="appointmentType"
                                                         onchange="toggleAppointmentFields()">
-                                                        <option value="">Select Appointment Type</option>
+                                                        <option value="">Select Appointment With</option>
                                                         <option value="CC">CC & HCP Appointment</option>
-                                                        <option value="PATIENT"> HCP & Patient Appointment</option>
+                                                        <option value="PATIENT">PATIENT & HCP Appointment</option>
                                                     </select>
                                                     <small id="appointmentType_err" class="text-danger pt-1"></small>
                                                 </div>
@@ -1556,9 +1539,10 @@
                                                                 autocomplete="off">
                                                             <span class="input-group-text bg-white border-start-0"><i
                                                                     class="bi bi-search"></i></span>
-                                                            <button class="btn btn-outline-primary d-flex align-items-center"
-                                                                type="button" id="addPatientBtn" title="Add New Patient">
-                                                                <i class="bi bi-plus-lg me-1"></i> Add Patient
+                                                            <button class="btn text-light d-flex align-items-center"
+                                                                style="background-color: #00ad8e;" type="button" id="addPatientBtn"
+                                                                title="Add New Patient">
+                                                                <i class="bi bi-plus-lg me-1"></i> Add New Patient
                                                             </button>
                                                         </div>
                                                         <select class="form-select" name="patientId" id="patientId">
@@ -1611,7 +1595,7 @@
                                                         <label class="form-label" for="appTime">Time <span
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" class="form-control" id="appTime" name="appTime"
-                                                            placeholder="E.g. Select time" readonly>
+                                                            placeholder="Select time" readonly>
                                                         <small id="appTime_err" class="text-danger pt-1"></small>
                                                     </div>
 
@@ -1660,18 +1644,18 @@
                                                                 class="text-danger">*</span></label></label>
                                                         <textarea class="form-control" id="appReason" name="appReason" rows="3"
                                                             maxlength="250"
-                                                            placeholder="Enter Compliant to book appointment..."></textarea>
+                                                            placeholder="Enter complaint to book appointment"></textarea>
                                                         <small id="appReason_err" class="text-danger pt-1"></small>
                                                     </div>
 
                                                     <div class="form-group pb-3">
                                                         <label class="form-label" for="pay">Payment</label>
                                                         <input type="text" class="form-control" id="pay" name="pay"
-                                                            placeholder="E.g. Add payment details">
+                                                            placeholder="Add payment details">
                                                     </div>
 
                                                     <button type="submit" id="AppSubmit" class="btn text-light float-end mt-2"
-                                                        style="background-color: #00ad8e;">Confirm</button>
+                                                        style="background-color: #00ad8e;">Book Appointment</button>
                                                 </fieldset>
                                             </form>
                                         </div>

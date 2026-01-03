@@ -1110,9 +1110,15 @@
                             );
 
                             rows.forEach((r, i) => {
+                                const complaintText = r.patientComplaint
+                                    ? escapeHTML(r.patientComplaint)
+                                    : 'No complaint provided';
+
                                 tbody.insertAdjacentHTML('beforeend', `
-                                    <tr>
-                                        <td>${start + i + 1}.</td>
+                                    <tr data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="${complaintText}">
+                                        <td class="align-middle">${start + i + 1}.</td>
                                         <td class="align-middle">${escapeHTML(r.appointmentType)}</td>
                                         <td class="align-middle">${escapeHTML(r.patientId)}</td>
                                         <td class="align-middle">${formatDateOrToday(r.dateOfAppoint)}</td>
@@ -1124,6 +1130,7 @@
                             });
 
                             generateAppointmentPagination(filteredList.length, page);
+                            initBootstrapTooltips();
                         }
 
                         function updateAppointmentEntriesInfo(start, end, total) {
@@ -1167,6 +1174,27 @@
 
                         // INIT
                         displayAppointmentPage(1);
+
+                        function initBootstrapTooltips() {
+                            const tooltipTriggerList = [].slice.call(
+                                document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                            );
+
+                            tooltipTriggerList.forEach(el => {
+                                // Dispose old instance (important for pagination)
+                                if (bootstrap.Tooltip.getInstance(el)) {
+                                    bootstrap.Tooltip.getInstance(el).dispose();
+                                }
+
+                                new bootstrap.Tooltip(el, {
+                                    placement: 'top',
+                                    html: false,
+                                    trigger: 'hover',
+                                    container: 'body'
+                                });
+                            });
+                        }
+
                     </script>
 
                 <?php if (isset($appointmentReschedule[0]['id'])) { ?>
@@ -1337,7 +1365,7 @@
                         }
 
                         function displayReschedulePage(page) {
-                            
+
                             currentPageReschedule = page;
                             const start = (page - 1) * itemsPerPageReschedule;
                             const end = start + itemsPerPageReschedule;

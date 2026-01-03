@@ -69,12 +69,13 @@ class Chiefconsultant extends CI_Controller
         $otp = rand(1000, 9999);
         $this->session->set_userdata('generated_otp', $otp);
 
-        $message = " Dear User, <br> <br>
+        $message = "Hi there, <br> <br>
         Your One-Time Password (OTP) to reset your Chief Consultant (CC) account password is:
-       <b> $otp </b> <br>
+        <b> $otp </b> <br>
         Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
-       <br> Best regards,<br>  
-        EDF Support Team ";
+        <br><br>
+        Regards,
+        <br><b>EDF Healthcare Team</b>";
 
         $this->email->set_newline("\r\n");
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
@@ -329,11 +330,12 @@ class Chiefconsultant extends CI_Controller
 
         $message = "Hi there, <br><br>
         Your OTP to change your CC account password is: <strong>$otp</strong><br>
-        This OTP is valid for 10 minutes.<br><br>
-        Warm regards,<br>
-        Team EDF";
+        This OTP is valid for 10 minutes.
+        <br><br>
+        Regards,
+        <br><b>EDF Healthcare Team</b>";
         $this->load->library('email');
-        $this->email->from('noreply@consult.edftech.in', 'EDF OTP Verification');
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($email);
         $this->email->subject('Change Password OTP');
         $this->email->message($message);

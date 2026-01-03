@@ -277,9 +277,9 @@ class Consultation extends CI_Controller
         //         Dear {$patient[0]['firstName']} {$patient[0]['lastName']},
         //         <br><br>
         //         Your consultation has been successfully completed.  
+        //         <br><br>
         //         Regards,
-        //         <br>
-        //         <b>EDF Healthcare Team</b>
+        //         <br><b>EDF Healthcare Team</b>
         // ";
 
         //     $this->email->set_newline("\r\n");

@@ -559,7 +559,7 @@ class HcpModel extends CI_Model
     }
 
     //Update Appointments
-    /* public function updateAppointment()
+    public function updateAppointment()
     {
         $post = $this->input->post(null, true);
 
@@ -573,7 +573,7 @@ class HcpModel extends CI_Model
         $this->db->where('id', $post['appTableId']);
         $this->db->update('appointment_details', $updatedata);
         return true;
-    } */
+    }
 
 
     public function getHcpDetails()

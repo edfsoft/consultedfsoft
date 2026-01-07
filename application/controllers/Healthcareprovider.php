@@ -483,8 +483,9 @@ class Healthcareprovider extends CI_Controller
 
             $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully and Mail has been sent');
         }
-
+        else {
         $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+        }
         redirect('Healthcareprovider/appointments');
     }
 
@@ -522,7 +523,9 @@ class Healthcareprovider extends CI_Controller
 
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled and cancellation email sent.');
             }
+            else {
             $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled Successfully.');
+                }
 
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to cancel appointment.');
@@ -556,14 +559,59 @@ class Healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/');
         }
     }
-
-    public function updateAppointmentForm()
+*/
+    /* public function updateAppointmentForm()
     {
         if ($this->HcpModel->updateAppointment()) {
             $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in updating appointment details');
         }
+        redirect('Healthcareprovider/appointments');
+    } */
+
+    public function updateAppointmentForm()
+    {
+        if ($this->HcpModel->updateAppointment()) {
+
+            $appointmentId = $this->input->post('appTableId'); 
+
+            $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
+
+            if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
+
+                $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
+                $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
+
+                $message = "
+                    Dear {$details['firstName']},<br><br>
+                    Your Reschedule appointment has been successfully <b>updated</b>.<br><br>
+                    <b>📅 Date:</b> {$formattedDate}<br>
+                    <b>⏰ Time:</b> {$formattedTime}<br><br>
+                    <b>🔗 Join Meeting:</b><br>
+                    <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
+                    Please join the meeting at the scheduled time.<br><br>
+                    Regards,<br><b>EDF Healthcare Team</b>
+                ";
+
+                $this->email->set_newline("\r\n");
+                $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+                $this->email->to($details['mailId']);
+                $this->email->subject('Appointment Rescheduled & Meeting Link'); 
+                $this->email->message($message);
+                $this->email->send();
+
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully and Mail has been sent');
+
+            } 
+            else {
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
+            }
+
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating appointment details');
+        }
+
         redirect('Healthcareprovider/appointments');
     }
  */

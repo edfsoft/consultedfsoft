@@ -614,7 +614,7 @@ class Healthcareprovider extends CI_Controller
 
         redirect('Healthcareprovider/appointments');
     }
- */
+
 
     public function appointmentReschedule()
     {

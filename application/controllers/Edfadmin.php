@@ -130,9 +130,10 @@ class Edfadmin extends CI_Controller
             Mail Id: <b>" . $mailId . " </b><br>
             Password: <b>" . $pswd . " </b><br>
             You will be required to change your password upon first login.
-            <br><br> Warm regards, <br>
-            Team EDF";
-            $this->email->from('noreply@consult.edftech.in', 'EDF Tech Account Creation');
+            <br><br>
+            Regards,
+            <br><b>EDF Healthcare Team</b>";
+            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
             $this->email->to($mailId);
             $this->email->subject('Your Account Login Credentials');
             $this->email->message($message);
@@ -279,9 +280,10 @@ class Edfadmin extends CI_Controller
             Mail Id: <b>" . $hcpMailId . " </b><br>
             Password: <b>" . $pswd . " </b><br>
             You will be required to change your password upon first login.
-            <br><br> Warm regards, <br>
-            Team EDF";
-            $this->email->from('noreply@consult.edftech.in', 'EDF Tech Account Creation');
+            <br><br>
+            Regards,
+            <br><b>EDF Healthcare Team</b>";
+            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
             $this->email->to($hcpMailId);
             $this->email->subject('Your Account Login Credentials');
             $this->email->message($message);

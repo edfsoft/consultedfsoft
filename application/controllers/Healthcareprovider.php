@@ -74,12 +74,13 @@ class Healthcareprovider extends CI_Controller
         $this->session->set_userdata('generated_otp', $otp);
 
         // $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
-        $message = " Dear User, <br> <br>
+        $message = "Hi there, <br> <br>
         Your One-Time Password (OTP) to reset your Health Care Provider (HCP) account password is:
-       <b> $otp </b> <br>
+        <b> $otp </b> <br>
         Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
-       <br> Best regards,<br>  
-        EDF Support Team ";
+        <br><br>
+        Regards,
+        <br><b>EDF Healthcare Team</b>";
 
         $this->email->set_newline("\r\n");
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
@@ -461,14 +462,16 @@ class Healthcareprovider extends CI_Controller
             $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
             $message = "
-                Dear {$details['firstName']},<br><br>
+                Dear {$details['firstName']} {$details['lastName']},<br><br>
                 Your appointment has been successfully booked.<br><br>
                 <b>📅 Date:</b> {$formattedDate}<br>
                 <b>⏰ Time:</b> {$formattedTime}<br><br>
                 <b>🔗 Join Meeting:</b><br>
                 <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
-                Please join the meeting at the scheduled time.<br><br>
-                Regards,<br><b>EDF Healthcare Team</b>
+                Please join the meeting at the scheduled time.
+                <br><br>
+                Regards,
+                <br><b>EDF Healthcare Team</b>
             ";
 
             $this->email->set_newline("\r\n");
@@ -499,15 +502,16 @@ class Healthcareprovider extends CI_Controller
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
                 $message = "
-                Dear {$details['firstName']},<br><br>
+                Dear {$details['firstName']} {$details['lastName']},<br><br>
 
                 Your appointment on <b>{$formattedDate}</b> at <b>{$formattedTime}</b> 
                 has been <b>CANCELED</b>.<br><br>
 
                 You may reschedule anytime through our platform.<br><br>
 
-                Regards,<br>
-                <b>EDF Healthcare Team</b>
+                <br><br>
+                Regards,
+                <br><b>EDF Healthcare Team</b>
                 ";
 
                 $this->email->set_newline("\r\n");
@@ -610,7 +614,8 @@ class Healthcareprovider extends CI_Controller
 
         redirect('Healthcareprovider/appointments');
     }
-   
+ */
+
     public function appointmentReschedule()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -725,11 +730,11 @@ class Healthcareprovider extends CI_Controller
         $message = "Hi there, <br><br>
         Your OTP is <b> $otp </b> to change the new password for your account. 
         <br>This OTP is valid for 10 minutes.
-        <br><br> Warm regards, <br>
-        Team EDF";
-        $subject = "EDF Password Security";
+        <br><br>
+        Regards,
+        <br><b>EDF Healthcare Team</b>";
         $this->load->library('email');
-        $this->email->from('noreply@consult.edftech.in', $subject);
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($email);
         $this->email->subject('Your OTP for Password Change');
         $this->email->message($message);

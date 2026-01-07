@@ -1620,7 +1620,8 @@
                                         <div class="mb-3"></div>
                                         <div class="dropZone"
                                             style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                            <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                            <p class="text-muted mb-0">Drag and drop your files here or click the button
+                                                above to upload. Supported formats: .pdf, .png, .jpg, .jpeg.
                                             </p>
                                         </div>
                                         <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
@@ -2227,7 +2228,8 @@
                                 <div class="mb-3"></div>
                                 <div class="dropZone"
                                     style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.</p>
+                                    <p class="text-muted mb-0">Drag and drop your files here or click the button above to
+                                        upload. Supported formats: .pdf, .png, .jpg, .jpeg.</p>
                                 </div>
                                 <input type="file" class="fileInput d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                                     multiple>
@@ -2780,7 +2782,8 @@
                                 <div class="mb-3"></div>
                                 <div id="dropZone"
                                     style="border: 2px dashed #ccc; padding: 20px; text-align: center; cursor: pointer; margin-bottom: 15px;">
-                                    <p class="text-muted mb-0">Drag and drop files here, or click the button below.
+                                    <p class="text-muted mb-0">Drag and drop your files here or click the button above to
+                                        upload. Supported formats: .pdf, .png, .jpg, .jpeg.
                                     </p>
                                 </div>
                                 <input type="file" id="fileInput" class="d-none" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
@@ -3147,140 +3150,181 @@
         </div>
         <!-- Medicine Modal -->
         <div class="modal fade" id="medicinesModal" tabindex="-1" aria-labelledby="medicinesModalTitle"
-            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="modal-title fw-medium" id="medicinesModalTitle"
-                                style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
-                            <small id="medicineCompositionText" class="text-muted d-block"></small>
-                        </div>
-                        <span id="medicineCategoryText" class="text-dark"></span>
-                        <div>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                    </div>
-
-                    <div class="modal-body" style="font-family: Poppins, sans-serif;">
-                        <div class="mb-4">
-
-                            <div class="d-flex align-items-center gap-2">
+                    aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header d-flex justify-content-between align-items-center">
                                 <div>
-                                    <label class="form-label fw-semibold">Quantity</label>
-                                    <input type="number" id="medicineQuantity" min="0" class="form-control w-100"
-                                        placeholder="Enter quantity">
+                                    <h5 class="modal-title fw-medium" id="medicinesModalTitle"
+                                        style="font-family: Poppins, sans-serif;">Enter Medicine Details</h5>
+                                    <small id="medicineCompositionText" class="text-muted d-block"></small>
                                 </div>
-                                <div class="mb-4" style="position: relative; left: 200px;">
-                                    <label class="form-label fw-semibold">Food Timing</label>
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="foodTiming"
-                                                value="Before" id="beforeFood">
-                                            <label class="form-check-label" for="beforeFood">Before Food</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="foodTiming" value="After"
-                                                id="afterFood">
-                                            <label class="form-check-label" for="afterFood">After Food</label>
-                                        </div>
+                                <span id="medicineCategoryText" class="text-dark"></span>
+                                <div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                            </div>
+
+                            <div class="modal-body" style="font-family: Poppins, sans-serif;">
+                                <div class="mb-4">
+
+                                    <div class="d-flex align-items-start gap-4">
+
+                            <div>
+                                <label class="form-label fw-semibold">Quantity</label>
+                                <input type="number" id="medicineQuantity" min="0"
+                                    class="form-control w-100"
+                                    placeholder="Enter quantity">
+                            </div>
+
+                            <div>
+                                <label class="form-label fw-semibold">Food Timing</label>
+
+                                <div class="d-flex flex-column flex-lg-row gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                            name="foodTiming" value="After" id="afterFood">
+                                        <label class="form-check-label" for="afterFood">
+                                            After Food
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio"
+                                            name="foodTiming" value="Before" id="beforeFood">
+                                        <label class="form-check-label" for="beforeFood">
+                                            Before Food
+                                        </label>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">Timing</label>
+                            <div class="mb-4">
+                                    <label class="form-label fw-semibold">Timing</label>
+                                    <div id="timingOptions" class="d-flex flex-wrap gap-4">
+                                        
+                                        <!-- Morning -->
+                                        <div class="form-check d-flex align-items-center gap-2 flex-column flex-sm-row">
+                                        <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
+                                            <input type="checkbox" id="morningCheck" class="me-1">
+                                            <label for="morningCheck" class="mb-0">Morning</label>
+                                        </div>
+                                        <div class="d-flex gap-3 w-100 w-sm-auto">
+                                            <input type="number" id="morningQty" 
+                                                class="form-control" 
+                                                style="min-width: 110px; width: 100%; max-width: 200px;" 
+                                                min="0" step="0.5" disabled placeholder="Qty">
+                                            <select id="morningUnit" class="form-select" 
+                                                style="min-width: 130px; width: 100%; max-width: 220px;" disabled>
+                                                <option value=""></option>
+                                                <?php if (!empty($dosageUnits)): ?>
+                                                    <?php foreach ($dosageUnits as $unit): ?>
+                                                        <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                            <?= htmlspecialchars($unit['units_name']) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                            <div id="timingOptions" class="d-flex flex-wrap gap-4">
-                                <div class="form-check d-flex align-items-center gap-2">
-                                    <input type="checkbox" id="morningCheck">
-                                    <label for="morningCheck" class="mb-0">Morning</label>
-                                    <input type="number" id="morningQty" class="form-control w-25" min="0" step="0.5"
-                                        disabled placeholder="Qty">
-                                    <select id="morningUnit" class="form-select w-25" disabled>
-                                        <option value=""></option>
-                                        <?php if (!empty($dosageUnits)): ?>
-                                            <?php foreach ($dosageUnits as $unit): ?>
-                                                <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                    <?= htmlspecialchars($unit['units_name']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
+                                        <!-- Afternoon -->
+                                        <div class="form-check d-flex align-items-center gap-2 flex-column flex-sm-row">
+                                        <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
+                                            <input type="checkbox" id="afternoonCheck" class="me-1">
+                                            <label for="afternoonCheck" class="mb-0">Afternoon</label>
+                                        </div>
+                                        <div class="d-flex gap-3 w-100 w-sm-auto">
+                                            <input type="number" id="afternoonQty" 
+                                                class="form-control" 
+                                                style="min-width: 110px; width: 100%; max-width: 200px;" 
+                                                min="0" step="0.5" disabled placeholder="Qty">
+                                            <select id="afternoonUnit" class="form-select" 
+                                                style="min-width: 110px; width: 100%; max-width: 210px;" disabled>
+                                                <option value=""></option>
+                                                <?php if (!empty($dosageUnits)): ?>
+                                                    <?php foreach ($dosageUnits as $unit): ?>
+                                                        <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                            <?= htmlspecialchars($unit['units_name']) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                        <!-- Evening -->
+                                        <div class="form-check d-flex align-items-center gap-2 flex-column flex-sm-row">
+                                            <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
+                                                <input type="checkbox" id="eveningCheck" class="me-1">
+                                                <label for="eveningCheck" class="mb-0">Evening</label>
+                                            </div>
+                                            <div class="d-flex gap-3 w-100 w-sm-auto">
+                                                <input type="number" id="eveningQty" 
+                                                    class="form-control" 
+                                                    style="min-width: 110px; width: 100%; max-width: 200px;" 
+                                                    min="0" step="0.5" disabled placeholder="Qty">
+                                                <select id="eveningUnit" class="form-select" 
+                                                    style="min-width: 130px; width: 100%; max-width: 220px;" disabled>
+                                                    <option value=""></option>
+                                                    <?php if (!empty($dosageUnits)): ?>
+                                                        <?php foreach ($dosageUnits as $unit): ?>
+                                                            <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                                <?= htmlspecialchars($unit['units_name']) ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- Night -->
+                                        <div class="form-check d-flex align-items-center gap-2 flex-column flex-sm-row">
+                                            <div class="d-flex align-items-center gap-2 mb-2 mb-sm-0">
+                                                <input type="checkbox" id="nightCheck" class="me-1">
+                                                <label for="nightCheck" class="mb-0">Night</label>
+                                            </div>
+                                            <div class="d-flex gap-2 w-100 w-sm-auto">
+                                                <input type="number" id="nightQty" 
+                                                    class="form-control flex-fill flex-sm-none" 
+                                                    style="min-width: 100px;" 
+                                                    min="0" step="0.5" disabled placeholder="Qty">
+                                                <select id="nightUnit" class="form-select flex-fill flex-sm-none" 
+                                                    style="min-width: 120px;" disabled>
+                                                    <option value=""></option>
+                                                    <?php if (!empty($dosageUnits)): ?>
+                                                        <?php foreach ($dosageUnits as $unit): ?>
+                                                            <option value="<?= htmlspecialchars($unit['units_name']) ?>">
+                                                                <?= htmlspecialchars($unit['units_name']) ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                 </div>
 
-                                <div class="form-check d-flex align-items-center gap-2">
-                                    <input type="checkbox" id="afternoonCheck">
-                                    <label for="afternoonCheck" class="mb-0">Afternoon</label>
-                                    <input type="number" id="afternoonQty" class="form-control w-25" min="0" step="0.5"
-                                        disabled placeholder="Qty">
-                                    <select id="afternoonUnit" class="form-select w-25" disabled>
-                                        <option value=""></option>
-                                        <?php if (!empty($dosageUnits)): ?>
-                                            <?php foreach ($dosageUnits as $unit): ?>
-                                                <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                    <?= htmlspecialchars($unit['units_name']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
-                                </div>
-
-                                <div class="form-check d-flex align-items-center gap-2">
-                                    <input type="checkbox" id="eveningCheck">
-                                    <label for="eveningCheck" class="mb-0">Evening</label>
-                                    <input type="number" id="eveningQty" class="form-control w-25" min="0" step="0.5"
-                                        disabled placeholder="Qty">
-                                    <select id="eveningUnit" class="form-select w-25" disabled>
-                                        <option value=""></option>
-                                        <?php if (!empty($dosageUnits)): ?>
-                                            <?php foreach ($dosageUnits as $unit): ?>
-                                                <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                    <?= htmlspecialchars($unit['units_name']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
-                                </div>
-
-                                <div class="form-check d-flex align-items-center gap-2">
-                                    <input type="checkbox" id="nightCheck">
-                                    <label for="nightCheck" class="mb-0">Night</label>
-                                    <input type="number" id="nightQty" class="form-control w-25" min="0" step="0.5"
-                                        disabled placeholder="Qty">
-                                    <select id="nightUnit" class="form-select w-25" disabled>
-                                        <option value=""></option>
-                                        <?php if (!empty($dosageUnits)): ?>
-                                            <?php foreach ($dosageUnits as $unit): ?>
-                                                <option value="<?= htmlspecialchars($unit['units_name']) ?>">
-                                                    <?= htmlspecialchars($unit['units_name']) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        <?php endif; ?>
-                                    </select>
+                                <div class="mb-3 pt-3">
+                                    <label class="form-label fw-semibold">Notes</label>
+                                    <textarea id="medicineNotes" class="form-control" rows="3"
+                                        placeholder="Enter any additional notes..."></textarea>
                                 </div>
 
                             </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn text-light" style="background-color: #00ad8e;"
+                                    onclick="saveMedicineModal()">OK</button>
+                            </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Notes</label>
-                            <textarea id="medicineNotes" class="form-control" rows="3"
-                                placeholder="Enter any additional notes..."></textarea>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn text-light" style="background-color: #00ad8e;"
-                            onclick="saveMedicineModal()">OK</button>
                     </div>
                 </div>
-            </div>
-        </div>
-
+             </div>
+             
         <!-- Advice Note Modal -->
         <div class="modal fade" id="adviceModal" tabindex="-1" aria-labelledby="adviceModalTitle" aria-hidden="true"
             data-bs-backdrop="static" data-bs-keyboard="false">
@@ -6715,12 +6759,25 @@
                 const food_timing = document.querySelector('input[name="foodTiming"]:checked')?.value || "";
 
                 if (!pendingMedicineName) return;
-
+                let medData;
+                if (pendingMedicineId) {
+                    const existingMed = selectedMedicines.find(m => String(m.id) === String(pendingMedicineId));
+                    if (existingMed) {
+                        medData = {
+                            compositionName: existingMed.composition || '',
+                            category: existingMed.category || ''
+                        };
+                    } else {
+                        medData = { compositionName: '', category: '' };
+                    }
+                } else {
+                    medData = medicinesData.find(m => m.id === pendingMedicineMasterId) || { compositionName: '', category: '' };
+                }
                 const existingIndex = selectedMedicines.findIndex(
                     m => String(m.id) === String(pendingMedicineId)
                 );
 
-                const medData = medicinesData.find(m => m.id === pendingMedicineMasterId) || { compositionName: '', category: '' };
+                //const medData = medicinesData.find(m => m.id === pendingMedicineMasterId) || { compositionName: '', category: '' };
                 const composition = medData.compositionName || "";
                 const category = medData.category || "";
 
@@ -8162,6 +8219,36 @@
             });
         });
     </script>
+
+    <!-- Submit control -->
+         <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                function setupProcessingAnimation(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            return;
+                        }
+
+                        const btn = form.querySelector('button[type="submit"]');
+
+                        if (btn) {
+                            btn.disabled = true;
+                            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Save';
+                        }
+                    });
+                }
+
+                const consultForms = document.querySelectorAll('[id="consultationForm"]');
+                consultForms.forEach(function(form) {
+                    setupProcessingAnimation(form);
+                });
+
+                const editForm = document.getElementById('editConsultationForm');
+                if (editForm) {
+                    setupProcessingAnimation(editForm);
+                }
+            });
+         </script>
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

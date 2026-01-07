@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<!-- Delete Consultation Confirmation Modal -->
+<!-- Delete Consultation, Appointment and Reschedule Confirmation Modal -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
     aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">

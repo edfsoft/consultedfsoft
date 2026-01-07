@@ -74,12 +74,13 @@ class Healthcareprovider extends CI_Controller
         $this->session->set_userdata('generated_otp', $otp);
 
         // $message = "Your OTP is $otp to change the new password for your Health Care Provider[HCP] account.";
-        $message = " Dear User, <br> <br>
+        $message = "Hi there, <br> <br>
         Your One-Time Password (OTP) to reset your Health Care Provider (HCP) account password is:
-       <b> $otp </b> <br>
+        <b> $otp </b> <br>
         Please use this OTP to proceed with updating your password. For security reasons, this OTP is valid for 10 minutes and should not be shared with anyone.
-       <br> Best regards,<br>  
-        EDF Support Team ";
+        <br><br>
+        Regards,
+        <br><b>EDF Healthcare Team</b>";
 
         $this->email->set_newline("\r\n");
         $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
@@ -461,14 +462,16 @@ class Healthcareprovider extends CI_Controller
             $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
             $message = "
-                Dear {$details['firstName']},<br><br>
+                Dear {$details['firstName']} {$details['lastName']},<br><br>
                 Your appointment has been successfully booked.<br><br>
                 <b>📅 Date:</b> {$formattedDate}<br>
                 <b>⏰ Time:</b> {$formattedTime}<br><br>
                 <b>🔗 Join Meeting:</b><br>
                 <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
-                Please join the meeting at the scheduled time.<br><br>
-                Regards,<br><b>EDF Healthcare Team</b>
+                Please join the meeting at the scheduled time.
+                <br><br>
+                Regards,
+                <br><b>EDF Healthcare Team</b>
             ";
 
             $this->email->set_newline("\r\n");
@@ -480,8 +483,9 @@ class Healthcareprovider extends CI_Controller
 
             $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully and Mail has been sent');
         }
-
+        else {
         $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+        }
         redirect('Healthcareprovider/appointments');
     }
 
@@ -498,15 +502,16 @@ class Healthcareprovider extends CI_Controller
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
                 $message = "
-                Dear {$details['firstName']},<br><br>
+                Dear {$details['firstName']} {$details['lastName']},<br><br>
 
                 Your appointment on <b>{$formattedDate}</b> at <b>{$formattedTime}</b> 
                 has been <b>CANCELED</b>.<br><br>
 
                 You may reschedule anytime through our platform.<br><br>
 
-                Regards,<br>
-                <b>EDF Healthcare Team</b>
+                <br><br>
+                Regards,
+                <br><b>EDF Healthcare Team</b>
                 ";
 
                 $this->email->set_newline("\r\n");
@@ -518,7 +523,9 @@ class Healthcareprovider extends CI_Controller
 
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled and cancellation email sent.');
             }
+            else {
             $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled Successfully.');
+                }
 
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to cancel appointment.');
@@ -552,8 +559,8 @@ class Healthcareprovider extends CI_Controller
             redirect('Healthcareprovider/');
         }
     }
-
-    public function updateAppointmentForm()
+*/
+    /* public function updateAppointmentForm()
     {
         if ($this->HcpModel->updateAppointment()) {
             $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
@@ -561,9 +568,54 @@ class Healthcareprovider extends CI_Controller
             $this->session->set_flashdata('showErrorMessage', 'Error in updating appointment details');
         }
         redirect('Healthcareprovider/appointments');
+    } */
+
+    public function updateAppointmentForm()
+    {
+        if ($this->HcpModel->updateAppointment()) {
+
+            $appointmentId = $this->input->post('appTableId'); 
+
+            $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
+
+            if ($details && $details['appointmentType'] === 'PATIENT' && !empty($details['mailId'])) {
+
+                $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
+                $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
+
+                $message = "
+                    Dear {$details['firstName']},<br><br>
+                    Your Reschedule appointment has been successfully <b>updated</b>.<br><br>
+                    <b>📅 Date:</b> {$formattedDate}<br>
+                    <b>⏰ Time:</b> {$formattedTime}<br><br>
+                    <b>🔗 Join Meeting:</b><br>
+                    <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
+                    Please join the meeting at the scheduled time.<br><br>
+                    Regards,<br><b>EDF Healthcare Team</b>
+                ";
+
+                $this->email->set_newline("\r\n");
+                $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+                $this->email->to($details['mailId']);
+                $this->email->subject('Appointment Rescheduled & Meeting Link'); 
+                $this->email->message($message);
+                $this->email->send();
+
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully and Mail has been sent');
+
+            } 
+            else {
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
+            }
+
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating appointment details');
+        }
+
+        redirect('Healthcareprovider/appointments');
     }
- */
-   
+
+
     public function appointmentReschedule()
     {
         if (isset($_SESSION['hcpsName'])) {
@@ -678,11 +730,11 @@ class Healthcareprovider extends CI_Controller
         $message = "Hi there, <br><br>
         Your OTP is <b> $otp </b> to change the new password for your account. 
         <br>This OTP is valid for 10 minutes.
-        <br><br> Warm regards, <br>
-        Team EDF";
-        $subject = "EDF Password Security";
+        <br><br>
+        Regards,
+        <br><b>EDF Healthcare Team</b>";
         $this->load->library('email');
-        $this->email->from('noreply@consult.edftech.in', $subject);
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
         $this->email->to($email);
         $this->email->subject('Your OTP for Password Change');
         $this->email->message($message);

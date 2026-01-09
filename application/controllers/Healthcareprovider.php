@@ -482,9 +482,8 @@ class Healthcareprovider extends CI_Controller
             $this->email->send();
 
             $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully and Mail has been sent');
-        }
-        else {
-        $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+        } else {
+            $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
         }
         redirect('Healthcareprovider/appointments');
     }
@@ -522,10 +521,9 @@ class Healthcareprovider extends CI_Controller
                 $this->email->send();
 
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled and cancellation email sent.');
+            } else {
+                $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled Successfully.');
             }
-            else {
-            $this->session->set_flashdata('showSuccessMessage', 'Appointment Canceled Successfully.');
-                }
 
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to cancel appointment.');
@@ -535,46 +533,46 @@ class Healthcareprovider extends CI_Controller
     }
 
     //Update Appointments
-    /* public function appointmentUpdate()
-    {
-        if (isset($_SESSION['hcpsName'])) {
-            $this->data['method'] = "appointmentUpdate";
-            $appId = $this->uri->segment(3);
-            $editAppDetails = $this->HcpModel->editAppDetails($appId);
-            $this->data['updateAppDetails'] = $editAppDetails;
-            $appTime = $this->HcpModel->getAppointmentTime();
-            $this->data['appBookedDetails'] = $appTime;
+    // public function appointmentUpdate()
+    // {
+    //     if (isset($_SESSION['hcpsName'])) {
+    //         $this->data['method'] = "appointmentUpdate";
+    //         $appId = $this->uri->segment(3);
+    //         $editAppDetails = $this->HcpModel->editAppDetails($appId);
+    //         $this->data['updateAppDetails'] = $editAppDetails;
+    //         $appTime = $this->HcpModel->getAppointmentTime();
+    //         $this->data['appBookedDetails'] = $appTime;
 
-            $mtime = $this->HcpModel->getAppMorTime();
-            $this->data['morning'] = $mtime;
-            $atime = $this->HcpModel->getAppAfterTime();
-            $this->data['afternoon'] = $atime;
-            $etime = $this->HcpModel->getAppEveTime();
-            $this->data['evening'] = $etime;
-            $ntime = $this->HcpModel->getAppNightTime();
-            $this->data['night'] = $ntime;
+    //         $mtime = $this->HcpModel->getAppMorTime();
+    //         $this->data['morning'] = $mtime;
+    //         $atime = $this->HcpModel->getAppAfterTime();
+    //         $this->data['afternoon'] = $atime;
+    //         $etime = $this->HcpModel->getAppEveTime();
+    //         $this->data['evening'] = $etime;
+    //         $ntime = $this->HcpModel->getAppNightTime();
+    //         $this->data['night'] = $ntime;
 
-            $this->load->view('hcpDashboard.php', $this->data);
-        } else {
-            redirect('Healthcareprovider/');
-        }
-    }
-*/
-    /* public function updateAppointmentForm()
-    {
-        if ($this->HcpModel->updateAppointment()) {
-            $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in updating appointment details');
-        }
-        redirect('Healthcareprovider/appointments');
-    } */
+    //         $this->load->view('hcpDashboard.php', $this->data);
+    //     } else {
+    //         redirect('Healthcareprovider/');
+    //     }
+    // }
+
+    // public function updateAppointmentForm()
+    // {
+    //     if ($this->HcpModel->updateAppointment()) {
+    //         $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
+    //     } else {
+    //         $this->session->set_flashdata('showErrorMessage', 'Error in updating appointment details');
+    //     }
+    //     redirect('Healthcareprovider/appointments');
+    // }
 
     public function updateAppointmentForm()
     {
         if ($this->HcpModel->updateAppointment()) {
 
-            $appointmentId = $this->input->post('appTableId'); 
+            $appointmentId = $this->input->post('appTableId');
 
             $details = $this->HcpModel->getAppointmentAndPatientDetails($appointmentId);
 
@@ -597,14 +595,13 @@ class Healthcareprovider extends CI_Controller
                 $this->email->set_newline("\r\n");
                 $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
                 $this->email->to($details['mailId']);
-                $this->email->subject('Appointment Rescheduled & Meeting Link'); 
+                $this->email->subject('Appointment Rescheduled & Meeting Link');
                 $this->email->message($message);
                 $this->email->send();
 
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully and Mail has been sent');
 
-            } 
-            else {
+            } else {
                 $this->session->set_flashdata('showSuccessMessage', 'Appointment details updated successfully');
             }
 
@@ -614,7 +611,6 @@ class Healthcareprovider extends CI_Controller
 
         redirect('Healthcareprovider/appointments');
     }
-
 
     public function appointmentReschedule()
     {

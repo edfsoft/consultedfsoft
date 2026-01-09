@@ -53,7 +53,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group pb-2">
-                    <label class="fw-medium" >First Name <span class="text-danger">*</span></label>
+                    <label class="fw-medium">First Name <span class="text-danger">*</span></label>
                     <input type="text" name="newFirstName" id="newFirstName" placeholder="E.g. Siva"
                         class="form-control">
                     <small id="newFirstName_err" class="text-danger"></small>

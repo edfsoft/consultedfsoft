@@ -263,13 +263,12 @@ class Consultation extends CI_Controller
             $messages[] = "Attachments";
 
         if (!empty($messages)) {
-            // UPDATED MESSAGE: Let user know it's happening in background
             $this->session->set_flashdata('showSuccessMessage', implode(", ", $messages) . " saved successfully. Mail is being sent in the background.");
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Failed to save consultation details.');
         }
 
-        session_write_close(); 
+        session_write_close();
 
         $redirectUrl = base_url('Consultation/consultation/' . $post['patientIdDb']);
         header("Location: " . $redirectUrl);
@@ -277,14 +276,15 @@ class Consultation extends CI_Controller
         header("Content-Length: 0");
         header("Connection: close");
 
-        if (ob_get_level()) ob_end_clean();
+        if (ob_get_level())
+            ob_end_clean();
         flush();
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         }
 
         if ($post['consultationSendEmail'] == '1') {
-            
+
             $patient = $this->ConsultModel->getPatientDetails($post['patientIdDb']);
             $email = $patient[0]['mailId'];
 
@@ -299,12 +299,12 @@ class Consultation extends CI_Controller
             $consultationData = [
                 'patientDetails' => $patient,
                 'consultation' => [
-                    'consult_date'   => date('Y-m-d'),
-                    'consult_time'   => date('H:i:s'),
-                    'symptoms'       => $symptoms, 
-                    'diagnosis'      => $diagnoses,
-                    'medicines'      => $medicines,
-                    'instructions'   => $pdfInstructions,
+                    'consult_date' => date('Y-m-d'),
+                    'consult_time' => date('H:i:s'),
+                    'symptoms' => $symptoms,
+                    'diagnosis' => $diagnoses,
+                    'medicines' => $medicines,
+                    'instructions' => $pdfInstructions,
                     'next_follow_up' => $this->input->post('nextFollowUpDate')
                 ]
             ];
@@ -313,12 +313,11 @@ class Consultation extends CI_Controller
             $dompdf = new \Dompdf\Dompdf();
 
             $html = $this->load->view('prescription_pdf_template', $consultationData, true);
-            
+
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
 
-            // 4. Save Temporary File
             $output = $dompdf->output();
             $tempFileName = 'Consultation_' . date('d-m-Y_h-i_A') . '_' . $consultationId . '.pdf';
             $tempFilePath = FCPATH . 'uploads/temp/' . $tempFileName;
@@ -328,7 +327,6 @@ class Consultation extends CI_Controller
             }
             file_put_contents($tempFilePath, $output);
 
-            // 5. Send Email
             $message = "
                 Dear {$patient[0]['firstName']},<br><br>
                 Your consultation has been successfully completed.<br>
@@ -343,17 +341,15 @@ class Consultation extends CI_Controller
             $this->email->message($message);
             $this->email->attach($tempFilePath);
 
-            $this->email->send(); 
+            $this->email->send();
 
-            // 6. Delete Temp File
             if (file_exists($tempFilePath)) {
                 unlink($tempFilePath);
             }
         }
-        
-     }
 
-     
+    }
+
     // Edit Consultation view page
     public function editConsultation($consultation_id)
     {

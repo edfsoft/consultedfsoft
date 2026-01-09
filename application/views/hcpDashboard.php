@@ -1314,7 +1314,7 @@
                         `;
 
                             // Delete Button (Triggers Modal via new function)
-                        const deleteBtn = `
+                            const deleteBtn = `
                             <button class="btn btn-danger" onclick="confirmDeleteReschedule(${row.id})" title="Delete">
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -1435,85 +1435,85 @@
                                 const li = document.createElement('li');
                                 li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
                         style="background-color:${i === currentPage ? '#2b353bf5' : 'transparent'}">${i}</button>`;
-                                    li.onclick = () => displayReschedulePage(i);
-                                    ul.appendChild(li);
-                                }
-
-                                // Next
-                                const next = document.createElement('li');
-                                next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
-                                next.onclick = () => currentPage < totalPages && displayReschedulePage(currentPage + 1);
-                                ul.appendChild(next);
-
-                                container.appendChild(ul);
+                                li.onclick = () => displayReschedulePage(i);
+                                ul.appendChild(li);
                             }
 
-                            // 7. FILTER & SORT LOGIC
-                            function applyRescheduleFilters() {
-                                const search = searchBarRes.value.toLowerCase();
-                                const typeFilter = filterDropdownRes.value; // 'All', 'PATIENT', 'CC'
+                            // Next
+                            const next = document.createElement('li');
+                            next.innerHTML = `<button class="border px-3 py-2" ${currentPage === totalPages ? 'disabled' : ''}>Next</button>`;
+                            next.onclick = () => currentPage < totalPages && displayReschedulePage(currentPage + 1);
+                            ul.appendChild(next);
 
-                                filteredRescheduleList = rescheduleList.filter(a => {
-                                    const patientId = a.patientId?.toLowerCase() || '';
-                                    const ccId = a.referalDoctor?.toLowerCase() || '';
+                            container.appendChild(ul);
+                        }
 
-                                    const matchSearch = patientId.includes(search) || ccId.includes(search);
-                                    const matchType = typeFilter === 'All' || a.appointmentType === typeFilter;
+                        // 7. FILTER & SORT LOGIC
+                        function applyRescheduleFilters() {
+                            const search = searchBarRes.value.toLowerCase();
+                            const typeFilter = filterDropdownRes.value; // 'All', 'PATIENT', 'CC'
 
-                                    return matchSearch && matchType;
+                            filteredRescheduleList = rescheduleList.filter(a => {
+                                const patientId = a.patientId?.toLowerCase() || '';
+                                const ccId = a.referalDoctor?.toLowerCase() || '';
+
+                                const matchSearch = patientId.includes(search) || ccId.includes(search);
+                                const matchType = typeFilter === 'All' || a.appointmentType === typeFilter;
+
+                                return matchSearch && matchType;
+                            });
+
+                            // Sort
+                            if (sortByReschedule) {
+                                filteredRescheduleList.sort((a, b) => {
+                                    let x = a[sortByReschedule] || '';
+                                    let y = b[sortByReschedule] || '';
+                                    return sortOrderReschedule === 'asc' ? x.localeCompare(y) : y.localeCompare(x);
                                 });
-
-                                // Sort
-                                if (sortByReschedule) {
-                                    filteredRescheduleList.sort((a, b) => {
-                                        let x = a[sortByReschedule] || '';
-                                        let y = b[sortByReschedule] || '';
-                                        return sortOrderReschedule === 'asc' ? x.localeCompare(y) : y.localeCompare(x);
-                                    });
-                                }
-
-                                displayReschedulePage(1);
                             }
 
-                            function toggleRescheduleSort(field) {
-                                if (sortByReschedule === field) {
-                                    sortOrderReschedule = sortOrderReschedule === 'asc' ? 'desc' : 'asc';
-                                } else {
-                                    sortByReschedule = field;
-                                    sortOrderReschedule = 'asc';
-                                }
-
-                                // Update Icons
-                                pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
-                                dateIndRes.textContent = sortByReschedule === 'dateOfAppoint' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
-
-                                applyRescheduleFilters();
-                            }
-
-                            // 8. EVENT LISTENERS
-                            itemsDropdownRes.onchange = e => {
-                                itemsPerPageReschedule = parseInt(e.target.value);
-                                displayReschedulePage(1);
-                            };
-
-                            searchBarRes.oninput = () => {
-                                clearSearchRes.style.display = searchBarRes.value ? 'block' : 'none';
-                                applyRescheduleFilters();
-                            };
-
-                            clearSearchRes.onclick = () => {
-                                searchBarRes.value = '';
-                                clearSearchRes.style.display = 'none';
-                                applyRescheduleFilters();
-                            };
-
-                            filterDropdownRes.onchange = applyRescheduleFilters;
-
-                            sortPidRes.onclick = () => toggleRescheduleSort('patientId');
-                            sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
-
-                            // 9. INITIALIZE
                             displayReschedulePage(1);
+                        }
+
+                        function toggleRescheduleSort(field) {
+                            if (sortByReschedule === field) {
+                                sortOrderReschedule = sortOrderReschedule === 'asc' ? 'desc' : 'asc';
+                            } else {
+                                sortByReschedule = field;
+                                sortOrderReschedule = 'asc';
+                            }
+
+                            // Update Icons
+                            pidIndRes.textContent = sortByReschedule === 'patientId' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
+                            dateIndRes.textContent = sortByReschedule === 'dateOfAppoint' ? (sortOrderReschedule === 'asc' ? '🡱' : '🡳') : '';
+
+                            applyRescheduleFilters();
+                        }
+
+                        // 8. EVENT LISTENERS
+                        itemsDropdownRes.onchange = e => {
+                            itemsPerPageReschedule = parseInt(e.target.value);
+                            displayReschedulePage(1);
+                        };
+
+                        searchBarRes.oninput = () => {
+                            clearSearchRes.style.display = searchBarRes.value ? 'block' : 'none';
+                            applyRescheduleFilters();
+                        };
+
+                        clearSearchRes.onclick = () => {
+                            searchBarRes.value = '';
+                            clearSearchRes.style.display = 'none';
+                            applyRescheduleFilters();
+                        };
+
+                        filterDropdownRes.onchange = applyRescheduleFilters;
+
+                        sortPidRes.onclick = () => toggleRescheduleSort('patientId');
+                        sortDateRes.onclick = () => toggleRescheduleSort('dateOfAppoint');
+
+                        // 9. INITIALIZE
+                        displayReschedulePage(1);
 
                     </script>
 
@@ -2801,7 +2801,7 @@
                                                 options[i].disabled = true;
                                                 options[i].hidden = true;
                                                 if (select.value === value) {
-                                                    select.value = ""; 
+                                                    select.value = "";
                                                 }
                                             }
                                         }
@@ -2833,22 +2833,22 @@
                                             if (currentHour >= 18) {
                                                 hideOption('Night');
                                             }
-                                            displayTime(); 
+                                            displayTime();
                                         }
                                     }
-                                    window.onload = function() {
+                                    window.onload = function () {
                                         var selectElement = document.getElementById('dayTime');
                                         if (selectElement) {
-                                            selectElement.addEventListener('change', function() {
+                                            selectElement.addEventListener('change', function () {
                                                 displayTime();
                                             });
                                         }
 
                                         var dateInputElement = document.getElementById('appDate');
                                         if (dateInputElement) {
-                                            dateInputElement.addEventListener('change', function() {
-                                                adjustTimeOptionsBasedOnCurrentTime(); 
-                                                adjustTimeOptions(); 
+                                            dateInputElement.addEventListener('change', function () {
+                                                adjustTimeOptionsBasedOnCurrentTime();
+                                                adjustTimeOptions();
                                             });
                                         }
 
@@ -2856,7 +2856,7 @@
                                         if (submitBtn) {
                                             const form = submitBtn.closest('form');
                                             if (form) {
-                                                form.addEventListener('submit', function(event) {
+                                                form.addEventListener('submit', function (event) {
                                                     if (!validateAppointment()) {
                                                         event.preventDefault();
                                                         return;
@@ -2934,7 +2934,7 @@
                                         } else {
                                             document.getElementById("appTime_err").innerHTML = "";
                                         }
-                                        
+
                                         return true;
                                     }
                                 </script>

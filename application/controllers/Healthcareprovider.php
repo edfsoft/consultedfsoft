@@ -588,8 +588,9 @@ class Healthcareprovider extends CI_Controller
                     <b>⏰ Time:</b> {$formattedTime}<br><br>
                     <b>🔗 Join Meeting:</b><br>
                     <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
-                    Please join the meeting at the scheduled time.<br><br>
-                    Regards,<br><b>EDF Healthcare Team</b>
+                    Please join the meeting at the scheduled time. <br><br>
+                    Regards,
+                    <br><b>EDF Healthcare Team</b>
                 ";
 
                 $this->email->set_newline("\r\n");
@@ -781,27 +782,6 @@ class Healthcareprovider extends CI_Controller
 
         redirect('Healthcareprovider/');
     }
-
-
-    // Check mail
-    // public function testMailEdf()
-    // {
-    //     $message = "Hii, This is test mail, Mail sent successfully";
-
-    //     $this->email->from('noreply@consult.edftech.in', 'EDF Tech Test mail');
-    //     $this->email->to('karthicklingasamy6@gmail.com');
-    //     $this->email->subject('EDF test mail check');
-    //     $this->email->message($message);
-
-    //     if ($this->email->send()) {
-    //         echo "Mail sent successfully!";
-    //     } else {
-    //         echo "Mail sending failed!<br>";
-    //         echo $this->email->print_debugger();
-    //     }
-    // }
-
-
 
 
 

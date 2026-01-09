@@ -330,14 +330,16 @@ class Consultation extends CI_Controller
             $message = "
                 Dear {$patient[0]['firstName']},<br><br>
                 Your consultation has been successfully completed.<br>
-                Please find your consultation attached.<br><br>
-                Regards,<br><b>EDF Healthcare Team</b>
+                Please find your consultation attached.
+                <br><br>
+                Regards,
+                <br><b>EDF Healthcare Team</b>
             ";
 
             $this->email->set_newline("\r\n");
             $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
             $this->email->to($email);
-            $this->email->subject('Consultation Prescription');
+            $this->email->subject('Consultation Details');
             $this->email->message($message);
             $this->email->attach($tempFilePath);
 

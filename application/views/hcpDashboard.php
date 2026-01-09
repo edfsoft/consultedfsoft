@@ -1445,7 +1445,7 @@
                         for (let i = startPage; i <= endPage; i++) {
                             const li = document.createElement('li');
                             li.innerHTML = `<button class="btn border px-3 py-2 ${i === currentPage ? 'text-light' : ''}"
-                        style="background-color:${i === currentPage ? '#2b353bf5' : 'transparent'}">${i}</button>`;
+                        style="background-color:${i === currentPage ? '#00ad8e' : 'transparent'}">${i}</button>`;
                             li.onclick = () => displayReschedulePage(i);
                             ul.appendChild(li);
                         }

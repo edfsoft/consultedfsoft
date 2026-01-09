@@ -1214,7 +1214,7 @@
 
                             <div id="entriesPerPageReschedule" class="d-md-flex align-items-center justify-content-between mx-4">
                                 <select id="filterDropdownReschedule" class="form-select border border-2 rounded-3 px-3 py-2"
-                                    style="height: 50px; width: 250px;">
+                                    style="height: 50px; width: 280px;">
                                     <option value="All">Filter Appoinmtent with (All)</option>
                                     <option value="PATIENT">HCP</option>
                                     <option value="CC">CC</option>
@@ -1401,13 +1401,13 @@
 
                             tbody.insertAdjacentHTML('beforeend', `
                                 <tr>
-                                    <td>${start + i + 1}.</td>
-                                    <td>${r.appointmentType}</td>
-                                    <td>${patientLink}</td>
-                                    <td>${formatDateOrToday(r.dateOfAppoint)}</td>
-                                    <td>${formatTimeAMPM(r.timeOfAppoint)}</td>
-                                    <td>${ccLink}</td>
-                                    <td>${renderRescheduleActions(r)}</td>
+                                    <td class="align-middle">${start + i + 1}.</td>
+                                    <td class="align-middle">${r.appointmentType}</td>
+                                    <td class="align-middle">${patientLink}</td>
+                                    <td class="align-middle">${formatDateOrToday(r.dateOfAppoint)}</td>
+                                    <td class="align-middle">${formatTimeAMPM(r.timeOfAppoint)}</td>
+                                    <td class="align-middle">${ccLink}</td>
+                                    <td class="align-middle">${renderRescheduleActions(r)}</td>
                                 </tr>
                             `);
                         });

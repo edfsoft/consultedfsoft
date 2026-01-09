@@ -1002,7 +1002,6 @@
                         }
 
                         displayAppointmentPage(1);
-
                     }
 
                     function renderActionButtons(row) {
@@ -1388,6 +1387,10 @@
                         }
 
                         rows.forEach((r, i) => {
+                            const complaintText = r.patientComplaint
+                                ? escapeHTML(r.patientComplaint)
+                                : 'No complaint provided';
+
                             const patientLink = `<a href="${baseUrl}Healthcareprovider/patientdetails/${r.patientDbId}" 
                                     class="text-dark" onmouseover="this.style.textDecoration='underline'" 
                                     onmouseout="this.style.textDecoration='none'">${escapeHTML(r.patientId)}</a>`;
@@ -1400,7 +1403,9 @@
                             }
 
                             tbody.insertAdjacentHTML('beforeend', `
-                                <tr>
+                                <tr data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="${complaintText}">
                                     <td class="align-middle">${start + i + 1}.</td>
                                     <td class="align-middle">${r.appointmentType}</td>
                                     <td class="align-middle">${patientLink}</td>
@@ -1416,6 +1421,7 @@
                             `Showing ${start + 1} to ${Math.min(end, filteredRescheduleList.length)} of ${filteredRescheduleList.length} entries.`;
 
                         generateReschedulePagination(filteredRescheduleList.length, page);
+                        initRescheduleTooltips();
                     }
 
                     function generateReschedulePagination(totalItems, currentPage) {
@@ -1520,6 +1526,25 @@
                     // 9. INITIALIZE
                     displayReschedulePage(1);
 
+                    function initRescheduleTooltips() {
+                        const tooltipTriggerList = [].slice.call(
+                            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                        );
+
+                        tooltipTriggerList.forEach(el => {
+                            // Dispose old instance (important for pagination)
+                            if (bootstrap.Tooltip.getInstance(el)) {
+                                bootstrap.Tooltip.getInstance(el).dispose();
+                            }
+
+                            new bootstrap.Tooltip(el, {
+                                placement: 'top',
+                                html: false,
+                                trigger: 'hover',
+                                container: 'body'
+                            });
+                        });
+                    }
                 </script>
 
             <?php

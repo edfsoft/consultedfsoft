@@ -549,6 +549,7 @@ class HcpModel extends CI_Model
             a.appointmentLink, 
             a.appointmentType,
             p.firstName, 
+            p.lastName, 
             p.mailId
         ');
         $this->db->from('appointment_details a');

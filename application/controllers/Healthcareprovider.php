@@ -582,7 +582,7 @@ class Healthcareprovider extends CI_Controller
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
                 $message = "
-                    Dear {$details['firstName']},<br><br>
+                    Dear {$details['firstName']} {$details['lastName']},<br><br>
                     Your Reschedule appointment has been successfully <b>updated</b>.<br><br>
                     <b>📅 Date:</b> {$formattedDate}<br>
                     <b>⏰ Time:</b> {$formattedTime}<br><br>

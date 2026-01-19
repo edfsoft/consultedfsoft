@@ -153,7 +153,7 @@ class Patient extends CI_Controller
             // $appointmentList = $this->PatientModel->getAppointmentListDash();
             // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
             // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
-            $this->load->view('hcpDashboard.php', $this->data);
+            $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');
         }

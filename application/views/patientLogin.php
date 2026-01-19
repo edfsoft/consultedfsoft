@@ -50,7 +50,7 @@
             }
 
             #bgcolor {
-                background-color: rgba(0, 173, 142, 0.4);
+                background-color: rgb(47, 128, 237, 0.4);
                 min-height: 100vh;
             }
 
@@ -70,11 +70,11 @@
     <div class="container-fluid">
         <div class="row" id="bgcolor">
             <div class="col-md-6 text-center">
-                <img src="<?php echo base_url(); ?>assets/hcpbglogin.png" alt="Fixed Image"
+                <img src="<?php echo base_url(); ?>assets/patientbglogin.png" alt="Fixed Image"
                     class="fixed-image img-fluid">
                 <div class="fixed-image-container text-center d-none d-md-block"
                     style="position: fixed; top: 50%; left: 25%; transform: translate(-50%, -50%);">
-                    <img src="<?php echo base_url(); ?>assets/hcplogin.png" alt="image" class="img-fluid" width=""
+                    <img src="<?php echo base_url(); ?>assets/patientlogin.png" alt="image" class="img-fluid" width=""
                         height="">
                 </div>
             </div>
@@ -82,7 +82,7 @@
                 <div class="login-form mx-lg-2 mx-xxl-5 p-3 p-sm-4 p-xxl-5">
                     <a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/edf_logo.png"
                             id="edfLogo" alt="logo" class="img-fluid"></a>
-                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#00AD8E;" id="patientHeading">Patient
+                    <p class="fs-1 fs-sm-2 pt-2" style="font-weight:500;color:#2F80ED;" id="patientHeading">Patient
                         Login
                     </p>
                     <p class="" style="font-size:24px;font-weight:600;">Welcome back 👋</p>
@@ -118,7 +118,7 @@
                         <div class="d-flex justify-content-between">
                             <button type="submit"
                                 class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
-                                style="background-color:#00AD8E;font-size:16px;font-weight:600;">Login</button>
+                                style="background-color:#2F80ED;font-size:16px;font-weight:600;">Login</button>
                             <a href="<?php echo base_url() . "Patient/resetPassword" ?>" id="forgotPassword"
                                 class="text-danger mt-5">Forgot password?</a>
                         </div>

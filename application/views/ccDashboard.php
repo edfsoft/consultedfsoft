@@ -1485,7 +1485,7 @@
                                                     </div>
                                                 </div>
 
-                                                <h5 class="fw-bolder pb-3">Profile Details:</h5>
+                                                 <p class="my-3 fs-5 fw-semibold">Profile Details</p>
 
                                                 <div class="d-md-flex pb-1">
                                                     <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
@@ -1570,7 +1570,7 @@
                                                     </div>
 
                                                     <div class="d-flex justify-content-between mt-2 ">
-                                                        <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details :</p>
+                                                        <p class="my-3 fs-5 fw-semibold">Profile Details :</p>
 
                                                         <a href="<?php echo base_url() . "Chiefconsultant/editMyProfile" ?>"><i
                                                                 class="bi bi-pencil-square"></i> Edit</a>

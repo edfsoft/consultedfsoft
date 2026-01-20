@@ -91,7 +91,7 @@
                                 <a href="<?php echo base_url() . "Patient/dashboard" ?>" class="float-end text-dark mt-2"><i
                                         class="bi bi-arrow-left"></i> Back</a>
                             </div>
-                            <div class="card-body p-3 p-sm-4">
+                            <div class="card-body p-3 px-sm-5">
                             <?php
                             foreach ($patientDetails as $key => $value) {
                                 ?>
@@ -807,7 +807,7 @@
                                                     </div>
                                                 </div>
 
-                                                <h5 class="fw-bolder pb-3">Profile Details:</h5>
+                                                 <p class="my-3 fs-5 fw-semibold">Profile Details</p>
 
                                                 <div class="d-md-flex pb-1">
                                                     <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
@@ -1026,7 +1026,7 @@
                                                                 </div>
                                                             </div>
 
-                                                            <h5 class="fw-bolder pb-3">Profile Details:</h5>
+                                                             <p class="my-3 fs-5 fw-semibold">Profile Details</p>
 
                                                             <div class="d-md-flex pb-1">
                                                                 <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>

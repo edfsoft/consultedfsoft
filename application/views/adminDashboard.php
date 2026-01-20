@@ -780,7 +780,7 @@
                                             </div>
                                         </div>
 
-                                        <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details</p>
+                                        <p class="my-3 fs-5 fw-semibold">Profile Details</p>
 
                                         <div class="d-md-flex pb-1">
                                             <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
@@ -1473,7 +1473,7 @@
                                                                 </a></p>
                                                         </div>
                                                     </div>
-                                                    <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details</p>
+                                                    <p class="my-3 fs-5 fw-semibold">Profile Details</p>
                                                     <div class="d-md-flex pb-1">
                                                         <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
                                                         <p class="col-md-9 ps-2">

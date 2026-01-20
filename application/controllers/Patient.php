@@ -157,7 +157,7 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "appointments";
-            
+
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');
@@ -186,6 +186,16 @@ class Patient extends CI_Controller
         } else {
             redirect('Patient/');
         }
+    }
+
+    public function updateMyProfile()
+    {
+        if ($this->PatientModel->updateProfileDetails()) {
+            $this->session->set_flashdata('showSuccessMessage', 'Profile details updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating profile details');
+        }
+        redirect('Patient/myProfile');
     }
 
     public function changePassword()

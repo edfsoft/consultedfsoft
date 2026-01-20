@@ -41,6 +41,67 @@ class PatientModel extends CI_Model
         return $select->result_array();
     }
 
+    public function updateProfileDetails()
+    {
+        $post = $this->input->post(null, true);
+        $updateData = array(
+            // 'firstName' => $post['patientName'],
+            // 'lastName' => $post['patientLastName'],
+            // 'mobileNumber' => $post['patientMobile'],
+            // 'alternateMobile' => $post['patientAltMobile'],
+            // 'mailId' => $post['patientEmail'],
+            'gender' => $post['patientGender'],
+            'age' => $post['patientAge'],
+            'bloodGroup' => $post['patientBlood'],
+            'maritalStatus' => $post['patientMarital'],
+            'marriedSince' => $post['marriedSince'],
+            'profession' => $post['patientProfessions'],
+            'doorNumber' => $post['patientDoorNo'],
+            'address' => $post['patientStreet'],
+            'district' => $post['patientDistrict'],
+            'pincode' => $post['patientPincode'],
+            'partnerName' => $post['partnersName'],
+            'partnerMobile' => $post['partnerMobile'],
+            'partnerBlood' => $post['partnerBlood']
+        );
+        $this->db->where('id', $post['patientIdDb']);
+        $this->db->update('patient_details', $updateData);
+
+        $uploadPath = './uploads/';
+        $allowedTypes = ['jpg', 'jpeg', 'png'];
+        $maxSize = 1 * 1024 * 1024;
+
+        if (!empty($_FILES['profilePhoto']['name'])) {
+            $ext = pathinfo($_FILES['profilePhoto']['name'], PATHINFO_EXTENSION);
+            $ext = strtolower($ext);
+
+            if (!in_array($ext, $allowedTypes)) {
+                return ['status' => false, 'message' => 'Invalid file type'];
+            }
+
+            if ($_FILES['profilePhoto']['size'] > $maxSize) {
+                return ['status' => false, 'message' => 'File size exceeds 1MB'];
+            }
+
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+
+            $formattedId = str_pad($post['patientIdDb'], 2, '0', STR_PAD_LEFT);
+            $fileName = 'patient_profile_' . $formattedId . '.' . $ext;
+            $targetPath = $uploadPath . $fileName;
+
+            if (!move_uploaded_file($_FILES['profilePhoto']['tmp_name'], $targetPath)) {
+                return false;
+            }
+
+            $this->db->where('id', $post['patientIdDb']);
+            $this->db->update('patient_details', ['profilePhoto' => $fileName]);
+        }
+
+        return $post['patientIdDb'];
+    }
+
     public function updateNewPassword()/* Password change after login */
     {
         $post = $this->input->post(null, true);

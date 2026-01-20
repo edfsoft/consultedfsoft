@@ -114,7 +114,33 @@ class PatientModel extends CI_Model
         return ($this->db->affected_rows() > 0);
     }
 
+    public function getHcpProfile()
+    {
+        $details = "SELECT * FROM `hcp_details` WHERE deleteStatus = '0' AND approvalStatus = '1'";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
 
+    public function getHcpDetails($hcpIdDb)
+    {
+        $details = "SELECT * FROM `hcp_details` WHERE `id`=$hcpIdDb  AND deleteStatus = '0' AND approvalStatus = '1'";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
+
+    public function getCcProfile()
+    {
+        $details = "SELECT * FROM `cc_details` WHERE deleteStatus = '0' AND approvalStatus = '1'";
+        $select = $this->db->query($details);
+        return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
+    }
+
+    public function getCcDetails($ccIdDb)
+    {
+        $details = "SELECT * FROM `cc_details` WHERE `id`=$ccIdDb AND deleteStatus = '0' AND approvalStatus = '1'";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
 
 
 

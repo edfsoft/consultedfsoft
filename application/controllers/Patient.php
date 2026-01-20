@@ -271,13 +271,21 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "hcps";
-            // $patientTotal = $this->PatientModel->getPatientList();
-            // $this->data['patientTotal'] = $patientTotal['totalRows'];
-            // $ccDetails = $this->PatientModel->getCcProfile();
-            // $this->data['totalCcs'] = $ccDetails['totalRows'];
-            // $appointmentList = $this->PatientModel->getAppointmentListDash();
-            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
-            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+             $hcpDetails = $this->PatientModel->getHcpProfile();
+            $this->data['hcpDetails'] = $hcpDetails['response'];
+            $this->load->view('patientDashboard.php', $this->data);
+        } else {
+            redirect('Patient/');
+        }
+    }
+
+    public function healthCareProvidersProfile()
+    {
+        if (isset($_SESSION['patientIdDb'])) {
+            $hcpIdDb = $this->uri->segment(3);
+            $this->data['method'] = "hcpsProfile";
+            $hcpDetails = $this->PatientModel->getHcpDetails($hcpIdDb);
+            $this->data['hcpDetails'] = $hcpDetails;
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');
@@ -288,13 +296,21 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "chiefDoctors";
-            // $patientTotal = $this->PatientModel->getPatientList();
-            // $this->data['patientTotal'] = $patientTotal['totalRows'];
-            // $ccDetails = $this->PatientModel->getCcProfile();
-            // $this->data['totalCcs'] = $ccDetails['totalRows'];
-            // $appointmentList = $this->PatientModel->getAppointmentListDash();
-            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
-            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+            $ccDetails = $this->PatientModel->getCcProfile();
+            $this->data['ccDetails'] = $ccDetails['response'];
+            $this->load->view('patientDashboard.php', $this->data);
+        } else {
+            redirect('Patient/');
+        }
+    }
+
+    public function chiefDoctorsProfile()
+    {
+        if (isset($_SESSION['patientIdDb'])) {
+            $ccIdDb = $this->uri->segment(3);
+            $this->data['method'] = "chiefDoctorProfile";
+            $ccDetails = $this->PatientModel->getCcDetails($ccIdDb);
+            $this->data['ccDetails'] = $ccDetails;
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');

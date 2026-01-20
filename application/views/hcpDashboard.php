@@ -3035,7 +3035,7 @@
                                                     'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
                                                     'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
                                                     '<div>' +
-                                                    '<p class=\'card-title\'><b>' + value.doctorName + '</b><br>' + value.ccId + '</p>' +
+                                                    '<p class=\'card-title\'><b>' + value.doctorName + '</b> /<br>' + value.ccId + '</p>' +
                                                     '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
                                                     '<a href=\'<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/' + value.id + '\' ' +
                                                     'class=\'btn btn-secondary\'>Full Details</a>' +
@@ -3135,7 +3135,9 @@
                                                             <p style="font-size:20px;font-weight:500;">Dr.
                                         <?php echo $value['doctorName']; ?>
                                                             </p>
-                                                            <p style="font-size:16px;font-weight:400;color:#00ad8e;">Diabetologist</p>
+                                                            <p style="font-size:16px;font-weight:400;color:#00ad8e;">
+                                        <?php echo $value['specialization']; ?>
+                                                            </p>
                                                             <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
                                                                     style="font-size:16px;font-weight:400;"
                                                                     class="text-decoration-none text-dark fs-6">+91

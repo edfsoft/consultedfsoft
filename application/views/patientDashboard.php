@@ -72,10 +72,8 @@
             ?>
                 <section>
                     <div class="card rounded">
-                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                            <p style="font-size: 24px; font-weight: 500"> Appointments</p>
-                            <a href="<?php echo base_url() . "Patient/dashboard" ?>" class="float-end text-dark mt-2"><i
-                                    class="bi bi-arrow-left"></i> Back</a>
+                        <div class="mt-2 p-3 pt-sm-4 px-sm-4">
+                            <p style="font-size: 24px; font-weight: 500"> Appointments</p>                           
                         </div>
                         <div class="card-body p-3 p-sm-4">
 
@@ -638,243 +636,217 @@
             <?php
         } else if ($method == "hcps") {
             ?>
-                                <section>
-                                    <div class="card rounded">
-                                        <div class="d-sm-flex justify-content-between p-3">
-                                            <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
-                                                Health Care Providers
-                                            </p>
-                                            <div class="input-group pt-2 pt-sm-0" style="width:250px;">
-                                                <span class="input-group-text" id="searchIcon">
-                                                    <i class="bi bi-search"></i>
-                                                </span>
-                                                <input type="text" id="searchInputChiefDoctor" class="form-control" placeholder="Search by name"
-                                                    aria-describedby="searchIcon">
-                                                <button class="btn btn-outline-secondary" type="button" id="clearSearchChiefDoctor">
-                                                    <i class="bi bi-x"></i>
-                                                </button>
-                                            </div>
+                                 <section>
+                                <div class="card rounded">
+                                    <div class="d-sm-flex justify-content-between p-3">
+                                        <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
+                                            Health Care Providers
+                                        </p>
+                                        <div class="input-group pt-2 pt-sm-0" style="width:250px;">
+                                            <span class="input-group-text" id="searchIconHcp">
+                                                <i class="bi bi-search"></i>
+                                            </span>
+                                            <input type="text" id="searchInputHcp" class="form-control" placeholder="Search by name"
+                                                aria-describedby="searchIconHcp">
+                                            <button class="btn btn-outline-secondary" type="button" id="clearSearchHcp">
+                                                <i class="bi bi-x"></i>
+                                            </button>
                                         </div>
                                     </div>
+                                </div>
 
-                <?php if (isset($ccDetails[0]['id'])) { ?>
+                <?php if (isset($hcpDetails[0]['id'])) {
+                    ?>
 
-                                        <div class="container">
-                                            <div class="row justify-content-center" id="doctorContainer">
-                                            </div>
+                                    <div class="container">
+                                        <div class="row justify-content-center" id="hcpContainer"></div>
+                                        <div class="pagination justify-content-center mt-3" id="paginationContainerHcp"></div>
+                                    </div>
 
-                                            <div class="pagination justify-content-center mt-3" id="paginationContainer">
-                                            </div>
-                                        </div>
                 <?php } else { ?>
-                                        <h5 class="card text-center p-3"><b>No Records Found.</b> </h5>
+                                    <h5 class="card text-center p-3"><b>No Records Found.</b> </h5>
                 <?php } ?>
-                                </section>
 
-                                <script>
-                                    const itemsPerPage = 6;
-                                    const ccDetails = <?php echo json_encode($ccDetails); ?>;
-                                    let filteredDetails = ccDetails;
-                                    const initialPage = parseInt(localStorage.getItem('currentPage')) || 1;
+                            </section>
 
-                                    function displayPage(page) {
-                                        localStorage.setItem('currentPage', page);
-                                        const start = (page - 1) * itemsPerPage;
-                                        const end = start + itemsPerPage;
-                                        const itemsToShow = filteredDetails.slice(start, end);
+                            <script>
+                                const itemsPerPageHcp = 6;
+                                const hcpDetails = <?php echo json_encode($hcpDetails); ?>;
+                                let filteredHcpDetails = hcpDetails;
+                                const initialPageHcp = parseInt(localStorage.getItem('currentPageHcp')) || 1;
 
-                                        const doctorContainer = document.getElementById('doctorContainer');
-                                        doctorContainer.innerHTML = '';
+                                function displayHcpPage(page) {
+                                    localStorage.setItem('currentPageHcp', page);
+                                    const start = (page - 1) * itemsPerPageHcp;
+                                    const end = start + itemsPerPageHcp;
+                                    const itemsToShow = filteredHcpDetails.slice(start, end);
 
-                                        if (itemsToShow.length === 0) {
-                                            const noMatchesDiv = document.createElement('div');
-                                            noMatchesDiv.className = 'col-12 text-center';
-                                            noMatchesDiv.innerHTML = '<p>No matches found.</p>';
-                                            doctorContainer.appendChild(noMatchesDiv);
-                                        } else {
-                                            itemsToShow.forEach(value => {
-                                                const doctorItem = document.createElement('div');
-                                                doctorItem.className = 'card col-lg-4 m-3 chief-doctor-item';
-                                                doctorItem.innerHTML =
-                                                    '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
-                                                    '<img src="' + (value.ccPhoto ? '<?php echo base_url(); ?>uploads/' + value.ccPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') +
-                                                    'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
-                                                    'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
-                                                    '<div>' +
-                                                    '<p class=\'card-title\'><b>' + value.doctorName + '</b><br>' + value.ccId + '</p>' +
-                                                    '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
-                                                    '<a href=\'<?php echo base_url(); ?>Patient/chiefDoctorsProfile/' + value.id + '\' ' +
-                                                    'class=\'btn btn-secondary\'>Full Details</a>' +
-                                                    '</div>' +
-                                                    '</div>';
-                                                doctorContainer.appendChild(doctorItem);
-                                            });
-                                        }
+                                    const hcpContainer = document.getElementById('hcpContainer');
+                                    hcpContainer.innerHTML = '';
 
-                                        generatePagination(filteredDetails.length, page);
+                                    if (itemsToShow.length === 0) {
+                                        const noMatchesDiv = document.createElement('div');
+                                        noMatchesDiv.className = 'col-12 text-center';
+                                        noMatchesDiv.innerHTML = '<p>No matches found.</p>';
+                                        hcpContainer.appendChild(noMatchesDiv);
+                                    } else {
+                                        itemsToShow.forEach(value => {
+                                            const hcpItem = document.createElement('div');
+                                            hcpItem.className = 'card col-lg-4 m-3 hcp-item';
+                                            hcpItem.innerHTML =
+                                                '<div class=\'d-sm-flex justify-content-evenly text-center p-4\'>' +
+                                                '<img src="' + (value.hcpPhoto ? '<?php echo base_url(); ?>uploads/' + value.hcpPhoto : '<?php echo base_url(); ?>assets/BlankProfile.jpg') + 'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
+                                                'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
+                                                '<div>' +
+                                                '<p class=\'card-title\'><b>' + value.hcpName + '</b> /<br>' + value.hcpId + '</p>' +
+                                                '<p style=\'color: #2F80ED;\'><b>' + value.hcpSpecialization + '</b></p>' +
+                                                '<a href=\'<?php echo base_url(); ?>Patient/healthCareProvidersProfile/' + value.id + '\' ' +
+                                                'class=\'btn btn-secondary\'>Full Details</a>' +
+                                                '</div>' +
+                                                '</div>';
+                                            hcpContainer.appendChild(hcpItem);
+                                        });
                                     }
 
-                                    function generatePagination(totalItems, currentPage) {
-                                        const totalPages = Math.ceil(totalItems / itemsPerPage);
-                                        const paginationContainer = document.getElementById('paginationContainer');
-                                        paginationContainer.innerHTML = '';
+                                    generateHcpPagination(filteredHcpDetails.length, page);
+                                }
 
-                                        const ul = document.createElement('ul');
-                                        ul.className = 'pagination';
+                                function generateHcpPagination(totalItems, currentPage) {
+                                    const totalPages = Math.ceil(totalItems / itemsPerPageHcp);
+                                    const paginationContainer = document.getElementById('paginationContainerHcp');
+                                    paginationContainer.innerHTML = '';
 
-                                        const prevLi = document.createElement('li');
-                                        prevLi.innerHTML =
+                                    const ul = document.createElement('ul');
+                                    ul.className = 'pagination';
+
+                                    const prevLi = document.createElement('li');
+                                    prevLi.innerHTML =
+                                        '<a href=\'#\'>' +
+                                        '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === 1 ? 'disabled' : '') + '>&lt;</button>' +
+                                        '</a>';
+                                    prevLi.onclick = () => {
+                                        if (currentPage > 1) displayHcpPage(currentPage - 1);
+                                    };
+                                    ul.appendChild(prevLi);
+
+                                    for (let i = 1; i <= totalPages; i++) {
+                                        const li = document.createElement('li');
+                                        li.innerHTML =
                                             '<a href=\'#\'>' +
-                                            '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === 1 ? 'disabled' : '') + '>&lt;</button>' +
+                                            '<button type=\'button\' class=\'btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '\'>' + i + '</button>' +
                                             '</a>';
-                                        prevLi.onclick = () => {
-                                            if (currentPage > 1) displayPage(currentPage - 1);
-                                        };
-                                        ul.appendChild(prevLi);
-
-                                        for (let i = 1; i <= totalPages; i++) {
-                                            const li = document.createElement('li');
-                                            li.innerHTML =
-                                                '<a href=\'#\'>' +
-                                                '<button type=\'button\' class=\'btn border px-3 py-2 ' + (i === currentPage ? 'btn-secondary text-light' : '') + '\'>' + i + '</button>' +
-                                                '</a>';
-                                            li.onclick = () => displayPage(i);
-                                            ul.appendChild(li);
-                                        }
-
-                                        const nextLi = document.createElement('li');
-                                        nextLi.innerHTML =
-                                            '<a href=\'#\'>' +
-                                            '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === totalPages ? 'disabled' : '') + '>&gt;</button>' +
-                                            '</a>';
-                                        nextLi.onclick = () => {
-                                            if (currentPage < totalPages) displayPage(currentPage + 1);
-                                        };
-                                        ul.appendChild(nextLi);
-
-                                        paginationContainer.appendChild(ul);
+                                        li.onclick = () => displayHcpPage(i);
+                                        ul.appendChild(li);
                                     }
 
-                                    document.getElementById('searchInputChiefDoctor').addEventListener('keyup', function () {
-                                        const searchQuery = this.value.toLowerCase();
-                                        filteredDetails = ccDetails.filter(item => item.doctorName.toLowerCase().includes(searchQuery));
-                                        displayPage(1);
-                                    });
+                                    const nextLi = document.createElement('li');
+                                    nextLi.innerHTML =
+                                        '<a href=\'#\'>' +
+                                        '<button type=\'button\' class=\'bg-light border px-3 py-2\' ' + (currentPage === totalPages ? 'disabled' : '') + '>&gt;</button>' +
+                                        '</a>';
+                                    nextLi.onclick = () => {
+                                        if (currentPage < totalPages) displayHcpPage(currentPage + 1);
+                                    };
+                                    ul.appendChild(nextLi);
 
-                                    document.getElementById('clearSearchChiefDoctor').addEventListener('click', function () {
-                                        document.getElementById('searchInputChiefDoctor').value = '';
-                                        filteredDetails = ccDetails;
-                                        displayPage(1);
-                                    });
+                                    paginationContainer.appendChild(ul);
+                                }
 
-                                    displayPage(initialPage);
-                                </script>
+                                document.getElementById('searchInputHcp').addEventListener('keyup', function () {
+                                    const searchQuery = this.value.toLowerCase();
+                                    filteredHcpDetails = hcpDetails.filter(item => item.hcpName.toLowerCase().includes(searchQuery));
+                                    displayHcpPage(1);
+                                });
 
+                                document.getElementById('clearSearchHcp').addEventListener('click', function () {
+                                    document.getElementById('searchInputHcp').value = '';
+                                    filteredHcpDetails = hcpDetails;
+                                    displayHcpPage(1);
+                                });
+
+                                displayHcpPage(initialPageHcp);
+                            </script>
 
             <?php
         } else if ($method == "hcpsProfile") {
             ?>
                                     <section>
-                                        <div class="card rounded">
-                                            <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                <p style="font-size: 24px; font-weight: 500">
-                                                    Health Care Provider Profile </p>
-                                                <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
-                                                        class="bi bi-arrow-left"></i> Back</button>
-                                            </div>
-
-                                            <div class="card-body p-3 p-sm-4">
-
-                                                <div class="d-sm-flex justify-content-start mt-2 mb-5">
-                                <?php
-                                foreach ($ccDetails as $key => $value) {
-                                    ?>
-                                <?php if (isset($value['ccPhoto']) && $value['ccPhoto'] != "") { ?>
-                                                            <img src="<?php echo base_url('uploads/' . $value['ccPhoto']); ?>" alt="Profile Photo"
-                                                                width="140" height="140" class="rounded-circle"
-                                                                onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
-                                <?php } else { ?>
-                                                            <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
-                                                                height="140" class="rounded-circle my-auto">
-                                <?php } ?>
-                                                        <div class="ps-sm-5">
-                                                            <p style="font-size:20px;font-weight:500;">Dr.
-                                        <?php echo $value['doctorName']; ?>
-                                                            </p>
-                                                            <p style="font-size:16px;font-weight:400;color:#00ad8e;">Diabetologist</p>
-                                                            <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
-                                                                    style="font-size:16px;font-weight:400;"
-                                                                    class="text-decoration-none text-dark fs-6">+91
-                                            <?php echo $value['doctorMobile']; ?>
-                                                                </a> | <a href="mailto:<?php echo $value['doctorMail']; ?>"
-                                                                    style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
-                                            <?php echo $value['doctorMail']; ?>
-                                                                </a></p>
-                                                        </div>
-                                                    </div>
-
-                                                    <h5 class="fw-bolder pb-3">Profile Details:</h5>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['yearOfExperience'] ? $value['yearOfExperience'] : "-"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Qualification : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['qualification'] ? $value['qualification'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Registration detail : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['regDetails'] ? $value['regDetails'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Membership : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['membership'] ? $value['membership'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Services : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['services'] ? $value['services'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['dateOfBirth'] ? $value['dateOfBirth'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['hospitalName'] ? $value['hospitalName'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="d-md-flex pb-1">
-                                                        <p class="text-secondary col-md-3 mb-1">Location : </p>
-                                                        <p class="col-md-9 ps-2">
-                                    <?php echo $value['location'] ? $value['location'] : "Not provided"; ?>
-                                                        </p>
-                                                    </div>
-
-                                                </div>
-                    <?php } ?>
+                                    <div class="card rounded">
+                                        <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
+                                            <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
+                                            <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
+                                                    class="bi bi-arrow-left"></i> Back</button>
                                         </div>
-                                    </section>
+                                        <div class="card-body p-3 p-sm-4">
+                            <?php
+                            foreach ($hcpDetails as $key => $value) {
+                                ?>
+                                                <div class="d-sm-flex justify-content-start mt-2 mb-5">
+                                <?php if (isset($value['hcpPhoto']) && $value['hcpPhoto'] != "") { ?>
+                                                        <img src="<?php echo base_url('uploads/' . $value['hcpPhoto']); ?>" alt="Profile Photo"
+                                                            width="140" height="140" class="rounded-circle"
+                                                            onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfile.jpg'); ?>';">
+                                <?php } else { ?>
+                                                        <img src="<?php echo base_url(); ?>assets/BlankProfile.jpg" alt="Profile Photo" width="140"
+                                                            height="140" class="rounded-circle">
+                                <?php } ?>
+                                                    <div class="ps-sm-5">
+                                                        <p style="font-size:20px;font-weight:500;">Dr.
+                                        <?php echo $value['hcpName']; ?>
+                                                        </p>
+                                                        <p style="font-size:16px;font-weight:400;color: #2F80ED;">
+                                        <?php echo $value['hcpSpecialization']; ?>
+                                                        </p>
+                                                        <p><a href="tel:<?php echo $value['hcpMobile']; ?>" style="font-size:16px;font-weight:400;"
+                                                                class="text-decoration-none text-dark fs-6">+91
+                                            <?php echo $value['hcpMobile']; ?>
+                                                            </a> | <a href="mailto:<?php echo $value['hcpMail']; ?>"
+                                                                style="font-size:16px;font-weight:400;" class="text-decoration-none text-dark fs-6">
+                                            <?php echo $value['hcpMail']; ?>
+                                                            </a></p>
+                                                    </div>
+                                                </div>
+
+                                                <h5 class="fw-bolder pb-3">Profile Details:</h5>
+
+                                                <div class="d-md-flex pb-1">
+                                                    <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
+                                                    <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpExperience'] ? $value['hcpExperience'] : "-"; ?>
+                                                    </p>
+                                                </div>
+
+                                                <div class="d-md-flex pb-1">
+                                                    <p class="text-secondary col-md-3 mb-1">Qualification : </p>
+                                                    <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpQualification'] ? $value['hcpQualification'] : "Not provided"; ?>
+                                                    </p>
+                                                </div>
+
+                                                <div class="d-md-flex pb-1">
+                                                    <p class="text-secondary col-md-3 mb-1">Date of Birth : </p>
+                                                    <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpDob'] ? $value['hcpDob'] : "Not provided"; ?>
+                                                    </p>
+                                                </div>
+
+                                                <div class="d-md-flex pb-1">
+                                                    <p class="text-secondary col-md-3 mb-1">Hospital / Clinic Name : </p>
+                                                    <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpHospitalName'] ? $value['hcpHospitalName'] : "Not provided"; ?>
+                                                    </p>
+                                                </div>
+
+                                                <div class="d-md-flex pb-1">
+                                                    <p class="text-secondary col-md-3 mb-1">Location : </p>
+                                                    <p class="col-md-9 ps-2">
+                                    <?php echo $value['hcpLocation'] ? $value['hcpLocation'] : "Not provided"; ?>
+                                                    </p>
+                                                </div>
+                        <?php } ?>
+                                        </div>
+                                    </div>
+                                </section>
 
             <?php
         } else if ($method == "chiefDoctors") {
@@ -942,8 +914,8 @@
                                                             'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
                                                             'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
                                                             '<div>' +
-                                                            '<p class=\'card-title\'><b>' + value.doctorName + '</b><br>' + value.ccId + '</p>' +
-                                                            '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
+                                                            '<p class=\'card-title\'><b>' + value.doctorName + '</b> /<br>' + value.ccId + '</p>' +
+                                                            '<p style=\'color: #2F80ED;\'><b>' + value.specialization + '</b></p>' +
                                                             '<a href=\'<?php echo base_url(); ?>Patient/chiefDoctorsProfile/' + value.id + '\' ' +
                                                             'class=\'btn btn-secondary\'>Full Details</a>' +
                                                             '</div>' +
@@ -1042,7 +1014,7 @@
                                                                     <p style="font-size:20px;font-weight:500;">Dr.
                                         <?php echo $value['doctorName']; ?>
                                                                     </p>
-                                                                    <p style="font-size:16px;font-weight:400;color:#00ad8e;">Diabetologist</p>
+                                                                    <p style="font-size:16px;font-weight:400;color:#2F80ED;"><?php echo $value['specialization']; ?></p>
                                                                     <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
                                                                             style="font-size:16px;font-weight:400;"
                                                                             class="text-decoration-none text-dark fs-6">+91

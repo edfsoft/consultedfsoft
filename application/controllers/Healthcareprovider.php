@@ -433,16 +433,16 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
-    /* public function newAppointment()
- {
-     if ($this->HcpModel->insertAppointment()) {
+    /*  public function newAppointment()
+     {
+         if ($this->HcpModel->insertAppointment()) {
 
-         $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
-     } else {
-         $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
-     }
-     redirect('Healthcareprovider/appointments');
- } */
+             $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+         } else {
+             $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
+         }
+         redirect('Healthcareprovider/appointments');
+     } */
 
     public function newAppointment()
     {

@@ -27,17 +27,31 @@ class PatientModel extends CI_Model
         $result = $this->db->query($query, array($emailid));
         $user = $result->row_array();
 
-        // $hashedPassword = $user['password'];
-        // if (password_verify($password, $hashedPassword)) {
-        //     return $user;
-        // }
-        if ($password == $user['password']) { /* Need to hash the password */
+        $hashedPassword = $user['password'];
+        if (password_verify($password, $hashedPassword)) {
             return $user;
         }
     }
 
+    public function getPatientDetails()
+    {
+        $patientIdDb = $_SESSION['patientIdDb'];
+        $details = "SELECT * FROM `patient_details` WHERE `id` = $patientIdDb";
+        $select = $this->db->query($details);
+        return $select->result_array();
+    }
 
-
+    public function updateNewPassword()/* Password change after login */
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            'password' => password_hash($post['patientCnfmPassword'], PASSWORD_BCRYPT),
+            'firstLoginPswd' => '1'
+        );
+        $this->db->where('id', $post['patientDbId']);
+        $this->db->update('patient_details', $updatedata);
+        return ($this->db->affected_rows() > 0);
+    }
 
 
 

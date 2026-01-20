@@ -112,9 +112,9 @@ class Patient extends CI_Controller
     // {
     //     $result = $this->PatientModel->changeNewPassword();
     //     if ($result) {
-    //         $this->session->set_flashdata('successMessage', 'Password updated successfully');
+    //         $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
     //     } else {
-    //         $this->session->set_flashdata('errorMessage', 'Password update failed or no changes made');
+    //         $this->session->set_flashdata('showErrorMessage', 'Password update failed or no changes made');
     //     }
     //     redirect('Patient/');
     // }
@@ -180,17 +180,95 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "myProfile";
-            // $patientTotal = $this->PatientModel->getPatientList();
-            // $this->data['patientTotal'] = $patientTotal['totalRows'];
-            // $ccDetails = $this->PatientModel->getCcProfile();
-            // $this->data['totalCcs'] = $ccDetails['totalRows'];
-            // $appointmentList = $this->PatientModel->getAppointmentListDash();
-            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
-            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+            $patientDetail = $this->PatientModel->getPatientDetails();
+            $this->data['patientDetails'] = $patientDetail;
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');
         }
+    }
+
+    public function editMyProfile()
+    {
+        if (isset($_SESSION['patientIdDb'])) {
+            $this->data['method'] = "editMyProfile";
+            // $hcpDetails = $this->HcpModel->getHcpDetails();
+            // $this->data['hcpDetails'] = $hcpDetails;
+            // $specList = $this->HcpModel->getSpecialization();
+            // $this->data['specializationList'] = $specList;
+            $this->load->view('patientDashboard.php', $this->data);
+        } else {
+            redirect('Patient/');
+        }
+    }
+
+    public function changePassword()
+    {
+        if (isset($_SESSION['patientIdDb'])) {
+            $this->data['method'] = "passwordChange";
+            $patientDetail = $this->PatientModel->getPatientDetails();
+            $this->data['patientDetails'] = $patientDetail;
+            $this->load->view('patientDashboard.php', $this->data);
+        } else {
+            redirect('Patient/');
+        }
+    }
+
+    public function sendEmailOtp()/* OTP for change password in the HCP after login*/
+    {
+        $email = $this->input->post('email');
+
+        if (!$email) {
+            echo json_encode(['status' => 'fail', 'message' => 'Email required']);
+            return;
+        }
+
+        $otp = rand(1000, 9999);
+        $this->session->set_userdata('email_otp', $otp);
+        $this->session->set_userdata('email_otp_address', $email);
+
+        $message = "Hi there, <br><br>
+        Your OTP is <b> $otp </b> to change the new password for your account. 
+        <br>This OTP is valid for 10 minutes.
+        <br><br>
+        Regards,
+        <br><b>EDF Healthcare Team</b>";
+        $this->load->library('email');
+        $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+        $this->email->to($email);
+        $this->email->subject('Your OTP for Password Change');
+        $this->email->message($message);
+        $this->email->set_mailtype("html");
+        $mailSent = $this->email->send();
+        if ($mailSent) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'fail']);
+        }
+    }
+
+    public function verifyEmailOtp()
+    {
+        $enteredOtp = $this->input->post('otp');
+        $sessionOtp = $this->session->userdata('email_otp');
+
+        if ($enteredOtp == $sessionOtp) {
+            echo json_encode(['status' => 'success']);
+            $this->session->unset_userdata(['email_otp', 'email_otp_address']); // after otp verification is done.
+        } else {
+            echo json_encode(['status' => 'fail']);
+        }
+    }
+
+    public function saveNewPassword()
+    {
+        if ($this->PatientModel->updateNewPassword()) {
+            $this->session->unset_userdata('firstLogin');
+            $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
+        } else {
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating password');
+        }
+        redirect('Patient/myProfile');
     }
 
     public function healthCareProviders()

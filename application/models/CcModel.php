@@ -113,7 +113,7 @@ class CcModel extends CI_Model
 
     public function allPatientList()
     {
-        $details = "SELECT * FROM `patient_details` WHERE `deleteStatus` = '0' ORDER BY `patientId` DESC";
+        $details = "SELECT * FROM `patient_details` WHERE `deleteStatus` = '0' ORDER BY `patientId` ASC";
         $select = $this->db->query($details);
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }

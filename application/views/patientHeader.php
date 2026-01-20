@@ -111,7 +111,7 @@
                 style="font-size: 18px; font-weight: 400;color:white;" id="chiefDoctor">
                 <div>
                     <i class="bi bi-person-check pe-3"></i>
-                    <span>Chief Doctors</span>
+                    <span>Chief Consultants</span>
                 </div>
             </a>
         </li>

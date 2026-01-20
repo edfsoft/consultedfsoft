@@ -216,7 +216,7 @@
                 <section>
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                            <p style="font-size: 24px; font-weight: 500">Chief Consultant List</p>
+                            <p style="font-size: 24px; font-weight: 500">Chief Consultants List</p>
                             <a href="<?php echo base_url() . "Edfadmin/ccSignupForm" ?>">
                                 <button style="background-color: #2b353bf5;"
                                     class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
@@ -744,7 +744,7 @@
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                                     <p style="font-size: 24px; font-weight: 500">
-                                        Chief Doctor Profile </p>
+                                        Chief Consultant Profile </p>
                                     <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
                                             class="bi bi-arrow-left"></i> Back</button>
                                 </div>
@@ -913,7 +913,7 @@
                             <section>
                                 <div class="card rounded">
                                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                        <p style="font-size: 24px; font-weight: 500">Health Care Provider List</p>
+                                        <p style="font-size: 24px; font-weight: 500">Health Care Providers List</p>
                                         <a href="<?php echo base_url() . 'Edfadmin/hcpSignupForm'; ?>">
                                             <button style="background-color: #2b353bf5;"
                                                 class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
@@ -1438,7 +1438,7 @@
                                     <section>
                                         <div class="card rounded">
                                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
+                                                <p style="font-size: 24px; font-weight: 500"> Health Care Provider Profile</p>
                                                 <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
                                                         class="bi bi-arrow-left"></i> Back</button>
                                             </div>

@@ -1451,7 +1451,7 @@
                                 <section>
                                     <div class="card rounded">
                                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                            <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
+                                            <p style="font-size: 24px; font-weight: 500"> Health Care Provider Profile</p>
                                             <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
                                                     class="bi bi-arrow-left"></i> Back</button>
                                         </div>
@@ -1569,7 +1569,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="d-flex justify-content-between mt-2 ">
+                                                    <div class="d-flex justify-content-between mt-2">
                                                         <p class="my-3 fs-5 fw-semibold">Profile Details :</p>
 
                                                         <a href="<?php echo base_url() . "Chiefconsultant/editMyProfile" ?>"><i

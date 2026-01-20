@@ -773,7 +773,7 @@
                                     <section>
                                     <div class="card rounded">
                                         <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                            <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
+                                            <p style="font-size: 24px; font-weight: 500"> Health Care Provider Profile</p>
                                             <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
                                                     class="bi bi-arrow-left"></i> Back</button>
                                         </div>
@@ -855,7 +855,7 @@
                                             <div class="card rounded">
                                                 <div class="d-sm-flex justify-content-between p-3">
                                                     <p class="ps-2 m-0" style="font-size: 24px; font-weight: 500">
-                                                        Chief Doctors
+                                                        Chief Consultants
                                                     </p>
                                                     <div class="input-group pt-2 pt-sm-0" style="width:250px;">
                                                         <span class="input-group-text" id="searchIcon">
@@ -991,7 +991,7 @@
                                                 <div class="card rounded">
                                                     <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                                                         <p style="font-size: 24px; font-weight: 500">
-                                                            Chief Doctor Profile </p>
+                                                            Chief Consultant Profile </p>
                                                         <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
                                                                 class="bi bi-arrow-left"></i> Back</button>
                                                     </div>

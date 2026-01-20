@@ -104,7 +104,7 @@
         <li class="pt-4">
             <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#confirmLogout"
                 style="font-size: 18px; font-weight: 400;color:white;" id="logout">
-                <div><i class="bi bi-box-arrow-in-right pe-3"></i>
+                <div><i class="bi bi-box-arrow-right pe-3"></i>
                     <span>Log Out</span>
                 </div>
             </a>

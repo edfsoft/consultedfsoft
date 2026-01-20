@@ -81,7 +81,7 @@
             </a>
         </li>
 
-<!--       <li class="pt-4">
+        <!--       <li class="pt-4">
             <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
                 style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
                 <div>
@@ -90,13 +90,12 @@
             </a>
         </li> -->
         <li class="pt-4">
-            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>" 
-            style="font-size: 18px; font-weight: 400; color: white;" 
-            id="appointments">
-                
+            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
+                style="font-size: 18px; font-weight: 400; color: white;" id="appointments">
+
                 <div class="d-flex justify-content-between align-items-center pe-3">
                     <div>
-                        <i class="bi bi-calendar2-check pe-3"></i> 
+                        <i class="bi bi-calendar2-check pe-3"></i>
                         <span>Appointments</span>
                     </div>
                     <?php if (isset($todayCount) && $todayCount > 0): ?>
@@ -121,7 +120,7 @@
         <li class="pt-4">
             <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#confirmLogout"
                 style="font-size: 18px; font-weight: 400;color:white;" id="logout">
-                <div><i class="bi bi-box-arrow-in-right pe-3"></i>
+                <div><i class="bi bi-box-arrow-right pe-3"></i>
                     <span>Log Out</span>
                 </div>
             </a>

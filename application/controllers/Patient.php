@@ -11,36 +11,36 @@ class Patient extends CI_Controller
         $this->load->model('PatientModel');
         $this->load->library('session');
         $this->load->library('email');
-        // $this->check_session_timeout();
+        $this->check_session_timeout();
     }
 
-    // private function check_session_timeout()
-    // {
-    //     $session_lifetime = 1800; // 30 minutes
-    //     $alert_time = 1200; // 10 minutes (for alert)
-    //     $last_activity = $this->session->userdata('last_activity_time');
+    private function check_session_timeout()
+    {
+        $session_lifetime = 1800; // 30 minutes
+        $alert_time = 1200; // 10 minutes (for alert)
+        $last_activity = $this->session->userdata('last_activity_time');
 
-    //     if ($this->session->userdata('hcpIdDb')) {
-    //         if ($last_activity) {
-    //             $inactive_time = time() - $last_activity;
-    //             if ($inactive_time >= $alert_time && $inactive_time < $session_lifetime) {
-    //                 $this->session->set_flashdata('showErrorMessage', 'You have been inactive for 10 minutes. You will be logged out soon due to inactivity.');
-    //             }
-    //             if ($inactive_time >= $session_lifetime) {
-    //                 $this->session->set_flashdata('errorMessage', 'Session expired due to inactivity for last 30 minutes.');
-    //                 $this->session->unset_userdata('patientIdDb');
-    //                 $this->session->unset_userdata('patientId');
-    //                 $this->session->unset_userdata('patientName');
-    //                 $this->session->unset_userdata('patientMailId');
-    //                 $this->session->unset_userdata('patientMobileNum');
-    //                 $this->session->unset_userdata('last_activity_time');
-    //                 $this->session->sess_regenerate(TRUE);
-    //                 redirect('Patient/');
-    //             }
-    //         }
-    //         $this->session->set_userdata('last_activity_time', time());
-    //     }
-    // }
+        if ($this->session->userdata('patientIdDb')) {
+            if ($last_activity) {
+                $inactive_time = time() - $last_activity;
+                if ($inactive_time >= $alert_time && $inactive_time < $session_lifetime) {
+                    $this->session->set_flashdata('showErrorMessage', 'You have been inactive for 10 minutes. You will be logged out soon due to inactivity.');
+                }
+                if ($inactive_time >= $session_lifetime) {
+                    $this->session->set_flashdata('errorMessage', 'Session expired due to inactivity for last 30 minutes.');
+                    $this->session->unset_userdata('patientIdDb');
+                    $this->session->unset_userdata('patientId');
+                    $this->session->unset_userdata('patientName');
+                    $this->session->unset_userdata('patientMailId');
+                    $this->session->unset_userdata('patientMobileNum');
+                    $this->session->unset_userdata('last_activity_time');
+                    $this->session->sess_regenerate(TRUE);
+                    redirect('Patient/');
+                }
+            }
+            $this->session->set_userdata('last_activity_time', time());
+        }
+    }
 
     public function index()
     {
@@ -131,9 +131,9 @@ class Patient extends CI_Controller
                 'patientMobileNum' => $login['mobileNumber'],
             );
             $this->session->set_userdata($LoggedInDetails);
-            // if ($login['firstLoginPswd'] == '0') {
-            //     $this->session->set_userdata('firstLogin', '0');
-            // }
+            if ($login['firstLoginPswd'] == '0') {
+                $this->session->set_userdata('firstLogin', '0');
+            }
             redirect('Patient/dashboard');
         } else {
             $this->session->set_flashdata('errorMessage', 'Please enter registered details.');
@@ -159,7 +159,73 @@ class Patient extends CI_Controller
         }
     }
 
+    public function appointments()
+    {
+        if (isset($_SESSION['patientIdDb'])) {
+            $this->data['method'] = "appointments";
+            // $patientTotal = $this->PatientModel->getPatientList();
+            // $this->data['patientTotal'] = $patientTotal['totalRows'];
+            // $ccDetails = $this->PatientModel->getCcProfile();
+            // $this->data['totalCcs'] = $ccDetails['totalRows'];
+            // $appointmentList = $this->PatientModel->getAppointmentListDash();
+            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
+            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+            $this->load->view('patientDashboard.php', $this->data);
+        } else {
+            redirect('Patient/');
+        }
+    }
 
+    public function myProfile()
+    {
+        if (isset($_SESSION['patientIdDb'])) {
+            $this->data['method'] = "myProfile";
+            // $patientTotal = $this->PatientModel->getPatientList();
+            // $this->data['patientTotal'] = $patientTotal['totalRows'];
+            // $ccDetails = $this->PatientModel->getCcProfile();
+            // $this->data['totalCcs'] = $ccDetails['totalRows'];
+            // $appointmentList = $this->PatientModel->getAppointmentListDash();
+            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
+            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+            $this->load->view('patientDashboard.php', $this->data);
+        } else {
+            redirect('Patient/');
+        }
+    }
+
+    public function healthCareProviders()
+    {
+        if (isset($_SESSION['patientIdDb'])) {
+            $this->data['method'] = "hcps";
+            // $patientTotal = $this->PatientModel->getPatientList();
+            // $this->data['patientTotal'] = $patientTotal['totalRows'];
+            // $ccDetails = $this->PatientModel->getCcProfile();
+            // $this->data['totalCcs'] = $ccDetails['totalRows'];
+            // $appointmentList = $this->PatientModel->getAppointmentListDash();
+            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
+            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+            $this->load->view('patientDashboard.php', $this->data);
+        } else {
+            redirect('Patient/');
+        }
+    }
+
+    public function chiefDoctors()
+    {
+        if (isset($_SESSION['patientIdDb'])) {
+            $this->data['method'] = "chiefDoctors";
+            // $patientTotal = $this->PatientModel->getPatientList();
+            // $this->data['patientTotal'] = $patientTotal['totalRows'];
+            // $ccDetails = $this->PatientModel->getCcProfile();
+            // $this->data['totalCcs'] = $ccDetails['totalRows'];
+            // $appointmentList = $this->PatientModel->getAppointmentListDash();
+            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
+            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+            $this->load->view('patientDashboard.php', $this->data);
+        } else {
+            redirect('Patient/');
+        }
+    }
 
     public function logout()
     {
@@ -168,8 +234,8 @@ class Patient extends CI_Controller
         $this->session->unset_userdata('patientName');
         $this->session->unset_userdata('patientMailId');
         $this->session->unset_userdata('patientMobileNum');
-        // $this->session->unset_userdata('firstLogin');
-        // $this->session->unset_userdata('last_activity_time');
+        $this->session->unset_userdata('firstLogin');
+        $this->session->unset_userdata('last_activity_time');
 
         $this->session->sess_regenerate(TRUE);
 

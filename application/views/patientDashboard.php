@@ -209,7 +209,232 @@
                                             class="bi bi-arrow-left"></i> Back</a>
                                 </div>
                                 <div class="card-body ps-3 p-sm-4">
+                            <?php
+                            foreach ($patientDetails as $key => $value) {
+                                ?>
+                                        <form action="<?php echo base_url() . "Patient/updateMyProfile" ?>" name="editPatientDetails"
+                                            id="editPatientDetails" enctype="multipart/form-data" method="POST"
+                                            oninput="validatePatientDetails()" onsubmit="return submitPatientDetails(event)">
+                                            <div class="position-relative">
+                                                <img id="previewImage" src="<?= isset($value['profilePhoto']) && $value['profilePhoto'] !== "No data"
+                                                    ? base_url('uploads/' . $value['profilePhoto'])
+                                                    : base_url('assets/img/BlankProfileCircle.png') ?>"
+                                                    alt="Profile Photo" width="150" height="150" class="rounded-circle d-block mx-auto mb-4"
+                                                    style="box-shadow: 0px 4px 4px rgba(47, 129, 237, 0.7); outline: 1px solid white;"
+                                                    onerror="this.onerror=null;this.src='<?= base_url('assets/BlankProfileCircle.png') ?>';">
+                                                <input type="file" id="profilePhoto" name="profilePhoto"
+                                                    class="form-control p-3 image-input d-none" accept=".png, .jpg, .jpeg">
+                                                <a href="#" class="position-absolute rounded-circle px-2 py-1"
+                                                    style="color: #2F80ED;border: 2px solid #2F80ED;border-radius: 50%;top: 77%; left: 52%; transform: translateX(44%); "
+                                                    onclick="document.getElementById('profilePhoto').click();"><i
+                                                        class="bi bi-camera"></i></a>
+                                            </div>
+                                            <p class="ps-2 pb-2" style="font-size: 20px; font-weight: 500;color:#2F80ED">
+                                                <button
+                                                    style=" width:30px;height:30px;background-color: #2F80ED;font-size:20px; font-weight: 500"
+                                                    class="text-light rounded-circle border-0">1</button> Basic Details
+                                            </p>
+                                            <div class="d-md-flex justify-content-between py-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientName">First Name</label>
+                                                    <input type="text" class="form-control" id="patientName" name="patientName"
+                                                        value="<?php echo $value['firstName'] ?>" maxlength="30" placeholder="E.g. Siva"
+                                                        style="cursor: no-drop;" disabled readonly>
+                                                    <small id="patientName_err" class="text-danger pt-1"></small>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientLastName">Last Name</label>
+                                                    <input type="text" class="form-control" id="" name="patientLastName"
+                                                        value="<?php echo $value['lastName'] ?>" maxlength="30" placeholder="E.g. Kumar"
+                                                        style="cursor: no-drop;" disabled readonly>
+                                                    <small id="patientLastName_err" class="text-danger pt-1"></small>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientMobile">Moblie Number</label>
+                                                    <input type="text" class="form-control" id="patientMobile" name="patientMobile"
+                                                        value="<?php echo $value['mobileNumber'] ?>" maxlength="10"
+                                                        placeholder="E.g. 9638527410" style="cursor: no-drop;" disabled readonly>
+                                                    <small id="patientMobile_err" class="text-danger pt-1"></small>
+                                                    <small id="duplicateMobile_err" class="text-danger pt-1"></small>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientAltMobile">Alternate Moblie
+                                                        Number</label>
+                                                    <input type="text" class="form-control" id="patientAltMobile" name="patientAltMobile"
+                                                        value="<?php echo $value['alternateMobile'] ?>" maxlength="10"
+                                                        placeholder="E.g. 9876543210" style="cursor: no-drop;" disabled readonly>
+                                                    <small id="patientAltMobile_err" class="text-danger pt-1"></small>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientEmail">Email
+                                                    </label>
+                                                    <input type="email" class="form-control" id="patientEmail" name="patientEmail"
+                                                        value="<?php echo $value['mailId'] ?>" placeholder="E.g. example@gmail.com"
+                                                        maxlength="50" style="cursor: no-drop;" disabled readonly>
+                                                    <small id="patientEmail_err" class="text-danger pt-1"></small>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientGender">Gender <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" id="patientGender" name="patientGender">
+                                                        <option value="">Select Gender</option>
+                                                        <option value="Male" <?php if (isset($value['gender']) && $value['gender'] === 'Male')
+                                                            echo 'selected'; ?>>Male</option>
+                                                        <option value="Female" <?php if (isset($value['gender']) && $value['gender'] === 'Female')
+                                                            echo 'selected'; ?>>Female</option>
+                                                    </select>
+                                                    <small id="patientGender_err" class="text-danger pt-1"></small>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                        <?php
+                                        $createdDate = new DateTime($value['created_at']);
+                                        $today = new DateTime();
+                                        $diff = $today->diff($createdDate);
+                                        $currentAge = $value['age'] + $diff->y;
+                                        ?>
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientAge">Age
+                                                        <span class="text-danger">*</span>
+                                                    </label>
+                                                    <input type="number" class="form-control" id="patientAge" name="patientAge" min="0"
+                                                        max="121" maxlength="3" value="<?php echo $currentAge; ?>" placeholder="E.g. 41">
+                                                    <small id="patientAge_err" class="text-danger pt-1"></small>
+                                                </div>
 
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientBlood">Blood Group</label>
+                                                    <select class="form-select" id="patientBlood" name="patientBlood">
+                                                        <option value="">Select Blood Group</option>
+                                                        <option value="A +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'A +ve')
+                                                            echo 'selected'; ?>>A +ve</option>
+                                                        <option value="A -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'A -ve')
+                                                            echo 'selected'; ?>>A -ve</option>
+                                                        <option value="B +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'B +ve')
+                                                            echo 'selected'; ?>>B +ve</option>
+                                                        <option value="B -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'B -ve')
+                                                            echo 'selected'; ?>>B -ve</option>
+                                                        <option value="O +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'O +ve')
+                                                            echo 'selected'; ?>>O +ve</option>
+                                                        <option value="O -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'O -ve')
+                                                            echo 'selected'; ?>>O -ve</option>
+                                                        <option value="AB +ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'AB +ve')
+                                                            echo 'selected'; ?>>AB +ve</option>
+                                                        <option value="AB -ve" <?php if (isset($value['bloodGroup']) && $value['bloodGroup'] === 'AB -ve')
+                                                            echo 'selected'; ?>>AB -ve</option>
+                                                    </select>
+                                                    <small id="patientBlood_err" class="text-danger pt-1"></small>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientMarital">Marital Status</label>
+                                                    <select class="form-select" id="patientMarital" name="patientMarital">
+                                                        <option value="">Select Marital Status</option>
+                                                        <option value="Single" <?php if (isset($value['maritalStatus']) && $value['maritalStatus'] === 'Single')
+                                                            echo 'selected'; ?>>Single</option>
+                                                        <option value="Married" <?php if (isset($value['maritalStatus']) && $value['maritalStatus'] === 'Married')
+                                                            echo 'selected'; ?>>Married
+                                                        </option>
+                                                    </select>
+                                                    <small id="patientMarital_err" class="text-danger pt-1"></small>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="marriedSince">Married Since</label>
+                                                    <input type="text" class="form-control" id="marriedSince"
+                                                        value="<?php echo $value['marriedSince'] ?>" name="marriedSince" maxlength="20"
+                                                        placeholder="E.g. 2012">
+                                                </div>
+                                            </div>
+
+                                            <p class="py-3" style="font-size: 20px; font-weight: 500;color: #2F80ED"> <button
+                                                    style=" width:30px;height:30px;background-color: #2F80ED;font-size:20px; font-weight: 500"
+                                                    class="text-light rounded-circle border-0">2</button> Additional Information
+                                            </p>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientProfessions">Patient's
+                                                        Profession</label>
+                                                    <input type="text" class="form-control" id="patientProfessions"
+                                                        name="patientProfessions" value="<?php echo $value['profession'] ?>" maxlength="30"
+                                                        placeholder="E.g. IT employee">
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientDoorNo">Door Number</label>
+                                                    <input type="text" class="form-control" id="patientDoorNo" name="patientDoorNo"
+                                                        value="<?php echo $value['doorNumber'] ?>" maxlength="30" placeholder="E.g. 96">
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientStreet">Street Address</label>
+                                                    <input type="text" class="form-control" id="patientStreet" name="patientStreet"
+                                                        value="<?php echo $value['address'] ?>" maxlength="30"
+                                                        placeholder="E.g. Abc street">
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="patientDistrict">District</label>
+                                                    <input type="text" class="form-control" id="patientDistrict" name="patientDistrict"
+                                                        value="<?php echo $value['district'] ?>" maxlength="30" placeholder="E.g. Erode">
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="patientPincode">Pincode</label>
+                                                    <input type="text" class="form-control" id="patientPincode" name="patientPincode"
+                                                        value="<?php echo $value['pincode'] ?>" maxlength="6" placeholder="E.g. 638001">
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="partnersName">Guardian's Name </label>
+                                                    <input type="text" class="form-control" id="partnersName" name="partnersName"
+                                                        value="<?php echo $value['partnerName'] ?>" maxlength="30"
+                                                        placeholder="E.g. Rohith">
+                                                    <small id="partnersName_err" class="text-danger pt-1"></small>
+                                                </div>
+                                            </div>
+                                            <div class="d-md-flex justify-content-between pb-3">
+                                                <div class="col-md-6 pe-md-4 pb-2 pb-md-0">
+                                                    <label class="form-label" for="partnerMobile">Guardian's Mobile </label>
+                                                    <input type="text" class="form-control" id="partnerMobile" name="partnerMobile"
+                                                        value="<?php echo $value['partnerMobile'] ?>" maxlength="10"
+                                                        placeholder="E.g. 9874563210">
+                                                    <small id="partnerMobile_err" class="text-danger pt-1"></small>
+                                                </div>
+                                                <div class="col-md-6 pe-md-4 pt-2 pt-md-0">
+                                                    <label class="form-label" for="partnerBlood">Guardian's Blood Group</label>
+                                                    <select class="form-select" id="partnerBlood" name="partnerBlood">
+                                                        <option value="">Select Blood Group</option>
+                                                        <option value="A +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'A +ve')
+                                                            echo 'selected'; ?>>A +ve</option>
+                                                        <option value="A -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'A -ve')
+                                                            echo 'selected'; ?>>A -ve</option>
+                                                        <option value="B +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'B +ve')
+                                                            echo 'selected'; ?>>B +ve</option>
+                                                        <option value="B -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'B -ve')
+                                                            echo 'selected'; ?>>B -ve</option>
+                                                        <option value="O +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'O +ve')
+                                                            echo 'selected'; ?>>O +ve</option>
+                                                        <option value="O -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'O -ve')
+                                                            echo 'selected'; ?>>O -ve</option>
+                                                        <option value="AB +ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'AB +ve')
+                                                            echo 'selected'; ?>>AB +ve</option>
+                                                        <option value="AB -ve" <?php if (isset($value['partnerBlood']) && $value['partnerBlood'] === 'AB -ve')
+                                                            echo 'selected'; ?>>AB -ve</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" id="patientIdDb" name="patientIdDb" value="<?php echo $value['id']; ?>">
+                                            <div class="d-flex justify-content-between mt-3">
+                                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                                <button type="submit" class="btn text-light"
+                                                    style="background-color: #2F80ED;">Update</button>
+                                            </div>
+                                        </form>
+                        <?php } ?>
                                 </div>
                             </div>
                         </section>
@@ -934,7 +1159,6 @@
             document.getElementById('chiefDoctor').style.color = "#bbd3f2";
         <?php } ?>
     </script>
-
 
     <!-- Common Script -->
     <script src="<?php echo base_url(); ?>application/views/js/script.js"></script>

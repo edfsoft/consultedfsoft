@@ -146,13 +146,7 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "dashboard";
-            // $patientTotal = $this->PatientModel->getPatientList();
-            // $this->data['patientTotal'] = $patientTotal['totalRows'];
-            // $ccDetails = $this->PatientModel->getCcProfile();
-            // $this->data['totalCcs'] = $ccDetails['totalRows'];
-            // $appointmentList = $this->PatientModel->getAppointmentListDash();
-            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
-            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');
@@ -163,13 +157,7 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "appointments";
-            // $patientTotal = $this->PatientModel->getPatientList();
-            // $this->data['patientTotal'] = $patientTotal['totalRows'];
-            // $ccDetails = $this->PatientModel->getCcProfile();
-            // $this->data['totalCcs'] = $ccDetails['totalRows'];
-            // $appointmentList = $this->PatientModel->getAppointmentListDash();
-            // // $this->data['appointmentList'] = $appointmentList['response']; /* Currently commented */
-            // $this->data['appointmentsTotal'] = $appointmentList['totalRows'];
+            
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');
@@ -192,10 +180,8 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "editMyProfile";
-            // $hcpDetails = $this->HcpModel->getHcpDetails();
-            // $this->data['hcpDetails'] = $hcpDetails;
-            // $specList = $this->HcpModel->getSpecialization();
-            // $this->data['specializationList'] = $specList;
+            $patientDetail = $this->PatientModel->getPatientDetails();
+            $this->data['patientDetails'] = $patientDetail;
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');

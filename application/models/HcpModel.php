@@ -642,6 +642,7 @@ class HcpModel extends CI_Model
         );
         $this->db->where('id', $post['hcpDbId']);
         $this->db->update('hcp_details', $updatedata);
+        return ($this->db->affected_rows() > 0);
     }
 
     public function getCcProfile()

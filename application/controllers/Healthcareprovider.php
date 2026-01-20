@@ -124,9 +124,9 @@ class Healthcareprovider extends CI_Controller
     {
         $result = $this->HcpModel->changeNewPassword();
         if ($result) {
-            $this->session->set_flashdata('successMessage', 'Password updated successfully');
+            $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
         } else {
-            $this->session->set_flashdata('errorMessage', 'Password update failed or no changes made');
+            $this->session->set_flashdata('showErrorMessage', 'Password update failed or no changes made');
         }
         redirect('Healthcareprovider/');
     }
@@ -759,11 +759,12 @@ class Healthcareprovider extends CI_Controller
 
     public function saveNewPassword()
     {
-        $this->session->unset_userdata('firstLogin');
+        
         if ($this->HcpModel->updateNewPassword()) {
-            $this->session->set_flashdata('successMessage', 'Password updated successfully');
+            $this->session->unset_userdata('firstLogin');
+            $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
         } else {
-            $this->session->set_flashdata('errorMessage', 'Error in updating password');
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating password');
         }
         redirect('Healthcareprovider/myProfile');
     }

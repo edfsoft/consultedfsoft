@@ -226,7 +226,7 @@ class CcModel extends CI_Model
         );
         $this->db->where('id', $ccDbId);
         $this->db->update('cc_details', $ccPassword);
-        return true;
+        return ($this->db->affected_rows() > 0);
     }
 
 

@@ -2281,7 +2281,7 @@
                                                 <section>
                                                     <div class="card rounded">
                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                            <p style="font-size: 24px; font-weight: 500">Specialization List</p>
+                                                            <p style="font-size: 24px; font-weight: 500">Specializations List</p>
                                                             <button type="button" onclick="openAddModal('specialization')" style="background-color: #2b353bf5;"
                                                                 class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                 <i class="bi bi-plus-square-fill"></i> New
@@ -3214,7 +3214,7 @@
                                                                 <section>
                                                                     <div class="card rounded">
                                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                            <p style="font-size: 24px; font-weight: 500">Investigation List</p>
+                                                                            <p style="font-size: 24px; font-weight: 500">Investigations List</p>
                                                                             <button type="button" onclick="openAddModal('investigation')" style="background-color: #2b353bf5;"
                                                                                 class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                 <i class="bi bi-plus-square-fill"></i> New
@@ -3408,7 +3408,7 @@
                                                                     <section>
                                                                         <div class="card rounded">
                                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                                <p style="font-size: 24px; font-weight: 500">Instruction List</p>
+                                                                                <p style="font-size: 24px; font-weight: 500">Instructions List</p>
                                                                                 <button type="button" onclick="openAddModal('instruction')" style="background-color: #2b353bf5;"
                                                                                     class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                     <i class="bi bi-plus-square-fill"></i> New
@@ -3602,7 +3602,7 @@
                                                                         <section>
                                                                             <div class="card rounded">
                                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                                    <p style="font-size: 24px; font-weight: 500">Procedure List</p>
+                                                                                    <p style="font-size: 24px; font-weight: 500">Procedures List</p>
                                                                                     <button type="button" onclick="openAddModal('procedure')" style="background-color: #2b353bf5;"
                                                                                         class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                         <i class="bi bi-plus-square-fill"></i> New
@@ -3798,7 +3798,7 @@
                                                                             <section>
                                                                                 <div class="card rounded">
                                                                                     <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                                        <p style="font-size: 24px; font-weight: 500">Advice List</p>
+                                                                                        <p style="font-size: 24px; font-weight: 500">Advices List</p>
                                                                                         <button type="button" onclick="openAddModal('advice')" style="background-color: #2b353bf5;"
                                                                                             class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                             <i class="bi bi-plus-square-fill"></i> New

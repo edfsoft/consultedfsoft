@@ -158,7 +158,7 @@ class HcpModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    public function insertPatients()
+    public function insertPatients($hashedPassword)
     {
         $post = $this->input->post(null, true);
 
@@ -181,8 +181,10 @@ class HcpModel extends CI_Model
             'partnerName' => $post['partnersName'],
             'partnerMobile' => $post['partnerMobile'],
             'partnerBlood' => $post['partnerBlood'],
-            'patientHcp	' => $_SESSION['hcpId'],
-            'patientHcpDbId	' => $_SESSION['hcpIdDb'],
+            'patientHcp' => $_SESSION['hcpId'],
+            'patientHcpDbId' => $_SESSION['hcpIdDb'],
+            'password' => $hashedPassword,
+            'firstLoginPswd' => '0',
         );
         $this->db->insert('patient_details', $insertdata);
         $registeredId = $this->db->insert_id();

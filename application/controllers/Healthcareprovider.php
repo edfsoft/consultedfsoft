@@ -310,15 +310,71 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    private function generateTempPassword($length = 8)
+    {
+        $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $lowercase = 'abcdefghijklmnopqrstuvwxyz';
+        $special = '@#$%&*!';
+        $numbers = '0123456789';
+
+        $password = $uppercase[random_int(0, strlen($uppercase) - 1)];
+        $password .= $lowercase[random_int(0, strlen($lowercase) - 1)];
+        $password .= $special[random_int(0, strlen($special) - 1)];
+        $password .= $numbers[random_int(0, strlen($numbers) - 1)];
+
+        $allChars = $uppercase . $lowercase . $special . $numbers;
+        while (strlen($password) < $length) {
+            $password .= $allChars[random_int(0, strlen($allChars) - 1)];
+        }
+
+        return str_shuffle($password);
+    }
+
     public function addPatientsForm()
     {
-        $register = $this->HcpModel->insertPatients();
-        $this->HcpModel->generatePatientId($register);
-        if ($register) {
-            $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
+        $post = $this->input->post(null, true);
+        $patientMail = $post['patientEmail'] ?? '';
+
+        $tempPassword = null;
+        $hashedPassword = null;
+
+        if (!empty($patientMail)) {
+            $tempPassword = $this->generateTempPassword(8);
+            $hashedPassword = password_hash($tempPassword, PASSWORD_BCRYPT);
         }
+
+        $register = $this->HcpModel->insertPatients($hashedPassword);
+        if (!$register) {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
+            redirect('Consultation/consultation');
+            return;
+        }
+        $this->HcpModel->generatePatientId($register);
+
+        if (!empty($patientMail)) {
+            $message = "
+                    Hi there,<br><br>
+                    Your account has been created as <b>Patient</b>.<br><br>
+                    Login URL: <b>https://consult.edftech.in/</b><br>
+                    Email Address: <b>{$patientMail}</b><br>
+                    Temporary Password: <b>{$tempPassword}</b><br><br>
+                    You will be required to change your password upon first login.
+                    <br><br>
+                    Regards,<br>
+                    <b>EDF Healthcare Team</b>
+                ";
+
+            $this->email->set_newline("\r\n");
+            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+            $this->email->to($patientMail);
+            $this->email->subject('Your Account Login Credentials');
+            $this->email->message($message);
+
+            if (!$this->email->send()) {
+                log_message('error', 'Patient email failed: ' . $this->email->print_debugger());
+            }
+        }
+        $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
         redirect('Consultation/consultation/' . $register);
     }
 
@@ -759,7 +815,7 @@ class Healthcareprovider extends CI_Controller
 
     public function saveNewPassword()
     {
-        
+
         if ($this->HcpModel->updateNewPassword()) {
             $this->session->unset_userdata('firstLogin');
             $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');

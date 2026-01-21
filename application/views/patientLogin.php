@@ -170,14 +170,6 @@
 
     <!-- Validation -->
     <script>
-        // document.getElementById("patientPassword").onfocus = function () {
-        //     document.getElementById("passwordmessage").style.display = "block";
-        // }
-
-        // document.getElementById("patientPassword").onblur = function () {
-        //     document.getElementById("passwordmessage").style.display = "none";
-        // }
-
         function validEmail(input) {
             const emailError = document.getElementById("mail_err");
             if (input.value != "") {
@@ -191,7 +183,7 @@
                 passwordError.textContent = "";
             }
 
-            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(input.value)) {
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(input.value)) {
                 document.getElementById("passwordmessage").style.display = "block";
             } else {
                 document.getElementById("passwordmessage").style.display = "none";
@@ -215,7 +207,7 @@
             if (password == "") {
                 document.getElementById("password_err").innerHTML = "Please enter a password.";
                 return false;
-            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+            } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(password)) {
                 document.getElementById("password_err").innerHTML = "Invalid password. Please enter valid password.";
                 return false;
             } {

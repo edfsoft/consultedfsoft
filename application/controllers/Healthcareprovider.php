@@ -462,6 +462,17 @@ class Healthcareprovider extends CI_Controller
     {
         header('Content-Type: application/json');
         $input = json_decode(file_get_contents('php://input'), true);
+        if (!$input || empty($input['firstName']) || empty($input['mobile'])) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Invalid input data'
+            ]);
+            return;
+        }
+
+        $tempPassword = $this->generateTempPassword(8);
+        $hashedPassword = password_hash($tempPassword, PASSWORD_BCRYPT);
+
         $data = [
             'firstName' => $input['firstName'],
             'lastName' => $input['lastName'],
@@ -471,22 +482,61 @@ class Healthcareprovider extends CI_Controller
             'age' => $input['age'],
             'patientHcp' => $_SESSION['hcpId'],
             'patientHcpDbId' => $_SESSION['hcpIdDb'],
+            'password' => $hashedPassword,
+            'firstLoginPswd' => '0' 
         ];
 
         $insertId = $this->HcpModel->insertPartialPatient($data);
+
+        if (!$insertId) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Patient insert failed'
+            ]);
+            return;
+        }
+
         $patientId = $this->HcpModel->generatePatientId($insertId);
 
-        if ($insertId && $patientId) {
-            $this->HcpModel->updatePatientId($insertId, ['patientId' => $patientId]);
+        if (!$patientId) {
             echo json_encode([
-                'success' => true,
-                'id' => $insertId,
-                'patientId' => $patientId,
-                'firstName' => $data['firstName']
+                'success' => false,
+                'message' => 'Patient ID generation failed'
             ]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Insert failed']);
+            return;
         }
+        $this->HcpModel->updatePatientId($insertId, ['patientId' => $patientId]);
+
+        if (!empty($data['mailId'])) {
+            $message = "
+            Hi there,<br><br>
+            Your account has been created as <b>Patient</b>.<br><br>
+            Login URL: <b>https://consult.edftech.in/</b><br>
+            Email Address: <b>{$data['mailId']}</b><br>
+            Temporary Password: <b>{$tempPassword}</b><br><br>
+            You will be required to change your password upon first login.
+            <br><br>
+            Regards,<br>
+            <b>EDF Healthcare Team</b>
+        ";
+
+            $this->email->set_newline("\r\n");
+            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+            $this->email->to($data['mailId']);
+            $this->email->subject('Your Account Login Credentials');
+            $this->email->message($message);
+
+            if (!$this->email->send()) {
+                log_message('error', 'Patient email failed: ' . $this->email->print_debugger());
+            }
+        }
+
+        echo json_encode([
+            'success' => true,
+            'id' => $insertId,
+            'patientId' => $patientId,
+            'firstName' => $data['firstName']
+        ]);
     }
 
     /*  public function newAppointment()

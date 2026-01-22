@@ -118,7 +118,7 @@
                         <div class="d-flex justify-content-between">
                             <button type="submit"
                                 class="border-0 rounded-pill text-light mt-4 px-4 px-sm-5 py-1 py-sm-3"
-                                style="background-color:#2F80ED;font-size:16px;font-weight:600;">Login</button>
+                                style="background-color: #2F80ED;font-size:16px;font-weight:600;">Login</button>
                             <a href="<?php echo base_url() . "Patient/resetPassword" ?>" id="forgotPassword"
                                 class="text-danger mt-5">Forgot password?</a>
                         </div>

@@ -6,17 +6,56 @@ class PatientModel extends CI_Model
         parent::__construct();
     }
 
+    public function generate_otp($email)
+    {
+        $otp = rand(1000, 9999);
+        $hashed_otp = password_hash($otp, PASSWORD_BCRYPT);
+        date_default_timezone_set('Asia/Kolkata');
+        $expiry_time = date('Y-m-d H:i:s', strtotime('+10 minutes'));
+        $this->db->where('email', $email)->delete('password_resets');
 
-    // public function changeNewPassword()
-    // {
-    //     $post = $this->input->post(null, true);
-    //     $updatedata = array(
-    //         'hcpPassword' => password_hash($post['hcpCnfmPassword'], PASSWORD_BCRYPT),
-    //     );
-    //     $this->db->where('hcpMobile', $post['hcpMobileNum']);
-    //     $this->db->update('hcp_details', $updatedata);
-    //     return ($this->db->affected_rows() > 0);
-    // }
+        $data = [
+            'email' => $email,
+            'otp' => $hashed_otp,
+            'expires_at' => $expiry_time,
+            'is_used' => 0
+        ];
+        $this->db->insert('password_resets', $data);
+
+        return $otp;
+    }
+
+    public function validate_otp($email, $otp)
+    {
+        date_default_timezone_set('Asia/Kolkata');
+
+        $this->db->where('email', $email);
+        $this->db->order_by('created_at', 'DESC');
+        $query = $this->db->get('password_resets');
+        $record = $query->row();
+        $expires_at_timestamp = strtotime($record->expires_at);
+        $current_timestamp = time();
+
+        if ($expires_at_timestamp < $current_timestamp) {
+            return ['status' => false, 'reason' => 'OTP expired'];
+        }
+        if (password_verify($otp, $record->otp)) {
+            return ['status' => true];
+        } else {
+            return ['status' => false, 'reason' => 'Invalid OTP'];
+        }
+    }
+
+    public function changeNewPassword()
+    {
+        $post = $this->input->post(null, true);
+        $updatedata = array(
+            'password' => password_hash($post['patientCnfmPassword'], PASSWORD_BCRYPT),
+        );
+        $this->db->where('mailId', $post['mailId']);
+        $this->db->update('patient_details', $updatedata);
+        return ($this->db->affected_rows() > 0);
+    }
 
     public function patientLoginDetails()
     {

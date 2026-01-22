@@ -404,6 +404,7 @@ class HcpModel extends CI_Model
 
     public function getTodayPendingCount()
     {
+        date_default_timezone_set('Asia/Kolkata');
         $hcpIdDb = $_SESSION['hcpIdDb'];
         $today = date('Y-m-d');
         $currentTime = date('H:i');
@@ -479,7 +480,7 @@ class HcpModel extends CI_Model
         return array("response" => $select->result_array(), "totalRows" => $select->num_rows());
     }
 
-    public function insertAppointment()
+    /* public function insertAppointment()
     {
         $post = $this->input->post(null, true);
 
@@ -516,7 +517,7 @@ class HcpModel extends CI_Model
         // 5. Insert
         $this->db->insert('appointment_details', $insert);
         return $this->db->insert_id();
-    }
+    } */
 
     public function getAppointmentReschedule()
     {
@@ -658,7 +659,57 @@ class HcpModel extends CI_Model
     }
 
 
+    function generateMeetingID() {
+    $chars = 'abcdefghijklmnopqrstuvwxyz'; // Google Meet uses lowercase letters
+    
+    // Generate 3 random letters for the first part
+    $part1 = substr(str_shuffle($chars), 0, 3);
+    // Generate 4 random letters for the middle part
+    $part2 = substr(str_shuffle($chars), 0, 4);
+    // Generate 3 random letters for the last part
+    $part3 = substr(str_shuffle($chars), 0, 3);
 
+    return $part1 . '-' . $part2 . '-' . $part3; // Result: wzo-dprz-zqy
+}
+
+public function insertAppointment()
+    {
+        $post = $this->input->post(null, true);
+
+        $ccId = 'Nil';
+        $ccDbId = 'Nil';
+        $appLink = $this->generateMeetingID();//link for only hcp
+        $modeOfConsultant = 'Nil';
+        if (!empty($post['patientId'])) {
+            list($patientId, $dbId) = explode('|', $post['patientId']);
+        } else {
+            return false; // handle error
+        }
+
+        if (!empty($post['referalDoctor'])) {//If referal doctor has, insert cc & hcp meet link
+            list($ccId, $ccDbId) = explode('|', $post['referalDoctor']);
+        }
+
+        $insert = array(
+            'patientId' => $patientId,
+            'patientDbId' => $dbId,
+            'referalDoctor' => $ccId,
+            'appointmentLink' => $appLink,
+            'referalDoctorDbId' => $ccDbId,
+            'modeOfConsultant' => $modeOfConsultant,
+            'dateOfAppoint' => $post['appDate'],
+            'partOfDay' => $post['dayTime'],
+            'timeOfAppoint' => $post['appTime'],
+            'appointmentType' => $post['appointmentType'],
+            'patientComplaint' => $post['appReason'],
+            'patientHcp' => $_SESSION['hcpId'],
+            'hcpDbId' => $_SESSION['hcpIdDb'],
+        );
+
+        // 5. Insert
+        $this->db->insert('appointment_details', $insert);
+        return $this->db->insert_id();
+    }
 
 
 

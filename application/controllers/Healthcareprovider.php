@@ -1,8 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+// Manually include the files in this order
+require_once APPPATH . 'libraries/Agora/Util.php';
+require_once APPPATH . 'libraries/Agora/AccessToken.php';
+require_once APPPATH . 'libraries/Agora/RtcTokenBuilder.php';
 
 class Healthcareprovider extends CI_Controller
 {
+
 
     function __construct()
     {
@@ -566,14 +571,15 @@ class Healthcareprovider extends CI_Controller
 
             $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
             $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
-
+            $meetingBaseUrl = 'https://consult.edftech.in/Healthcareprovider/join/';
+            $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
             $message = "
                 Dear {$details['firstName']} {$details['lastName']},<br><br>
                 Your appointment has been successfully booked.<br><br>
                 <b>📅 Date:</b> {$formattedDate}<br>
                 <b>⏰ Time:</b> {$formattedTime}<br><br>
                 <b>🔗 Join Meeting:</b><br>
-                <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
+                <a href='{$joinUrl}' target='_blank'>{$joinUrl}</a><br><br>
                 Please join the meeting at the scheduled time.
                 <br><br>
                 Regards,
@@ -891,8 +897,94 @@ class Healthcareprovider extends CI_Controller
     }
 
 
+    public function join($unique_meeting_id = null) {
+        if (!$unique_meeting_id) {
+            show_error('Invalid Meeting Link', 404);
+        }
+        date_default_timezone_set('Asia/Kolkata');
+        $this->db->select('
+            appointment_details.*, 
+            patient_details.firstName, 
+            patient_details.lastName, 
+            hcp_details.hcpName
+        ');
+        $this->db->from('appointment_details');
+        
+        $this->db->join('patient_details', 'patient_details.id = appointment_details.patientDbId', 'inner');
+        
+        $this->db->join('hcp_details', 'hcp_details.id = appointment_details.hcpDbId', 'inner');
+        
+        $this->db->where('appointment_details.appointmentlink', $unique_meeting_id);
+        
+        $appointment = $this->db->get()->row();
 
+        if (!$appointment) {
+            show_error('This meeting link is invalid.', 403);
+        }
 
+        // 2. TIME VALIDATION LOGIC (Keep commented or uncomment as needed)
+        $current_time = time();
+        /* $appointment_scheduled_at = strtotime($appointment->dateOfAppoint . ' ' . $appointment->timeOfAppoint);
+        $earliest_join_time = $appointment_scheduled_at - 600; 
+        $latest_join_time = $appointment_scheduled_at + 3600;
 
+        if ($current_time < $earliest_join_time) {
+            $wait_minutes = ceil(($earliest_join_time - $current_time) / 60);
+            show_error("Meeting hasn't started yet. You can join in $wait_minutes minutes.", 403);
+        }
+        if ($current_time > $latest_join_time) {
+            show_error("This meeting link has expired as the 1-hour window has passed.", 403);
+        }
+        */
 
+        $patient_full_name = $appointment->firstName . ' ' . $appointment->lastName;
+        $doctor_full_name = $appointment->hcpName;
+
+        $is_doctor_logged_in = $this->session->has_userdata('hcpIdDb');
+
+        if ($is_doctor_logged_in) {
+            $local_name = $doctor_full_name;
+            if(empty($local_name)) { $local_name = $doctor_full_name; } // Fallback to DB
+            
+            $remote_name = $patient_full_name; 
+            
+        } else {
+            $local_name = $patient_full_name;
+            $remote_name = $doctor_full_name; 
+        }
+
+        // 3. AGORA TOKEN GENERATION
+        //$current_time = time();
+        $appID = 'f891d97665524065b626ea324f06942f';
+        $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9'; 
+        $channel_name = $unique_meeting_id;
+        
+        $uid = rand(1000, 9999);
+        $role = RtcTokenBuilder::RolePublisher;
+        
+        $expireTimeInSeconds = 3600;
+        $privilegeExpiredTs = $current_time + $expireTimeInSeconds;
+
+        $dynamicToken = RtcTokenBuilder::buildTokenWithUid(
+            $appID, 
+            $appCertificate, 
+            $channel_name, 
+            $uid, 
+            $role, 
+            $privilegeExpiredTs
+        );
+
+        // 4. Pass Data to View
+        $data = [
+            'method'       => 'videoCall',
+            'app_id'       => $appID,
+            'temp_token'   => $dynamicToken,
+            'channel_name' => $channel_name,
+            'uid'          => $uid,
+            'local_name'   => $local_name, 
+            'remote_name'  => $remote_name
+        ];
+
+        $this->load->view('agoraTestView', $data);
+    }
 }

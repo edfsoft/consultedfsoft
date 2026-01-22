@@ -1005,7 +1005,7 @@
                     }
 
                     function renderActionButtons(row) {
-
+                        const fullJoinUrl = `${baseUrl}healthcareprovider/join/${row.appointmentLink}`;
                         const consultBtn = `
                                 <a href="${baseUrl}Consultation/consultation/${row.patientDbId}">
                                     <button class="btn btn-secondary mx-1"
@@ -1022,13 +1022,13 @@
 
                         const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
                         const isToday = now.toISOString().slice(0, 10) === row.dateOfAppoint;
-                        const isWithin10Minutes = diffMinutes >= -10 && diffMinutes <= 10;
+                        const isWithin10Minutes = diffMinutes >= -10000 && diffMinutes <= 10000;
                         const shouldEnableJoin = isToday && isWithin10Minutes;
 
                         const joinBtn = shouldEnableJoin
                             ? `
-                                    <a href="${safeUrl(row.appointmentLink)}"
-                                    target="_blank" rel="noopener noreferrer">
+                                    <a href="${safeUrl(fullJoinUrl)}"
+                                    target=_blank rel="noopener noreferrer">
                                         <button class="btn btn-success">Join</button>
                                     </a>
                                 `

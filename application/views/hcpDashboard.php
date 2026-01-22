@@ -1005,7 +1005,7 @@
                     }
 
                     function renderActionButtons(row) {
-
+                        const fullJoinUrl = `${baseUrl}healthcareprovider/join/${row.appointmentLink}`;
                         const consultBtn = `
                                 <a href="${baseUrl}Consultation/consultation/${row.patientDbId}">
                                     <button class="btn btn-secondary mx-1"
@@ -1022,13 +1022,13 @@
 
                         const diffMinutes = (now - appointmentDateTime) / (1000 * 60);
                         const isToday = now.toISOString().slice(0, 10) === row.dateOfAppoint;
-                        const isWithin10Minutes = diffMinutes >= -10 && diffMinutes <= 10;
+                        const isWithin10Minutes = diffMinutes >= -10000 && diffMinutes <= 10000;
                         const shouldEnableJoin = isToday && isWithin10Minutes;
 
                         const joinBtn = shouldEnableJoin
                             ? `
-                                    <a href="${safeUrl(row.appointmentLink)}"
-                                    target="_blank" rel="noopener noreferrer">
+                                    <a href="${safeUrl(fullJoinUrl)}"
+                                    target=_blank rel="noopener noreferrer">
                                         <button class="btn btn-success">Join</button>
                                     </a>
                                 `
@@ -3035,7 +3035,7 @@
                                                     'alt="Profile Photo" width="122" height="122" class="rounded-circle my-auto" ' +
                                                     'onerror="this.onerror=null;this.src=\'<?php echo base_url(); ?>assets/BlankProfile.jpg\';">' +
                                                     '<div>' +
-                                                    '<p class=\'card-title\'><b>' + value.doctorName + '</b><br>' + value.ccId + '</p>' +
+                                                    '<p class=\'card-title\'><b>' + value.doctorName + '</b> /<br>' + value.ccId + '</p>' +
                                                     '<p style=\'color: #00ad8e;\'><b>' + value.specialization + '</b></p>' +
                                                     '<a href=\'<?php echo base_url(); ?>Healthcareprovider/chiefDoctorsProfile/' + value.id + '\' ' +
                                                     'class=\'btn btn-secondary\'>Full Details</a>' +
@@ -3135,7 +3135,9 @@
                                                             <p style="font-size:20px;font-weight:500;">Dr.
                                         <?php echo $value['doctorName']; ?>
                                                             </p>
-                                                            <p style="font-size:16px;font-weight:400;color:#00ad8e;">Diabetologist</p>
+                                                            <p style="font-size:16px;font-weight:400;color:#00ad8e;">
+                                        <?php echo $value['specialization']; ?>
+                                                            </p>
                                                             <p><a href="tel:<?php echo $value['doctorMobile']; ?>"
                                                                     style="font-size:16px;font-weight:400;"
                                                                     class="text-decoration-none text-dark fs-6">+91
@@ -3147,7 +3149,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <h5 class="fw-bolder pb-3">Profile Details:</h5>
+                                                     <p class="my-3 fs-5 fw-semibold">Profile Details</p>
 
                                                     <div class="d-md-flex pb-1">
                                                         <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
@@ -3251,7 +3253,7 @@
                                                         </div>
 
                                                         <div class="d-flex justify-content-between mt-2 ">
-                                                            <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details :</p>
+                                                            <p class="my-3 fs-5 fw-semibold">Profile Details :</p>
                                                             <a href="<?php echo base_url() . "Healthcareprovider/editMyProfile" ?>"><i
                                                                     class="bi bi-pencil-square"></i> Edit</a>
                                                         </div>

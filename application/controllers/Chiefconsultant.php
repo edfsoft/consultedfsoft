@@ -118,7 +118,6 @@ class Chiefconsultant extends CI_Controller
     public function updateNewPassword()
     {
         $result = $this->CcModel->changeNewPassword();
-
         if ($result) {
             $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
         } else {
@@ -364,8 +363,8 @@ class Chiefconsultant extends CI_Controller
 
     public function saveNewPassword()
     {
-        $this->session->unset_userdata('firstLogin');
         if ($this->CcModel->updateNewPassword()) {
+            $this->session->unset_userdata('firstLogin');
             $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
         } else {
             $this->session->set_flashdata('showErrorMessage', 'Error in updating password');

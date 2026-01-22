@@ -216,7 +216,7 @@
                 <section>
                     <div class="card rounded">
                         <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                            <p style="font-size: 24px; font-weight: 500">Chief Consultant List</p>
+                            <p style="font-size: 24px; font-weight: 500">Chief Consultants List</p>
                             <a href="<?php echo base_url() . "Edfadmin/ccSignupForm" ?>">
                                 <button style="background-color: #2b353bf5;"
                                     class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
@@ -744,7 +744,7 @@
                             <div class="card rounded">
                                 <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
                                     <p style="font-size: 24px; font-weight: 500">
-                                        Chief Doctor Profile </p>
+                                        Chief Consultant Profile </p>
                                     <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
                                             class="bi bi-arrow-left"></i> Back</button>
                                 </div>
@@ -780,7 +780,7 @@
                                             </div>
                                         </div>
 
-                                        <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details</p>
+                                        <p class="my-3 fs-5 fw-semibold">Profile Details</p>
 
                                         <div class="d-md-flex pb-1">
                                             <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
@@ -913,7 +913,7 @@
                             <section>
                                 <div class="card rounded">
                                     <div class="d-sm-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                        <p style="font-size: 24px; font-weight: 500">Health Care Provider List</p>
+                                        <p style="font-size: 24px; font-weight: 500">Health Care Providers List</p>
                                         <a href="<?php echo base_url() . 'Edfadmin/hcpSignupForm'; ?>">
                                             <button style="background-color: #2b353bf5;"
                                                 class="text-light border-0 rounded d-block d-sm-inline mx-auto mx-sm-0 p-2 mb-3">
@@ -1438,7 +1438,7 @@
                                     <section>
                                         <div class="card rounded">
                                             <div class="d-flex justify-content-between mt-2 p-3 pt-sm-4 px-sm-4">
-                                                <p style="font-size: 24px; font-weight: 500"> Health Care Provider's Profile</p>
+                                                <p style="font-size: 24px; font-weight: 500"> Health Care Provider Profile</p>
                                                 <button onclick="goBack()" class="border-0 bg-light float-end text-dark pb-3"><i
                                                         class="bi bi-arrow-left"></i> Back</button>
                                             </div>
@@ -1473,7 +1473,7 @@
                                                                 </a></p>
                                                         </div>
                                                     </div>
-                                                    <p class="my-3 mt-3 fs-5 fw-semibold">Profile Details</p>
+                                                    <p class="my-3 fs-5 fw-semibold">Profile Details</p>
                                                     <div class="d-md-flex pb-1">
                                                         <p class="text-secondary col-md-3 mb-1">Years of Experience : </p>
                                                         <p class="col-md-9 ps-2">
@@ -2281,7 +2281,7 @@
                                                 <section>
                                                     <div class="card rounded">
                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                            <p style="font-size: 24px; font-weight: 500">Specialization List</p>
+                                                            <p style="font-size: 24px; font-weight: 500">Specializations List</p>
                                                             <button type="button" onclick="openAddModal('specialization')" style="background-color: #2b353bf5;"
                                                                 class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                 <i class="bi bi-plus-square-fill"></i> New
@@ -3214,7 +3214,7 @@
                                                                 <section>
                                                                     <div class="card rounded">
                                                                         <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                            <p style="font-size: 24px; font-weight: 500">Investigation List</p>
+                                                                            <p style="font-size: 24px; font-weight: 500">Investigations List</p>
                                                                             <button type="button" onclick="openAddModal('investigation')" style="background-color: #2b353bf5;"
                                                                                 class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                 <i class="bi bi-plus-square-fill"></i> New
@@ -3408,7 +3408,7 @@
                                                                     <section>
                                                                         <div class="card rounded">
                                                                             <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                                <p style="font-size: 24px; font-weight: 500">Instruction List</p>
+                                                                                <p style="font-size: 24px; font-weight: 500">Instructions List</p>
                                                                                 <button type="button" onclick="openAddModal('instruction')" style="background-color: #2b353bf5;"
                                                                                     class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                     <i class="bi bi-plus-square-fill"></i> New
@@ -3602,7 +3602,7 @@
                                                                         <section>
                                                                             <div class="card rounded">
                                                                                 <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                                    <p style="font-size: 24px; font-weight: 500">Procedure List</p>
+                                                                                    <p style="font-size: 24px; font-weight: 500">Procedures List</p>
                                                                                     <button type="button" onclick="openAddModal('procedure')" style="background-color: #2b353bf5;"
                                                                                         class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                         <i class="bi bi-plus-square-fill"></i> New
@@ -3798,7 +3798,7 @@
                                                                             <section>
                                                                                 <div class="card rounded">
                                                                                     <div class="d-sm-flex justify-content-between mt-2 mb-3 p-2 pt-sm-4 px-sm-4">
-                                                                                        <p style="font-size: 24px; font-weight: 500">Advice List</p>
+                                                                                        <p style="font-size: 24px; font-weight: 500">Advices List</p>
                                                                                         <button type="button" onclick="openAddModal('advice')" style="background-color: #2b353bf5;"
                                                                                             class="text-light border-0 rounded mx-sm-0 p-2 mb-3 btn">
                                                                                             <i class="bi bi-plus-square-fill"></i> New

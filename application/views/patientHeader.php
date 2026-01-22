@@ -22,22 +22,22 @@
                     <a class="d-flex align-items-center text-dark fw-medium" href="#" data-bs-toggle="dropdown"
                         onmouseover="this.style.textDecoration='underline';"
                         onmouseout="this.style.textDecoration='none';">
-                        <?php echo $_SESSION['hcpsName']; ?> <span class="dropdown-toggle mx-2 mx-sm-3"></span>
+                        <?php echo $_SESSION['patientName']; ?> <span class="dropdown-toggle mx-2 mx-sm-3"></span>
                     </a>
-                    <span class="fw-medium" style="font-size:16px;color: #00ad8e;">HCP</span>
+                    <span class="fw-medium" style="font-size:16px;color: #2F80ED;">Patient</span>
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile"
                         style="box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);">
                         <li class="dropdown-header">
-                            <p class="fs-6 fw-medium text-dark"> <?php echo $_SESSION['hcpsName']; ?> / </p>
-                            <p> <?php echo $_SESSION['hcpId']; ?> </p>
-                            <span>Health Care Provider</span>
+                            <p class="fs-6 fw-medium text-dark"> <?php echo $_SESSION['patientName']; ?> / </p>
+                            <p> <?php echo $_SESSION['patientId']; ?> </p>
+                            <span>Patient</span>
                         </li>
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
                         <li> <a class="dropdown-item d-flex align-items-center"
-                                href="<?php echo base_url() . "Healthcareprovider/myProfile" ?>"
+                                href="<?php echo base_url() . "Patient/myProfile" ?>"
                                 onmouseover="this.style.textDecoration='underline';"
                                 onmouseout="this.style.textDecoration='none';"> <i class="bi bi-person"></i> <span>My
                                     Profile</span> </a> </li>
@@ -45,12 +45,6 @@
                             <hr class="dropdown-divider" />
                         </li>
                         <li>
-                            <!-- <a href="<?php echo base_url() . "" ?>"
-                            class="dropdown-item d-flex align-items-center text-danger"
-                            onclick="return confirm('Are you sure to logout?')">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>Log Out</span>
-                        </a> -->
                             <a href="#" data-bs-toggle="modal" data-bs-target="#confirmLogout"
                                 class="dropdown-item d-flex align-items-center text-danger">
                                 <i class="bi bi-box-arrow-right"></i>
@@ -64,10 +58,10 @@
     </nav>
 </header>
 
-<aside id="sidebar" class="sidebar" style="background-color: #00ad8e">
+<aside id="sidebar" class="sidebar" style="background-color: #2F80ED">
     <ul class="sidebar-nav pt-5 ps-4" id="sidebar-nav">
         <li>
-            <a href="<?php echo base_url() . "Healthcareprovider/dashboard" ?>" id="dashboard"
+            <a href="<?php echo base_url() . "Patient/dashboard" ?>" id="dashboard"
                 style="font-size: 18px; font-weight: 400;color:white;">
                 <i class="bi bi-grid pe-3"></i>
                 <span>Dashboard</span>
@@ -75,22 +69,7 @@
         </li>
 
         <li class="pt-4">
-            <a style="font-size: 18px; font-weight: 400;color:white;" id="patients"
-                href="<?php echo base_url() . "Healthcareprovider/patients" ?>">
-                <div><i class="bi bi-people pe-3"></i> <span>Patients</span></div>
-            </a>
-        </li>
-
-        <!--       <li class="pt-4">
-            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
-                style="font-size: 18px; font-weight: 400;color:white;" id="appointments">
-                <div>
-                    <i class="bi bi-calendar2-check pe-3"></i> <span>Appointments</span>
-                </div>
-            </a>
-        </li> -->
-        <li class="pt-4">
-            <a href="<?php echo base_url() . "Healthcareprovider/appointments" ?>"
+            <a href="<?php echo base_url() . "Patient/appointments" ?>"
                 style="font-size: 18px; font-weight: 400; color: white;" id="appointments">
 
                 <div class="d-flex justify-content-between align-items-center pe-3">
@@ -108,14 +87,54 @@
         </li>
 
         <li class="pt-4">
-            <a href="<?php echo base_url() . "Healthcareprovider/chiefDoctors" ?>"
-                style="font-size: 18px; font-weight: 400;color:white;" id="chiefDoctor">
+            <a class="" href="<?php echo base_url() . "Patient/myProfile" ?>"
+                style="font-size: 18px; font-weight: 400;color:white;" id="myProfile">
                 <div>
-                    <i class="bi bi-person-hearts pe-3"></i>
-                    <span>Chief Doctors</span>
+                    <i class="bi bi-person pe-3"></i>
+                    <span>My Profile</span>
                 </div>
             </a>
         </li>
+
+        <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Patient/healthCareProviders" ?>"
+                style="font-size: 18px; font-weight: 400;color:white;" id="healthCareProvider">
+                <div>
+                    <i class="bi bi-person-hearts pe-3"></i>
+                    <span>Health Care Providers</span>
+                </div>
+            </a>
+        </li>
+
+        <li class="pt-4">
+            <a href="<?php echo base_url() . "Patient/chiefDoctors" ?>"
+                style="font-size: 18px; font-weight: 400;color:white;" id="chiefDoctor">
+                <div>
+                    <i class="bi bi-person-check pe-3"></i>
+                    <span>Chief Consultants</span>
+                </div>
+            </a>
+        </li>
+
+        <!-- <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Patient/feedback" ?>"
+                style="font-size: 18px; font-weight: 400;color:white;" id="feedback">
+                <div>
+                    <i class="bi bi-chat-right-heart pe-3"></i>
+                    <span>Feedback</span>
+                </div>
+            </a>
+        </li>
+
+        <li class="pt-4">
+            <a class="" href="<?php echo base_url() . "Patient/faqs" ?>"
+                style="font-size: 18px; font-weight: 400;color:white;" id="faqs">
+                <div>
+                    <i class="bi bi-question-circle pe-3"></i>
+                    <span>FAQs</span>
+                </div>
+            </a>
+        </li> -->
 
         <li class="pt-4">
             <a href="#" role="button" data-bs-toggle="modal" data-bs-target="#confirmLogout"

@@ -68,14 +68,14 @@
         <li class="pt-4">
             <a class="" style="font-size: 18px; font-weight: 400;color:#8cafba;" id="ccs"
                 href="<?php echo base_url() . "Edfadmin/ccList" ?>">
-                <div><i class="bi bi-person-check pe-3"></i></i> <span>CC</span></div>
+                <div><i class="bi bi-person-check pe-3"></i></i> <span>CCs</span></div>
             </a>
         </li>
         <li class="pt-4">
             <a class="" href="<?php echo base_url() . "Edfadmin/hcpList" ?>"
                 style="font-size: 18px; font-weight: 400;color:#8cafba;" id="hcps">
                 <div>
-                    <i class="bi bi-person-hearts pe-3"></i> <span>HCP</span>
+                    <i class="bi bi-person-hearts pe-3"></i> <span>HCPs</span>
                 </div>
             </a>
         </li>

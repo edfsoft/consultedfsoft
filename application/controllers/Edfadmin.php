@@ -127,7 +127,7 @@ class Edfadmin extends CI_Controller
             $message = "Hi there, <br><br>
             Your account has been created as Chief Consultant [CC].<br>
             Login URL: <b>https://consult.edftech.in/</b><br>
-            Mail Id: <b>" . $mailId . " </b><br>
+            Mail Address: <b>" . $mailId . " </b><br>
             Password: <b>" . $pswd . " </b><br>
             You will be required to change your password upon first login.
             <br><br>
@@ -226,7 +226,7 @@ class Edfadmin extends CI_Controller
 
         $response = [
             'mobile_exists' => in_array('Mobile Number', $existing_errors),
-            'email_exists' => in_array('Mail Id', $existing_errors)
+            'email_exists' => in_array('Mail Address', $existing_errors)
         ];
 
         header('Content-Type: application/json');
@@ -277,7 +277,7 @@ class Edfadmin extends CI_Controller
             $message = "Hi there, <br><br>
             Your account has been created as Health Care Provider [HCP].<br>
             Login URL: <b>https://consult.edftech.in/</b><br>
-            Mail Id: <b>" . $hcpMailId . " </b><br>
+            Mail Address: <b>" . $hcpMailId . " </b><br>
             Password: <b>" . $pswd . " </b><br>
             You will be required to change your password upon first login.
             <br><br>

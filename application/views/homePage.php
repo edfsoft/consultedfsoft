@@ -78,6 +78,8 @@
                                 Care Provider</a></li>
                         <li><a href="<?php echo base_url() . "Chiefconsultant/" ?>" class="dropdown-item py-2">
                                 Chief Consultant</a></li>
+                        <li><a href="<?php echo base_url() . "Patient/" ?>" class="dropdown-item py-2">
+                                Patient</a></li>
                     </ul>
                 </div>
 

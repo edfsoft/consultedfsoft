@@ -1,8 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+// Manually include the files in this order
+require_once APPPATH . 'libraries/Agora/Util.php';
+require_once APPPATH . 'libraries/Agora/AccessToken.php';
+require_once APPPATH . 'libraries/Agora/RtcTokenBuilder.php';
 
 class Healthcareprovider extends CI_Controller
 {
+
 
     function __construct()
     {
@@ -124,9 +129,9 @@ class Healthcareprovider extends CI_Controller
     {
         $result = $this->HcpModel->changeNewPassword();
         if ($result) {
-            $this->session->set_flashdata('successMessage', 'Password updated successfully');
+            $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
         } else {
-            $this->session->set_flashdata('errorMessage', 'Password update failed or no changes made');
+            $this->session->set_flashdata('showErrorMessage', 'Password update failed or no changes made');
         }
         redirect('Healthcareprovider/');
     }
@@ -310,15 +315,71 @@ class Healthcareprovider extends CI_Controller
         }
     }
 
+    private function generateTempPassword($length = 8)
+    {
+        $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $lowercase = 'abcdefghijklmnopqrstuvwxyz';
+        $special = '@#$%&*!';
+        $numbers = '0123456789';
+
+        $password = $uppercase[random_int(0, strlen($uppercase) - 1)];
+        $password .= $lowercase[random_int(0, strlen($lowercase) - 1)];
+        $password .= $special[random_int(0, strlen($special) - 1)];
+        $password .= $numbers[random_int(0, strlen($numbers) - 1)];
+
+        $allChars = $uppercase . $lowercase . $special . $numbers;
+        while (strlen($password) < $length) {
+            $password .= $allChars[random_int(0, strlen($allChars) - 1)];
+        }
+
+        return str_shuffle($password);
+    }
+
     public function addPatientsForm()
     {
-        $register = $this->HcpModel->insertPatients();
-        $this->HcpModel->generatePatientId($register);
-        if ($register) {
-            $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
-        } else {
-            $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
+        $post = $this->input->post(null, true);
+        $patientMail = $post['patientEmail'] ?? '';
+
+        $tempPassword = null;
+        $hashedPassword = null;
+
+        if (!empty($patientMail)) {
+            $tempPassword = $this->generateTempPassword(8);
+            $hashedPassword = password_hash($tempPassword, PASSWORD_BCRYPT);
         }
+
+        $register = $this->HcpModel->insertPatients($hashedPassword);
+        if (!$register) {
+            $this->session->set_flashdata('showErrorMessage', 'Error in adding patient');
+            redirect('Consultation/consultation');
+            return;
+        }
+        $this->HcpModel->generatePatientId($register);
+
+        if (!empty($patientMail)) {
+            $message = "
+                    Hi there,<br><br>
+                    Your account has been created as <b>Patient</b>.<br><br>
+                    Login URL: <b>https://consult.edftech.in/</b><br>
+                    Email Address: <b>{$patientMail}</b><br>
+                    Temporary Password: <b>{$tempPassword}</b><br><br>
+                    You will be required to change your password upon first login.
+                    <br><br>
+                    Regards,<br>
+                    <b>EDF Healthcare Team</b>
+                ";
+
+            $this->email->set_newline("\r\n");
+            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+            $this->email->to($patientMail);
+            $this->email->subject('Your Account Login Credentials');
+            $this->email->message($message);
+
+            if (!$this->email->send()) {
+                log_message('error', 'Patient email failed: ' . $this->email->print_debugger());
+            }
+        }
+        $this->session->set_flashdata('showSuccessMessage', 'Patient added successfully');
         redirect('Consultation/consultation/' . $register);
     }
 
@@ -406,6 +467,17 @@ class Healthcareprovider extends CI_Controller
     {
         header('Content-Type: application/json');
         $input = json_decode(file_get_contents('php://input'), true);
+        if (!$input || empty($input['firstName']) || empty($input['mobile'])) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Invalid input data'
+            ]);
+            return;
+        }
+
+        $tempPassword = $this->generateTempPassword(8);
+        $hashedPassword = password_hash($tempPassword, PASSWORD_BCRYPT);
+
         $data = [
             'firstName' => $input['firstName'],
             'lastName' => $input['lastName'],
@@ -415,34 +487,73 @@ class Healthcareprovider extends CI_Controller
             'age' => $input['age'],
             'patientHcp' => $_SESSION['hcpId'],
             'patientHcpDbId' => $_SESSION['hcpIdDb'],
+            'password' => $hashedPassword,
+            'firstLoginPswd' => '0' 
         ];
 
         $insertId = $this->HcpModel->insertPartialPatient($data);
+
+        if (!$insertId) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Patient insert failed'
+            ]);
+            return;
+        }
+
         $patientId = $this->HcpModel->generatePatientId($insertId);
 
-        if ($insertId && $patientId) {
-            $this->HcpModel->updatePatientId($insertId, ['patientId' => $patientId]);
+        if (!$patientId) {
             echo json_encode([
-                'success' => true,
-                'id' => $insertId,
-                'patientId' => $patientId,
-                'firstName' => $data['firstName']
+                'success' => false,
+                'message' => 'Patient ID generation failed'
             ]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Insert failed']);
+            return;
         }
+        $this->HcpModel->updatePatientId($insertId, ['patientId' => $patientId]);
+
+        if (!empty($data['mailId'])) {
+            $message = "
+            Hi there,<br><br>
+            Your account has been created as <b>Patient</b>.<br><br>
+            Login URL: <b>https://consult.edftech.in/</b><br>
+            Email Address: <b>{$data['mailId']}</b><br>
+            Temporary Password: <b>{$tempPassword}</b><br><br>
+            You will be required to change your password upon first login.
+            <br><br>
+            Regards,<br>
+            <b>EDF Healthcare Team</b>
+        ";
+
+            $this->email->set_newline("\r\n");
+            $this->email->from('noreply@consult.edftech.in', 'Consult EDF');
+            $this->email->to($data['mailId']);
+            $this->email->subject('Your Account Login Credentials');
+            $this->email->message($message);
+
+            if (!$this->email->send()) {
+                log_message('error', 'Patient email failed: ' . $this->email->print_debugger());
+            }
+        }
+
+        echo json_encode([
+            'success' => true,
+            'id' => $insertId,
+            'patientId' => $patientId,
+            'firstName' => $data['firstName']
+        ]);
     }
 
-    /* public function newAppointment()
- {
-     if ($this->HcpModel->insertAppointment()) {
+    /*  public function newAppointment()
+     {
+         if ($this->HcpModel->insertAppointment()) {
 
-         $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
-     } else {
-         $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
-     }
-     redirect('Healthcareprovider/appointments');
- } */
+             $this->session->set_flashdata('showSuccessMessage', 'Appointment booked successfully');
+         } else {
+             $this->session->set_flashdata('showErrorMessage', 'Error in booking appointment');
+         }
+         redirect('Healthcareprovider/appointments');
+     } */
 
     public function newAppointment()
     {
@@ -460,14 +571,15 @@ class Healthcareprovider extends CI_Controller
 
             $formattedDate = date('d M Y', strtotime($details['dateOfAppoint']));
             $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
-
+            $meetingBaseUrl = 'https://consult.edftech.in/Healthcareprovider/join/';
+            $joinUrl = $meetingBaseUrl . ltrim($details['appointmentLink'], '/');
             $message = "
                 Dear {$details['firstName']} {$details['lastName']},<br><br>
                 Your appointment has been successfully booked.<br><br>
                 <b>📅 Date:</b> {$formattedDate}<br>
                 <b>⏰ Time:</b> {$formattedTime}<br><br>
                 <b>🔗 Join Meeting:</b><br>
-                <a href='{$details['appointmentLink']}' target='_blank'>{$details['appointmentLink']}</a><br><br>
+                <a href='{$joinUrl}' target='_blank'>{$joinUrl}</a><br><br>
                 Please join the meeting at the scheduled time.
                 <br><br>
                 Regards,
@@ -582,7 +694,7 @@ class Healthcareprovider extends CI_Controller
                 $formattedTime = date('h:i A', strtotime($details['timeOfAppoint']));
 
                 $message = "
-                    Dear {$details['firstName']},<br><br>
+                    Dear {$details['firstName']} {$details['lastName']},<br><br>
                     Your Reschedule appointment has been successfully <b>updated</b>.<br><br>
                     <b>📅 Date:</b> {$formattedDate}<br>
                     <b>⏰ Time:</b> {$formattedTime}<br><br>
@@ -759,11 +871,12 @@ class Healthcareprovider extends CI_Controller
 
     public function saveNewPassword()
     {
-        $this->session->unset_userdata('firstLogin');
+
         if ($this->HcpModel->updateNewPassword()) {
-            $this->session->set_flashdata('successMessage', 'Password updated successfully');
+            $this->session->unset_userdata('firstLogin');
+            $this->session->set_flashdata('showSuccessMessage', 'Password updated successfully');
         } else {
-            $this->session->set_flashdata('errorMessage', 'Error in updating password');
+            $this->session->set_flashdata('showErrorMessage', 'Error in updating password');
         }
         redirect('Healthcareprovider/myProfile');
     }
@@ -784,8 +897,94 @@ class Healthcareprovider extends CI_Controller
     }
 
 
+    public function join($unique_meeting_id = null) {
+        if (!$unique_meeting_id) {
+            show_error('Invalid Meeting Link', 404);
+        }
+        date_default_timezone_set('Asia/Kolkata');
+        $this->db->select('
+            appointment_details.*, 
+            patient_details.firstName, 
+            patient_details.lastName, 
+            hcp_details.hcpName
+        ');
+        $this->db->from('appointment_details');
+        
+        $this->db->join('patient_details', 'patient_details.id = appointment_details.patientDbId', 'inner');
+        
+        $this->db->join('hcp_details', 'hcp_details.id = appointment_details.hcpDbId', 'inner');
+        
+        $this->db->where('appointment_details.appointmentlink', $unique_meeting_id);
+        
+        $appointment = $this->db->get()->row();
 
+        if (!$appointment) {
+            show_error('This meeting link is invalid.', 403);
+        }
 
+        // 2. TIME VALIDATION LOGIC (Keep commented or uncomment as needed)
+        $current_time = time();
+        /* $appointment_scheduled_at = strtotime($appointment->dateOfAppoint . ' ' . $appointment->timeOfAppoint);
+        $earliest_join_time = $appointment_scheduled_at - 600; 
+        $latest_join_time = $appointment_scheduled_at + 3600;
 
+        if ($current_time < $earliest_join_time) {
+            $wait_minutes = ceil(($earliest_join_time - $current_time) / 60);
+            show_error("Meeting hasn't started yet. You can join in $wait_minutes minutes.", 403);
+        }
+        if ($current_time > $latest_join_time) {
+            show_error("This meeting link has expired as the 1-hour window has passed.", 403);
+        }
+        */
 
+        $patient_full_name = $appointment->firstName . ' ' . $appointment->lastName;
+        $doctor_full_name = $appointment->hcpName;
+
+        $is_doctor_logged_in = $this->session->has_userdata('hcpIdDb');
+
+        if ($is_doctor_logged_in) {
+            $local_name = $doctor_full_name;
+            if(empty($local_name)) { $local_name = $doctor_full_name; } // Fallback to DB
+            
+            $remote_name = $patient_full_name; 
+            
+        } else {
+            $local_name = $patient_full_name;
+            $remote_name = $doctor_full_name; 
+        }
+
+        // 3. AGORA TOKEN GENERATION
+        //$current_time = time();
+        $appID = 'f891d97665524065b626ea324f06942f';
+        $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9'; 
+        $channel_name = $unique_meeting_id;
+        
+        $uid = rand(1000, 9999);
+        $role = RtcTokenBuilder::RolePublisher;
+        
+        $expireTimeInSeconds = 3600;
+        $privilegeExpiredTs = $current_time + $expireTimeInSeconds;
+
+        $dynamicToken = RtcTokenBuilder::buildTokenWithUid(
+            $appID, 
+            $appCertificate, 
+            $channel_name, 
+            $uid, 
+            $role, 
+            $privilegeExpiredTs
+        );
+
+        // 4. Pass Data to View
+        $data = [
+            'method'       => 'videoCall',
+            'app_id'       => $appID,
+            'temp_token'   => $dynamicToken,
+            'channel_name' => $channel_name,
+            'uid'          => $uid,
+            'local_name'   => $local_name, 
+            'remote_name'  => $remote_name
+        ];
+
+        $this->load->view('agoraTestView', $data);
+    }
 }

@@ -51,6 +51,7 @@ class PatientModel extends CI_Model
         $post = $this->input->post(null, true);
         $updatedata = array(
             'password' => password_hash($post['patientCnfmPassword'], PASSWORD_BCRYPT),
+            'firstLoginPswd' => '1'
         );
         $this->db->where('mailId', $post['mailId']);
         $this->db->update('patient_details', $updatedata);

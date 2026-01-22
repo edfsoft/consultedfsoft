@@ -76,6 +76,7 @@ class CcModel extends CI_Model
         $updatedata = array(
             // 'doctorPassword' => $post['ccCnfmPassword']
             'doctorPassword' => password_hash($post['ccCnfmPassword'], PASSWORD_BCRYPT),
+            'firstLoginPswd' => '1'
         );
         $this->db->where('doctorMobile', $post['ccMobileNum']);
         $this->db->update('cc_details', $updatedata);

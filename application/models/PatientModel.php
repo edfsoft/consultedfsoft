@@ -77,6 +77,74 @@ class PatientModel extends CI_Model
         }
     }
 
+     public function get_consultations_by_patient($patient_id)
+    {
+        $this->db->select('*');
+        $this->db->from('consultations');
+        $this->db->where('patient_id', $patient_id);
+        // $this->db->order_by('created_at', 'DESC');
+        $this->db->order_by('consult_date', 'DESC');
+        $this->db->order_by('consult_time', 'DESC');
+        $consultations = $this->db->get()->result_array();
+
+        foreach ($consultations as &$consultation) {
+            $consultation_id = $consultation['id'];
+
+            // Vitals
+            $consultation['vitals'] = $this->db
+                ->get_where('consult_vitals', ['consultation_id' => $consultation_id])
+                ->row_array();
+
+            // Symptoms
+            $consultation['symptoms'] = $this->db
+                ->get_where('consult_symptoms', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Findings
+            $consultation['findings'] = $this->db
+                ->get_where('consult_findings', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Diagnosis
+            $consultation['diagnosis'] = $this->db
+                ->get_where('consult_diagnosis', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Investigations
+            $consultation['investigations'] = $this->db
+                ->get_where('consult_investigations', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Instructions
+            $consultation['instructions'] = $this->db
+                ->get_where('consult_instructions', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Procedures
+            $consultation['procedures'] = $this->db
+                ->get_where('consult_procedures', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Advices
+            $consultation['advices'] = $this->db
+                ->get_where('consult_advices', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Medicines
+            $consultation['medicines'] = $this->db
+                ->order_by('order_position', 'ASC')
+                ->get_where('consult_medicines', ['consultation_id' => $consultation_id])
+                ->result_array();
+
+            // Attachments
+            $consultation['attachments'] = $this->db
+                ->get_where('consult_attachments', ['consultation_id' => $consultation_id])
+                ->result_array();
+        }
+
+        return $consultations;
+    }
+    
     public function getPatientDetails()
     {
         $patientIdDb = $_SESSION['patientIdDb'];

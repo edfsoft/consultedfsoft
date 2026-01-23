@@ -155,7 +155,9 @@ class Patient extends CI_Controller
     {
         if (isset($_SESSION['patientIdDb'])) {
             $this->data['method'] = "dashboard";
-
+            $patientIdDb = $_SESSION['patientIdDb'];
+            $this->data['patientDetails'] = $this->PatientModel->getPatientDetails();
+            $this->data['consultations'] = $this->PatientModel->get_consultations_by_patient($patientIdDb);
             $this->load->view('patientDashboard.php', $this->data);
         } else {
             redirect('Patient/');

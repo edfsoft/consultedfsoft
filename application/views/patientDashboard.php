@@ -1996,6 +1996,8 @@
                 if (modalElement) {
                     const modalInstance = bootstrap.Modal.getInstance(modalElement);
                     if (modalInstance) modalInstance.hide();
+                    // Ensure backdrop is removed
+                    document.querySelector('.modal-backdrop')?.remove();
                 }
             }
 

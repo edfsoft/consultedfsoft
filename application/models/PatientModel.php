@@ -62,10 +62,14 @@ class PatientModel extends CI_Model
     {
         $postData = $this->input->post(null, true);
         $emailid = $postData['patientEmail'];
+        $id = $postData['patientId'];
         $password = $postData['patientPassword'];
-        $query = "SELECT * FROM patient_details WHERE mailId = ? AND deleteStatus = '0'";
-        $result = $this->db->query($query, array($emailid));
-        $user = $result->row_array();
+        $user = $this->db
+            ->where('mailId', $emailid)
+            ->where('patientId', $id)
+            ->where('deleteStatus', '0')
+            ->get('patient_details')
+            ->row_array();
 
         $hashedPassword = $user['password'];
         if (password_verify($password, $hashedPassword)) {

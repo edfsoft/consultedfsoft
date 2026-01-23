@@ -91,6 +91,12 @@
                     <form action="<?php echo base_url() . "Patient/patientLogin" ?>" method="post"
                         name="patientLoginform" onsubmit="return validateLogin()">
                         <div class="mb-3">
+                            <label for="patientId" class="form-label">EDF Id <span class="text-danger">*</span></label>
+                            <input type="text" name="patientId" id="patientId" class="form-control rounded-pill p-3"
+                                oninput="validPatientId(this)" placeholder="EDF000001">
+                            <small id="patientId_err" class="text-danger pt-1"></small>
+                        </div>
+                        <div class="mb-3">
                             <label for="patientEmail" class="form-label">Email Address <span
                                     class="text-danger">*</span></label>
                             <input type="text" name="patientEmail" id="patientEmail" placeholder="example@gmail.com"
@@ -170,6 +176,13 @@
 
     <!-- Validation -->
     <script>
+        function validPatientId(input) {
+            const patientIdError = document.getElementById("patientId_err");
+            if (input.value != "") {
+                patientIdError.textContent = "";
+            }
+        }
+
         function validEmail(input) {
             const emailError = document.getElementById("mail_err");
             if (input.value != "") {
@@ -191,8 +204,19 @@
         }
 
         function validateLogin() {
+            var patientId = document.getElementById("patientId").value;
             var email = document.getElementById("patientEmail").value;
             var password = document.getElementById("patientPassword").value;
+
+            if (patientId == "") {
+                document.getElementById("patientId_err").innerHTML = "Please enter a patient ID.";
+                return false;
+            } else if (!/^EDF\d{6}$/.test(patientId)) {
+                document.getElementById("patientId_err").innerHTML = "Invalid patient ID. Please enter valid patient ID.";
+                return false;
+            } else {
+                document.getElementById("patientId_err").innerHTML = "";
+            }
 
             if (email == "") {
                 document.getElementById("mail_err").innerHTML = "Please enter an email address.";

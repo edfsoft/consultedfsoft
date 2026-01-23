@@ -57,6 +57,7 @@ class Patient extends CI_Controller
     public function sendFPOtp()
     {
         $patientMail = $this->input->post('patientPassMail');
+        $patientId = $this->input->post('patientPassId');
         $user_exists = $this->db->where('mailId', $patientMail)->get('patient_details')->num_rows() > 0;
         if (!$user_exists) {
             $this->session->set_flashdata('errorMessage', 'Email not registered.');
@@ -82,6 +83,7 @@ class Patient extends CI_Controller
         if ($this->email->send()) {
             $this->data['method'] = "verifyOtp";
             $this->data['patientMail'] = $patientMail;
+            $this->data['patientId'] = $patientId;
             $this->session->set_flashdata('successMessage', 'OTP sent to your email and is valid for the next 10 minutes.');
         } else {
             $this->data['method'] = "getMailId";
@@ -94,15 +96,18 @@ class Patient extends CI_Controller
     {
         $enteredOtp = isset($_POST['patientPwdOtp']) ? $this->input->post('patientPwdOtp') : '0';
         $mail = $this->input->post('patientMail');
+        $patientId = $this->input->post('patientId');
         $result = $this->PatientModel->validate_otp($mail, $enteredOtp);
         if ($result['status'] == true) {
             $this->data['method'] = "newPassword";
             $this->data['mailId'] = $mail;
+            $this->data['patientId'] = $patientId;
             $this->session->set_flashdata('successMessage', 'OTP verified successfully.');
             $this->load->view('patientForgetPassword.php', $this->data);
         } elseif ($result['status'] == false && $result['reason'] == 'Invalid OTP') {
             $this->data['method'] = "verifyOtp";
             $this->data['mailId'] = $mail;
+            $this->data['patientId'] = $patientId;
             $this->session->set_flashdata('errorMessage', $result['reason']);
             $this->load->view('patientForgetPassword.php', $this->data);
         } elseif ($result['status'] == false && $result['reason'] == 'OTP expired') {

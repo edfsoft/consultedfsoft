@@ -54,8 +54,8 @@ class PatientModel extends CI_Model
             'firstLoginPswd' => '1'
         );
         $this->db->where('mailId', $post['mailId']);
-        $this->db->update('patient_details', $updatedata);
-        return ($this->db->affected_rows() > 0);
+        $this->db->where('patientId', $post['patientId']);
+        return $this->db->update('patient_details', $updatedata);
     }
 
     public function patientLoginDetails()

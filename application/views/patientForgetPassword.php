@@ -97,6 +97,14 @@
                             name="patientPasswordResetFormMail" onsubmit="return validateForm()"
                             oninput="return removeError()">
                             <div class="mb-3">
+                                <label for="patientPassId" class="form-label">EDF Id <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" name="patientPassId" id="patientPassId"
+                                    class="form-control rounded-pill p-3" oninput="validPatientId(this)"
+                                    placeholder="EDF000001">
+                                <small id="patientId_err" class="text-danger pt-1"></small>
+                            </div>
+                            <div class="my-3">
                                 <label for="patientPassMail" class="form-label">Mail Id <span
                                         class="text-danger">*</span></label>
                                 <input type="mail" name="patientPassMail" id="patientPassMail"
@@ -109,7 +117,18 @@
 
                         <script>
                             function validateForm() {
+                                var patientId = document.getElementById("patientPassId").value;
                                 var email = document.getElementById("patientPassMail").value;
+
+                                if (patientId == "") {
+                                    document.getElementById("patientId_err").innerHTML = "Please enter a patient ID.";
+                                    return false;
+                                } else if (!/^EDF\d{6}$/.test(patientId)) {
+                                    document.getElementById("patientId_err").innerHTML = "Invalid patient ID. Please enter valid patient ID.";
+                                    return false;
+                                } else {
+                                    document.getElementById("patientId_err").innerHTML = "";
+                                }
 
                                 if (email == "") {
                                     document.getElementById("patientPassMail_err").innerHTML = "Please enter an email address.";
@@ -123,7 +142,12 @@
                             }
 
                             function removeError() {
+                                var patientId = document.getElementById("patientPassId").value;
                                 var email = document.getElementById("patientPassMail").value;
+
+                                if (patientId != "") {
+                                    document.getElementById("patientId_err").innerHTML = "";
+                                }
 
                                 if (email != "") {
                                     document.getElementById("patientPassMail_err").innerHTML = "";
@@ -146,6 +170,7 @@
                                     <small id="otp_err" class="text-danger pt-1"></small>
                                 </div>
                                 <input type="hidden" id="patientMail" name="patientMail" value="<?php echo $patientMail; ?>">
+                                <input type="hidden" id="patientId" name="patientId" value="<?php echo $patientId; ?>">
                                 <div class="d-flex justify-content-between mt-4">
                                     <button type="submit" class="border-0 rounded-pill text-light px-4 px-sm-5 py-1 py-sm-3"
                                         style="background-color:#2F80ED;font-size:16px;font-weight:600;">Verify</button>
@@ -180,6 +205,7 @@
                                 <form action="<?php echo base_url() . "Patient/updateNewPassword" ?>" method="post"
                                     name="patientPasswordResetForm" onsubmit="return validateFields()">
                                     <input type="hidden" id="mailId" name="mailId" value="<?php echo $mailId; ?>">
+                                    <input type="hidden" id="patientId" name="patientId" value="<?php echo $patientId; ?>">
                                     <div class="position-relative">
                                         <label for="patientPassword" class="form-label">Password <span
                                                 class="text-danger">*</span></label>

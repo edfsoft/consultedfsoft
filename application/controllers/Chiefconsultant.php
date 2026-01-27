@@ -231,6 +231,7 @@ class Chiefconsultant extends CI_Controller
             $this->data['method'] = "appointments";
             $appointmentList = $this->CcModel->getAppointmentList();
             $this->data['appointmentList'] = $appointmentList['response'];
+            $this->data['meetingBaseUrl'] = 'http://localhost/consultedfsoft/';
             $this->setVariable();
             $this->load->view('ccDashboard.php', $this->data);
         } else {
@@ -389,5 +390,12 @@ class Chiefconsultant extends CI_Controller
         redirect('Chiefconsultant/');
     }
 
+    // In chiefconsultation.php (or chiefdoctor.php)
 
+    public function check_session_name($chief_name) {
+        if ($this->session->has_userdata('ccName') && $this->session->userdata('ccName') === $chief_name) {
+            return true;
+        }
+        return false;
+    }
 }

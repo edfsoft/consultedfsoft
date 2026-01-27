@@ -790,7 +790,7 @@ class Healthcareprovider extends CI_Controller
     }
 
 
-    public function join($unique_meeting_id = null) {
+    /* public function join($unique_meeting_id = null) {
         if (!$unique_meeting_id) {
             show_error('Invalid Meeting Link', 404);
         }
@@ -816,7 +816,7 @@ class Healthcareprovider extends CI_Controller
         }
 
         // 2. TIME VALIDATION LOGIC (Keep commented or uncomment as needed)
-        $current_time = time();
+        $current_time = time(); */
         /* $appointment_scheduled_at = strtotime($appointment->dateOfAppoint . ' ' . $appointment->timeOfAppoint);
         $earliest_join_time = $appointment_scheduled_at - 600; 
         $latest_join_time = $appointment_scheduled_at + 3600;
@@ -830,7 +830,7 @@ class Healthcareprovider extends CI_Controller
         }
         */
 
-        $patient_full_name = $appointment->firstName . ' ' . $appointment->lastName;
+        /* $patient_full_name = $appointment->firstName . ' ' . $appointment->lastName;
         $doctor_full_name = $appointment->hcpName;
 
         $is_doctor_logged_in = $this->session->has_userdata('hcpIdDb');
@@ -876,6 +876,129 @@ class Healthcareprovider extends CI_Controller
             'uid'          => $uid,
             'local_name'   => $local_name, 
             'remote_name'  => $remote_name
+        ];
+
+        $this->load->view('agoraTestView', $data);
+    } */
+
+    public function join($unique_meeting_id = null) {
+        if (!$unique_meeting_id) {
+            show_error('Invalid Meeting Link', 404);
+        }
+        date_default_timezone_set('Asia/Kolkata');
+        $this->db->select('
+            appointment_details.*, 
+            patient_details.firstName, 
+            patient_details.lastName, 
+            hcp_details.hcpName,
+            chief.hcpName AS chiefName,
+            cc_details.doctorName AS ccDoctorName
+        ');
+        $this->db->from('appointment_details');
+        
+        $this->db->join('patient_details', 'patient_details.id = appointment_details.patientDbId', 'inner');
+        
+        $this->db->join('hcp_details', 'hcp_details.id = appointment_details.hcpDbId', 'inner');
+        
+        $this->db->join('hcp_details AS chief', 'chief.id = appointment_details.referalDoctorDbId', 'left');
+        
+        $this->db->join('cc_details', 'cc_details.id = appointment_details.referalDoctorDbId', 'left'); // Assuming cc_details has doctorName
+        
+        $this->db->where('appointment_details.appointmentlink', $unique_meeting_id);
+        
+        $appointment = $this->db->get()->row();
+
+        if (!$appointment) {
+            show_error('This meeting link is invalid.', 403);
+        }
+
+        // Get role from URL
+        $role = $this->input->get('role');
+
+        $patient_full_name = $appointment->firstName . ' ' . $appointment->lastName;
+        $hcp_full_name = $appointment->hcpName;
+        $chief_full_name = $appointment->chiefName ?: $appointment->ccDoctorName; // Use ccDoctorName if chiefName not available
+
+        $logged_hcp_id = $this->session->userdata('hcpIdDb');
+
+        $is_main_hcp = false;
+        $is_cc = false;
+        $is_patient = false;
+        $is_valid = false;
+
+        if ($role == 'hcp') {
+            if ($this->session->has_userdata('hcpIdDb') && $logged_hcp_id == $appointment->hcpDbId) {
+                $is_main_hcp = true;
+                $is_valid = true;
+                $local_name = $hcp_full_name;
+                $remote_name = $patient_full_name;
+            }
+        } else if ($role == 'cc') {
+            // Manually include and instantiate the Chiefconsultant controller
+            $this->load->model('CCModel');
+        
+        $is_valid = $this->CCModel->check_session_name($chief_full_name);
+            $is_cc = true;
+            $local_name = $chief_full_name;
+                $remote_name = $patient_full_name;
+            if (!$is_valid) {
+                show_error('Unauthorized access', 403);
+            }
+        
+        } else {
+            $is_patient = true;
+            $is_valid = true;
+            $local_name = $patient_full_name;
+            $remote_name = $chief_full_name ? $chief_full_name : $hcp_full_name;
+        }
+
+        if (!$is_valid) {
+            show_error('Unauthorized access', 403);
+        }
+
+        // 3. AGORA TOKEN GENERATION
+        $current_time = time();
+        $appID = 'f891d97665524065b626ea324f06942f';
+        $appCertificate = '3b5229b39c254ce9b03f5a64966fa5c9'; 
+        $channel_name = $unique_meeting_id;
+        
+        // Assign UID based on role
+        if ($is_main_hcp) {
+            $uid = rand(200000, 299999); // HCP range
+        } elseif ($is_cc) {
+            $uid = rand(300000, 399999); // CC range
+        } else {
+            $uid = rand(100000, 199999); // Patient range
+        }
+        
+        $role_val = RtcTokenBuilder::RolePublisher;
+        
+        $expireTimeInSeconds = 3600;
+        $privilegeExpiredTs = $current_time + $expireTimeInSeconds;
+
+        $dynamicToken = RtcTokenBuilder::buildTokenWithUid(
+            $appID, 
+            $appCertificate, 
+            $channel_name, 
+            $uid, 
+            $role_val, 
+            $privilegeExpiredTs
+        );
+
+        // 4. Pass Data to View
+        $data = [
+            'method'       => 'videoCall',
+            'app_id'       => $appID,
+            'temp_token'   => $dynamicToken,
+            'channel_name' => $channel_name,
+            'uid'          => $uid,
+            'local_name'   => $local_name, 
+            'remote_name'  => $remote_name,
+            'patient_name' => $patient_full_name,
+            'hcp_name'     => $hcp_full_name,
+            'chief_name'   => $chief_full_name,
+            'role'         => $role ?: 'patient',
+            'is_doctor'    => ($is_main_hcp || $is_cc)
         ];
 
         $this->load->view('agoraTestView', $data);

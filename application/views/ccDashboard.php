@@ -1184,11 +1184,13 @@
                                                         $shouldEnableButton = $isToday && $isWithin10Minutes;
 
                                                         if ($shouldEnableButton) { ?>
-                                                                    <a href="<?php echo $value['appointmentLink']; ?>" target="_blank">
+                                                                    <button class="btn btn-success" disabled>Join</button>
+                                                    <?php } else { ?>
+
+                                                                    <a href="<?php echo $meetingBaseUrl . 'Healthcareprovider/join/' . ltrim($value['appointmentLink'], '/') . '?role=cc'; ?>"
+                                                                    target="_self" rel="noopener">
                                                                         <button class="btn btn-success">Join</button>
                                                                     </a>
-                                                    <?php } else { ?>
-                                                                    <button class="btn btn-success" disabled>Join</button>
                                                     <?php } ?>
                                                             </td>
                                                         </tr>
